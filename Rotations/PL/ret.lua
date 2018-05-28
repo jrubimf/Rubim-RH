@@ -134,7 +134,7 @@ local function Generators() --actions.generators=variable,name=ds_castable,value
     end
     --actions.generators+=/call_action_list,name=finishers,if=talent.execution_sentence.enabled&(cooldown.judgment.remains<gcd*4.25|debuff.judgment.remains>gcd*4.25)&cooldown.execution_sentence.up|buff.whisper_of_the_nathrezim.up&buff.whisper_of_the_nathrezim.remains<gcd*1.5
     if (S.ExecutionSentence:IsAvailable() and (S.Judgement:CooldownRemains() < Player:GCD() * 4.25 or Target:DebuffRemains(S.JudgmentDebuff) > Player:GCD() * 4.25) and S.ExecutionSentence:IsReady() or Player:Buff(S.WhisperoftheNathrezim) and Player:BuffRemains(S.WhisperoftheNathrezim) < Player:GCD() * 1.5) and Finishers() ~= nil then
-        return S.Finishers()
+        return Finishers()
     end
 
     --actions.generators+=/judgment,if=dot.execution_sentence.ticking&dot.execution_sentence.remains<gcd*2&debuff.judgment.remains<gcd*2
