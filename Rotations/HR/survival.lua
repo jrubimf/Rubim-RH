@@ -9,10 +9,7 @@
 	  local Target = Unit.Target;
 	  local Spell = AC.Spell;
 	  local Item = AC.Item;
-		
-
-
-	  -- Spells
+			  -- Spells
 	  if not Spell.Hunter then Spell.Hunter = {}; end
 	  Spell.Hunter.Survival = {
 		-- Racials

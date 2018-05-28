@@ -13,10 +13,11 @@ t214 = true
 
 --INTERRUPTS---
 local int_smart = true
+local int_sephuz = false
 
 local runonce = 0
-classspell = {}
 local event = function()
+    local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
     if runonce == 0 then
         print("===================")
         print("|cFF69CCF0R Rotation Assist:")
@@ -25,6 +26,7 @@ local event = function()
         print("===================")
         runonce = 1
     end
+
     --Default
     local QuestionMark = 212812
     ClassSpell1 = QuestionMark
@@ -49,60 +51,46 @@ local event = function()
     local JusticarVengeance = 215661
     local WordofGlory = 210191
 
-    --Shaman
-    local HealingSurge = 188070
-
     --DK
     if select(2, UnitClass("player")) == "DEATHKNIGHT" then
         --Blood
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert( classspell, DeathStrike )
-            table.insert( classspell, RuneTap )
+            ClassSpell1 = DeathStrike
+            ClassSpell2 = RuneTap
             --Frost
         elseif GetSpecialization() == 2 then
-            classspell = {}
-            table.insert( classspell, DeathStrike )
-            table.insert( classspell, BreathOfSindragosa )
-            table.insert( classspell, SindragosasFury )
+            ClassSpell1 = DeathStrike
+            ClassSpell2 = BreathOfSindragosa
+            ClassSpell3 = SindragosasFury
             --Unholy
         elseif GetSpecialization() == 3 then
-            classspell = {}
-            table.insert( classspell, DeathStrike )
+            ClassSpell1 = DeathStrike
         end
     end
+
 
     --DEMON HUNTER
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert( classspell, FelRush )
-            table.insert( classspell, EyeBeam )
+            ClassSpell1 = FelRush
+            ClassSpell2 = EyeBeam
         end
     end
 
     --WARRIOR
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert( classspell, Warbreaker )
-            table.insert( classspell, Ravager )
+            ClassSpell1 = Warbreaker
+            ClassSpell2 = Ravager
         end
     end
 
     --PALADIN
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
-            classspell = {}
-            table.insert( classspell, JusticarVengeance )
+            ClassSpell1 = JusticarVengeance
+            ClassSpell2 = WordofGlory
         end
-    end
-
-    --SHAMAN
-    --Shaman
-    if select(3, UnitClass("player")) == 7 then
-        classspell = {}
-        table.insert( classspell, HealingSurge )
     end
 
 
@@ -167,52 +155,47 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         UIDropDownMenu_AddButton(info)
     elseif menuList == "Spells" then
         --SKILL 1
-        for i=1, #classspell do
-            info.text = GetSpellInfo(classspell[i])
-
-            if i == 1 then
-                info.checked = useS1
+        info.text = GetSpellInfo(ClassSpell1)
+        info.checked = useS1
+        info.func = function(self)
+            PlaySound(891, "Master");
+            if useS1 then
+                useS1 = false
+            else
+                useS1 = true
             end
 
-            if i == 2 then
-                info.checked = useS2
-            end
-
-            if i == 3 then
-                info.checked = useS3
-            end
-            info.func = function(self)
-                PlaySound(891, "Master");
-
-                if i == 1 then
-                    if useS1 then
-                        useS1 = false
-                    else
-                        useS1 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS1))
-                end
-
-                if i == 2 then
-                    if useS2 then
-                        useS2 = false
-                    else
-                        useS2 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS2))
-                end
-
-                if i == 3 then
-                    if useS3 then
-                        useS3 = false
-                    else
-                        useS3 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS3))
-                end
-            end
-            UIDropDownMenu_AddButton(info, level)
+            print("|cFF69CCF0".. GetSpellInfo(ClassSpell1) .. "|r: |cFF00FF00" ..  tostring(useS1))
         end
+        UIDropDownMenu_AddButton(info, level)
+        --SKILL 2
+        info.text = GetSpellInfo(ClassSpell2)
+        info.checked = useS2
+        info.func = function(self)
+            PlaySound(891, "Master");
+            if useS2 then
+                useS2 = false
+            else
+                useS2 = true
+            end
+
+            print("|cFF69CCF0".. GetSpellInfo(ClassSpell2) .. "|r: |cFF00FF00" ..  tostring(useS2))
+        end
+        UIDropDownMenu_AddButton(info, level)
+        --SKILL 3
+        info.text = GetSpellInfo(ClassSpell3)
+        info.checked = useS3
+        info.func = function(self)
+            PlaySound(891, "Master");
+            if useS3 then
+                useS3 = false
+            else
+                useS3 = true
+            end
+
+            print("|cFF69CCF0".. GetSpellInfo(ClassSpell3) .. "|r: |cFF00FF00" ..  tostring(useS3))
+        end
+        UIDropDownMenu_AddButton(info, level)
         -- Show the "Games" sub-menu
         --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
         --            info.text = s
@@ -226,10 +209,28 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             PlaySound(891, "Master");
             if int_smart then
                 int_smart = false
+                int_sephuz = false
                 print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Everything ")
             else
                 int_smart = true
+                int_sephuz = false
                 print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Only necessary. ")
+            end
+        end
+        UIDropDownMenu_AddButton(info, level)
+        ---
+        info.text = "Sephuz"
+        info.checked = int_sephuz
+        info.func = function(self)
+            PlaySound(891, "Master");
+            if int_smart then
+                int_smart = false
+                int_sephuz = true
+                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Saving for Sephuz ")
+            else
+                int_smart = true
+                int_sephuz = false
+                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Disabled for Sephuz. ")
             end
         end
         UIDropDownMenu_AddButton(info, level)
