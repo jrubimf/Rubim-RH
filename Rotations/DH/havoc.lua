@@ -203,13 +203,6 @@ function HavocRotation()
     if not Player:AffectingCombat() then
         return 146250
     end
-	
-		--INTERRUPT
-	if S.ConsumeMagic:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
 
     if Player:IsChanneling(S.EyeBeam) then
         return 248999

@@ -45,14 +45,7 @@ function VengRotation()
     if not Player:AffectingCombat() then
         return 146250
     end
-	
-	--INTERRUPT
-	if S.ConsumeMagic:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
-	
+
     -- Unit Update
     AC.GetEnemies(20, true); -- Fel Devastation (I think it's 20 thp)
     AC.GetEnemies(8, true); -- Sigil of Flame & Spirit Bomb

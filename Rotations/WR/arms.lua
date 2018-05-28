@@ -357,13 +357,6 @@ function WarriorArms()
     if not Player:AffectingCombat() then
         return "146250"
     end
-	
-	--INTERRUPT
-	if S.Pummel:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
 
     -- Interrupts
     -- In Combat
