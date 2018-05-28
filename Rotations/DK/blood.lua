@@ -1,5 +1,3 @@
--- Last Update: 05/04/18 02:41
--- Author: Rubim
 --- ============================ HEADER ============================
 local addonName, addonTable = ...;
 local AC = AethysCore;
@@ -151,7 +149,7 @@ function BloodRotation()
     AC.GetEnemies(20, true);
 	----
 	
-	----CHANNEL
+	----CHANNEL BLOOD DRINKER
 	if Player:IsChanneling(S.Blooddrinker) then
         return "248999"
     end

@@ -1,3 +1,10 @@
+if AethysCore == nil then
+    message("ERROR: Aethyhs Core is missing. Please download it.")
+end
+if AethysCache == nil then
+    message("ERROR: Aethyhs Cache is missing. Please download it.")
+end
+
 devRub = false
 --DEFAULTS
 useRACIAL = true
@@ -16,7 +23,7 @@ local int_smart = true
 
 local runonce = 0
 classspell = {}
-local event = function()
+local startUP = function()
     if runonce == 0 then
         print("===================")
         print("|cFF69CCF0R Rotation Assist:")
@@ -27,10 +34,6 @@ local event = function()
     end
     --Default
     local QuestionMark = 212812
-    ClassSpell1 = QuestionMark
-    ClassSpell2 = QuestionMark
-    ClassSpell3 = QuestionMark
-
     --DK
     local DeathStrike = 49998
     local RuneTap = 194679
@@ -107,8 +110,9 @@ local event = function()
 end
 
 local rubStart = CreateFrame("frame")
-rubStart:SetScript("OnEvent", event)
+rubStart:SetScript("OnEvent", startUP)
 rubStart:RegisterEvent("PLAYER_LOGIN")
+rubStart:RegisterEvent("PLAYER_ENTERING_WORLD")
 rubStart:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 
 -- Create the dropdown, and configure its appearance
@@ -362,15 +366,6 @@ f:SetScript("OnUpdate", onUpdate)
 --return true
 --end
 --- ============================              ============================
-local error = 0
-if AethysCore == nil then
-    message("ERROR: Aethyhs Core is missing. Please download it.")
-    error = 1
-end
-if AethysCache == nil then
-    message("ERROR: Aethyhs Cache is missing. Please download it.")
-    error = 1
-end
 local AC = AethysCore;
 local Cache = AethysCache;
 local Unit = AC.Unit;
@@ -470,13 +465,16 @@ function MainRotation()
         end
     end
 
-    --Rougue
+    --Rogue
     if select(3, UnitClass("player")) == 4 then
         if GetSpecialization() == 1 then
             SetNextAbility(AssasinationRotation())
         end
         if GetSpecialization() == 2 then
             SetNextAbility(OutlawRotation())
+        end
+        if GetSpecialization() == 3 then
+            SetNextAbility(SubRotation())
         end
     end
 
@@ -524,7 +522,7 @@ function MainRotation()
         end
 
         if GetSpecialization() == 2 then
-            SetNextAbility(PProtRotation())
+            SetNextAbility(PaladinProt())
         end
 
         if GetSpecialization() == 1 then
@@ -735,9 +733,6 @@ end
 
 local SpellsInterrupt = {
     194610, 198405, 194657, 199514, 199589, 216197, --Maw of Souls
-
-
-
     0
 }
 

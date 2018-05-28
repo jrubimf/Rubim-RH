@@ -87,7 +87,7 @@ local function Cooldowns()
         return 55748
     end
     --actions.cooldowns+=/crusade,if=holy_power>=3|((equipped.137048|race.blood_elf)&holy_power>=2)
-    if CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 3 or ((I.LiadrinsFuryUnleashed:IsEquipped() or Player:Race() == "BloodElf") and Player:HolyPower() >= 2) then
+	 if CDsON() and S.Crusade:IsCastable() and ((Player:HolyPower() >= 3 and not I.LiadrinsFuryUnleashed:IsEquipped()) or ((I.LiadrinsFuryUnleashed:IsEquipped() or Player:Race() == "BloodElf") and Player:HolyPower() >= 2)) then
         return 55748
     end
 end

@@ -1,6 +1,3 @@
--- Last Update: 05/04/18 02:41
--- Author: Rubim
-
 --- ============================ HEADER ============================
 local addonName, addonTable = ...;
 local AC = AethysCore;
@@ -434,14 +431,14 @@ function FrostRotation()
     if not Player:AffectingCombat() then
         return 146250
     end
-	
-	--INTERRUPT
-	if S.MindFreeze:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
-	
+
+    --INTERRUPT
+    if S.MindFreeze:IsCastable() and ShouldInterrupt() then
+        GRInterrupt:Show()
+    else
+        GRInterrupt:Hide()
+    end
+
     AC.GetEnemies("Melee");
     AC.GetEnemies(8, true);
     AC.GetEnemies(10, true);

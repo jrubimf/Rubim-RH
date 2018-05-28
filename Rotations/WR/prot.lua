@@ -78,7 +78,7 @@ function AoE()
     end
 end
 
-function ProtRotation()
+function PaladinProt()
     if not Player:AffectingCombat() then
         return "146250"
     end
