@@ -1,5 +1,5 @@
 ## Interface: 70100
-## Title: |cffc41f3bRubim Rotation Helper|r
+## Title: Rubim |cffc41f3bRotation Helper|r
 ## Author: Rubim
 ## Version: 1.0
 ## Notes: Show what button to press

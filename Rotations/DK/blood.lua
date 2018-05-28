@@ -115,7 +115,6 @@ end
 function OFF()
     if S.Marrowrend:IsCastableP("Melee") and (Player:BuffStack(S.BoneShield) < 6 or Player:BuffRemains(S.BoneShield) <= 3) then
         return S.Marrowrend:ID()
-        
     end
 
     if S.DeathStrike:IsReady("Melee") and Player:RunicPower() >= 80 then
