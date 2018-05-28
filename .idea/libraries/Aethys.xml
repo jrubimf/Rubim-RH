@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Aethys" type="Lua">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../AethysCore" />
+      <root url="file://$PROJECT_DIR$/../AethysCache" />
+      <root url="file://$PROJECT_DIR$/../TellMeWhen" />
+      <root url="file://$PROJECT_DIR$/../Hekili" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

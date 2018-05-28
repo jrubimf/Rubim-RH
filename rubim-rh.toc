@@ -1,0 +1,32 @@
+## Interface: 70100
+## Title: |cffc41f3bRubim Rotation Helper|r
+## Author: Rubim
+## Version: 1.0
+## Notes: Show what button to press
+## SavedVariables: RubimRHDB
+## OptionalDeps: Ace3
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+main.lua
+Rotations\DK\blood.lua
+Rotations\DK\frost.lua
+Rotations\DK\unholy.lua
+Rotations\DH\havoc.lua
+Rotations\DH\veng.lua
+Rotations\RG\outlaw.lua
+Rotations\RG\sub.lua
+Rotations\MK\brew.lua
+Rotations\MK\wind.lua
+Rotations\MK\mist.lua
+Rotations\WR\prot.lua
+Rotations\WR\arms.lua
+Rotations\WR\fury.lua
+Rotations\SM\enha.lua
+Rotations\SM\eleme.lua
+Rotations\SM\resto.lua
+Rotations\PL\ret.lua
+Rotations\PL\prot.lua
+Rotations\PL\holy.lua
