@@ -266,48 +266,17 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     end
 end)
 
-local function DropDownMenu_OnClick(self, arg1, arg2, checked)
-    print("What")
-end
-
---ROTATION
-local GGRotation = CreateFrame("Frame", nil, UIParent)
-GGRotation:SetBackdrop(nil)
-GGRotation:SetFrameStrata("HIGH")
-GGRotation:SetSize(30, 30)
-GGRotation:SetScale(0.6);
-GGRotation:SetPoint("TOPLEFT", 31, 12)
-GGRotation.texture = GGRotation:CreateTexture(nil, "TOOLTIP")
-GGRotation.texture:SetAllPoints(true)
-GGRotation.texture:SetColorTexture(0, 0, 0, 1.0)
-GGRotation:Hide()
-
-if TMW == nil then
-    GGRotation:Show()
-    devRub = true
-    Sephul = CreateFrame("Frame", nil, UIParent)
-    Sephul:SetBackdrop(nil)
-    Sephul:SetFrameStrata("HIGH")
-    Sephul:SetSize(30, 30)
-    Sephul:SetScale(1);
-    Sephul:SetPoint("TOPLEFT", 1, -50)
-    Sephul.texture = Sephul:CreateTexture(nil, "TOOLTIP")
-    Sephul.texture:SetAllPoints(true)
-    Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
-    Sephul.texture:SetTexture(GetSpellTexture(226262))
-    Sephul:Hide()
-end
-
-GRInterrupt = CreateFrame("Frame", nil, UIParent)
-GRInterrupt:SetBackdrop(nil)
-GRInterrupt:SetFrameStrata("HIGH")
-GRInterrupt:SetSize(30, 30)
-GRInterrupt:SetScale(0.6);
-GRInterrupt:SetPoint("TOPLEFT", 1, 12)
-GRInterrupt.texture = GRInterrupt:CreateTexture(nil, "TOOLTIP")
-GRInterrupt.texture:SetAllPoints(true)
-GRInterrupt.texture:SetColorTexture(0, 1, 0, 1.0)
-GRInterrupt:Hide()
+Sephul = CreateFrame("Frame", nil, UIParent)
+Sephul:SetBackdrop(nil)
+Sephul:SetFrameStrata("HIGH")
+Sephul:SetSize(30, 30)
+Sephul:SetScale(1);
+Sephul:SetPoint("TOPLEFT", 1, -50)
+Sephul.texture = Sephul:CreateTexture(nil, "TOOLTIP")
+Sephul.texture:SetAllPoints(true)
+Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
+Sephul.texture:SetTexture(GetSpellTexture(226262))
+Sephul:Hide()
 
 local IconRotation = CreateFrame("Frame", nil, UIParent)
 IconRotation:SetBackdrop(nil)
@@ -351,13 +320,12 @@ local function onUpdate(self, elapsed)
     total = total + elapsed
     if total >= 0.2 then
         IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
-        GGRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
         total = 0
     end
 end
 
-local f = CreateFrame("frame")
-f:SetScript("OnUpdate", onUpdate)
+local updateIcon = CreateFrame("frame")
+updateIcon:SetScript("OnUpdate", onUpdate)
 --IconRotation.texture:SetTexture(GetSpellTexture(BloodRotation()))
 
 -- Last Update: 05/04/18 02:42

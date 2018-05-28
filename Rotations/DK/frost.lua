@@ -432,13 +432,6 @@ function FrostRotation()
         return 146250
     end
 
-    --INTERRUPT
-    if S.MindFreeze:IsCastable() and ShouldInterrupt() then
-        GRInterrupt:Show()
-    else
-        GRInterrupt:Hide()
-    end
-
     AC.GetEnemies("Melee");
     AC.GetEnemies(8, true);
     AC.GetEnemies(10, true);

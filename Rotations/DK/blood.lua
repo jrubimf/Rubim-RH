@@ -164,14 +164,7 @@ function BloodRotation()
 	if S.RuneTap:IsCastable() and GetQueueSpell() == S.RuneTap:ID() then
 		return S.RuneTap:ID()
 	end
-	
-	--INTERRUPT
-	if S.MindFreeze:IsCastable() and ShouldInterrupt() and not I.SephuzSecret:IsEquipped() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end
-	
+
 	if I.SephuzSecret:IsEquipped() and Player:Buff(S.SephuzBuff) then
 		lastSephuz = GetTime()
 	end
