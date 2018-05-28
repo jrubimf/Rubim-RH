@@ -97,9 +97,7 @@ local event = function()
             table.insert( classspell, JusticarVengeance )
         end
     end
-
     --SHAMAN
-    --Shaman
     if select(3, UnitClass("player")) == 7 then
         classspell = {}
         table.insert( classspell, HealingSurge )
