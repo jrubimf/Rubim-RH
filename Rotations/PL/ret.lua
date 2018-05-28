@@ -98,11 +98,18 @@ local function Finishers()
         return S.ExecutionSentence:ID()
     end
     --actions.finishers+=/divine_storm,if=debuff.judgment.up&variable.ds_castable&buff.divine_purpose.react
-    if S.DivineStorm:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and Player:Buff(S.DivinePurposeBuff) then
+    if S.DivineStorm:IsReady() and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and Player:Buff(S.DivinePurposeBuff) then
         return S.DivineStorm:ID()
     end
     --actions.finishers+=/divine_storm,if=debuff.judgment.up&variable.ds_castable&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
-    if S.DivineStorm:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) then
+
+    print(S.DivineStorm:IsReady() )
+    print(Target:Debuff(S.JudgmentDebuff))
+    print(Var_DS_Castable)
+    print(S.Crusade:IsAvailable())
+    print(S.Crusade:CooldownRemains())
+    print(Player:GCD() * 2)
+    if S.DivineStorm:IsReady() and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) then
         return S.DivineStorm:ID()
     end
 
@@ -122,7 +129,10 @@ local function Finishers()
     end
 end
 
-local function Generators() --actions.generators=variable,name=ds_castable,value=spell_targets.divine_storm>=2|(buff.scarlet_inquisitors_expurgation.stack>=29&(equipped.144358&(dot.wake_of_ashes.ticking&time>10|dot.wake_of_ashes.remains<gcd))|(buff.scarlet_inquisitors_expurgation.stack>=29&(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack>=15|cooldown.crusade.remains>15&!buff.crusade.up)|cooldown.avenging_wrath.remains>15)&!equipped.144358)
+local function Generators()
+    --actions.generators=variable,name=ds_castable,value=spell_targets.divine_storm>=2|(buff.scarlet_inquisitors_expurgation.stack>=29&(equipped.144358&(dot.wake_of_ashes.ticking&time>10|dot.wake_of_ashes.remains<gcd))|(buff.scarlet_inquisitors_expurgation.stack>=29&(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack>=15|cooldown.crusade.remains>15&!buff.crusade.up)|cooldown.avenging_wrath.remains>15)&!equipped.144358)
+    --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()
+    Var_DS_Castable = Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (I.AshesToDust:IsEquipped() and (Target:Debuff(S.WakeofAshes) and AC.CombatTime() > 10 or Target:DebuffRemains(S.WakeofAshes) < Player:GCD())) or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) >= 15 or S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or  S.AvengingWrath:CooldownRemains() > 15) and not I.AshesToDust:IsEquipped())
     --actions.generators+=/judgment,if=set_bonus.tier21_4pc
     if S.Judgment:IsReady(30) and T214 then
         return S.Judgement:ID()
@@ -245,9 +255,6 @@ function PaladinRetribution()
     if not Player:AffectingCombat() then
         return "146250"
     end
-    --actions.generators=variable,name=ds_castable,value=spell_targets.divine_storm>=2|(buff.scarlet_inquisitors_expurgation.stack>=29&(equipped.144358&(dot.wake_of_ashes.ticking&time>10|dot.wake_of_ashes.remains<gcd))|(buff.scarlet_inquisitors_expurgation.stack>=29&(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack>=15|cooldown.crusade.remains>15&!buff.crusade.up)|cooldown.avenging_wrath.remains>15)&!equipped.144358)
-    local Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (I.AshesToDust:IsEquipped() and (Target:Debuff(S.WakeofAshes) and AC.CombatTime() > 10 or Target:DebuffRemains(S.WakeofAshes) < Player:GCD())) or Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) >= 15 or S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or S.AvengingWrath:CooldownRemains() > 15) and not I.AshesToDust:IsEquipped())
-    --(Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (I.AshesToDust:IsEquipped() and (Target:Debuff(S.WakeofAshes) and AC.CombatTime() > 10 or Target:DebuffRemains(S.WakeofAshes) < Player:GCD())) or Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) >= 15 or S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or S.AvengingWrath:CooldownRemains() > 15) and not I.AshesToDust:IsEquipped()))
 
     if useS1 and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose 
