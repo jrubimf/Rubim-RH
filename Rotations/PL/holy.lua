@@ -87,7 +87,7 @@ function ShouldDispell()
 end
 
 
-function PHolyRotation()
+function PaladinHoly()
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
 	AC.GetEnemies("Melee"); -- Melee
 	AC.GetEnemies(6, true); -- 

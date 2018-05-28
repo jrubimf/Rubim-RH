@@ -349,7 +349,7 @@ function Single()
     end
 end
 
-function ArmsRotation()
+function WarriorArms()
     -- Unit Update
     AC.GetEnemies(8); -- WhirlWind
     -- Out of Combat

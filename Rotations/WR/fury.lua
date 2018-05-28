@@ -286,7 +286,7 @@ local function single_target()
 end
 
 -- APL Main
-function FuryRotation()
+function WarriorFury()
     -- Unit Update
     AC.GetEnemies(8);
     AC.GetEnemies(10);

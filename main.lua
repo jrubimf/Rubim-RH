@@ -459,13 +459,13 @@ function MainRotation()
     --Warrior
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
-            SetNextAbility(ArmsRotation())
+            SetNextAbility(WarriorArms())
         end
         if GetSpecialization() == 2 then
-            SetNextAbility(FuryRotation())
+            SetNextAbility(WarriorFury())
         end
         if GetSpecialization() == 3 then
-            SetNextAbility(ProtRotation())
+            SetNextAbility(WarriorProt())
         end
     end
 
@@ -494,7 +494,7 @@ function MainRotation()
         end
 
         if GetSpecialization() == 1 then
-            SetNextAbility(PHolyRotation())
+            SetNextAbility(PaladinHoly())
         end
     end
 
