@@ -102,13 +102,6 @@ local function Finishers()
         return S.DivineStorm:ID()
     end
     --actions.finishers+=/divine_storm,if=debuff.judgment.up&variable.ds_castable&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
-
-    print(S.DivineStorm:IsReady() )
-    print(Target:Debuff(S.JudgmentDebuff))
-    print(Var_DS_Castable)
-    print(S.Crusade:IsAvailable())
-    print(S.Crusade:CooldownRemains())
-    print(Player:GCD() * 2)
     if S.DivineStorm:IsReady() and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) then
         return S.DivineStorm:ID()
     end
