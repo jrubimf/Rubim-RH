@@ -117,7 +117,7 @@ local function Finishers()
     end
 
     --actions.finishers+=/templars_verdict,if=debuff.judgment.up&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd)
-    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()) then
+    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2 or not CDsON()) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()) then
         return S.TemplarsVerdict:ID()
     end
 end

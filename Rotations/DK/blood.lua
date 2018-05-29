@@ -168,7 +168,7 @@ function BloodRotation()
 		lastSephuz = GetTime()
 	end
 	
-	if I.SephuzSecret:IsEquipped() and devRub == true and ((GetTime() - lastSephuz) + 9) >= 30 then
+	if I.SephuzSecret:IsEquipped() and ((GetTime() - lastSephuz) + 9) >= 30 then
 		Sephul:Show()
 	else
 		Sephul:Hide()

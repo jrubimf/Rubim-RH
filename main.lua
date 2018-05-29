@@ -490,7 +490,7 @@ function MainRotation()
         end
 
         if GetSpecialization() == 2 then
-            SetNextAbility(PaladinProt())
+            SetNextAbility(PaladinProtection())
         end
 
         if GetSpecialization() == 1 then

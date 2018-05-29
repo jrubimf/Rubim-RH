@@ -64,7 +64,7 @@
 
 
 --- ======= MAIN =======
-function PProtRotation()
+function PaladinProtection()
     -- Unit Update
     AC.GetEnemies(10, true);
     	--INTERRUPT
