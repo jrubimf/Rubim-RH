@@ -5,8 +5,13 @@ if AethysCache == nil then
     message("ERROR: Aethyhs Cache is missing. Please download it.")
 end
 
+
 devRub = false
+
+if devRub == true then
 debugVarText = "DebugText"
+
+
 local debugframe = CreateFrame("Frame", "DebugFrmae", UIParent)
 local debugtext = debugframe:CreateFontString("DebugText", "OVERLAY")
 local event = function()
@@ -54,6 +59,7 @@ local event = function()
 		self.isMoving = false;
 	end
 	end)	
+end
 end
 
 debugframe:SetScript("OnEvent", event)
