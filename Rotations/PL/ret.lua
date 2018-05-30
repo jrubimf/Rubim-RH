@@ -244,7 +244,12 @@ function PaladinRetribution()
     AC.GetEnemies(8, true);
     AC.GetEnemies(10, true);
     AC.GetEnemies(20, true);
-
+	Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()
+	
+	
+	debugVarText = "VarDS = " .. tostring(Var_DS_Castable) .. "\n" .. "Enemies Around: " .. Cache.EnemiesCount[8]
+	
+	
     --Out of Combat
     if not Player:AffectingCombat() then
         return "146250"
