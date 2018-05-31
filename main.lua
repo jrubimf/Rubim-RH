@@ -8,12 +8,11 @@ end
 
 devRub = false
 
+local debugframe = CreateFrame("Frame", "DebugFrmae", UIParent)
+local debugtext = debugframe:CreateFontString("DebugText", "OVERLAY")
 if devRub == true then
 debugVarText = "DebugText"
 
-
-local debugframe = CreateFrame("Frame", "DebugFrmae", UIParent)
-local debugtext = debugframe:CreateFontString("DebugText", "OVERLAY")
 local event = function()
 	if DEBUGonetime == nil then
 	debugframe:SetWidth(240)
