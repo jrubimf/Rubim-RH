@@ -536,13 +536,6 @@ function WindWalkerRotation()
     if not Player:AffectingCombat() then
         return "146250"
     end
-	
-	--INTERRUPT
-	if S.SpearHandStrike:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
 
     if Cache.EnemiesCount[8] <= 0 then
         return "233159"

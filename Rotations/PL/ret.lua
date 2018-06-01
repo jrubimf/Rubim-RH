@@ -117,7 +117,7 @@ local function Finishers()
     end
 
     --actions.finishers+=/templars_verdict,if=debuff.judgment.up&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd)
-    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2 or not CDsON) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()) then
+    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2 or not CDsON()) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()) then
         return S.TemplarsVerdict:ID()
     end
 end
@@ -141,7 +141,7 @@ local function Generators()
         return Finishers()
     end
 
-    --actions.generators+=/judgment,if=dot.execution_sentence.ticking&dot.execution_sentence.remains<gcd*2&debuff.judgment.remains<gcd*2
+        --actions.generators+=/judgment,if=dot.execution_sentence.ticking&dot.execution_sentence.remains<gcd*2&debuff.judgment.remains<gcd*2
     if S.Judgment:IsReady(30) and Target:Debuff(S.ExecutionSentence) and Target:DebuffRemains(S.ExecutionSentence) < Player:GCD() * 2 and Target:DebuffRemains(S.JudgmentDebuff) < Player:GCD() * 2 then
         return S.Judgment:ID()
     end
