@@ -61,7 +61,6 @@ local I = Item.DeathKnight.Blood;
 function BloodBurst()
     if S.Consumption:IsCastableP("Melee") and Cache.EnemiesCount[8] > 1 then
         return S.Consumption:ID()
-        
     end
 
     if S.DeathStrike:IsReady("Melee") and Player:RunicPower() >= 80 then
@@ -186,7 +185,6 @@ function BloodRotation()
 	LeftShift = IsLeftShiftKeyDown();
 	if LeftCtrl and LeftShift and S.DeathandDecay:IsCastable() then
 		return S.DeathandDecay:ID()
-		
 	end
 
     -- Units without Blood Plague
@@ -195,6 +193,10 @@ function BloodRotation()
         if CycleUnit:DebuffRemainsP(S.BloodPlague) <= 3 then
             UnitsWithoutBloodPlague = UnitsWithoutBloodPlague + 1;
         end
+    end
+
+    if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+        return S.DeathStrike:ID()
     end
 	
 	if useS1 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
@@ -205,11 +207,11 @@ function BloodRotation()
         return S.BloodFury:ID()
     end
 
-    if not Target:IsDummy() and GetMobsDying() >= 70 then
-        if BloodBurst() ~= nil then
-            return BloodBurst()
-        end
-    end
+--    if not Target:IsDummy() and GetMobsDying() >= 70 then
+--        if BloodBurst() ~= nil then
+--            return BloodBurst()
+--        end
+--    end
 
     if Player:Buff(S.DancingRuneWeaponBuff) then
         if DRW() ~= nil then
@@ -229,10 +231,9 @@ function BloodRotation()
 
     if S.Marrowrend:IsCastableP("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3) then
         return S.Marrowrend:ID()
-        
     end
 
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
+    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and lastMoved() > 1 then
         return S.DeathandDecay:ID()
     end
 
@@ -260,7 +261,7 @@ function BloodRotation()
         return S.BloodBoil:ID()
     end
 
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) then
+    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and lastMoved() > 1 then
         return S.DeathandDecay:ID()
     end
 
@@ -276,42 +277,30 @@ function BloodRotation()
     -- actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
     if S.Marrowrend:IsCastableP("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or (Player:BuffRemainsP(S.BoneShield) <= Player:GCD() * 3)) then
         return S.Marrowrend:ID()
-        
     end
 
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) then
+    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) and lastMoved() > 1 then
         return S.DeathandDecay:ID()
-        
     end
     -- actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
     if S.Bonestorm:IsReady() and Cache.EnemiesCount[8] >= 3 and Player:RunicPower() >= 90 then
         return S.Bonestorm:ID()
-        
     end
 
     if S.Consumption:IsCastableP("Melee") and Cache.EnemiesCount[8] >= 1 then
         return S.Consumption:ID()
-        
     end
 
     if S.Marrowrend:IsCastableP("Melee") and Player:BuffStack(S.BoneShield) <= 6 then
         return S.Marrowrend:ID()
-        
     end
 
     if S.HeartStrike:IsCastableP("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) then
         return S.HeartStrike:ID()
-        
     end
 
     if S.BloodBoil:IsCastableP() and Cache.EnemiesCount[10] >= 1 then
         return S.BloodBoil:ID()
-        
-    end
-
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) then
-        return S.DeathandDecay:ID()
-        
     end
 
     if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and useS2) then

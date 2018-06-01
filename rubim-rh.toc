@@ -11,6 +11,9 @@ embeds.xml
 #@end-no-lib-strip@
 
 main.lua
+Modules\Custom.lua
+Modules\Debug.lua
+Modules\Icons.lua
 Rotations\DK\blood.lua
 Rotations\DK\frost.lua
 Rotations\DK\unholy.lua
@@ -30,3 +33,4 @@ Rotations\SM\resto.lua
 Rotations\PL\ret.lua
 Rotations\PL\prot.lua
 Rotations\PL\holy.lua
+Rotations\HR\survival.lua
