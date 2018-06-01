@@ -4,67 +4,6 @@
 --- DateTime: 01/06/2018 02:32
 ---
 
-Sephul = CreateFrame("Frame", nil, UIParent)
-Sephul:SetBackdrop(nil)
-Sephul:SetFrameStrata("HIGH")
-Sephul:SetSize(30, 30)
-Sephul:SetScale(1);
-Sephul:SetPoint("TOPLEFT", 1, -50)
-Sephul.texture = Sephul:CreateTexture(nil, "TOOLTIP")
-Sephul.texture:SetAllPoints(true)
-Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
-Sephul.texture:SetTexture(GetSpellTexture(226262))
-Sephul:Hide()
-
-local IconRotation = CreateFrame("Frame", nil, UIParent)
-IconRotation:SetBackdrop(nil)
-IconRotation:SetFrameStrata("HIGH")
---IconRotation:SetSize(18, 18)
-IconRotation:SetSize(50, 50)
---IconRotation:SetPoint("TOPLEFT", 19, 6)
---IconRotation:SetPoint("TOPLEFT", 50, 6)
-IconRotation:SetPoint("CENTER", 0, -300)
-IconRotation.texture = IconRotation:CreateTexture(nil, "BACKGROUND")
-IconRotation.texture:SetAllPoints(true)
-IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
-IconRotation:SetMovable(true)
-IconRotation:EnableMouse(true)
---IconRotation:DisableDrawLayer("BACKGROUND")
-IconRotation:SetScript("OnMouseDown", function(self, button)
-    if button == "LeftButton" and not self.isMoving then
-        self:StartMoving();
-        self.isMoving = true;
-    end
-end)
-IconRotation:SetScript("OnMouseUp", function(self, button)
-    if button == "LeftButton" and self.isMoving then
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-
-    if button == "RightButton" then
-        ToggleDropDownMenu(1, nil, dropDown, "cursor", 3, -3)
-    end
-end)
-IconRotation:SetScript("OnHide", function(self)
-    if (self.isMoving) then
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-end)
-
-local total = 0
-local function onUpdate(self, elapsed)
-    total = total + elapsed
-    if total >= 0.2 then
-        IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
-        total = 0
-    end
-end
-
-local updateIcon = CreateFrame("frame")
-updateIcon:SetScript("OnUpdate", onUpdate)
-
 --INTERRUPTS---
 local int_smart = true
 
@@ -310,3 +249,64 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         --
     end
 end)
+
+Sephul = CreateFrame("Frame", nil, UIParent)
+Sephul:SetBackdrop(nil)
+Sephul:SetFrameStrata("HIGH")
+Sephul:SetSize(30, 30)
+Sephul:SetScale(1);
+Sephul:SetPoint("TOPLEFT", 1, -50)
+Sephul.texture = Sephul:CreateTexture(nil, "TOOLTIP")
+Sephul.texture:SetAllPoints(true)
+Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
+Sephul.texture:SetTexture(GetSpellTexture(226262))
+Sephul:Hide()
+
+local IconRotation = CreateFrame("Frame", nil, UIParent)
+IconRotation:SetBackdrop(nil)
+IconRotation:SetFrameStrata("HIGH")
+--IconRotation:SetSize(18, 18)
+IconRotation:SetSize(50, 50)
+--IconRotation:SetPoint("TOPLEFT", 19, 6)
+--IconRotation:SetPoint("TOPLEFT", 50, 6)
+IconRotation:SetPoint("CENTER", 0, -300)
+IconRotation.texture = IconRotation:CreateTexture(nil, "BACKGROUND")
+IconRotation.texture:SetAllPoints(true)
+IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
+IconRotation:SetMovable(true)
+IconRotation:EnableMouse(true)
+--IconRotation:DisableDrawLayer("BACKGROUND")
+IconRotation:SetScript("OnMouseDown", function(self, button)
+    if button == "LeftButton" and not self.isMoving then
+        self:StartMoving();
+        self.isMoving = true;
+    end
+end)
+IconRotation:SetScript("OnMouseUp", function(self, button)
+    if button == "LeftButton" and self.isMoving then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+    end
+
+    if button == "RightButton" then
+        ToggleDropDownMenu(1, nil, dropDown, "cursor", 3, -3)
+    end
+end)
+IconRotation:SetScript("OnHide", function(self)
+    if (self.isMoving) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+    end
+end)
+
+local total = 0
+local function onUpdate(self, elapsed)
+    total = total + elapsed
+    if total >= 0.2 then
+        IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+        total = 0
+    end
+end
+
+local updateIcon = CreateFrame("frame")
+updateIcon:SetScript("OnUpdate", onUpdate)
