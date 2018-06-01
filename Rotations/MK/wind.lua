@@ -15,7 +15,9 @@ local pairs = pairs;
 
 --- ============================ CONTENT ============================
 -- Spells
-if not Spell.Monk then Spell.Monk = {}; end
+if not Spell.Monk then
+    Spell.Monk = {};
+end
 Spell.Monk.Windwalker = {
     -- Racials
     Bloodlust = Spell(2825),
@@ -65,7 +67,7 @@ Spell.Monk.Windwalker = {
     Disable = Spell(116095),
     HealingElixir = Spell(122281), --Talent
     Paralysis = Spell(115078),
-	SpearHandStrike = Spell(116705),
+    SpearHandStrike = Spell(116705),
 
     -- Legendaries
     TheEmperorsCapacitor = Spell(235054),
@@ -78,7 +80,9 @@ Spell.Monk.Windwalker = {
 };
 local S = Spell.Monk.Windwalker;
 -- Items
-if not Item.Monk then Item.Monk = {}; end
+if not Item.Monk then
+    Item.Monk = {};
+end
 Item.Monk.Windwalker = {
     -- Legendaries
     DrinkingHornCover = Item(137097, { 9 }),
@@ -88,21 +92,22 @@ Item.Monk.Windwalker = {
 local I = Item.Monk.Windwalker;
 -- Rotation Var
 
-if Player:Level() ~= nil then
-	local BaseCost = {
-		[S.BlackoutKick] = (Player:Level() < 12 and 3 or (Player:Level() < 22 and 2 or 1)),
-		[S.RisingSunKick] = 2,
-		[S.FistsOfFury] = (I.KatsuosEclipse:IsEquipped() and 2 or 3),
-		[S.SpinningCraneKick] = 3,
-		[S.RushingJadeWind] = 1
-	}
-end	
+local BaseCost = {}
 
 -- Functions --
 function Spell:IsUsableP()
+    if Player:Level() ~= nil then
+        BaseCost = {
+            [S.BlackoutKick] = (Player:Level() < 12 and 3 or (Player:Level() < 22 and 2 or 1)),
+            [S.RisingSunKick] = 2,
+            [S.FistsOfFury] = (I.KatsuosEclipse:IsEquipped() and 2 or 3),
+            [S.SpinningCraneKick] = 3,
+            [S.RushingJadeWind] = 1
+        }
+    end
     if self:Cost(2) > 0 and self:CostInfo(1, "type") == 3 then
         return Player:EnergyPredicted() >= self:Cost(2);
-    elseif self:Cost(1) == 0 and self:CostInfo(1, "type") == 12 then
+    elseif self:Cost(1) == 0 and self:CostInfo(1, "type") == 12 and BaseCost[self] ~= nil then
         return Player:BuffP(S.Serenity) and self:IsUsable() or Player:Chi() >= BaseCost[self];
     else
         return self:IsUsable();
@@ -114,19 +119,24 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 end
 
 local function EnergyTimeToXP(Amount, Offset)
-    if Player:EnergyRegen() == 0 then return -1; end
+    if Player:EnergyRegen() == 0 then
+        return -1;
+    end
     return Amount > Player:EnergyPredicted() and (Amount - Player:EnergyPredicted()) / (Player:EnergyRegen() * (1 - (Offset or 0))) or 0;
 end
 
 -- ReadyTime - Returns a normalized number based on spell usability and cooldown so you can easliy compare.
 function Spell:ReadyTime(Index)
-    if not self:IsLearned() or not self:IsAvailable() or Player:PrevGCD(1, self) then return 999; end
+    if not self:IsLearned() or not self:IsAvailable() or Player:PrevGCD(1, self) then
+        return 999;
+    end
     if self:IsUsableP() then
         return self:CooldownRemainsP();
     elseif not self:IsUsableP() then
         if self:Cost(Index) ~= 0 and self:CostInfo(1, "type") == 3 then
             return EnergyTimeToXP(self:Cost(Index));
-        else return 999;
+        else
+            return 999;
         end
     end
 end
@@ -143,66 +153,66 @@ local function AoE()
     if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitPredicted() >= 20 and
             (S.RisingSunKick:CooldownRemainsP() == 0 or (S.StrikeOfTheWindlord:IsAvailable() and S.StrikeOfTheWindlord:CooldownRemainsP() == 0)) then
         return S.EnergizingElixir:ID()
-        
+
     end
     -- actions.aoe+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
             S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
 
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
             (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
 
     -- actions.aoe+=/fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.aoe+=/fists_of_fury,if=cooldown.rising_sun_kick.remains>=3.5&chi<=5
     if S.FistsOfFury:IsReady() and S.RisingSunKick:CooldownRemainsP() >= 3.5 and Player:Chi() <= 5 then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.aoe+=/whirling_dragon_punch
     if S.WhirlingDragonPunch:Ready() then
         return S.WhirlingDragonPunch:ID()
-        
+
     end
 
     -- actions.aoe+=/strike_of_the_windlord,if=!talent.serenity.enabled|cooldown.serenity.remains>=10
     if S.StrikeOfTheWindlord:IsReady() and (not S.Serenity:IsAvailable() or (S.Serenity:CooldownRemainsP() >= 10)) then
         return S.StrikeOfTheWindlord:ID()
-        
+
     end
     -- actions.aoe+=/rising_sun_kick,target_if=cooldown.whirling_dragon_punch.remains>=gcd&!prev_gcd.1.rising_sun_kick&cooldown.fists_of_fury.remains>gcd
     if S.RisingSunKick:IsReady() and S.RisingSunKick:CooldownRemainsP() >= Player:GCD() and not Player:PrevGCD(1, S.RisingSunKick) and S.FistsOfFury:CooldownRemainsP() > Player:GCD() then
         return S.RisingSunKick:ID()
-        
+
     end
 
     -- actions.aoe+=/rushing_jade_wind,if=chi.max-chi>1&!prev_gcd.1.rushing_jade_wind
     if S.RushingJadeWind:IsReady() and Player:ChiDeficit() > 1 and not Player:PrevGCD(1, S.RushingJadeWind) then
         return S.RushingJadeWind:ID()
-        
+
     end
 
     -- actions.aoe+=/chi_burst,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
     if S.ChiBurst:IsReady() and Player:Chi() <= 3 and
             (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) then
         return S.ChiBurst:ID()
-        
+
     end
     -- actions.aoe+=/chi_burst
     if S.ChiBurst:IsReady() then
         return S.ChiBurst:ID()
-        
+
     end
 
     -- actions.aoe+=/spinning_crane_kick,if=(active_enemies>=3|(buff.bok_proc.up&chi.max-chi>=0))&!prev_gcd.1.spinning_crane_kick&set_bonus.tier21_4pc
@@ -213,13 +223,13 @@ local function AoE()
             and not Player:PrevGCD(1, S.SpinningCraneKick)
             and t214) then
         return S.SpinningCraneKick:ID()
-        
+
     end
 
     -- actions.aoe+=/spinning_crane_kick,if=active_enemies>=3&!prev_gcd.1.spinning_crane_kick
     if S.SpinningCraneKick:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:PrevGCD(1, S.SpinningCraneKick) then
         return S.SpinningCraneKick:ID()
-        
+
     end
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&(!set_bonus.tier19_2pc|talent.serenity.enabled)
     if S.BlackoutKick:IsReady()
@@ -229,7 +239,7 @@ local function AoE()
             and (not t192
             or S.Serenity:IsAvailable())) then
         return S.BlackoutKick:ID()
-        
+
     end
 
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(chi>1|buff.bok_proc.up|(talent.energizing_elixir.enabled&cooldown.energizing_elixir.remains<cooldown.fists_of_fury.remains))&((cooldown.rising_sun_kick.remains>1&(!artifact.strike_of_the_windlord.enabled|cooldown.strike_of_the_windlord.remains>1)|chi>4)&(cooldown.fists_of_fury.remains>1|chi>2)|prev_gcd.1.tiger_palm)&!prev_gcd.1.blackout_kick
@@ -238,20 +248,20 @@ local function AoE()
             ((S.RisingSunKick:CooldownRemainsP() > 1 and (not S.StrikeOfTheWindlord:IsAvailable() or S.StrikeOfTheWindlord:CooldownRemainsP() > 1) or Player:Chi() > 4) and
                     (S.FistsOfFury:CooldownRemainsP() > 1 or Player:Chi() > 2) or Player:PrevGCD(1, S.TigerPalm)) and not Player:PrevGCD(1, S.BlackoutKick) then
         return S.BlackoutKick:ID()
-        
+
     end
 
     -- actions.aoe+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and
             Player:BuffStack(S.TheEmperorsCapacitor) >= 19 and Player:EnergyTimeToMaxPredicted() > 3 then
         return S.CracklingJadeLightning:ID()
-        
+
     end
     -- actions.aoe+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=14&cooldown.serenity.remains<13&talent.serenity.enabled&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStack(S.TheEmperorsCapacitor) >= 14 and
             S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 3 then
         return S.CracklingJadeLightning:ID()
-        
+
     end
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
     if S.BlackoutKick:IsReady()
@@ -260,31 +270,31 @@ local function AoE()
             and t214
             and Player:BuffP(S.BlackoutKickBuff)) then
         return S.BlackoutKick:ID()
-        
+
     end
 
     -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
             (Player:EnergyTimeToMaxPredicted() < 3 or Player:ChiDeficit() >= 2) then
         return S.TigerPalm:ID()
-        
+
     end
     -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy.time_to_max<=1&chi.max-chi>=2
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
             Player:EnergyTimeToMaxPredicted() <= 1 and Player:ChiDeficit() >= 2 then
         return S.TigerPalm:ID()
-        
+
     end
     -- actions.aoe+=/chi_wave,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
     if S.ChiWave:IsReady() and Player:Chi() <= 3 and
             (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) then
         return S.ChiWave:ID()
-        
+
     end
     -- actions.aoe+=/chi_wave
     if S.ChiWave:IsReady() then
         return S.ChiWave:ID()
-        
+
     end
 end
 
@@ -294,12 +304,12 @@ local function SingleTarget()
     if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitPredicted() >= 20 and
             (S.RisingSunKick:CooldownRemainsP() == 0 or (S.StrikeOfTheWindlord:IsAvailable() and S.StrikeOfTheWindlord:CooldownRemainsP() == 0)) then
         return S.EnergizingElixir:ID()
-        
+
     end
     -- actions.st+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
     if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5 then
         return S.ArcaneTorrent:ID()
-        
+
     end
     -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
     if S.BlackoutKick:IsReady()
@@ -308,47 +318,47 @@ local function SingleTarget()
             and t214
             and Player:BuffP(S.BlackoutKickBuff)) then
         return S.BlackoutKick:ID()
-        
+
     end
     -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy.time_to_max<=1&chi.max-chi>=2
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
             Player:EnergyTimeToMaxPredicted() <= 1 and Player:ChiDeficit() >= 2 then
         return S.TigerPalm:ID()
-        
+
     end
 
     -- actions.st+=/strike_of_the_windlord,if=!talent.serenity.enabled|cooldown.serenity.remains>=10
     if S.StrikeOfTheWindlord:IsReady() and (not S.Serenity:IsAvailable() or (S.Serenity:CooldownRemainsP() >= 10)) then
         return S.StrikeOfTheWindlord:ID()
-        
+
     end
     -- actions.st+=/whirling_dragon_punch
     if S.WhirlingDragonPunch:Ready() then
         return S.WhirlingDragonPunch:ID()
-        
+
     end
     -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=((chi>=3&energy>=40)|chi>=5)&(!talent.serenity.enabled|cooldown.serenity.remains>=6)
     if S.RisingSunKick:IsReady() and ((Player:Chi() >= 3 and Player:EnergyPredicted() >= 40) or Player:Chi() == 5) and
             (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() >= 6) then
         return S.RisingSunKick:ID()
-        
+
     end
     -- actions.st+=/fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
             S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.st+=/fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
             (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.st+=/fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.st+=/fists_of_fury,if=cooldown.rising_sun_kick.remains>=3.5&chi<=5
     if S.FistsOfFury:IsReady() and S.RisingSunKick:CooldownRemainsP() >= 3.5 and Player:Chi() <= 5 then
@@ -413,7 +423,7 @@ local function SingleTarget()
     if S.ChiBurst:IsReady() and Player:Chi() <= 3 and
             (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) then
         return S.ChiBurst:ID()
-        
+
     end
     -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
@@ -428,22 +438,22 @@ local function SEF()
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir)
             and Player:EnergyTimeToMaxPredicted() <= 0 and Player:Chi() < 1 then
         return S.TigerPalm:ID()
-        
+
     end
     -- actions.sef+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
     if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
         return S.ArcaneTorrent:ID()
-        
+
     end
     -- actions.sef+=/storm_earth_and_fire,if=!buff.storm_earth_and_fire.up
     if CDsON() and not Player:BuffP(S.StormEarthAndFire) then
         return S.StormEarthAndFire:ID()
-        
+
     end
     -- actions.sef+=/call_action_list,name=st
-    if SingleTarget() ~= nil then 
-			return SingleTarget()
-	end	
+    if SingleTarget() ~= nil then
+        return SingleTarget()
+    end
 end
 
 -- Serenity
@@ -452,67 +462,67 @@ local function Serenity()
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir)
             and Player:EnergyPredicted() >= Player:EnergyMax() and Player:Chi() < 1 and not Player:BuffP(S.Serenity) then
         return S.TigerPalm:ID()
-        
+
     end
     -- actions.serenity+=/serenity
     if CDsON() and S.Serenity:IsReady() then
         return S.Serenity:ID()
-        
+
     end
     -- actions.serenity+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=active_enemies<3
     if S.RisingSunKick:IsReady() and Cache.EnemiesCount[8] < 3 then
         return S.RisingSunKick:ID()
-        
+
     end
     -- actions.serenity+=/strike_of_the_windlord
     if S.StrikeOfTheWindlord:IsReady() then
         return S.StrikeOfTheWindlord:ID()
-        
+
     end
     -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(!prev_gcd.1.blackout_kick)&(prev_gcd.1.strike_of_the_windlord|prev_gcd.1.fists_of_fury)&active_enemies<2
     if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) and (Player:PrevGCD(1, S.StrikeOfTheWindlord) or Player:PrevGCD(1, S.FistsOfFury)) and Cache.EnemiesCount[8] < 2 then
         return S.BlackoutKick:ID()
-        
+
     end
     -- actions.serenity+=/fists_of_fury,if=((equipped.drinking_horn_cover&buff.pressure_point.remains<=2&set_bonus.tier20_4pc)&(cooldown.rising_sun_kick.remains>1|active_enemies>1)),interrupt=1
     if S.FistsOfFury:IsReady() and ((I.DrinkingHornCover:IsEquipped() and Player:BuffRemainsP(S.PressurePoint) <= 2 and t204) and (S.RisingSunKick:CooldownRemainsP() > 1 or Cache.EnemiesCount[8] > 1)) then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.serenity+=/fists_of_fury,if=((!equipped.drinking_horn_cover|buff.bloodlust.up|buff.serenity.remains<1)&(cooldown.rising_sun_kick.remains>1|active_enemies>1)),interrupt=1
     if S.FistsOfFury:IsReady() and ((not I.DrinkingHornCover:IsEquipped() or Player:BuffP(S.Bloodlust) or Player:BuffRemainsP(S.Serenity) < 1) and (S.RisingSunKick:CooldownRemainsP() > 1 or Cache.EnemiesCount[8] > 1)) then
         return S.FistsOfFury:ID()
-        
+
     end
     -- actions.serenity+=/spinning_crane_kick,if=active_enemies>=3&!prev_gcd.1.spinning_crane_kick
     if S.SpinningCraneKick:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:PrevGCD(1, S.SpinningCraneKick) then
         return S.SpinningCraneKick:ID()
-        
+
     end
     -- actions.serenity+=/rushing_jade_wind,if=!prev_gcd.1.rushing_jade_wind&buff.rushing_jade_wind.down&buff.serenity.remains>=4
     if S.RushingJadeWind:IsReady() and not Player:PrevGCD(1, S.RushingJadeWind) and Player:BuffDownP(S.RushingJadeWind) and Player:BuffRemainsP(S.Serenity) >= 4 then
         return S.RushingJadeWind:ID()
-        
+
     end
     -- actions.serenity+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=active_enemies>=3
     if S.RisingSunKick:IsReady() and Cache.EnemiesCount[8] >= 3 then
         return S.RisingSunKick:ID()
-        
+
     end
     -- actions.serenity+=/rushing_jade_wind,if=!prev_gcd.1.rushing_jade_wind&buff.rushing_jade_wind.down&active_enemies>1
     if S.RushingJadeWind:IsReady() and not Player:PrevGCD(1, S.RushingJadeWind) and Player:BuffDownP(S.RushingJadeWind) and Cache.EnemiesCount[8] > 1 then
         return S.RushingJadeWind:ID()
-        
+
     end
     -- actions.serenity+=/spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick
     if S.SpinningCraneKick:IsReady() and not Player:PrevGCD(1, S.SpinningCraneKick) then
         return S.SpinningCraneKick:ID()
-        
+
     end
     -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
     if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) then
         return S.BlackoutKick:ID()
-        
+
     end
 end
 
@@ -551,29 +561,29 @@ function WindWalkerRotation()
     -- actions.st+=/chi_wave
     if S.ChiWave:IsReady() then
         return S.ChiWave:ID()
-        
+
     end
     -- actions.st+=/chi_burst
     if S.ChiBurst:IsReady() and Cache.EnemiesCount[5] >= 1 then
         return S.ChiBurst:ID()
-        
+
     end
     -- actions+=/touch_of_death
-    if  CDsON() and S.TouchOfDeath:Ready() and Target:TimeToDie() >= 9 then
+    if CDsON() and S.TouchOfDeath:Ready() and Target:TimeToDie() >= 9 then
         return S.TouchOfDeath:ID()
-        
+
     end
     -- -- actions+=/call_action_list,name=serenity,if=(talent.serenity.enabled&cooldown.serenity.remains<=0)|buff.serenity.up
     if (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() <= 0) or Player:BuffP(S.Serenity) then
-        if Serenity() ~= nil then 
-			return Serenity()
-		end	
+        if Serenity() ~= nil then
+            return Serenity()
+        end
     end
     -- actions+=/call_action_list,name=sef,if=!talent.serenity.enabled&(buff.storm_earth_and_fire.up|cooldown.storm_earth_and_fire.charges=2)
     if not S.Serenity:IsAvailable() and (Player:BuffP(S.StormEarthAndFire) or S.StormEarthAndFire:Charges() == 2) then
-        if SEF() ~= nil then 
-			return SEF()
-		end	
+        if SEF() ~= nil then
+            return SEF()
+        end
     end
     -- actions+=/call_action_list,name=sef,if=!talent.serenity.enabled&equipped.drinking_horn_cover&
     -- (cooldown.strike_of_the_windlord.remains<=18&cooldown.fists_of_fury.remains<=12&chi>=3&cooldown.rising_sun_kick.remains<=1|target.time_to_die<=25|cooldown.touch_of_death.remains>112)&
@@ -581,22 +591,22 @@ function WindWalkerRotation()
     if not S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
             (S.StrikeOfTheWindlord:CooldownRemainsP() <= 18 and S.FistsOfFury:CooldownRemainsP() <= 12 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1 or
                     Target:TimeToDie() <= 25 or S.TouchOfDeath:CooldownRemainsP() > 112) and S.StormEarthAndFire:Charges() == 1 then
-        if SEF() ~= nil then 
-			return SEF()
-		end	
+        if SEF() ~= nil then
+            return SEF()
+        end
     end
     -- actions+=/call_action_list,name=sef,if=!talent.serenity.enabled&!equipped.drinking_horn_cover&(cooldown.strike_of_the_windlord.remains<=14&
     if not S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
             (S.StrikeOfTheWindlord:CooldownRemainsP() <= 14 and S.FistsOfFury:CooldownRemainsP() <= 6 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1 or
                     Target:TimeToDie() <= 15 or S.TouchOfDeath:CooldownRemainsP() > 112) and S.StormEarthAndFire:Charges() == 1 then
-        if SEF() ~= nil then 
-			return SEF()
-		end	
+        if SEF() ~= nil then
+            return SEF()
+        end
     end
     if Cache.EnemiesCount[8] > 3 and useAoE then
-        if AoE() ~= nil then 
-			return AoE()
-		end	
+        if AoE() ~= nil then
+            return AoE()
+        end
     end
 
     -- actions+=/call_action_list,name=st
