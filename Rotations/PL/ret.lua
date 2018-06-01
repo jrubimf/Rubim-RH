@@ -133,7 +133,7 @@ local function Generators()
     end
 
     --actions.generators+=/call_action_list,name=finishers,if=(buff.crusade.up&buff.crusade.stack<15|buff.liadrins_fury_unleashed.up)|(talent.wake_of_ashes.enabled&cooldown.wake_of_ashes.remains<gcd*2)
-    if (Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) < 15 or Player:Buff(S.LiadrinsFuryUnleashed)) or ((S.WakeofAshes:IsAvailable() and S.WakeofAshes:CooldownRemains() < Player:GCD() * 2)) and Finishers() ~= nil then
+    if ((Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) < 15 or Player:Buff(S.LiadrinsFuryUnleashed)) or ((S.WakeofAshes:IsAvailable() and S.WakeofAshes:CooldownRemains() < Player:GCD() * 2))) and Finishers() ~= nil then
         return Finishers()
     end
     --actions.generators+=/call_action_list,name=finishers,if=talent.execution_sentence.enabled&(cooldown.judgment.remains<gcd*4.25|debuff.judgment.remains>gcd*4.25)&cooldown.execution_sentence.up|buff.whisper_of_the_nathrezim.up&buff.whisper_of_the_nathrezim.remains<gcd*1.5
