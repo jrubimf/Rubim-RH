@@ -260,18 +260,18 @@ function PaladinRetribution()
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= Config.justicarglory * 100 - 5 and Player:HolyPower() >= 5 then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 - 5 and Player:HolyPower() >= 5 then
             return S.JusticarsVengeance:ID()
         end
     end
 
     if useS1 and S.WorldofGlory:IsReady() then
         -- Divine Purpose 
-        if Player:HealthPercentage() <= Config.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= Config.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
             return S.JusticarsVengeance:ID()
         end
     end
