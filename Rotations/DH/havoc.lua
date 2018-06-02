@@ -198,6 +198,8 @@ local function PoolingForChaosStrike()
     return false;
 end
 
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 -- Main APL
 function HavocRotation()
     if not Player:AffectingCombat() then
@@ -312,7 +314,7 @@ function HavocRotation()
             
         end
         -- chaos_strike,if=(!talent.momentum.enabled|buff.momentum.up|fury.deficit<30+buff.prepared.up*8)&!variable.pooling_for_chaos_strike&!variable.pooling_for_meta&!variable.pooling_for_blade_dance
-        if InMeleeRange and S.ChaosStrike:IsCastable() and Player:FuryWithCSRefund() >= S.ChaosStrike:Cost()
+        if InMeleeRange and S.ChaosStrike:IsReady() and Player:FuryWithCSRefund() >= S.ChaosStrike:Cost()
                 and ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff) or Player:FuryDeficitWithCSRefund() < 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0))
                 and not PoolingForChaosStrike() and not PoolingForMeta() and not PoolingForBladeDance()) then
             return S.ChaosStrike:ID()
@@ -442,7 +444,7 @@ function HavocRotation()
         end
 
         -- chaos_strike,if=(talent.demon_blades.enabled|!talent.momentum.enabled|buff.momentum.up|fury.deficit<30+buff.prepared.up*8)&!variable.pooling_for_chaos_strike&!variable.pooling_for_meta&!variable.pooling_for_blade_dance
-        if InMeleeRange and S.ChaosStrike:IsCastable() and Player:FuryWithCSRefund() >= S.ChaosStrike:Cost()
+        if InMeleeRange and S.ChaosStrike:IsReady() and Player:FuryWithCSRefund() >= S.ChaosStrike:Cost()
                 and ((S.DemonBlades:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff)
                 or Player:FuryDeficitWithCSRefund() < 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0))
                 and not PoolingForChaosStrike() and not PoolingForMeta() and not PoolingForBladeDance()) then

@@ -1,4 +1,5 @@
 --- Localize Vars
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 -- AethysCore
@@ -55,6 +56,8 @@ if not Item.Warrior then Item.Warrior = {}; end
 Item.Warrior.Portection = {};
 local I = Item.Warrior.Protection;
 
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 
 function AoE()
     if S.IgnorePain:IsCastable() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then

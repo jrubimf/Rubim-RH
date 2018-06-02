@@ -1,3 +1,115 @@
+local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
+--local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+--[[ The defaults a user without a profile will get. ]]--
+local defaults = {
+    profile = {
+        mainOption = {
+            cooldownbind = nil,
+            interruptsbind = nil,
+        },
+        dh = { cooldown = false },
+        dk = {
+            cooldown = false,
+            deathstrike = 0.85
+        },
+        pl = {
+            cooldown = false,
+            lightoftheprotector = 0.90,
+            justicarglory = 0.50,
+        },
+        wr = {
+            cooldown = false,
+            victoryrush = 0.80
+        },
+        rg = {
+            cooldown = false,
+        },
+        hr = {
+            cooldown = false,
+        },
+        mk = {
+            cooldown = false,
+        },
+        sh = {
+            cooldown = false,
+        }
+    }
+}
+
+--[[ RubimRH Initialize ]]--
+function RubimRH:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("RubimRHDB", defaults, true)
+    self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
+    self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
+    self.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+    self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
+
+    self:SetupOptions()
+
+    --DK
+    if select(3, UnitClass("player")) == 6 then
+        varClass = RubimRH.db.profile.dk
+    end
+
+    --Demon HUNTER
+    if select(3, UnitClass("player")) == 12 then
+        varClass = RubimRH.db.profile.dh
+    end
+
+    --Rogue
+    if select(3, UnitClass("player")) == 4 then
+        varClass = RubimRH.db.profile.rg
+    end
+
+    --Monk
+    if select(3, UnitClass("player")) == 10 then
+        varClass = RubimRH.db.profile.mk
+    end
+
+    --Warrior
+    if select(3, UnitClass("player")) == 1 then
+        varClass = RubimRH.db.profile.wr
+    end
+
+    --Hunter
+    if select(3, UnitClass("player")) == 3 then
+        varClass = RubimRH.db.profile.hr
+    end
+
+    --Shaman
+    if select(3, UnitClass("player")) == 7 then
+        varClass = RubimRH.db.profile.sh
+    end
+
+    --Paladin
+    if select(3, UnitClass("player")) == 2 then
+        varClass = RubimRH.db.profile.pl
+    end
+
+    useCD = varClass.cooldown or false
+end
+
+function RubimRH:OnEnable()
+    print("|cffc41f3bRubim RH|r: |cffffff00/rubimrh|r for GUI menu")
+end
+
+function RubimRH:OnProfileChanged(event, db)
+    self.db.profile = db.profile
+end
+
+function RubimRH:OnProfileReset(event, db)
+    for k, v in pairs(defaults) do
+        db.profile[k] = v
+    end
+    self.db.profile = db.profile
+end
+
+function RubimRH:OnNewProfile(event, db)
+    for k, v in pairs(defaults) do
+        db.profile[k] = v
+    end
+end
+
 if AethysCore == nil then
     message("ERROR: Aethyhs Core is missing. Please download it.")
 end
@@ -11,17 +123,12 @@ local Unit = AC.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 
---DEFAULTS
 useRACIAL = true
 useAoE = true
-useCD = true
 ---SKILLS---
 useS1 = true
 useS2 = true
 useS3 = true
----TIER---
-t212 = true
-t214 = true
 
 --IconRotation.texture:SetTexture(GetSpellTexture(BloodRotation()))
 
@@ -65,7 +172,6 @@ function AoEON()
     end
 end
 
-
 function TargetIsValid()
     return Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost();
 end
@@ -91,7 +197,7 @@ function MainRotation()
         return "ERROR: Missing an addon"
     end
 
-    if IsMounted() and UnitAura("player", GetSpellInfo(190784)) == nil then
+    if Player:IsMounted() then
         return 155142
     end
 
@@ -108,7 +214,6 @@ function MainRotation()
     if select(3, UnitClass("player")) == 6 then
         if GetSpecialization() == 1 then
             SetNextAbility(BloodRotation())
-            --Frost
         elseif GetSpecialization() == 2 then
             SetNextAbility(FrostRotation())
         elseif GetSpecialization() == 3 then
@@ -128,13 +233,13 @@ function MainRotation()
     --Rogue
     if select(3, UnitClass("player")) == 4 then
         if GetSpecialization() == 1 then
-            SetNextAbility(AssasinationRotation())
+            SetNextAbility(RogueAss())
         end
         if GetSpecialization() == 2 then
-            SetNextAbility(OutlawRotation())
+            SetNextAbility(RogueOutlaw())
         end
         if GetSpecialization() == 3 then
-            SetNextAbility(SubRotation())
+            SetNextAbility(RogueSub())
         end
     end
 
@@ -189,7 +294,5 @@ function MainRotation()
             SetNextAbility(PaladinHoly())
         end
     end
-
-
     return GetNextAbility()
 end

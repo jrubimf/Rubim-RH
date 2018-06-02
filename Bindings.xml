@@ -1,0 +1,8 @@
+<Bindings>
+  <Binding category="Rubim RH" name="Cooldown Toggle" header="RRH">
+    RubimRH.CDToggle()
+  </Binding>
+  <Binding category="Rubim RH" name="Interrupt Toggle">
+    RubimRH.InterruptToggle()
+  </Binding>
+</Bindings>

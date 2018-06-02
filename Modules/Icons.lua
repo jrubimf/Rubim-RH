@@ -114,13 +114,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow = "Cooldowns", nil
         info.checked = useCD
         info.func = function(self)
-            PlaySound(891, "Master");
-            if useCD == false then
-                useCD = true
-            else
-                useCD = false
-            end
-            print("|cFF69CCF0CD".. "|r: |cFF00FF00" .. tostring(useCD))
+            RubimRH.CDToggle()
         end
         UIDropDownMenu_AddButton(info)
         --
@@ -143,11 +137,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
-        info.checked = false
-        info.func = function(self) end
-        UIDropDownMenu_AddButton(info)
-        --TIER
-        info.text, info.hasArrow, info.menuList = "Tier", true, "Tier"
         info.checked = false
         info.func = function(self) end
         UIDropDownMenu_AddButton(info)
@@ -219,34 +208,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             end
         end
         UIDropDownMenu_AddButton(info, level)
-    elseif menuList == "Tier" then
-        --2 PIECES
-        info.text = "T21: 2Pcs"
-        info.checked = t212
-        info.func = function(self)
-            PlaySound(891, "Master");
-            if t212 then
-                t212 = false
-            else
-                t212 = true
-            end
-            print("|cFF69CCF0".. "2PCs" .. "|r: |cFF00FF00" ..  tostring(t212))
-        end
-        UIDropDownMenu_AddButton(info, level)
-        --4 PIECES
-        info.text = "T21: 4Pcs"
-        info.checked = t214
-        info.func = function(self)
-            PlaySound(891, "Master");
-            if t214 then
-                t214 = false
-            else
-                t214 = true
-            end
-            print("|cFF69CCF0".. "4PCs" .. "|r: |cFF00FF00" ..  tostring(t214))
-        end
-        UIDropDownMenu_AddButton(info, level)
-        --
     end
 end)
 

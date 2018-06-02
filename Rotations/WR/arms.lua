@@ -1,4 +1,6 @@
 --- Localize Vars
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+
 -- Addon
 local addonName, addonTable = ...;
 
@@ -12,7 +14,9 @@ local Spell = AC.Spell;
 local Item = AC.Item;
 
 -- Spells
-if not Spell.Warrior then Spell.Warrior = {}; end
+if not Spell.Warrior then
+    Spell.Warrior = {};
+end
 Spell.Warrior.Arms = {
     -- Racials
     Berserking = Spell(26297),
@@ -79,7 +83,9 @@ Spell.Warrior.Arms = {
 local S = Spell.Warrior.Arms;
 
 -- Items
-if not Item.Warrior then Item.Warrior = {} end
+if not Item.Warrior then
+    Item.Warrior = {}
+end
 Item.Warrior.Arms = {
     -- Legendaries
     TheGreatStormsEye = Item(151823, { 1 }),
@@ -91,10 +97,15 @@ local I = Item.Warrior.Arms;
 
 -- APL Variables
 local function battle_cry_deadly_calm()
-    if Player:Buff(S.BattleCryBuff) and S.DeadlyCalm:IsAvailable() then return true
-    else return false
+    if Player:Buff(S.BattleCryBuff) and S.DeadlyCalm:IsAvailable() then
+        return true
+    else
+        return false
     end
 end
+
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 
 function Cleave()
     --	actions.cleave=bladestorm,if=buff.battle_cry.up&!talent.ravager.enabled
@@ -362,7 +373,7 @@ function WarriorArms()
     -- In Combat
     if Target:Exists() and Target:IsInRange("Melee") then
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= 90 then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush * 100 then
             return S.VictoryRush:ID()
         end
 

@@ -40,6 +40,8 @@ Spell.DemonHunter.Vengeance = {
 };
 local S = Spell.DemonHunter.Vengeance;
 
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 -- APL Main
 function VengRotation()
     if not Player:AffectingCombat() then

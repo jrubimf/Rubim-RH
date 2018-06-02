@@ -1,4 +1,6 @@
 ----- ============================ HEADER ============================
+--local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+--local Config = RubimRH.db.profile.mk
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...;
@@ -146,6 +148,9 @@ function Spell:Ready(Index)
     return self:IsReady();
 end
 
+local T192PC, T194PC = AC.HasTier("T20");
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 --- ======= MAIN =======
 local function AoE()
     -- actions.aoe=call_action_list,name=cd
@@ -221,7 +226,7 @@ local function AoE()
             or (Player:BuffP(S.BlackoutKickBuff)
             and Player:ChiDeficit() >= 0))
             and not Player:PrevGCD(1, S.SpinningCraneKick)
-            and t214) then
+            and T214PC) then
         return S.SpinningCraneKick:ID()
 
     end
@@ -235,8 +240,8 @@ local function AoE()
     if S.BlackoutKick:IsReady()
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
-            and t214
-            and (not t192
+            and T214PC
+            and (not T192PC
             or S.Serenity:IsAvailable())) then
         return S.BlackoutKick:ID()
 
@@ -267,7 +272,7 @@ local function AoE()
     if S.BlackoutKick:IsReady()
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
-            and t214
+            and T214PC
             and Player:BuffP(S.BlackoutKickBuff)) then
         return S.BlackoutKick:ID()
 
@@ -315,7 +320,7 @@ local function SingleTarget()
     if S.BlackoutKick:IsReady()
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
-            and t214
+            and T214PC
             and Player:BuffP(S.BlackoutKickBuff)) then
         return S.BlackoutKick:ID()
 
@@ -372,8 +377,8 @@ local function SingleTarget()
     if S.BlackoutKick:IsReady()
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
-            and t214
-            and (not t192
+            and T214PC
+            and (not T192PC
             or S.Serenity:IsAvailable())) then
         return S.BlackoutKick:ID()
     end
@@ -383,7 +388,7 @@ local function SingleTarget()
             or (Player:BuffP(S.BlackoutKickBuff)
             and Player:ChiDeficit() >= 0))
             and not Player:PrevGCD(1, S.SpinningCraneKick)
-            and t214) then
+            and T214PC) then
         return S.SpinningCraneKick:ID()
     end
     -- actions.st+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
@@ -485,7 +490,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/fists_of_fury,if=((equipped.drinking_horn_cover&buff.pressure_point.remains<=2&set_bonus.tier20_4pc)&(cooldown.rising_sun_kick.remains>1|active_enemies>1)),interrupt=1
-    if S.FistsOfFury:IsReady() and ((I.DrinkingHornCover:IsEquipped() and Player:BuffRemainsP(S.PressurePoint) <= 2 and t204) and (S.RisingSunKick:CooldownRemainsP() > 1 or Cache.EnemiesCount[8] > 1)) then
+    if S.FistsOfFury:IsReady() and ((I.DrinkingHornCover:IsEquipped() and Player:BuffRemainsP(S.PressurePoint) <= 2 and T204PC) and (S.RisingSunKick:CooldownRemainsP() > 1 or Cache.EnemiesCount[8] > 1)) then
         return S.FistsOfFury:ID()
 
     end

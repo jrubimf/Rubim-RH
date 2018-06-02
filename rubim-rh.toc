@@ -10,7 +10,8 @@
 embeds.xml
 #@end-no-lib-strip@
 
-main.lua
+Rubim-RH.lua
+Rubim-RHc.lua
 Modules\Custom.lua
 Modules\Debug.lua
 Modules\Icons.lua

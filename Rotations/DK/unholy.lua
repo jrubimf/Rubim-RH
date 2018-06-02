@@ -1,4 +1,5 @@
 --- ============================ HEADER ============================
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 -- AethysCore
@@ -86,7 +87,8 @@ Item.DeathKnight.Unholy = {
 local I = Item.DeathKnight.Unholy;
 --Rotation Var
 
-
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 --- ===== APL =====
 --- ===============
 local function AOE()
@@ -249,7 +251,7 @@ local function Cooldowns()
         end
     end
     -- t20 gameplay
-    if CDsON() and (S.ArmyOfDead:IsCastable() or S.ArmyOfDead:CooldownRemainsP() <= 5) and S.DarkArbiter:TimeSinceLastCast() > 20 and Player:Runes() <= 3 and T204 then
+    if CDsON() and (S.ArmyOfDead:IsCastable() or S.ArmyOfDead:CooldownRemainsP() <= 5) and S.DarkArbiter:TimeSinceLastCast() > 20 and Player:Runes() <= 3 and T204PC then
         return 233159
     end
     --actions.cooldowns+=/apocalypse,if=debuff.festering_wound.stack>=6
@@ -299,6 +301,14 @@ function UnholyRotation()
             return S.Outbreak:ID()
         end
         return 146250
+    end
+
+    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
+        return S.DeathStrike:ID()
+    end
+
+    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
+        return S.DeathStrike:ID()
     end
 
     if useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 20 then

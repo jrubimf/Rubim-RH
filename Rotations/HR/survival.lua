@@ -7,6 +7,7 @@ local Cache = AethysCache;
 local Unit = AC.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local Pet = Unit.Pet;
 local Spell = AC.Spell;
 local Item = AC.Item;
 -- Spells
@@ -79,144 +80,151 @@ local function mokTalented()
     return S.WayoftheMokNathal:IsAvailable();
 end
 
+local function petNear()
+    if Pet:IsActive() and CheckInteractDistance("pet", 3) then
+        return true
+    end
+    return false
+end
+
 
 local function fillers()
     --actions.fillers=flanking_strike,if=cooldown.mongoose_bite.charges<3
-    if S.FlankingStrike:IsCastable() and S.MongooseBite:Charges() < 3 then
+    if S.FlankingStrike:IsReady() and S.MongooseBite:Charges() < 3 and petNear() then
         return S.FlankingStrike:ID()
     end
 
     --actions.fillers+=/spitting_cobra
-    if S.SpittingCobra:IsCastable() then
+    if S.SpittingCobra:IsReady() then
         return S.SpittingCobra:ID()
     end
 
     --actions.fillers+=/dragonsfire_grenade
-    if S.DragonsfireGrenade:IsCastable() then
+    if S.DragonsfireGrenade:IsReady() then
         return S.DragonsfireGrenade:ID()
     end
 
     --actions.fillers+=/lacerate,if=refreshable|!ticking
-    if S.Lacerate:IsCastable() and (Target:DebuffRefreshable(S.Lacerate, 3.6) or not Target:Debuff(S.Lacerate)) then
+    if S.Lacerate:IsReady() and (Target:DebuffRefreshable(S.Lacerate, 3.6) or not Target:Debuff(S.Lacerate)) then
         return S.Lacerate:ID()
     end
 
     --actions.fillers+=/raptor_strike,if=buff.t21_2p_exposed_flank.up&!variable.mokTalented
-    if S.RaptorStrike:IsCastable() and Player:BuffP(S.ExposedFlank) and not mokTalented() then
+    if S.RaptorStrike:IsReady() and Player:BuffP(S.ExposedFlank) and not mokTalented() then
         return S.RaptorStrike:ID()
     end
 
     --actions.fillers+=/raptor_strike,if=(talent.serpent_sting.enabled&!dot.serpent_sting.ticking)
-    if S.RaptorStrike:IsCastable() and (S.SerpentSting:IsAvailable() and not Target:Debuff(S.SerpentStingDebuff)) then
+    if S.RaptorStrike:IsReady() and (S.SerpentSting:IsAvailable() and not Target:Debuff(S.SerpentStingDebuff)) then
         return S.RaptorStrike:ID()
     end
 
     --actions.fillers+=/steel_trap,if=refreshable|!ticking
-    if IsSpellKnown(S.SteelTrapTalent:ID()) and S.SteelTrap:IsCastable() and S.SteelTrapTalent:CooldownUp() and not S.CaltropsTalent:IsAvailable() and (Target:DebuffRefreshable(S.SteelTrapDebuff, 3.6) or not Target:Debuff(S.SteelTrapTalent)) then
+    if IsSpellKnown(S.SteelTrapTalent:ID()) and S.SteelTrap:IsReady() and S.SteelTrapTalent:CooldownUp() and not S.CaltropsTalent:IsAvailable() and (Target:DebuffRefreshable(S.SteelTrapDebuff, 3.6) or not Target:Debuff(S.SteelTrapTalent)) then
         return S.SteelTrap:ID()
     end
 
     --actions.fillers+=/caltrops,if=refreshable|!ticking
-    if S.Caltrops:IsCastable() and S.CaltropsTalent:CooldownUp() and not S.SteelTrapTalent:IsAvailable() and (Target:DebuffRefreshable(S.CaltropsDebuff, 3.6) or not Target:Debuff(S.CaltropsDebuff)) then
+    if S.Caltrops:IsReady() and S.CaltropsTalent:CooldownUp() and not S.SteelTrapTalent:IsAvailable() and (Target:DebuffRefreshable(S.CaltropsDebuff, 3.6) or not Target:Debuff(S.CaltropsDebuff)) then
         return S.Caltrops:ID()
     end
 
     --actions.fillers+=/explosive_trap
-    if S.ExplosiveTrap:IsCastable() then
+    if S.ExplosiveTrap:IsReady() then
         return S.ExplosiveTrap:ID()
     end
 
     --actions.fillers+=/butchery,if=variable.frizzosEquipped&dot.lacerate.refreshable&(focus>((50+40)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Butchery:IsCastable() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Butchery:IsReady() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Butchery:ID()
     end
 
     --actions.fillers+=/carve,if=variable.frizzosEquipped&dot.lacerate.refreshable&(focus>((50+40)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Carve:IsCastable() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Carve:IsReady() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Carve:ID()
     end
 
     --actions.fillers+=/flanking_strike
-    if S.FlankingStrike:IsCastable() then
+    if S.FlankingStrike:IsReady() and petNear() then
         return S.FlankingStrike:ID()
     end
 
     --actions.fillers+=/raptor_strike,if=(variable.mokTalented&buff.moknathal_tactics.remains<gcd*4)|(focus>((75-focus.regen*gcd)))
-    if S.RaptorStrike:IsCastable() and (mokTalented() and Player:BuffRemains(S.MokNathalTactics) < Player:GCD() * 4) or (Player:Focus() > (75 - Player:FocusRegen() * Player:GCD())) then
+    if S.RaptorStrike:IsReady() and (mokTalented() and Player:BuffRemains(S.MokNathalTactics) < Player:GCD() * 4) or (Player:Focus() > (75 - Player:FocusRegen() * Player:GCD())) then
         return S.RaptorStrike:ID()
     end
 end
 
 function biteTrigger()
     --actions.biteTrigger=lacerate,if=remains<14&set_bonus.tier20_4pc&cooldown.mongoose_bite.remains<gcd*3
-    if S.Lacerate:IsCastable() and Target:DebuffRemainsP(S.Lacerate) < 14 and AC.Tier20_4Pc and S.MongooseBite:CooldownRemains() < Player:GCD() * 3 then
+    if S.Lacerate:IsReady() and Target:DebuffRemainsP(S.Lacerate) < 14 and AC.Tier20_4Pc and S.MongooseBite:CooldownRemains() < Player:GCD() * 3 then
         return S.Lacerate:ID()
     end
 
     --actions.biteTrigger+=/mongoose_bite,if=charges>=2
-    if S.MongooseBite:IsCastable() and S.MongooseBite:Charges() >= 3 then
+    if S.MongooseBite:IsReady() and S.MongooseBite:Charges() >= 3 then
         return S.MongooseBite:ID()
     end
 end
 
 function bitePhase()
     --actions.bitePhase=mongoose_bite,if=cooldown.mongoose_bite.charges=3
-    if S.MongooseBite:IsCastable() and S.MongooseBite:Charges() == 3 then
+    if S.MongooseBite:IsReady() and S.MongooseBite:Charges() == 3 then
         return S.MongooseBite:ID()
     end
 
     --actions.bitePhase+=/flanking_strike,if=buff.mongoose_fury.remains>(gcd*(cooldown.mongoose_bite.charges+1))
-    if S.FlankingStrike:IsCastable() and Player:BuffRemainsP(S.MongooseFury) > (Player:GCD() *(S.MongooseBite:Charges() + 1)) then
+    if petNear() and S.FlankingStrike:IsReady() and Player:BuffRemainsP(S.MongooseFury) > (Player:GCD() *(S.MongooseBite:Charges() + 1)) then
         return S.FlankingStrike:ID()
     end
 
     --actions.bitePhase+=/mongoose_bite,if=buff.mongoose_fury.up
-    if S.MongooseBite:IsCastable() and Player:Buff(S.MongooseFury) then
+    if S.MongooseBite:IsReady() and Player:Buff(S.MongooseFury) then
         return S.MongooseBite:ID()
     end
 
     --actions.bitePhase+=/fury_of_the_eagle,if=(!variable.mokTalented|(buff.moknathal_tactics.remains>(gcd*(8%3))))&!buff.aspect_of_the_eagle.up,interrupt_immediate=1,interrupt_if=	cooldown.mongoose_bite.charges=3|(ticks_remain<=1&buff.moknathal_tactics.remains<0.7)
-    if CDsON() and S.FuryoftheEagle:IsCastable() and (not S.WayoftheMokNathal:IsAvailable() or Player:BuffRemains(S.MokNathalTactics) > (Player:GCD() * (8 / 3))) and Player:BuffStack(S.MongooseFury) == 6 then
+    if CDsON() and S.FuryoftheEagle:IsReady() and (not S.WayoftheMokNathal:IsAvailable() or Player:BuffRemains(S.MokNathalTactics) > (Player:GCD() * (8 / 3))) and Player:BuffStack(S.MongooseFury) == 6 then
         return S.FuryoftheEagle:ID()
     end
 
     --actions.bitePhase+=/lacerate,if=dot.lacerate.refreshable&(focus>((50+35)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Lacerate:IsCastable() and Player:FocusPredicted(0.2) > 30 and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 35 >(45 -((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Lacerate:IsReady() and Player:FocusPredicted(0.2) > 30 and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 35 >(45 -((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Lacerate:ID()
     end
 
     --actions.bitePhase+=/raptor_strike,if=buff.t21_2p_exposed_flank.up
-    if S.RaptorStrike:IsCastable() and Player:FocusPredicted(0.2) > 25 and Player:BuffP(S.ExposedFlank) then
+    if S.RaptorStrike:IsReady() and Player:FocusPredicted(0.2) > 25 and Player:BuffP(S.ExposedFlank) then
         return S.RaptorStrike:ID()
     end
 
     --actions.bitePhase+=/spitting_cobra
-    if S.SpittingCobra:IsCastable() then
+    if S.SpittingCobra:IsReady() then
         return S.SpittingCobra:ID()
     end
 
     --actions.bitePhase+=/dragonsfire_grenade
-    if S.DragonsfireGrenade:IsCastable() then
+    if S.DragonsfireGrenade:IsReady() then
         return S.DragonsfireGrenade:ID()
     end
 
     --actions.bitePhase+=/steel_trap
-    if IsSpellKnown(S.SteelTrapTalent:ID()) and S.SteelTrap:IsCastable() and S.SteelTrapTalent:CooldownUp() and not S.CaltropsTalent:IsAvailable() then
+    if IsSpellKnown(S.SteelTrapTalent:ID()) and S.SteelTrap:IsReady() and S.SteelTrapTalent:CooldownUp() and not S.CaltropsTalent:IsAvailable() then
         return S.SteelTrap:ID()
     end
 
     --actions.bitePhase+=/a_murder_of_crows
-    if S.AMurderofCrows:IsCastable() then
+    if S.AMurderofCrows:IsReady() then
         return S.AMurderofCrows:ID()
     end
 
     --actions.bitePhase+=/caltrops,if=!ticking
-    if S.Caltrops:IsCastable() and S.CaltropsTalent:CooldownUp() and not Target:Debuff(S.CaltropsDebuff) and not S.SteelTrapTalent:IsAvailable() then
+    if S.Caltrops:IsReady() and S.CaltropsTalent:CooldownUp() and not Target:Debuff(S.CaltropsDebuff) and not S.SteelTrapTalent:IsAvailable() then
         return S.Caltrops:ID()
     end
 
     --actions.bitePhase+=/explosive_trap
-    if S.ExplosiveTrap:IsCastable() then
+    if S.ExplosiveTrap:IsReady() then
         return S.ExplositeTrap:ID()
     end
 end

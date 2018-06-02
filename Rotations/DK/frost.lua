@@ -1,4 +1,5 @@
 --- ============================ HEADER ============================
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
 local AC = AethysCore;
 local Cache = AethysCache;
@@ -99,6 +100,9 @@ Item.DeathKnight.Frost = {
 
 local S = Spell.DeathKnight.Frost;
 local I = Item.DeathKnight.Frost;
+
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 
 local function ColdHeart()
     --actions.cold_heart=chains_of_ice,if=buff.cold_heart.stack=20&buff.unholy_strength.react&cooldown.pillar_of_frost.remains>6
@@ -310,7 +314,7 @@ local function BoSTick()
         return S.HowlingBlast:ID()
     end
     --actions.bos_ticking+=/frost_strike,if=set_bonus.tier20_2pc&runic_power.deficit<=15&rune<=3&buff.pillar_of_frost.up&!talent.shattering_strikes.enabled
-    if S.FrostStrike:IsReady(S.FrostStrike) and T202 and Player:RunicPowerDeficit() <= 15 and Player:Runes() <= 3 and Player:Buff(S.PillarOfFrost) and not S.ShatteringStrikes:IsAvailable() then
+    if S.FrostStrike:IsReady(S.FrostStrike) and T202PC and Player:RunicPowerDeficit() <= 15 and Player:Runes() <= 3 and Player:Buff(S.PillarOfFrost) and not S.ShatteringStrikes:IsAvailable() then
         return S.FrostStrike:ID()
     end
     --actions.bos_ticking+=/obliterate,if=runic_power<=45|rune.time_to_5<gcd|buff.hungering_rune_weapon.remains>=2
@@ -439,7 +443,7 @@ function FrostRotation()
         return S.HowlingBlast:ID()
     end
 
-    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= 90 then
+    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
         return S.DeathStrike:ID()
     end
 

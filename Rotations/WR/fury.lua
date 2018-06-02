@@ -1,4 +1,5 @@
 --- Localize Vars
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 -- AethysCore
@@ -77,9 +78,8 @@ Item.Warrior.Fury = {
     PotionoftheOldWar = Item(127844),
 };
 local I = Item.Warrior.Fury;
--- Rotation Var
-local ShouldReturn; -- Used to get the return string
--- GUI Settings
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 
 --- APL Action Lists (and Variables)
 -- # AoE
@@ -129,7 +129,7 @@ local function CDs()
         return S.RagingBlow:ID()
     end
     -- actions.cooldowns+=/rampage,if=(rage>=100&talent.frothing_berserker.enabled&!set_bonus.tier21_4pc)|set_bonus.tier21_4pc|!talent.frothing_berserker.enabled
-    if S.Rampage:IsReady() and ((Player:Rage() >= 100 and S.FrothingBerserker:IsAvailable() and not T214) or T214 or not S.FrothingBerserker:IsAvailable()) then
+    if S.Rampage:IsReady() and ((Player:Rage() >= 100 and S.FrothingBerserker:IsAvailable() and not T214PC) or T214PC or not S.FrothingBerserker:IsAvailable()) then
         return S.Rampage:ID()
     end
     -- actions.cooldowns+=/odyns_fury,if=buff.enrage.up&(cooldown.raging_blow.remains>0|!talent.inner_rage.enabled)

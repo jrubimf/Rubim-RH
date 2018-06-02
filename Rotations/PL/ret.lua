@@ -1,4 +1,5 @@
 --- Localize Vars
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 -- AethysCore
@@ -72,6 +73,9 @@ local function Judged()
     return Target:Debuff(S.JudgmentDebuff) or S.Judgment:CooldownRemains() > Player:GCD() * 2;
 end
 
+local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
+
 local function Cooldowns()
     --actions.cooldowns=potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
     --actions.cooldowns+=/blood_fury
@@ -128,7 +132,7 @@ local function Generators()
     --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()
     --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (I.AshesToDust:IsEquipped() and (Target:Debuff(S.WakeofAshes) and AC.CombatTime() > 10 or Target:DebuffRemains(S.WakeofAshes) < Player:GCD())) or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) >= 15 or S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or S.AvengingWrath:CooldownRemains() > 15) and not I.AshesToDust:IsEquipped()))
     --actions.generators+=/judgment,if=set_bonus.tier21_4pc
-    if S.Judgment:IsReady(30) and T214 then
+    if S.Judgment:IsReady(30) and T214PC then
         return S.Judgement:ID()
     end
 
@@ -147,12 +151,12 @@ local function Generators()
     end
 
     --actions.generators+=/blade_of_justice,if=holy_power<=2&(set_bonus.tier20_2pc|set_bonus.tier20_4pc)
-    if S.BladeofJustice:IsReady("Melee") and Player:HolyPower() <= 2 and (T202 or T204) then
+    if S.BladeofJustice:IsReady("Melee") and Player:HolyPower() <= 2 and (T202PC or T204PC) then
         return 231843
     end
 
     --actions.generators+=/divine_hammer,if=holy_power<=2&(set_bonus.tier20_2pc|set_bonus.tier20_4pc)
-    if S.DivineHammer:IsCastable(8, true) and Player:HolyPower() <= 2 and (T202 or T204) then
+    if S.DivineHammer:IsCastable(8, true) and Player:HolyPower() <= 2 and (T202PC or T204PC) then
         return 231843
     end
     --actions.generators+=/wake_of_ashes,if=(!raid_event.adds.exists|raid_event.adds.in>15)&(holy_power<=0|holy_power=1&(cooldown.blade_of_justice.remains>gcd|cooldown.divine_hammer.remains>gcd)|holy_power=2&((cooldown.zeal.charges_fractional<=0.65|cooldown.crusader_strike.charges_fractional<=0.65)))
@@ -161,12 +165,12 @@ local function Generators()
     end
 
     --actions.generators+=/blade_of_justice,if=holy_power<=3&!set_bonus.tier20_4pc
-    if S.BladeofJustice:IsReady("Melee") and Player:HolyPower() <= 3 and not T204 then
+    if S.BladeofJustice:IsReady("Melee") and Player:HolyPower() <= 3 and not T204PC then
         return 231843
     end
 
     --actions.generators+=/divine_hammer,if=holy_power<=3&!set_bonus.tier20_4pc
-    if S.DivineHammer:IsReady() and Player:HolyPower() <= 3 and not T204 then
+    if S.DivineHammer:IsReady() and Player:HolyPower() <= 3 and not T204PC then
         return 231843
     end
 
@@ -185,7 +189,7 @@ local function Generators()
         return 166844
     end
     --actions.generators+=/crusader_strike,if=cooldown.crusader_strike.charges_fractional>=1.65&holy_power<=4&(cooldown.blade_of_justice.remains>gcd*2|cooldown.divine_hammer.remains>gcd*2)&debuff.judgment.remains>gcd&(talent.greater_judgment.enabled|!set_bonus.tier20_4pc&talent.the_fires_of_justice.enabled)
-    if S.CrusaderStrike:IsReady("Melee") and S.CrusaderStrike:ChargesFractional() >= 1.65 and Player:HolyPower() <= 4 and (S.BladeofJustice:CooldownRemains() > Player:GCD() * 2 or S.DivineHammer:CooldownRemains() > Player:GCD() * 2) and Target:DebuffRemains(S.JudgmentDebuff) > Player:GCD() and (S.GreaterJudgment:IsAvailable() or not T204 and S.TheFiresofJustice:IsAvailable()) then
+    if S.CrusaderStrike:IsReady("Melee") and S.CrusaderStrike:ChargesFractional() >= 1.65 and Player:HolyPower() <= 4 and (S.BladeofJustice:CooldownRemains() > Player:GCD() * 2 or S.DivineHammer:CooldownRemains() > Player:GCD() * 2) and Target:DebuffRemains(S.JudgmentDebuff) > Player:GCD() and (S.GreaterJudgment:IsAvailable() or not T204PC and S.TheFiresofJustice:IsAvailable()) then
         return 166844
     end
 
@@ -252,22 +256,22 @@ function PaladinRetribution()
 
     if useS1 and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose 
-        if Player:HealthPercentage() <= 90 and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= 85 and Player:HolyPower() >= 5 then
+        if Player:HealthPercentage() <= Config.justicarglory * 100 - 5 and Player:HolyPower() >= 5 then
             return S.JusticarsVengeance:ID()
         end
     end
 
     if useS1 and S.WorldofGlory:IsReady() then
         -- Divine Purpose 
-        if Player:HealthPercentage() <= 90 and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= Config.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= 85 and Player:HolyPower() >= 3 then
+        if Player:HealthPercentage() <= Config.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
             return S.JusticarsVengeance:ID()
         end
     end

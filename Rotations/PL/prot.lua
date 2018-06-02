@@ -1,4 +1,5 @@
 --- ============================ HEADER ============================
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...;
@@ -61,6 +62,7 @@ Item.Paladin.Protection = {
 local I = Item.Paladin.Protection;
 -- Rotation Var
 local T202PC, T204PC = AC.HasTier("T20");
+local T212PC, T214PC = AC.HasTier("T21");
 -- GUI Settings
 
 
@@ -110,7 +112,7 @@ function PaladinProtection()
         if Target:IsInRange(10) then
             if not Player:HealingAbsorbed() then
                 -- LotP (HP) / HotP (HP)
-                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= 95 then
+                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.pl.lightoftheprotector * 100 then
                     return S.LightoftheProtector:ID()
                 end
                 if S.HandoftheProtector:IsCastable() and Player:HealthPercentage() <= 75 then
