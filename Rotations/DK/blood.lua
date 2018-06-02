@@ -173,13 +173,9 @@ function BloodRotation()
 		Sephul:Hide()
 	end	
 	
-    if S.MindFreeze:IsCastable() and I.SephuzSecret:IsEquipped() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and ((GetTime() - lastSephuz) + 9) >= 30 then
+    if S.MindFreeze:IsCastable() and I.SephuzSecret:IsEquipped() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and (((GetTime() - lastSephuz) + 9) >= 30 or ((GetTime() - lastSephuz) + 9) <= 15) then
 		return S.RuneTap:ID()
-	end	
-	
-	if S.MindFreeze:IsCastable() and I.SephuzSecret:IsEquipped() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and ((GetTime() - lastSephuz) + 9) >= 30 then
-		return S.RuneTap:ID()
-	end	
+	end
 	
 	LeftCtrl= IsLeftControlKeyDown();
 	LeftShift = IsLeftShiftKeyDown();
