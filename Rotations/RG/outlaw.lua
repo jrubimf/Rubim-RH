@@ -86,24 +86,24 @@ Spell.Rogue.Outlaw = {
 -- Stealth
 local Rogue = {}
 function Rogue.Stealth(Stealth, Setting)
-    if Settings.StealthOOC and Stealth:IsCastable() and not Player:IsStealthed() then
-        if AR.Cast(Stealth, Settings.OffGCDasOffGCD.Stealth) then return "Cast Stealth (OOC)"; end
+    if Stealth:IsCastable() and not Player:IsStealthed() then
+       return false --stealth
     end
     return false;
 end
 
 -- Crimson Vial
 function Rogue.CrimsonVial(CrimsonVial)
-    if CrimsonVial:IsCastable() and Player:HealthPercentage() <= Settings.CrimsonVialHP then
-        if AR.Cast(CrimsonVial, Settings.GCDasOffGCD.CrimsonVial) then return "Cast Crimson Vial (Defensives)"; end
+    if CrimsonVial:IsCastable() and Player:HealthPercentage() <= 80 then
+        return false --defensives
     end
     return false;
 end
 
 -- Feint
 function Rogue.Feint(Feint)
-    if Feint:IsCastable() and not Player:Buff(Feint) and Player:HealthPercentage() <= Settings.FeintHP then
-        if AR.Cast(Feint, Settings.GCDasOffGCD.Feint) then return "Cast Feint (Defensives)"; end
+    if Feint:IsCastable() and not Player:Buff(Feint) and Player:HealthPercentage() <= 80 then
+        return false --feint
     end
 end
 
@@ -356,38 +356,39 @@ end
 
 -- # Reroll when Loaded Dice is up and if you have less than 2 buffs or less than 4 and no True Bearing. With SnD, consider that we never have to reroll.
 local function RtB_Reroll()
-    if not Cache.APLVar.RtB_Reroll then
-        -- Defensive Override : Grand Melee if HP < 60
-        if Settings.General.SoloMode and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
-            -- 1+ Buff
-        elseif Settings.Outlaw.RolltheBonesLogic == "1+ Buff" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
-            -- Broadsides
-        elseif Settings.Outlaw.RolltheBonesLogic == "Broadsides" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
-            -- Buried Treasure
-        elseif Settings.Outlaw.RolltheBonesLogic == "Buried Treasure" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
-            -- Grand Melee
-        elseif Settings.Outlaw.RolltheBonesLogic == "Grand Melee" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
-            -- Jolly Roger
-        elseif Settings.Outlaw.RolltheBonesLogic == "Jolly Roger" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
-            -- Shark Infested Waters
-        elseif Settings.Outlaw.RolltheBonesLogic == "Shark Infested Waters" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
-            -- True Bearing
-        elseif Settings.Outlaw.RolltheBonesLogic == "True Bearing" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
-            -- SimC Default
-            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
-        else
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and
-                    (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
-        end
-    end
+    Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+--    if not Cache.APLVar.RtB_Reroll then
+--        -- Defensive Override : Grand Melee if HP < 60
+--        if Settings.General.SoloMode and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+--            -- 1+ Buff
+--        elseif Settings.Outlaw.RolltheBonesLogic == "1+ Buff" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
+--            -- Broadsides
+--        elseif Settings.Outlaw.RolltheBonesLogic == "Broadsides" then
+  ---          Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
+--            -- Buried Treasure
+--        elseif Settings.Outlaw.RolltheBonesLogic == "Buried Treasure" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
+--            -- Grand Melee
+--        elseif Settings.Outlaw.RolltheBonesLogic == "Grand Melee" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+--            -- Jolly Roger
+--        elseif Settings.Outlaw.RolltheBonesLogic == "Jolly Roger" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
+--            -- Shark Infested Waters
+--        elseif Settings.Outlaw.RolltheBonesLogic == "Shark Infested Waters" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
+--            -- True Bearing
+--        elseif Settings.Outlaw.RolltheBonesLogic == "True Bearing" then
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
+--            -- SimC Default
+--            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
+--        else
+--            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and
+--                    (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
+--        end
+    --end
     return Cache.APLVar.RtB_Reroll;
 end
 
@@ -446,7 +447,7 @@ end
 local function BladeFlurry()
     -- Blade Flurry Expiration Offset
     if Cache.EnemiesCount[RTIdentifier] == 1 and BFReset then
-        BFTimer, BFReset = AC.GetTime() + Settings.Outlaw.BFOffset, false;
+        BFTimer, BFReset = AC.GetTime(), false;
     elseif Cache.EnemiesCount[RTIdentifier] > 1 then
         BFReset = true;
     end
@@ -598,18 +599,12 @@ function RogueOutlaw()
 
     -- Defensives
     -- Crimson Vial
-    ShouldReturn = Rogue.CrimsonVial(S.CrimsonVial);
-    if ShouldReturn then return ShouldReturn; end
-    -- Feint
-    ShouldReturn = Rogue.Feint(S.Feint);
-    if ShouldReturn then return ShouldReturn; end
 
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
         if not Player:Buff(S.VanishBuff) then
-            ShouldReturn = Rogue.Stealth(S.Stealth);
-            if ShouldReturn then return ShouldReturn; end
+
         end
         -- Flask
         -- Food
@@ -624,9 +619,7 @@ function RogueOutlaw()
             else
                 -- actions.precombat+=/curse_of_the_dreadblades,if=combo_points.deficit>=4
                 if CDsON() and S.CurseoftheDreadblades:IsCastable() and Player:ComboPointsDeficit() >= 4 then
-                    if AR.Cast(S.CurseoftheDreadblades, Settings.Outlaw.OffGCDasOffGCD.CurseoftheDreadblades) then
-                        return "Cast Curse of the Dreadblades (Opener)";
-                    end
+                    return S.CurseoftheDreadblades:ID()
                 end
                 if Player:IsStealthed(true, true) and S.Ambush:IsCastable() then
                     return S.Ambush:ID()
@@ -635,7 +628,7 @@ function RogueOutlaw()
                 end
             end
         end
-        return;
+        return 146250
     end
 
     -- In Combat
@@ -643,27 +636,21 @@ function RogueOutlaw()
     Rogue.MfDSniping(S.MarkedforDeath);
     if TargetIsValid() then
         -- Mythic Dungeon
-        ShouldReturn = MythicDungeon();
-        if ShouldReturn then return ShouldReturn; end
-        -- Training Scenario
-        ShouldReturn = TrainingScenario();
-        if ShouldReturn then return ShouldReturn; end
-        -- Kick
-        if Settings.General.InterruptEnabled and S.Kick:IsCastable(S.SaberSlash) and Target:IsInterruptible() then
-            return S.Kick, Settings.Commons.OffGCDasOffGCD.Kick:ID()
+        -- actions+=/call_action_list,name=bf
+        if BladeFlurry() ~= nil then
+            return BladeFlurry()
         end
 
-        -- actions+=/call_action_list,name=bf
-        ShouldReturn = BladeFlurry();
-        if ShouldReturn then return "BladeFlurry: " .. ShouldReturn; end
         -- actions+=/call_action_list,name=cds
-        ShouldReturn = CDs();
-        if ShouldReturn then return "CDs: " .. ShouldReturn; end
+        if CDs() ~= nil then
+            return CDs()
+        end
         -- # Conditions are here to avoid worthless check if nothing is available
         -- actions+=/call_action_list,name=stealth,if=stealthed|cooldown.vanish.up|cooldown.shadowmeld.up
         if Player:IsStealthed(true, true) or S.Vanish:IsCastable() or S.Shadowmeld:IsCastable() then
-            ShouldReturn = Stealth();
-            if ShouldReturn then return "Stealth: " .. ShouldReturn; end
+            if Stealth() ~= nil then
+                return Stealth()
+            end
         end
         -- actions+=/death_from_above,if=energy.time_to_max>2&!variable.ss_useable_noreroll
         if S.DeathfromAbove:IsCastable(15) and not SS_Useable_NoReroll() and EnergyTimeToMaxRounded() > 2 then
@@ -673,19 +660,10 @@ function RogueOutlaw()
         if S.DeathfromAbove:TimeSinceLastCast() <= 1.325 then
             -- actions+=/sprint,if=equipped.thraxis_tricksy_treads&buff.death_from_above.up&buff.death_from_above.remains<=0.15
             if S.Sprint:IsCastable() and I.ThraxisTricksyTreads:IsEquipped() then
-                if AR.Cast(S.Sprint) then
-                    -- Set the cooldown on the main frame to be equal to the delay we actually want, not the full GCD duration
-                    AR.MainIconFrame:SetCooldown(S.DeathfromAbove.LastCastTime, 1.325);
-                    return "Cast Sprint (DfA)";
-                end
+                return S.Sprint:ID()
             end
             -- actions+=/adrenaline_rush,if=buff.death_from_above.up&buff.death_from_above.remains<=0.15
             if S.AdrenalineRush:IsCastable() then
-                if AR.Cast(S.AdrenalineRush, Settings.Outlaw.OffGCDasOffGCD.AdrenalineRush) then
-                    -- Set the cooldown on the main frame to be equal to the delay we actually want, not the full GCD duration
-                    AR.MainIconFrame:SetCooldown(S.DeathfromAbove.LastCastTime, 1.325);
-                    return "Cast Adrenaline Rush (DfA)";
-                end
             end
         end
         if S.SliceandDice:IsAvailable() and S.SliceandDice:IsCastable() then
@@ -734,4 +712,5 @@ function RogueOutlaw()
             return S.PistolShot:ID()
         end
     end
+    return 233159
 end

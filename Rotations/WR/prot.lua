@@ -81,6 +81,20 @@ function AoE()
     end
 end
 
+function Vengeance()
+	if not Player:Buff(S.VegeanceIP) and not Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
+		return S.Revenge:ID()
+	end
+
+	if Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
+		return S.Revenge:ID()
+	end	
+	
+	if Player:Buff(S.VegeanceIP) and S.IgnorePain:IsReady() then
+		return S.IgnorePain:ID()
+	end	
+end
+
 function WarriorProt()
     if not Player:AffectingCombat() then
         return "146250"
@@ -102,6 +116,10 @@ function WarriorProt()
         return S.BattleCry:ID()
     end
 
+	if Vengeance() ~= nil and S.Vengeance:IsAvailable() then
+		return Vengeance()
+	end	
+	
     if S.IgnorePain:IsCastable() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
         return S.IgnorePain:ID()
     end
