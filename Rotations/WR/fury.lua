@@ -133,7 +133,7 @@ local function CDs()
         return S.Rampage:ID()
     end
     -- actions.cooldowns+=/odyns_fury,if=buff.enrage.up&(cooldown.raging_blow.remains>0|!talent.inner_rage.enabled)
-    if CDsON() and S.OdynsFury:IsCastable() and Player:BuffP(S.Enrage) and (S.RagingBlow:CooldownRemainsP() > 0 or not S.InnerRage:IsAvailable()) then
+    if useS1 and S.OdynsFury:IsCastable() and Player:BuffP(S.Enrage) and (S.RagingBlow:CooldownRemainsP() > 0 or not S.InnerRage:IsAvailable()) then
         return S.OdynsFury:ID()
     end
     -- actions.cooldowns+=/berserker_rage,if=talent.outburst.enabled&buff.enrage.down&buff.battle_cry.up
@@ -215,7 +215,7 @@ local function execute()
         return S.Execute:ID()
     end
     -- actions.execute+=/odyns_fury
-    if CDsON() and S.OdynsFury:IsCastable() then
+    if useS1 and S.OdynsFury:IsCastable() then
         return S.OdynsFury:ID()
     end
     -- actions.execute+=/bloodthirst
@@ -275,6 +275,12 @@ local function single_target()
     if S.Whirlwind:IsCastable() and S.WreckingBallTalent:IsAvailable() and Player:BuffP(S.WreckingBall) and Player:BuffP(S.Enrage) then
         return S.Whirlwind:ID()
     end
+
+    --actions.single_target+=/whirlwind,if=!buff.meat_cleaver.up&spell_targets.whirlwind=2
+    if S.Whirlwind:IsCastable() and not Player:Buff(S.MeatCleaver) then
+        return S.Whirlwind:ID()
+    end
+
     -- actions.single_target+=/raging_blow
     if S.RagingBlow:IsReady() then
         return S.RagingBlow:ID()
@@ -392,9 +398,45 @@ function WarriorFury()
             return S.ArcaneTorrent:ID()
         end
     end
+
+    if not CDsON() then
+        -- actions+=/battle_cry,if=gcd.remains=0&talent.reckless_abandon.enabled&!talent.bloodbath.enabled&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
+        if S.BattleCry:IsCastable() and Cache.EnemiesCount[8] >= 1
+                and (S.RecklessAbandon:IsAvailable() and not S.Bloodbath:IsAvailable()
+                and (I.UmbralMoonglaives:IsEquipped()
+                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
+                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
+                or not I.UmbralMoonglaives:IsEquipped()) then
+            return S.BattleCry:ID()
+        end
+        -- actions+=/battle_cry,if=gcd.remains=0&talent.bladestorm.enabled&(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)
+        if S.BattleCry:IsCastable() and S.Bladestorm:IsAvailable() and Cache.EnemiesCount[8] >= 1 then
+            return S.BattleCry:ID()
+        end
+        -- actions+=/battle_cry,if=gcd.remains=0&buff.dragon_roar.up&(cooldown.bloodthirst.remains=0|buff.enrage.remains>cooldown.bloodthirst.remains)
+        if S.BattleCry:IsCastable() and Cache.EnemiesCount[8] >= 1 and Player:BuffP(S.DragonRoar) and (S.Bloodthirst:CooldownRemainsP() == 0 or Player:BuffRemainsP(S.Enrage) > S.Bloodthirst:CooldownRemainsP()) then
+            return S.BattleCry:ID()
+        end
+        -- actions+=/battle_cry,if=(gcd.remains=0|gcd.remains<=0.4&prev_gcd.1.rampage)&(cooldown.bloodbath.remains=0|buff.bloodbath.up|!talent.bloodbath.enabled|(target.time_to_die<12))&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
+        if S.BattleCry:IsCastable() and Cache.EnemiesCount[8] >= 1
+                and ((Player:GCDRemains() == 0 or (Player:GCDRemains() <= 0.4 and Player:PrevGCDP(1, S.Rampage)))
+                and (S.Bloodbath:CooldownRemainsP() == 0 or Player:BuffP(S.Bloodbath)
+                or not S.Bloodbath:IsAvailable()
+                or (Target:TimeToDie() < 12))
+                and (I.UmbralMoonglaives:IsEquipped()
+                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
+                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
+                or not I.UmbralMoonglaives:IsEquipped()) then
+            return S.BattleCry:ID()
+        end
+        -- actions+=/bloodbath,if=buff.battle_cry.up|(target.time_to_die<14)|(cooldown.battle_cry.remains<2&prev_gcd.1.rampage)
+        if S.Bloodbath:IsCastable() and (Player:BuffP(S.BattleCry) or (Target:TimeToDie() < 14) or (S.BattleCry:CooldownRemainsP() < 2 and Player:PrevGCDP(1, S.Rampage))) then
+            return S.Bloodbath:ID()
+        end
+    end
     -- # Action list
     -- actions+=/run_action_list,name=cooldowns,if=buff.battle_cry.up&spell_targets.whirlwind=1
-    if CDsON() and Player:BuffP(S.BattleCry) and Cache.EnemiesCount[8] == 1 then
+    if Player:BuffP(S.BattleCry) and Cache.EnemiesCount[8] == 1 then
         if CDs() ~= nil then
             return CDs()
         end
@@ -488,16 +530,17 @@ end
 
 -- actions.movement=heroic_leap
 
--- actions.single_target=bloodthirst,if=buff.fujiedas_fury.up&buff.fujiedas_fury.remains<2
--- actions.single_target+=/furious_slash,if=talent.frenzy.enabled&(buff.frenzy.down|buff.frenzy.remains<=2)
--- actions.single_target+=/raging_blow,if=buff.enrage.up&talent.inner_rage.enabled
--- actions.single_target+=/rampage,if=target.health.pct>21&(rage>=100|!talent.frothing_berserker.enabled)&(((cooldown.battle_cry.remains>5|cooldown.bloodbath.remains>5)&!talent.carnage.enabled)|((cooldown.battle_cry.remains>3|cooldown.bloodbath.remains>3)&talent.carnage.enabled))|buff.massacre.react
--- actions.single_target+=/execute,if=buff.stone_heart.react&((talent.inner_rage.enabled&cooldown.raging_blow.remains>1)|buff.enrage.up)
--- actions.single_target+=/bloodthirst
--- actions.single_target+=/furious_slash,if=set_bonus.tier19_2pc&!talent.inner_rage.enabled
--- actions.single_target+=/whirlwind,if=buff.wrecking_ball.react&buff.enrage.up
--- actions.single_target+=/raging_blow
--- actions.single_target+=/furious_slash
+
+--actions.single_target=bloodthirst,if=buff.fujiedas_fury.up&buff.fujiedas_fury.remains<2
+--actions.single_target+=/furious_slash,if=talent.frenzy.enabled&(buff.frenzy.down|buff.frenzy.remains<=2)
+--actions.single_target+=/raging_blow,if=buff.enrage.up&talent.inner_rage.enabled
+--actions.single_target+=/rampage,if=target.health.pct>21&(rage>=100|!talent.frothing_berserker.enabled)&(((cooldown.battle_cry.remains>5|cooldown.bloodbath.remains>5)&!talent.carnage.enabled)|((cooldown.battle_cry.remains>3|cooldown.bloodbath.remains>3)&talent.carnage.enabled))|buff.massacre.react
+--actions.single_target+=/execute,if=buff.stone_heart.react&((talent.inner_rage.enabled&cooldown.raging_blow.remains>1)|buff.enrage.up)
+--actions.single_target+=/bloodthirst
+--actions.single_target+=/furious_slash,if=set_bonus.tier19_2pc&!talent.inner_rage.enabled
+--actions.single_target+=/whirlwind,if=buff.wrecking_ball.react&buff.enrage.up
+--actions.single_target+=/whirlwind,if=!buff.meat_cleaver.up&spell_targets.whirlwind=2
+--actions.single_target+=/raging_blowactions.single_target+=/furious_slash
 
 -- actions.three_targets=execute,if=buff.stone_heart.react
 -- actions.three_targets+=/rampage,if=buff.meat_cleaver.up&((buff.enrage.down&!talent.frothing_berserker.enabled)|(rage>=100&talent.frothing_berserker.enabled))|buff.massacre.react

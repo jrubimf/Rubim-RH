@@ -33,6 +33,7 @@ local startUP = function()
     --Warrior
     local Warbreaker = 209577
     local Ravager = 152277
+    local OdynsFury = 205545
 
     --Paladin
     local JusticarVengeance = 215661
@@ -46,18 +47,18 @@ local startUP = function()
         --Blood
         if GetSpecialization() == 1 then
             classspell = {}
-            table.insert( classspell, DeathStrike )
-            table.insert( classspell, RuneTap )
+            table.insert(classspell, DeathStrike)
+            table.insert(classspell, RuneTap)
             --Frost
         elseif GetSpecialization() == 2 then
             classspell = {}
-            table.insert( classspell, DeathStrike )
-            table.insert( classspell, BreathOfSindragosa )
-            table.insert( classspell, SindragosasFury )
+            table.insert(classspell, DeathStrike)
+            table.insert(classspell, BreathOfSindragosa)
+            table.insert(classspell, SindragosasFury)
             --Unholy
         elseif GetSpecialization() == 3 then
             classspell = {}
-            table.insert( classspell, DeathStrike )
+            table.insert(classspell, DeathStrike)
         end
     end
 
@@ -65,8 +66,8 @@ local startUP = function()
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
             classspell = {}
-            table.insert( classspell, FelRush )
-            table.insert( classspell, EyeBeam )
+            table.insert(classspell, FelRush)
+            table.insert(classspell, EyeBeam)
         end
     end
 
@@ -74,8 +75,11 @@ local startUP = function()
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
             classspell = {}
-            table.insert( classspell, Warbreaker )
-            table.insert( classspell, Ravager )
+            table.insert(classspell, Warbreaker)
+            table.insert(classspell, Ravager)
+        elseif GetSpecialization() == 2 then
+            classspell = {}
+            table.insert(classspell, OdynsFury)
         end
     end
 
@@ -83,13 +87,13 @@ local startUP = function()
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
             classspell = {}
-            table.insert( classspell, JusticarVengeance )
+            table.insert(classspell, JusticarVengeance)
         end
     end
     --SHAMAN
     if select(3, UnitClass("player")) == 7 then
         classspell = {}
-        table.insert( classspell, HealingSurge )
+        table.insert(classspell, HealingSurge)
     end
 end
 
@@ -127,67 +131,70 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             else
                 useAoE = false
             end
-            print("|cFF69CCF0CD".. "|r: |cFF00FF00" .. tostring(useCD))
+            print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useCD))
         end
         UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow, info.menuList = "Interrupts", true, "Interrupts"
         info.checked = false
-        info.func = function(self) end
+        info.func = function(self)
+        end
         UIDropDownMenu_AddButton(info)
         --
-        info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
-        info.checked = false
-        info.func = function(self) end
-        UIDropDownMenu_AddButton(info)
+        if #classspell > 0 then
+            info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
+            info.checked = false
+            info.func = function(self)
+            end
+            UIDropDownMenu_AddButton(info)
+        end
     elseif menuList == "Spells" then
         --SKILL 1
-        for i=1, #classspell do
-            info.text = GetSpellInfo(classspell[i])
-
-            if i == 1 then
-                info.checked = useS1
-            end
-
-            if i == 2 then
-                info.checked = useS2
-            end
-
-            if i == 3 then
-                info.checked = useS3
-            end
-            info.func = function(self)
-                PlaySound(891, "Master");
+            for i = 1, #classspell do
+                info.text = GetSpellInfo(classspell[i])
 
                 if i == 1 then
-                    if useS1 then
-                        useS1 = false
-                    else
-                        useS1 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS1))
+                    info.checked = useS1
                 end
 
                 if i == 2 then
-                    if useS2 then
-                        useS2 = false
-                    else
-                        useS2 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS2))
+                    info.checked = useS2
                 end
 
                 if i == 3 then
-                    if useS3 then
-                        useS3 = false
-                    else
-                        useS3 = true
-                    end
-                    print("|cFF69CCF0".. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" ..  tostring(useS3))
+                    info.checked = useS3
                 end
+                info.func = function(self)
+                    PlaySound(891, "Master");
+                    if i == 1 then
+                        if useS1 then
+                            useS1 = false
+                        else
+                            useS1 = true
+                        end
+                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS1))
+                    end
+
+                    if i == 2 then
+                        if useS2 then
+                            useS2 = false
+                        else
+                            useS2 = true
+                        end
+                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS2))
+                    end
+
+                    if i == 3 then
+                        if useS3 then
+                            useS3 = false
+                        else
+                            useS3 = true
+                        end
+                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS3))
+                    end
+                end
+                UIDropDownMenu_AddButton(info, level)
             end
-            UIDropDownMenu_AddButton(info, level)
-        end
         -- Show the "Games" sub-menu
         --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
         --            info.text = s
@@ -201,10 +208,10 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             PlaySound(891, "Master");
             if int_smart then
                 int_smart = false
-                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Everything ")
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Everything ")
             else
                 int_smart = true
-                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Only necessary. ")
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Only necessary. ")
             end
         end
         UIDropDownMenu_AddButton(info, level)
