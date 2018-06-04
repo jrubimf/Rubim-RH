@@ -57,6 +57,7 @@ Spell.DeathKnight.Unholy = {
     FesteringWounds = Spell(194310), --max 8 stacks
     VirulentPlagueDebuff = Spell(191587), -- 13s debuff from Outbreak
     --Defensives
+    DarkSuccor = Spell(101568),
     AntiMagicShell = Spell(48707),
     IcebornFortitute = Spell(48792),
     -- Utility
