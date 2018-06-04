@@ -277,7 +277,7 @@ local function single_target()
     end
 
     --actions.single_target+=/whirlwind,if=!buff.meat_cleaver.up&spell_targets.whirlwind=2
-    if S.Whirlwind:IsCastable() and not Player:Buff(S.MeatCleaver) then
+    if S.Whirlwind:IsCastable() and not Player:Buff(S.MeatCleaver) and Cache.EnemiesCount[8] == 2 then
         return S.Whirlwind:ID()
     end
 
