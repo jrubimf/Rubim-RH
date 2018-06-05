@@ -8,7 +8,7 @@
 local int_smart = true
 
 local runonce = 0
-classspell = {}
+classSpell = {}
 local startUP = function()
     if runonce == 0 then
         print("===================")
@@ -46,54 +46,54 @@ local startUP = function()
     if select(2, UnitClass("player")) == "DEATHKNIGHT" then
         --Blood
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert(classspell, DeathStrike)
-            table.insert(classspell, RuneTap)
+            classSpell = {}
+            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
+            table.insert(classSpell, { spellID = RuneTap, isActive = true })
             --Frost
         elseif GetSpecialization() == 2 then
-            classspell = {}
-            table.insert(classspell, DeathStrike)
-            table.insert(classspell, BreathOfSindragosa)
-            table.insert(classspell, SindragosasFury)
+            classSpell = {}
+            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
+            table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
+            table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
             --Unholy
         elseif GetSpecialization() == 3 then
-            classspell = {}
-            table.insert(classspell, DeathStrike)
+            classSpell = {}
+            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
         end
     end
 
     --DEMON HUNTER
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert(classspell, FelRush)
-            table.insert(classspell, EyeBeam)
+            classSpell = {}
+            table.insert(classSpell, { spellID = FelRush, isActive = true })
+            table.insert(classSpell, { spellID = EyeBeam, isActive = true })
         end
     end
 
     --WARRIOR
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
-            classspell = {}
-            table.insert(classspell, Warbreaker)
-            table.insert(classspell, Ravager)
+            classSpell = {}
+            table.insert(classSpell, { spellID = Warbreaker, isActive = true })
+            table.insert(classSpell, { spellID = Ravager, isActive = true })
         elseif GetSpecialization() == 2 then
-            classspell = {}
-            table.insert(classspell, OdynsFury)
+            classSpell = {}
+            table.insert(classSpell, { spellID = OdynsFury, isActive = true })
         end
     end
 
     --PALADIN
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
-            classspell = {}
-            table.insert(classspell, JusticarVengeance)
+            classSpell = {}
+            table.insert(classSpell, { spellID = JusticarVengeance, isActive = true })
         end
     end
     --SHAMAN
     if select(3, UnitClass("player")) == 7 then
-        classspell = {}
-        table.insert(classspell, HealingSurge)
+        classSpell = {}
+        table.insert(classSpell, { spellID = HealingSurge, isActive = true })
     end
 end
 
@@ -141,7 +141,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
-        if #classspell > 0 then
+        if #classSpell > 0 then
             info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
             info.checked = false
             info.func = function(self)
@@ -150,51 +150,20 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
     elseif menuList == "Spells" then
         --SKILL 1
-            for i = 1, #classspell do
-                info.text = GetSpellInfo(classspell[i])
-
-                if i == 1 then
-                    info.checked = useS1
+        for i = 1, #classSpell do
+            info.text = GetSpellInfo(classSpell[i].spellID)
+            info.checked = classSpell[i].isActive
+            info.func = function(self)
+                PlaySound(891, "Master");
+                if classSpell[i].isActive then
+                    classSpell[i].isActive = false
+                else
+                    classSpell[i].isActive = true
                 end
-
-                if i == 2 then
-                    info.checked = useS2
-                end
-
-                if i == 3 then
-                    info.checked = useS3
-                end
-                info.func = function(self)
-                    PlaySound(891, "Master");
-                    if i == 1 then
-                        if useS1 then
-                            useS1 = false
-                        else
-                            useS1 = true
-                        end
-                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS1))
-                    end
-
-                    if i == 2 then
-                        if useS2 then
-                            useS2 = false
-                        else
-                            useS2 = true
-                        end
-                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS2))
-                    end
-
-                    if i == 3 then
-                        if useS3 then
-                            useS3 = false
-                        else
-                            useS3 = true
-                        end
-                        print("|cFF69CCF0" .. GetSpellInfo(classspell[i]) .. "|r: |cFF00FF00" .. tostring(useS3))
-                    end
-                end
-                UIDropDownMenu_AddButton(info, level)
+                print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
             end
+            UIDropDownMenu_AddButton(info, level)
+        end
         -- Show the "Games" sub-menu
         --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
         --            info.text = s

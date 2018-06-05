@@ -114,7 +114,7 @@ function Cleave()
     end
 
     --	actions.cleave+=/ravager,if=talent.ravager.enabled&cooldown.battle_cry.remains<=gcd&debuff.colossus_smash.remains>6
-    if useS2 and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
+    if classSpell[2].isActive and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
         return S.Ravager:ID()
     end
 
@@ -124,7 +124,7 @@ function Cleave()
     end
 
     --	actions.cleave+=/warbreaker,if=raid_event.adds.in>90&buff.shattered_defenses.down
-    if useS1 and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if classSpell[1].isActive and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.Warbreaker:ID()
     end
 
@@ -161,7 +161,7 @@ end
 
 function AoE()
     -- actions.aoe=warbreaker,if=(cooldown.bladestorm.up|cooldown.bladestorm.remains<=gcd)&(cooldown.battle_cry.up|cooldown.battle_cry.remains<=gcd)
-    if useS1 and S.Warbreaker:IsReady() and ((S.Bladestorm:CooldownRemainsP() == 0 or S.Bladestorm:CooldownRemainsP() <= Player:GCD()) and (S.BattleCry:CooldownRemainsP() == 0 or S.BattleCry:CooldownRemainsP() <= Player:GCD())) then
+    if classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.Bladestorm:CooldownRemainsP() == 0 or S.Bladestorm:CooldownRemainsP() <= Player:GCD()) and (S.BattleCry:CooldownRemainsP() == 0 or S.BattleCry:CooldownRemainsP() <= Player:GCD())) then
         return S.Warbreaker:ID()
     end
 
@@ -171,7 +171,7 @@ function AoE()
     end
 
     --actions.aoe+=/ravager,if=talent.ravager.enabled&cooldown.battle_cry.remains<=gcd&debuff.colossus_smash.remains>6
-    if useS2 and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
+    if classSpell[2].isActive and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
         return S.Ravager:ID()
     end
 
@@ -243,7 +243,7 @@ function Execute()
     end
 
     -- actions.execute+=/warbreaker,if=(raid_event.adds.in>90|!raid_event.adds.exists)&cooldown.mortal_strike.remains<=gcd.remains&buff.shattered_defenses.down&buff.executioners_precision.stack=2
-    if useS1 and S.Warbreaker:IsReady() and (S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains() and not Player:Buff(S.ShatteredDefensesBuff) and Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2) then
+    if classSpell[1].isActive and S.Warbreaker:IsReady() and (S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains() and not Player:Buff(S.ShatteredDefensesBuff) and Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2) then
         return S.Warbreaker:ID()
     end
 
@@ -258,7 +258,7 @@ function Execute()
     end
 
     -- actions.execute+=/ravager,if=cooldown.battle_cry.remains<=gcd&debuff.colossus_smash.remains>6
-    if useS2 and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
+    if classSpell[2].isActive and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
         return S.Ravager:ID()
     end
 
@@ -300,7 +300,7 @@ function Single()
     end
 
     -- actions.single+=/warbreaker,if=(raid_event.adds.in>90|!raid_event.adds.exists)&((talent.fervor_of_battle.enabled&debuff.colossus_smash.remains<gcd)|!talent.fervor_of_battle.enabled&((buff.stone_heart.up|cooldown.mortal_strike.remains<=gcd.remains)&buff.shattered_defenses.down))
-    if useS1 and S.Warbreaker:IsReady() and ((S.FervorOfBattle:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) < Player:GCD()) or not S.FervorOfBattle:IsAvailable() and ((Player:Buff(S.StoneHeartBuff) or S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains()) and not Player:Buff(S.ShatteredDefensesBuff))) then
+    if classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.FervorOfBattle:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) < Player:GCD()) or not S.FervorOfBattle:IsAvailable() and ((Player:Buff(S.StoneHeartBuff) or S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains()) and not Player:Buff(S.ShatteredDefensesBuff))) then
         return S.Warbreaker:ID()
     end
 
@@ -315,7 +315,7 @@ function Single()
     end
 
     -- actions.single+=/ravager,if=cooldown.battle_cry.remains<=gcd&debuff.colossus_smash.remains>6
-    if useS2 and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
+    if classSpell[2].isActive and S.Ravager:IsReady() and (S.BattleCry:CooldownRemainsP() <= Player:GCD() and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 6) then
         return S.Ravager:ID()
     end
 

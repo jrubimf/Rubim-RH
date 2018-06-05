@@ -65,7 +65,7 @@ function VengRotation()
     if S.DemonSpikes:IsCastable("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
         return S.DemonSpikes:ID()
     end
-    if S.InfernalStrike:IsCastable("Melee") and S.InfernalStrike:ChargesFractional() > 1.8 then
+    if S.InfernalStrike:TimeSinceLastCast() > 1 and S.InfernalStrike:IsCastable("Melee") and S.InfernalStrike:ChargesFractional() >= 1.6 then
         return S.InfernalStrike:ID()
     end
     -- actions+=/spirit_bomb,if=soul_fragments=5|debuff.frailty.down
@@ -90,7 +90,7 @@ function VengRotation()
         return S.Felblade:ID()
     end
     -- actions+=/fel_devastation
-    if CDsON() and S.FelDevastation:IsCastable(20, true) and GetUnitSpeed("player") == 0 and Player:Pain() >= 30 then
+    if CDsON() and S.FelDevastation:IsCastable(20, true) and lastMoved() > 1 and Player:Pain() >= 30 then
         return S.FelDevastation:ID()
     end
     -- actions+=/sigil_of_flame

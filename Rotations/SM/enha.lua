@@ -194,7 +194,7 @@ function Enhancement ()
         -- Use healthstone if we have it and our health is low.
 
         -- Heal when we have less than the set health threshold!
-        if S.HealingSurge:IsReady() and useS1 and Player:HealthPercentage() <= 50 then
+        if S.HealingSurge:IsReady() and classSpell[1].isActive and Player:HealthPercentage() <= 50 then
             -- Instant casts using maelstrom only.
             if Player:Maelstrom() >= 20 then
                 return S.HealingSurge:ID()

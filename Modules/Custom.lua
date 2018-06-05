@@ -212,6 +212,7 @@ local SpellsInterrupt = {
     0
 }
 
+
 function ShouldInterrupt()
     local importantCast = false
     local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo("target")

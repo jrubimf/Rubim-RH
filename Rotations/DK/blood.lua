@@ -96,7 +96,7 @@ function DRW()
 
     end
 
-    if useS1 and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > 1.5 then
+    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > 1.5 then
         return S.DeathStrike:ID()
 
     end
@@ -106,7 +106,7 @@ function DRW()
 
     end
 
-    if useS1 and S.DeathStrike:IsReady("Melee") then
+    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") then
         return S.DeathStrike:ID()
 
     end
@@ -166,20 +166,24 @@ function BloodRotation()
         return S.RuneTap:ID()
     end
 
-    if I.SephuzSecret:IsEquipped() and Player:Buff(S.SephuzBuff) then
-        lastSephuz = GetTime()
-    end
+    if I.SephuzSecret:IsEquipped() then
 
-    if I.SephuzSecret:IsEquipped() and ((GetTime() - lastSephuz) + 9) >= 30 then
-        Sephul:Show()
-    else
-        Sephul:Hide()
-    end
+        if Player:Buff(S.SephuzBuff) then
+            lastSephuz = GetTime()
+        end
 
-    if S.MindFreeze:IsCastable() and I.SephuzSecret:IsEquipped() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and (((GetTime() - lastSephuz) + 9) >= 30 or ((GetTime() - lastSephuz) + 9) <= 15) then
-        return S.RuneTap:ID()
-    end
+        --ShowFrame
+        if I.SephuzSecret:IsEquipped() and ((GetTime() - lastSephuz) + 9) >= 30 then
+            Sephul:Show()
+        else
+            Sephul:Hide()
+        end
 
+        --We Should Iterrupt
+        if S.MindFreeze:IsCastable() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and (((GetTime() - lastSephuz) + 9) >= 30 or ((GetTime() - lastSephuz) + 9) <= 15) then
+            return S.RuneTap:ID()
+        end
+    end
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
     if LeftCtrl and LeftShift and S.DeathandDecay:IsCastable() then
@@ -198,7 +202,7 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
-    if useS1 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
+    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
 
@@ -240,7 +244,7 @@ function BloodRotation()
         return S.DeathandDecay:ID()
     end
 
-    if useS1 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 90 and not Player:HealingAbsorbed() then
+    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 90 and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
 
@@ -302,7 +306,7 @@ function BloodRotation()
         return S.BloodBoil:ID()
     end
 
-    if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and useS2) then
+    if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and classSpell[2].isActive) then
         return S.HeartStrike:ID()
 
     end

@@ -443,11 +443,11 @@ function FrostRotation()
         return S.HowlingBlast:ID()
     end
 
-    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
+    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
         return S.DeathStrike:ID()
     end
 
-    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
+    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
         return S.DeathStrike:ID()
     end
 
@@ -457,7 +457,7 @@ function FrostRotation()
         end
     end
 
-    if useS2 and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 15 then
+    if classSpell[2].isActive and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 15 then
         if BoSPool() ~= nil then
             return BoSPool()
         end

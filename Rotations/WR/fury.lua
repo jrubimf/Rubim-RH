@@ -133,7 +133,7 @@ local function CDs()
         return S.Rampage:ID()
     end
     -- actions.cooldowns+=/odyns_fury,if=buff.enrage.up&(cooldown.raging_blow.remains>0|!talent.inner_rage.enabled)
-    if useS1 and S.OdynsFury:IsCastable() and Player:BuffP(S.Enrage) and (S.RagingBlow:CooldownRemainsP() > 0 or not S.InnerRage:IsAvailable()) then
+    if classSpell[1].isActive and S.OdynsFury:IsCastable() and Player:BuffP(S.Enrage) and (S.RagingBlow:CooldownRemainsP() > 0 or not S.InnerRage:IsAvailable()) then
         return S.OdynsFury:ID()
     end
     -- actions.cooldowns+=/berserker_rage,if=talent.outburst.enabled&buff.enrage.down&buff.battle_cry.up
@@ -215,7 +215,7 @@ local function execute()
         return S.Execute:ID()
     end
     -- actions.execute+=/odyns_fury
-    if useS1 and S.OdynsFury:IsCastable() then
+    if classSpell[1].isActive and S.OdynsFury:IsCastable() then
         return S.OdynsFury:ID()
     end
     -- actions.execute+=/bloodthirst
