@@ -256,11 +256,11 @@ function PaladinRetribution()
 
     if classSpell[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose 
-        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory * 100 - 5 and Player:HolyPower() >= 5 then
+        if Player:HealthPercentage() <= RubimRH.db.profile.pl.justicarglory - 5 and Player:HolyPower() >= 5 then
             return S.JusticarsVengeance:ID()
         end
     end

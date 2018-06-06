@@ -112,7 +112,7 @@ function PaladinProtection()
         if Target:IsInRange(10) then
             if not Player:HealingAbsorbed() then
                 -- LotP (HP) / HotP (HP)
-                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.pl.lightoftheprotector * 100 then
+                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.pl.lightoftheprotector then
                     return S.LightoftheProtector:ID()
                 end
                 if S.HandoftheProtector:IsCastable() and Player:HealthPercentage() <= 75 then

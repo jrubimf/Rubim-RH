@@ -33,9 +33,12 @@ local pairs = pairs;
 	FlashofLight				  = Spell(19750),
 	HolyLight					  = Spell(82326),
 	HolyShock					  = Spell(20473),
+	InfusionofLight				  = Spell(53576),
 	BeaconofLight				  = Spell(53563),
+	BeaconofVirtue				  = Spell(200025),
 	LightofDawn					  = Spell(85222),
-	
+
+
     -- Legendaries
     LiadrinsFuryUnleashed         = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289);
@@ -102,46 +105,53 @@ function PaladinHoly()
 	if Player:IsChanneling() or Player:IsCasting() then
         return 248999
     end
-	
-	if MouseOver:IsDeadOrGhost() or not MouseOver:Exists() then
-		return 233159
-	end
-	
+
 	if LeftCtrl and MouseOver:Exists() and ShouldDispell() and S.Cleanse:IsReady() then
 		return S.Cleanse:ID()
-	end	
-	
+	end
+
+	if LeftShift and MouseOver:Exists() and S.BeaconofVirtue:IsReady() then
+		return 77394
+	end
+
 	if MouseOver:Exists() and not MouseOver:Buff(S.BeaconofLight) and UnitGUID("mouseover") == UnitGUID("focus") then
 		return S.BeaconofLight:ID()
-	end	
-	if MouseOver:Exists() and S.HolyShock:IsReady() then
-		if not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 95 then
-			return S.HolyShock:ID()
-		elseif not MouseOver:IsAPlayer() and Player:CanAttack(MouseOver) then
-			return S.HolyShock:ID()
-		end	
-	end	
-	
-	if UnitGUID("player") ~= UnitGUID("mouseover") and MouseOver:Exists() and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 80 and Player:BuffStack(S.LightoftheMartyrStack) >= 4 then
-		return S.LightoftheMartyr:ID()
-	end	
-	
-	if UnitGUID("player") ~= UnitGUID("mouseover") and MouseOver:Exists() and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 70 and Player:BuffStack(S.LightoftheMartyrStack) >= 3 then
-		return S.LightoftheMartyr:ID()
-	end	
-	
-	if UnitGUID("player") ~= UnitGUID("mouseover") and MouseOver:Exists() and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 60 then
-		return S.LightoftheMartyr:ID()
-	end	
-	
-	if not Player:IsMoving() and MouseOver:Exists() and S.FlashofLight:IsCastable() and not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 75 then
-		return S.FlashofLight:ID()
-	end	
+	end
 
-	if not Player:IsMoving() and MouseOver:Exists() and S.HolyLight:IsCastable() and not Player:CanAttack(MouseOver) and MouseOver:HealthPercentage() <= 90 then
-		return S.HolyLight:ID()
-	end	
-	
+	if Target:Exists() then
+		if S.HolyShock:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 95 and (not Player:Buff(S.InfusionofLight) or Player:BuffRemains(S.InfusionofLight) <= 2) then
+			return S.HolyShock:ID()
+		end
+
+		if S.HolyShock:IsReady() and  not Target:IsAPlayer() and Player:CanAttack(Target) then
+			return S.HolyShock:ID()
+		end
+
+		if not Player:CanAttack(Target) and S.HolyShock:IsReady() and Target:HealthPercentage() <= 80 then
+			return S.HolyShock:ID()
+		end
+
+		if UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 80 and Player:BuffStack(S.LightoftheMartyrStack) >= 4 then
+			return S.LightoftheMartyr:ID()
+		end
+
+		if UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 70 and Player:BuffStack(S.LightoftheMartyrStack) >= 3 then
+			return S.LightoftheMartyr:ID()
+		end
+
+		if not Player:IsMoving() and S.FlashofLight:IsCastable() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 75 then
+			return S.FlashofLight:ID()
+		end
+
+		if not Player:IsMoving() and S.HolyLight:IsCastable() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 90 then
+			return S.HolyLight:ID()
+		end
+
+		if Player:IsMoving() and UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsCastable() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 60 and Player:HealthPercentage() >= 80 then
+			return S.LightoftheMartyr:ID()
+		end
+	end
+
 	if Player:AffectingCombat() and TargetIsValid() then
 		if S.Judgement:IsUsable() and S.Judgement:IsCastable() then
 			return S.Judgement:ID()

@@ -262,3 +262,56 @@ function lastMoved()
     end
     return GetTime() - movedTimer
 end
+
+local playerGUID
+local damageAmounts, damageTimestamps = {}, {}
+damageInLast3Seconds = 0
+local lastMeleeHit = 0
+
+local combatLOG = CreateFrame("Frame")
+combatLOG:RegisterEvent("PLAYER_LOGIN")
+combatLOG:SetScript("OnEvent", function(self, event)
+    playerGUID = UnitGUID("player")
+    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    self:SetScript("OnEvent", function(_, _, timestamp, event, _, _, _, _, _, destGUID, _, _, _, ...)
+        if destGUID ~= playerGUID then return end
+        local amount
+        if event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE" or event == "RANGE_DAMAGE" then
+            _, _, _, amount = ...
+        elseif event == "SWING_DAMAGE" then
+            lastMeleeHit = GetTime()
+            amount = ...
+        elseif event == "ENVIRONMENTAL_DAMAGE" then
+            _, amount = ...
+        end
+        if amount then
+            -- Record new damage at the top of the log:
+            tinsert(damageAmounts, 1, amount)
+            tinsert(damageTimestamps, 1, timestamp)
+            -- Clear out old entries from the bottom, and add up the remaining ones:
+            local cutoff = timestamp - 3
+            damageInLast3Seconds = 0
+            for i = #damageTimestamps, 1, -1 do
+                local timestamp = damageTimestamps[i]
+                if timestamp < cutoff then
+                    damageTimestamps[i] = nil
+                    damageAmounts[i] = nil
+                else
+                    damageInLast3Seconds = damageInLast3Seconds + damageAmounts[i]
+                end
+            end
+        end
+    end)
+end)
+
+function lastSwing()
+    return GetTime() - lastMeleeHit
+end
+
+function lastDamage(option)
+    if option == nil then
+        return damageInLast3Seconds
+    else
+        return (damageInLast3Seconds / 100) * UnitHealthMax("player")
+    end
+end

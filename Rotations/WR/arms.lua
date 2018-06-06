@@ -77,8 +77,7 @@ Spell.Warrior.Arms = {
     StoneHeartBuff = Spell(225947),
 
     -- Misc
-    WeightedBlade = Spell(253383),
-    PoolFocus = Spell(9999000010)
+    WeightedBlade = Spell(253383)
 }
 local S = Spell.Warrior.Arms;
 
@@ -373,7 +372,7 @@ function WarriorArms()
     -- In Combat
     if Target:Exists() and Target:IsInRange("Melee") then
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush * 100 then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush then
             return S.VictoryRush:ID()
         end
 

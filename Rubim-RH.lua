@@ -1,4 +1,5 @@
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
+local AceGUI = LibStub("AceGUI-3.0")
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
 local defaults = {
@@ -85,7 +86,6 @@ function RubimRH:OnInitialize()
     if select(3, UnitClass("player")) == 2 then
         varClass = RubimRH.db.profile.pl
     end
-
     useCD = varClass.cooldown or false
 end
 
@@ -213,10 +213,13 @@ function MainRotation()
     --DK
     if select(3, UnitClass("player")) == 6 then
         if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(250)
             SetNextAbility(BloodRotation())
         elseif GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(251)
             SetNextAbility(FrostRotation())
         elseif GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(252)
             SetNextAbility(UnholyRotation())
         end
     end
@@ -224,8 +227,10 @@ function MainRotation()
     --Demon HUNTER
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(577)
             SetNextAbility(HavocRotation())
         elseif GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(581)
             SetNextAbility(VengRotation())
         end
     end
@@ -256,12 +261,15 @@ function MainRotation()
     --Warrior
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(71)
             SetNextAbility(WarriorArms())
         end
         if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(72)
             SetNextAbility(WarriorFury())
         end
         if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(73)
             SetNextAbility(WarriorProt())
         end
     end
@@ -276,6 +284,7 @@ function MainRotation()
     --Shaman
     if select(3, UnitClass("player")) == 7 then
         if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(263)
             SetNextAbility(Enhancement())
         end
     end
@@ -283,14 +292,17 @@ function MainRotation()
     --Paladin
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(65)
             SetNextAbility(PaladinRetribution())
         end
 
         if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(66)
             SetNextAbility(PaladinProtection())
         end
 
         if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(70)
             SetNextAbility(PaladinHoly())
         end
     end

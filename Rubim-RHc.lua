@@ -113,9 +113,9 @@ local function getOptions()
                                 deathstrike = {
                                     order = 1,
                                     type = "range",
-                                    min = 0.05,
-                                    max = 0.95,
-                                    isPercent = true,
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
                                     --fontSize = "medium",
                                     name = "Death Strike (Dark Succur)"
                                 },
@@ -170,9 +170,9 @@ local function getOptions()
                                 victoryrush = {
                                     order = 1,
                                     type = "range",
-                                    min = 0.05,
-                                    max = 0.95,
-                                    isPercent = true,
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
                                     --fontSize = "medium",
                                     name = "Victory Rush"
                                 },
@@ -225,9 +225,9 @@ local function getOptions()
                                 lightoftheprotector = {
                                     order = 1,
                                     type = "range",
-                                    min = 0.05,
-                                    max = 0.95,
-                                    isPercent = true,
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
                                     --fontSize = "medium",
                                     name = "Light of the Protector"
                                 },
@@ -251,9 +251,9 @@ local function getOptions()
                                 justicarglory = {
                                     order = 1,
                                     type = "range",
-                                    min = 0.05,
-                                    max = 0.95,
-                                    isPercent = true,
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
                                     --fontSize = "medium",
                                     name = "Justicar/Word of Glory"
                                 },

@@ -71,9 +71,7 @@ Spell.DeathKnight.Unholy = {
     InstructorsFourthLesson = Spell(208713),
     KiljaedensBurningWish = Spell(144259),
     --DarkArbiter HiddenAura
-    DarkArbiterActive = Spell(212412),
-    -- Misc
-    PoolForArmy = Spell(9999000010)
+    DarkArbiterActive = Spell(212412)
 };
 local S = Spell.DeathKnight.Unholy;
 --Items
@@ -304,7 +302,7 @@ function UnholyRotation()
         return 146250
     end
 
-    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
+    if useS1 and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike then
         return S.DeathStrike:ID()
     end
 
@@ -351,7 +349,7 @@ function UnholyRotation()
 end
 
 --- ====27/11/2017======
---- ======= SIMC =======  
+--- ======= SIMC =======
 -- # Default consumables
 -- potion=prolonged_power
 ---- flask=countless_armies
@@ -445,4 +443,3 @@ end
 --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<=4
 --actions.valkyr+=/scourge_strike,if=debuff.festering_wound.up
 --actions.valkyr+=/clawing_shadows,if=debuff.festering_wound.up
-  

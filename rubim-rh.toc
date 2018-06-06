@@ -35,3 +35,4 @@ Rotations\PL\ret.lua
 Rotations\PL\prot.lua
 Rotations\PL\holy.lua
 Rotations\HR\survival.lua
+HealingEngine.lua

@@ -43,9 +43,7 @@ Spell.DeathKnight.Blood = {
     VampiricBlood = Spell(55233),
     -- Legendaries
     HaemostasisBuff = Spell(235558),
-    SephuzBuff = Spell(208052),
-    -- Misc
-    Pool = Spell(9999000010)
+    SephuzBuff = Spell(208052)
 };
 
 -- Items
@@ -96,7 +94,7 @@ function DRW()
 
     end
 
-    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > 1.5 then
+    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and not Player:PrevGCD(1, S.DeathStrike) then
         return S.DeathStrike:ID()
 
     end
@@ -139,9 +137,9 @@ end
 function runeTAP()
 end
 
+
 local lastSephuz = 0
 function BloodRotation()
-
     lastMoved()
     ----RANGE
     AC.GetEnemies("Melee");
@@ -166,6 +164,7 @@ function BloodRotation()
         return S.RuneTap:ID()
     end
 
+    Sephul:Hide()
     if I.SephuzSecret:IsEquipped() then
 
         if Player:Buff(S.SephuzBuff) then
@@ -184,6 +183,11 @@ function BloodRotation()
             return S.RuneTap:ID()
         end
     end
+
+    if S.DeathStrike:TimeSinceLastCast() <= Player:GCD() then
+        damageInLast3Seconds = 0
+    end
+
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
     if LeftCtrl and LeftShift and S.DeathandDecay:IsCastable() then
@@ -206,14 +210,12 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
-    if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
-        return S.BloodFury:ID()
+    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
+        return S.DeathStrike:ID()
     end
 
-    if not Target:IsDummy() and GetMobsDying() >= 70 then
-        if BloodBurst() ~= nil then
-            return BloodBurst()
-        end
+    if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
+        return S.BloodFury:ID()
     end
 
     if Player:Buff(S.DancingRuneWeaponBuff) then
@@ -300,10 +302,6 @@ function BloodRotation()
 
     if S.HeartStrike:IsCastableP("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) then
         return S.HeartStrike:ID()
-    end
-
-    if S.BloodBoil:IsCastableP() and Cache.EnemiesCount[10] >= 1 then
-        return S.BloodBoil:ID()
     end
 
     if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and classSpell[2].isActive) then

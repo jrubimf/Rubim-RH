@@ -72,11 +72,7 @@ Spell.DeathKnight.Frost = {
     KoltirasNewfoundWill = Spell(208782),
     PerseveranceOfTheEbonMartyre = Spell(216059),
     SealOfNecrofantasia = Spell(212216),
-    ToravonsWhiteoutBindings = Spell(205628),
-
-    -- Misc
-    PoolRange = Spell(9999000010)
-    -- Macros
+    ToravonsWhiteoutBindings = Spell(205628)
 };
 
 -- Items
@@ -431,6 +427,7 @@ end
 
 
 function FrostRotation()
+    print(S.DeathStrike:TimeSinceLastCast())
     --
     if not Player:AffectingCombat() then
         return 146250
@@ -443,7 +440,7 @@ function FrostRotation()
         return S.HowlingBlast:ID()
     end
 
-    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike * 100 then
+    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike then
         return S.DeathStrike:ID()
     end
 

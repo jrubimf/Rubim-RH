@@ -1,4 +1,5 @@
 --- Localize Vars
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 
@@ -194,7 +195,7 @@ function Enhancement ()
         -- Use healthstone if we have it and our health is low.
 
         -- Heal when we have less than the set health threshold!
-        if S.HealingSurge:IsReady() and classSpell[1].isActive and Player:HealthPercentage() <= 50 then
+        if S.HealingSurge:IsReady() and classSpell[1].isActive and Player:HealthPercentage() <= RubimRH.db.profile.sh.healingsurge then
             -- Instant casts using maelstrom only.
             if Player:Maelstrom() >= 20 then
                 return S.HealingSurge:ID()

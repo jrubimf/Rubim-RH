@@ -205,7 +205,7 @@ local function getHealingTarget(option)
 end
 
 function setColorTarget()	
-	if UnitGUID("target") == members[1].GUID or getHealingTarget("guid") == nil then
+	if UnitGUID("target") == members[1].GUID or getHealingTarget() == nil or healingTarget == nil then
 		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
 		return
 	end	

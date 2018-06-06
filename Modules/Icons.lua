@@ -236,14 +236,15 @@ IconRotation:SetScript("OnHide", function(self)
     end
 end)
 
-local total = 0
-local function onUpdate(self, elapsed)
-    total = total + elapsed
-    if total >= 0.2 then
+local updateIcon = CreateFrame("Frame");
+updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
+    updateIcon:onUpdate(sinceLastUpdate);
+end)
+
+function updateIcon:onUpdate(sinceLastUpdate)
+    self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
+    if (self.sinceLastUpdate >= 0.2) then
         IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
-        total = 0
+        self.sinceLastUpdate = 0;
     end
 end
-
-local updateIcon = CreateFrame("frame")
-updateIcon:SetScript("OnUpdate", onUpdate)
