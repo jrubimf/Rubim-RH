@@ -171,7 +171,7 @@ local function CDs()
         return S.PillarOfFrost:ID()
     end
     --actions.cds+=/breath_of_sindragosa,if=buff.pillar_of_frost.up
-    if useS2 and S.BreathofSindragosa:IsCastable() and Player:Buff(S.PillarOfFrost) then
+    if classSpell[2].isActive and S.BreathofSindragosa:IsCastable() and Player:Buff(S.PillarOfFrost) then
         return S.BreathofSindragosa:ID()
     end
     --actions.cooldowns+=/call_action_list,name=cold_heart,if=equipped.cold_heart&((buff.cold_heart.stack>=10&!buff.obliteration.up&debuff.razorice.stack=5)|target.time_to_die<=gcd)
@@ -259,7 +259,7 @@ local function BoSPool()
         return S.Obliterate:ID()
     end
     --actions.bos_pooling+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-    if useS3 and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+    if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
         return S.SindragosasFury:ID()
     end
     --actions.bos_pooling+=/frost_strike,if=runic_power.deficit<=30&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>rune.time_to_4)
@@ -318,7 +318,7 @@ local function BoSTick()
         return S.Obliterate:ID()
     end
     --actions.bos_ticking+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-    if useS3 and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+    if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
         return S.SindragosasFury:ID()
     end
     --actions.bos_ticking+=/horn_of_winter,if=runic_power.deficit>=30&rune.time_to_3>gcd
@@ -376,7 +376,7 @@ local function Standard()
         return S.Obliterate:ID()
     end
     --actions.standard+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-    if useS3 and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+    if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
         return S.SindragosasFury:ID()
     end
     --actions.standard+=/frost_strike,if=runic_power.deficit<10&!buff.hungering_rune_weapon.up
