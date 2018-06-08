@@ -427,8 +427,6 @@ end
 
 
 function FrostRotation()
-    print(S.DeathStrike:TimeSinceLastCast())
-    --
     if not Player:AffectingCombat() then
         return 146250
     end
