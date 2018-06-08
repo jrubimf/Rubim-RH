@@ -249,7 +249,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=(talent.momentum.enabled|talent.fel_mastery.enabled)&(!talent.momentum.enabled|(charges=2|cooldown.vengeful_retreat.remains>4)&buff.momentum.down)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-        if useS1 and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
                 and (not S.Momentum:IsAvailable() or (S.FelRush:ChargesP() == 2 or S.VengefulRetreat:CooldownRemainsP() > 4) and Player:BuffDownP(S.MomentumBuff))) then
             return S.FelRush:ID()
 
@@ -294,7 +294,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
-        if useS2 and S.EyeBeam:IsReady(20, true) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
+        if classSpell[2].isActive and S.EyeBeam:IsReady(20, true) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
                 or ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70) and
                 (not IsMetaExtendedByDemonic() or (AC.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)))) then
             return S.EyeBeam:ID()
@@ -321,7 +321,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=!talent.momentum.enabled&talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-        if useS1 and S.FelRush:IsCastable(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
             return S.FelRush:ID()
 
         end
@@ -336,7 +336,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
-        if useS1 and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
             return S.FelRush:ID()
 
         end
@@ -352,7 +352,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=(talent.momentum.enabled|talent.fel_mastery.enabled)&(!talent.momentum.enabled|(charges=2|cooldown.vengeful_retreat.remains>4)&buff.momentum.down)&(!talent.fel_mastery.enabled|fury.deficit>=25)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-        if useS1 and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
                 and (not S.Momentum:IsAvailable() or (S.FelRush:ChargesP() == 2 or S.VengefulRetreat:CooldownRemainsP() > 4) and Player:BuffDownP(S.MomentumBuff))
                 and (not S.FelMastery:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 25)) then
             return S.FelRush:ID()
@@ -381,7 +381,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=charges=2&!talent.momentum.enabled&!talent.fel_mastery.enabled&!buff.metamorphosis.up&talent.demon_blades.enabled
-        if useS1 and S.FelRush:IsCastable(20, true) and (S.FelRush:ChargesP() == 2 and not S.Momentum:IsAvailable() and not S.FelMastery:IsAvailable()
+        if classSpell[1].isActive and S.FelRush:IsCastable(20, true) and (S.FelRush:ChargesP() == 2 and not S.Momentum:IsAvailable() and not S.FelMastery:IsAvailable()
                 and not Player:BuffP(S.MetamorphosisBuff) and S.DemonBlades:IsAvailable()) then
             return S.FelRush:ID()
 
@@ -415,7 +415,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|buff.havoc_t21_4pc.remains<2&(!talent.blind_fury.enabled|fury.deficit>=70)&((spell_targets.eye_beam_tick>=3&raid_event.adds.in>cooldown)|talent.blind_fury.enabled|set_bonus.tier21_2pc)
-        if useS2 and S.EyeBeam:IsReady(20, true) and (Cache.EnemiesCount[CleaveRangeID] > 1)
+        if classSpell[2].isActive and S.EyeBeam:IsReady(20, true) and (Cache.EnemiesCount[CleaveRangeID] > 1)
                 or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
                 and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
             return S.EyeBeam:ID()
@@ -452,7 +452,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&(talent.demon_blades.enabled|buff.metamorphosis.down)
-        if useS1 and S.FelRush:IsCastable(20, true) and (not S.Momentum:IsAvailable() and (S.DemonBlades:IsAvailable() or Player:BuffDownP(S.MetamorphosisBuff))) then
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and (not S.Momentum:IsAvailable() and (S.DemonBlades:IsAvailable() or Player:BuffDownP(S.MetamorphosisBuff))) then
             return S.FelRush:ID()
 
         end
@@ -467,7 +467,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
-        if useS1 and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
+        if classSpell[1].isActive  and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
             return S.FelRush:ID()
 
         end
