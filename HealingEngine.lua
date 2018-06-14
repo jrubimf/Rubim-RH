@@ -3,7 +3,7 @@
 --- Created by Rubim.
 --- DateTime: 06/06/2018 05:05
 ---
-local healingToggle = false
+local healingToggle = true
 
 if healingToggle then
 
@@ -181,8 +181,8 @@ if healingToggle then
         t = GetTime()
     end
 
-    local healingTarget = nil
-    local healingTargetG = nil
+    local healingTarget = "None"
+    local healingTargetG = "None"
     local function setHealingTarget(tar)
         local target = tar or nil
         if target == nil and members[1].HP < 100 then
@@ -206,6 +206,8 @@ if healingToggle then
     function setColorTarget()
         TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         if healingTarget == nil or (UnitGUID("target") == healingTargetG) then
+            healingTarget = "None"
+            healingTargetG = "None"
             TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
             return
         end

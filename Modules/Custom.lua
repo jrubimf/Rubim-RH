@@ -312,6 +312,6 @@ function lastDamage(option)
     if option == nil then
         return damageInLast3Seconds
     else
-        return (damageInLast3Seconds / 100) * UnitHealthMax("player")
+        return (damageInLast3Seconds * 100) / UnitHealthMax("player")
     end
 end

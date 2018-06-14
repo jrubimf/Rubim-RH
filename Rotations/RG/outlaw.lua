@@ -385,8 +385,7 @@ local function RtB_Reroll()
 --            -- SimC Default
 --            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
 --        else
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and
---                    (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
 --        end
     --end
     return Cache.APLVar.RtB_Reroll;
