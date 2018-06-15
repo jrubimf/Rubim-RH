@@ -277,7 +277,13 @@ function MainRotation()
     --Hunter
     if select(3, UnitClass("player")) == 3 then
         if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(255)
             SetNextAbility(HunterSurvival())
+        end
+
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(254)
+            SetNextAbility(HunterMarksMan())
         end
     end
 

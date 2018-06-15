@@ -35,5 +35,6 @@ Rotations\PL\ret.lua
 Rotations\PL\prot.lua
 Rotations\PL\holy.lua
 Rotations\HR\survival.lua
+Rotations\HR\mm.lua
 HealingEngine.lua
 Modules\PVP.lua

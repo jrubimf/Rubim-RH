@@ -263,6 +263,10 @@ function lastMoved()
     return GetTime() - movedTimer
 end
 
+
+local dmgTaken = {
+}
+
 local playerGUID
 local damageAmounts, damageTimestamps = {}, {}
 damageInLast3Seconds = 0

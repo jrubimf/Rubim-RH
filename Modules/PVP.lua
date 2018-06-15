@@ -107,28 +107,36 @@ end
 
 function ShouldInterrupt()
     local importantCast = false
-    local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo("arena1")
-    local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo("arena2")
-    local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo("arena3")
+    local allyHealer = "None"
+    local enemyHealer = "None"
+    for i=1, 3 do
+        local enemyHealer = "None"
+        if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
+            enemyHealer = "arena" .. i
+            break
+        end
+    end
+
+    for i=1, 3 do
+        local allyHealer = "None"
+        if GetSpecializationRoleByID(GetInspectSpecialization("arena" .. i)) == "HEALER" then
+            enemyHealer = "arena" .. i
+            break
+        end
+    end
+
+    local castName1, _, _, _, castStartTime1, castEndTime1, _, _, notInterruptable1, spellID1 = UnitCastingInfo("arena1")
+    local castName2, _, _, _, castStartTime2, castEndTime2, _, _, notInterruptable2, spellID2 = UnitCastingInfo("arena2")
+    local castName3, _, _, _, castStartTime3, castEndTime3, _, _, notInterruptable3, spellID3 = UnitCastingInfo("arena3")
 
     if castName == nil then
-        local castName, nameSubtext, text, texture, startTimeMS, endTimeMS, isTradeSkill, notInterruptible = UnitChannelInfo("arena1")
-        local castName, nameSubtext, text, texture, startTimeMS, endTimeMS, isTradeSkill, notInterruptible = UnitChannelInfo("arena2")
-        local castName, nameSubtext, text, texture, startTimeMS, endTimeMS, isTradeSkill, notInterruptible = UnitChannelInfo("arena3")
+        local castName1, nameSubtext1, text1, texture, startTimeMS1, endTimeMS1, isTradeSkill, notInterruptible1 = UnitChannelInfo("arena1")
+        local castName2, nameSubtext2, text2, texture, startTimeMS2, endTimeMS2, isTradeSkill, notInterruptible2 = UnitChannelInfo("arena2")
+        local castName3, nameSubtext3, text3, texture, startTimeMS3, endTimeMS3, isTradeSkill, notInterruptible3 = UnitChannelInfo("arena3")
     end
 
     if spellID == nil or notInterruptable == true then
         return false
-    end
-
-    local allyHealer = "None"
-    local enemyHealer = "None"
-    for i=1, 3 do
-        local enemyHealer = GetInspectSpecialization("arena" .. i)
-        if GetSpecializationRoleByID(class) == "HEALER" then
-            break
-        end
-        enemyHealer = "None"
     end
 
 
@@ -155,7 +163,7 @@ function ShouldInterrupt()
     local timeLeft = ((GetTime() * 1000 - castEndTime) * -1) / 1000
     local castTime = castEndTime - castStartTime
     local currentPercent = timeSinceStart / castTime * 100000
-    local interruptPercent = math.random(10, 30)
+    local interruptPercent = math.random(40, 80)
     if currentPercent >= interruptPercent then
     return true
     end

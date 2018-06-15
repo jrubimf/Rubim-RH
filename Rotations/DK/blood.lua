@@ -202,7 +202,11 @@ function BloodRotation()
         end
     end
 
-    if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+    if S.DeathStrike:IsReady() and Player:ActiveMitigationNeeded() then
+        return S.DeathStrike:ID()
+    end
+
+    if S.DeathStrike:IsReady() and Player:RunicPowerDeficit() < 20 then
         return S.DeathStrike:ID()
     end
 
@@ -210,7 +214,7 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
-    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
+    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
 
@@ -229,11 +233,6 @@ function BloodRotation()
     --
     --        end
     --    end
-
-    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 20 then
-        return S.DeathStrike:ID()
-    end
-
     if S.Marrowrend:IsCastableP("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3) then
         return S.Marrowrend:ID()
     end

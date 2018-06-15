@@ -25,6 +25,7 @@ local startUP = function()
     local RuneTap = 194679
     local BreathOfSindragosa = 152279
     local SindragosasFury = 190778
+    local PillarOfFrost = 51271
 
     --DH
     local FelRush = 195072
@@ -55,6 +56,7 @@ local startUP = function()
             table.insert(classSpell, { spellID = DeathStrike, isActive = true })
             table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
             table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
+            table.insert(classSpell, { spellID = PillarOfFrost, isACtive = true})
             --Unholy
         elseif GetSpecialization() == 3 then
             classSpell = {}

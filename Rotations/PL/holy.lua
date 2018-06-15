@@ -89,6 +89,11 @@ function ShouldDispell()
 	return false	
 end
 
+function lowDmg()
+
+
+end
+
 
 function PaladinHoly()
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
@@ -119,6 +124,11 @@ function PaladinHoly()
 	end
 
 	if Target:Exists() then
+
+		if S.BeaconofVirtue:IsReady() and AoEHealing(90) >= 3 then
+			return 144473
+		end
+
 		if S.HolyShock:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 95 and (not Player:Buff(S.InfusionofLight) or Player:BuffRemains(S.InfusionofLight) <= 2) then
 			return S.HolyShock:ID()
 		end
