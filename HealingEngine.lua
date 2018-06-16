@@ -28,25 +28,25 @@ if healingToggle then
         end
     end
 
-    local height
-    local currentHeight = tonumber(string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "%d+x(%d+)"))
-    if roundscale(GetScreenHeight()) == currentHeight then
-        height = GetScreenHeight()
+    if GetCurrentResolution() == 0 or (GetCVar("gxMaximize") == "0" and GetCurrentResolution() ~= #{ GetScreenResolutions() }) then
+        SetCVar("gxWindowedResolution", select(#{ GetScreenResolutions() }, GetScreenResolutions()))
+        return RestartGx()
+    end
+
+    local myhight1 = tonumber(string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "%d+x(%d+)"))
+    if roundscale(GetScreenHeight()) == myhight1 then
+        myhight = GetScreenHeight()
     elseif GetCVar("useuiscale") == "1" and GetCVar("gxMaximize") == "1" then
-        height = currentHeight
+        myhight = myhight1
     elseif GetCVar("useuiscale") == "0" and GetCVar("gxMaximize") == "0" then
-        height = roundscale(GetScreenHeight())
+        myhight = roundscale(GetScreenHeight())
     elseif GetCVar("useuiscale") == "1" and GetCVar("gxMaximize") == "0" then
-        SetCVar("useuiScale", 0)
+        SetCVar("useuiScale", 0) -- myhight = myhight1 --if you use Windowed Fix
         return
     end
-    local myscale1 = 0.42666670680046 * (1080 / height)
-    local myscale2 = 0.17777778208256 * (1080 / height)
 
-    function roundscale(num, idp)
-        mult = 10 ^ (idp or 0)
-        return math.floor(num * mult + 0.5) / mult
-    end
+    myscale1 = 0.42666670680046 * (1080 / myhight)
+    myscale2 = 0.17777778208256 * (1080 / myhight)
 
     function SetFrameScale(frame, input, x, y, w, h)
         local xOffset0 = 1
@@ -71,7 +71,7 @@ if healingToggle then
         end
     end
 
-    TargetColor = CreateFrame("Frame", nil, UIParent)
+    TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
     TargetColor:SetBackdrop(nil)
     TargetColor:SetFrameStrata("HIGH")
     TargetColor:SetSize(1, 1)
@@ -81,7 +81,6 @@ if healingToggle then
     TargetColor.texture:SetAllPoints(true)
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
     TargetColor:Show()
-
     SetFrameScale(TargetColor, 0.71111112833023, 442, 0, 1, 1)
 
     function CalculateHP(t)
