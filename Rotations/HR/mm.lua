@@ -161,53 +161,6 @@ local function TargetDebuffP (Spell, AnyCaster, Offset)
     end
 end
 
-local function PlayerFocusLossOnCastEnd ()
-    if Player:IsCasting() then
-        return Spell(Player:CastID()):Cost();
-    elseif Player:PrevGCDP(1, S.AimedShot, true) then
-        return S.AimedShot:Cost();
-    elseif Player:PrevGCDP(1, S.Windburst, true) then
-        return S.Windburst:Cost();
-    else
-        return 0;
-    end
-end
-
-local function PlayerFocusRemainingCastRegen (Offset)
-    if Player:FocusRegen() == 0 then
-        return -1;
-    end
-    -- If we are casting, we check what we will regen until the end of the cast
-    if Player:IsCasting() then
-        return Player:FocusRegen() * (Player:CastRemains() + (Offset or 0));
-        -- Else we'll use the remaining GCD as "CastTime"
-    else
-        return Player:FocusRegen() * (Player:GCDRemains() + (Offset or 0));
-    end
-end
-
-local PFPPrev = math.floor((Player:Focus() + math.min(Player:FocusDeficit(), PlayerFocusRemainingCastRegen(Offset)) - PlayerFocusLossOnCastEnd()) + 0.5);
-local function PlayerFocusPredicted (Offset)
-    if Player:FocusRegen() == 0 then
-        return -1;
-    end
-    --v2
-    local FocusP = math.floor((Player:Focus() + math.min(Player:FocusDeficit(), PlayerFocusRemainingCastRegen(Offset)) - PlayerFocusLossOnCastEnd()) + 0.5);
-    local FocusDelta = FocusP - PFPPrev
-    --if (FocusDelta < -3 or FocusDelta > 0 and FocusDelta < 8 or S.ArcaneShot:TimeSinceLastCast() < 0.1 or S.MarkedShot:TimeSinceLastCast() < 0.1 or S.Sidewinders:TimeSinceLastCast() < 0.1 or S.MultiShot:TimeSinceLastCast() < 0.1 or Player:IsCasting()) then
-    if (FocusDelta < -3 or FocusDelta > 0 and (FocusDelta < 8 or Player.MMHunter.GCDDisable > 0)) then
-        PFPPrev = FocusP;
-        return FocusP;
-    else
-        return PFPPrev;
-    end
-    --v1
-    -- if math.abs(FocusP - 50) <= (8 - (Player:GCD() * Player:FocusRegen())) then
-    --   return (Player:PrevGCD(1, S.ArcaneShot) and 60 or 49);
-    -- else
-    --   return FocusP;
-end
-
 local function Opener()
     if S.BlackArrow:IsReady() then
         return S.BlackArrow:ID()
