@@ -283,7 +283,7 @@ function MainRotation()
 
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(254)
-            SetNextAbility(HunterMarksMan())
+            SetNextAbility(HunterMM())
         end
     end
 

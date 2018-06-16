@@ -96,7 +96,7 @@ local pvpHEX = {
 
 local enemyHealer = "None"
 function findHealer()
-    for i=1, 3 do
+    for i = 1, 3 do
         local enemyHealer = "None"
         if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
             print("arena" .. i)
@@ -109,7 +109,7 @@ function ShouldInterrupt()
     local importantCast = false
     local allyHealer = "None"
     local enemyHealer = "None"
-    for i=1, 3 do
+    for i = 1, 3 do
         local enemyHealer = "None"
         if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
             enemyHealer = "arena" .. i
@@ -117,7 +117,7 @@ function ShouldInterrupt()
         end
     end
 
-    for i=1, 3 do
+    for i = 1, 3 do
         local allyHealer = "None"
         if GetSpecializationRoleByID(GetInspectSpecialization("arena" .. i)) == "HEALER" then
             enemyHealer = "arena" .. i
@@ -139,24 +139,23 @@ function ShouldInterrupt()
         return false
     end
 
-
-    for i,v in ipairs(pvpHEX) do
-    if spellID == v then
-    importantCast = true
-    break
-    end
+    for i, v in ipairs(pvpHEX) do
+        if spellID == v then
+            importantCast = true
+            break
+        end
     end
 
     if spellID == nil or castInterruptable == false then
-    return false
+        return false
     end
 
     if int_smart == false then
-    importantCast = true
+        importantCast = true
     end
 
     if importantCast == false then
-    return false
+        return false
     end
 
     local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
@@ -165,7 +164,21 @@ function ShouldInterrupt()
     local currentPercent = timeSinceStart / castTime * 100000
     local interruptPercent = math.random(40, 80)
     if currentPercent >= interruptPercent then
-    return true
+        return true
     end
     return false
+end
+
+local arenaSTART = CreateFrame("Frame")
+arenaSTART:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
+
+arenaSTART:SetScript("OnEvent", function(self, event, ...)
+    local numOpps = GetNumArenaOpponentSpecs()
+    for i = 1, numOpps do
+        local specID = GetArenaOpponentSpec(i)
+        local _, spec, _, _, _, role, _ = GetSpecializationInfoByID(specID)
+        if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
+            arenaHealer = "arena" .. i
+        end
     end
+end)

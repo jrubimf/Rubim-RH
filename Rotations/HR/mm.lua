@@ -208,80 +208,114 @@ local function PlayerFocusPredicted (Offset)
     --   return FocusP;
 end
 
-local function PlayerFocusDeficitPredicted (Offset)
-    return Player:FocusMax() - PlayerFocusPredicted(Offset);
-end
-
-local function IsCastableM (Spell)
-    if not Player:IsMoving() or not Settings.Marksmanship.EnableMovementRotation then
-        return true;
-    end
-    --Aimed Shot can sometimes be cast while moving
-    if Spell == S.AimedShot then
-        return Player:Buff(S.LockandLoad) or Player:Buff(S.MKIIGyroscopicStabilizer);
-    elseif Spell == S.Windburst then
-        return false;
-    end
-    return true
-end
-
-local function IsCastableP (Spell)
-    if Spell == S.AimedShot then
-        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost();
-    elseif Spell == S.MarkedShot then
-        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost() and TargetDebuffP(S.HuntersMark);
-    elseif Spell == S.Windburst then
-        return Spell:IsCastable() and not Player:PrevGCDP(1, S.Windburst, true) and not Player:IsCasting(S.Windburst);
-    else
-        return Spell:IsCastable();
-    end
-end
-
---- APL Main
-
 local function Opener()
-    --Use Black Arrow Icon Black Arrow on your kill target if you are talented into it.
-    if S.BlackArrow:IsAvailable() and S.BlackArrow:IsCastable() then
+    if S.BlackArrow:IsReady() then
         return S.BlackArrow:ID()
     end
 
-    --Use Sidewinders Icon Sidewinders to apply Vulnerable Icon Vulnerable if you are talented into it.
     if S.Sidewinders:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
-    --Use Arcane Shot Icon Arcane Shot/Multi-Shot Icon Multi-Shot when Marking Targets Icon Marking Targets procs.
+    if S.MarkedShot:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
 
-
-    --Use Marked Shot Icon Marked Shot to apply Vulnerable Icon Vulnerable.
-    --Cast Aimed Shot Icon Aimed Shot.
-    if S.AimedShot:IsCastable() then
+    if S.AimedShot:IsReady() then
         return S.AimedShot:ID()
     end
-
-    --Use Arcane Shot Icon Arcane Shot as a filler and to generate Focus.
-    if S.ArcaneShot:IsCastable() then
-        return S.ArcaneShot:ID()
-    end
-
-    --Use Marking Targets Icon Marking Targets procs to be able to use Marked Shot Icon Marked Shot.
-
-    --Use Aimed Shot Icon Aimed Shots when Lock and Load Icon Lock and Load procs.
-    --Use A Murder of Crows Icon A Murder of Crows if your teammate needs time to burst.
 end
 
 local function Burst()
+    if S.BlackArrow:IsReady() then
+        return S.BlackArrow:ID()
+    end
 
+    if S.Windburst:IsReady() then
+        return S.Windburst:ID()
+    end
+
+    if S.AMurderofCrows:IsReady() then
+        return S.AMurderofCrows:ID()
+    end
+
+    if S.Sidewinders:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
+
+    if S.MarkedShot:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
+
+    if S.TrueShot:IsReady() then
+        return S.TrueShot:ID()
+    end
+
+    if S.AimedShot:IsReady() then
+        return S.AimedShot:ID()
+    end
+
+    if S.Sidewinders:Ready() then
+        return S.Sidewinders:ID()
+    end
+
+    if S.MarkedShot:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
+
+    if S.AimedShot:IsReady() then
+        return S.AimedShot:ID()
+    end
 end
 
 local function Sustained()
+    if S.BlackArrow:IsAvailable() and S.BlackArrow:IsReady() then
+        return S.BlackArrow:ID()
+    end
 
+    if S.Sidewinders:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
 
+    if S.MarkedShot:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+        return S.Sidewinders:ID()
+    end
+
+    if S.AimedShot:IsReady() then
+        return S.AimedShot:ID()
+    end
+
+    if S.ArcaneShot:IsReady() then
+        return S.ArcaneShot:ID()
+    end
+
+    if S.MarkedShot:IsReady() then
+        return S.MarkedShot:ID()
+    end
+
+    if S.AimedShot:IsReady() and Player:Buff(S.LockandLoad) then
+        return S.AimedShot:ID()
+    end
+
+    if S.Windburst:IsReady() then
+        return S.Windburst:ID()
+    end
+
+    if S.AMurderofCrows:IsReady() then
+        return S.AMurderofCrows:ID()
+    end
 end
 
-function HunterMM ()
-
+function HunterMM()
     if TargetIsValid() then
+
+        if CDsON() and Burst() ~= nil then
+            return Burst()
+        end
+
+        if Sustained() ~= nil then
+            return Sustained()
+        end
 
 
     end
