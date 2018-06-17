@@ -260,6 +260,12 @@ local function Sustained()
 end
 
 function HunterMM()
+
+    if not Player:AffectingCombat() then
+        return "146250"
+    end
+
+
     if TargetIsValid() then
 
         if CDsON() and Burst() ~= nil then
@@ -273,4 +279,5 @@ function HunterMM()
 
     end
 
+    return 233159
 end
