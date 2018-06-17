@@ -166,11 +166,11 @@ local function Opener()
         return S.BlackArrow:ID()
     end
 
-    if S.Sidewinders:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.Sidewinders:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
@@ -192,11 +192,11 @@ local function Burst()
         return S.AMurderofCrows:ID()
     end
 
-    if S.Sidewinders:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.Sidewinders:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsCastable() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
@@ -212,7 +212,7 @@ local function Burst()
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
@@ -226,11 +226,11 @@ local function Sustained()
         return S.BlackArrow:ID()
     end
 
-    if S.Sidewinders:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.Sidewinders:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsReady() and S.DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
@@ -260,23 +260,17 @@ local function Sustained()
 end
 
 function HunterMM()
-
     if not Player:AffectingCombat() then
         return "146250"
     end
 
-
     if TargetIsValid() then
-
         if CDsON() and Burst() ~= nil then
             return Burst()
         end
-
         if Sustained() ~= nil then
             return Sustained()
         end
-
-
     end
 
     return 233159
