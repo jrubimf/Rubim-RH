@@ -3,13 +3,15 @@
 --- Created by Rubim.
 --- DateTime: 01/06/2018 02:32
 ---
+local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+
 
 --INTERRUPTS---
 local int_smart = true
 
 local runonce = 0
 classSpell = {}
-local startUP = function()
+local updateConfigFunc = function()
     if runonce == 0 then
         print("===================")
         print("|cFF69CCF0R Rotation Assist:")
@@ -48,19 +50,22 @@ local startUP = function()
         --Blood
         if GetSpecialization() == 1 then
             classSpell = {}
-            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
-            table.insert(classSpell, { spellID = RuneTap, isActive = true })
+            classSpell = RubimRH.db.profile.dk.blood
+            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
+            --table.insert(classSpell, { spellID = RuneTap, isActive = true })
             --Frost
         elseif GetSpecialization() == 2 then
             classSpell = {}
-            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
-            table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
-            table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
-            table.insert(classSpell, { spellID = PillarOfFrost, isACtive = true})
+            classSpell = RubimRH.db.profile.dk.frost
+            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
+            --table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
+            --table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
+            --table.insert(classSpell, { spellID = PillarOfFrost, isaCtive = true})
             --Unholy
         elseif GetSpecialization() == 3 then
             classSpell = {}
-            table.insert(classSpell, { spellID = DeathStrike, isActive = true })
+            classSpell = RubimRH.db.profile.dk.unholy
+            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
         end
     end
 
@@ -68,8 +73,7 @@ local startUP = function()
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
             classSpell = {}
-            table.insert(classSpell, { spellID = FelRush, isActive = true })
-            table.insert(classSpell, { spellID = EyeBeam, isActive = true })
+            classSpell = RubimRH.db.profile.dh.havoc
         end
     end
 
@@ -77,11 +81,10 @@ local startUP = function()
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
             classSpell = {}
-            table.insert(classSpell, { spellID = Warbreaker, isActive = true })
-            table.insert(classSpell, { spellID = Ravager, isActive = true })
+            classSpell = RubimRH.db.profile.wr.arms
         elseif GetSpecialization() == 2 then
             classSpell = {}
-            table.insert(classSpell, { spellID = OdynsFury, isActive = true })
+            classSpell = RubimRH.db.profile.wr.fury
         end
     end
 
@@ -89,21 +92,21 @@ local startUP = function()
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
             classSpell = {}
-            table.insert(classSpell, { spellID = JusticarVengeance, isActive = true })
+            classSpell = RubimRH.db.profile.dh.ret
         end
     end
     --SHAMAN
     if select(3, UnitClass("player")) == 7 then
         classSpell = {}
-        table.insert(classSpell, { spellID = HealingSurge, isActive = true })
+        classSpell = RubimRH.db.profile.sh.enhc
     end
 end
 
-local rubStart = CreateFrame("frame")
-rubStart:SetScript("OnEvent", startUP)
-rubStart:RegisterEvent("PLAYER_LOGIN")
-rubStart:RegisterEvent("PLAYER_ENTERING_WORLD")
-rubStart:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+local updateConfig = CreateFrame("frame")
+updateConfig:SetScript("OnEvent", updateConfigFunc)
+updateConfig:RegisterEvent("PLAYER_LOGIN")
+updateConfig:RegisterEvent("PLAYER_ENTERING_WORLD")
+updateConfig:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 
 -- Create the dropdown, and configure its appearance
 local dropDown = CreateFrame("FRAME", "DropDownMenu", UIParent, "UIDropDownMenuTemplate")

@@ -2,23 +2,77 @@ local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "Ace
 local AceGUI = LibStub("AceGUI-3.0")
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
+
+--DK
+local DeathStrike = 49998
+local RuneTap = 194679
+local BreathOfSindragosa = 152279
+local SindragosasFury = 190778
+local PillarOfFrost = 51271
+
+--DH
+local FelRush = 195072
+local EyeBeam = 198013
+
+--Warrior
+local Warbreaker = 209577
+local Ravager = 152277
+local OdynsFury = 205545
+
+--Paladin
+local JusticarVengeance = 215661
+local WordofGlory = 210191
+
+--Shaman
+local HealingSurge = 188070
+
 local defaults = {
     profile = {
         mainOption = {
             cooldownbind = nil,
             interruptsbind = nil,
         },
-        dh = { cooldown = false },
+        dh = {
+            havoc = {
+                { spellID = FelRush, isActive = true },
+                { spellID = EyeBeam, isActive = true }
+            },
+            cooldown = false
+        },
         dk = {
+            blood = {
+                { spellID = DeathStrike, isActive = true },
+                { spellID = RuneTap, isActive = true }
+            },
+            frost = {
+                { spellID = DeathStrike, isActive = true },
+                { spellID = BreathOfSindragosa, isActive = true },
+                { spellID = SindragosasFury, isActive = true },
+                { spellID = PillarOfFrost, isActive = true }
+            },
+            unholy = {
+                { spellID = DeathStrike, isActive = true },
+                { spellID = RuneTap, isActive = true }
+            },
             cooldown = false,
             deathstrike = 0.85
         },
         pl = {
+            ret = {
+                { spellID = JusticarVengeance, isActive = true }
+            },
             cooldown = false,
             lightoftheprotector = 0.90,
             justicarglory = 0.50,
         },
         wr = {
+            arms = {
+                { spellID = Warbreaker, isActive = true },
+                { spellID = Ravager, isActive = true }
+            },
+            fury = {
+                { spellID = OdynsFury, isActive = true }
+            },
             cooldown = false,
             victoryrush = 0.80
         },
@@ -32,6 +86,9 @@ local defaults = {
             cooldown = false,
         },
         sh = {
+            enhc = {
+                { spellID = HealingSurge, isActive = true }
+            },
             cooldown = false,
         }
     }
@@ -170,10 +227,6 @@ function AoEON()
     else
         return false
     end
-end
-
-function TargetIsValid()
-    return Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost();
 end
 
 --- ============================              ============================

@@ -11,6 +11,11 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 
 --- ============================   CUSTOM   ============================
+function TargetIsValid()
+    return Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost();
+end
+
+
 local function round2(num, idp)
     mult = 10 ^ (idp or 0)
     return math.floor(num * mult + 0.5) / mult
