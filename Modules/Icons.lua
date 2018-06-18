@@ -92,7 +92,7 @@ local updateConfigFunc = function()
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.dh.ret
+            classSpell = RubimRH.db.profile.pl.ret
         end
     end
     --SHAMAN

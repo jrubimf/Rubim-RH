@@ -218,6 +218,10 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
+    if Player:HealthPercentage() < 90 and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > Player:GCD() * 2 then
+        return S.DeathStrike:ID()
+    end
+
     if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
         return S.BloodFury:ID()
     end
