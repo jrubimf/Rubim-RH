@@ -9,6 +9,7 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = AC.Spell;
 local Item = AC.Item;
+local MouseOver = Unit.MouseOver;
 -- Lua
 local pairs = pairs;
 local tableconcat = table.concat;
