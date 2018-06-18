@@ -161,21 +161,15 @@ local function TargetDebuffP (Spell, AnyCaster, Offset)
     end
 end
 
-local function Opener()
-    if S.BlackArrow:IsReady() then
-        return S.BlackArrow:ID()
-    end
-
-    if S.Sidewinders:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
-        return S.Sidewinders:ID()
-    end
-
-    if S.MarkedShot:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
-        return S.Sidewinders:ID()
-    end
-
-    if S.AimedShot:IsReady() then
-        return S.AimedShot:ID()
+local function IsCastableP (Spell)
+    if Spell == S.AimedShot then
+        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost();
+    elseif Spell == S.MarkedShot then
+        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost() and TargetDebuffP(S.HuntersMark);
+    elseif Spell == S.Windburst then
+        return Spell:IsCastable() and not Player:PrevGCDP(1, S.Windburst, true) and not Player:IsCasting(S.Windburst);
+    else
+        return Spell:IsCastable();
     end
 end
 
@@ -192,11 +186,11 @@ local function Burst()
         return S.AMurderofCrows:ID()
     end
 
-    if S.Sidewinders:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
+    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsCastable() and Player:DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
         return S.Sidewinders:ID()
     end
 
@@ -204,7 +198,7 @@ local function Burst()
         return S.TrueShot:ID()
     end
 
-    if S.AimedShot:IsReady() then
+    if S.AimedShot:IsReady() and TargetDebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() then
         return S.AimedShot:ID()
     end
 
@@ -212,7 +206,7 @@ local function Burst()
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
@@ -226,20 +220,16 @@ local function Sustained()
         return S.BlackArrow:ID()
     end
 
-    if S.Sidewinders:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
+    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < 2 then
         return S.Sidewinders:ID()
     end
 
-    if S.MarkedShot:IsReady() and Player:DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 then
         return S.Sidewinders:ID()
     end
 
     if S.AimedShot:IsReady() then
         return S.AimedShot:ID()
-    end
-
-    if S.ArcaneShot:IsReady() then
-        return S.ArcaneShot:ID()
     end
 
     if S.MarkedShot:IsReady() then
@@ -265,9 +255,9 @@ function HunterMM()
     end
 
     if TargetIsValid() then
-        if CDsON() and Burst() ~= nil then
-            return Burst()
-        end
+        --if CDsON() and Burst() ~= nil then
+        --            return Burst()
+        --        end
         if Sustained() ~= nil then
             return Sustained()
         end
