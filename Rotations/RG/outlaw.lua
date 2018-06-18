@@ -78,7 +78,7 @@ Spell.Rogue.Outlaw = {
     -- Legendaries
     GreenskinsWaterloggedWristcuffs = Spell(209423)
 }
-
+local S = Spell.Rogue.Outlaw;
 --
 -- User: Rubim
 -- Date: 28/05/2018
@@ -87,7 +87,7 @@ Spell.Rogue.Outlaw = {
 
 -- Stealth
 local function Stealth(Stealth, Setting)
-    if Stealth:IsCastable() and not Player:IsStealthed() then
+    if Stealth:IsReady() and not Player:IsStealthed() then
        return false --stealth
     end
     return false;
@@ -95,7 +95,7 @@ end
 
 -- Crimson Vial
 local function CrimsonVial(CrimsonVial)
-    if CrimsonVial:IsCastable() and Player:HealthPercentage() <= 80 then
+    if CrimsonVial:IsReady() and Player:HealthPercentage() <= 80 then
         return false --defensives
     end
     return false;
@@ -103,7 +103,7 @@ end
 
 -- Feint
 local function Feint(Feint)
-    if Feint:IsCastable() and not Player:Buff(Feint) and Player:HealthPercentage() <= 80 then
+    if Feint:IsReady() and not Player:Buff(Feint) and Player:HealthPercentage() <= 80 then
         return false --feint
     end
 end
@@ -111,7 +111,7 @@ end
 -- Marked for Death Sniping
 local BestUnit, BestUnitTTD;
 local function MfDSniping(MarkedforDeath)
-    if MarkedforDeath:IsCastable() then
+    if MarkedforDeath:IsReady() then
         -- Get Units up to 30y for MfD.
         AC.GetEnemies(30);
 
@@ -152,113 +152,9 @@ local function CPSpend()
     return mathmin(Player:ComboPoints(), CPMaxSpend());
 end
 
--- poisoned
---[[ Original SimC Code
-  return dots.deadly_poison -> is_ticking() ||
-          debuffs.wound_poison -> check();
-]]
-local function Poisoned(Unit)
-    return (Unit:Debuff(Spell.Rogue.Assassination.DeadlyPoisonDebuff) or Unit:Debuff(Spell.Rogue.Assassination.WoundPoisonDebuff)) and true or false;
-end
 
--- poison_remains
---[[ Original SimC Code
-  if ( dots.deadly_poison -> is_ticking() ) {
-    return dots.deadly_poison -> remains();
-  } else if ( debuffs.wound_poison -> check() ) {
-    return debuffs.wound_poison -> remains();
-  } else {
-    return timespan_t::from_seconds( 0.0 );
-  }
-]]
-local function PoisonRemains(Unit)
-    return (Unit:Debuff(Spell.Rogue.Assassination.DeadlyPoisonDebuff) and Unit:DebuffRemainsP(Spell.Rogue.Assassination.DeadlyPoisonDebuff))
-            or (Unit:Debuff(Spell.Rogue.Assassination.WoundPoisonDebuff) and Unit:DebuffRemainsP(Spell.Rogue.Assassination.WoundPoisonDebuff))
-            or 0;
-end
-
--- bleeds
---[[ Original SimC Code
-  rogue_td_t* tdata = get_target_data( target );
-  return tdata -> dots.garrote -> is_ticking() +
-         tdata -> dots.internal_bleeding -> is_ticking() +
-         tdata -> dots.rupture -> is_ticking();
-]]
-local function Bleeds()
-    return (Target:Debuff(Spell.Rogue.Assassination.Garrote) and 1 or 0) + (Target:Debuff(Spell.Rogue.Assassination.Rupture) and 1 or 0) + (Target:Debuff(Spell.Rogue.Assassination.InternalBleeding) and 1 or 0);
-end
-
--- poisoned_bleeds
---[[ Original SimC Code
-  int poisoned_bleeds = 0;
-  for ( size_t i = 0, actors = sim -> target_non_sleeping_list.size(); i < actors; i++ )
-  {
-    player_t* t = sim -> target_non_sleeping_list[i];
-    rogue_td_t* tdata = get_target_data( t );
-    if ( tdata -> lethal_poisoned() ) {
-      poisoned_bleeds += tdata -> dots.garrote -> is_ticking() +
-                          tdata -> dots.internal_bleeding -> is_ticking() +
-                          tdata -> dots.rupture -> is_ticking();
-    }
-  }
-  return poisoned_bleeds;
-]]
-local PoisonedBleedsCount = 0;
-function Rogue.PoisonedBleeds()
-    PoisonedBleedsCount = 0;
-    -- Get Units up to 50y (not really worth the potential performance loss to go higher).
-    AC.GetEnemies(50);
-    for _, Unit in pairs(Cache.Enemies[50]) do
-        if Commons.Poisoned(Unit) then
-            -- TODO: For loop for this ? Not sure it's worth considering we would have to make 2 times spell object (Assa is init after Commons)
-            if Unit:Debuff(Spell.Rogue.Assassination.Garrote) then
-                PoisonedBleedsCount = PoisonedBleedsCount + 1;
-            end
-            if Unit:Debuff(Spell.Rogue.Assassination.InternalBleeding) then
-                PoisonedBleedsCount = PoisonedBleedsCount + 1;
-            end
-            if Unit:Debuff(Spell.Rogue.Assassination.Rupture) then
-                PoisonedBleedsCount = PoisonedBleedsCount + 1;
-            end
-        end
-    end
-    return PoisonedBleedsCount;
-end
-
--- Assassination Tier 19 4PC Envenom Multiplier
---[[ Original SimC Code
-  if ( p() -> sets.has_set_bonus( ROGUE_ASSASSINATION, T19, B4 ) )
-  {
-    size_t bleeds = 0;
-    rogue_td_t* tdata = td( target );
-    bleeds += tdata -> dots.garrote -> is_ticking();
-    bleeds += tdata -> dots.internal_bleeding -> is_ticking();
-    bleeds += tdata -> dots.rupture -> is_ticking();
-    // As of 04/08/2017, Mutilated Flesh works on T19 4PC.
-    bleeds += tdata -> dots.mutilated_flesh -> is_ticking();
-    m *= 1.0 + p() -> sets.set( ROGUE_ASSASSINATION, T19, B4 ) -> effectN( 1 ).percent() * bleeds;
-  }
-]]
-local T19_4C_BaseMultiplier = 0.1;
-function Rogue.Assa_T19_4PC_EnvMultiplier()
-    return 1 + T19_4C_BaseMultiplier * (Commons.Bleeds() + (Target:Debuff(Spell.Rogue.Assassination.MutilatedFlesh) and 1 or 0));
-end
-
--- mantle_duration
---[[ Original SimC Code
-  if ( buffs.mantle_of_the_master_assassin_aura -> check() )
-  {
-    timespan_t nominal_master_assassin_duration = timespan_t::from_seconds( spell.master_assassins_initiative -> effectN( 1 ).base_value() );
-    timespan_t gcd_remains = timespan_t::from_seconds( std::max( ( gcd_ready - sim -> current_time() ).total_seconds(), 0.0 ) );
-    return gcd_remains + nominal_master_assassin_duration;
-  }
-  else if ( buffs.mantle_of_the_master_assassin -> check() )
-    return buffs.mantle_of_the_master_assassin -> remains();
-  else
-    return timespan_t::from_seconds( 0.0 );
-]]
 local MasterAssassinsInitiative, NominalDuration = Spell(235027), 6;
-function Rogue.MantleDuration()
+local function MantleDuration()
     if Player:BuffRemains(MasterAssassinsInitiative) < 0 then
         return Player:GCDRemains() + NominalDuration;
     else
@@ -266,7 +162,6 @@ function Rogue.MantleDuration()
     end
 end
 
-local S = Spell.Rogue.Outlaw;
 -- Choose a persistent PistolShot icon to avoid Blunderbuss icon
 S.PistolShot.TextureSpellID = 242277;
 -- Items
@@ -454,16 +349,16 @@ local function BladeFlurry()
     if Player:Buff(S.BladeFlurry) then
         -- actions.bf=cancel_buff,name=blade_flurry,if=spell_targets.blade_flurry<2&buff.blade_flurry.up
         if Cache.EnemiesCount[RTIdentifier] < 2 and AC.GetTime() > BFTimer then
-            return "not yet"
+            return S.BladeFlurry:ID()
         end
         -- actions.bf+=/cancel_buff,name=blade_flurry,if=equipped.shivarran_symmetry&cooldown.blade_flurry.up&buff.blade_flurry.up&spell_targets.blade_flurry>=2
         if I.ShivarranSymmetry:IsEquipped() and S.BladeFlurry:CooldownUp() and Cache.EnemiesCount[RTIdentifier] >= 2 then
-            return "not yet"
+            return S.BladeFlurry:ID()
         end
     else
         -- actions.bf+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
-        if S.BladeFlurry:IsCastable() and Cache.EnemiesCount[RTIdentifier] >= 2 then
-            return "not yet"
+        if S.BladeFlurry:IsReady() and Cache.EnemiesCount[RTIdentifier] >= 2 then
+            return S.BladeFlurry:ID()
         end
     end
 end
@@ -475,31 +370,31 @@ local function CDs()
         -- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
         -- TODO: Add Items
         -- actions.cds+=/cannonball_barrage,if=spell_targets.cannonball_barrage>=1
-        if AoEON() and S.CannonballBarrage:IsCastable() and Cache.EnemiesCount[8] >= 1 then
+        if AoEON() and S.CannonballBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.CannonballBarrage:ID()
         end
     end
     if Target:IsInRange(S.SaberSlash) then
         if CDsON() then
             -- actions.cds+=/blood_fury
-            if S.BloodFury:IsCastable() then
+            if S.BloodFury:IsReady() then
                 return S.BloodFury:ID()
             end
             -- actions.cds+=/berserking
-            if S.Berserking:IsCastable() then
+            if S.Berserking:IsReady() then
                 return S.Berserking:ID()
             end
             -- actions.cds+=/arcane_torrent,if=energy.deficit>40
-            if S.ArcaneTorrent:IsCastable() and Player:EnergyDeficitPredicted() > 40 then
+            if S.ArcaneTorrent:IsReady() and Player:EnergyDeficitPredicted() > 40 then
                 return S.ArcaneTorrent:ID()
             end
             -- actions.cds+=/adrenaline_rush,if=!buff.adrenaline_rush.up&energy.deficit>0
-            if S.AdrenalineRush:IsCastable() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitPredicted() > 0 then
+            if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitPredicted() > 0 then
                 return S.AdrenalineRush:ID()
             end
         end
         -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit|((raid_event.adds.in>40|buff.true_bearing.remains>15-buff.adrenaline_rush.up*5)&!stealthed.rogue&combo_points.deficit>=cp_max_spend-1)
-        if S.MarkedforDeath:IsCastable() then
+        if S.MarkedforDeath:IsReady() then
             -- Note: Increased the SimC condition by 50% since we are slower.
             if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit() * 1.5) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0)
                     or (((Cache.EnemiesCount[30] == 1 and Player:BuffRemainsP(S.TrueBearing) > 15 - (Player:BuffP(S.AdrenalineRush) and 5 or 0))
@@ -512,16 +407,16 @@ local function CDs()
         if CDsON() then
             if I.ThraxisTricksyTreads:IsEquipped() and not SS_Useable() then
                 -- actions.cds+=/sprint,if=!talent.death_from_above.enabled&equipped.thraxis_tricksy_treads&!variable.ss_useable
-                if S.Sprint:IsCastable() and not S.DeathfromAbove:IsAvailable() then
+                if S.Sprint:IsReady() and not S.DeathfromAbove:IsAvailable() then
                     return S.Sprint:ID()
                 end
                 -- actions.cds+=/darkflight,if=equipped.thraxis_tricksy_treads&!variable.ss_useable&buff.sprint.down
-                if S.Darkflight:IsCastable() and not Player:BuffP(S.Sprint) then
+                if S.Darkflight:IsReady() and not Player:BuffP(S.Sprint) then
                     return S.Darkflight:ID()
                 end
             end
             -- actions.cds+=/curse_of_the_dreadblades,if=combo_points.deficit>=4&(buff.true_bearing.up|buff.adrenaline_rush.up|time_to_die<20)
-            if S.CurseoftheDreadblades:IsCastable() and Player:ComboPointsDeficit() >= 4 and
+            if S.CurseoftheDreadblades:IsReady() and Player:ComboPointsDeficit() >= 4 and
                     (Player:BuffP(S.TrueBearing) or Player:BuffP(S.AdrenalineRush) or Target:FilteredTimeToDie("<", 20)) then
                 return S.CurseoftheDreadblades:ID()
             end
@@ -535,17 +430,17 @@ local function Stealth()
         local Ambush_Condition = (Player:ComboPointsDeficit() >= 2 + 2 * ((S.GhostlyStrike:IsAvailable() and not Target:Debuff(S.GhostlyStrike)) and 1 or 0)
                 + (Player:Buff(S.Broadsides) and 1 or 0) and Player:EnergyPredicted() > 60 and not Player:Buff(S.JollyRoger) and not Player:Buff(S.HiddenBlade)) and true or false;
         -- actions.stealth+=/ambush,if=variable.ambush_condition
-        if Player:IsStealthed(true, true) and S.Ambush:IsCastable() and Ambush_Condition then
+        if Player:IsStealthed(true, true) and S.Ambush:IsReady() and Ambush_Condition then
             return S.Ambush:ID()
         else
             if CDsON() and not Player:IsTanking(Target) then
                 -- actions.stealth+=/vanish,if=(variable.ambush_condition|equipped.mantle_of_the_master_assassin&!variable.rtb_reroll&!variable.ss_useable)&mantle_duration=0
-                if S.Vanish:IsCastable() and (Ambush_Condition or (I.MantleoftheMasterAssassin:IsEquipped() and not RtB_Reroll() and not SS_Useable()))
+                if S.Vanish:IsReady() and (Ambush_Condition or (I.MantleoftheMasterAssassin:IsEquipped() and not RtB_Reroll() and not SS_Useable()))
                         and MantleDuration() == 0 then
                     return S.Vanish:ID()
                 end
                 -- actions.stealth+=/shadowmeld,if=variable.ambush_condition
-                if S.Shadowmeld:IsCastable() and Ambush_Condition then
+                if S.Shadowmeld:IsReady() and Ambush_Condition then
                     return S.Shadowmeld:ID()
                 end
             end
@@ -555,19 +450,19 @@ end
 
 local function Build()
     -- actions.build=ghostly_strike,if=combo_points.deficit>=1+buff.broadsides.up&refreshable
-    if S.GhostlyStrike:IsCastable(S.SaberSlash)
+    if S.GhostlyStrike:IsReady(S.SaberSlash)
             and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadsides) and 1 or 0)) and Target:DebuffRefreshableP(S.GhostlyStrike, 4.5) then
         return S.GhostlyStrike:ID()
     end
     -- actions.build+=/pistol_shot,if=combo_points.deficit>=1+buff.broadsides.up+talent.quick_draw.enabled&buff.opportunity.up&(energy.time_to_max>2-talent.quick_draw.enabled|(buff.greenskins_waterlogged_wristcuffs.up&(buff.blunderbuss.up|buff.greenskins_waterlogged_wristcuffs.remains<2)))
-    if (S.PistolShot:IsCastable(20) or S.Blunderbuss:IsCastable(20))
+    if (S.PistolShot:IsReady(20) or S.Blunderbuss:IsReady(20))
             and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadsides) and 1 or 0) + (S.QuickDraw:IsAvailable() and 1 or 0))
             and Player:BuffP(S.Opportunity) and (EnergyTimeToMaxRounded() > (2 - (S.QuickDraw:IsAvailable() and 1 or 0))
-            or (Player:BuffP(S.GreenskinsWaterloggedWristcuffs) and (S.Blunderbuss:IsCastable() or Player:BuffRemainsP(S.GreenskinsWaterloggedWristcuffs) < 2))) then
+            or (Player:BuffP(S.GreenskinsWaterloggedWristcuffs) and (S.Blunderbuss:IsReady() or Player:BuffRemainsP(S.GreenskinsWaterloggedWristcuffs) < 2))) then
         return S.PistolShot:ID()
     end
     -- actions.build+=/saber_slash,if=variable.ss_useable
-    if S.SaberSlash:IsCastable(S.SaberSlash) and SS_Useable() then
+    if S.SaberSlash:IsReady(S.SaberSlash) and SS_Useable() then
         return S.SaberSlash:ID()
     end
 end
@@ -575,16 +470,16 @@ end
 local function Finish()
     -- # BTE in mantle used to be DPS neutral but is a loss due to t21
     -- actions.finish=between_the_eyes,if=equipped.greenskins_waterlogged_wristcuffs&!buff.greenskins_waterlogged_wristcuffs.up
-    if S.BetweentheEyes:IsCastable(20) and I.GreenskinsWaterloggedWristcuffs:IsEquipped() and not Player:BuffP(S.GreenskinsWaterloggedWristcuffs) then
+    if S.BetweentheEyes:IsReady(20) and I.GreenskinsWaterloggedWristcuffs:IsEquipped() and not Player:BuffP(S.GreenskinsWaterloggedWristcuffs) then
         return S.BetweentheEyes:ID()
     end
     -- actions.finish+=/run_through,if=!talent.death_from_above.enabled|energy.time_to_max<cooldown.death_from_above.remains+3.5
-    if S.RunThrough:IsCastable(S.RunThrough) and (not S.DeathfromAbove:IsAvailable()
+    if S.RunThrough:IsReady(S.RunThrough) and (not S.DeathfromAbove:IsAvailable()
             or EnergyTimeToMaxRounded() < S.DeathfromAbove:CooldownRemainsP() + 3.5) then
         return S.RunThrough:ID()
     end
     -- OutofRange BtE
-    if S.BetweentheEyes:IsCastable(20) and not Target:IsInRange(10) then
+    if S.BetweentheEyes:IsReady(20) and not Target:IsInRange(10) then
         return S.BetweentheEyes:ID()
     end
 end
@@ -612,17 +507,17 @@ function RogueOutlaw()
         -- Opener
         if TargetIsValid() and Target:IsInRange(S.SaberSlash) then
             if Player:ComboPoints() >= 5 then
-                if S.RunThrough:IsCastable() then
+                if S.RunThrough:IsReady() then
                     return S.RunThrough:ID()
                 end
             else
                 -- actions.precombat+=/curse_of_the_dreadblades,if=combo_points.deficit>=4
-                if CDsON() and S.CurseoftheDreadblades:IsCastable() and Player:ComboPointsDeficit() >= 4 then
+                if CDsON() and S.CurseoftheDreadblades:IsReady() and Player:ComboPointsDeficit() >= 4 then
                     return S.CurseoftheDreadblades:ID()
                 end
-                if Player:IsStealthed(true, true) and S.Ambush:IsCastable() then
+                if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
                     return S.Ambush:ID()
-                elseif S.SaberSlash:IsCastable() then
+                elseif S.SaberSlash:IsReady() then
                     return S.SaberSlash:ID()
                 end
             end
@@ -646,26 +541,26 @@ function RogueOutlaw()
         end
         -- # Conditions are here to avoid worthless check if nothing is available
         -- actions+=/call_action_list,name=stealth,if=stealthed|cooldown.vanish.up|cooldown.shadowmeld.up
-        if Player:IsStealthed(true, true) or S.Vanish:IsCastable() or S.Shadowmeld:IsCastable() then
+        if Player:IsStealthed(true, true) or S.Vanish:IsReady() or S.Shadowmeld:IsReady() then
             if Stealth() ~= nil then
                 return Stealth()
             end
         end
         -- actions+=/death_from_above,if=energy.time_to_max>2&!variable.ss_useable_noreroll
-        if S.DeathfromAbove:IsCastable(15) and not SS_Useable_NoReroll() and EnergyTimeToMaxRounded() > 2 then
+        if S.DeathfromAbove:IsReady(15) and not SS_Useable_NoReroll() and EnergyTimeToMaxRounded() > 2 then
             return S.DeathfromAbove:ID()
         end
         -- Note: DfA execute time is 1.475s, the buff is modeled to lasts 1.475s on SimC, while it's 1s in-game. So we retrieve it from TimeSinceLastCast.
         if S.DeathfromAbove:TimeSinceLastCast() <= 1.325 then
             -- actions+=/sprint,if=equipped.thraxis_tricksy_treads&buff.death_from_above.up&buff.death_from_above.remains<=0.15
-            if S.Sprint:IsCastable() and I.ThraxisTricksyTreads:IsEquipped() then
+            if S.Sprint:IsReady() and I.ThraxisTricksyTreads:IsEquipped() then
                 return S.Sprint:ID()
             end
             -- actions+=/adrenaline_rush,if=buff.death_from_above.up&buff.death_from_above.remains<=0.15
-            if S.AdrenalineRush:IsCastable() then
+            if S.AdrenalineRush:IsReady() then
             end
         end
-        if S.SliceandDice:IsAvailable() and S.SliceandDice:IsCastable() then
+        if S.SliceandDice:IsAvailable() and S.SliceandDice:IsReady() then
             -- actions+=/slice_and_dice,if=!variable.ss_useable&buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8&!buff.slice_and_dice.improved&!buff.loaded_dice.up
             -- Note: Added Player:BuffRemainsP(S.SliceandDice) == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
             if not SS_Useable() and (Target:FilteredTimeToDie(">", Player:BuffRemainsP(S.SliceandDice)) or Player:BuffRemainsP(S.SliceandDice) == 0)
@@ -684,12 +579,12 @@ function RogueOutlaw()
         end
         -- actions+=/roll_the_bones,if=!variable.ss_useable&(target.time_to_die>20|buff.roll_the_bones.remains<target.time_to_die)&(buff.roll_the_bones.remains<=3|variable.rtb_reroll)
         -- Note: Added RtB_BuffRemains() == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
-        if S.RolltheBones:IsCastable() and not SS_Useable() and (Target:FilteredTimeToDie(">", 20)
+        if S.RolltheBones:IsReady() and not SS_Useable() and (Target:FilteredTimeToDie(">", 20)
                 or Target:FilteredTimeToDie(">", RtB_BuffRemains()) or RtB_BuffRemains() == 0) and (RtB_BuffRemains() <= 3 or RtB_Reroll()) then
             return S.RolltheBones:ID()
         end
         -- actions+=/killing_spree,if=energy.time_to_max>5|energy<15
-        if CDsON() and S.KillingSpree:IsCastable(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
+        if CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
             return S.KillingSpree:ID()
         end
         -- actions+=/call_action_list,name=build
@@ -702,11 +597,11 @@ function RogueOutlaw()
         end
         -- # Gouge is used as a CP Generator while nothing else is available and you have Dirty Tricks talent. It's unlikely that you'll be able to do this optimally in-game since it requires to move in front of the target, but it's here so you can quantifiy its value.
         -- actions+=/gouge,if=talent.dirty_tricks.enabled&combo_points.deficit>=1
-        if S.Gouge:IsCastable(S.SaberSlash) and S.DirtyTricks:IsAvailable() and Player:ComboPointsDeficit() >= 1 then
+        if S.Gouge:IsReady(S.SaberSlash) and S.DirtyTricks:IsAvailable() and Player:ComboPointsDeficit() >= 1 then
             return S.Gouge:ID()
         end
         -- OutofRange Pistol Shot
-        if not Target:IsInRange(10) and (S.PistolShot:IsCastable(20) or S.Blunderbuss:IsCastable(20)) and not Player:IsStealthed(true, true)
+        if not Target:IsInRange(10) and (S.PistolShot:IsReady(20) or S.Blunderbuss:IsReady(20)) and not Player:IsStealthed(true, true)
                 and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
             return S.PistolShot:ID()
         end

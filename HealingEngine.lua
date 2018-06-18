@@ -3,7 +3,7 @@
 --- Created by Rubim.
 --- DateTime: 06/06/2018 05:05
 ---
-healingToggle = false
+healingToggle = true
 
 function roundscale(num, idp)
     mult = 10 ^ (idp or 0)
@@ -39,7 +39,7 @@ if healingToggle then
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
     TargetColor:Show()
 
-    local height
+    local height = 1
     function refreshScale(self, elapsed)
         self.TimeSinceLastUpdate = (self.TimeSinceLastUpdate or 0) + elapsed
         if (self.TimeSinceLastUpdate > 2.1) then
