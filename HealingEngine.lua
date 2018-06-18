@@ -28,49 +28,6 @@ if healingToggle then
         end
     end
 
-    if GetCurrentResolution() == 0 or (GetCVar("gxMaximize") == "0" and GetCurrentResolution() ~= #{ GetScreenResolutions() }) then
-        SetCVar("gxWindowedResolution", select(#{ GetScreenResolutions() }, GetScreenResolutions()))
-        return RestartGx()
-    end
-
-    local myhight1 = tonumber(string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "%d+x(%d+)"))
-    if roundscale(GetScreenHeight()) == myhight1 then
-        myhight = GetScreenHeight()
-    elseif GetCVar("useuiscale") == "1" and GetCVar("gxMaximize") == "1" then
-        myhight = myhight1
-    elseif GetCVar("useuiscale") == "0" and GetCVar("gxMaximize") == "0" then
-        myhight = roundscale(GetScreenHeight())
-    elseif GetCVar("useuiscale") == "1" and GetCVar("gxMaximize") == "0" then
-        SetCVar("useuiScale", 0) -- myhight = myhight1 --if you use Windowed Fix
-        return
-    end
-
-    myscale1 = 0.42666670680046 * (1080 / myhight)
-    myscale2 = 0.17777778208256 * (1080 / myhight)
-
-    function SetFrameScale(frame, input, x, y, w, h)
-        local xOffset0 = 1
-        if frame:GetEffectiveScale() == nil then
-            return
-        end
-        if GetCVar("gxMaximize") == "0" then
-            xOffset0 = 0.9411764705882353
-        end
-        xPixel, yPixel, wPixel, hPixel = x, y, w, h
-        xRes, yRes = string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "(%d+)x(%d+)");
-        uiscale = UIParent:GetScale();
-        XCoord = xPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale / xOffset0
-        YCoord = yPixel * (768.0 / yRes) / uiscale;
-        Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
-        Height = hPixel * (768.0 / yRes) / uiscale;
-        local myscale = input * (1080 / height)
-        if frame:GetEffectiveScale() ~= myscale then
-            frame:SetPoint("TOPLEFT", XCoord, YCoord)
-            frame:SetSize(Weight, Height)
-            frame:SetScale(myscale / (frame:GetParent() and frame:GetParent():GetEffectiveScale() or 1))
-        end
-    end
-
     TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
     TargetColor:SetBackdrop(nil)
     TargetColor:SetFrameStrata("HIGH")
@@ -81,7 +38,57 @@ if healingToggle then
     TargetColor.texture:SetAllPoints(true)
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
     TargetColor:Show()
-    SetFrameScale(TargetColor, 0.71111112833023, 442, 0, 1, 1)
+
+    local height
+    function refreshScale(self, elapsed)
+        self.TimeSinceLastUpdate = (self.TimeSinceLastUpdate or 0) + elapsed
+        if (self.TimeSinceLastUpdate > 2.1) then
+            self.TimeSinceLastUpdate = 0;
+            if GetCurrentResolution()==0 or (GetCVar("gxMaximize")=="0" and GetCurrentResolution()~=#{GetScreenResolutions()}) then
+                SetCVar("gxWindowedResolution", select(#{GetScreenResolutions()}, GetScreenResolutions()))
+                return RestartGx()
+            end
+            local height2 = tonumber(string.match(({ GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))
+            if roundscale(GetScreenHeight())== height2 then
+                height = GetScreenHeight()
+            elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="1" then
+                height = height2
+            elseif GetCVar("useuiscale")=="0" and GetCVar("gxMaximize")=="0" then
+                height = roundscale(GetScreenHeight())
+            elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="0" then
+                SetCVar("useuiScale", 0) -- myhight = myhight1 --if you use Windowed Fix
+                return
+            end
+            myscale1 = 0.42666670680046 * (1080 / height)
+            myscale2 = 0.17777778208256 * (1080 / height)
+            SetFrameScale(TargetColor, 0.71111112833023, 442, 0, 1, 1)
+        end
+    end
+    local resizeIcon = CreateFrame("frame")
+    resizeIcon:SetScript("OnUpdate", refreshScale)
+
+    function SetFrameScale(frame, input, x, y, w, h)
+        local xOffset0 = 1
+        if frame==nil then
+            return
+        end
+        if GetCVar("gxMaximize")=="0" then
+            xOffset0 = 0.9411764705882353
+        end
+        xPixel, yPixel, wPixel, hPixel = x, y, w, h
+        xRes, yRes = string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x(%d+)");
+        uiscale = UIParent:GetScale();
+        XCoord = xPixel*(768.0/xRes)*GetMonitorAspectRatio()/uiscale/xOffset0
+        YCoord = yPixel * (768.0 / yRes) / uiscale;
+        Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
+        Height = hPixel * (768.0 / yRes) / uiscale;
+        myscale = input * (1080 / height)
+        if frame:GetEffectiveScale()~=myscale then
+            frame:SetPoint("TOPLEFT", XCoord, YCoord)
+            frame:SetSize(Weight, Height)
+            frame:SetScale(myscale/(frame:GetParent() and frame:GetParent():GetEffectiveScale() or 1))
+        end
+    end
 
     function CalculateHP(t)
         incomingheals = UnitGetIncomingHeals(t) and UnitGetIncomingHeals(t) or 0
@@ -257,7 +264,7 @@ if healingToggle then
 
     function setColorTarget()
         TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
-        if healingTarget == nil or ((UnitGUID("target") or UnitGuid("player")) == healingTargetG) then
+        if healingTarget == nil or ((UnitExists("target") and (UnitGUID("target") or UnitGuid("player"))) == healingTargetG) then
             healingTarget = "None"
             healingTargetG = "None"
             TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
