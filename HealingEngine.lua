@@ -5,6 +5,9 @@
 ---
 healingToggle = true
 
+--Controls
+local disableTarget = false
+
 function roundscale(num, idp)
     mult = 10 ^ (idp or 0)
     return math.floor(num * mult + 0.5) / mult
@@ -267,6 +270,10 @@ if healingToggle then
 
     function setColorTarget()
         TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
+
+        if disableTarget then
+            return
+        end
 
         if (getHealingTarget() ~= nil and not UnitExists(getHealingTarget())) or getHealingTarget() == nil or healingTarget == nil or healingTargetG == nil or ((UnitExists("target") and (UnitGUID("target") or UnitGuid("player"))) == healingTargetG) then
             healingTarget = "None"
@@ -709,6 +716,16 @@ if healingToggle then
             return true
         end
         return false
+    end
+
+    function targetOverride()
+        if disableTarget then
+            disableTarget = false
+            print("Auto-Target ON")
+        else
+            disableTarget = true
+            print("Auto-Target OFF")
+        end
     end
 
     local total = 0
