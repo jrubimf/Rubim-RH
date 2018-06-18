@@ -143,10 +143,6 @@ end
 
 --- ======= SIMC CUSTOM FUNCTION / EXPRESSION =======
 -- cp_max_spend
-function Rogue.CPMaxSpend()
-    -- Should work for all 3 specs since they have same Deeper Stratagem Spell ID.
-    return Spell.Rogue.Subtlety.DeeperStratagem:IsAvailable() and 6 or 5;
-end
 
 -- "cp_spend"
 function Rogue.CPSpend()
