@@ -220,11 +220,11 @@ local function Sustained()
         return S.BlackArrow:ID()
     end
 
-    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < 2 then
+    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
         return 224806
     end
 
-    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
         return S.MarkedShot:ID()
     end
 
