@@ -271,7 +271,7 @@ function HavocRotation()
 
     end
     -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up))
-    if S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
+    if lastMoved() > 0.5 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.FuryOfTheIllidari:ID()
 
     end
@@ -294,7 +294,7 @@ function HavocRotation()
 
     end
     -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
-    if classSpell[2].isActive and S.EyeBeam:IsReady(20, true) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
+    if classSpell[2].isActive and lastMoved() > 0.5 and S.EyeBeam:IsReady(20, true) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
             or ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70) and
             (not IsMetaExtendedByDemonic() or (AC.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)))) then
       return S.EyeBeam:ID()
@@ -392,7 +392,7 @@ function HavocRotation()
 
     end
     -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up)&(!talent.chaos_blades.enabled|buff.chaos_blades.up|cooldown.chaos_blades.remains>30|target.time_to_die<cooldown.chaos_blades.remains))
-    if (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
+    if lastMoved() > 0.5 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
             and (not S.ChaosBlades:IsAvailable() or Player:BuffP(S.ChaosBlades) or S.ChaosBlades:CooldownRemainsP() > 30
             or Target:TimeToDie() < S.ChaosBlades:CooldownRemainsP()))) then
       return S.FuryOfTheIllidari:ID()
