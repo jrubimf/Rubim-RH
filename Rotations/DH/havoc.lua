@@ -321,7 +321,7 @@ function HavocRotation()
 
     end
     -- fel_rush,if=!talent.momentum.enabled&talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
+    if classSpell[1].isActive and lastMoved() > 0.5 and S.FelRush:IsCastable(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
       return S.FelRush:ID()
 
     end
@@ -415,7 +415,7 @@ function HavocRotation()
 
     end
     -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|buff.havoc_t21_4pc.remains<2&(!talent.blind_fury.enabled|fury.deficit>=70)&((spell_targets.eye_beam_tick>=3&raid_event.adds.in>cooldown)|talent.blind_fury.enabled|set_bonus.tier21_2pc)
-    if classSpell[2].isActive and S.EyeBeam:IsReady(20, true) and (Cache.EnemiesCount[CleaveRangeID] > 1)
+    if classSpell[2].isActive and lastMoved() > 0.5 and S.EyeBeam:IsReady(20, true) and (Cache.EnemiesCount[CleaveRangeID] > 1)
             or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
             and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
       return S.EyeBeam:ID()
