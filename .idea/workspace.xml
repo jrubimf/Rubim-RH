@@ -67,8 +67,8 @@
       <file leaf-file-name="outlaw.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/RG/outlaw.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="471" column="0" lean-forward="false" selection-start-line="471" selection-start-column="0" selection-end-line="471" selection-end-column="0" />
+            <state relative-caret-position="302">
+              <caret line="706" column="11" lean-forward="true" selection-start-line="706" selection-start-column="11" selection-end-line="706" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -125,10 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>button</find>
-      <find>targetIsVa</find>
-      <find>LibStub(&quot;AceDB-3.0&quot;)</find>
-      <find>FelRush</find>
       <find>FelRush:ID()</find>
       <find>Av</find>
       <find>Avi</find>
@@ -155,6 +151,10 @@
       <find>Furyof</find>
       <find>FuryOfTheIllidari</find>
       <find>MouseOver</find>
+      <find>CPMaxSpend</find>
+      <find>Deeper</find>
+      <find>Rogue.</find>
+      <find>Poisoned</find>
     </findStrings>
     <replaceStrings>
       <replace>4421</replace>
@@ -916,8 +916,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/RG/outlaw.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="471" column="0" lean-forward="false" selection-start-line="471" selection-start-column="0" selection-end-line="471" selection-end-column="0" />
+        <state relative-caret-position="302">
+          <caret line="706" column="11" lean-forward="true" selection-start-line="706" selection-start-column="11" selection-end-line="706" selection-end-column="11" />
           <folding />
         </state>
       </provider>

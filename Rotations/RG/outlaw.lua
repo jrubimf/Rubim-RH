@@ -33,6 +33,7 @@ Spell.Rogue.Outlaw = {
     BetweentheEyes = Spell(199804),
     BladeFlurry = Spell(13877),
     BladeFlurry2 = Spell(103828), -- Icon: Prot. Warrior Warbringer
+    DeeperStratagem  = Spell(193531),
     Opportunity = Spell(195627),
     PistolShot = Spell(185763),
     RolltheBones = Spell(193316),
@@ -85,8 +86,7 @@ Spell.Rogue.Outlaw = {
 --
 
 -- Stealth
-local Rogue = {}
-function Rogue.Stealth(Stealth, Setting)
+local function Stealth(Stealth, Setting)
     if Stealth:IsCastable() and not Player:IsStealthed() then
        return false --stealth
     end
@@ -94,7 +94,7 @@ function Rogue.Stealth(Stealth, Setting)
 end
 
 -- Crimson Vial
-function Rogue.CrimsonVial(CrimsonVial)
+local function CrimsonVial(CrimsonVial)
     if CrimsonVial:IsCastable() and Player:HealthPercentage() <= 80 then
         return false --defensives
     end
@@ -102,7 +102,7 @@ function Rogue.CrimsonVial(CrimsonVial)
 end
 
 -- Feint
-function Rogue.Feint(Feint)
+local function Feint(Feint)
     if Feint:IsCastable() and not Player:Buff(Feint) and Player:HealthPercentage() <= 80 then
         return false --feint
     end
@@ -110,7 +110,7 @@ end
 
 -- Marked for Death Sniping
 local BestUnit, BestUnitTTD;
-function Rogue.MfDSniping(MarkedforDeath)
+local function MfDSniping(MarkedforDeath)
     if MarkedforDeath:IsCastable() then
         -- Get Units up to 30y for MfD.
         AC.GetEnemies(30);
@@ -137,16 +137,19 @@ end
 
 -- Everyone CanDotUnit override to account for Mantle
 -- Is it worth to DoT the unit ?
-function Rogue.CanDoTUnit(Unit, HealthThreshold)
+local function CanDoTUnit(Unit, HealthThreshold)
     return Everyone.CanDoTUnit(Unit, HealthThreshold * (Commons.MantleDuration() > 0 and Settings.EDMGMantleOffset or 1));
 end
 
 --- ======= SIMC CUSTOM FUNCTION / EXPRESSION =======
 -- cp_max_spend
-
+local function CPMaxSpend ()
+    -- Should work for all 3 specs since they have same Deeper Stratagem Spell ID.
+    return S.DeeperStratagem:IsAvailable() and 6 or 5;
+end
 -- "cp_spend"
-function Rogue.CPSpend()
-    return mathmin(Player:ComboPoints(), Commons.CPMaxSpend());
+local function CPSpend()
+    return mathmin(Player:ComboPoints(), CPMaxSpend());
 end
 
 -- poisoned
@@ -154,7 +157,7 @@ end
   return dots.deadly_poison -> is_ticking() ||
           debuffs.wound_poison -> check();
 ]]
-function Rogue.Poisoned(Unit)
+local function Poisoned(Unit)
     return (Unit:Debuff(Spell.Rogue.Assassination.DeadlyPoisonDebuff) or Unit:Debuff(Spell.Rogue.Assassination.WoundPoisonDebuff)) and true or false;
 end
 
@@ -168,7 +171,7 @@ end
     return timespan_t::from_seconds( 0.0 );
   }
 ]]
-function Rogue.PoisonRemains(Unit)
+local function PoisonRemains(Unit)
     return (Unit:Debuff(Spell.Rogue.Assassination.DeadlyPoisonDebuff) and Unit:DebuffRemainsP(Spell.Rogue.Assassination.DeadlyPoisonDebuff))
             or (Unit:Debuff(Spell.Rogue.Assassination.WoundPoisonDebuff) and Unit:DebuffRemainsP(Spell.Rogue.Assassination.WoundPoisonDebuff))
             or 0;
@@ -181,7 +184,7 @@ end
          tdata -> dots.internal_bleeding -> is_ticking() +
          tdata -> dots.rupture -> is_ticking();
 ]]
-function Rogue.Bleeds()
+local function Bleeds()
     return (Target:Debuff(Spell.Rogue.Assassination.Garrote) and 1 or 0) + (Target:Debuff(Spell.Rogue.Assassination.Rupture) and 1 or 0) + (Target:Debuff(Spell.Rogue.Assassination.InternalBleeding) and 1 or 0);
 end
 
@@ -500,9 +503,9 @@ local function CDs()
             -- Note: Increased the SimC condition by 50% since we are slower.
             if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit() * 1.5) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0)
                     or (((Cache.EnemiesCount[30] == 1 and Player:BuffRemainsP(S.TrueBearing) > 15 - (Player:BuffP(S.AdrenalineRush) and 5 or 0))
-                    or Target:IsDummy()) and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= Rogue.CPMaxSpend() - 1) then
+                    or Target:IsDummy()) and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1) then
                 return S.MarkedforDeath:ID()
-            elseif not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= Rogue.CPMaxSpend() - 1 then
+            elseif not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1 then
                 return S.MarkedforDeath:ID()
             end
         end
@@ -538,7 +541,7 @@ local function Stealth()
             if CDsON() and not Player:IsTanking(Target) then
                 -- actions.stealth+=/vanish,if=(variable.ambush_condition|equipped.mantle_of_the_master_assassin&!variable.rtb_reroll&!variable.ss_useable)&mantle_duration=0
                 if S.Vanish:IsCastable() and (Ambush_Condition or (I.MantleoftheMasterAssassin:IsEquipped() and not RtB_Reroll() and not SS_Useable()))
-                        and Rogue.MantleDuration() == 0 then
+                        and MantleDuration() == 0 then
                     return S.Vanish:ID()
                 end
                 -- actions.stealth+=/shadowmeld,if=variable.ambush_condition
@@ -629,7 +632,7 @@ function RogueOutlaw()
 
     -- In Combat
     -- MfD Sniping
-    Rogue.MfDSniping(S.MarkedforDeath);
+    --MfDSniping(S.MarkedforDeath);
     if TargetIsValid() then
         -- Mythic Dungeon
         -- actions+=/call_action_list,name=bf
@@ -670,7 +673,7 @@ function RogueOutlaw()
                 return S.SliceandDice:ID()
             end
             -- actions+=/slice_and_dice,if=buff.loaded_dice.up&combo_points>=cp_max_spend&(!buff.slice_and_dice.improved|buff.slice_and_dice.remains<4)
-            if Player:Buff(S.LoadedDice) and Player:ComboPoints() >= Rogue.CPMaxSpend()
+            if Player:Buff(S.LoadedDice) and Player:ComboPoints() >= CPMaxSpend()
                     and (not ImprovedSliceAndDice() or Player:BuffRemainsP(S.SliceandDice) < 4) then
                 return S.SliceandDice:ID()
             end
