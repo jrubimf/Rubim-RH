@@ -3,7 +3,7 @@
 --- Created by Rubim.
 --- DateTime: 06/06/2018 05:05
 ---
-healingToggle = true
+healingToggle = false
 
 function roundscale(num, idp)
     mult = 10 ^ (idp or 0)
