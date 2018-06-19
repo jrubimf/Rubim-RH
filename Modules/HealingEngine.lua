@@ -253,8 +253,8 @@ function setHealingTarget(TARGET, HP)
         healingTargetG = members[1].GUID
         return members[1].HP
     end
-    local healingTarget = "None"
-    local healingTargetG = "None"
+    healingTarget = "None"
+    healingTargetG = "None"
 end
 
 function setColorTarget()
@@ -263,21 +263,25 @@ function setColorTarget()
 
     --Modifiers to disable it
     if disableTarget then
+        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a mouseover target, stop healing (kinda of dangerous)
     if CanHeal("mouseover") and GetMouseFocus() ~= WorldFrame and MouseoverCheck then
+        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a target do nothing.
     if UnitExists("target") and healingTargetG == UnitGUID("target") then
+        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have no one to heal then do nothing.
     if healingTarget == nil or healingTargetG == nil then
+        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 

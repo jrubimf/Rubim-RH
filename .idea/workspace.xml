@@ -54,11 +54,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="havoc.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rotations/DH/havoc.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2014">
+              <caret line="474" column="31" lean-forward="false" selection-start-line="474" selection-start-column="31" selection-end-line="474" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="HealingEngine.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Modules/HealingEngine.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="742" column="39" lean-forward="true" selection-start-line="742" selection-start-column="39" selection-end-line="742" selection-end-column="39" />
+            <state relative-caret-position="519">
+              <caret line="241" column="26" lean-forward="true" selection-start-line="241" selection-start-column="26" selection-end-line="241" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -115,7 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>UnitG</find>
       <find>for</find>
       <find>mov</find>
       <find>lastMoved</find>
@@ -124,7 +133,6 @@
       <find>mouseOver</find>
       <find>x.</find>
       <find>party</find>
-      <find>player</find>
       <find>R_CustomT</find>
       <find>getLowestHP</find>
       <find>Soul</find>
@@ -145,6 +153,8 @@
       <find>self</find>
       <find>_G</find>
       <find>print</find>
+      <find>player</find>
+      <find>IsCastable</find>
     </findStrings>
     <replaceStrings>
       <replace>4421</replace>
@@ -163,10 +173,10 @@
       <replace>CDsON()</replace>
       <replace>:ID()</replace>
       <replace>SetNextAbility</replace>
-      <replace>IsReady</replace>
       <replace>.TextureSpellID</replace>
       <replace>Rubim</replace>
       <replace>healingTarget</replace>
+      <replace>IsReady</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -225,12 +235,12 @@
         <option value="$PROJECT_DIR$/Modules/Icons.lua" />
         <option value="$PROJECT_DIR$/Rotations/DH/veng.lua" />
         <option value="$PROJECT_DIR$/Rotations/RG/outlaw.lua" />
-        <option value="$PROJECT_DIR$/Rotations/DH/havoc.lua" />
         <option value="$PROJECT_DIR$/HealingEngine.lua" />
         <option value="$PROJECT_DIR$/Rotations/DK/blood.lua" />
         <option value="$PROJECT_DIR$/rubim-rh.toc" />
         <option value="$PROJECT_DIR$/Rubim-RH.lua" />
         <option value="$PROJECT_DIR$/Modules/CombatTracker.lua" />
+        <option value="$PROJECT_DIR$/Rotations/DH/havoc.lua" />
         <option value="$PROJECT_DIR$/Modules/HealingEngine.lua" />
       </list>
     </option>
@@ -517,7 +527,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13489583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -840,14 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DH/havoc.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="102" column="0" lean-forward="true" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -912,10 +913,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/DH/havoc.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2014">
+          <caret line="474" column="31" lean-forward="false" selection-start-line="474" selection-start-column="31" selection-end-line="474" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/HealingEngine.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="742" column="39" lean-forward="true" selection-start-line="742" selection-start-column="39" selection-end-line="742" selection-end-column="39" />
+        <state relative-caret-position="519">
+          <caret line="241" column="26" lean-forward="true" selection-start-line="241" selection-start-column="26" selection-end-line="241" selection-end-column="26" />
           <folding />
         </state>
       </provider>

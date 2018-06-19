@@ -214,24 +214,24 @@ function HavocRotation()
     -- Locals for tracking if we should display these suggestions together
 
     -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis|variable.waiting_for_chaos_blades)|target.time_to_die<25
-    if S.Metamorphosis:IsCastable("Melee")
+    if S.Metamorphosis:IsReady("Melee")
             and (not (S.Demonic:IsAvailable() or PoolingForMeta() or WaitingForNemesis() or WaitingForChaosBlades()) or Target:TimeToDie() < 25) then
       return 187827
 
     end
     -- metamorphosis,if=talent.demonic.enabled&buff.metamorphosis.up
-    if S.Metamorphosis:IsCastable("Melee") and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
+    if S.Metamorphosis:IsReady("Melee") and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
       return 187827
 
     end
     -- chaos_blades,if=buff.metamorphosis.up|cooldown.metamorphosis.adjusted_remains>60|target.time_to_die<=duration
-    if S.ChaosBlades:IsCastable("Melee")
+    if S.ChaosBlades:IsReady("Melee")
             and (Player:BuffP(S.MetamorphosisBuff) or MetamorphosisCooldownAdjusted() > 60 or Target:TimeToDie() <= 18) then
       return S.ChaosBlades:ID()
 
     end
     -- nemesis,if=!raid_event.adds.exists&(buff.chaos_blades.up|buff.metamorphosis.up|cooldown.metamorphosis.adjusted_remains<20|target.time_to_die<=60)
-    if S.Nemesis:IsCastable("Melee") and ((Player:BuffP(S.ChaosBlades)
+    if S.Nemesis:IsReady("Melee") and ((Player:BuffP(S.ChaosBlades)
             or Player:BuffP(S.MetamorphosisBuff) or MetamorphosisCooldownAdjusted() < 20 or Target:TimeToDie() <= 60)) then
       return S.Nemesis:ID()
 
@@ -243,25 +243,25 @@ function HavocRotation()
     local InMeleeRange = IsInMeleeRange()
 
     -- vengeful_retreat,if=(talent.prepared.enabled|talent.momentum.enabled)&buff.prepared.down&buff.momentum.down
-    if S.VengefulRetreat:IsCastable("Melee", true)
+    if S.VengefulRetreat:IsReady("Melee", true)
             and ((S.Prepared:IsAvailable() or S.Momentum:IsAvailable()) and Player:BuffDownP(S.PreparedBuff) and Player:BuffDownP(S.MomentumBuff)) then
       return S.VengefulRetreat:ID()
 
     end
     -- fel_rush,if=(talent.momentum.enabled|talent.fel_mastery.enabled)&(!talent.momentum.enabled|(charges=2|cooldown.vengeful_retreat.remains>4)&buff.momentum.down)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
+    if classSpell[1].isActive  and S.FelRush:IsReady(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
             and (not S.Momentum:IsAvailable() or (S.FelRush:ChargesP() == 2 or S.VengefulRetreat:CooldownRemainsP() > 4) and Player:BuffDownP(S.MomentumBuff))) then
       return S.FelRush:ID()
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&(!talent.momentum.enabled|buff.momentum.up)&charges=2
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive)
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive)
             and (S.Bloodlet:IsAvailable() and (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff)) and S.ThrowGlaive:ChargesP() == 2) then
       return S.ThrowGlaive:ID()
 
     end
     -- death_sweep,if=variable.blade_dance
-    if S.DeathSweep:IsCastable(8, true) and Player:FuryWithCSRefund() >= S.DeathSweep:Cost() and BladeDance() then
+    if S.DeathSweep:IsReady(8, true) and Player:FuryWithCSRefund() >= S.DeathSweep:Cost() and BladeDance() then
       return 199552
 
     end
@@ -271,24 +271,24 @@ function HavocRotation()
 
     end
     -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up))
-    if lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
+    if lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.FuryOfTheIllidari:ID()
 
     end
     -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
-    if S.BladeDance:IsCastable(8, true) and Player:FuryWithCSRefund() >= S.BladeDance:Cost()
+    if S.BladeDance:IsReady(8, true) and Player:FuryWithCSRefund() >= S.BladeDance:Cost()
             and (BladeDance() and S.EyeBeam:CooldownRemainsP() > 5 and not S.Metamorphosis:IsReady()) then
       return S.BladeDance:ID()
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&spell_targets>=2&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&(spell_targets>=3|raid_event.adds.in>recharge_time+cooldown)
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and (Cache.EnemiesCount[CleaveRangeID] >= 2) and
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and (Cache.EnemiesCount[CleaveRangeID] >= 2) and
             (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.ThrowGlaive:ID()
 
     end
     -- felblade,if=fury.deficit>=30&(fury<40|buff.metamorphosis.down)
-    if S.Felblade:IsCastable(S.Felblade) and Player:FuryDeficitWithCSRefund() >= 30
+    if S.Felblade:IsReady(S.Felblade) and Player:FuryDeficitWithCSRefund() >= 30
             and (Player:FuryWithCSRefund() < 40 or not Player:BuffP(S.MetamorphosisBuff)) then
       return S.Felblade:ID()
 
@@ -301,14 +301,14 @@ function HavocRotation()
 
     end
     -- annihilation,if=(!talent.momentum.enabled|buff.momentum.up|fury.deficit<30+buff.prepared.up*8|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance
-    if InMeleeRange and S.Annihilation:IsCastable() and Player:FuryWithCSRefund() >= S.Annihilation:Cost()
+    if InMeleeRange and S.Annihilation:IsReady() and Player:FuryWithCSRefund() >= S.Annihilation:Cost()
             and ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff) or Player:FuryDeficitWithCSRefund() < 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0)
             or Player:BuffRemainsP(S.MetamorphosisBuff) < 5) and not PoolingForBladeDance()) then
       return 204317
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&raid_event.adds.in>recharge_time+cooldown
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive)
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive)
             and (S.Bloodlet:IsAvailable() and (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.ThrowGlaive:ID()
 
@@ -321,22 +321,22 @@ function HavocRotation()
 
     end
     -- fel_rush,if=!talent.momentum.enabled&talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-    if classSpell[1].isActive and lastMoved() > 0.2 and S.FelRush:IsCastable(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
+    if classSpell[1].isActive and lastMoved() > 0.2 and S.FelRush:IsReady(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
       return S.FelRush:ID()
 
     end
     -- demons_bite
-    if InMeleeRange and S.DemonsBite:IsCastable() then
+    if InMeleeRange and S.DemonsBite:IsReady() then
       return S.DemonsBite:ID()
 
     end
     -- throw_glaive,if=buff.out_of_range.up|!talent.bloodlet.enabled
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and (not IsInMeleeRange() or not S.Bloodlet:IsAvailable()) then
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive) and (not IsInMeleeRange() or not S.Bloodlet:IsAvailable()) then
       return S.ThrowGlaive:ID()
 
     end
     -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
+    if classSpell[1].isActive  and S.FelRush:IsReady(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
       return S.FelRush:ID()
 
     end
@@ -346,42 +346,42 @@ function HavocRotation()
     local InMeleeRange = IsInMeleeRange()
 
     -- vengeful_retreat,if=(talent.prepared.enabled|talent.momentum.enabled)&buff.prepared.down&buff.momentum.down
-    if S.VengefulRetreat:IsCastable("Melee", true)
+    if S.VengefulRetreat:IsReady("Melee", true)
             and ((S.Prepared:IsAvailable() or S.Momentum:IsAvailable()) and Player:BuffDownP(S.PreparedBuff) and Player:BuffDownP(S.MomentumBuff)) then
       return S.VengefulRetreat:ID()
 
     end
     -- fel_rush,if=(talent.momentum.enabled|talent.fel_mastery.enabled)&(!talent.momentum.enabled|(charges=2|cooldown.vengeful_retreat.remains>4)&buff.momentum.down)&(!talent.fel_mastery.enabled|fury.deficit>=25)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
+    if classSpell[1].isActive  and S.FelRush:IsReady(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
             and (not S.Momentum:IsAvailable() or (S.FelRush:ChargesP() == 2 or S.VengefulRetreat:CooldownRemainsP() > 4) and Player:BuffDownP(S.MomentumBuff))
             and (not S.FelMastery:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 25)) then
       return S.FelRush:ID()
 
     end
     -- fel_barrage,if=(buff.momentum.up|!talent.momentum.enabled)&(active_enemies>desired_targets|raid_event.adds.in>30)
-    if S.FelBarrage:IsCastable(S.FelBarrage) and ((Player:BuffP(S.MomentumBuff) or not S.Momentum:IsAvailable())) then
+    if S.FelBarrage:IsReady(S.FelBarrage) and ((Player:BuffP(S.MomentumBuff) or not S.Momentum:IsAvailable())) then
       return S.FelBarrage:ID()
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&(!talent.momentum.enabled|buff.momentum.up)&charges=2
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive)
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive)
             and (S.Bloodlet:IsAvailable() and (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff)) and S.ThrowGlaive:ChargesP() == 2) then
       return S.ThrowGlaive:ID()
 
     end
     -- felblade,if=fury<15&(cooldown.death_sweep.remains<2*gcd|cooldown.blade_dance.remains<2*gcd)
-    if S.Felblade:IsCastable(S.Felblade) and (Player:FuryWithCSRefund() < 15 and (S.DeathSweep:CooldownRemainsP() < 2 * Player:GCD()
+    if S.Felblade:IsReady(S.Felblade) and (Player:FuryWithCSRefund() < 15 and (S.DeathSweep:CooldownRemainsP() < 2 * Player:GCD()
             or S.BladeDance:CooldownRemainsP() < 2 * Player:GCD())) then
       return S.Felblade:ID()
 
     end
     -- death_sweep,if=variable.blade_dance
-    if S.DeathSweep:IsCastable(8, true) and Player:FuryWithCSRefund() >= S.DeathSweep:Cost() and BladeDance() then
+    if S.DeathSweep:IsReady(8, true) and Player:FuryWithCSRefund() >= S.DeathSweep:Cost() and BladeDance() then
       return 199552
 
     end
     -- fel_rush,if=charges=2&!talent.momentum.enabled&!talent.fel_mastery.enabled&!buff.metamorphosis.up&talent.demon_blades.enabled
-    if classSpell[1].isActive and S.FelRush:IsCastable(20, true) and (S.FelRush:ChargesP() == 2 and not S.Momentum:IsAvailable() and not S.FelMastery:IsAvailable()
+    if classSpell[1].isActive and S.FelRush:IsReady(20, true) and (S.FelRush:ChargesP() == 2 and not S.Momentum:IsAvailable() and not S.FelMastery:IsAvailable()
             and not Player:BuffP(S.MetamorphosisBuff) and S.DemonBlades:IsAvailable()) then
       return S.FelRush:ID()
 
@@ -392,7 +392,7 @@ function HavocRotation()
 
     end
     -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up)&(!talent.chaos_blades.enabled|buff.chaos_blades.up|cooldown.chaos_blades.remains>30|target.time_to_die<cooldown.chaos_blades.remains))
-    if lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsCastable(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
+    if lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
             and (not S.ChaosBlades:IsAvailable() or Player:BuffP(S.ChaosBlades) or S.ChaosBlades:CooldownRemainsP() > 30
             or Target:TimeToDie() < S.ChaosBlades:CooldownRemainsP()))) then
       return S.FuryOfTheIllidari:ID()
@@ -404,13 +404,13 @@ function HavocRotation()
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&spell_targets>=2&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&(spell_targets>=3|raid_event.adds.in>recharge_time+cooldown)
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and Cache.EnemiesCount[CleaveRangeID] >= 2
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and Cache.EnemiesCount[CleaveRangeID] >= 2
             and (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.ThrowGlaive:ID()
 
     end
     -- felblade,if=fury.deficit>=30+buff.prepared.up*8
-    if S.Felblade:IsCastable(S.Felblade) and (Player:FuryDeficitWithCSRefund() >= 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0)) then
+    if S.Felblade:IsReady(S.Felblade) and (Player:FuryDeficitWithCSRefund() >= 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0)) then
       return S.Felblade:ID()
 
     end
@@ -422,7 +422,7 @@ function HavocRotation()
 
     end
     -- annihilation,if=(talent.demon_blades.enabled|!talent.momentum.enabled|buff.momentum.up|fury.deficit<30+buff.prepared.up*8|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance
-    if InMeleeRange and S.Annihilation:IsCastable() and Player:FuryWithCSRefund() >= S.Annihilation:Cost()
+    if InMeleeRange and S.Annihilation:IsReady() and Player:FuryWithCSRefund() >= S.Annihilation:Cost()
             and ((S.DemonBlades:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff)
             or Player:FuryDeficitWithCSRefund() < 30 + (Player:BuffP(S.PreparedBuff) and 8 or 0) or Player:BuffRemainsP(S.MetamorphosisBuff) < 5)
             and not PoolingForBladeDance()) then
@@ -430,14 +430,14 @@ function HavocRotation()
 
     end
     -- throw_glaive,if=talent.bloodlet.enabled&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&raid_event.adds.in>recharge_time+cooldown
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive)
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive)
             and (S.Bloodlet:IsAvailable() and (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
       return S.ThrowGlaive:ID()
 
     end
 
     -- throw_glaive,if=!talent.bloodlet.enabled&buff.metamorphosis.down&spell_targets>=3
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive)
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive)
             and (not S.Bloodlet:IsAvailable() and Player:BuffDownP(S.MetamorphosisBuff) and Cache.EnemiesCount[CleaveRangeID] >= 3) then
       return S.ThrowGlaive:ID()
 
@@ -452,27 +452,27 @@ function HavocRotation()
 
     end
     -- fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&(talent.demon_blades.enabled|buff.metamorphosis.down)
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20, true) and (not S.Momentum:IsAvailable() and (S.DemonBlades:IsAvailable() or Player:BuffDownP(S.MetamorphosisBuff))) then
+    if classSpell[1].isActive  and S.FelRush:IsReady(20, true) and (not S.Momentum:IsAvailable() and (S.DemonBlades:IsAvailable() or Player:BuffDownP(S.MetamorphosisBuff))) then
       return S.FelRush:ID()
 
     end
     -- demons_bite
-    if InMeleeRange and S.DemonsBite:IsCastable() then
+    if InMeleeRange and S.DemonsBite:IsReady() then
       return S.DemonsBite:ID()
 
     end
     -- felblade,if=movement.distance>15|buff.out_of_range.up
-    if S.Felblade:IsCastable(S.Felblade) and (not IsInMeleeRange()) then
+    if S.Felblade:IsReady(S.Felblade) and (not IsInMeleeRange()) then
       return S.Felblade:ID()
 
     end
     -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
-    if classSpell[1].isActive  and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
+    if classSpell[1].isActive  and S.FelRush:IsReady(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
       return S.FelRush:ID()
 
     end
     -- throw_glaive,if=!talent.bloodlet.enabled&talent.demon_blades.enabled
-    if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and (not S.Bloodlet:IsAvailable() and S.DemonBlades:IsAvailable()) then
+    if S.ThrowGlaive:IsReady(S.ThrowGlaive) and (not S.Bloodlet:IsAvailable() and S.DemonBlades:IsAvailable()) then
       return S.ThrowGlaive:ID()
 
     end
