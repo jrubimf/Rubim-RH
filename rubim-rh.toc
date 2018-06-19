@@ -16,6 +16,9 @@ Modules\Custom.lua
 Modules\Debug.lua
 Modules\Icons.lua
 Modules\UI.lua
+Modules\CombatTracker.lua
+Modules\HealingEngine.lua
+Modules\PVP.lua
 Rotations\DK\blood.lua
 Rotations\DK\frost.lua
 Rotations\DK\unholy.lua
@@ -37,5 +40,3 @@ Rotations\PL\prot.lua
 Rotations\PL\holy.lua
 Rotations\HR\survival.lua
 Rotations\HR\mm.lua
-HealingEngine.lua
-Modules\PVP.lua

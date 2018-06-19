@@ -214,11 +214,11 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
-    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and not Player:HealingAbsorbed() then
+    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
 
-    if Player:HealthPercentage() < 90 and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > Player:GCD() * 2 then
+    if Player:HealthPercentage() < 90 and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > Player:GCD() * 3 then
         return S.DeathStrike:ID()
     end
 
