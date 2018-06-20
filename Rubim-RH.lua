@@ -34,15 +34,15 @@ local defaults = {
         },
         dh = {
             havoc = {
-                { spellID = FelRush, isActive = true },
-                { spellID = EyeBeam, isActive = true }
+                { name = GetSpellInfo(FelRush), spellID = FelRush, isActive = true },
+                { name = GetSpellInfo(EyeBeam), spellID = EyeBeam, isActive = true }
             },
             cooldown = false
         },
         dk = {
             blood = {
-                { spellID = DeathStrike, isActive = true },
-                { spellID = RuneTap, isActive = true }
+                { name = GetSpellInfo(FelRush), spellID = DeathStrike, isActive = true },
+                { name = GetSpellInfo(FelRush), spellID = RuneTap, isActive = true }
             },
             frost = {
                 { spellID = DeathStrike, isActive = true },

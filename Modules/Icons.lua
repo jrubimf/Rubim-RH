@@ -108,6 +108,9 @@ updateConfig:RegisterEvent("PLAYER_LOGIN")
 updateConfig:RegisterEvent("PLAYER_ENTERING_WORLD")
 updateConfig:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 
+
+-- RogueMenu
+
 -- Create the dropdown, and configure its appearance
 local dropDown = CreateFrame("FRAME", "DropDownMenu", UIParent, "UIDropDownMenuTemplate")
 dropDown:SetPoint("CENTER")
@@ -156,16 +159,26 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     elseif menuList == "Spells" then
         --SKILL 1
         for i = 1, #classSpell do
-            info.text = GetSpellInfo(classSpell[i].spellID)
-            info.checked = classSpell[i].isActive
-            info.func = function(self)
-                PlaySound(891, "Master");
-                if classSpell[i].isActive then
-                    classSpell[i].isActive = false
-                else
-                    classSpell[i].isActive = true
+            if classSpell[i].spellID == 193316 then
+                info.text = "Open Roll the Bones"
+                info.checked = false
+                info.func = function(self)
+                    PlaySound(891, "Master");
+                    OUT_rollthebonesMenu()()
                 end
-                print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
+
+            else
+                info.text = GetSpellInfo(classSpell[i].spellID)
+                info.checked = classSpell[i].isActive
+                info.func = function(self)
+                    PlaySound(891, "Master");
+                    if classSpell[i].isActive then
+                        classSpell[i].isActive = false
+                    else
+                        classSpell[i].isActive = true
+                    end
+                    print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
+                end
             end
             UIDropDownMenu_AddButton(info, level)
         end

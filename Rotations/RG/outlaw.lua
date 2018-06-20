@@ -18,7 +18,9 @@ local tostring = tostring;
 
 --- APL Local Vars
 -- Spells
-if not Spell.Rogue then Spell.Rogue = {}; end
+if not Spell.Rogue then
+    Spell.Rogue = {};
+end
 Spell.Rogue.Outlaw = {
     -- Racials
     ArcaneTorrent = Spell(25046),
@@ -33,7 +35,7 @@ Spell.Rogue.Outlaw = {
     BetweentheEyes = Spell(199804),
     BladeFlurry = Spell(13877),
     BladeFlurry2 = Spell(103828), -- Icon: Prot. Warrior Warbringer
-    DeeperStratagem  = Spell(193531),
+    DeeperStratagem = Spell(193531),
     Opportunity = Spell(195627),
     PistolShot = Spell(185763),
     RolltheBones = Spell(193316),
@@ -85,10 +87,67 @@ local S = Spell.Rogue.Outlaw;
 -- Time: 16:50
 --
 
+local AceGUI = LibStub("AceGUI-3.0")
+-- Create the frame container
+local rogueGUI = AceGUI:Create("Frame")
+rogueGUI:SetTitle("Rogue - Roll the Boness")
+rogueGUI:SetStatusText("Rubim")
+rogueGUI:SetCallback("OnClose", function(widget)
+    AceGUI:Release(widget)
+end)
+-- Fill Layout - the TabGroup widget will fill the whole frame
+rogueGUI:SetLayout("Flow")
+--rogueGUI:SetLayout("Fill")
+rogueGUI:SetWidth(260)
+rogueGUI:SetHeight(140)
+
+local label = AceGUI:Create("Label")
+label:SetText("Choose a buff from the list.")
+rogueGUI:AddChild(label)
+
+local rollBones = {
+    "Simcraft",
+    "SoloMode",
+    "1+ Buff",
+    "Broadsides",
+    "Buried Treasure",
+    "Grand Melee",
+    "Jolly Roger",
+    "Shark Infested Waters",
+    "Ture Bearing"
+}
+
+local selectedBuff = "Simcraft"
+
+local dropdown = AceGUI:Create("Dropdown")
+dropdown:SetValue("Choose a Buff")
+dropdown:SetList(rollBones)
+dropdown:SetText(selectedBuff)
+--dropdown:SetLabel("Pick a Buff")
+dropdown:SetCallback("OnValueChanged", function(self, event, pos)
+    print("Roll the Bones: " .. rollBones[pos])
+    selectedBuff = rollBones[pos]
+
+end)
+rogueGUI:AddChild(dropdown)
+--AddItem(key, value) - Add an item to the list.
+--SetMultiselect(flag) - Toggle multi-selecting.
+--GetMultiselect() - Query the multi-select flag.
+--SetItemValue(key, value) - Set the value of a item in the list.
+--SetItemDisabled(key, flag) - Disable one item in the list.
+--SetDisabled(flag) - Disable the widget.
+
+
+--rogueGUI:Hide(0)
+
+function OUT_rollthebonesMenu()
+    rogueGUI:Show()
+end
+
 -- Stealth
 local function Stealth(Stealth, Setting)
     if Stealth:IsReady() and not Player:IsStealthed() then
-       return false --stealth
+        return false --stealth
     end
     return false;
 end
@@ -152,7 +211,6 @@ local function CPSpend()
     return mathmin(Player:ComboPoints(), CPMaxSpend());
 end
 
-
 local MasterAssassinsInitiative, NominalDuration = Spell(235027), 6;
 local function MantleDuration()
     if Player:BuffRemains(MasterAssassinsInitiative) < 0 then
@@ -165,7 +223,9 @@ end
 -- Choose a persistent PistolShot icon to avoid Blunderbuss icon
 S.PistolShot.TextureSpellID = 242277;
 -- Items
-if not Item.Rogue then Item.Rogue = {}; end
+if not Item.Rogue then
+    Item.Rogue = {};
+end
 Item.Rogue.Outlaw = {
     -- Legendaries
     GreenskinsWaterloggedWristcuffs = Item(137099, { 9 }),
@@ -194,8 +254,12 @@ local RtB_BuffsList = {
     S.TrueBearing
 };
 local function RtB_List(Type, List)
-    if not Cache.APLVar.RtB_List then Cache.APLVar.RtB_List = {}; end
-    if not Cache.APLVar.RtB_List[Type] then Cache.APLVar.RtB_List[Type] = {}; end
+    if not Cache.APLVar.RtB_List then
+        Cache.APLVar.RtB_List = {};
+    end
+    if not Cache.APLVar.RtB_List[Type] then
+        Cache.APLVar.RtB_List[Type] = {};
+    end
     local Sequence = table.concat(List);
     -- All
     if Type == "All" then
@@ -215,7 +279,7 @@ local function RtB_List(Type, List)
             for i = 1, #List do
                 if Player:Buff(RtB_BuffsList[List[i]]) then
                     Cache.APLVar.RtB_List[Type][Sequence] = true;
-                    break;
+                    break ;
                 end
             end
         end
@@ -229,7 +293,7 @@ local function RtB_BuffRemains()
         for i = 1, #RtB_BuffsList do
             if Player:Buff(RtB_BuffsList[i]) then
                 Cache.APLVar.RtB_BuffRemains = Player:BuffRemainsP(RtB_BuffsList[i]);
-                break;
+                break ;
             end
         end
     end
@@ -252,36 +316,36 @@ end
 -- # Reroll when Loaded Dice is up and if you have less than 2 buffs or less than 4 and no True Bearing. With SnD, consider that we never have to reroll.
 local function RtB_Reroll()
     Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
---    if not Cache.APLVar.RtB_Reroll then
---        -- Defensive Override : Grand Melee if HP < 60
---        if Settings.General.SoloMode and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
---            -- 1+ Buff
---        elseif Settings.Outlaw.RolltheBonesLogic == "1+ Buff" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
---            -- Broadsides
---        elseif Settings.Outlaw.RolltheBonesLogic == "Broadsides" then
-  ---          Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
---            -- Buried Treasure
---        elseif Settings.Outlaw.RolltheBonesLogic == "Buried Treasure" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
---            -- Grand Melee
---        elseif Settings.Outlaw.RolltheBonesLogic == "Grand Melee" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
---            -- Jolly Roger
---        elseif Settings.Outlaw.RolltheBonesLogic == "Jolly Roger" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
---            -- Shark Infested Waters
---        elseif Settings.Outlaw.RolltheBonesLogic == "Shark Infested Waters" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
---            -- True Bearing
---        elseif Settings.Outlaw.RolltheBonesLogic == "True Bearing" then
---            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
---            -- SimC Default
---            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
---        else
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
---        end
+    --    if not Cache.APLVar.RtB_Reroll then
+    --        -- Defensive Override : Grand Melee if HP < 60
+    --        if selectedBuff == "SoloMode" and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+    --            -- 1+ Buff
+    --        elseif selectedBuff == "1+ Buff" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
+    --            -- Broadsides
+    --        elseif selectedBuff == "Broadsides" then
+    ---          Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
+    --            -- Buried Treasure
+    --        elseif selectedBuff == "Buried Treasure" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
+    --            -- Grand Melee
+    --        elseif selectedBuff == "Grand Melee" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+    --            -- Jolly Roger
+    --        elseif selectedBuff == "Jolly Roger" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
+    --            -- Shark Infested Waters
+    --        elseif selectedBuff == "Shark Infested Waters" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
+    --            -- True Bearing
+    --        elseif selectedBuff == "True Bearing" then
+    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
+    --            -- SimC Default
+    --            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
+    --        else
+    Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
+    --        end
     --end
     return Cache.APLVar.RtB_Reroll;
 end

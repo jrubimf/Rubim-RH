@@ -180,7 +180,7 @@ function BloodRotation()
 
         --We Should Iterrupt
         if S.MindFreeze:IsCastable() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and (((GetTime() - lastSephuz) + 9) >= 30 or ((GetTime() - lastSephuz) + 9) <= 15) then
-            return S.RuneTap:ID()
+            return S.MindFreeze:ID()
         end
     end
 
