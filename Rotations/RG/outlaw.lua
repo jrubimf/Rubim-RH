@@ -138,7 +138,7 @@ rogueGUI:AddChild(dropdown)
 --SetDisabled(flag) - Disable the widget.
 
 
---rogueGUI:Hide(0)
+rogueGUI:Hide(0)
 
 function OUT_rollthebonesMenu()
     rogueGUI:Show()
