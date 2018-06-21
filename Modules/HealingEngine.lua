@@ -12,7 +12,7 @@ function roundscale(num, idp)
     return math.floor(num * mult + 0.5) / mult
 end
 
-TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
+TargetColor = CreateFrame("Frame", "TargetColor")
 TargetColor:SetBackdrop(nil)
 TargetColor:SetFrameStrata("HIGH")
 TargetColor:SetSize(1, 1)
