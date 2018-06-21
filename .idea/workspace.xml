@@ -17,8 +17,8 @@
       <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+            <state relative-caret-position="322">
+              <caret line="209" column="0" lean-forward="true" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -115,9 +115,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>max_charges-charges_fractional</find>
-      <find>use_thrash</find>
-      <find>use</find>
       <find>pool</find>
       <find>BrutalSlash</find>
       <find>ThrashThreshold</find>
@@ -145,6 +142,9 @@
       <find>Rip</find>
       <find>S.Rip:ID()</find>
       <find>Finishers</find>
+      <find>Thrash</find>
+      <find>Thrash:ID</find>
+      <find>Brutal</find>
     </findStrings>
     <replaceStrings>
       <replace>4421</replace>
@@ -935,8 +935,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="394" column="0" lean-forward="false" selection-start-line="394" selection-start-column="0" selection-end-line="394" selection-end-column="0" />
+        <state relative-caret-position="322">
+          <caret line="209" column="0" lean-forward="true" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
           <folding />
         </state>
       </provider>

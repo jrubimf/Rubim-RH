@@ -161,7 +161,7 @@ local function Generators()
 
     --actions.st_generators+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
     if S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
-        return 199167
+        return 211292
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
@@ -205,7 +205,7 @@ local function Generators()
 
     --actions.st_generators+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
     if S.BrutalSlash:IsReady(AoERadius, true) and Player:Buff(S.TigersFury) then
-        return 199167
+        return 211292
     end
 
     --actions.st_generators+=/moonfire_cat,target_if=refreshable
