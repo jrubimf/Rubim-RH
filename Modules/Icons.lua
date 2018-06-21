@@ -45,6 +45,9 @@ local updateConfigFunc = function()
     --Shaman
     local HealingSurge = 188070
 
+    --Rogue
+    local RolltheBones = 193316
+
     --DK
     if select(2, UnitClass("player")) == "DEATHKNIGHT" then
         --Blood
@@ -99,6 +102,11 @@ local updateConfigFunc = function()
     if select(3, UnitClass("player")) == 7 then
         classSpell = {}
         classSpell = RubimRH.db.profile.sh.enhc
+    end
+
+    --ROGUE
+    if select(3, UnitClass("player")) == 4 then
+        classSpell = { { spellID = RolltheBones, isActive = nil } }
     end
 end
 
@@ -164,7 +172,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
                 info.checked = false
                 info.func = function(self)
                     PlaySound(891, "Master");
-                    OUT_rollthebonesMenu()()
+                    OUT_rollthebonesMenu()
                 end
 
             else

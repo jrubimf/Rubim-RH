@@ -213,6 +213,10 @@ local function Burst()
     if S.AimedShot:IsReady() then
         return S.AimedShot:ID()
     end
+
+    if S.AMurderofCrows:IsAvailable() and  S.AMurderofCrows:IsReady() then
+        return S.AMurderofCrows:ID()
+    end
 end
 
 local function Sustained()
@@ -224,6 +228,10 @@ local function Sustained()
         return S.MarkedShot:ID()
     end
 
+    if Player:IsMoving() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
+        return 224806
+    end
+
     if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
         return S.MarkedShot:ID()
     end
@@ -232,15 +240,7 @@ local function Sustained()
         return 224806
     end
 
-    if S.AimedShot:IsReady() then
-        return S.AimedShot:ID()
-    end
-
-    if S.MarkedShot:IsReady() then
-        return S.MarkedShot:ID()
-    end
-
-    if S.AimedShot:IsReady() and Player:Buff(S.LockandLoad) then
+    if S.AimedShot:IsReady() and TargetDebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() then
         return S.AimedShot:ID()
     end
 
@@ -248,8 +248,8 @@ local function Sustained()
         return S.Windburst:ID()
     end
 
-    if S.AMurderofCrows:IsAvailable() and  S.AMurderofCrows:IsReady() then
-        return S.AMurderofCrows:ID()
+    if S.Sidewinders:Ready() then
+        return 224806
     end
 end
 

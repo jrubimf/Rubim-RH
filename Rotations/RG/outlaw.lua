@@ -89,58 +89,47 @@ local S = Spell.Rogue.Outlaw;
 
 local AceGUI = LibStub("AceGUI-3.0")
 -- Create the frame container
-local rogueGUI = AceGUI:Create("Frame")
-rogueGUI:SetTitle("Rogue - Roll the Boness")
-rogueGUI:SetStatusText("Rubim")
-rogueGUI:SetCallback("OnClose", function(widget)
-    AceGUI:Release(widget)
-end)
--- Fill Layout - the TabGroup widget will fill the whole frame
-rogueGUI:SetLayout("Flow")
---rogueGUI:SetLayout("Fill")
-rogueGUI:SetWidth(260)
-rogueGUI:SetHeight(140)
-
-local label = AceGUI:Create("Label")
-label:SetText("Choose a buff from the list.")
-rogueGUI:AddChild(label)
-
-local rollBones = {
-    "Simcraft",
-    "SoloMode",
-    "1+ Buff",
-    "Broadsides",
-    "Buried Treasure",
-    "Grand Melee",
-    "Jolly Roger",
-    "Shark Infested Waters",
-    "Ture Bearing"
-}
 
 local selectedBuff = "Simcraft"
-
-local dropdown = AceGUI:Create("Dropdown")
-dropdown:SetValue("Choose a Buff")
-dropdown:SetList(rollBones)
-dropdown:SetText(selectedBuff)
---dropdown:SetLabel("Pick a Buff")
-dropdown:SetCallback("OnValueChanged", function(self, event, pos)
-    print("Roll the Bones: " .. rollBones[pos])
-    selectedBuff = rollBones[pos]
-
-end)
-rogueGUI:AddChild(dropdown)
---AddItem(key, value) - Add an item to the list.
---SetMultiselect(flag) - Toggle multi-selecting.
---GetMultiselect() - Query the multi-select flag.
---SetItemValue(key, value) - Set the value of a item in the list.
---SetItemDisabled(key, flag) - Disable one item in the list.
---SetDisabled(flag) - Disable the widget.
-
-
-rogueGUI:Hide(0)
-
 function OUT_rollthebonesMenu()
+    local rogueGUI = AceGUI:Create("Frame")
+    rogueGUI:SetTitle("Rogue - Roll the Boness")
+    rogueGUI:SetStatusText("Rubim")
+    rogueGUI:SetCallback("OnClose", function(widget)
+        AceGUI:Release(widget)
+    end)
+    -- Fill Layout - the TabGroup widget will fill the whole frame
+    rogueGUI:SetLayout("Flow")
+    --rogueGUI:SetLayout("Fill")
+    rogueGUI:SetWidth(260)
+    rogueGUI:SetHeight(140)
+
+    local label = AceGUI:Create("Label")
+    label:SetText("Choose a buff from the list.")
+    rogueGUI:AddChild(label)
+
+    local rollBones = {
+        "Simcraft",
+        "SoloMode",
+        "1+ Buff",
+        "Broadsides",
+        "Buried Treasure",
+        "Grand Melee",
+        "Jolly Roger",
+        "Shark Infested Waters",
+        "Ture Bearing"
+    }
+    local dropdown = AceGUI:Create("Dropdown")
+    dropdown:SetValue("Choose a Buff")
+    dropdown:SetList(rollBones)
+    dropdown:SetText(selectedBuff)
+    --dropdown:SetLabel("Pick a Buff")
+    dropdown:SetCallback("OnValueChanged", function(self, event, pos)
+        print("Roll the Bones: " .. rollBones[pos])
+        selectedBuff = rollBones[pos]
+
+    end)
+    rogueGUI:AddChild(dropdown)
     rogueGUI:Show()
 end
 
