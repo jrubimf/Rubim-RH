@@ -140,7 +140,6 @@ end
 
 local lastSephuz = 0
 function BloodRotation()
-    lastMoved()
     ----RANGE
     AC.GetEnemies("Melee");
     AC.GetEnemies(8, true);

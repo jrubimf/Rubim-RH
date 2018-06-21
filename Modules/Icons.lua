@@ -106,7 +106,14 @@ local updateConfigFunc = function()
 
     --ROGUE
     if select(3, UnitClass("player")) == 4 then
+        classSpell = {}
         classSpell = { { spellID = RolltheBones, isActive = nil } }
+    end
+
+    --DRUID
+    if select(3, UnitClass("player")) == 11 then
+        classSpell = {}
+        classSpell = RubimRH.db.profile.dr.feral
     end
 end
 

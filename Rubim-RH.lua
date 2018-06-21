@@ -26,6 +26,10 @@ local WordofGlory = 210191
 --Shaman
 local HealingSurge = 188070
 
+--Druid
+local Regrowth = 8936
+local Renewal = 108238
+
 local defaults = {
     profile = {
         mainOption = {
@@ -34,15 +38,15 @@ local defaults = {
         },
         dh = {
             havoc = {
-                { name = GetSpellInfo(FelRush), spellID = FelRush, isActive = true },
-                { name = GetSpellInfo(EyeBeam), spellID = EyeBeam, isActive = true }
+                { spellID = FelRush, isActive = true },
+                { spellID = EyeBeam, isActive = true }
             },
             cooldown = false
         },
         dk = {
             blood = {
-                { name = GetSpellInfo(FelRush), spellID = DeathStrike, isActive = true },
-                { name = GetSpellInfo(FelRush), spellID = RuneTap, isActive = true }
+                { spellID = DeathStrike, isActive = true },
+                { spellID = RuneTap, isActive = true }
             },
             frost = {
                 { spellID = DeathStrike, isActive = true },
@@ -90,6 +94,14 @@ local defaults = {
                 { spellID = HealingSurge, isActive = true }
             },
             cooldown = false,
+        },
+        dr = {
+            feral = {
+                { spellID = Renewal, isActive = true },
+                { spellID = Regrowth, isActive = true },
+            },
+            renewal = 50,
+            regrowth = 85,
         }
     }
 }
@@ -142,6 +154,11 @@ function RubimRH:OnInitialize()
     --Paladin
     if select(3, UnitClass("player")) == 2 then
         varClass = RubimRH.db.profile.pl
+    end
+
+    --Druid
+    if select(3, UnitClass("player")) == 11 then
+        varClass = RubimRH.db.profile.dr
     end
     useCD = varClass.cooldown or false
 end
@@ -250,7 +267,7 @@ function MainRotation()
         return "ERROR: Missing an addon"
     end
 
-    if Player:IsMounted() then
+    if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
         return 155142
     end
 
@@ -363,6 +380,19 @@ function MainRotation()
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(70)
             SetNextAbility(PaladinHoly())
+        end
+    end
+
+    --Druid
+    if select(3, UnitClass("player")) == 11 then
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(103)
+            SetNextAbility(DruidFeral())
+        end
+
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(104)
+            SetNextAbility(DruidGuardian())
         end
     end
     return GetNextAbility()

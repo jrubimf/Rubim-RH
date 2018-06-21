@@ -260,8 +260,71 @@ local function getOptions()
                             }
                         },
                     }
+                },
+                Druid = {
+                    order = 1,
+                    type = "group",
+                    name = "General",
+                    args = {
+                        general = {
+                            order = 1,
+                            type = "group",
+                            childGroups = "tab",
+                            inline = true,
+                            name = "General",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.dr[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.dr[key] = value
+                            end,
+                            args = {
+                                cooldowns = {
+                                    order = 1,
+                                    type = "toggle",
+                                    name = "Cooldowns"
+                                },
+                            }
+                        },
+                        feral = {
+                            order = 2,
+                            type = "group",
+                            childGroups = "tab",
+                            inline = true,
+                            name = "Druid - Feral",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.dr[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.dr[key] = value
+                            end,
+                            args = {
+                                renewal = {
+                                    order = 1,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Renewal"
+                                },
+                                regrowth = {
+                                    order = 1,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Regrowth"
+                                },
+                            }
+                        },
+                    }
                 }
-
             }
         }
         for k, v in pairs(configOptions) do
@@ -286,6 +349,7 @@ function RubimRH:SetupOptions()
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Death Knight", "RubimRH", "DeathKnight")
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
+    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
     configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
 
