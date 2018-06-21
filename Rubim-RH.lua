@@ -271,6 +271,12 @@ function MainRotation()
         return 155142
     end
 
+    if not Player:AffectingCombat() then
+        SetNextAbility(146250)
+    else
+        SetNextAbility(233159)
+    end
+
     --    shiftDown = IsShiftKeyDown()
     --    if shiftDown then
     --        return 69042
