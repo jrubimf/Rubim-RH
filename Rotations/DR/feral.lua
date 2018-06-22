@@ -130,11 +130,9 @@ function Player:EnergyTimeToXP (Amount, Offset)
 end
 
 local useTrash = 0
-
 poolResource = {
     { skill = "None", qty = "0", isActive = false }
 }
-local spellPool = nil
 
 local MeleeRange, AoERadius, RangedRange = 0, 0, 0
 local RakeDuration, RipDuration, ThrashDuration = 0, 0, 0
@@ -145,31 +143,31 @@ local RakeThreshold, RipThreshold, ThrashThreshold = 0, 0, 0
 --- ======= MAIN =======
 local function Generators()
     --actions.st_generators=regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points>=2&cooldown.ashamanes_frenzy.remains<gcd
-    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() >= 2 and (S.AshamanesFrenzy:CooldownRemainsP() < Player:GCD()) then
+    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() >= 2 and (S.AshamanesFrenzy:CooldownRemainsP() < Player:GCD())) then
         return S.Regrowth:ID()
     end
 
     --actions.st_generators+=/regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
-    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4 then
+    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4) then
         return S.Regrowth:ID()
     end
 
     --actions.st_generators+=/regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))&buff.bloodtalons.down
-    if S.Regrowth:IsReady() and I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStack(S.PredatorySwiftness) > 2 or (Player:BuffStack(S.PredatorySwiftness) > 1 and Target:DebuffRemainsP(S.RakeDebuff) < 3)) and not Player:Buff(S.BloodtalonsBuff) then
+    if S.Regrowth:IsReady() and (I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStack(S.PredatorySwiftness) > 2 or (Player:BuffStack(S.PredatorySwiftness) > 1 and Target:DebuffRemainsP(S.RakeDebuff) < 3)) and not Player:Buff(S.BloodtalonsBuff)) then
         return S.Regrowth:ID()
     end
 
     --actions.st_generators+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
-    if S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
+    if S.BrutalSlash:IsAvailable() and S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
         return 194612
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
     if (Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (Cache.EnemiesCount[ThrashRadius] > 2)) and not S.Thrash:IsReady() then
-        poolResource = {
-            { skill = "Thrash", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Thrash
+        poolResource[1].spellName = "Thrash"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -179,10 +177,10 @@ local function Generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     if not Target:Debuff(S.RakeDebuff) or (not S.Bloodtalons:IsAvailable() and Target:DebuffRefreshableP(S.RakeDebuff, RakeThreshold)) and Target:TimeToDie() > 4 then
-        poolResource = {
-            { skill = "Rake", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Rake
+        poolResource[1].spellName = "Rake"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     --actions.st_generators+=/rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
@@ -192,10 +190,10 @@ local function Generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     if S.Rake:IsReady() and S.Bloodtalons:IsAvailable() and Player:Buff(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4 then
-        poolResource = {
-            { skill = "Rake", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Rake
+        poolResource[1].spellName = "Rake"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     --actions.st_generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
@@ -204,16 +202,16 @@ local function Generators()
     end
 
     --actions.st_generators+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
-    if S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
+    if S.BrutalSlash:IsAvailable() and S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
         return 194612
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
     if (Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (Cache.EnemiesCount[ThrashRadius] > 2)) and not S.Thrash:IsReady() then
-        poolResource = {
-            { skill = "Thrash", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Thrash
+        poolResource[1].spellName = "Thrash"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -223,7 +221,7 @@ local function Generators()
 
     --
     --actions.st_generators+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
-    if S.BrutalSlash:IsReady(AoERadius, true) and Player:Buff(S.TigersFury) then
+    if S.BrutalSlash:IsAvailable() and S.BrutalSlash:IsReady(AoERadius, true) and Player:Buff(S.TigersFury) then
         return 194612
     end
 
@@ -234,10 +232,11 @@ local function Generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     if Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (useTrash == 2 or Cache.EnemiesCount[ThrashRadius] > 1) then
-        poolResource = {
-            { skill = "Thrash", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Thrash
+        poolResource[1].spellName = "Thrash"
+        poolResource[1].isActive = true
+        spellPool = S.Thrash
+        return 233159
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
@@ -252,15 +251,15 @@ local function Generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     if not S.BrutalSlash:IsAvailable() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
-        poolResource = {
-            { skill = "Swipe", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.BrutalSlash
+        poolResource[1].spellName = "BrutalSlash"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
     if S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
-        return S.Swipe:ID()
+        return 194612
     end
 
     --actions.st_generators+=/shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
@@ -272,10 +271,10 @@ end
 local function Finishers()
     -- actions.st_finishers=pool_resource,for_next=1
     if S.SavageRoar:IsAvailable() and S.SavageRoar:CooldownRemainsP() == 0 and not Player:Buff(S.SavageRoar) then
-        poolResource = {
-            { skill = "SavageRoar", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.SavageRoar
+        poolResource[1].spellName = "SavageRoar"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.down
@@ -285,10 +284,10 @@ local function Finishers()
 
     -- actions.st_finishers+=/pool_resource,for_next=1
     if (Target:DebuffRefreshableP(S.Rip, 0) or (Target:DebuffRefreshableP(S.Rip, RipThreshold) and Target:HealthPercentage() >= 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRefreshableP(S.Rip, RipDuration * 0.8) and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip) and Target:TimeToDie() > 8)) then
-        poolResource = {
-            { skill = "Rip", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.Rip
+        poolResource[1].spellName = "Rip"
+        poolResource[1].isActive = true
+        return 233159
     end
     -- actions.st_finishers+=/rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
     if S.Rip:IsReady() and (Target:DebuffRefreshableP(S.Rip, 0) or (Target:DebuffRefreshableP(S.Rip, RipThreshold) and Target:HealthPercentage() >= 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRefreshableP(S.Rip, RipDuration * 0.8) and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip) and Target:TimeToDie() > 8)) then
@@ -297,10 +296,10 @@ local function Finishers()
 
     -- actions.st_finishers+=/pool_resource,for_next=1
     if not Player:Buff(S.SavageRoar) and S.SavageRoar:IsAvailable() then
-        poolResource = {
-            { skill = "SavageRoar", qty = "40", isActive = true }
-        }
-        return 124309
+        poolResource[1].skill = S.SavageRoar
+        poolResource[1].spellName = "SavageRoar"
+        poolResource[1].isActive = true
+        return 233159
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.remains<12
@@ -349,8 +348,8 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-    if S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
-        return S.Incarnation:ID()
+    if S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
+        return 124309
     end
 
     -- actions.cooldowns+=/potion,name=prolonged_power,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
@@ -448,6 +447,13 @@ function DruidFeral()
     AC.GetEnemies(ThrashRadius, true); -- Thrash
     AC.GetEnemies(AoERadius, true); -- Swipe
 
+
+    if not Player:AffectingCombat() then
+        poolResource[1].skill = "Nil"
+        poolResource[1].spellName = "0"
+        poolResource[1].isActive = false
+    end
+
     if UnitChannelInfo("player") ~= nil or UnitCastingInfo("player") ~= nil then
         return 248999
     end
@@ -464,44 +470,39 @@ function DruidFeral()
         return 233159
     end
 
-    if poolResource[1].isActive == true and Player:ComboPoints() >= 1 then
-        --print(poolResource[1].isActive)
-        --print("Pooling: " .. poolResource[1].skill)
-
-        if spellPool ~= nil and Player:PrevGCD(1, spellPool) then
-            spellPool = nil
-            poolResource = {
-                { skill = "None", qty = "0", isActive = false }
-            }
-        end
-
-        if poolResource[1].skill == "Rake" then
-            spellPool = S.Rake
-        end
-
-        if poolResource[1].skill == "Thrash" then
-            spellPool = S.Thrash
-        end
-
-        if poolResource[1].skill == "Swipe" then
-            spellPool = S.Swipe
-        end
-
-        if poolResource[1].skill == "Rip" then
-            spellPool = S.Rip
-        end
-
-        if poolResource[1].skill == "SavageRoar" then
-            spellPool = S.SavageRoar
-        end
-
-        if spellPool ~= nil then
-            return spellPool:ID()
-        end
-
+    if poolResource[1].isActive == true and Player:PrevGCD(1, poolResource[1].skill) then
+        poolResource[1].skill = "Nil"
+        poolResource[1].spellName = "0"
+        poolResource[1].isActive = false
         return 233159
-
     end
+
+    if poolResource[1].spellName == "Rake" and S.Rake:IsReady() and S.Rake:CooldownRemainsP() == 0 then
+        return S.Rake:ID()
+    end
+
+    if poolResource[1].spellName == "BrutalSlash" and S.BrutalSlash:IsReady() and S.BrutalSlash:ChargesFractional() >= 1 then
+        return 194612
+    end
+
+    if Player:ComboPoints() >= 1 then
+        if poolResource[1].spellName == "Thrash" and S.Thrash:IsReady() and S.Thrash:CooldownRemainsP() == 0 then
+            return S.Thrash:ID()
+        end
+
+        if poolResource[1].spellName == "Rip" and S.Rip:IsReady() and S.Rip:CooldownRemainsP() == 0 then
+            return S.Rip:ID()
+        end
+
+        if poolResource[1].spellName == "SavageRoar" and S.SavageRoar:IsReady() and S.SavageRoar:CooldownRemainsP() == 0 then
+            return S.SavageRoar:ID()
+        end
+    end
+
+    if poolResource[1].isActive == true and Player:ComboPoints() > 1 then
+        return 233159
+    end
+    --debugVarText = Player:PrevGCD()
 
     -- actions=run_action_list,name=single_target,if=dot.rip.ticking|time>15
     if SingleTarget() ~= nil and Target:IsInRange(MeleeRange) and (Target:DebuffRemainsP(S.Rip) > 0 or AC.CombatTime() > 15) then
@@ -534,7 +535,7 @@ function DruidFeral()
             return S.Berserk:ID()
         end
         -- incarnation
-        if S.Incarnation:IsReady() then
+        if S.Incarnation:IsAvailable() and S.Incarnation:IsReady() then
             return 124309
         end
     end
@@ -550,7 +551,7 @@ function DruidFeral()
     end
 
     -- actions+=/regrowth,if=(talent.sabertooth.enabled|buff.predatory_swiftness.up)&talent.bloodtalons.enabled&buff.bloodtalons.down&combo_points=5
-    if S.Regrowth:IsReady() and (Player:ComboPoints() == 5) and (not Player:Buff(S.BloodtalonsBuff)) and S.Bloodtalons:IsAvailable() and (S.Sabertooth:IsAvailable() or Player:Buff(S.PredatorySwiftness)) then
+    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() or Player:Buff(S.PredatorySwiftness) and S.Bloodtalons:IsAvailable() and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() == 5) then
         return S.Regrowth:ID()
     end
 
