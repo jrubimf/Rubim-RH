@@ -131,7 +131,7 @@ end
 
 local useTrash = 0
 
-local poolResource = {
+poolResource = {
     { skill = "None", qty = "0", isActive = false }
 }
 local spellPool = nil
@@ -161,7 +161,7 @@ local function Generators()
 
     --actions.st_generators+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
     if S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
-        return 211292
+        return 194612
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
@@ -169,12 +169,12 @@ local function Generators()
         poolResource = {
             { skill = "Thrash", qty = "40", isActive = true }
         }
-        return S.RipAndTear:ID()
+        return S.Thrash:ID()
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
     if S.Thrash:IsReady() and Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (Cache.EnemiesCount[ThrashRadius] > 2) then
-        return S.RipAndTear:ID()
+        return S.Thrash:ID()
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
@@ -203,9 +203,28 @@ local function Generators()
         return S.Rake:ID()
     end
 
+    --actions.st_generators+=/brutal_slash,if=spell_targets.brutal_slash>desired_targets
+    if S.BrutalSlash:IsReady() and Cache.EnemiesCount[AoERadius] > 1 then
+        return 194612
+    end
+
+    --actions.st_generators+=/pool_resource,for_next=1
+    if (Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (Cache.EnemiesCount[ThrashRadius] > 2)) and not S.Thrash:IsReady() then
+        poolResource = {
+            { skill = "Thrash", qty = "40", isActive = true }
+        }
+        return S.Thrash:ID()
+    end
+
+    --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
+    if S.Thrash:IsReady() and Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (Cache.EnemiesCount[ThrashRadius] > 2) then
+        return S.Thrash:ID()
+    end
+
+    --
     --actions.st_generators+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
     if S.BrutalSlash:IsReady(AoERadius, true) and Player:Buff(S.TigersFury) then
-        return 211292
+        return 194612
     end
 
     --actions.st_generators+=/moonfire_cat,target_if=refreshable
@@ -216,19 +235,19 @@ local function Generators()
     --actions.st_generators+=/pool_resource,for_next=1
     if Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (useTrash == 2 or Cache.EnemiesCount[ThrashRadius] > 1) then
         poolResource = {
-            { skill = "Rake", qty = "40", isActive = true }
+            { skill = "Thrash", qty = "40", isActive = true }
         }
-        return S.RipAndTear:ID()
+        return S.Thrash:ID()
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
     if S.Thrash:IsReady() and Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and (useTrash == 2 or Cache.EnemiesCount[ThrashRadius] > 1) then
-        return S.RipAndTear:ID()
+        return S.Thrash:ID()
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
-    if S.Thrash:IsReady(ThrashRadius, true) and Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and useTrash == 2 and Player:Buff(S.Clearcasting) then
-        return S.RipAndTear:ID()
+    if S.Thrash:IsReady(ThrashRadius, true) and Target:DebuffRefreshableP(S.Thrash, ThrashThreshold) and useTrash == 1 and Player:Buff(S.Clearcasting) then
+        return S.Thrash:ID()
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
@@ -257,6 +276,7 @@ local function Finishers()
             { skill = "SavageRoar", qty = "40", isActive = true }
         }
         return S.SavageRoar:ID()
+
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.down
@@ -441,6 +461,10 @@ function DruidFeral()
         return S.Regrowth:ID()
     end
 
+    if not TargetIsValid() then
+        return 233159
+    end
+
     if poolResource[1].isActive == true then
         --print(poolResource[1].isActive)
         --print("Pooling: " .. poolResource[1].skill)
@@ -475,6 +499,9 @@ function DruidFeral()
         if spellPool ~= nil then
             return spellPool:ID()
         end
+
+        return 233159
+
     end
 
     -- actions=run_action_list,name=single_target,if=dot.rip.ticking|time>15

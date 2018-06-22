@@ -214,7 +214,7 @@ local function Burst()
         return S.AimedShot:ID()
     end
 
-    if S.AMurderofCrows:IsAvailable() and  S.AMurderofCrows:IsReady() then
+    if S.AMurderofCrows:IsAvailable() and S.AMurderofCrows:IsReady() then
         return S.AMurderofCrows:ID()
     end
 end
@@ -259,6 +259,22 @@ function HunterMM()
     end
 
     if TargetIsValid() then
+
+        -- if Viper Sting(202901): Use Viper Sting on enemy healer if our target is below 70%hp. IF healer is a RESTO DRUID then cast ONLY when all buffs are on the target: Rejuvenation(774), Lifebloom(33763), Cenarion Ward (102351)
+--        if S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and not (EnemyHealer:Class("Druid") and EnemyHealer:HealthPercentage() < 70) or (EnemyHealer:Druid and EnemyHealer:Buff(S.Rejuvenation) and EnemyHealer:Buff(S.Lifebloom) and EnemyHealer:Buff(S.CenarionWard)) then
+--            return S.ViperSting:ID()
+--        end
+
+        --if Scorpid Sting(202901): Use Scorpid Sting if enemy melee dps (including hunter) is bursting OR we/our teammate is below 60%hp
+--        if S.ScorpidSting:IsAvailable() and (EnemyDPS:isBursting("player", 60) or EnemyDPS:isBursting("arena1", 60) or EnemyDPS:isBursting("arena2", 60) or EnemyDPS:isBursting("arena3", 60)) then
+--            return S.ScorpidSting:ID()
+--        end
+
+
+        --if Spider Sting(202914): Use Spider sting as interrupt if Counter shot(147362) is on cd and teammate is below 70%hp.
+
+
+
         --if CDsON() and Burst() ~= nil then
         --            return Burst()
         --        end
