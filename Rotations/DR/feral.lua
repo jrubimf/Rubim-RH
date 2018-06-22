@@ -169,7 +169,7 @@ local function Generators()
         poolResource = {
             { skill = "Thrash", qty = "40", isActive = true }
         }
-        return S.Thrash:ID()
+        return 124309
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -182,7 +182,7 @@ local function Generators()
         poolResource = {
             { skill = "Rake", qty = "40", isActive = true }
         }
-        return S.Rake:ID()
+        return 124309
     end
 
     --actions.st_generators+=/rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
@@ -195,7 +195,7 @@ local function Generators()
         poolResource = {
             { skill = "Rake", qty = "40", isActive = true }
         }
-        return S.Rake:ID()
+        return 124309
     end
 
     --actions.st_generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
@@ -213,7 +213,7 @@ local function Generators()
         poolResource = {
             { skill = "Thrash", qty = "40", isActive = true }
         }
-        return S.Thrash:ID()
+        return 124309
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -237,7 +237,7 @@ local function Generators()
         poolResource = {
             { skill = "Thrash", qty = "40", isActive = true }
         }
-        return S.Thrash:ID()
+        return 124309
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
@@ -255,7 +255,7 @@ local function Generators()
         poolResource = {
             { skill = "Swipe", qty = "40", isActive = true }
         }
-        return S.Swipe:ID()
+        return 124309
     end
 
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
@@ -275,8 +275,7 @@ local function Finishers()
         poolResource = {
             { skill = "SavageRoar", qty = "40", isActive = true }
         }
-        return S.SavageRoar:ID()
-
+        return 124309
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.down
@@ -289,7 +288,7 @@ local function Finishers()
         poolResource = {
             { skill = "Rip", qty = "40", isActive = true }
         }
-        return S.Rip:ID()
+        return 124309
     end
     -- actions.st_finishers+=/rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
     if S.Rip:IsReady() and (Target:DebuffRefreshableP(S.Rip, 0) or (Target:DebuffRefreshableP(S.Rip, RipThreshold) and Target:HealthPercentage() >= 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRefreshableP(S.Rip, RipDuration * 0.8) and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip) and Target:TimeToDie() > 8)) then
@@ -301,7 +300,7 @@ local function Finishers()
         poolResource = {
             { skill = "SavageRoar", qty = "40", isActive = true }
         }
-        return S.SavageRoar:ID()
+        return 124309
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.remains<12
@@ -465,7 +464,7 @@ function DruidFeral()
         return 233159
     end
 
-    if poolResource[1].isActive == true then
+    if poolResource[1].isActive == true and Player:ComboPoints() >= 1 then
         --print(poolResource[1].isActive)
         --print("Pooling: " .. poolResource[1].skill)
 
