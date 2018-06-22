@@ -536,7 +536,7 @@ function DruidFeral()
         end
         -- incarnation
         if S.Incarnation:IsReady() then
-            return S.Incarnation:ID()
+            return 124309
         end
     end
 

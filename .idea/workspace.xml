@@ -17,8 +17,8 @@
       <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="469" column="15" lean-forward="false" selection-start-line="469" selection-start-column="10" selection-end-line="469" selection-end-column="15" />
+            <state relative-caret-position="322">
+              <caret line="538" column="25" lean-forward="false" selection-start-line="538" selection-start-column="25" selection-end-line="538" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -115,7 +115,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Target</find>
       <find>SingleTar</find>
       <find>Lastcast</find>
       <find>SingleTArget</find>
@@ -145,6 +144,7 @@
       <find>poolEnerg</find>
       <find>BrutalSlash</find>
       <find>Print</find>
+      <find>Incarnation</find>
     </findStrings>
     <replaceStrings>
       <replace>4421</replace>
@@ -247,7 +247,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -529,7 +529,7 @@
     <option name="totallyTimeSpent" value="396463000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -936,8 +936,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="469" column="15" lean-forward="false" selection-start-line="469" selection-start-column="10" selection-end-line="469" selection-end-column="15" />
+        <state relative-caret-position="322">
+          <caret line="538" column="25" lean-forward="false" selection-start-line="538" selection-start-column="25" selection-end-line="538" selection-end-column="25" />
           <folding />
         </state>
       </provider>
