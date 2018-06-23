@@ -10,7 +10,7 @@ healingToggle = true
 TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
 TargetColor:SetBackdrop(nil)
 TargetColor:SetFrameStrata("HIGH")
-TargetColor:SetSize(1, 300)
+TargetColor:SetSize(1, 1)
 TargetColor:SetScale(1);
 TargetColor:SetPoint("TOPLEFT", 442, 0)
 --/run TargetColor:SetPoint("TOPLEFT", 300, 0)
