@@ -12,7 +12,7 @@ function roundscale(num, idp)
     return math.floor(num * mult + 0.5) / mult
 end
 
-TargetColor = CreateFrame("Frame", "TargetColor")
+TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
 TargetColor:SetBackdrop(nil)
 TargetColor:SetFrameStrata("HIGH")
 TargetColor:SetSize(1, 1)
@@ -22,6 +22,65 @@ TargetColor.texture = TargetColor:CreateTexture(nil, "TOOLTIP")
 TargetColor.texture:SetAllPoints(true)
 TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
 TargetColor:Show()
+
+local myhight
+function onUpdate(self, elapsed)
+    self.TimeSinceLastUpdate = (self.TimeSinceLastUpdate or 0) + elapsed    
+    if (self.TimeSinceLastUpdate > 2.1) then 
+        self.TimeSinceLastUpdate = 0;
+        if GetCurrentResolution()==0 or (GetCVar("gxMaximize")=="0" and GetCurrentResolution()~=#{GetScreenResolutions()}) then
+            SetCVar("gxWindowedResolution", select(#{GetScreenResolutions()}, GetScreenResolutions()))        
+            return RestartGx()        
+        end     
+        local myhight1 = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))    
+        if roundscale(GetScreenHeight())==myhight1 then
+            myhight = GetScreenHeight()  
+        elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="1" then
+            myhight = myhight1
+        elseif GetCVar("useuiscale")=="0" and GetCVar("gxMaximize")=="0" then
+            myhight = roundscale(GetScreenHeight())
+        elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="0" then            
+            SetCVar("useuiScale", 0) -- myhight = myhight1 --if you use Windowed Fix
+            return
+        end    
+        myscale1 = 0.42666670680046 * (1080 / myhight)
+        myscale2 = 0.17777778208256 * (1080 / myhight)
+        SetFramePos(TargetColor, 442, 0, 1, 1) 
+		
+		if RubimExtra then
+			MiniRotation:SetScale(myscale1 / (MiniRotation:GetParent() and MiniRotation:GetParent():GetEffectiveScale() or 1))
+		end	
+    end    
+end
+local resizeIcon = CreateFrame("frame")
+resizeIcon:SetScript("OnUpdate", onUpdate)
+function roundscale(num, idp)
+    mult = 10 ^ (idp or 0)
+    return math.floor(num * mult + 0.5) / mult
+end
+
+function SetFramePos(frame, x, y, w, h)
+    local xOffset0 = 1   
+    if frame==nil then
+        return 
+    end      
+    if GetCVar("gxMaximize")=="0" then 
+        xOffset0 = 0.9411764705882353       
+    end    
+    xPixel, yPixel, wPixel, hPixel = x, y, w, h
+    xRes, yRes = string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x(%d+)");
+    uiscale = UIParent:GetScale();     
+    XCoord = xPixel*(768.0/xRes)*GetMonitorAspectRatio()/uiscale/xOffset0
+    YCoord = yPixel * (768.0 / yRes) / uiscale;
+    Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
+    Height = hPixel * (768.0 / yRes) / uiscale;  
+    if x and y then
+        frame:SetPoint("TOPLEFT", XCoord, YCoord)
+    end
+    if w and h then
+        frame:SetSize(Weight, Height)
+    end                
+end
 
 
 function CalculateHP(t)
@@ -174,8 +233,8 @@ function AoEHealing(HP)
     return lowhpmembers
 end
 
-local healingTarget = "None"
-local healingTargetG = "None"
+healingTarget = "None"
+healingTargetG = "None"
 function setHealingTarget(TARGET, HP)
     local target = TARGET or nil
     local hp = HP or 99
@@ -203,8 +262,8 @@ function setHealingTarget(TARGET, HP)
         healingTargetG = members[1].GUID
         return members[1].HP
     end
-    local healingTarget = "None"
-    local healingTargetG = "None"
+    healingTarget = "None"
+    healingTargetG = "None"
 end
 
 function setColorTarget()
@@ -213,16 +272,19 @@ function setColorTarget()
 
     --Modifiers to disable it
     if disableTarget then
+		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a mouseover target, stop healing (kinda of dangerous)
     if CanHeal("mouseover") and GetMouseFocus() ~= WorldFrame and MouseoverCheck then
+		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a target do nothing.
     if UnitExists("target") and healingTargetG == UnitGUID("target") then
+		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
@@ -233,21 +295,25 @@ function setColorTarget()
 
     --Party
     if healingTarget == "party1" then
-        TargetColor.texture:SetColorTexture(0.345098, 0.239216, 0.741176, 1.0)
+        TargetColor.texture:SetColorTexture(0.192157, 0.878431, 0.015686, 1.0)
         return
     end
     if healingTarget == "party2" then
-        TargetColor.texture:SetColorTexture(0.407843, 0.501961, 0.086275, 1.0)
+        TargetColor.texture:SetColorTexture(0.780392, 0.788235, 0.745098, 1.0)
         return
     end
     if healingTarget == "party3" then
-        TargetColor.texture:SetColorTexture(0.160784, 0.470588, 0.164706, 1.0)
+        TargetColor.texture:SetColorTexture(0.498039, 0.184314, 0.521569, 1.0)
         return
     end
     if healingTarget == "party4" then
-        TargetColor.texture:SetColorTexture(0.725490, 0.572549, 0.647059, 1.0)
+        TargetColor.texture:SetColorTexture(0.627451, 0.905882, 0.882353, 1.0)
         return
-    end   
+    end
+    if healingTarget == "player" then
+        TargetColor.texture:SetColorTexture(0.145098, 0.658824, 0.121569, 1.0)
+        return
+    end
     
     --PartyPET
     if healingTarget == "partypet1" then
@@ -590,10 +656,10 @@ function setColorTarget()
     end
     
     --Stuff
-    if healingTarget == "player" then
-        TargetColor.texture:SetColorTexture(0.788235, 0.470588, 0.858824, 1.0)
-        return
-    end
+--    if healingTarget == "player" then
+        --TargetColor.texture:SetColorTexture(0.788235, 0.470588, 0.858824, 1.0)
+        --return
+    --end
     if healingTarget == "focus" then
         TargetColor.texture:SetColorTexture(0.615686, 0.227451, 0.988235, 1.0)
         return
@@ -704,3 +770,22 @@ local function onUpdate(self, elapsed)
 end
 local updateHealing = CreateFrame("frame")
 updateHealing:SetScript("OnUpdate", onUpdate)
+
+
+local purgeTable = CreateFrame("Frame")
+
+purgeTable:RegisterEvent("PLAYER_REGEN_DISABLED")
+purgeTable:RegisterEvent("PLAYER_REGEN_ENABLED")
+
+purgeTable:SetScript("OnEvent", function(self,event, ...)
+    if event == "PLAYER_REGEN_DISABLED" then
+        if RubimExtra then
+		end
+    end
+
+    if event == "PLAYER_REGEN_ENABLED" then 
+        if RubimExtra then
+		
+		end
+    end
+end)

@@ -232,14 +232,14 @@ Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
 Sephul.texture:SetTexture(GetSpellTexture(226262))
 Sephul:Hide()
 
-local IconRotation = CreateFrame("Frame", nil, UIParent)
+local IconRotation = CreateFrame("Frame", nil)
 IconRotation:SetBackdrop(nil)
 IconRotation:SetFrameStrata("HIGH")
 --IconRotation:SetSize(18, 18)
-IconRotation:SetSize(50, 50)
+IconRotation:SetSize(40, 40)
 --IconRotation:SetPoint("TOPLEFT", 19, 6)
 --IconRotation:SetPoint("TOPLEFT", 50, 6)
-IconRotation:SetPoint("CENTER", 0, -300)
+IconRotation:SetPoint("CENTER", 0, -200)
 IconRotation.texture = IconRotation:CreateTexture(nil, "BACKGROUND")
 IconRotation.texture:SetAllPoints(true)
 IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
@@ -278,6 +278,11 @@ function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
         IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+		
+		if RubimExtra then
+			MiniRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+		end	
+		
         self.sinceLastUpdate = 0;
     end
 end
