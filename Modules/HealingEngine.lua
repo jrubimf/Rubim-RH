@@ -205,22 +205,25 @@ end
 function setColorTarget()
     --Default START COLOR
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
+	
+	
+	--Should no target ppl
+	if UnitExists("target") and UnitCanAttack("player", "target") then
+		return
+	end
 
     --Modifiers to disable it
     if disableTarget then
-		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a mouseover target, stop healing (kinda of dangerous)
     if CanHeal("mouseover") and GetMouseFocus() ~= WorldFrame and MouseoverCheck then
-		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have a target do nothing.
     if UnitExists("target") and healingTargetG == UnitGUID("target") then
-		TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
