@@ -10,12 +10,14 @@ healingToggle = true
 TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
 TargetColor:SetBackdrop(nil)
 TargetColor:SetFrameStrata("HIGH")
-TargetColor:SetSize(1, 1)
+TargetColor:SetSize(1, 300)
 TargetColor:SetScale(1);
 TargetColor:SetPoint("TOPLEFT", 442, 0)
+--/run TargetColor:SetPoint("TOPLEFT", 300, 0)
 TargetColor.texture = TargetColor:CreateTexture(nil, "TOOLTIP")
 TargetColor.texture:SetAllPoints(true)
 TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
+SetFramePos(TargetColor, 442, 0, 1, 1) 
 
 function CalculateHP(t)
     incomingheals = UnitGetIncomingHeals(t) and UnitGetIncomingHeals(t) or 0
@@ -227,27 +229,23 @@ function setColorTarget()
         return
     end
 
-    --Party
+        --Party
     if healingTarget == "party1" then
-        TargetColor.texture:SetColorTexture(0.192157, 0.878431, 0.015686, 1.0)
+        TargetColor.texture:SetColorTexture(0.345098, 0.239216, 0.741176, 1.0)
         return
     end
     if healingTarget == "party2" then
-        TargetColor.texture:SetColorTexture(0.780392, 0.788235, 0.745098, 1.0)
+        TargetColor.texture:SetColorTexture(0.407843, 0.501961, 0.086275, 1.0)
         return
     end
     if healingTarget == "party3" then
-        TargetColor.texture:SetColorTexture(0.498039, 0.184314, 0.521569, 1.0)
+        TargetColor.texture:SetColorTexture(0.160784, 0.470588, 0.164706, 1.0)
         return
     end
     if healingTarget == "party4" then
-        TargetColor.texture:SetColorTexture(0.627451, 0.905882, 0.882353, 1.0)
+        TargetColor.texture:SetColorTexture(0.725490, 0.572549, 0.647059, 1.0)
         return
-    end
-    if healingTarget == "player" then
-        TargetColor.texture:SetColorTexture(0.145098, 0.658824, 0.121569, 1.0)
-        return
-    end
+    end   
     
     --PartyPET
     if healingTarget == "partypet1" then
@@ -265,7 +263,7 @@ function setColorTarget()
     if healingTarget == "partypet4" then
         TargetColor.texture:SetColorTexture(0.117647, 0.870588, 0.635294, 1.0)
         return
-    end        
+    end   
     
     --Raid
     if healingTarget == "raid1" then
