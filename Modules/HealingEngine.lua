@@ -233,22 +233,22 @@ function setColorTarget()
 
     --Party
     if healingTarget == "party1" then
-        TargetColor.texture:SetColorTexture(0.192157, 0.878431, 0.015686, 1.0)
+        TargetColor.texture:SetColorTexture(0.345098, 0.239216, 0.741176, 1.0)
         return
     end
     if healingTarget == "party2" then
-        TargetColor.texture:SetColorTexture(0.780392, 0.788235, 0.745098, 1.0)
+        TargetColor.texture:SetColorTexture(0.407843, 0.501961, 0.086275, 1.0)
         return
     end
     if healingTarget == "party3" then
-        TargetColor.texture:SetColorTexture(0.498039, 0.184314, 0.521569, 1.0)
+        TargetColor.texture:SetColorTexture(0.160784, 0.470588, 0.164706, 1.0)
         return
     end
     if healingTarget == "party4" then
-        TargetColor.texture:SetColorTexture(0.627451, 0.905882, 0.882353, 1.0)
+        TargetColor.texture:SetColorTexture(0.725490, 0.572549, 0.647059, 1.0)
         return
-    end
-
+    end   
+    
     --PartyPET
     if healingTarget == "partypet1" then
         TargetColor.texture:SetColorTexture(0.486275, 0.176471, 1.000000, 1.0)
@@ -265,8 +265,8 @@ function setColorTarget()
     if healingTarget == "partypet4" then
         TargetColor.texture:SetColorTexture(0.117647, 0.870588, 0.635294, 1.0)
         return
-    end
-
+    end        
+    
     --Raid
     if healingTarget == "raid1" then
         TargetColor.texture:SetColorTexture(0.192157, 0.878431, 0.015686, 1.0)
@@ -403,7 +403,7 @@ function setColorTarget()
     if healingTarget == "raid34" then
         TargetColor.texture:SetColorTexture(0.639216, 0.168627, 0.447059, 1.0)
         return
-    end
+    end    
     if healingTarget == "raid35" then
         TargetColor.texture:SetColorTexture(0.874510, 0.058824, 0.400000, 1.0)
         return
@@ -588,7 +588,7 @@ function setColorTarget()
         TargetColor.texture:SetColorTexture(0.929412, 0.592157, 0.501961, 1.0)
         return
     end
-
+    
     --Stuff
     if healingTarget == "player" then
         TargetColor.texture:SetColorTexture(0.788235, 0.470588, 0.858824, 1.0)
@@ -629,14 +629,12 @@ function setColorTarget()
     if healingTarget == PLACEHOLDER then
         TargetColor.texture:SetColorTexture(0.647059, 0.874510, 0.713725, 1.0)
         return
-    end
-    if healingTarget == PLACEHOLDER then
-        --was party5
+    end   
+    if healingTarget == PLACEHOLDER then --was party5
         TargetColor.texture:SetColorTexture(0.007843, 0.301961, 0.388235, 1.0)
         return
-    end
-    if healingTarget == PLACEHOLDER then
-        --was party5pet
+    end     
+    if healingTarget == PLACEHOLDER then --was party5pet
         TargetColor.texture:SetColorTexture(0.572549, 0.705882, 0.984314, 1.0)
         return
     end
@@ -694,8 +692,6 @@ function predictHeal(SPELLID, VARIATION)
     end
     return total + (total * variation) / 100
 end
-
-
 
 
 local total = 0
