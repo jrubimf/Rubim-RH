@@ -286,3 +286,63 @@ function updateIcon:onUpdate(sinceLastUpdate)
         self.sinceLastUpdate = 0;
     end
 end
+
+function roundscale(num, idp)
+    mult = 10 ^ (idp or 0)
+    return math.floor(num * mult + 0.5) / mult
+end
+
+local myhight
+function onUpdate(self, elapsed)
+    self.TimeSinceLastUpdate = (self.TimeSinceLastUpdate or 0) + elapsed    
+    if (self.TimeSinceLastUpdate > 2.1) then 
+        self.TimeSinceLastUpdate = 0;
+        if GetCurrentResolution()==0 or (GetCVar("gxMaximize")=="0" and GetCurrentResolution()~=#{GetScreenResolutions()}) then
+            SetCVar("gxWindowedResolution", select(#{GetScreenResolutions()}, GetScreenResolutions()))        
+            return RestartGx()        
+        end     
+        local myhight1 = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))    
+        if roundscale(GetScreenHeight())==myhight1 then
+            myhight = GetScreenHeight()  
+        elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="1" then
+            myhight = myhight1
+        elseif GetCVar("useuiscale")=="0" and GetCVar("gxMaximize")=="0" then
+            myhight = roundscale(GetScreenHeight())
+        elseif GetCVar("useuiscale")=="1" and GetCVar("gxMaximize")=="0" then            
+            SetCVar("useuiScale", 0) -- myhight = myhight1 --if you use Windowed Fix
+            return
+        end    
+        myscale1 = 0.42666670680046 * (1080 / myhight)
+        myscale2 = 0.17777778208256 * (1080 / myhight)
+        SetFramePos(TargetColor, 442, 0, 1, 1) 
+		
+		if RubimExtra then
+			MiniRotation:SetScale(myscale1 / (MiniRotation:GetParent() and MiniRotation:GetParent():GetEffectiveScale() or 1))
+		end	
+    end    
+end
+local resizeIcon = CreateFrame("frame")
+resizeIcon:SetScript("OnUpdate", onUpdate)
+
+function SetFramePos(frame, x, y, w, h)
+    local xOffset0 = 1   
+    if frame==nil then
+        return 
+    end      
+    if GetCVar("gxMaximize")=="0" then 
+        xOffset0 = 0.9411764705882353       
+    end    
+    xPixel, yPixel, wPixel, hPixel = x, y, w, h
+    xRes, yRes = string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x(%d+)");
+    uiscale = UIParent:GetScale();     
+    XCoord = xPixel*(768.0/xRes)*GetMonitorAspectRatio()/uiscale/xOffset0
+    YCoord = yPixel * (768.0 / yRes) / uiscale;
+    Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
+    Height = hPixel * (768.0 / yRes) / uiscale;  
+    if x and y then
+        frame:SetPoint("TOPLEFT", XCoord, YCoord)
+    end
+    if w and h then
+        frame:SetSize(Weight, Height)
+    end                
+end
