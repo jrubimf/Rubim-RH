@@ -158,19 +158,19 @@ function WarriorProt()
         end
     end
 
-    if S.ShieldSlam:IsReadyP("Melee") then
+    if S.ShieldSlam:IsReady("Melee") then
         return S.ShieldSlam:ID()
     end
 
-    if S.ThunderClap:IsReadyP() and Cache.EnemiesCount[12] >= 1 then
+    if S.ThunderClap:IsReady() and Cache.EnemiesCount[12] >= 1 then
         return S.ThunderClap:ID()
     end
 
-    if not S.Vengeance:IsAvailable() and S.Revenge:IsReadyP() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
+    if not S.Vengeance:IsAvailable() and S.Revenge:IsReady() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
         return S.Revenge:ID()
     end
 
-    if S.Devastate:IsReadyP() then
+    if S.Devastate:IsReady() then
         return S.Devastate:ID()
     end
     return "233159"
