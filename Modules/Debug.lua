@@ -5,7 +5,7 @@
 ---
 
 local devRub = false
-
+debugVarText = "Nothing"
 if devRub then
     local debugFrame = CreateFrame("Frame", "DebugFrame", UIParent)
     local debugText = debugFrame:CreateFontString("DebugText", "OVERLAY")

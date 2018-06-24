@@ -527,7 +527,7 @@ local function Finish()
         return S.BetweentheEyes:ID()
     end
     -- actions.finish+=/run_through,if=!talent.death_from_above.enabled|energy.time_to_max<cooldown.death_from_above.remains+3.5
-    if S.RunThrough:IsReady(S.RunThrough) and (not S.DeathfromAbove:IsAvailable()
+    if S.RunThrough:IsReady() and (not S.DeathfromAbove:IsAvailable()
             or EnergyTimeToMaxRounded() < S.DeathfromAbove:CooldownRemainsP() + 3.5) then
         return S.RunThrough:ID()
     end
@@ -546,7 +546,9 @@ function RogueOutlaw()
 
     -- Defensives
     -- Crimson Vial
-
+    if UnitName("player") == "Saberslash" and S.CrimsonVial:IsReady() and Player:HealthPercentage() <= 80 then
+        return 20594
+    end
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth

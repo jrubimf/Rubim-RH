@@ -314,12 +314,15 @@ function MainRotation()
     --Rogue
     if select(3, UnitClass("player")) == 4 then
         if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(259)
             SetNextAbility(RogueAss())
         end
         if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(260)
             SetNextAbility(RogueOutlaw())
         end
         if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(261)
             SetNextAbility(RogueSub())
         end
     end

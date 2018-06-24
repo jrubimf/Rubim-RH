@@ -116,7 +116,7 @@ function Spell:IsUsableP()
     end
 end
 
-function Spell:IsReady(Range, AoESpell, ThisUnit)
+function Spell:IsReadyWind(Range, AoESpell, ThisUnit)
     return self:IsCastableP(Range, AoESpell, ThisUnit) and self:IsUsableP();
 end
 

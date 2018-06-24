@@ -245,7 +245,6 @@ IconRotation.texture:SetAllPoints(true)
 IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
 IconRotation:SetMovable(true)
 IconRotation:EnableMouse(true)
---IconRotation:DisableDrawLayer("BACKGROUND")
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
         self:StartMoving();
@@ -278,34 +277,32 @@ function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
         IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
-		
-		if RubimExtra then
-			MiniRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
-		end	
-		
+        if RubimExtra then
+            RubimRH.MiniRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+        end
         self.sinceLastUpdate = 0;
     end
 end
 
-function SetFramePos(frame, x, y, w, h)
-    local xOffset0 = 1   
-    if frame==nil then
-        return 
-    end      
-    if GetCVar("gxMaximize")=="0" then 
-        xOffset0 = 0.9411764705882353       
-    end    
+function RubimRH.SetFramePos(frame, x, y, w, h)
+    local xOffset0 = 1
+    if frame == nil then
+        return
+    end
+    if GetCVar("gxMaximize") == "0" then
+        xOffset0 = 0.9411764705882353
+    end
     xPixel, yPixel, wPixel, hPixel = x, y, w, h
-    xRes, yRes = string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x(%d+)");
-    uiscale = UIParent:GetScale();     
-    XCoord = xPixel*(768.0/xRes)*GetMonitorAspectRatio()/uiscale/xOffset0
+    xRes, yRes = string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "(%d+)x(%d+)");
+    uiscale = UIParent:GetScale();
+    XCoord = xPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale / xOffset0
     YCoord = yPixel * (768.0 / yRes) / uiscale;
     Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
-    Height = hPixel * (768.0 / yRes) / uiscale;  
+    Height = hPixel * (768.0 / yRes) / uiscale;
     if x and y then
         frame:SetPoint("TOPLEFT", XCoord, YCoord)
     end
     if w and h then
         frame:SetSize(Weight, Height)
-    end                
+    end
 end

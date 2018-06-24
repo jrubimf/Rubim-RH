@@ -372,11 +372,11 @@ function WarriorArms()
     -- In Combat
     if Target:Exists() and Target:IsInRange("Melee") then
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush then
             return S.VictoryRush:ID()
         end
 
-        if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsCastable() then
+        if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
             return S.VictoryRush:ID()
         end
         -- Racial

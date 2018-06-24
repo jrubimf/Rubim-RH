@@ -60,23 +60,23 @@ local T202PC, T204PC = AC.HasTier("T20");
 local T212PC, T214PC = AC.HasTier("T21");
 
 function AoE()
-    if S.IgnorePain:IsCastable() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
+    if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
         return S.IgnorePain:ID()
     end
 
-    if S.Revenge:IsCastable() and S.Revenge:IsReady() and Player:RageDeficit() <= 30 then
+    if S.Revenge:IsReady() and S.Revenge:IsReady() and Player:RageDeficit() <= 30 then
         return S.Revenge:ID()
     end
 
-    if S.ThunderClap:IsCastableP() and Cache.EnemiesCount[12] >= 1 then
+    if S.ThunderClap:IsReadyP() and Cache.EnemiesCount[12] >= 1 then
         return S.ThunderClap:ID()
     end
 
-    if S.ShieldSlam:IsCastableP("Melee") then
+    if S.ShieldSlam:IsReadyP("Melee") then
         return S.ShieldSlam:ID()
     end
 
-    if S.Devastate:IsCastableP() then
+    if S.Devastate:IsReadyP() then
         return S.Devastate:ID()
     end
 end
@@ -108,11 +108,11 @@ function WarriorProt()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
-    if LeftCtrl and LeftShift and S.Shockwave:IsCastable() then
+    if LeftCtrl and LeftShift and S.Shockwave:IsReady() then
         return S.Shockwave:ID()
     end
 
-    if S.BattleCry:IsCastable() and Cache.EnemiesCount[8] >= 1 then
+    if S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.BattleCry:ID()
     end
 
@@ -120,35 +120,35 @@ function WarriorProt()
 		return Vengeance()
 	end	
 	
-    if S.IgnorePain:IsCastable() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
+    if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
         return S.IgnorePain:ID()
     end
 
-    if S.ShieldBlock:IsCastable("Melee") and Player:Rage() >= 15 and not Player:Buff(S.ShieldBlockB) and IsTanking and S.ShieldBlock:ChargesFractional() >= 1.8 then
+    if S.ShieldBlock:IsReady("Melee") and Player:Rage() >= 15 and not Player:Buff(S.ShieldBlockB) and IsTanking and S.ShieldBlock:ChargesFractional() >= 1.8 then
         return S.ShieldBlock:ID()
     end
 
-    if S.ImpendingVictory:IsCastable() and Player:HealthPercentage() <= 85 then
+    if S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
         return S.VictoryRush:ID()
     end
 
-    if Player:Buff(S.Victorious) and S.VictoryRush:IsCastable() and Player:HealthPercentage() <= 85 then
+    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= 85 then
         return S.VictoryRush:ID()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsCastable() then
+    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
         return S.VictoryRush:ID()
     end
 
-    if Player:Buff(S.Victorious) and S.ImpendingVictory:IsCastable() and Player:HealthPercentage() <= 85 then
+    if Player:Buff(S.Victorious) and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
         return S.VictoryRush:ID()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.ImpendingVictory:IsCastable() then
+    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.ImpendingVictory:IsReady() then
         return S.VictoryRush:ID()
     end
 
-    if S.Revenge:IsCastable() and Player:RageDeficit() <= 30 and Cache.EnemiesCount[8] >= 1 then
+    if S.Revenge:IsReady() and Player:RageDeficit() <= 30 and Cache.EnemiesCount[8] >= 1 then
         return S.Revenge:ID()
     end
 
@@ -158,19 +158,19 @@ function WarriorProt()
         end
     end
 
-    if S.ShieldSlam:IsCastableP("Melee") then
+    if S.ShieldSlam:IsReadyP("Melee") then
         return S.ShieldSlam:ID()
     end
 
-    if S.ThunderClap:IsCastableP() and Cache.EnemiesCount[12] >= 1 then
+    if S.ThunderClap:IsReadyP() and Cache.EnemiesCount[12] >= 1 then
         return S.ThunderClap:ID()
     end
 
-    if not S.Vengeance:IsAvailable() and S.Revenge:IsCastableP() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
+    if not S.Vengeance:IsAvailable() and S.Revenge:IsReadyP() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
         return S.Revenge:ID()
     end
 
-    if S.Devastate:IsCastableP() then
+    if S.Devastate:IsReadyP() then
         return S.Devastate:ID()
     end
     return "233159"
