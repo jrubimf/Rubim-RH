@@ -106,7 +106,7 @@ end
 local T202PC, T204PC = AC.HasTier("T20");
 local T212PC, T214PC = AC.HasTier("T21");
 
-function Cleave()
+local function Cleave()
     --	actions.cleave=bladestorm,if=buff.battle_cry.up&!talent.ravager.enabled
     if S.Bladestorm:IsReady() and Player:Buff(S.BattleCry) and not S.Ravager:IsAvailable() then
         return S.Bladestorm:ID()
@@ -158,7 +158,7 @@ function Cleave()
     end
 end
 
-function AoE()
+local function AoE()
     -- actions.aoe=warbreaker,if=(cooldown.bladestorm.up|cooldown.bladestorm.remains<=gcd)&(cooldown.battle_cry.up|cooldown.battle_cry.remains<=gcd)
     if classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.Bladestorm:CooldownRemainsP() == 0 or S.Bladestorm:CooldownRemainsP() <= Player:GCD()) and (S.BattleCry:CooldownRemainsP() == 0 or S.BattleCry:CooldownRemainsP() <= Player:GCD())) then
         return S.Warbreaker:ID()
@@ -230,7 +230,7 @@ function AoE()
     end
 end
 
-function Execute()
+local function Execute()
     -- actions.execute=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
     if S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
@@ -287,7 +287,7 @@ function Execute()
     end
 end
 
-function Single()
+local function Single()
     -- actions.single=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
     if S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
