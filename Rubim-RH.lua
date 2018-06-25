@@ -167,7 +167,9 @@ local defaults = {
         sh = {
             enh = {
                 cooldown = true,
-                { spellID = HealingSurge, isActive = true }
+                spells = {
+                    { spellID = HealingSurge, isActive = true }
+                }
             },
         },
         dr = {
@@ -175,8 +177,10 @@ local defaults = {
                 cooldowns = false,
                 renewal = 50,
                 regrowth = 85,
-                { spellID = Renewal, isActive = true },
-                { spellID = Regrowth, isActive = true },
+                spells = {
+                    { spellID = Renewal, isActive = true },
+                    { spellID = Regrowth, isActive = true },
+                }
             },
             guardian = {
                 cooldowns = false,
