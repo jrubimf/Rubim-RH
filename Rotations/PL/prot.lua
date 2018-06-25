@@ -116,7 +116,7 @@ function PaladinProtection()
                     return S.LightoftheProtector:ID()
                 end
                 if S.HandoftheProtector:IsCastable() and Player:HealthPercentage() <= 75 then
-                    return S.HandoftheProtector:ID()
+                    return 250389
                 end
             end
         end
