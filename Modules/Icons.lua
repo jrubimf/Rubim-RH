@@ -158,7 +158,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             else
                 useAoE = false
             end
-            print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useCD))
+            print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useAoE))
         end
         UIDropDownMenu_AddButton(info)
         --

@@ -94,7 +94,6 @@ local pvpHEX = {
     605, --  Dominate Mind
 }
 
-local enemyHealer = "None"
 function findHealer()
     for i = 1, 3 do
         local enemyHealer = "None"
@@ -172,13 +171,24 @@ end
 local arenaSTART = CreateFrame("Frame")
 arenaSTART:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
 
+enemyHealer = {}
+enemyDPS = {}
 arenaSTART:SetScript("OnEvent", function(self, event, ...)
     local numOpps = GetNumArenaOpponentSpecs()
+    enemyHealer = {}
+    enemyDPS = {}
     for i = 1, numOpps do
         local specID = GetArenaOpponentSpec(i)
-        local _, spec, _, _, _, role, _ = GetSpecializationInfoByID(specID)
-        if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
-            arenaHealer = "arena" .. i
+        if specID > 0 then
+            local id, name, description, icon, role, class = GetSpecializationInfoByID(specID)
+            local repeated = 0
+            if role == "HEALER" then
+                table.insert(enemyHealer, { Unit = "arena" .. i, Class = class })
+            else
+                table.insert(enemyDPS, { Unit = "arena" .. i, Class = class })
+
+            end
         end
+
     end
 end)

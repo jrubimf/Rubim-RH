@@ -365,33 +365,6 @@ local function EnergyTimeToMaxRounded()
     return math.floor(Player:EnergyTimeToMaxPredicted() * 10 + 0.5) / 10;
 end
 
---MENU
---UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
---    local info = UIDropDownMenu_CreateInfo()
---    if (level or 1) == 1 then
---        info.text, info.hasArrow, info.menuList = "Diceroll", true, "Diceroll"
---        info.checked = false
---        info.func = function(self) end
---        UIDropDownMenu_AddButton(info)
---    elseif menuList == "Diceroll" then
---        --2 PIECES
---        info.text = "Smart"
---        info.checked = int_smart
---        info.func = function(self)
---            PlaySound(891, "Master");
---            if int_smart then
---                int_smart = false
---                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Everything ")
---            else
---                int_smart = true
---                print("|cFF69CCF0".. "Interrupting" .. "|r: |cFF00FF00" ..  "Only necessary. ")
---            end
---        end
---        UIDropDownMenu_AddButton(info, level)
---    end
---end)
---END
-
 local function BladeFlurry()
     -- Blade Flurry Expiration Offset
     if Cache.EnemiesCount[RTIdentifier] == 1 and BFReset then

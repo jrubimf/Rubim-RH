@@ -13,6 +13,7 @@ local Cache = AethysCache;
 local Unit = AC.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Spell = AC.Spell;
 local Item = AC.Item;
 
@@ -253,7 +254,25 @@ local function Sustained()
     end
 end
 
+local enemyHEALtarget = "None"
+local function aethysHealer()
+    if enemyHealer.Unit == "arena1" then
+        enemyHEALtarget = Arena[1]
+        return
+    elseif enemyHealer.Unit == "arena2" then
+        enemyHEALtarget = Arena[2]
+        return
+    elseif enemyHealer.Unit == "arena3" then
+        enemyHEALtarget = Arena[3]
+        return
+    end
+    enemyHEALtarget = "None"
+
+end
+
 function HunterMM()
+    aethysHealer()
+
     if not Player:AffectingCombat() then
         return "146250"
     end
@@ -261,9 +280,11 @@ function HunterMM()
     if TargetIsValid() then
 
         -- if Viper Sting(202901): Use Viper Sting on enemy healer if our target is below 70%hp. IF healer is a RESTO DRUID then cast ONLY when all buffs are on the target: Rejuvenation(774), Lifebloom(33763), Cenarion Ward (102351)
---        if S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and not (EnemyHealer:Class("Druid") and EnemyHealer:HealthPercentage() < 70) or (EnemyHealer:Druid and EnemyHealer:Buff(S.Rejuvenation) and EnemyHealer:Buff(S.Lifebloom) and EnemyHealer:Buff(S.CenarionWard)) then
---            return S.ViperSting:ID()
---        end
+        if enemyHEALtarget ~= "None" then
+            if S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and (not enemyHealer.class == "DRUID" and enemyHEALtarget:HealthPercentage() < 70) or (enemyHealer.class == "DRUID" and enemyHEALtarget:Buff(S.Rejuvenation) and enemyHEALtarget:Buff(S.Lifebloom) and enemyHEALtarget:Buff(S.CenarionWard)) then
+                return 146250
+            end
+        end
 
         --if Scorpid Sting(202901): Use Scorpid Sting if enemy melee dps (including hunter) is bursting OR we/our teammate is below 60%hp
 --        if S.ScorpidSting:IsAvailable() and (EnemyDPS:isBursting("player", 60) or EnemyDPS:isBursting("arena1", 60) or EnemyDPS:isBursting("arena2", 60) or EnemyDPS:isBursting("arena3", 60)) then
@@ -275,9 +296,9 @@ function HunterMM()
 
 
 
-        --if CDsON() and Burst() ~= nil then
-        --            return Burst()
-        --        end
+        if CDsON() and Burst() ~= nil then
+               return Burst()
+        end
         if Sustained() ~= nil then
             return Sustained()
         end

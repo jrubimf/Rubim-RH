@@ -428,9 +428,10 @@ end
 
 function FrostRotation()
   if not Player:AffectingCombat() then
+    rotationMode = "Out of Combat"
     return 146250
   end
-
+  rotationMode = "Combat"
   AC.GetEnemies("Melee");
   AC.GetEnemies(8, true);
   AC.GetEnemies(10, true);

@@ -4,78 +4,62 @@
 --- DateTime: 01/06/2018 02:34
 ---
 
-local devRub = false
-debugVarText = "Nothing"
-if devRub then
-    local debugFrame = CreateFrame("Frame", "DebugFrame", UIParent)
-    local debugText = debugFrame:CreateFontString("DebugText", "OVERLAY")
-    local OneTimeRubim = nil
-    local event = function()
-        if OneTimeRubim == nil then
-            debugFrame:SetWidth(240)
-            debugFrame:SetHeight(40)
-            debugFrame:SetPoint("CENTER")-- Baseado no chat?
-            local tex = debugFrame:CreateTexture("BACKGROUND")
-            tex:SetAllPoints()
-            tex:SetTexture(0, 0, 0);
-            tex:SetAlpha(0.5)
-            OneTimeRubim = 1
-        end
+local pvpRub = true
+rotationMode = "Disabled"
+local OneTimeRubim = nil
 
-        debugText:SetFontObject(GameFontNormalSmall)
-        debugText:SetJustifyH("CENTER") --
-        debugText:SetPoint("CENTER", debugFrame, "CENTER", 0, 0) -- Centralizado sempre / TODO Salvar localização em variavél.
-        debugText:SetFont("Fonts\\FRIZQT__.TTF", 20)
-        debugText:SetShadowOffset(1, -1)
-        debugText:SetText("Hello")
+local pvpHelper = CreateFrame("Frame",nil,UIParent)
+local rotationText = pvpHelper:CreateFontString("DebugText", "OVERLAY")
+local healerStuff = pvpHelper:CreateFontString("DebugText", "OVERLAY")
+pvpHelper:SetFrameStrata("BACKGROUND")
+pvpHelper:SetWidth(150) -- Set these to whatever height/width is needed
+pvpHelper:SetHeight(60) -- for your Texture
+pvpHelper:SetPoint("CENTER",0,0)
+pvpHelper.texture = pvpHelper:CreateTexture(nil, "TOOLTIP")
+pvpHelper.texture:SetAllPoints(true)
+pvpHelper.texture:SetColorTexture(0.2, 0.2, 0.2, 0.0)
+--pvpHelper.texture:SetAlpha()
 
-        local t = GetTime()
-        debugFrame:SetScript("OnUpdate", function()
-            --se tiver com problemas, colocar um delay usando o GetTime()
-            --if t - GetTime() <= 0.2 then
-            debugText:SetText(debugVarText)
-            --t = GetTime()
-            --		end
-        end)
+rotationText:SetFontObject(GameFontNormalSmall)
+rotationText:SetJustifyH("RIGHT") --
+rotationText:SetPoint("TOP", pvpHelper, "TOP", 0, 0)
+rotationText:SetFont("Fonts\\FRIZQT__.TTF", 20)
+rotationText:SetShadowOffset(1, -1)
+rotationText:SetText(rotationMode)
 
-        debugFrame:SetMovable(true)
-        debugFrame:EnableMouse(true)
-        debugFrame:SetScript("OnMouseDown", function(self, button)
-            if button == "LeftButton" and not self.isMoving then
-                self:StartMoving();
-                self.isMoving = true;
-            end
-        end)
-        debugFrame:SetScript("OnMouseUp", function(self, button)
-            if button == "LeftButton" and self.isMoving then
-                local arg1, _, arg2, arg3, arg4 = debugFrame:GetPoint()
-                self:StopMovingOrSizing();
-                self.isMoving = false;
-            end
-        end)
-        debugFrame:SetScript("OnHide", function(self)
-            if (self.isMoving) then
-                self:StopMovingOrSizing();
-                self.isMoving = false;
-            end
-        end)
+local t = GetTime()
+pvpHelper:SetScript("OnUpdate", function()
+    --se tiver com problemas, colocar um delay usando o GetTime()
+    --if t - GetTime() <= 0.2 then
+    if rotationMode ~= nil then
+        rotationText:SetText(rotationMode)
 
     end
+    --t = GetTime()
+    --		end
+end)
 
-    local total = 0
-
-    local function onUpdate(self, elapsed)
-        total = total + elapsed
-        if total >= 1 then
-
-            total = 0
-        end
+pvpHelper:SetMovable(true)
+pvpHelper:EnableMouse(true)
+pvpHelper:SetScript("OnMouseDown", function(self, button)
+    if button == "LeftButton" and not self.isMoving then
+        self:StartMoving();
+        self.isMoving = true;
     end
+end)
+pvpHelper:SetScript("OnMouseUp", function(self, button)
+    if button == "LeftButton" and self.isMoving then
+        local arg1, _, arg2, arg3, arg4 = pvpHelper:GetPoint()
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+    end
+end)
+pvpHelper:SetScript("OnHide", function(self)
+    if (self.isMoving) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+    end
+end)
 
-    local f = CreateFrame("frame")
-    f:SetScript("OnUpdate", onUpdate)
 
-    debugFrame:SetScript("OnEvent", event)
-    debugFrame:RegisterEvent("PLAYER_LOGIN")
-
-end
+pvpHelper:Show()
