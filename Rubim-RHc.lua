@@ -15,7 +15,7 @@ function RubimRH.CDToggle()
         useCD = false
         varClass.cooldown = false
     end
-    print("|cFF69CCF0CD".. "|r: |cFF00FF00" .. tostring(useCD))
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useCD))
 end
 
 local options, configOptions = nil, {}
@@ -37,7 +37,7 @@ local function getOptions()
                             type = "group",
                             childGroups = "tab",
                             inline = true,
-                            name = "General Config",
+                            name = "General",
                             get = function(info)
                                 local key = info.arg or info[#info]
                                 return RubimRH.db.profile.mo[key]
@@ -50,15 +50,25 @@ local function getOptions()
                                 cooldownbind = {
                                     order = 1,
                                     type = "keybinding",
-                                    get = function() return GetBindingKey("Cooldown Toggle")    end,
-                                    set = function(info, v) SetBinding(v, "Cooldown Toggle")    SaveBindings(GetCurrentBindingSet()) end,
+                                    get = function()
+                                        return GetBindingKey("Cooldown Toggle")
+                                    end,
+                                    set = function(info, v)
+                                        SetBinding(v, "Cooldown Toggle")
+                                        SaveBindings(GetCurrentBindingSet())
+                                    end,
                                     name = "Cooldowns"
                                 },
                                 interruptsbind = {
                                     order = 2,
                                     type = "keybinding",
-                                    get = function() return GetBindingKey("Interrupt Toggle")    end,
-                                    set = function(info, v) SetBinding(v, "Interrupt Toggle")    SaveBindings(GetCurrentBindingSet()) end,
+                                    get = function()
+                                        return GetBindingKey("Interrupt Toggle")
+                                    end,
+                                    set = function(info, v)
+                                        SetBinding(v, "Interrupt Toggle")
+                                        SaveBindings(GetCurrentBindingSet())
+                                    end,
                                     name = "Interrupts"
                                 },
                             }
@@ -71,45 +81,69 @@ local function getOptions()
                     name = "DK",
                     childGroups = "tab",
                     args = {
-                        general = {
-                            order = 1,
+                        frost = {
+                            order = 2,
                             type = "group",
                             childGroups = "tab",
                             inline = true,
-                            name = "General",
+                            name = "Death Knight - Frost",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dk[key]
+                                return RubimRH.db.profile.dk.frost[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dk[key] = value
+                                RubimRH.db.profile.dk.frost[key] = value
                             end,
                             args = {
                                 cooldown = {
                                     order = 1,
                                     type = "toggle",
-                                    get = function() return useCD end,
-                                    set = function(info, v) RubimRH.CDToggle() end,
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
                                     name = "Cooldowns"
+                                },
+                                deathstrike = {
+                                    order = 1,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Death Strike (Dark Succur)"
                                 },
                             }
                         },
-                        dk = {
-                            order = 2,
+                        unholy = {
+                            order = 3,
                             type = "group",
                             childGroups = "tab",
                             inline = true,
-                            name = "Death Knight - Frost/Unholy",
+                            name = "Death Knight - Unholy",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dk[key]
+                                return RubimRH.db.profile.dk.unholy[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dk[key] = value
+                                RubimRH.db.profile.dk.unholy[key] = value
                             end,
                             args = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
                                 deathstrike = {
                                     order = 1,
                                     type = "range",
@@ -128,45 +162,32 @@ local function getOptions()
                     type = "group",
                     name = "Warrior",
                     args = {
-                        general = {
-                            order = 1,
-                            type = "group",
-                            childGroups = "tab",
-                            inline = true,
-                            name = "General",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.wr[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.wr[key] = value
-                            end,
-                            args = {
-                                cooldown = {
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function() return useCD end,
-                                    set = function(info, v) RubimRH.CDToggle() end,
-                                    name = "Cooldowns"
-                                },
-                            }
-                        },
-                        wr = {
-                            order = 2,
+                        arms = {
+                            order = 3,
                             type = "group",
                             childGroups = "tab",
                             inline = true,
                             name = "Warrior - Arms",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.wr[key]
+                                return RubimRH.db.profile.wr.arms[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.wr[key] = value
+                                RubimRH.db.profile.wr.arms[key] = value
                             end,
                             args = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
                                 victoryrush = {
                                     order = 1,
                                     type = "range",
@@ -185,29 +206,7 @@ local function getOptions()
                     type = "group",
                     name = "General",
                     args = {
-                        general = {
-                            order = 1,
-                            type = "group",
-                            childGroups = "tab",
-                            inline = true,
-                            name = "General",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.pl[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.pl[key] = value
-                            end,
-                            args = {
-                                cooldown = {
-                                    order = 1,
-                                    type = "toggle",
-                                    name = "Cooldowns"
-                                },
-                            }
-                        },
-                        prot = {
+                        ret = {
                             order = 2,
                             type = "group",
                             childGroups = "tab",
@@ -215,21 +214,32 @@ local function getOptions()
                             name = "Paladin - Protection",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.pl[key]
+                                return RubimRH.db.profile.pl.prot[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.pl[key] = value
+                                RubimRH.db.profile.pl.prot[key] = value
                             end,
                             args = {
-                                lightoftheprotector = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
+                                justicarglory = {
                                     order = 1,
                                     type = "range",
                                     min = 5,
                                     max = 95,
                                     step = 5,
                                     --fontSize = "medium",
-                                    name = "Light of the Protector"
+                                    name = "Light/Hand of the Protector"
                                 },
                             }
                         },
@@ -241,13 +251,24 @@ local function getOptions()
                             name = "Paladin - Retribution",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.pl[key]
+                                return RubimRH.db.profile.pl.ret[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.pl[key] = value
+                                RubimRH.db.profile.pl.ret[key] = value
                             end,
                             args = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
                                 justicarglory = {
                                     order = 1,
                                     type = "range",
@@ -266,43 +287,32 @@ local function getOptions()
                     type = "group",
                     name = "General",
                     args = {
-                        general = {
-                            order = 1,
-                            type = "group",
-                            childGroups = "tab",
-                            inline = true,
-                            name = "General",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dr[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.dr[key] = value
-                            end,
-                            args = {
-                                cooldown = {
-                                    order = 1,
-                                    type = "toggle",
-                                    name = "Cooldowns"
-                                },
-                            }
-                        },
                         feral = {
-                            order = 2,
+                            order = 3,
                             type = "group",
                             childGroups = "tab",
                             inline = true,
                             name = "Druid - Feral",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dr[key]
+                                return RubimRH.db.profile.dr.feral[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dr[key] = value
+                                RubimRH.db.profile.dr.feral[key] = value
                             end,
                             args = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
                                 renewal = {
                                     order = 1,
                                     type = "range",

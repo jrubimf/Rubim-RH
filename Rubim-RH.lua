@@ -32,14 +32,12 @@ local HealingSurge = 188070
 local Regrowth = 8936
 local Renewal = 108238
 
-
 if AethysCore == nil then
     message("ERROR: Aethyhs Core is missing. Please download it.")
 end
 if AethysCache == nil then
     message("ERROR: Aethyhs Cache is missing. Please download it.")
 end
-
 
 local AC = AethysCore;
 local Cache = AethysCache;
@@ -342,7 +340,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         end
     end
 
-    if classRotation == nil then
+    if classRotation == "None" then
         message("ERROR: Class not supported")
     end
     useCD = varClass.cooldown or false
@@ -452,122 +450,90 @@ function MainRotation()
     --    end
 
     --DK
-    if select(3, UnitClass("player")) == 6 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(250)
-            SetNextAbility(BloodRotation())
-        elseif GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(251)
-            SetNextAbility(FrostRotation())
-        elseif GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(252)
-            SetNextAbility(UnholyRotation())
-        end
+    if classRotation == "blood" then
+        SetNextAbility(BloodRotation())
     end
 
-    --Demon HUNTER
-    if select(3, UnitClass("player")) == 12 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(577)
-            SetNextAbility(HavocRotation())
-        elseif GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(581)
-            SetNextAbility(VengRotation())
-        end
+    if classRotation == "frost" then
+        SetNextAbility(FrostRotation())
     end
 
-    --Rogue
-    if select(3, UnitClass("player")) == 4 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(259)
-            SetNextAbility(RogueAss())
-        end
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(260)
-            SetNextAbility(RogueOutlaw())
-        end
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(261)
-            SetNextAbility(RogueSub())
-        end
+    if classRotation == "unholy" then
+        SetNextAbility(UnholyRotation())
     end
 
-    --Monk
-    if select(3, UnitClass("player")) == 10 then
-        if GetSpecialization() == 1 then
-            SetNextAbility(BrewMasterRotation())
-        end
-        if GetSpecialization() == 3 then
-            SetNextAbility(WindWalkerRotation())
-        end
+    --DH
+    if classRotation == "havoc" then
+        SetNextAbility(HavocRotation())
     end
+    if classRotation == "veng" then
+        SetNextAbility(VengRotation())
+    end
+
+    --RG
+    if classRotation == "ass" then
+        SetNextAbility(RogueAss())
+    end
+    if classRotation == "out" then
+        SetNextAbility(RogueOutlaw())
+    end
+    if classRotation == "sub" then
+        SetNextAbility(RogueSub())
+    end
+
+
+
+    --MK
+    if classRotation == "brew" then
+        SetNextAbility(BrewMasterRotation())
+    end
+    if classRotation == "mind" then
+        SetNextAbility(WindWalkerRotation())
+    end
+
 
     --Warrior
-    if select(3, UnitClass("player")) == 1 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(71)
-            SetNextAbility(WarriorArms())
-        end
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(72)
-            SetNextAbility(WarriorFury())
-        end
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(73)
-            SetNextAbility(WarriorProt())
-        end
+    if classRotation == "arms" then
+        SetNextAbility(WarriorArms())
+    end
+    if classRotation == "fury" then
+        SetNextAbility(WarriorFury())
+    end
+    if classRotation == "prot" then
+        SetNextAbility(WarriorProt())
     end
 
-    --Hunter
-    if select(3, UnitClass("player")) == 3 then
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(255)
-            SetNextAbility(HunterSurvival())
-        end
 
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(254)
-            SetNextAbility(HunterMM())
-        end
+    --Hunter
+    if classRotation == "mm" then
+        SetNextAbility(HunterMM())
+    end
+    if classRotation == "surv" then
+        SetNextAbility(HunterSurvival())
     end
 
     --Shaman
-    if select(3, UnitClass("player")) == 7 then
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(263)
-            SetNextAbility(Enhancement())
-        end
+    if classRotation == "enh" then
+        SetNextAbility(ShamanEnh())
     end
 
     --Paladin
-    if select(3, UnitClass("player")) == 2 then
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(65)
-            SetNextAbility(PaladinRetribution())
-        end
-
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(66)
-            SetNextAbility(PaladinProtection())
-        end
-
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(70)
-            SetNextAbility(PaladinHoly())
-        end
+    if classRotation == "holy" then
+        SetNextAbility(PaladinHoly())
+    end
+    if classRotation == "pprot" then
+        SetNextAbility(PaladinProtection())
+    end
+    if classRotation == "ret" then
+        SetNextAbility(PaladinRetribution())
     end
 
     --Druid
-    if select(3, UnitClass("player")) == 11 then
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(103)
-            SetNextAbility(DruidFeral())
-        end
-
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(104)
-            SetNextAbility(DruidGuardian())
-        end
+    if classRotation == "feral" then
+        SetNextAbility(DruidFeral())
+    end
+    if classRotation == "guardian" then
+        SetNextAbility(DruidGuardian())
     end
     return GetNextAbility()
 end

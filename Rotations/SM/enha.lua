@@ -166,7 +166,7 @@ local function alphaWolfCheck()
 end
 
 -- APL Main
-function Enhancement ()
+function ShamanEnh ()
     -- Unit Update
     AC.GetEnemies(40);  -- Lightning Bolt
     AC.GetEnemies(30);  -- Purge / Wind Shear
