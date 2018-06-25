@@ -86,7 +86,7 @@ local function getOptions()
                                 RubimRH.db.profile.dk[key] = value
                             end,
                             args = {
-                                cooldowns = {
+                                cooldown = {
                                     order = 1,
                                     type = "toggle",
                                     get = function() return useCD end,
@@ -143,7 +143,7 @@ local function getOptions()
                                 RubimRH.db.profile.wr[key] = value
                             end,
                             args = {
-                                cooldowns = {
+                                cooldown = {
                                     order = 1,
                                     type = "toggle",
                                     get = function() return useCD end,
@@ -200,7 +200,7 @@ local function getOptions()
                                 RubimRH.db.profile.pl[key] = value
                             end,
                             args = {
-                                cooldowns = {
+                                cooldown = {
                                     order = 1,
                                     type = "toggle",
                                     name = "Cooldowns"
@@ -281,7 +281,7 @@ local function getOptions()
                                 RubimRH.db.profile.dr[key] = value
                             end,
                             args = {
-                                cooldowns = {
+                                cooldown = {
                                     order = 1,
                                     type = "toggle",
                                     name = "Cooldowns"

@@ -305,38 +305,39 @@ end
 -- # Reroll when Loaded Dice is up and if you have less than 2 buffs or less than 4 and no True Bearing. With SnD, consider that we never have to reroll.
 local function RtB_Reroll()
     Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
-    --    if not Cache.APLVar.RtB_Reroll then
-    --        -- Defensive Override : Grand Melee if HP < 60
-    --        if selectedBuff == "SoloMode" and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
-    --            -- 1+ Buff
-    --        elseif selectedBuff == "1+ Buff" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
-    --            -- Broadsides
-    --        elseif selectedBuff == "Broadsides" then
-    ---          Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
-    --            -- Buried Treasure
-    --        elseif selectedBuff == "Buried Treasure" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
-    --            -- Grand Melee
-    --        elseif selectedBuff == "Grand Melee" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
-    --            -- Jolly Roger
-    --        elseif selectedBuff == "Jolly Roger" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
-    --            -- Shark Infested Waters
-    --        elseif selectedBuff == "Shark Infested Waters" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
-    --            -- True Bearing
-    --        elseif selectedBuff == "True Bearing" then
-    --            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
-    --            -- SimC Default
-    --            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
-    --        else
-    Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
-    --        end
-    --end
+    if not Cache.APLVar.RtB_Reroll then
+        --        -- Defensive Override : Grand Melee if HP < 60
+        if selectedBuff == "SoloMode" and Player:HealthPercentage() < 50 then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+            --            -- 1+ Buff
+        elseif selectedBuff == "1+ Buff" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
+            --            -- Broadsides
+        elseif selectedBuff == "Broadsides" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadsides)) and true or false;
+            --            -- Buried Treasure
+        elseif selectedBuff == "Buried Treasure" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
+            --            -- Grand Melee
+        elseif selectedBuff == "Grand Melee" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
+            --            -- Jolly Roger
+        elseif selectedBuff == "Jolly Roger" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
+            --            -- Shark Infested Waters
+        elseif selectedBuff == "Shark Infested Waters" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
+            --            -- True Bearing
+        elseif selectedBuff == "True Bearing" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
+            --            -- SimC Default
+            -- actions=variable,name=rtb_reroll,value=!talent.slice_and_dice.enabled&buff.loaded_dice.up&(rtb_buffs<2|(rtb_buffs<4&!buff.true_bearing.up))
+        else
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and Player:BuffP(S.LoadedDice) and (RtB_Buffs() < 2 or (RtB_Buffs() < 4 and not Player:BuffP(S.TrueBearing)))) and true or false;
+        end
+    end
     return Cache.APLVar.RtB_Reroll;
+
 end
 
 -- # Condition to use Saber Slash when not rerolling RtB or when using SnD

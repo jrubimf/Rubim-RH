@@ -59,15 +59,15 @@ local defaults = {
                 { spellID = RuneTap, isActive = true }
             },
             cooldown = false,
-            deathstrike = 0.85
+            deathstrike = 85
         },
         pl = {
             ret = {
                 { spellID = JusticarVengeance, isActive = true }
             },
             cooldown = false,
-            lightoftheprotector = 0.90,
-            justicarglory = 0.50,
+            lightoftheprotector = 90,
+            justicarglory = 50,
         },
         wr = {
             arms = {
@@ -78,7 +78,7 @@ local defaults = {
                 { spellID = OdynsFury, isActive = true }
             },
             cooldown = false,
-            victoryrush = 0.80
+            victoryrush = 80
         },
         rg = {
             cooldown = false,
