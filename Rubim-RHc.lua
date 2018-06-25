@@ -36,7 +36,7 @@ local function getOptions()
                             order = 1,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "General",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -75,17 +75,16 @@ local function getOptions()
                         },
                     }
                 },
-                DeathKnight = {
+                Classes = {
                     order = 1,
                     type = "group",
-                    name = "DK",
-                    childGroups = "tab",
+                    name = "Classes",
                     args = {
                         frost = {
                             order = 2,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "Death Knight - Frost",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -122,7 +121,7 @@ local function getOptions()
                             order = 3,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "Death Knight - Unholy",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -155,62 +154,11 @@ local function getOptions()
                                 },
                             }
                         },
-                    }
-                },
-                Warrior = {
-                    order = 1,
-                    type = "group",
-                    name = "Warrior",
-                    args = {
-                        arms = {
-                            order = 3,
+                        prot = {
+                            order = 4,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
-                            name = "Warrior - Arms",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.wr.arms[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.wr.arms[key] = value
-                            end,
-                            args = {
-                                cooldown = {
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return useCD
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.CDToggle()
-                                    end,
-                                    name = "Cooldowns"
-                                },
-                                victoryrush = {
-                                    order = 1,
-                                    type = "range",
-                                    min = 5,
-                                    max = 95,
-                                    step = 5,
-                                    --fontSize = "medium",
-                                    name = "Victory Rush"
-                                },
-                            }
-                        },
-                    }
-                },
-                Paladin = {
-                    order = 1,
-                    type = "group",
-                    name = "General",
-                    args = {
-                        ret = {
-                            order = 2,
-                            type = "group",
-                            childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "Paladin - Protection",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -232,22 +180,40 @@ local function getOptions()
                                     end,
                                     name = "Cooldowns"
                                 },
-                                justicarglory = {
+                                layonahandspct = {
                                     order = 1,
                                     type = "range",
                                     min = 5,
                                     max = 95,
                                     step = 5,
                                     --fontSize = "medium",
-                                    name = "Light/Hand of the Protector"
+                                    name = "Lay on Hands"
+                                },
+                                ardentdefenderpct = {
+                                    order = 2,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Ardent Defender"
+                                },
+                                guardianofancientkingspct = {
+                                    order = 3,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Guardian of Ancient Kings"
                                 },
                             }
                         },
                         ret = {
-                            order = 3,
+                            order = 5,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "Paladin - Retribution",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -280,18 +246,11 @@ local function getOptions()
                                 },
                             }
                         },
-                    }
-                },
-                Druid = {
-                    order = 1,
-                    type = "group",
-                    name = "General",
-                    args = {
                         feral = {
-                            order = 3,
+                            order = 6,
                             type = "group",
                             childGroups = "tab",
-                            inline = true,
+                            inline = false,
                             name = "Druid - Feral",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -333,8 +292,45 @@ local function getOptions()
                                 },
                             }
                         },
+                        arms = {
+                            order = 7,
+                            type = "group",
+                            childGroups = "tab",
+                            inline = false,
+                            name = "Warrior - Arms",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.wr.arms[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.wr.arms[key] = value
+                            end,
+                            args = {
+                                cooldown = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return useCD
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
+                                victoryrush = {
+                                    order = 1,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Victory Rush"
+                                },
+                            }
+                        },
                     }
-                }
+                },
             }
         }
         for k, v in pairs(configOptions) do
@@ -356,10 +352,10 @@ function RubimRH:SetupOptions()
 
     LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("RubimRH", getOptions)
     self.optionsFrames.RubimRH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", nil, nil, "mainOptions")
-    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Death Knight", "RubimRH", "DeathKnight")
-    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
-    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
-    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
+    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Classes", "RubimRH", "Classes")
+--    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
+--    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
+--    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
     configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
 

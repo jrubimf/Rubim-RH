@@ -93,6 +93,10 @@ local updateConfigFunc = function()
 
     --PALADIN
     if select(3, UnitClass("player")) == 2 then
+        if GetSpecialization() == 2 then
+            classSpell = {}
+            classSpell = RubimRH.db.profile.pl.prot.spells
+        end
         if GetSpecialization() == 3 then
             classSpell = {}
             classSpell = RubimRH.db.profile.pl.ret.spells

@@ -24,6 +24,9 @@ local OdynsFury = 205545
 --Paladin
 local JusticarVengeance = 215661
 local WordofGlory = 210191
+local layonahands = 633
+local guardianofancientkings = 86659
+local ardentdefender = 31850
 
 --Shaman
 local HealingSurge = 188070
@@ -110,7 +113,15 @@ local defaults = {
             },
             prot = {
                 cooldown = true,
-                lightoftheprotector = 90,
+                lightoftheprotectorpct = 90,
+                layonahandspct = 20,
+                ardentdefenderpct = 5,
+                guardianofancientkingspct = 50,
+                spells = {
+                    { spellID = layonahands, isActive = false },
+                    { spellID = ardentdefender, isActive = false },
+                    { spellID = guardianofancientkings, isActive = false },
+                }
             },
         },
         wr = {
