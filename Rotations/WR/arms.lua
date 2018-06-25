@@ -372,7 +372,7 @@ function WarriorArms()
     -- In Combat
     if Target:Exists() and Target:IsInRange("Melee") then
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.victoryrush then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.arms.victoryrush then
             return S.VictoryRush:ID()
         end
 

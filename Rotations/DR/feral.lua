@@ -458,11 +458,11 @@ function DruidFeral()
         return 248999
     end
     -- Defensives
-    if classSpell[1].isActive and S.Renewal:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.dr.renewal then
+    if classSpell[1].isActive and S.Renewal:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.dr.feral.renewal then
         return S.Renewal:ID()
     end
 
-    if classSpell[2].isActive and S.Regrowth:IsReady() and Player:Buff(S.PredatorySwiftness) and Player:HealthPercentage() <= RubimRH.db.profile.dr.regrowth then
+    if classSpell[2].isActive and S.Regrowth:IsReady() and Player:Buff(S.PredatorySwiftness) and Player:HealthPercentage() <= RubimRH.db.profile.dr.feral.regrowth then
         return S.Regrowth:ID()
     end
 

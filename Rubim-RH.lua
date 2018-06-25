@@ -3,6 +3,8 @@ local AceGUI = LibStub("AceGUI-3.0")
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
 
+local classRotation = "None"
+
 --DK
 local DeathStrike = 49998
 local RuneTap = 194679
@@ -30,6 +32,28 @@ local HealingSurge = 188070
 local Regrowth = 8936
 local Renewal = 108238
 
+
+if AethysCore == nil then
+    message("ERROR: Aethyhs Core is missing. Please download it.")
+end
+if AethysCache == nil then
+    message("ERROR: Aethyhs Cache is missing. Please download it.")
+end
+
+
+local AC = AethysCore;
+local Cache = AethysCache;
+local Unit = AC.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+
+useRACIAL = true
+useAoE = true
+---SKILLS---
+useS1 = true
+useS2 = true
+useS3 = true
+
 local defaults = {
     profile = {
         mainOption = {
@@ -38,70 +62,127 @@ local defaults = {
         },
         dh = {
             havoc = {
-                { spellID = FelRush, isActive = true },
-                { spellID = EyeBeam, isActive = true }
+                cooldown = true,
+                spells = {
+                    { spellID = FelRush, isActive = true },
+                    { spellID = EyeBeam, isActive = true }
+                }
             },
-            cooldown = false
+            veng = {
+                cooldown = true,
+            },
         },
         dk = {
             blood = {
-                { spellID = DeathStrike, isActive = true },
-                { spellID = RuneTap, isActive = true }
+                cooldown = true,
+                spells = {
+                    { spellID = DeathStrike, isActive = true },
+                    { spellID = RuneTap, isActive = true }
+                }
             },
             frost = {
-                { spellID = DeathStrike, isActive = true },
-                { spellID = BreathOfSindragosa, isActive = true },
-                { spellID = SindragosasFury, isActive = true },
-                { spellID = PillarOfFrost, isActive = true }
+                cooldown = true,
+                deathstrike = 85,
+                spells = {
+                    { spellID = DeathStrike, isActive = true },
+                    { spellID = BreathOfSindragosa, isActive = true },
+                    { spellID = SindragosasFury, isActive = true },
+                    { spellID = PillarOfFrost, isActive = true }
+                }
             },
             unholy = {
-                { spellID = DeathStrike, isActive = true },
-                { spellID = RuneTap, isActive = true }
+                cooldown = true,
+                deathstrike = 85,
+                spells = {
+                    { spellID = DeathStrike, isActive = true },
+                    { spellID = RuneTap, isActive = true }
+                }
             },
-            cooldown = false,
-            deathstrike = 85
         },
         pl = {
             ret = {
-                { spellID = JusticarVengeance, isActive = true }
+                cooldown = true,
+                justicarglory = 50,
+                spells = {
+                    { spellID = JusticarVengeance, isActive = true }
+                }
             },
-            cooldown = false,
-            lightoftheprotector = 90,
-            justicarglory = 50,
+            holy = {
+                cooldown = true,
+            },
+            prot = {
+                cooldown = true,
+                lightoftheprotector = 90,
+            },
         },
         wr = {
             arms = {
-                { spellID = Warbreaker, isActive = true },
-                { spellID = Ravager, isActive = true }
+                cooldown = true,
+                victoryrush = 80,
+                spells = {
+                    { spellID = Warbreaker, isActive = true },
+                    { spellID = Ravager, isActive = true }
+                }
             },
             fury = {
-                { spellID = OdynsFury, isActive = true }
+                cooldown = true,
+                spells = {
+                    { spellID = OdynsFury, isActive = true }
+                }
             },
-            cooldown = false,
-            victoryrush = 80
+            prot = {
+                cooldown = true,
+                victoryrush = 80,
+            }
         },
         rg = {
-            cooldown = false,
+            out = {
+                cooldown = true,
+            },
+            sub = {
+                cooldown = true,
+            },
+            ass = {
+                cooldown = true,
+            }
         },
         hr = {
-            cooldown = false,
+            mm = {
+                cooldown = true,
+            },
+            bm = {
+                cooldown = true,
+            },
+
+            surv = {
+                cooldown = true,
+            }
         },
         mk = {
-            cooldown = false,
+            brew = {
+                cooldown = true,
+            },
+            wind = {
+                cooldown = true,
+            },
         },
         sh = {
-            enhc = {
+            enh = {
+                cooldown = true,
                 { spellID = HealingSurge, isActive = true }
             },
-            cooldown = false,
         },
         dr = {
             feral = {
+                cooldowns = false,
+                renewal = 50,
+                regrowth = 85,
                 { spellID = Renewal, isActive = true },
                 { spellID = Regrowth, isActive = true },
             },
-            renewal = 50,
-            regrowth = 85,
+            guardian = {
+                cooldowns = false,
+            }
         }
     }
 }
@@ -113,55 +194,159 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
     self.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
-
     self:SetupOptions()
+end
+
+local updateClassVariables = CreateFrame("Frame")
+updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+updateClassVariables:RegisterEvent("PLAYER_LOGIN")
+
+updateClassVariables:SetScript("OnEvent", function(self, event, ...)
 
     --DK
     if select(3, UnitClass("player")) == 6 then
-        varClass = RubimRH.db.profile.dk
+        if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(250)
+            classRotation = "blood"
+            varClass = RubimRH.db.profile.dk.blood
+        elseif GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(251)
+            classRotation = "frost"
+            varClass = RubimRH.db.profile.dk.frost
+        elseif GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(252)
+            classRotation = "unholy"
+            varClass = RubimRH.db.profile.dk.unholy
+        end
     end
 
     --Demon HUNTER
     if select(3, UnitClass("player")) == 12 then
-        varClass = RubimRH.db.profile.dh
+        if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(577)
+            classRotation = "havoc"
+            varClass = RubimRH.db.profile.dh.havoc
+        elseif GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(581)
+            classRotation = "veng"
+            varClass = RubimRH.db.profile.dh.veng
+        end
     end
 
     --Rogue
     if select(3, UnitClass("player")) == 4 then
-        varClass = RubimRH.db.profile.rg
+        if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(259)
+            classRotation = "ass"
+            varClass = RubimRH.db.profile.rg.ass
+        end
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(260)
+            classRotation = "out"
+            varClass = RubimRH.db.profile.rg.out
+        end
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(261)
+            varClass = RubimRH.db.profile.rg.sub
+        end
     end
 
     --Monk
     if select(3, UnitClass("player")) == 10 then
-        varClass = RubimRH.db.profile.mk
+        if GetSpecialization() == 1 then
+            classRotation = "brew"
+            varClass = RubimRH.db.profile.mk.brew
+        end
+        if GetSpecialization() == 3 then
+            classRotation = "wind"
+            varClass = RubimRH.db.profile.mk.ww
+        end
     end
 
     --Warrior
     if select(3, UnitClass("player")) == 1 then
-        varClass = RubimRH.db.profile.wr
+        if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(71)
+            classRotation = "arms"
+            varClass = RubimRH.db.profile.wr.arms
+        end
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(72)
+            classRotation = "fury"
+            varClass = RubimRH.db.profile.wr.fury
+        end
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(73)
+            classRotation = "prot"
+            varClass = RubimRH.db.profile.wr.prot
+        end
     end
 
     --Hunter
     if select(3, UnitClass("player")) == 3 then
-        varClass = RubimRH.db.profile.hr
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(255)
+            classRotation = "surv"
+            varClass = RubimRH.db.profile.hr.surv
+        end
+
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(254)
+            classRotation = "mm"
+            varClass = RubimRH.db.profile.hr.mm
+        end
     end
 
     --Shaman
     if select(3, UnitClass("player")) == 7 then
-        varClass = RubimRH.db.profile.sh
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(263)
+            classRotation = "enh"
+            varClass = RubimRH.db.profile.sh.enh
+        end
     end
 
     --Paladin
     if select(3, UnitClass("player")) == 2 then
-        varClass = RubimRH.db.profile.pl
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(65)
+            classRotation = "ret"
+            varClass = RubimRH.db.profile.pl.ret
+        end
+
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(66)
+            classRotation = "pprot"
+            varClass = RubimRH.db.profile.pl.prot
+        end
+
+        if GetSpecialization() == 1 then
+            Player:RegisterListenedSpells(70)
+            classRotation = "holy"
+            varClass = RubimRH.db.profile.pl.holy
+        end
     end
 
     --Druid
     if select(3, UnitClass("player")) == 11 then
-        varClass = RubimRH.db.profile.dr
+        if GetSpecialization() == 2 then
+            Player:RegisterListenedSpells(103)
+            classRotation = "feral"
+            varClass = RubimRH.db.profile.dr.feral
+        end
+
+        if GetSpecialization() == 3 then
+            Player:RegisterListenedSpells(104)
+            classRotation = "guardian"
+            varClass = RubimRH.db.profile.dr.guardian
+        end
+    end
+
+    if classRotation == nil then
+        message("ERROR: Class not supported")
     end
     useCD = varClass.cooldown or false
-end
+end)
 
 function RubimRH:OnEnable()
     print("|cffc41f3bRubim RH|r: |cffffff00/rubimrh|r for GUI menu")
@@ -183,26 +368,6 @@ function RubimRH:OnNewProfile(event, db)
         db.profile[k] = v
     end
 end
-
-if AethysCore == nil then
-    message("ERROR: Aethyhs Core is missing. Please download it.")
-end
-if AethysCache == nil then
-    message("ERROR: Aethyhs Cache is missing. Please download it.")
-end
-
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-
-useRACIAL = true
-useAoE = true
----SKILLS---
-useS1 = true
-useS2 = true
-useS3 = true
 
 --IconRotation.texture:SetTexture(GetSpellTexture(BloodRotation()))
 

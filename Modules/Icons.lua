@@ -53,13 +53,13 @@ local updateConfigFunc = function()
         --Blood
         if GetSpecialization() == 1 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.dk.blood
+            classSpell = RubimRH.db.profile.dk.blood.spells
             --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
             --table.insert(classSpell, { spellID = RuneTap, isActive = true })
             --Frost
         elseif GetSpecialization() == 2 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.dk.frost
+            classSpell = RubimRH.db.profile.dk.frost.spells
             --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
             --table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
             --table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
@@ -67,7 +67,7 @@ local updateConfigFunc = function()
             --Unholy
         elseif GetSpecialization() == 3 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.dk.unholy
+            classSpell = RubimRH.db.profile.dk.unholy.spells
             --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
         end
     end
@@ -76,7 +76,7 @@ local updateConfigFunc = function()
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.dh.havoc
+            classSpell = RubimRH.db.profile.dh.havoc.spells
         end
     end
 
@@ -84,10 +84,10 @@ local updateConfigFunc = function()
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.wr.arms
+            classSpell = RubimRH.db.profile.wr.arms.spells
         elseif GetSpecialization() == 2 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.wr.fury
+            classSpell = RubimRH.db.profile.wr.fury.spells
         end
     end
 
@@ -95,13 +95,13 @@ local updateConfigFunc = function()
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
             classSpell = {}
-            classSpell = RubimRH.db.profile.pl.ret
+            classSpell = RubimRH.db.profile.pl.ret.spells
         end
     end
     --SHAMAN
     if select(3, UnitClass("player")) == 7 then
         classSpell = {}
-        classSpell = RubimRH.db.profile.sh.enhc
+        classSpell = RubimRH.db.profile.sh.enh.spells
     end
 
     --ROGUE
@@ -113,7 +113,7 @@ local updateConfigFunc = function()
     --DRUID
     if select(3, UnitClass("player")) == 11 then
         classSpell = {}
-        classSpell = RubimRH.db.profile.dr.feral
+        classSpell = RubimRH.db.profile.dr.feral.spells
     end
 end
 

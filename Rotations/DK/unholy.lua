@@ -302,7 +302,7 @@ function UnholyRotation()
         return 146250
     end
 
-    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.deathstrike then
+    if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.unholy.deathstrike then
         return S.DeathStrike:ID()
     end
 
