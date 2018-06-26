@@ -4,62 +4,64 @@
 --- DateTime: 01/06/2018 02:34
 ---
 
-local pvpRub = true
+local pvpRub = false
 rotationMode = "Disabled"
 local OneTimeRubim = nil
 
-local pvpHelper = CreateFrame("Frame",nil,UIParent)
-local rotationText = pvpHelper:CreateFontString("DebugText", "OVERLAY")
-local healerStuff = pvpHelper:CreateFontString("DebugText", "OVERLAY")
-pvpHelper:SetFrameStrata("BACKGROUND")
-pvpHelper:SetWidth(150) -- Set these to whatever height/width is needed
-pvpHelper:SetHeight(60) -- for your Texture
-pvpHelper:SetPoint("CENTER",0,0)
-pvpHelper.texture = pvpHelper:CreateTexture(nil, "TOOLTIP")
-pvpHelper.texture:SetAllPoints(true)
-pvpHelper.texture:SetColorTexture(0.2, 0.2, 0.2, 0.0)
---pvpHelper.texture:SetAlpha()
+if pvpRub then
+    local pvpHelper = CreateFrame("Frame",nil,UIParent)
+    local rotationText = pvpHelper:CreateFontString("DebugText", "OVERLAY")
+    local healerStuff = pvpHelper:CreateFontString("DebugText", "OVERLAY")
+    pvpHelper:SetFrameStrata("BACKGROUND")
+    pvpHelper:SetWidth(150) -- Set these to whatever height/width is needed
+    pvpHelper:SetHeight(60) -- for your Texture
+    pvpHelper:SetPoint("CENTER",0,0)
+    pvpHelper.texture = pvpHelper:CreateTexture(nil, "TOOLTIP")
+    pvpHelper.texture:SetAllPoints(true)
+    pvpHelper.texture:SetColorTexture(0.2, 0.2, 0.2, 0.0)
+    --pvpHelper.texture:SetAlpha()
 
-rotationText:SetFontObject(GameFontNormalSmall)
-rotationText:SetJustifyH("RIGHT") --
-rotationText:SetPoint("TOP", pvpHelper, "TOP", 0, 0)
-rotationText:SetFont("Fonts\\FRIZQT__.TTF", 20)
-rotationText:SetShadowOffset(1, -1)
-rotationText:SetText(rotationMode)
+    rotationText:SetFontObject(GameFontNormalSmall)
+    rotationText:SetJustifyH("RIGHT") --
+    rotationText:SetPoint("TOP", pvpHelper, "TOP", 0, 0)
+    rotationText:SetFont("Fonts\\FRIZQT__.TTF", 20)
+    rotationText:SetShadowOffset(1, -1)
+    rotationText:SetText(rotationMode)
 
-local t = GetTime()
-pvpHelper:SetScript("OnUpdate", function()
-    --se tiver com problemas, colocar um delay usando o GetTime()
-    --if t - GetTime() <= 0.2 then
-    if rotationMode ~= nil then
-        rotationText:SetText(rotationMode)
+    local t = GetTime()
+    pvpHelper:SetScript("OnUpdate", function()
+        --se tiver com problemas, colocar um delay usando o GetTime()
+        --if t - GetTime() <= 0.2 then
+        if rotationMode ~= nil then
+            rotationText:SetText(rotationMode)
 
-    end
-    --t = GetTime()
-    --		end
-end)
+        end
+        --t = GetTime()
+        --		end
+    end)
 
-pvpHelper:SetMovable(true)
-pvpHelper:EnableMouse(true)
-pvpHelper:SetScript("OnMouseDown", function(self, button)
-    if button == "LeftButton" and not self.isMoving then
-        self:StartMoving();
-        self.isMoving = true;
-    end
-end)
-pvpHelper:SetScript("OnMouseUp", function(self, button)
-    if button == "LeftButton" and self.isMoving then
-        local arg1, _, arg2, arg3, arg4 = pvpHelper:GetPoint()
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-end)
-pvpHelper:SetScript("OnHide", function(self)
-    if (self.isMoving) then
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-end)
+    pvpHelper:SetMovable(true)
+    pvpHelper:EnableMouse(true)
+    pvpHelper:SetScript("OnMouseDown", function(self, button)
+        if button == "LeftButton" and not self.isMoving then
+            self:StartMoving();
+            self.isMoving = true;
+        end
+    end)
+    pvpHelper:SetScript("OnMouseUp", function(self, button)
+        if button == "LeftButton" and self.isMoving then
+            local arg1, _, arg2, arg3, arg4 = pvpHelper:GetPoint()
+            self:StopMovingOrSizing();
+            self.isMoving = false;
+        end
+    end)
+    pvpHelper:SetScript("OnHide", function(self)
+        if (self.isMoving) then
+            self:StopMovingOrSizing();
+            self.isMoving = false;
+        end
+    end)
 
 
-pvpHelper:Show()
+    pvpHelper:Show()
+end

@@ -446,7 +446,15 @@ function MainRotation()
     end
 
     if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
-        return 155142
+        return 0, 975744
+    end
+
+    if ACTIVE_CHAT_EDIT_BOX ~= nil then
+        return 0, 413580
+    end
+
+    if _G.LootFrame:IsShown() then
+        return 0, 975746
     end
 
     if not Player:AffectingCombat() then

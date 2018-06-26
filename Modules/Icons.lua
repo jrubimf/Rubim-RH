@@ -280,7 +280,12 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
-        IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+
+        if select(2, MainRotation()) ~= nil then
+            return IconRotation.texture:SetTexture(select(2, MainRotation()))
+        else
+            IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+        end
         if RubimExtra then
             RubimRH.MiniRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
         end
