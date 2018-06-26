@@ -136,7 +136,7 @@ local function Generic()
     end
     --actions.generic+=/defile
     if S.Defile:IsAvailable() and S.Defile:IsReady() then
-        return S.Defile:ID()
+        return 192464
     end
     --actions.generic+=/call_action_list,name=aoe,if=active_enemies>=2
     if AoEON() and Cache.EnemiesCount[10] >= 2 then
@@ -171,10 +171,6 @@ local function DarkArbiter()
     --actions.valkyr=death_coil
     if S.DeathCoil:IsReady() and (Player:Buff(S.SuddenDoom) or Player:RunicPower() >= 45) then
         return S.DeathCoil:ID()
-    end
-    --actions.valkyr+=/arcane_torrent,if=runic_power<45|runic_power.deficit>20
-    if S.ArcaneTorrent:IsReady() and (Player:RunicPower() < 45 or Player:RunicPowerDeficit() > 20) then
-        return S.ArcaneTorrent:ID()
     end
     --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<6&cooldown.apocalypse.remains<3
     if S.FesteringStrike:IsReady() and Target:DebuffStack(S.FesteringWounds) < 6 and S.Apocalypse:CooldownRemainsP() < 3 then
@@ -310,39 +306,55 @@ function UnholyRotation()
         return S.DeathStrike:ID()
     end
 
-    if useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 20 then
+    --# Racials, Items, and other ogcds
+    --actions+=/arcane_torrent,if=runic_power.deficit>20&(pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled)
+    if CDsON() and useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 20 and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
         return S.ArcaneTorrent:ID()
     end
-    --actions.cds+=/arcane_torrent
-    if useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 50 and Player:Runes() < 2 then
-        return S.ArcaneTorrent:ID()
-    end
-    --actions.cds+=/blood_fury
-    if CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() then
+    --actions+=/blood_fury,if=pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled
+    if CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
         return S.BloodFury:ID()
     end
+    --actions+=/berserking,if=pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled
+    if CDsON() and useRACIAL and S.Berserking:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
+        return S.Berserking:ID()
+    end
+    --actions+=/use_items
+    --actions+=/use_item,name=feloiled_infernal_machine,if=pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled
+    --actions+=/use_item,name=ring_of_collapsing_futures,if=(buff.temptation.stack=0&target.time_to_die>60)|target.time_to_die<60
+    --actions+=/potion,if=buff.unholy_strength.react
+    --actions+=/blighted_rune_weapon,if=debuff.festering_wound.stack<=4
+    if S.BlightedRuneWeapon:IsReady() and S.BlightedRuneWeapon:IsAvailable() and Target:DebuffStack(S.FesteringWounds) <= 4 then
+        return 53635
+    end
 
-    --InCombat
+    --# Opener
+    --actions+=/sequence,if=equipped.137075&talent.dark_arbiter.enabled&!talent.blighted_rune_weapon.enabled,name=opener:outbreak:chains_of_ice:festering_strike:festering_strike:apocalypse:festering_strike:dark_arbiter:death_coil:dark_transformation
+    --actions+=/sequence,if=!equipped.137075&talent.dark_arbiter.enabled&!talent.blighted_rune_weapon.enabled,name=opener:outbreak:chains_of_ice:festering_strike:festering_strike:apocalypse:dark_transformation:festering_strike:dark_arbiter
+    --# Maintain Virulent Plague
+
     --actions+=/outbreak,target_if=(dot.virulent_plague.tick_time_remains+tick_time<=dot.virulent_plague.remains)&dot.virulent_plague.remains<=gcd
-    if S.Outbreak:IsUsable() and not Target:Debuff(S.VirulentPlagueDebuff) or Target:DebuffRemainsP(S.VirulentPlagueDebuff) < Player:GCD() * 1.5 then
+    if S.Outbreak:IsUsable() and not Target:Debuff(S.VirulentPlagueDebuff) or Target:DebuffRemainsP(S.VirulentPlagueDebuff) < Player:GCD() then
         return S.Outbreak:ID()
     end
-    --Lets call specific APLs
+
+    --actions+=/call_action_list,name=cooldowns
     if TargetIsValid() and CDsON() then
         if Cooldowns() ~= nil then
             return Cooldowns()
         end
     end
 
-    if (S.DarkArbiter:IsAvailable() and S.DarkArbiter:TimeSinceLastCast() > 22) or S.Defile:IsAvailable() or S.SoulReaper:IsAvailable() then
-        if Generic() ~= nil then
-            return Generic()
-        end
-    end
-
+    --actions+=/run_action_list,name=valkyr,if=pet.valkyr_battlemaiden.active&talent.dark_arbiter.enabled
     if S.DarkArbiter:TimeSinceLastCast() <= 22 then
         if DarkArbiter() ~= nil then
             return DarkArbiter()
+        end
+    end
+    --actions+=/call_action_list,name=generic
+    if (S.DarkArbiter:IsAvailable() and S.DarkArbiter:TimeSinceLastCast() > 22) or S.Defile:IsAvailable() or S.SoulReaper:IsAvailable() then
+        if Generic() ~= nil then
+            return Generic()
         end
     end
     return 233159
