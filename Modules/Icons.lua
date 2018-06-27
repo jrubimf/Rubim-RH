@@ -268,6 +268,21 @@ IconRotation.texture:SetAllPoints(true)
 IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
 IconRotation:SetMovable(true)
 IconRotation:EnableMouse(true)
+
+local IconRotationCDText = IconRotation:CreateFontString("CDText", "OVERLAY")
+IconRotationCDText:SetFontObject(GameFontNormalSmall)
+IconRotationCDText:SetJustifyH("LEFT") --
+IconRotationCDText:SetPoint("TOP", IconRotation, "TOP", 0, -4)
+IconRotationCDText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
+IconRotationCDText:SetShadowOffset(1, -1)
+
+local IconRotationAoEText = IconRotation:CreateFontString("AoEText", "OVERLAY")
+IconRotationAoEText:SetFontObject(GameFontNormalSmall)
+IconRotationAoEText:SetJustifyH("LEFT") --
+IconRotationAoEText:SetPoint("TOP", IconRotation, "TOP", 0, -28)
+IconRotationAoEText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
+IconRotationAoEText:SetShadowOffset(1, -1)
+
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
         self:StartMoving();
@@ -299,6 +314,8 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
+        IconRotationCDText:SetText(RubimRH.ColorOnOff(useCD) .."CD")
+        IconRotationAoEText:SetText(RubimRH.ColorOnOff(useAoE) .."AoE")
         if select(2, MainRotation()) ~= nil then
             IconRotation.texture:SetTexture(select(2, MainRotation()))
         else

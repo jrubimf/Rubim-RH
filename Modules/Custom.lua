@@ -15,7 +15,6 @@ function TargetIsValid()
     return Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost();
 end
 
-
 local function round2(num, idp)
     mult = 10 ^ (idp or 0)
     return math.floor(num * mult + 0.5) / mult
@@ -112,7 +111,11 @@ function DiyingIn()
             dyingmobs = dyingmobs + 1;
         end
     end
-    if dyingmobs == 0 then return 0 else return totalmobs/dyingmobs end
+    if dyingmobs == 0 then
+        return 0
+    else
+        return totalmobs / dyingmobs
+    end
 end
 
 function GetTotalMobs()
@@ -167,7 +170,6 @@ frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
 
-
 frame:SetScript("OnEvent", function(self, event, ...)
     if event == "NAME_PLATE_UNIT_ADDED" then
         local unitID = ...
@@ -180,8 +182,8 @@ frame:SetScript("OnEvent", function(self, event, ...)
     end
 
     if event == "UNIT_SPELLCAST_SUCCEEDED" then
-        local unit = select(1,...)
-        local spellID = select(5,...)
+        local unit = select(1, ...)
+        local spellID = select(5, ...)
         if spellID == GetQueueSpell() then
             SetQueueSpell(nil)
         end
@@ -217,7 +219,6 @@ local SpellsInterrupt = {
     0
 }
 
-
 function ShouldInterrupt()
     local importantCast = false
     local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo("target")
@@ -230,7 +231,7 @@ function ShouldInterrupt()
         return false
     end
 
-    for i,v in ipairs(SpellsInterrupt) do
+    for i, v in ipairs(SpellsInterrupt) do
         if spellID == v then
             importantCast = true
             break
@@ -268,7 +269,6 @@ function lastMoved()
     return GetTime() - movedTimer
 end
 
-
 local dmgTaken = {
 }
 
@@ -283,7 +283,9 @@ combatLOG:SetScript("OnEvent", function(self, event)
     playerGUID = UnitGUID("player")
     self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     self:SetScript("OnEvent", function(_, _, timestamp, event, _, _, _, _, _, destGUID, _, _, _, ...)
-        if destGUID ~= playerGUID then return end
+        if destGUID ~= playerGUID then
+            return
+        end
         local amount
         if event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE" or event == "RANGE_DAMAGE" then
             _, _, _, amount = ...
@@ -345,5 +347,13 @@ function RubimRH.SetFramePos(frame, x, y, w, h)
     end
     if w and h then
         frame:SetSize(Weight, Height)
+    end
+end
+
+function RubimRH.ColorOnOff(boolean)
+    if boolean == true then
+        return "|cFF00FF00"
+    else
+        return "|cFFFF0000"
     end
 end

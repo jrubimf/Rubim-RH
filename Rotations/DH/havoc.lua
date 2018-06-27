@@ -218,6 +218,17 @@ function HavocRotation()
         return 243762
     end
 
+
+    local function PvP()
+        --Interrupts Arena
+    end
+
+    if select(1,IsActiveBattlefieldArena()) == 1 or select(2,IsActiveBattlefieldArena()) == 1 then
+        if PvP() ~= nil then
+            return PvP()
+        end
+    end
+
     local function Cooldown()
         -- Locals for tracking if we should display these suggestions together
 
