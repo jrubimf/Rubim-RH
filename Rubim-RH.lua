@@ -1,4 +1,5 @@
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
+_G["RubimRH"] = RubimRH
 local AceGUI = LibStub("AceGUI-3.0")
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
@@ -50,17 +51,19 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 
 useRACIAL = true
-useAoE = true
 ---SKILLS---
 useS1 = true
 useS2 = true
 useS3 = true
+useAoE = true
 
 local defaults = {
     profile = {
         mainOption = {
             cooldownbind = nil,
             interruptsbind = nil,
+            aoebind = nil,
+            ccbreak = true,
         },
         dh = {
             havoc = {
@@ -217,7 +220,6 @@ updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 updateClassVariables:RegisterEvent("PLAYER_LOGIN")
 
 updateClassVariables:SetScript("OnEvent", function(self, event, ...)
-
     --DK
     if select(3, UnitClass("player")) == 6 then
         if GetSpecialization() == 1 then
@@ -361,6 +363,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         message("ERROR: Class not supported")
     end
     useCD = varClass.cooldown or false
+    ccBreak =  RubimRH.db.profile.mainOption.ccbreak
 end)
 
 function RubimRH:OnEnable()

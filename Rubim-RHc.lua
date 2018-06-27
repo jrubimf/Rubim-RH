@@ -4,8 +4,18 @@
 --- DateTime: 02/06/2018 12:53
 ---
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+function RubimRH.CCToggle()
+    PlaySound(891, "Master");
+    if ccBreak == false then
+        RubimRH.db.profile.mainOption.ccbreak = true
+        ccBreak = true
+    else
+        ccBreak = false
+        RubimRH.db.profile.mainOption.ccbreak = false
+    end
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(ccBreak))
+end
 
-_G["RubimRH"] = RubimRH
 function RubimRH.CDToggle()
     PlaySound(891, "Master");
     if useCD == false then
@@ -16,6 +26,16 @@ function RubimRH.CDToggle()
         varClass.cooldown = false
     end
     print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useCD))
+end
+
+function RubimRH.AoEToggle()
+    PlaySound(891, "Master");
+    if useAoE == false then
+        useAoE = true
+    else
+        useAoE = false
+    end
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useAoE))
 end
 
 local options, configOptions = nil, {}
@@ -70,6 +90,18 @@ local function getOptions()
                                         SaveBindings(GetCurrentBindingSet())
                                     end,
                                     name = "Interrupts"
+                                },
+                                aoebind = {
+                                    order = 2,
+                                    type = "keybinding",
+                                    get = function()
+                                        return GetBindingKey("AoE Toggle")
+                                    end,
+                                    set = function(info, v)
+                                        SetBinding(v, "AoE Toggle")
+                                        SaveBindings(GetCurrentBindingSet())
+                                    end,
+                                    name = "AoE"
                                 },
                             }
                         },

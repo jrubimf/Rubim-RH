@@ -9,7 +9,10 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --INTERRUPTS---
 local int_smart = true
 
+--RUN ONCE
 local runonce = 0
+
+--DB to VAR
 classSpell = {}
 local updateConfigFunc = function()
     if runonce == 0 then
@@ -152,13 +155,15 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow = "AoE", nil
         info.checked = useAoE
         info.func = function(self)
+            RubimRH.AoEToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        info.text, info.hasArrow = "CC Break", nil
+        info.checked = ccBreak
+        info.func = function(self)
             PlaySound(891, "Master");
-            if useAoE == false then
-                useAoE = true
-            else
-                useAoE = false
-            end
-            print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useAoE))
+            RubimRH.CCToggle()
         end
         UIDropDownMenu_AddButton(info)
         --
@@ -252,7 +257,7 @@ Sephul:Hide()
 
 local IconRotation = CreateFrame("Frame", nil)
 IconRotation:SetBackdrop(nil)
-IconRotation:SetFrameStrata("HIGH")
+IconRotation:SetFrameStrata("BACKGROUND")
 --IconRotation:SetSize(18, 18)
 IconRotation:SetSize(40, 40)
 --IconRotation:SetPoint("TOPLEFT", 19, 6)

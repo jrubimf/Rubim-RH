@@ -5,4 +5,7 @@
   <Binding category="Rubim RH" name="Interrupt Toggle">
     RubimRH.InterruptToggle()
   </Binding>
+  <Binding category="Rubim RH" name="AoE Toggle">
+    RubimRH.AoEToggle()
+  </Binding>
 </Bindings>
