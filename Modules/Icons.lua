@@ -214,10 +214,10 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             PlaySound(891, "Master");
             if int_smart then
                 int_smart = false
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Everything ")
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Disabled ")
             else
                 int_smart = true
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Only necessary. ")
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Smart/Everything")
             end
         end
         UIDropDownMenu_AddButton(info, level)
@@ -235,6 +235,20 @@ Sephul.texture:SetAllPoints(true)
 Sephul.texture:SetColorTexture(0, 1, 0, 1.0)
 Sephul.texture:SetTexture(GetSpellTexture(226262))
 Sephul:Hide()
+
+
+--NOT USABLE ANYMORE
+--RubimRH.Interrupt = CreateFrame("Frame", "Interrupt")
+--RubimRH.Interrupt:SetBackdrop(nil)
+--RubimRH.Interrupt:SetFrameStrata("HIGH")
+--RubimRH.Interrupt:SetSize(1, 1)
+--RubimRH.Interrupt:SetScale(1);
+--RubimRH.Interrupt:SetPoint("TOPLEFT", 10, 0)
+--RubimRH.Interrupt.texture = RubimRH.Interrupt:CreateTexture(nil, "TOOLTIP")
+--RubimRH.Interrupt.texture:SetAllPoints(true)
+--RubimRH.Interrupt.texture:SetColorTexture(0, 1, 0, 1.0)
+--RubimRH.Interrupt:Hide()
+--RubimRH.SetFramePos(Interrupt, 1, 0, 1, 1)
 
 local IconRotation = CreateFrame("Frame", nil)
 IconRotation:SetBackdrop(nil)
@@ -293,28 +307,5 @@ function updateIcon:onUpdate(sinceLastUpdate)
             end
         end
         self.sinceLastUpdate = 0;
-    end
-end
-
-function RubimRH.SetFramePos(frame, x, y, w, h)
-    local xOffset0 = 1
-    if frame == nil then
-        return
-    end
-    if GetCVar("gxMaximize") == "0" then
-        xOffset0 = 0.9411764705882353
-    end
-    xPixel, yPixel, wPixel, hPixel = x, y, w, h
-    xRes, yRes = string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "(%d+)x(%d+)");
-    uiscale = UIParent:GetScale();
-    XCoord = xPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale / xOffset0
-    YCoord = yPixel * (768.0 / yRes) / uiscale;
-    Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
-    Height = hPixel * (768.0 / yRes) / uiscale;
-    if x and y then
-        frame:SetPoint("TOPLEFT", XCoord, YCoord)
-    end
-    if w and h then
-        frame:SetSize(Weight, Height)
     end
 end

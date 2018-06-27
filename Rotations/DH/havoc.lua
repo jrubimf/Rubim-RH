@@ -249,7 +249,7 @@ function HavocRotation()
 
     end
     -- fel_rush,if=(talent.momentum.enabled|talent.fel_mastery.enabled)&(!talent.momentum.enabled|(charges=2|cooldown.vengeful_retreat.remains>4)&buff.momentum.down)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-    if classSpell[1].isActive  and S.FelRush:IsReady(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
+    if classSpell[1].isActive and S.FelRush:IsReady(20, true) and ((S.Momentum:IsAvailable() or S.FelMastery:IsAvailable())
             and (not S.Momentum:IsAvailable() or (S.FelRush:ChargesP() == 2 or S.VengefulRetreat:CooldownRemainsP() > 4) and Player:BuffDownP(S.MomentumBuff))) then
       return S.FelRush:ID()
 
@@ -359,7 +359,7 @@ function HavocRotation()
 
     end
     -- fel_barrage,if=(buff.momentum.up|!talent.momentum.enabled)&(active_enemies>desired_targets|raid_event.adds.in>30)
-    if S.FelBarrage:IsReady(S.FelBarrage) and ((Player:BuffP(S.MomentumBuff) or not S.Momentum:IsAvailable())) then
+    if classSpell[3].isActive and S.FelBarrage:IsReady(S.FelBarrage) and ((Player:BuffP(S.MomentumBuff) or not S.Momentum:IsAvailable())) then
       return S.FelBarrage:ID()
 
     end

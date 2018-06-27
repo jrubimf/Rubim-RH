@@ -560,7 +560,7 @@ function RogueOutlaw()
     if TargetIsValid() then
         -- Mythic Dungeon
         -- actions+=/call_action_list,name=bf
-        if BladeFlurry() ~= nil then
+        if AoEON() and BladeFlurry() ~= nil then
             return BladeFlurry()
         end
 

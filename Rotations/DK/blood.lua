@@ -163,9 +163,7 @@ function BloodRotation()
         return S.RuneTap:ID()
     end
 
-    Sephul:Hide()
     if I.SephuzSecret:IsEquipped() then
-
         if Player:Buff(S.SephuzBuff) then
             lastSephuz = GetTime()
         end

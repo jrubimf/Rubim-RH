@@ -107,7 +107,7 @@ local function getOptions()
                                     name = "Cooldowns"
                                 },
                                 deathstrike = {
-                                    order = 1,
+                                    order = 3,
                                     type = "range",
                                     min = 5,
                                     max = 95,

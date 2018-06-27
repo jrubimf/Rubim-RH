@@ -242,7 +242,7 @@ function ShouldInterrupt()
     end
 
     if int_smart == false then
-        importantCast = true
+        importantCast = false
     end
 
     if importantCast == false then
@@ -322,5 +322,28 @@ function lastDamage(option)
         return damageInLast3Seconds
     else
         return (damageInLast3Seconds * 100) / UnitHealthMax("player")
+    end
+end
+
+function RubimRH.SetFramePos(frame, x, y, w, h)
+    local xOffset0 = 1
+    if frame == nil then
+        return
+    end
+    if GetCVar("gxMaximize") == "0" then
+        xOffset0 = 0.9411764705882353
+    end
+    xPixel, yPixel, wPixel, hPixel = x, y, w, h
+    xRes, yRes = string.match(({ GetScreenResolutions() })[GetCurrentResolution()], "(%d+)x(%d+)");
+    uiscale = UIParent:GetScale();
+    XCoord = xPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale / xOffset0
+    YCoord = yPixel * (768.0 / yRes) / uiscale;
+    Weight = wPixel * (768.0 / xRes) * GetMonitorAspectRatio() / uiscale
+    Height = hPixel * (768.0 / yRes) / uiscale;
+    if x and y then
+        frame:SetPoint("TOPLEFT", XCoord, YCoord)
+    end
+    if w and h then
+        frame:SetSize(Weight, Height)
     end
 end

@@ -49,7 +49,7 @@ Spell.Paladin.Protection = {
     -- Legendaries
 
     -- Misc
-
+    ArcaneTorrent = Spell(155145),
     -- Macros
 
 };

@@ -15,6 +15,7 @@ local PillarOfFrost = 51271
 --DH
 local FelRush = 195072
 local EyeBeam = 198013
+local FelBarrage = 211053
 
 --Warrior
 local Warbreaker = 209577
@@ -66,7 +67,8 @@ local defaults = {
                 cooldown = true,
                 spells = {
                     { spellID = FelRush, isActive = true },
-                    { spellID = EyeBeam, isActive = true }
+                    { spellID = EyeBeam, isActive = true },
+                    { spellID = FelBarrage, isActive = true }
                 }
             },
             veng = {

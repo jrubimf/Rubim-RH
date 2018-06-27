@@ -128,7 +128,7 @@ function WarriorProt()
         return S.ShieldBlock:ID()
     end
 
-    if S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
+    if S.ImpendingVictory:IsAvailable() and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
         return S.VictoryRush:ID()
     end
 

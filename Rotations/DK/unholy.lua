@@ -259,7 +259,7 @@ local function Cooldowns()
     end
     --actions.cooldowns+=/summon_gargoyle,if=(!equipped.137075|cooldown.dark_transformation.remains<10)&rune.time_to_4>=gcd
     if S.SummonGargoyle:IsReady() and (not I.Taktheritrixs:IsEquipped() or S.DarkTransformation:CooldownRemainsP() < 10) and Player:RuneTimeToX(4) >= Player:GCD() then
-        return S.SummonGargoyle:ID()
+        return 85516
     end
     --actions.cooldowns+=/soul_reaper,if=(debuff.festering_wound.stack>=6&cooldown.apocalypse.remains<=gcd)|(debuff.festering_wound.stack>=3&rune>=3&cooldown.apocalypse.remains>20)
     if (S.SoulReaper:IsReady() and S.SoulReaper:IsCastable() and Target:DebuffStack(S.FesteringWounds) >= 6 and S.Apocalypse:CooldownRemainsP() <= Player:GCD()) or (S.SoulReaper:IsAvailable() and S.SoulReaper:IsCastable() and Target:DebuffStack(S.FesteringWounds) >= 3 and S.Apocalypse:CooldownRemains() > 20) then
