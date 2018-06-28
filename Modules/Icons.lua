@@ -285,8 +285,8 @@ IconRotationAoEText:SetShadowOffset(1, -1)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
-        RubimRH.createMacro()
-        RubimRH.editMacro()
+        --RubimRH.createMacro()
+        --RubimRH.editMacro()
         self:StartMoving();
         self.isMoving = true;
     end
