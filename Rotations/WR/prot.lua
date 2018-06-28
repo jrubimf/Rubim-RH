@@ -112,8 +112,12 @@ function WarriorProt()
         return S.Shockwave:ID()
     end
 
-    if S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
+    if CDsON() and S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.BattleCry:ID()
+    end
+
+    if CDsON() and S.Avatar:IsAvailable() and S.Avatar:IsReady() and Cache.EnemiesCount[8] >= 1 then
+        return S.Avatar:ID()
     end
 
 	if Vengeance() ~= nil and S.Vengeance:IsAvailable() then
@@ -152,7 +156,7 @@ function WarriorProt()
         return S.Revenge:ID()
     end
 
-    if Cache.EnemiesCount[12] >= 3 and useAoE then
+    if Cache.EnemiesCount[12] >= 3 and RubimRH.useAoE then
         if AoE() ~= nil then
             return AoE()
         end

@@ -18,24 +18,36 @@ end
 
 function RubimRH.CDToggle()
     PlaySound(891, "Master");
-    if useCD == false then
+        if RubimRH.useCD == false then
         varClass.cooldown = true
-        useCD = true
+        RubimRH.useCD = true
     else
-        useCD = false
+        RubimRH.useCD = false
         varClass.cooldown = false
     end
-    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useCD))
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useCD))
+end
+
+function RubimRH.AttackToggle()
+    PlaySound(891, "Master");
+    if RubimRH.useCD == false then
+        varClass.cooldown = true
+        RubimRH.useCD = true
+    else
+        RubimRH.useCD = false
+        varClass.cooldown = false
+    end
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useCD))
 end
 
 function RubimRH.AoEToggle()
     PlaySound(891, "Master");
-    if useAoE == false then
-        useAoE = true
+    if RubimRH.useAoE == false then
+        RubimRH.useAoE = true
     else
-        useAoE = false
+        RubimRH.useAoE = false
     end
-    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(useAoE))
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useAoE))
 end
 
 local options, configOptions = nil, {}
@@ -60,13 +72,24 @@ local function getOptions()
                             name = "General",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.mo[key]
+                                return RubimRH.db.profile.mainOption[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.mo[key] = value
+                                RubimRH.db.profile.mainOption[key] = value
                             end,
                             args = {
+                                startattack = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return startattack
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.CDToggle()
+                                    end,
+                                    name = "Cooldowns"
+                                },
                                 cooldownbind = {
                                     order = 1,
                                     type = "keybinding",
@@ -131,7 +154,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()
@@ -168,7 +191,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()
@@ -205,7 +228,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()
@@ -260,7 +283,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()
@@ -297,7 +320,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()
@@ -343,7 +366,7 @@ local function getOptions()
                                     order = 1,
                                     type = "toggle",
                                     get = function()
-                                        return useCD
+                                        return RubimRH.useCD
                                     end,
                                     set = function(info, v)
                                         RubimRH.CDToggle()

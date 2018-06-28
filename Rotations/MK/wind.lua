@@ -608,7 +608,7 @@ function WindWalkerRotation()
             return SEF()
         end
     end
-    if Cache.EnemiesCount[8] > 3 and useAoE then
+    if Cache.EnemiesCount[8] > 3 and RubimRH.useAoE then
         if AoE() ~= nil then
             return AoE()
         end

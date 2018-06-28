@@ -218,17 +218,6 @@ function HavocRotation()
         return 243762
     end
 
-
-    local function PvP()
-        --Interrupts Arena
-    end
-
-    if select(1,IsActiveBattlefieldArena()) == 1 or select(2,IsActiveBattlefieldArena()) == 1 then
-        if PvP() ~= nil then
-            return PvP()
-        end
-    end
-
     local function Cooldown()
         -- Locals for tracking if we should display these suggestions together
 
@@ -434,7 +423,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|buff.havoc_t21_4pc.remains<2&(!talent.blind_fury.enabled|fury.deficit>=70)&((spell_targets.eye_beam_tick>=3&raid_event.adds.in>cooldown)|talent.blind_fury.enabled|set_bonus.tier21_2pc)
-        if  not RubimRH.breakableAreaCC(6) and classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
+        if not RubimRH.breakableAreaCC(6) and classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
             if (Cache.EnemiesCount[CleaveRangeID] > 1) or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
                     and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
                 return S.EyeBeam:ID()

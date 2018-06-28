@@ -146,14 +146,14 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     if (level or 1) == 1 then
         --
         info.text, info.hasArrow = "Cooldowns", nil
-        info.checked = useCD
+        info.checked = RubimRH.useCD
         info.func = function(self)
             RubimRH.CDToggle()
         end
         UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow = "AoE", nil
-        info.checked = useAoE
+        info.checked = RubimRH.useAoE
         info.func = function(self)
             RubimRH.AoEToggle()
         end
@@ -285,6 +285,8 @@ IconRotationAoEText:SetShadowOffset(1, -1)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
+        RubimRH.createMacro()
+        RubimRH.editMacro()
         self:StartMoving();
         self.isMoving = true;
     end
@@ -314,8 +316,8 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
-        IconRotationCDText:SetText(RubimRH.ColorOnOff(useCD) .."CD")
-        IconRotationAoEText:SetText(RubimRH.ColorOnOff(useAoE) .."AoE")
+        IconRotationCDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .."CD")
+        IconRotationAoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .."AoE")
         if select(2, MainRotation()) ~= nil then
             IconRotation.texture:SetTexture(select(2, MainRotation()))
         else

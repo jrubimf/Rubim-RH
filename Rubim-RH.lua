@@ -55,7 +55,7 @@ useRACIAL = true
 useS1 = true
 useS2 = true
 useS3 = true
-useAoE = true
+RubimRH.useAoE = true
 
 local defaults = {
     profile = {
@@ -64,6 +64,7 @@ local defaults = {
             interruptsbind = nil,
             aoebind = nil,
             ccbreak = true,
+            startattack = false,
         },
         dh = {
             havoc = {
@@ -362,7 +363,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if classRotation == "None" then
         message("ERROR: Class not supported")
     end
-    useCD = varClass.cooldown or false
+    RubimRH.useCD = varClass.cooldown or false
     ccBreak =  RubimRH.db.profile.mainOption.ccbreak
 end)
 
@@ -400,7 +401,7 @@ function CDsON()
         return true
     end
 
-    if useCD == true then
+    if RubimRH.useCD == true then
         if UnitExists("boss1") == true or UnitClassification("target") == "worldboss" then
             return true
         end
@@ -412,9 +413,13 @@ function CDsON()
         if Target:IsDummy() then
             return true
         end
+
+        if UnitIsPlayer("target") then
+            return true
+        end
     end
 
-    if useCD == false then
+    if RubimRH.useCD == false then
         return false
     end
 
@@ -422,7 +427,7 @@ function CDsON()
 end
 
 function AoEON()
-    if useAoE == true then
+    if RubimRH.useAoE == true then
         return true
     else
         return false

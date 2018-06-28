@@ -9,7 +9,7 @@
 if select(3, UnitClass("player")) == 6 then
     --- CUSTOM CONFIG--
     --- Frost/Unholy
-    local useCDs = false --Long CDs
+    local RubimRH.useCDs = false --Long CDs
     local bossOnly = true --Check if target is a BOSS to use long CDs
     local hotkey = false --Use if holding CTRL + SHIFT
 
@@ -207,7 +207,7 @@ if select(3, UnitClass("player")) == 6 then
         if Target:IsDummy() then
             return true
         end
-        if useCDs == true then
+        if RubimRH.useCDs == true then
             return true
         end
         if hotkey == true and IsShiftKeyDown() and IsControlKeyDown() then

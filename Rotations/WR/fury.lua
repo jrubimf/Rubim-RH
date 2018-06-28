@@ -442,13 +442,13 @@ function WarriorFury()
         end
     end
     -- actions+=/run_action_list,name=three_targets,if=target.health.pct>20&(spell_targets.whirlwind=3|spell_targets.whirlwind=4)
-    if Target:Exists() and Target:HealthPercentage() > 20 and (Cache.EnemiesCount[8] == 3 or Cache.EnemiesCount[8] == 4) and useAoE then
+    if Target:Exists() and Target:HealthPercentage() > 20 and (Cache.EnemiesCount[8] == 3 or Cache.EnemiesCount[8] == 4) and RubimRH.useAoE then
         if Cleave() ~= nil then
             return Cleave()
         end
     end
     -- actions+=/run_action_list,name=aoe,if=spell_targets.whirlwind>4
-    if Cache.EnemiesCount[8] > 4 and useAoE then
+    if Cache.EnemiesCount[8] > 4 and RubimRH.useAoE then
         if AoE() ~= nil then
             return AoE()
         end
