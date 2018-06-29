@@ -214,7 +214,7 @@ function HavocRotation()
         return 248999
     end
 
-    if RubimRH.breakableCC("target") == true then
+    if RubimRH.breakableCC(Target) == true then
         return 243762
     end
 
