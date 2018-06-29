@@ -277,7 +277,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         end
         if GetSpecialization() == 3 then
             classRotation = "wind"
-            varClass = RubimRH.db.profile.mk.ww
+            varClass = RubimRH.db.profile.mk.wind
         end
     end
 
@@ -520,7 +520,7 @@ function MainRotation()
     if classRotation == "brew" then
         SetNextAbility(BrewMasterRotation())
     end
-    if classRotation == "mind" then
+    if classRotation == "wind" then
         SetNextAbility(WindWalkerRotation())
     end
 
