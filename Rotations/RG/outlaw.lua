@@ -486,7 +486,7 @@ local function Build()
             and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadsides) and 1 or 0) + (S.QuickDraw:IsAvailable() and 1 or 0))
             and Player:BuffP(S.Opportunity) and (EnergyTimeToMaxRounded() > (2 - (S.QuickDraw:IsAvailable() and 1 or 0))
             or (Player:BuffP(S.GreenskinsWaterloggedWristcuffs) and (S.Blunderbuss:IsReady() or Player:BuffRemainsP(S.GreenskinsWaterloggedWristcuffs) < 2))) then
-        return S.PistolShot:ID()
+        return 272935
     end
     -- actions.build+=/saber_slash,if=variable.ss_useable
     if S.SaberSlash:IsReady(S.SaberSlash) and SS_Useable() then
@@ -632,7 +632,7 @@ function RogueOutlaw()
         -- OutofRange Pistol Shot
         if not Target:IsInRange(10) and (S.PistolShot:IsReady(20) or S.Blunderbuss:IsReady(20)) and not Player:IsStealthed(true, true)
                 and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
-            return S.PistolShot:ID()
+            return 272935
         end
     end
     return 233159
