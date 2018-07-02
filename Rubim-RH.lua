@@ -1,3 +1,21 @@
+local errorEvent = CreateFrame("Frame")
+errorEvent:RegisterEvent("PLAYER_LOGIN")
+errorEvent:SetScript("OnEvent", function(self, event)
+
+    if AethysCore == nil then
+        message("ERROR: Aethyhs Core is missing. Please download it.")
+    end
+    if AethysCache == nil then
+        message("ERROR: Aethyhs Cache is missing. Please download it.")
+    end
+
+    if RubimExtra == true and RubimExtraVer ~= "02072018" then
+        message("ERROR: RubimExtra outdated. Please update it.")
+    end
+end)
+
+
+
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
 _G["RubimRH"] = RubimRH
 local AceGUI = LibStub("AceGUI-3.0")
@@ -36,13 +54,6 @@ local HealingSurge = 188070
 --Druid
 local Regrowth = 8936
 local Renewal = 108238
-
-if AethysCore == nil then
-    message("ERROR: Aethyhs Core is missing. Please download it.")
-end
-if AethysCache == nil then
-    message("ERROR: Aethyhs Cache is missing. Please download it.")
-end
 
 local AC = AethysCore;
 local Cache = AethysCache;
