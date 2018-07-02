@@ -285,8 +285,6 @@ IconRotationAoEText:SetShadowOffset(1, -1)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
-        --RubimRH.createMacro()
-        --RubimRH.editMacro()
         self:StartMoving();
         self.isMoving = true;
     end
@@ -325,9 +323,9 @@ function updateIcon:onUpdate(sinceLastUpdate)
         end
         if RubimExtra then
             if select(2, MainRotation()) ~= nil then
-                RubimRH.MiniRotation.texture:SetTexture(select(2, MainRotation()))
+                RubimRH.stIcon.texture:SetTexture(select(2, MainRotation()))
             else
-                RubimRH.MiniRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(MainRotation()))
             end
         end
         self.sinceLastUpdate = 0;

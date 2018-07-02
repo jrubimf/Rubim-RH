@@ -101,17 +101,24 @@ function PaladinProtection()
         return 146250
     end
 
-    -- Defensives
+
+    -- Defensives --
     if classSpell[1].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.layonahandspct and S.LayOnHands:IsReady() then
-        return S.LayOnHands:ID()
+        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.LayOnHands:ID()))
+    else
+        RubimRH.passiveIcon.texture:SetTexture(nil)
     end
 
     if classSpell[2].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.ardentdefenderpct and S.ArdentDefender:IsReady() then
-        return S.ArdentDefender:ID()
+        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.ArdentDefender:ID()))
+    else
+        RubimRH.passiveIcon.texture:SetTexture(nil)
     end
 
     if classSpell[3].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.guardianofancientkingspct and S.GuardianofAncientKings:IsReady() then
-        return S.GuardianofAncientKings:ID()
+        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.GuardianofAncientKings:ID()))
+    else
+        RubimRH.passiveIcon.texture:SetTexture(nil)
     end
 
     -- In Combat

@@ -13,6 +13,7 @@ local Cache = AethysCache;
 local Unit = AC.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local Party = Unit.Party;
 local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Spell = AC.Spell;
 local Item = AC.Item;
@@ -72,6 +73,10 @@ Spell.Hunter.Marksmanship = {
     SephuzBuff = Spell(208052),
     MKIIGyroscopicStabilizer = Spell(235691),
     PoolingSpell = Spell(9999000010),
+    --PvP
+    ViperSting = Spell(202901),
+    ScorpidSting = Spell(202900),
+    SpiderSting = Spell(202914),
     -- Macros
 };
 local S = Spell.Hunter.Marksmanship;
@@ -191,7 +196,7 @@ local function Burst()
         return 224806
     end
 
-    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30) then
         return S.MarkedShot:ID()
     end
 
@@ -199,19 +204,19 @@ local function Burst()
         return S.TrueShot:ID()
     end
 
-    if S.AimedShot:IsReady() and TargetDebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() then
+    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and lastMoved() > 0.5  then
         return S.AimedShot:ID()
     end
 
-    if S.Sidewinders:Ready() then
+    if S.Sidewinders:Ready() and not RubimRH.breakableAreaCC(30) then
         return 224806
     end
 
-    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 and not RubimRH.breakableAreaCC(30) then
         return S.MarkedShot:ID()
     end
 
-    if S.AimedShot:IsReady() then
+    if S.AimedShot:IsReady() and lastMoved() > 0.5 then
         return S.AimedShot:ID()
     end
 
@@ -225,23 +230,23 @@ local function Sustained()
         return S.BlackArrow:ID()
     end
 
-    if Player:IsMoving() and S.MarkedShot:IsReady() then
+    if Player:IsMoving() and S.MarkedShot:IsReady() and not RubimRH.breakableAreaCC(30) then
         return S.MarkedShot:ID()
     end
 
-    if Player:IsMoving() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
+    if Player:IsMoving() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD()and not RubimRH.breakableAreaCC(30) then
         return 224806
     end
 
-    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
+    if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30) then
         return S.MarkedShot:ID()
     end
 
-    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
+    if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30)  then
         return 224806
     end
 
-    if S.AimedShot:IsReady() and TargetDebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() then
+    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and lastMoved() > 0.5  then
         return S.AimedShot:ID()
     end
 
@@ -249,57 +254,100 @@ local function Sustained()
         return S.Windburst:ID()
     end
 
-    if S.Sidewinders:Ready() then
+    if S.Sidewinders:Ready() and not RubimRH.breakableAreaCC(30) then
         return 224806
     end
 end
 
 local enemyHEALtarget = "None"
+local enemyDPS1 = "None"
+local enemyDPS2 = "None"
 local function aethysHealer()
-    if enemyHealer.Unit == "arena1" then
-        enemyHEALtarget = Arena[1]
-        return
-    elseif enemyHealer.Unit == "arena2" then
-        enemyHEALtarget = Arena[2]
-        return
-    elseif enemyHealer.Unit == "arena3" then
-        enemyHEALtarget = Arena[3]
-        return
+    if enemyHealer[1] ~= nil then
+        if enemyHealer[1].Unit == "arena1" then
+            enemyHEALtarget = Arena[1]
+            local enemyDPS1 = Arena[2]
+            local enemyDPS2 = Arena[3]
+        elseif enemyHealer[1].Unit.Unit == "arena2" then
+            local enemyDPS1 = Arena[1]
+            enemyHEALtarget = Arena[2]
+            local enemyDPS2 = Arena[3]
+        elseif enemyHealer[1].Unit.Unit == "arena3" then
+            local enemyDPS1 = Arena[1]
+            local enemyDPS2 = Arena[2]
+            enemyHEALtarget = Arena[3]
+        end
     end
-    enemyHEALtarget = "None"
-
 end
 
 function HunterMM()
     aethysHealer()
 
-    if not Player:AffectingCombat() then
-        return "146250"
+    if S.TrueShot:TimeSinceLastCast() >= 15 and S.TrueShot:TimeSinceLastCast() <= 16 and CDsON() then
+        RubimRH.CDToggle()
+    end
+
+    if RubimRH.breakableCC(Target) == true or RubimRH.PvPImmunity(Target) == true then
+        return 243762
+    end
+
+    LeftCtrl = IsLeftControlKeyDown();
+    LeftShift = IsLeftShiftKeyDown();
+
+    if enemyHEALtarget ~= "None" then
+        if RubimRH.ShouldInterrupt() and enemyHEALtarget:IsInRange(22) and S.CounterShot:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) then
+            return 107079
+        end
+
+        if RubimRH.ShouldInterrupt() and enemyHEALtarget:IsInRange(22) and not S.CounterShot:Ready() and S.SpiderSting:IsAvailable() and S.SpiderSting:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) then
+            return 69070
+        end
+    end
+    -- if Viper Sting(202901): Use Viper Sting on enemy healer if our target is below 70%hp. IF healer is a RESTO DRUID then cast ONLY when all buffs are on the target: Rejuvenation(774), Lifebloom(33763), Cenarion Ward (102351)
+    if enemyHEALtarget ~= "None" then
+        if enemyHEALtarget:IsInRange(22) and S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and (not enemyHealer.class == "DRUID" and Target:HealthPercentage() < 70) or (enemyHealer.class == "DRUID" and Target:Buff(S.Rejuvenation) and Target:Buff(S.Lifebloom) and Target:Buff(S.CenarionWard)) then
+            return 146250
+        end
+
+        if enemyHEALtarget:IsInRange(22) and S.CounterShot:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) and Target:HealthPercentage() <= 30 then
+            return 107079
+        end
+
+        if enemyHEALtarget:IsInRange(22) and not S.CounterShot:Ready() and S.SpiderSting:IsAvailable() and S.SpiderSting:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) and Target:HealthPercentage() <= 30 then
+            return 69070
+        end
+
+    end
+
+    --if Scorpid Sting(202900): Use Scorpid Sting if enemy melee dps (including hunter) is bursting OR we/our teammate is below 60%hp
+    if S.ScorpidSting:IsAvailable() and S.ScorpidSting:IsReady() and (Party[1].HealthPercentage() <= 60 or Party[2].HealthPercentage() <= 60) and RubimRH.isMeleeClass(enemyDPS1) and RubimRH.PvPBursting(enemyDPS1) then
+        return 107079
+    end
+
+    if S.ScorpidSting:IsAvailable() and S.ScorpidSting:IsReady() and (Party[1].HealthPercentage() <= 60 or Party[2].HealthPercentage() <= 60) and RubimRH.isMeleeClass(enemyDPS1) and RubimRH.PvPBursting(enemyDPS1) then
+        return 69070
+    end
+
+
+    --if Spider Sting(202914): Use Spider sting as interrupt if Counter shot(147362) is on cd and teammate is below 70%hp.'
+    if enemyDPS1 ~= "None" then
+        if enemyDPS1:IsInRange(22) and S.CounterShot:IsReady() and RubimRH.PvPSpells(enemyDPS1) and Party[1]:HealthPercentage() <= 70 or Party[2]:HealthPercentage() <= 70 then
+            return 107079
+        end
+    end
+
+    if enemyDPS2 ~= "None" then
+        if enemyDPS2:IsInRange(22):IsInRange(22) and not S.CounterShot:Ready() and S.SpiderSting:IsAvailable() and S.SpiderSting:IsReady() and RubimRH.PvPSpells(enemyDPS2) and Party[1]:HealthPercentage() <= 70 or Party[2]:HealthPercentage() <= 70 then
+            return 69070
+        end
     end
 
     if TargetIsValid() then
 
-        -- if Viper Sting(202901): Use Viper Sting on enemy healer if our target is below 70%hp. IF healer is a RESTO DRUID then cast ONLY when all buffs are on the target: Rejuvenation(774), Lifebloom(33763), Cenarion Ward (102351)
-        if enemyHEALtarget ~= "None" then
-            if S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and (not enemyHealer.class == "DRUID" and enemyHEALtarget:HealthPercentage() < 70) or (enemyHealer.class == "DRUID" and enemyHEALtarget:Buff(S.Rejuvenation) and enemyHEALtarget:Buff(S.Lifebloom) and enemyHEALtarget:Buff(S.CenarionWard)) then
-                return 146250
-            end
-        end
-
-        --if Scorpid Sting(202901): Use Scorpid Sting if enemy melee dps (including hunter) is bursting OR we/our teammate is below 60%hp
---        if S.ScorpidSting:IsAvailable() and (EnemyDPS:isBursting("player", 60) or EnemyDPS:isBursting("arena1", 60) or EnemyDPS:isBursting("arena2", 60) or EnemyDPS:isBursting("arena3", 60)) then
---            return S.ScorpidSting:ID()
---        end
-
-
-        --if Spider Sting(202914): Use Spider sting as interrupt if Counter shot(147362) is on cd and teammate is below 70%hp.
-
-
-
         if CDsON() and Burst() ~= nil then
-               return Burst()
+            return Burst()
         end
-        if Sustained() ~= nil then
+        if not CDsON() and Sustained() ~= nil then
             return Sustained()
         end
     end

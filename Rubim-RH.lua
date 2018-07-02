@@ -183,6 +183,7 @@ local defaults = {
         },
         sh = {
             enh = {
+                healingsurge = 80,
                 cooldown = true,
                 spells = {
                     { spellID = HealingSurge, isActive = true }
