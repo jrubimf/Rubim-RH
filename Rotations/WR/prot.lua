@@ -49,6 +49,7 @@ Spell.Warrior.Protection = {
     Pummel = Spell(6552),
     ShieldBlock = Spell(2565),
     ShieldBlockB = Spell(132404),
+    Avatar = Spell(107574),
 };
 local S = Spell.Warrior.Protection;
 -- Items
