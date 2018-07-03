@@ -349,7 +349,7 @@ local function Cooldowns()
 
     -- actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
     if CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
-        return 102543
+        return 210631
     end
 
     -- actions.cooldowns+=/potion,name=prolonged_power,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
@@ -536,7 +536,7 @@ function DruidFeral()
         end
         -- incarnation
         if S.Incarnation:IsAvailable() and S.Incarnation:IsReady() then
-            return 102543
+            return 210631
         end
     end
 
