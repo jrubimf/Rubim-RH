@@ -17,8 +17,8 @@ function TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-    AC.GetEnemies(10)
-    if Cache.Enemies[10] ~= nil then
+    AC.GetEnemies(8)
+    if Cache.Enemies[8] ~= nil then
         for _, CycleUnit in pairs(Cache.Enemies[8]) do
             if CycleUnit:Exists() then
                 isValid = true
