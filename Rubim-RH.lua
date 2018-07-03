@@ -22,7 +22,7 @@ local AceGUI = LibStub("AceGUI-3.0")
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
 
-local classRotation = "None"
+RubimRH.currentSpec = "None"
 
 --DK
 local DeathStrike = 49998
@@ -93,6 +93,7 @@ local defaults = {
         dk = {
             blood = {
                 cooldown = true,
+                smartds = 30,
                 spells = {
                     { spellID = DeathStrike, isActive = true },
                     { spellID = RuneTap, isActive = true }
@@ -237,15 +238,15 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 6 then
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(250)
-            classRotation = "blood"
+            RubimRH.currentSpec = "blood"
             varClass = RubimRH.db.profile.dk.blood
         elseif GetSpecialization() == 2 then
             Player:RegisterListenedSpells(251)
-            classRotation = "frost"
+            RubimRH.currentSpec = "frost"
             varClass = RubimRH.db.profile.dk.frost
         elseif GetSpecialization() == 3 then
             Player:RegisterListenedSpells(252)
-            classRotation = "unholy"
+            RubimRH.currentSpec = "unholy"
             varClass = RubimRH.db.profile.dk.unholy
         end
     end
@@ -254,11 +255,11 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 12 then
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(577)
-            classRotation = "havoc"
+            RubimRH.currentSpec = "havoc"
             varClass = RubimRH.db.profile.dh.havoc
         elseif GetSpecialization() == 2 then
             Player:RegisterListenedSpells(581)
-            classRotation = "veng"
+            RubimRH.currentSpec = "veng"
             varClass = RubimRH.db.profile.dh.veng
         end
     end
@@ -267,12 +268,12 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 4 then
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(259)
-            classRotation = "ass"
+            RubimRH.currentSpec = "ass"
             varClass = RubimRH.db.profile.rg.ass
         end
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(260)
-            classRotation = "out"
+            RubimRH.currentSpec = "out"
             varClass = RubimRH.db.profile.rg.out
         end
         if GetSpecialization() == 3 then
@@ -284,11 +285,11 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     --Monk
     if select(3, UnitClass("player")) == 10 then
         if GetSpecialization() == 1 then
-            classRotation = "brew"
+            RubimRH.currentSpec = "brew"
             varClass = RubimRH.db.profile.mk.brew
         end
         if GetSpecialization() == 3 then
-            classRotation = "wind"
+            RubimRH.currentSpec = "wind"
             varClass = RubimRH.db.profile.mk.wind
         end
     end
@@ -297,17 +298,17 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 1 then
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(71)
-            classRotation = "arms"
+            RubimRH.currentSpec = "arms"
             varClass = RubimRH.db.profile.wr.arms
         end
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(72)
-            classRotation = "fury"
+            RubimRH.currentSpec = "fury"
             varClass = RubimRH.db.profile.wr.fury
         end
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(73)
-            classRotation = "prot"
+            RubimRH.currentSpec = "prot"
             varClass = RubimRH.db.profile.wr.prot
         end
     end
@@ -316,13 +317,13 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 3 then
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(255)
-            classRotation = "surv"
+            RubimRH.currentSpec = "surv"
             varClass = RubimRH.db.profile.hr.surv
         end
 
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(254)
-            classRotation = "mm"
+            RubimRH.currentSpec = "mm"
             varClass = RubimRH.db.profile.hr.mm
         end
     end
@@ -331,7 +332,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 7 then
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(263)
-            classRotation = "enh"
+            RubimRH.currentSpec = "enh"
             varClass = RubimRH.db.profile.sh.enh
         end
     end
@@ -340,19 +341,19 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 2 then
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(65)
-            classRotation = "ret"
+            RubimRH.currentSpec = "ret"
             varClass = RubimRH.db.profile.pl.ret
         end
 
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(66)
-            classRotation = "pprot"
+            RubimRH.currentSpec = "pprot"
             varClass = RubimRH.db.profile.pl.prot
         end
 
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(70)
-            classRotation = "holy"
+            RubimRH.currentSpec = "holy"
             varClass = RubimRH.db.profile.pl.holy
         end
     end
@@ -361,18 +362,18 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 11 then
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(103)
-            classRotation = "feral"
+            RubimRH.currentSpec = "feral"
             varClass = RubimRH.db.profile.dr.feral
         end
 
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(104)
-            classRotation = "guardian"
+            RubimRH.currentSpec = "guardian"
             varClass = RubimRH.db.profile.dr.guardian
         end
     end
 
-    if classRotation == "None" then
+    if RubimRH.currentSpec == "None" then
         message("ERROR: Class not supported")
     end
     RubimRH.useCD = varClass.cooldown or false
@@ -495,89 +496,89 @@ function MainRotation()
     --    end
 
     --DK
-    if classRotation == "blood" then
+    if RubimRH.currentSpec == "blood" then
         SetNextAbility(BloodRotation())
     end
 
-    if classRotation == "frost" then
+    if RubimRH.currentSpec == "frost" then
         SetNextAbility(FrostRotation())
     end
 
-    if classRotation == "unholy" then
+    if RubimRH.currentSpec == "unholy" then
         SetNextAbility(UnholyRotation())
     end
 
     --DH
-    if classRotation == "havoc" then
+    if RubimRH.currentSpec == "havoc" then
         SetNextAbility(HavocRotation())
     end
-    if classRotation == "veng" then
+    if RubimRH.currentSpec == "veng" then
         SetNextAbility(VengRotation())
     end
 
     --RG
-    if classRotation == "ass" then
+    if RubimRH.currentSpec == "ass" then
         SetNextAbility(RogueAss())
     end
-    if classRotation == "out" then
+    if RubimRH.currentSpec == "out" then
         SetNextAbility(RogueOutlaw())
     end
-    if classRotation == "sub" then
+    if RubimRH.currentSpec == "sub" then
         SetNextAbility(RogueSub())
     end
 
 
 
     --MK
-    if classRotation == "brew" then
+    if RubimRH.currentSpec == "brew" then
         SetNextAbility(BrewMasterRotation())
     end
-    if classRotation == "wind" then
+    if RubimRH.currentSpec == "wind" then
         SetNextAbility(WindWalkerRotation())
     end
 
 
     --Warrior
-    if classRotation == "arms" then
+    if RubimRH.currentSpec == "arms" then
         SetNextAbility(WarriorArms())
     end
-    if classRotation == "fury" then
+    if RubimRH.currentSpec == "fury" then
         SetNextAbility(WarriorFury())
     end
-    if classRotation == "prot" then
+    if RubimRH.currentSpec == "prot" then
         SetNextAbility(WarriorProt())
     end
 
 
     --Hunter
-    if classRotation == "mm" then
+    if RubimRH.currentSpec == "mm" then
         SetNextAbility(HunterMM())
     end
-    if classRotation == "surv" then
+    if RubimRH.currentSpec == "surv" then
         SetNextAbility(HunterSurvival())
     end
 
     --Shaman
-    if classRotation == "enh" then
+    if RubimRH.currentSpec == "enh" then
         SetNextAbility(ShamanEnh())
     end
 
     --Paladin
-    if classRotation == "holy" then
+    if RubimRH.currentSpec == "holy" then
         SetNextAbility(PaladinHoly())
     end
-    if classRotation == "pprot" then
+    if RubimRH.currentSpec == "pprot" then
         SetNextAbility(PaladinProtection())
     end
-    if classRotation == "ret" then
+    if RubimRH.currentSpec == "ret" then
         SetNextAbility(PaladinRetribution())
     end
 
     --Druid
-    if classRotation == "feral" then
+    if RubimRH.currentSpec == "feral" then
         SetNextAbility(DruidFeral())
     end
-    if classRotation == "guardian" then
+    if RubimRH.currentSpec == "guardian" then
         SetNextAbility(DruidGuardian())
     end
     return GetNextAbility()

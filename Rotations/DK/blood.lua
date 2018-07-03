@@ -69,44 +69,36 @@ function BloodBurst()
 
     if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 then
         return S.BloodBoil:ID()
-
     end
 
     if S.HeartStrike:IsCastableP("Melee") then
         return S.HeartStrike:ID()
-
     end
 
     if S.DeathStrike:IsReady("Melee") then
         return S.DeathStrike:ID()
-
     end
 end
 
 function DRW()
     if S.Marrowrend:IsCastableP("Melee") and (Player:BuffStack(S.BoneShield) < 6 or Player:BuffRemains(S.BoneShield) <= 3) then
         return S.Marrowrend:ID()
-
     end
 
     if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:ChargesFractional() >= 1.8 then
         return S.BloodBoil:ID()
-
     end
 
     if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and not Player:PrevGCD(1, S.DeathStrike) then
         return S.DeathStrike:ID()
-
     end
 
     if S.HeartStrike:IsCastableP("Melee") then
         return S.HeartStrike:ID()
-
     end
 
     if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") then
         return S.DeathStrike:ID()
-
     end
 end
 
@@ -117,17 +109,14 @@ function OFF()
 
     if S.DeathStrike:IsReady("Melee") and Player:RunicPower() >= 80 then
         return S.DeathStrike:ID()
-
     end
 
     if S.DeathStrike:IsReady("Melee") and Player:BuffRemains(S.BloodShield) > 0 then
         return S.DeathStrike:ID()
-
     end
 
     if S.HeartStrike:IsCastableP("Melee") then
         return S.HeartStrike:ID()
-
     end
 end
 
@@ -211,11 +200,7 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
-    if lastDamage("percent") > 30 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and not Player:HealingAbsorbed() then
-        return S.DeathStrike:ID()
-    end
-
-    if Player:HealthPercentage() < 90 and S.DeathStrike:IsReady("Melee") and S.DeathStrike:TimeSinceLastCast() > Player:GCD() * 3 then
+    if lastDamage("percent") > RubimRH.db.profile.dk.blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
 
@@ -306,7 +291,6 @@ function BloodRotation()
 
     if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and classSpell[2].isActive) then
         return S.HeartStrike:ID()
-
     end
     return 233159
 end

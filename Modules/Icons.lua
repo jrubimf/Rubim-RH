@@ -29,7 +29,7 @@ local updateConfigFunc = function()
     SetCVar("nameplateOtherBottomInset", 0.1)
     SetCVar("nameplateOtherTopInset", 0.08)
 
-        --Default
+    --Default
     local QuestionMark = 212812
     --DK
     local DeathStrike = 49998
@@ -120,7 +120,7 @@ local updateConfigFunc = function()
     --ROGUE
     if select(3, UnitClass("player")) == 4 then
         classSpell = {}
-        classSpell = { { spellID = RolltheBones, isActive = nil } }
+        classSpell = RubimRH.db.profile.rg.out.spells
     end
 
     --DRUID
@@ -150,6 +150,12 @@ UIDropDownMenu_SetText(dropDown, "Nothing")
 UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
     if (level or 1) == 1 then
+        info.text, info.hasArrow = "Class Config", nil
+        info.checked = false
+        info.func = function(self)
+            RubimRH.ClassConfig()
+        end
+        UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow = "Cooldowns", nil
         info.checked = RubimRH.useCD
@@ -322,8 +328,8 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
-        IconRotationCDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .."CD")
-        IconRotationAoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .."AoE")
+        IconRotationCDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .. "CD")
+        IconRotationAoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
         if select(2, MainRotation()) ~= nil then
             IconRotation.texture:SetTexture(select(2, MainRotation()))
         else
