@@ -17,10 +17,12 @@ function TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-
-    for _, CycleUnit in pairs(Cache.Enemies[10]) do
-        if CycleUnit:Exists() then
-            isValid = true
+    AC.GetEnemies(10)
+    if Cache.Enemies[10] ~= nil then
+        for _, CycleUnit in pairs(Cache.Enemies[8]) do
+            if CycleUnit:Exists() then
+                isValid = true
+            end
         end
     end
     return isValid
@@ -91,7 +93,6 @@ end
 local function RemoveNameplate(unitID)
     local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
     local unitframe = nameplate.UnitFrame
-
     -- recycle the nameplate
     activeUnitPlates[unitframe] = nil
 end
