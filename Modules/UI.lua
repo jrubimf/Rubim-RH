@@ -1,14 +1,4 @@
 local AceGUI = LibStub("AceGUI-3.0")
-
-function RubimRH.ClassConfig()
-    if RubimRH.currentSpec == "blood" then
-        BloodMenu()
-    elseif RubimRH.currentSpec == "out" then
-        OutlawMenu()
-    end
-end
-
--- Create the frame container
 local function BloodMenu()
     local bloodGUI = AceGUI:Create("Frame")
     bloodGUI:SetTitle("Blood Config")
@@ -77,4 +67,12 @@ local function OutlawMenu()
     end)
     rogueGUI:AddChild(dropdown)
     rogueGUI:Show()
+end
+
+function RubimRH.ClassConfig()
+    if RubimRH.currentSpec == "blood" then
+        BloodMenu()
+    elseif RubimRH.currentSpec == "out" then
+        OutlawMenu()
+    end
 end

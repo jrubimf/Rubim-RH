@@ -62,13 +62,13 @@ local function getOptions()
                     order = 1,
                     type = "group",
                     name = "General",
-                    childGroups = "tab",
+                    childGroups = "tree",
                     args = {
                         general = {
                             order = 1,
                             type = "group",
-                            childGroups = "tab",
-                            inline = false,
+                            childGroups = "tree",
+                            inline = true,
                             name = "General",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -88,10 +88,10 @@ local function getOptions()
                                     set = function(info, v)
                                         RubimRH.CDToggle()
                                     end,
-                                    name = "Cooldowns"
+                                    name = "AutoAttack"
                                 },
                                 cooldownbind = {
-                                    order = 1,
+                                    order = 3,
                                     type = "keybinding",
                                     get = function()
                                         return GetBindingKey("Cooldown Toggle")
@@ -103,7 +103,7 @@ local function getOptions()
                                     name = "Cooldowns"
                                 },
                                 interruptsbind = {
-                                    order = 2,
+                                    order = 4,
                                     type = "keybinding",
                                     get = function()
                                         return GetBindingKey("Interrupt Toggle")
@@ -115,7 +115,7 @@ local function getOptions()
                                     name = "Interrupts"
                                 },
                                 aoebind = {
-                                    order = 2,
+                                    order = 5,
                                     type = "keybinding",
                                     get = function()
                                         return GetBindingKey("AoE Toggle")
