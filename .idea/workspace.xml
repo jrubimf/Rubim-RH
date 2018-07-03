@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a6d15cf-6783-43a9-b72a-b65fca495572" name="Default" comment="Comment strings.">
-      <change beforePath="$PROJECT_DIR$/Modules/Custom.lua" afterPath="$PROJECT_DIR$/Modules/Custom.lua" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Modules/Icons.lua" afterPath="$PROJECT_DIR$/Modules/Icons.lua" />
       <change beforePath="$PROJECT_DIR$/Modules/PVP.lua" afterPath="$PROJECT_DIR$/Modules/PVP.lua" />
       <change beforePath="$PROJECT_DIR$/Rotations/DH/havoc.lua" afterPath="$PROJECT_DIR$/Rotations/DH/havoc.lua" />
+      <change beforePath="$PROJECT_DIR$/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rotations/DR/feral.lua" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="184">
+              <caret line="519" column="45" lean-forward="false" selection-start-line="519" selection-start-column="40" selection-end-line="519" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -59,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Custom.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Custom.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+            <state relative-caret-position="214">
+              <caret line="100" column="9" lean-forward="false" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -130,10 +131,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Event</find>
-      <find>Addon</find>
-      <find>MiniRotation</find>
-      <find>RollThe</find>
       <find>RtB_BuffRemains</find>
       <find>RtB_Reroll</find>
       <find>rollthebone</find>
@@ -160,6 +157,10 @@
       <find>validTar</find>
       <find>AC.</find>
       <find>TTD</find>
+      <find>REgrow</find>
+      <find>S.Regrowth</find>
+      <find>Regrowth</find>
+      <find>Lunar</find>
     </findStrings>
     <replaceStrings>
       <replace>4421</replace>
@@ -255,8 +256,8 @@
         <option value="$PROJECT_DIR$/Rotations/WR/prot.lua" />
         <option value="$PROJECT_DIR$/Modules/CombatTracker.lua" />
         <option value="$PROJECT_DIR$/Rotations/RG/outlaw.lua" />
-        <option value="$PROJECT_DIR$/Rotations/DR/feral.lua" />
         <option value="$PROJECT_DIR$/Modules/Custom.lua" />
+        <option value="$PROJECT_DIR$/Rotations/DR/feral.lua" />
       </list>
     </option>
   </component>
@@ -931,18 +932,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
+    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="214">
+          <caret line="100" column="9" lean-forward="false" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
+    <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+        <state relative-caret-position="184">
+          <caret line="519" column="45" lean-forward="false" selection-start-line="519" selection-start-column="40" selection-end-line="519" selection-end-column="45" />
           <folding />
         </state>
       </provider>

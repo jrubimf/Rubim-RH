@@ -143,7 +143,7 @@ local RakeThreshold, RipThreshold, ThrashThreshold = 0, 0, 0
 --- ======= MAIN =======
 local function Generators()
     --actions.st_generators=regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points>=2&cooldown.ashamanes_frenzy.remains<gcd
-    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() >= 2 and (S.AshamanesFrenzy:CooldownRemainsP() < Player:GCD())) then
+    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftness) and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() >= 2 and S.AshamanesFrenzy:CooldownRemainsP() < Player:GCD()) then
         return S.Regrowth:ID()
     end
 
@@ -227,7 +227,7 @@ local function Generators()
 
     --actions.st_generators+=/moonfire_cat,target_if=refreshable
     if S.LunarInspiration:IsAvailable() and S.MoonfireCat:IsReady(RangedRange) and Target:DebuffRefreshableP(S.MoonfireCat, MoonfireThreshold) then
-        return S.LunarInspiration:ID()
+        return S.MoonfireCat:ID()
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
@@ -391,11 +391,11 @@ local function SingleTarget()
     end
 
     -- actions.single_target+=/regrowth,if=combo_points=5&buff.predatory_swiftness.up&talent.bloodtalons.enabled&buff.bloodtalons.down&(!buff.incarnation.up|dot.rip.remains<8)
-    if S.Regrowth:IsCastable() and Player:ComboPoints() == 5 and Player:BuffP(S.PredatorySwiftness) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and (Player:BuffDownP(S.Incarnation) or (Target:DebuffRemainsP(S.Rip) < 8)) then
+    if S.Regrowth:IsReady() and (Player:ComboPoints() == 5 and Player:BuffP(S.PredatorySwiftness) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and (Player:BuffDownP(S.Incarnation) or (Target:DebuffRemainsP(S.Rip) < 8))) then
         return S.Regrowth:ID()
     end
     -- actions.single_target+=/regrowth,if=combo_points>3&talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.apex_predator.up&buff.incarnation.down
-    if S.Regrowth:IsCastable() and Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftness) and Player:BuffP(S.ApexPredator) and Player:BuffDownP(S.Incarnation) then
+    if S.Regrowth:IsReady() and (Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftness) and Player:BuffP(S.ApexPredator) and Player:BuffDownP(S.Incarnation)) then
         return S.Regrowth:ID()
     end
     -- actions.single_target+=/ferocious_bite,if=buff.apex_predator.up&((combo_points>4&(buff.incarnation.up|talent.moment_of_clarity.enabled))|(talent.bloodtalons.enabled&buff.bloodtalons.up&combo_points>3))
@@ -551,7 +551,7 @@ function DruidFeral()
     end
 
     -- actions+=/regrowth,if=(talent.sabertooth.enabled|buff.predatory_swiftness.up)&talent.bloodtalons.enabled&buff.bloodtalons.down&combo_points=5
-    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() or Player:Buff(S.PredatorySwiftness) and S.Bloodtalons:IsAvailable() and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() == 5) then
+    if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() or Player:Buff(S.PredatorySwiftness)) and S.Bloodtalons:IsAvailable() and not Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() == 5 then
         return S.Regrowth:ID()
     end
 
