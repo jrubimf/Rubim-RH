@@ -250,15 +250,15 @@ local function Generators()
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
-    if not S.BrutalSlash:IsAvailable() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
-        poolResource[1].skill = S.BrutalSlash
-        poolResource[1].spellName = "BrutalSlash"
+    if not S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
+        poolResource[1].skill = S.Swipe
+        poolResource[1].spellName = "Swipe"
         poolResource[1].isActive = true
         return 233159
     end
 
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
-    if S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
+        if S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
         return 194612
     end
 
@@ -316,7 +316,6 @@ local function Finishers()
     if S.FerociousBite:IsReady() and Player:Energy() >= 50 then
         return S.FerociousBite:ID()
     end
-
 end
 
 local function Cooldowns()
@@ -404,10 +403,11 @@ local function SingleTarget()
     end
 
     --actions.single_target+ = /run_action_list, name = st_finishers, if = combo_points>4
-    if Finishers() ~= nil and (Player:ComboPoints() > 4 and Target:IsInRange(MeleeRange)) then
+    if Finishers() ~= nil and Player:ComboPoints() > 4 then
         return Finishers()
     end
 
+    --actions.single_target+=/run_action_list,name=st_generators
     if Generators() ~= nil then
         return Generators()
     end
@@ -474,7 +474,6 @@ function DruidFeral()
         poolResource[1].skill = "Nil"
         poolResource[1].spellName = "0"
         poolResource[1].isActive = false
-        return 233159
     end
 
     if poolResource[1].spellName == "Rake" and S.Rake:IsReady() and S.Rake:CooldownRemainsP() == 0 then
@@ -485,11 +484,15 @@ function DruidFeral()
         return 194612
     end
 
-    if Player:ComboPoints() >= 1 then
-        if poolResource[1].spellName == "Thrash" and S.Thrash:IsReady() and S.Thrash:CooldownRemainsP() == 0 then
-            return S.Thrash:ID()
-        end
+    if poolResource[1].spellName == "Thrash" and S.Thrash:IsReady() and S.Thrash:CooldownRemainsP() == 0 then
+        return S.Thrash:ID()
+    end
 
+    if poolResource[1].spellPool == "Swipe" and S.Swipe:IsReady() and S.Swipe:CooldownRemainsP() == 0 then
+        return 194612
+    end
+
+    if Player:ComboPoints() >= 1 then
         if poolResource[1].spellName == "Rip" and S.Rip:IsReady() and S.Rip:CooldownRemainsP() == 0 then
             return S.Rip:ID()
         end
@@ -499,13 +502,13 @@ function DruidFeral()
         end
     end
 
-    if poolResource[1].isActive == true and Player:ComboPoints() > 1 then
+    if poolResource[1].isActive == true and (Player:ComboPoints() > 1)then
         return 233159
     end
     --debugVarText = Player:PrevGCD()
 
     -- actions=run_action_list,name=single_target,if=dot.rip.ticking|time>15
-    if SingleTarget() ~= nil and (Target:IsInRange(MeleeRange) and (Target:DebuffRemainsP(S.Rip) > 0 or AC.CombatTime() > 15)) then
+    if SingleTarget() ~= nil and (Target:DebuffRemainsP(S.Rip) > 0 or AC.CombatTime() > 15) then
         return SingleTarget()
     end
 

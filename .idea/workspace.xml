@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a6d15cf-6783-43a9-b72a-b65fca495572" name="Default" comment="Comment strings.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Modules/PVP.lua" afterPath="$PROJECT_DIR$/Modules/PVP.lua" />
       <change beforePath="$PROJECT_DIR$/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rotations/DR/feral.lua" />
     </list>
@@ -50,8 +51,8 @@
       <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="387" column="75" lean-forward="true" selection-start-line="387" selection-start-column="75" selection-end-line="387" selection-end-column="75" />
+            <state relative-caret-position="510">
+              <caret line="504" column="69" lean-forward="false" selection-start-line="504" selection-start-column="69" selection-end-line="504" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -128,21 +129,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>interrupt</find>
-      <find>rene</find>
-      <find>RubimRH.InterruptToggle()</find>
-      <find>Target</find>
-      <find>combat</find>
-      <find>poolResource</find>
-      <find>HealerInterrupt</find>
-      <find>nemesis</find>
-      <find>ShouldInterrupt</find>
       <find>lastDamage</find>
       <find>Melee</find>
       <find>incarnation</find>
       <find>Cooldowns</find>
       <find>Cooldown</find>
-      <find>print</find>
       <find>CDsON()</find>
       <find>cooldown</find>
       <find>Berserk</find>
@@ -158,9 +149,18 @@
       <find>rubimRH</find>
       <find>updateConfigFunc</find>
       <find>Predatory</find>
+      <find>AoE</find>
+      <find>Generators</find>
+      <find>print</find>
+      <find>poolResource</find>
+      <find>S.Thrash:ID()</find>
+      <find>Thrash</find>
+      <find>ComboPoint</find>
+      <find>Thrash:ID()</find>
+      <find>BrutalSlash</find>
+      <find>194612</find>
     </findStrings>
     <replaceStrings>
-      <replace>4421</replace>
       <replace>2284</replace>
       <replace>&quot;&quot;Waiting&quot;&quot;</replace>
       <replace>233159</replace>
@@ -190,6 +190,7 @@
       <replace>cooldown</replace>
       <replace>cooldown = true</replace>
       <replace>inline = false</replace>
+      <replace>:Debuff</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -553,7 +554,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15729167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="LuaCheck" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -939,8 +940,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="387" column="75" lean-forward="true" selection-start-line="387" selection-start-column="75" selection-end-line="387" selection-end-column="75" />
+        <state relative-caret-position="510">
+          <caret line="504" column="69" lean-forward="false" selection-start-line="504" selection-start-column="69" selection-end-line="504" selection-end-column="69" />
           <folding />
         </state>
       </provider>
