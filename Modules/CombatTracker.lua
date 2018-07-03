@@ -221,25 +221,25 @@ Listener:Add('Rubim_EvEnts', 'PLAYER_REGEN_DISABLED', function()
     wipe(Data)
 end)
 
-function incdmg(target)
-    if UnitExists(target) then
-        local pDMG = select(1, getDMG(target))
+function incdmg(unit)
+    if UnitExists(unit) then
+        local pDMG = select(1, getDMG(unit))
         return pDMG
     end
     return 0
 end
 
-function incdmgphys(target)
-    if UnitExists(target) then
-        local pDMG = select(3, getDMG(target))
+function incdmgphys(unit)
+    if UnitExists(unit) then
+        local pDMG = select(3, getDMG(unit))
         return pDMG
     end
     return 0
 end
 
-function incdmgmagic(target)
-    if UnitExists(target) then
-        local mDMG = select(4, getDMG(target))
+function incdmgmagic(unit)
+    if UnitExists(unit) then
+        local mDMG = select(4, getDMG(unit))
         return mDMG
     end
     return 0

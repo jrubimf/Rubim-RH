@@ -348,15 +348,15 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-    if S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
-        return 124309
+    if CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
+        return 102543
     end
 
     -- actions.cooldowns+=/potion,name=prolonged_power,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
 
 
     -- actions.cooldowns+=/ashamanes_frenzy,if=combo_points>=2&(!talent.bloodtalons.enabled|buff.bloodtalons.up)
-    if S.AshamanesFrenzy:IsReady() and Player:ComboPoints() >= 2 and (not S.Bloodtalons:IsAvailable() or Player:Buff(S.BloodtalonsBuff)) then
+    if CDsON() and S.AshamanesFrenzy:IsReady() and Player:ComboPoints() >= 2 and (not S.Bloodtalons:IsAvailable() or Player:Buff(S.BloodtalonsBuff)) then
         return S.AshamanesFrenzy:ID()
     end
 
@@ -536,7 +536,7 @@ function DruidFeral()
         end
         -- incarnation
         if S.Incarnation:IsAvailable() and S.Incarnation:IsReady() then
-            return 124309
+            return 102543
         end
     end
 
