@@ -213,11 +213,6 @@ function HavocRotation()
     if Player:IsChanneling(S.EyeBeam) then
         return 248999
     end
-
-    if RubimRH.breakableCC(Target) == true then
-        return 243762
-    end
-
     local function Cooldown()
         -- Locals for tracking if we should display these suggestions together
 
@@ -279,7 +274,7 @@ function HavocRotation()
 
         end
         -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up))
-        if not RubimRH.breakableAreaCC(6) and lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
+        if lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
             return S.FuryOfTheIllidari:ID()
 
         end
@@ -290,7 +285,7 @@ function HavocRotation()
 
         end
         -- throw_glaive,if=talent.bloodlet.enabled&spell_targets>=2&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&(spell_targets>=3|raid_event.adds.in>recharge_time+cooldown)
-        if not RubimRH.breakableAreaCC(10) and S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and (Cache.EnemiesCount[CleaveRangeID] >= 2) and
+        if  S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and (Cache.EnemiesCount[CleaveRangeID] >= 2) and
                 (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
             return S.ThrowGlaive:ID()
 
@@ -302,7 +297,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
-        if not RubimRH.breakableAreaCC(10) and (classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
+        if (classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
                 or ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70) and
                 (not IsMetaExtendedByDemonic() or (AC.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)))) then
             return S.EyeBeam:ID()
@@ -400,7 +395,7 @@ function HavocRotation()
 
         end
         -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up)&(!talent.chaos_blades.enabled|buff.chaos_blades.up|cooldown.chaos_blades.remains>30|target.time_to_die<cooldown.chaos_blades.remains))
-        if not RubimRH.breakableAreaCC(6) and lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
+        if lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
                 and (not S.ChaosBlades:IsAvailable() or Player:BuffP(S.ChaosBlades) or S.ChaosBlades:CooldownRemainsP() > 30
                 or Target:TimeToDie() < S.ChaosBlades:CooldownRemainsP()))) then
             return S.FuryOfTheIllidari:ID()
@@ -412,7 +407,7 @@ function HavocRotation()
 
         end
         -- throw_glaive,if=talent.bloodlet.enabled&spell_targets>=2&(!talent.master_of_the_glaive.enabled|!talent.momentum.enabled|buff.momentum.up)&(spell_targets>=3|raid_event.adds.in>recharge_time+cooldown)
-        if not RubimRH.breakableAreaCC(10) and S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and Cache.EnemiesCount[CleaveRangeID] >= 2
+        if S.ThrowGlaive:IsReady(S.ThrowGlaive) and (S.Bloodlet:IsAvailable() and Cache.EnemiesCount[CleaveRangeID] >= 2
                 and (not S.MasterOfTheGlaive:IsAvailable() or not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
             return S.ThrowGlaive:ID()
 
@@ -423,7 +418,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|buff.havoc_t21_4pc.remains<2&(!talent.blind_fury.enabled|fury.deficit>=70)&((spell_targets.eye_beam_tick>=3&raid_event.adds.in>cooldown)|talent.blind_fury.enabled|set_bonus.tier21_2pc)
-        if not RubimRH.breakableAreaCC(6) and classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
+        if classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
             if (Cache.EnemiesCount[CleaveRangeID] > 1) or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
                     and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
                 return S.EyeBeam:ID()
@@ -450,7 +445,8 @@ function HavocRotation()
         end
 
         -- throw_glaive,if=!talent.bloodlet.enabled&buff.metamorphosis.down&spell_targets>=3
-        if not RubimRH.breakableAreaCC(10) and S.ThrowGlaive:IsReady(S.ThrowGlaive)
+        if 
+            S.ThrowGlaive:IsReady(S.ThrowGlaive)
                 and (not S.Bloodlet:IsAvailable() and Player:BuffDownP(S.MetamorphosisBuff) and Cache.EnemiesCount[CleaveRangeID] >= 3) then
             return S.ThrowGlaive:ID()
 
