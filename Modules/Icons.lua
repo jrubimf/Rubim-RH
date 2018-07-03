@@ -23,7 +23,13 @@ local updateConfigFunc = function()
         print("===================")
         runonce = 1
     end
-    --Default
+    if GetCVar("nameplateShowEnemies") == 0 then
+        SetCVar("nameplateShowEnemies", 1)
+    end
+    SetCVar("nameplateOtherBottomInset", 0.1)
+    SetCVar("nameplateOtherTopInset", 0.08)
+
+        --Default
     local QuestionMark = 212812
     --DK
     local DeathStrike = 49998
@@ -285,6 +291,8 @@ IconRotationAoEText:SetShadowOffset(1, -1)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
+        RubimRH.createMacro()
+        RubimRH.editMacro()
         self:StartMoving();
         self.isMoving = true;
     end
