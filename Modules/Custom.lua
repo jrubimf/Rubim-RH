@@ -12,7 +12,18 @@ local Target = Unit.Target;
 
 --- ============================   CUSTOM   ============================
 function TargetIsValid()
-    return Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost();
+    local isValid = false
+
+    if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
+        isValid = true
+    end
+
+    for _, CycleUnit in pairs(Cache.Enemies[10]) do
+        if CycleUnit:Exists() then
+            isValid = true
+        end
+    end
+    return isValid
 end
 
 local function round2(num, idp)
