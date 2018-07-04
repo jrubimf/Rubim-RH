@@ -236,7 +236,7 @@ function HunterSurvival()
 
     --NO COMBAT
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     --actions=variable,name=frizzosEquipped,value=(equipped.137043)
@@ -278,5 +278,5 @@ function HunterSurvival()
 
     --actions.mokMaintain=raptor_strike,if=(buff.moknathal_tactics.remains<(gcd)|(buff.moknathal_tactics.stack<3))
 
-    return 233159
+    return 0, 975743
 end

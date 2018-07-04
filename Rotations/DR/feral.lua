@@ -167,7 +167,7 @@ local function Generators()
         poolResource[1].skill = S.Thrash
         poolResource[1].spellName = "Thrash"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -180,7 +180,7 @@ local function Generators()
         poolResource[1].skill = S.Rake
         poolResource[1].spellName = "Rake"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
@@ -193,7 +193,7 @@ local function Generators()
         poolResource[1].skill = S.Rake
         poolResource[1].spellName = "Rake"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
@@ -211,7 +211,7 @@ local function Generators()
         poolResource[1].skill = S.Thrash
         poolResource[1].spellName = "Thrash"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
@@ -236,7 +236,7 @@ local function Generators()
         poolResource[1].spellName = "Thrash"
         poolResource[1].isActive = true
         spellPool = S.Thrash
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
@@ -254,7 +254,7 @@ local function Generators()
         poolResource[1].skill = S.Swipe
         poolResource[1].spellName = "Swipe"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
@@ -274,7 +274,7 @@ local function Finishers()
         poolResource[1].skill = S.SavageRoar
         poolResource[1].spellName = "SavageRoar"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.down
@@ -287,7 +287,7 @@ local function Finishers()
         poolResource[1].skill = S.Rip
         poolResource[1].spellName = "Rip"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
     -- actions.st_finishers+=/rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
     if S.Rip:IsReady() and (Target:DebuffRefreshableP(S.Rip, 0) or (Target:DebuffRefreshableP(S.Rip, RipThreshold) and Target:HealthPercentage() >= 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRefreshableP(S.Rip, RipDuration * 0.8) and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip) and Target:TimeToDie() > 8)) then
@@ -299,7 +299,7 @@ local function Finishers()
         poolResource[1].skill = S.SavageRoar
         poolResource[1].spellName = "SavageRoar"
         poolResource[1].isActive = true
-        return 233159
+        return 0, 975743
     end
 
     -- actions.st_finishers+=/savage_roar,if=buff.savage_roar.remains<12
@@ -455,7 +455,7 @@ function DruidFeral()
     end
 
     if UnitChannelInfo("player") ~= nil or UnitCastingInfo("player") ~= nil then
-        return 248999
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
     -- Defensives
     if classSpell[1].isActive and S.Renewal:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.dr.feral.renewal then
@@ -467,7 +467,7 @@ function DruidFeral()
     end
 
     if not TargetIsValid() then
-        return 233159
+        return 0, 975743
     end
 
     if poolResource[1].isActive == true and Player:PrevGCD(1, poolResource[1].skill) then
@@ -503,7 +503,7 @@ function DruidFeral()
     end
 
     if poolResource[1].isActive == true and (Player:ComboPoints() > 1)then
-        return 233159
+        return 0, 975743
     end
     --debugVarText = Player:PrevGCD()
 
@@ -573,5 +573,5 @@ function DruidFeral()
         return S.Shred:ID()
     end
     
-    return 233159
+    return 0, 975743
 end

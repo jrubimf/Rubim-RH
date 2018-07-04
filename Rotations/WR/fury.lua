@@ -298,7 +298,7 @@ function WarriorFury()
     AC.GetEnemies(10);
 
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     --- In Combat
@@ -465,7 +465,7 @@ function WarriorFury()
             return single_target()
         end
     end
-    return "233159"
+    return "0, 975743"
 end
 
 --- Last Update: 11/26/2017

@@ -98,7 +98,7 @@ end
 
 function WarriorProt()
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     AC.GetEnemies("Melee");
@@ -178,5 +178,5 @@ function WarriorProt()
     if S.Devastate:IsReady() then
         return S.Devastate:ID()
     end
-    return "233159"
+    return "0, 975743"
 end

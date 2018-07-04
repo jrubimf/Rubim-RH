@@ -509,7 +509,7 @@ function RogueOutlaw()
                 end
             end
         end
-        return 146250
+        return 0, 462338
     end
 
     -- In Combat
@@ -593,5 +593,5 @@ function RogueOutlaw()
             return 242277
         end
     end
-    return 233159
+    return 0, 975743
 end

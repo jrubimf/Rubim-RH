@@ -158,7 +158,7 @@ function DruidGuardian()
                 return S.Moonfire:ID()
             end
         end
-        return 146250
+        return 0, 462338
     end
 
 
@@ -274,7 +274,7 @@ function DruidGuardian()
             end
         end
     end
-    return 233159
+    return 0, 975743
 end
 
 

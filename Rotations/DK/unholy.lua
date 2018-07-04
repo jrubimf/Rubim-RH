@@ -247,7 +247,7 @@ local function Cooldowns()
     end
     -- t20 gameplay
     if CDsON() and (S.ArmyOfDead:IsReady() or S.ArmyOfDead:CooldownRemainsP() <= 5) and S.DarkArbiter:TimeSinceLastCast() > 20 and Player:Runes() <= 3 and T204PC then
-        return 233159
+        return 0, 975743
     end
     --actions.cooldowns+=/apocalypse,if=debuff.festering_wound.stack>=6
     if S.Apocalypse:IsReady() and Target:DebuffStack(S.FesteringWounds) >= 6 then
@@ -295,7 +295,7 @@ function UnholyRotation()
         if TargetIsValid() and Target:IsInRange(30) and not Target:Debuff(S.VirulentPlagueDebuff) then
             return S.Outbreak:ID()
         end
-        return 146250
+        return 0, 462338
     end
 
     if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.dk.unholy.deathstrike then
@@ -357,7 +357,7 @@ function UnholyRotation()
             return Generic()
         end
     end
-    return 233159
+    return 0, 975743
 end
 
 --- ====27/11/2017======

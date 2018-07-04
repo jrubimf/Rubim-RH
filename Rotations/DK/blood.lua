@@ -138,12 +138,12 @@ function BloodRotation()
 
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.Blooddrinker) then
-        return "248999"
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
     --NO COMBAT
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     --
@@ -196,6 +196,14 @@ function BloodRotation()
         return S.DeathStrike:ID()
     end
 
+    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount["Melee"], 5) * 2)) >= Player:RunicPowerMax() then
+        return S.DeathStrike:ID()
+    end
+
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 35 and not Player:HealingAbsorbed() then
+        return S.DeathStrike:ID()
+    end
+
     if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
         return S.DeathStrike:ID()
     end
@@ -215,7 +223,7 @@ function BloodRotation()
     end
     --    if not Player:IsTanking("target") then
     --        OFF()
-    --        if GetNextAbility() ~= "233159" then
+    --        if GetNextAbility() ~= "0, 975743" then
     --
     --        end
     --    end
@@ -232,10 +240,6 @@ function BloodRotation()
     end
 
     if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 90 and not Player:HealingAbsorbed() then
-        return S.DeathStrike:ID()
-    end
-
-    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount["Melee"], 5) * 2)) >= Player:RunicPowerMax() then
         return S.DeathStrike:ID()
     end
 
@@ -292,5 +296,5 @@ function BloodRotation()
     if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and classSpell[2].isActive) then
         return S.HeartStrike:ID()
     end
-    return 233159
+    return 0, 975743
 end

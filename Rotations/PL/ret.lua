@@ -253,7 +253,7 @@ function PaladinRetribution()
     --Out of Combat
 
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
 
@@ -295,5 +295,5 @@ function PaladinRetribution()
         return Generators()
     end
     --Nothing to CAST
-    return 233159
+    return 0, 975743
 end

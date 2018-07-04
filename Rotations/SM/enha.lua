@@ -183,7 +183,7 @@ function ShamanEnh ()
                 return S.Rockbiter:ID()
             end
         end
-        return 146250
+        return 0, 462338
     end
 
     -- In Combat
@@ -409,5 +409,5 @@ function ShamanEnh ()
             return S.Flametongue:ID()
         end
     end
-    return 233159
+    return 0, 975743
 end

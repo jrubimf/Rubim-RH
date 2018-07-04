@@ -108,7 +108,7 @@ function PaladinHoly()
     end
 	
 	if Player:IsChanneling() or Player:IsCasting() then
-        return 248999
+        return 0, 236353
     end
 
 	if LeftCtrl and MouseOver:Exists() and ShouldDispell() and S.Cleanse:IsReady() then
@@ -176,5 +176,5 @@ function PaladinHoly()
 		end	
 	end
 	
-	return 233159
+	return 0, 975743
 end

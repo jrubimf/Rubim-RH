@@ -9,7 +9,7 @@ local Data = {}
 local Listener = {}
 local listeners = {}
 
-local frame = CreateFrame('Frame', 'Rubim_EvEnts')
+local frame = CreateFrame('Frame', 'return 0, 236353')
 frame:SetScript('OnEvent', function(_, event, ...)
     if not listeners[event] then return end
     for k in pairs(listeners[event]) do
@@ -201,7 +201,7 @@ function SpellDamage(_, unit, spellID)
     return Data[GUID] and Data[GUID][spellID] or 0
 end
 
-Listener:Add('Rubim_EvEnts', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
+Listener:Add('return 0, 236353', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
     local _, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
     -- Add the unit to our data if we dont have it
     addToData(SourceGUID)
@@ -213,11 +213,11 @@ Listener:Add('Rubim_EvEnts', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
     if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end)
 
-Listener:Add('Rubim_EvEnts', 'PLAYER_REGEN_ENABLED', function()
+Listener:Add('return 0, 236353', 'PLAYER_REGEN_ENABLED', function()
     wipe(Data)
 end)
 
-Listener:Add('Rubim_EvEnts', 'PLAYER_REGEN_DISABLED', function()
+Listener:Add('return 0, 236353', 'PLAYER_REGEN_DISABLED', function()
     wipe(Data)
 end)
 

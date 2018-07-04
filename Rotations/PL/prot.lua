@@ -98,7 +98,7 @@ function PaladinProtection()
                 return S.Judgment:ID()
             end
         end
-        return 146250
+        return 0, 462338
     end
 
 
@@ -171,7 +171,7 @@ function PaladinProtection()
             end
         end
     end
-    return 233159
+    return 0, 975743
 end
 
 --- ======= SIMC =======

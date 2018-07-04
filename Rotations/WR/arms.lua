@@ -365,7 +365,7 @@ function WarriorArms()
     -- Out of Combat
 
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     -- Interrupts
@@ -444,5 +444,5 @@ function WarriorArms()
             end
         end
     end
-    return "233159"
+    return "0, 975743"
 end

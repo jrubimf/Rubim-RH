@@ -549,19 +549,19 @@ function WindWalkerRotation()
     AC.GetEnemies(5);
     AC.GetEnemies(8);
     if not Player:AffectingCombat() then
-        return "146250"
+        return 0, 462338
     end
 
     if Cache.EnemiesCount[8] <= 0 then
-        return "233159"
+        return "0, 975743"
     end
 
     if Player:IsChanneling(S.FistsOfFury) then
-        return "248999"
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
     if Player:IsChanneling(S.CracklingJadeLightning) then
-        return "248999"
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
     -- actions.st+=/chi_wave
     if S.ChiWave:IsReady() then
@@ -620,7 +620,7 @@ function WindWalkerRotation()
             return SingleTarget()
         end
     end
-    return "233159"
+    return "0, 975743"
 end
 
 -- SimulationCraft APL, taken 2018-01-11

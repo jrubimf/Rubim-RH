@@ -54,7 +54,7 @@ function debugGuiShow()
     debugTexture:SetLabel("Texture:")
     debugTexture:SetWidth(300)
     debugTexture:SetCallback("OnEnterPressed", function(widget, event, text)
-        RubimRH.DebugFrame.texture:SetTexture(GetSpellTexture(text))
+        RubimRH.DebugFrame.texture:SetTexture(text)
     end)
     debugGUI:AddChild(debugTexture)
 

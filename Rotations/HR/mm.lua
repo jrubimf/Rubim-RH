@@ -306,7 +306,7 @@ function HunterMM()
     -- if Viper Sting(202901): Use Viper Sting on enemy healer if our target is below 70%hp. IF healer is a RESTO DRUID then cast ONLY when all buffs are on the target: Rejuvenation(774), Lifebloom(33763), Cenarion Ward (102351)
     if enemyHEALtarget ~= "None" then
         if enemyHEALtarget:IsInRange(22) and S.ViperSting:IsAvailable() and S.ViperSting:IsReady() and (not enemyHealer.class == "DRUID" and Target:HealthPercentage() < 70) or (enemyHealer.class == "DRUID" and Target:Buff(S.Rejuvenation) and Target:Buff(S.Lifebloom) and Target:Buff(S.CenarionWard)) then
-            return 146250
+            return 0, 462338
         end
 
         if enemyHEALtarget:IsInRange(22) and S.CounterShot:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) and Target:HealthPercentage() <= 30 then
@@ -352,5 +352,5 @@ function HunterMM()
         end
     end
 
-    return 233159
+    return 0, 975743
 end

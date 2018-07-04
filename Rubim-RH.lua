@@ -473,7 +473,7 @@ function MainRotation()
     end
 
     if ACTIVE_CHAT_EDIT_BOX ~= nil then
-        return 0, 413580
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\chatting.tga"
     end
 
     if _G.LootFrame:IsShown() then
@@ -481,9 +481,9 @@ function MainRotation()
     end
 
     if not Player:AffectingCombat() then
-        SetNextAbility(146250)
+        SetNextAbility(0, 462338)
     else
-        SetNextAbility(233159)
+        SetNextAbility(0, 975743)
     end
 
     --    shiftDown = IsShiftKeyDown()
@@ -497,89 +497,89 @@ function MainRotation()
 
     --DK
     if RubimRH.currentSpec == "blood" then
-        SetNextAbility(BloodRotation())
+        return BloodRotation()
     end
 
     if RubimRH.currentSpec == "frost" then
-        SetNextAbility(FrostRotation())
+        return FrostRotation()
     end
 
     if RubimRH.currentSpec == "unholy" then
-        SetNextAbility(UnholyRotation())
+        return UnholyRotation()
     end
 
     --DH
     if RubimRH.currentSpec == "havoc" then
-        SetNextAbility(HavocRotation())
+        return HavocRotation()
     end
     if RubimRH.currentSpec == "veng" then
-        SetNextAbility(VengRotation())
+        return VengRotation()
     end
 
     --RG
     if RubimRH.currentSpec == "ass" then
-        SetNextAbility(RogueAss())
+        return RogueAss()
     end
     if RubimRH.currentSpec == "out" then
-        SetNextAbility(RogueOutlaw())
+        return RogueOutlaw()
     end
     if RubimRH.currentSpec == "sub" then
-        SetNextAbility(RogueSub())
+        return RogueSub()
     end
 
 
 
     --MK
     if RubimRH.currentSpec == "brew" then
-        SetNextAbility(BrewMasterRotation())
+        return BrewMasterRotation()
     end
     if RubimRH.currentSpec == "wind" then
-        SetNextAbility(WindWalkerRotation())
+        return WindWalkerRotation()
     end
 
 
     --Warrior
     if RubimRH.currentSpec == "arms" then
-        SetNextAbility(WarriorArms())
+        return WarriorArms()
     end
     if RubimRH.currentSpec == "fury" then
-        SetNextAbility(WarriorFury())
+        return WarriorFury()
     end
     if RubimRH.currentSpec == "prot" then
-        SetNextAbility(WarriorProt())
+        return WarriorProt()
     end
 
 
     --Hunter
     if RubimRH.currentSpec == "mm" then
-        SetNextAbility(HunterMM())
+        return HunterMM()
     end
     if RubimRH.currentSpec == "surv" then
-        SetNextAbility(HunterSurvival())
+        return HunterSurvival()
     end
 
     --Shaman
     if RubimRH.currentSpec == "enh" then
-        SetNextAbility(ShamanEnh())
+        return ShamanEnh()
     end
 
     --Paladin
     if RubimRH.currentSpec == "holy" then
-        SetNextAbility(PaladinHoly())
+        return PaladinHoly()
     end
     if RubimRH.currentSpec == "pprot" then
-        SetNextAbility(PaladinProtection())
+        return PaladinProtection()
     end
     if RubimRH.currentSpec == "ret" then
-        SetNextAbility(PaladinRetribution())
+        return PaladinRetribution()
     end
 
     --Druid
     if RubimRH.currentSpec == "feral" then
-        SetNextAbility(DruidFeral())
+        return DruidFeral()
     end
     if RubimRH.currentSpec == "guardian" then
-        SetNextAbility(DruidGuardian())
+        return DruidGuardian()
     end
-    return GetNextAbility()
+    return nil
 end

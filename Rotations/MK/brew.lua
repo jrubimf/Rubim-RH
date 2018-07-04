@@ -126,7 +126,7 @@ function BrewMasterRotation()
 
     --- Out of Combat
     if not Player:AffectingCombat() then
-        return 146250
+        return 0, 462338
     end
 	
 	--INTERRUPT
@@ -203,5 +203,5 @@ function BrewMasterRotation()
         return S.KegSmash:ID()
     end
     -- Trick to take in consideration the Recovery Setting
-    return 233159
+    return 0, 975743
 end

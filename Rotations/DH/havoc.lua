@@ -207,12 +207,13 @@ local T212PC, T214PC = AC.HasTier("T21");
 -- Main APL
 function HavocRotation()
     if not Player:AffectingCombat() then
-        return 146250
+        return 0, 462338
     end
 
     if Player:IsChanneling(S.EyeBeam) then
-        return 248999
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
+
     local function Cooldown()
         -- Locals for tracking if we should display these suggestions together
 
@@ -513,7 +514,7 @@ function HavocRotation()
     if Normal() ~= nil then
         return Normal()
     end
-    return 233159
+    return 0, 975743
 end
 
 --- ======= SIMC =======

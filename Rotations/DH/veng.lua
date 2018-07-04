@@ -45,7 +45,7 @@ local T212PC, T214PC = AC.HasTier("T21");
 -- APL Main
 function VengRotation()
     if not Player:AffectingCombat() then
-        return 146250
+        return 0, 462338
     end
 
     -- Unit Update
@@ -119,5 +119,5 @@ function VengRotation()
     if Target:IsInRange(30) and S.ThrowGlaive:IsCastable() then
         return S.ThrowGlaive:ID()
     end
-    return 233159
+    return 0, 975743
 end
