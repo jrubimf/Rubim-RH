@@ -284,15 +284,15 @@ IconRotation:EnableMouse(true)
 local IconRotationCDText = IconRotation:CreateFontString("CDText", "OVERLAY")
 IconRotationCDText:SetFontObject(GameFontNormalSmall)
 IconRotationCDText:SetJustifyH("LEFT") --
-IconRotationCDText:SetPoint("TOP", IconRotation, "TOP", 0, -4)
+IconRotationCDText:SetPoint("CENTER", IconRotation, "CENTER", -10, -15)
 IconRotationCDText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
 IconRotationCDText:SetShadowOffset(1, -1)
 IconRotationCDText:SetTextColor(1,1,1, 0.5)
 
 local IconRotationAoEText = IconRotation:CreateFontString("AoEText", "OVERLAY")
 IconRotationAoEText:SetFontObject(GameFontNormalSmall)
-IconRotationAoEText:SetJustifyH("LEFT") --
-IconRotationAoEText:SetPoint("TOP", IconRotation, "TOP", 0, -28)
+IconRotationAoEText:SetJustifyH("RIGHT") --
+IconRotationAoEText:SetPoint("CENTER", IconRotation, "CENTER", 10, -15)
 IconRotationAoEText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
 IconRotationAoEText:SetShadowOffset(1, -1)
 IconRotationAoEText:SetTextColor(1,1,1, 0.5)
