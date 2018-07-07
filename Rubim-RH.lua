@@ -76,6 +76,9 @@ local defaults = {
             aoebind = nil,
             ccbreak = true,
             startattack = false,
+            align = "CENTER",
+            xCord = 0,
+            yCord = -200,
         },
         dh = {
             havoc = {
@@ -95,8 +98,8 @@ local defaults = {
                 cooldown = true,
                 smartds = 30,
                 spells = {
-                    { spellID = DeathStrike, isActive = false },
-                    { spellID = RuneTap, isActive = false }
+                    { spellID = DeathStrike, isActive = false, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
+                    { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." }
                 }
             },
             frost = {

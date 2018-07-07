@@ -293,7 +293,7 @@ function BloodRotation()
     end
 
     --Overcap Math
-    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount["Melee"], 5) * 2)) >= Player:RunicPowerMax() then
+    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount[8], 5) * 2)) >= Player:RunicPowerMax() then
         return S.DeathStrike:ID()
     end
 
@@ -329,9 +329,9 @@ function BloodRotation()
 
     --actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
     --actions.standard+=/death_strike,if=buff.blood_shield.up|(runic_power.deficit<15&(runic_power.deficit<25|!buff.dancing_rune_weapon.up))
-    if S.DeathStrike:IsReady("Melee") and not classSpell[1].isActive and (Player:Buff(S.BloodShield) or (Player:RunicPowerDeficit() < 15 and (Player:RunicPowerDeficit() < 25 or not Player:Buff(S.DancingRuneWeaponBuff)))) then
-        return S.DeathStrike:ID()
-    end
+    --if S.DeathStrike:IsReady("Melee") and not classSpell[1].isActive and (Player:Buff(S.BloodShield) or (Player:RunicPowerDeficit() < 15 and (Player:RunicPowerDeficit() < 25 or not Player:Buff(S.DancingRuneWeaponBuff)))) then
+    --        return S.DeathStrike:ID()
+    --end
 
     --actions.standard+=/consumption
     if S.Consumption:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then

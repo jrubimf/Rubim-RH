@@ -4,7 +4,7 @@
 --- DateTime: 01/06/2018 02:32
 ---
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
-
+local Icons = {}
 
 --INTERRUPTS---
 local int_smart = true
@@ -12,8 +12,114 @@ local int_smart = true
 --RUN ONCE
 local runonce = 0
 
+--
+local currentSize = 40
+
 --DB to VAR
 classSpell = {}
+
+-- Create the dropdown, and configure its appearance
+local dropDown = CreateFrame("FRAME", "DropDownMenu", UIParent, "UIDropDownMenuTemplate")
+dropDown:SetPoint("CENTER")
+dropDown:Hide()
+UIDropDownMenu_SetWidth(dropDown, 200)
+UIDropDownMenu_SetText(dropDown, "Nothing")
+
+-- Create and bind the initialization function to the dropdown menu
+UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    if (level or 1) == 1 then
+        info.text, info.hasArrow = "Class Config", nil
+        info.checked = false
+        info.func = function(self)
+            RubimRH.ClassConfig()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        info.text, info.hasArrow = "Cooldowns", nil
+        info.checked = RubimRH.useCD
+        info.func = function(self)
+            RubimRH.CDToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        info.text, info.hasArrow = "AoE", nil
+        info.checked = RubimRH.useAoE
+        info.func = function(self)
+            RubimRH.AoEToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        info.text, info.hasArrow = "CC Break", nil
+        info.checked = ccBreak
+        info.func = function(self)
+            PlaySound(891, "Master");
+            RubimRH.CCToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        info.text, info.hasArrow, info.menuList = "Interrupts", true, "Interrupts"
+        info.checked = false
+        info.func = function(self)
+        end
+        UIDropDownMenu_AddButton(info)
+        --
+        if classSpell ~= nil and #classSpell > 0 then
+            info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
+            info.checked = false
+            info.func = function(self)
+                if SkillFramesArray[1]:IsVisible() then
+                    for i = 1, #SkillFramesArray do
+                        SkillFramesArray[i]:Hide()
+                    end
+                else
+                    for i = 1, #SkillFramesArray do
+                        SkillFramesArray[i]:Show()
+                    end
+                end
+
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+    elseif menuList == "Spells" then
+        --SKILL 1
+        for i = 1, #classSpell do
+            info.text = GetSpellInfo(classSpell[i].spellID)
+            info.checked = classSpell[i].isActive
+            info.func = function(self)
+                PlaySound(891, "Master");
+                if classSpell[i].isActive then
+                    classSpell[i].isActive = false
+                else
+                    classSpell[i].isActive = true
+                end
+                print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
+            end
+            UIDropDownMenu_AddButton(info, level)
+        end
+        -- Show the "Games" sub-menu
+        --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
+        --            info.text = s
+        --            UIDropDownMenu_AddButton(info, level)
+        --        end
+    elseif menuList == "Interrupts" then
+        --2 PIECES
+        info.text = "Smart"
+        info.checked = int_smart
+        info.func = function(self)
+            PlaySound(891, "Master");
+            if int_smart then
+                int_smart = false
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Disabled ")
+            else
+                int_smart = true
+                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Smart/Everything")
+            end
+        end
+        UIDropDownMenu_AddButton(info, level)
+    end
+end)
+
 local updateConfigFunc = function()
     if runonce == 0 then
         print("===================")
@@ -21,6 +127,102 @@ local updateConfigFunc = function()
         print("|cFF00FF96Right-Click on the Main")
         print("|cFF00FF96Icon to more options")
         print("===================")
+
+        local mainOption = RubimRH.db.profile.mainOption
+        Icons.MainIcon = CreateFrame("Frame", nil)
+        Icons.MainIcon:SetBackdrop(nil)
+        Icons.MainIcon:SetFrameStrata("BACKGROUND")
+        Icons.MainIcon:SetSize(currentSize, 40)
+        --Icons.MainIcon:SetPoint("CENTER", 0, -200)
+        Icons.MainIcon:SetPoint(mainOption.align, mainOption.xCord,mainOption.yCord)
+        Icons.MainIcon.texture = Icons.MainIcon:CreateTexture(nil, "BACKGROUND")
+        Icons.MainIcon.texture:SetAllPoints(true)
+        Icons.MainIcon.texture:SetColorTexture(0, 0, 0, 0)
+        Icons.MainIcon:SetScale(1)
+        Icons.MainIcon:Show(1)
+        Icons.MainIcon:SetMovable(true)
+        Icons.MainIcon:EnableMouse(true)
+        Icons.MainIcon:SetScript("OnMouseDown", function(self, button)
+            if button == "LeftButton" and not self.isMoving then
+                self:StartMoving();
+                self.isMoving = true;
+            end
+        end)
+        Icons.MainIcon:SetScript("OnMouseUp", function(self, button)
+            if button == "LeftButton" and self.isMoving then
+                self:StopMovingOrSizing();
+                self.isMoving = false;
+            end
+        end)
+        Icons.MainIcon:SetScript("OnHide", function(self)
+            if (self.isMoving) then
+                self:StopMovingOrSizing();
+                self.isMoving = false;
+            end
+        end)
+
+        local IconRotation = CreateFrame("Frame", "MainIconFrame", Icons.MainIcon)
+        IconRotation:SetBackdrop(nil)
+        IconRotation:SetFrameStrata("BACKGROUND")
+        --IconRotation:SetSize(18, 18)
+        IconRotation:SetSize(40, 40)
+        --IconRotation:SetPoint("TOPLEFT", 19, 6)
+        --IconRotation:SetPoint("TOPLEFT", 50, 6)
+        IconRotation:SetPoint("LEFT", 0, 0)
+        IconRotation.texture = IconRotation:CreateTexture(nil, "BACKGROUND")
+        IconRotation.texture:SetAllPoints(true)
+        IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
+        IconRotation:SetMovable(true)
+        IconRotation:EnableMouse(true)
+
+        local IconRotationCDText = IconRotation:CreateFontString("CDText", "OVERLAY")
+        IconRotationCDText:SetFontObject(GameFontNormalSmall)
+        IconRotationCDText:SetJustifyH("LEFT") --
+        IconRotationCDText:SetPoint("CENTER", IconRotation, "CENTER", -10, -15)
+        IconRotationCDText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
+        IconRotationCDText:SetShadowOffset(1, -1)
+        IconRotationCDText:SetTextColor(1, 1, 1, 0.5)
+
+        local IconRotationAoEText = IconRotation:CreateFontString("AoEText", "OVERLAY")
+        IconRotationAoEText:SetFontObject(GameFontNormalSmall)
+        IconRotationAoEText:SetJustifyH("RIGHT") --
+        IconRotationAoEText:SetPoint("CENTER", IconRotation, "CENTER", 10, -15)
+        IconRotationAoEText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
+        IconRotationAoEText:SetShadowOffset(1, -1)
+        IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
+
+        IconRotation:SetScript("OnMouseDown", function(self, button)
+            if RubimRHPvP.active == true and button == "MiddleButton" then
+                RubimRH.createMacro()
+                RubimRH.editMacro()
+            end
+
+            if button == "LeftButton" and not Icons.MainIcon.isMoving then
+                Icons.MainIcon:StartMoving();
+                Icons.MainIcon.isMoving = true;
+            end
+        end)
+
+        IconRotation:SetScript("OnMouseUp", function(self, button)
+            if button == "RightButton" then
+                ToggleDropDownMenu(1, nil, dropDown, "cursor", 3, -3)
+            end
+
+            if button == "LeftButton" and Icons.MainIcon.isMoving then
+                local _,_,arg2, arg3, arg4 = Icons.MainIcon:GetPoint()
+                mainOption.align = arg2
+                mainOption.xCord = arg3
+                mainOption.yCord = arg4
+                Icons.MainIcon:StopMovingOrSizing();
+                Icons.MainIcon.isMoving = false;
+            end
+        end)
+        IconRotation:SetScript("OnHide", function(self)
+            if (Icons.MainIcon.isMoving) then
+                Icons.MainIcon:StopMovingOrSizing();
+                Icons.MainIcon.isMoving = false;
+            end
+        end)
         runonce = 1
     end
     if GetCVar("nameplateShowEnemies") == 0 then
@@ -137,97 +339,113 @@ updateConfig:RegisterEvent("PLAYER_ENTERING_WORLD")
 updateConfig:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 
 
--- RogueMenu
+-- MainIcons
+function RubimRH.tooltipShow(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, true)
+    GameTooltip:Show()
+end
 
--- Create the dropdown, and configure its appearance
-local dropDown = CreateFrame("FRAME", "DropDownMenu", UIParent, "UIDropDownMenuTemplate")
-dropDown:SetPoint("CENTER")
-dropDown:Hide()
-UIDropDownMenu_SetWidth(dropDown, 200)
-UIDropDownMenu_SetText(dropDown, "Nothing")
+function RubimRH.tooltipHide()
+    GameTooltip_Hide()
+end
 
--- Create and bind the initialization function to the dropdown menu
-UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
-    local info = UIDropDownMenu_CreateInfo()
-    if (level or 1) == 1 then
-        info.text, info.hasArrow = "Class Config", nil
-        info.checked = false
-        info.func = function(self)
-            RubimRH.ClassConfig()
+-- if text is provided, sets up the button to show a tooltip when moused over. Otherwise, removes the tooltip.
+function RubimRH.appendTooltip(self, text)
+        if text then
+            self.tooltipText = text
+            self:SetScript("OnEnter", RubimRH.tooltipShow)
+            self:SetScript("OnLeave", RubimRH.tooltipHide)
+        else
+            self:SetScript("OnEnter", nil)
+            self:SetScript("OnLeave", nil)
         end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow = "Cooldowns", nil
-        info.checked = RubimRH.useCD
-        info.func = function(self)
-            RubimRH.CDToggle()
+end
+
+SkillFramesArray = {}
+local function createIcon(loopVar, xOffset, description)
+    Icons.MainIcon:SetSize(currentSize * 2, 40)
+
+    if SkillFramesArray[loopVar] ~= nil then
+        SkillFramesArray[loopVar].texture:SetTexture(GetSpellTexture(classSpell[loopVar].spellID))
+        RubimRH.appendTooltip(SkillFramesArray[loopVar], description)
+        if classSpell[loopVar].isActive then
+            SkillFramesArray[loopVar]:SetAlpha(1.0)
+        else
+            SkillFramesArray[loopVar]:SetAlpha(0.2)
         end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow = "AoE", nil
-        info.checked = RubimRH.useAoE
-        info.func = function(self)
-            RubimRH.AoEToggle()
+    else
+        local newIcon = CreateFrame("Frame", "SkillFrame" .. loopVar, Icons.MainIcon)
+        table.insert(SkillFramesArray, newIcon)
+        RubimRH.appendTooltip(SkillFramesArray[#SkillFramesArray], description)
+        newIcon:Hide()
+        newIcon:SetBackdrop(nil)
+        newIcon:SetFrameStrata("BACKGROUND")
+        --IconRotation:SetSize(18, 18)
+        newIcon:SetSize(40, 40)
+        --IconRotation:SetPoint("TOPLEFT", 19, 6)
+        --IconRotation:SetPoint("TOPLEFT", 50, 6)
+        newIcon:SetPoint("LEFT", xOffset, 0)
+        newIcon.texture = newIcon:CreateTexture(nil, "BACKGROUND")
+        newIcon.texture:SetAllPoints(true)
+        newIcon.texture:SetColorTexture(0, 0, 0, 1.0)
+        newIcon.texture:SetTexture(GetSpellTexture(classSpell[loopVar].spellID))
+        newIcon:EnableMouse(true)
+        newIcon:SetMovable(true)
+        if classSpell[loopVar].isActive then
+            newIcon:SetAlpha(1.0)
+        else
+            newIcon:SetAlpha(0.2)
         end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow = "CC Break", nil
-        info.checked = ccBreak
-        info.func = function(self)
-            PlaySound(891, "Master");
-            RubimRH.CCToggle()
-        end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow, info.menuList = "Interrupts", true, "Interrupts"
-        info.checked = false
-        info.func = function(self)
-        end
-        UIDropDownMenu_AddButton(info)
-        --
-        if classSpell ~= nil and    #classSpell > 0 then
-            info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
-            info.checked = false
-            info.func = function(self)
+        newIcon:SetScript("OnMouseDown", function(self, button)
+            if button == "LeftButton" and not Icons.MainIcon.isMoving then
+                Icons.MainIcon:StartMoving();
+                Icons.MainIcon.isMoving = true;
             end
-            UIDropDownMenu_AddButton(info)
-        end
-    elseif menuList == "Spells" then
-        --SKILL 1
-        for i = 1, #classSpell do
-            info.text = GetSpellInfo(classSpell[i].spellID)
-            info.checked = classSpell[i].isActive
-            info.func = function(self)
+        end)
+        newIcon:SetScript("OnMouseUp", function(self, button)
+            if button == "LeftButton" and Icons.MainIcon.isMoving then
+                Icons.MainIcon:StopMovingOrSizing();
+                Icons.MainIcon.isMoving = false;
+            end
+            if button == "RightButton" and not Icons.MainIcon.isMoving then
                 PlaySound(891, "Master");
-                if classSpell[i].isActive then
-                    classSpell[i].isActive = false
+                if classSpell[loopVar].isActive then
+                    classSpell[loopVar].isActive = false
+                    newIcon:SetAlpha(0.2)
                 else
-                    classSpell[i].isActive = true
+                    classSpell[loopVar].isActive = true
+                    newIcon:SetAlpha(1.0)
                 end
-                print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
+                print("|cFF69CCF0" .. GetSpellInfo(classSpell[loopVar].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[loopVar].isActive))
             end
-            UIDropDownMenu_AddButton(info, level)
-        end
-        -- Show the "Games" sub-menu
-        --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
-        --            info.text = s
-        --            UIDropDownMenu_AddButton(info, level)
-        --        end
-    elseif menuList == "Interrupts" then
-        --2 PIECES
-        info.text = "Smart"
-        info.checked = int_smart
-        info.func = function(self)
-            PlaySound(891, "Master");
-            if int_smart then
-                int_smart = false
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Disabled ")
-            else
-                int_smart = true
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Smart/Everything")
+        end)
+
+        newIcon:SetScript("OnHide", function(self)
+            if (Icons.MainIcon.isMoving) then
+                Icons.MainIcon:StopMovingOrSizing();
+                Icons.MainIcon.isMoving = false;
             end
-        end
-        UIDropDownMenu_AddButton(info, level)
+        end)
+    end
+end
+
+RubimRH.Listener:Add('Rubim_Events', 'ACTIVE_TALENT_GROUP_CHANGED', function(...)
+    for i = 1, #SkillFramesArray do
+        SkillFramesArray[i]:Hide()
+    end
+
+    for i = 1, #classSpell do
+        createIcon(i, 40 * (i), classSpell[i].description)
+    end
+end)
+
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function(...)
+    for i = 1, #SkillFramesArray do
+    end
+
+    for i = 1, #classSpell do
+        createIcon(i, 40 * (i), classSpell[i].description)
     end
 end)
 
@@ -257,74 +475,6 @@ Sephul:Hide()
 --RubimRH.Interrupt:Hide()
 --RubimRH.SetFramePos(Interrupt, 1, 0, 1, 1)
 
-local MainIcons = CreateFrame("Frame", nil)
-MainIcons:SetBackdrop(nil)
-MainIcons:SetFrameStrata("BACKGROUND")
-MainIcons:SetSize(320, 40)
-MainIcons:SetPoint("CENTER", 0, -200)
-MainIcons.texture = MainIcons:CreateTexture(nil, "BACKGROUND")
-MainIcons.texture:SetAllPoints(true)
-MainIcons.texture:SetColorTexture(0, 0, 0, 0)
-MainIcons:SetScale(1)
-MainIcons:Show(1)
-
-
-local IconRotation = CreateFrame("Frame", nil)
-IconRotation:SetBackdrop(nil)
-IconRotation:SetFrameStrata("BACKGROUND")
---IconRotation:SetSize(18, 18)
-IconRotation:SetSize(40, 40)
---IconRotation:SetPoint("TOPLEFT", 19, 6)
---IconRotation:SetPoint("TOPLEFT", 50, 6)
-IconRotation:SetPoint("CENTER", 0, -200)
-IconRotation.texture = IconRotation:CreateTexture(nil, "BACKGROUND")
-IconRotation.texture:SetAllPoints(true)
-IconRotation.texture:SetColorTexture(0, 0, 0, 1.0)
-IconRotation:SetMovable(true)
-IconRotation:EnableMouse(true)
-
-local IconRotationCDText = IconRotation:CreateFontString("CDText", "OVERLAY")
-IconRotationCDText:SetFontObject(GameFontNormalSmall)
-IconRotationCDText:SetJustifyH("LEFT") --
-IconRotationCDText:SetPoint("CENTER", IconRotation, "CENTER", -10, -15)
-IconRotationCDText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
-IconRotationCDText:SetShadowOffset(1, -1)
-IconRotationCDText:SetTextColor(1, 1, 1, 0.5)
-
-local IconRotationAoEText = IconRotation:CreateFontString("AoEText", "OVERLAY")
-IconRotationAoEText:SetFontObject(GameFontNormalSmall)
-IconRotationAoEText:SetJustifyH("RIGHT") --
-IconRotationAoEText:SetPoint("CENTER", IconRotation, "CENTER", 10, -15)
-IconRotationAoEText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
-IconRotationAoEText:SetShadowOffset(1, -1)
-IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
-
-IconRotation:SetScript("OnMouseDown", function(self, button)
-    if button == "LeftButton" and not self.isMoving then
-        if RubimRHPvP.active == true then
-            RubimRH.createMacro()
-            RubimRH.editMacro()
-        end
-        self:StartMoving();
-        self.isMoving = true;
-    end
-end)
-IconRotation:SetScript("OnMouseUp", function(self, button)
-    if button == "LeftButton" and self.isMoving then
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-
-    if button == "RightButton" then
-        ToggleDropDownMenu(1, nil, dropDown, "cursor", 3, -3)
-    end
-end)
-IconRotation:SetScript("OnHide", function(self)
-    if (self.isMoving) then
-        self:StopMovingOrSizing();
-        self.isMoving = false;
-    end
-end)
 
 local updateIcon = CreateFrame("Frame");
 updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
@@ -334,12 +484,14 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
-        IconRotationCDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .. "CD")
-        IconRotationAoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
-        if select(2, MainRotation()) ~= nil then
-            IconRotation.texture:SetTexture(select(2, MainRotation()))
+        if CDText ~= nil then
+            CDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .. "CD")
+            AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
+        end
+        if select(2, MainRotation()) ~= nil and MainIconFrame ~= nil then
+            MainIconFrame.texture:SetTexture(select(2, MainRotation()))
         else
-            IconRotation.texture:SetTexture(GetSpellTexture(MainRotation()))
+            MainIconFrame.texture:SetTexture(GetSpellTexture(MainRotation()))
         end
         if RubimExtra then
             if select(2, MainRotation()) ~= nil then
