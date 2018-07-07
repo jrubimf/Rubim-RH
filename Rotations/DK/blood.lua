@@ -120,6 +120,82 @@ function OFF()
     end
 end
 
+local function simcraftMode()
+    --actions+=/dancing_rune_weapon,if=(!talent.blooddrinker.enabled|!cooldown.blooddrinker.ready)&!cooldown.death_and_decay.ready
+--    if S.DancingRuneWeapo:IsReady() and (not S.Blooddrinker:IsAvailable() or not S.Blooddrinker:IsReady()) and not S.DeathandDecay:IsReady() then
+--        return S.DancingRuneWeapon()
+    --end
+
+    --actions+=/vampiric_blood,if=!equipped.archimondes_hatred_reborn|cooldown.trinket.ready
+    --actions+=/tombstone,if=buff.bone_shield.stack>=7
+    --actions+=/call_action_list,name=standard
+
+    --actions.standard=death_strike,if=runic_power.deficit<10
+    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 10 then
+        return S.DeathStrike:ID()
+    end
+
+    --actions.standard+=/death_and_decay,if=talent.rapid_decomposition.enabled&!buff.dancing_rune_weapon.up
+    if S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/blooddrinker,if=!buff.dancing_rune_weapon.up
+    if S.Blooddrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) then
+        return S.Blooddrinker:ID()
+    end
+
+    --actions.standard+=/marrowrend,if=buff.bone_shield.remains<=gcd*2
+    if S.Marrowrend:IsReady("Melee") and Player:BuffRemains(S.BoneShield) <= Player:GCD() * 2 then
+        return S.Marrowrend:ID()
+    end
+
+    --actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
+    if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
+        return S.BloodBoil:ID()
+    end
+
+    --actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
+    if S.Marrowrend:IsReady("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or Player:BuffRemains(S.BoneShield) < Player:GCD() * 3) then
+        return S.Marrowrend:ID()
+    end
+
+    --actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
+    --actions.standard+=/death_strike,if=buff.blood_shield.up|(runic_power.deficit<15&(runic_power.deficit<25|!buff.dancing_rune_weapon.up))
+    if S.DeathStrike:IsReady("Melee") and (Player:Buff(S.BloodShield) or (Player:RunicPowerDeficit() < 15 and (Player:RunicPowerDeficit() < 25 or not Player:Buff(S.DancingRuneWeaponBuff)))) then
+        return S.DeathStrike:ID()
+    end
+
+    --actions.standard+=/consumption
+    if S.Consumption:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
+        return S.Consumption:ID()
+    end
+
+    --actions.standard+=/heart_strike,if=buff.dancing_rune_weapon.up
+    if S.HeartStrike:IsReady("Melee") and Player:Buff(S.DancingRuneWeaponBuff) and not classSpell[2].isActive then
+        return S.HeartStrike:ID()
+    end
+
+    --actions.standard+=/death_and_decay,if=buff.crimson_scourge.up
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/blood_boil,if=buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
+    if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
+        return S.BloodBoil:ID()
+    end
+    --actions.standard+=/death_and_decay
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/heart_strike,if=rune.time_to_3<gcd|buff.bone_shield.stack>6
+    if S.HeartStrike:IsReady("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 6) then
+        return S.HeartStrike:ID()
+    end
+end
+
 function saveDS()
 end
 
@@ -134,11 +210,12 @@ function BloodRotation()
     AC.GetEnemies(8, true);
     AC.GetEnemies(10, true);
     AC.GetEnemies(20, true);
-    ----
+    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
+
 
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.Blooddrinker) then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+        return 0, 236353
     end
 
     --NO COMBAT
@@ -146,11 +223,9 @@ function BloodRotation()
         return 0, 462338
     end
 
-    --
-    --SPELL QUEUE
-    if S.RuneTap:IsCastable() and GetQueueSpell() == S.RuneTap:ID() then
-        return S.RuneTap:ID()
-    end
+--    if not IsCurrentSpell(6603) and Cache.EnemiesCount[8] >= 1 then
+--        return 58984
+--    end
 
     if I.SephuzSecret:IsEquipped() then
         if Player:Buff(S.SephuzBuff) then
@@ -176,8 +251,8 @@ function BloodRotation()
 
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
-    if LeftCtrl and LeftShift and S.DeathandDecay:IsCastable() then
-        return S.DeathandDecay:ID()
+    if LeftCtrl and LeftShift and S.DeathStrike:IsReady() then
+        return S.DeathStrike:ID()
     end
 
     -- Units without Blood Plague
@@ -188,113 +263,116 @@ function BloodRotation()
         end
     end
 
-    if S.DeathStrike:IsReady() and Player:ActiveMitigationNeeded() then
-        return S.DeathStrike:ID()
-    end
-
-    if S.DeathStrike:IsReady() and Player:RunicPowerDeficit() < 20 then
-        return S.DeathStrike:ID()
-    end
-
-    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount["Melee"], 5) * 2)) >= Player:RunicPowerMax() then
-        return S.DeathStrike:ID()
-    end
-
-    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 35 and not Player:HealingAbsorbed() then
-        return S.DeathStrike:ID()
-    end
-
-    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 75 and not Player:HealingAbsorbed() then
-        return S.DeathStrike:ID()
-    end
-
-    if lastDamage("percent") > RubimRH.db.profile.dk.blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and not Player:HealingAbsorbed() then
-        return S.DeathStrike:ID()
-    end
-
+    --BloodFury
     if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
         return S.BloodFury:ID()
     end
 
-    if Player:Buff(S.DancingRuneWeaponBuff) then
-        if DRW() ~= nil then
-            return DRW()
-        end
-    end
-    --    if not Player:IsTanking("target") then
-    --        OFF()
-    --        if GetNextAbility() ~= "0, 975743" then
-    --
-    --        end
-    --    end
-    if S.Marrowrend:IsCastableP("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3) then
+    --if not IsTanking and simcraftMode() ~= nil then
+--        return simcraftMode()
+--    end
+
+    --Needs Marrowrend
+    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or  Player:BuffStack(S.BoneShield) <= 5) then
         return S.Marrowrend:ID()
     end
 
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and lastMoved() > 0.5 then
-        return S.DeathandDecay:ID()
-    end
-
-    if Target:TimeToDie() >= 20 and Player:Runes() <= 5 and Player:RunicPowerDeficit() <= 30 and Player:Buff(S.CrimsonScourge) then
-        return S.DeathandDecay:ID()
-    end
-
-    if classSpell[1].isActive and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 90 and not Player:HealingAbsorbed() then
+    --DSEmergency
+    if RubimRH.lastDamage("percent") > RubimRH.db.profile.dk.blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
         return S.DeathStrike:ID()
     end
 
-    if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and UnitsWithoutBloodPlague >= 1 then
-        return S.BloodBoil:ID()
+    --Mechanics
+    if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+        return S.DeathStrike:ID()
     end
 
-    if S.Blooddrinker:IsCastable(10) and AC.CombatTime() > 5 and not Player:HealingAbsorbed() and not Player:Buff(S.DancingRuneWeaponBuff) then
+    --Overcap
+    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 10 then
+        return S.DeathStrike:ID()
+    end
+
+    --Overcap Math
+    if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount["Melee"], 5) * 2)) >= Player:RunicPowerMax() then
+        return S.DeathStrike:ID()
+    end
+
+    --Heal needed
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and not classSpell[1].isActive then
+        return S.DeathStrike:ID()
+    end
+
+    --actions.standard+=/death_and_decay,if=talent.rapid_decomposition.enabled&!buff.dancing_rune_weapon.up
+    if S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/blooddrinker,if=!buff.dancing_rune_weapon.up
+    if S.Blooddrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) and Player:BuffRemains(S.BoneShield) >= 3 and Player:Runes() >= 2 then
         return S.Blooddrinker:ID()
     end
 
-    if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:ChargesFractional() >= 1.8 then
-        return S.BloodBoil:ID()
-    end
-
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and lastMoved() > 0.5 then
-        return S.DeathandDecay:ID()
-    end
-
-    if S.Marrowrend:IsCastableP("Melee") and Player:BuffRemainsP(S.BoneShield) <= Player:GCD() * 2 then
+    --actions.standard+=/marrowrend,if=buff.bone_shield.remains<=gcd*2
+    if S.Marrowrend:IsReady("Melee") and Player:BuffRemains(S.BoneShield) <= Player:GCD() * 2 then
         return S.Marrowrend:ID()
     end
 
-    -- actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
-    if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:ChargesFractional() >= 1.8 then
+    --actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
+    if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
         return S.BloodBoil:ID()
-
     end
-    -- actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
-    if S.Marrowrend:IsCastableP("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or (Player:BuffRemainsP(S.BoneShield) <= Player:GCD() * 3)) then
+
+    --actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
+    if S.Marrowrend:IsReady("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or Player:BuffRemains(S.BoneShield) < Player:GCD() * 3) then
         return S.Marrowrend:ID()
     end
 
-    if S.DeathandDecay:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) and lastMoved() > 0.5 then
-        return S.DeathandDecay:ID()
-    end
-    -- actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
-    if S.Bonestorm:IsReady() and Cache.EnemiesCount[8] >= 3 and Player:RunicPower() >= 90 then
-        return S.Bonestorm:ID()
+    --actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
+    --actions.standard+=/death_strike,if=buff.blood_shield.up|(runic_power.deficit<15&(runic_power.deficit<25|!buff.dancing_rune_weapon.up))
+    if S.DeathStrike:IsReady("Melee") and not classSpell[1].isActive and (Player:Buff(S.BloodShield) or (Player:RunicPowerDeficit() < 15 and (Player:RunicPowerDeficit() < 25 or not Player:Buff(S.DancingRuneWeaponBuff)))) then
+        return S.DeathStrike:ID()
     end
 
-    if S.Consumption:IsCastableP("Melee") and Cache.EnemiesCount[8] >= 1 then
+    --actions.standard+=/consumption
+    if S.Consumption:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
         return S.Consumption:ID()
     end
 
-    if S.Marrowrend:IsCastableP("Melee") and Player:BuffStack(S.BoneShield) <= 6 then
-        return S.Marrowrend:ID()
-    end
-
-    if S.HeartStrike:IsCastableP("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:Runes() >= 3) then
+    --actions.standard+=/heart_strike,if=buff.dancing_rune_weapon.up
+    if S.HeartStrike:IsReady("Melee") and Player:Buff(S.DancingRuneWeaponBuff) and not classSpell[2].isActive then
         return S.HeartStrike:ID()
     end
 
-    if S.HeartStrike:IsCastableP("Melee") and (((Player:RuneTimeToX(2) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 7) and classSpell[2].isActive) then
+    if S.HeartStrike:IsReady("Melee") and Player:Buff(S.DancingRuneWeaponBuff) and classSpell[2].isActive and Player:Runes() >= 3 then
         return S.HeartStrike:ID()
     end
+
+    --actions.standard+=/death_and_decay,if=buff.crimson_scourge.up
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/blood_boil,if=buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
+    if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
+        return S.BloodBoil:ID()
+    end
+    --actions.standard+=/death_and_decay
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and not classSpell[2].isActive then
+        return S.DeathandDecay:ID()
+    end
+
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and classSpell[2].isActive and Player:Runes() >= 3 then
+        return S.DeathandDecay:ID()
+    end
+
+    --actions.standard+=/heart_strike,if=rune.time_to_3<gcd|buff.bone_shield.stack>6
+    if S.HeartStrike:IsReady("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or Player:BuffStack(S.BoneShield) >= 6) and not classSpell[2].isActive then
+        return S.HeartStrike:ID()
+    end
+
+    if S.HeartStrike:IsReady("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or (Player:BuffStack(S.BoneShield) >= 6 and Player:Runes() >= 3)) and classSpell[2].isActive then
+        return S.HeartStrike:ID()
+    end
+
     return 0, 975743
 end

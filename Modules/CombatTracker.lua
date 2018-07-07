@@ -4,36 +4,7 @@
 --- DateTime: 19/06/2018 09:18
 ---
 --- Imported
-local CombatTracker = {}
 local Data = {}
-local Listener = {}
-local listeners = {}
-
-local frame = CreateFrame('Frame', 'return 0, 236353')
-frame:SetScript('OnEvent', function(_, event, ...)
-    if not listeners[event] then return end
-    for k in pairs(listeners[event]) do
-        listeners[event][k](...)
-    end
-end)
-
-function Listener.Add(_, name, event, callback)
-    if not listeners[event] then
-        frame:RegisterEvent(event)
-        listeners[event] = {}
-    end
-    listeners[event][name] = callback
-end
-
-function Listener.Remove(_, name, event)
-    if listeners[event] then
-        listeners[event][name] = nil
-    end
-end
-
-function Listener.Trigger(_, event, ...)
-    onEvent(nil, event, ...)
-end
 
 -- Thse are Mixed Damage types (magic and pysichal)
 local Doubles = {
@@ -152,7 +123,7 @@ local EVENTS = {
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
-function CombatTime(UNIT)
+function RubimRH.CombatTime(UNIT)
     local GUID = UnitGUID(UNIT)
     if Data[GUID] and InCombatLockdown() then
         local combatTime = (GetTime()-Data[GUID].combat_time)
@@ -161,7 +132,7 @@ function CombatTime(UNIT)
     return 0
 end
 
-function getDMG(UNIT)
+function RubimRH.getDMG(UNIT)
     local total, Hits, phys, magic = 0, 0, 0, 0
     local GUID = UnitGUID(UNIT)
     if Data[GUID] then
@@ -170,7 +141,7 @@ function getDMG(UNIT)
         if (time-Data[GUID].lastHit_taken) > 5 then
             Data[GUID] = nil
         else
-            local combatTime = CombatTime(UNIT)
+            local combatTime = RubimRH.CombatTime(UNIT)
             total = Data[GUID].dmgTaken / combatTime
             phys = Data[GUID].dmgTaken_P / combatTime
             magic = Data[GUID].dmgTaken_M / combatTime
@@ -180,28 +151,28 @@ function getDMG(UNIT)
     return total, Hits, phys, magic
 end
 
-function TimeToDie(unit)
+function RubimRH.TimeToDie(unit)
     local ttd = 0
-    local DMG, Hits = self:getDMG(unit)
+    local DMG, Hits = RubimRH.getDMG(unit)
     if DMG >= 1 and Hits > 1 then
         ttd = UnitHealth(unit) / DMG
     end
     return ttd or 8675309
 end
 
-function LastCast(_, unit)
+function RubimRH.LastCast(_, unit)
     local GUID = UnitGUID(unit)
     if Data[GUID] then
         return Data[GUID].lastcast
     end
 end
 
-function SpellDamage(_, unit, spellID)
+function RubimRH.SpellDamage(_, unit, spellID)
     local GUID = UnitGUID(unit)
     return Data[GUID] and Data[GUID][spellID] or 0
 end
 
-Listener:Add('return 0, 236353', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
+RubimRH.Listener:Add('Rubim_Events', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
     local _, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
     -- Add the unit to our data if we dont have it
     addToData(SourceGUID)
@@ -213,33 +184,33 @@ Listener:Add('return 0, 236353', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
     if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end)
 
-Listener:Add('return 0, 236353', 'PLAYER_REGEN_ENABLED', function()
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_ENABLED', function()
     wipe(Data)
 end)
 
-Listener:Add('return 0, 236353', 'PLAYER_REGEN_DISABLED', function()
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_DISABLED', function()
     wipe(Data)
 end)
 
-function incdmg(unit)
+function RubimRH.incdmg(unit)
     if UnitExists(unit) then
-        local pDMG = select(1, getDMG(unit))
+        local pDMG = select(1, RubimRH.getDMG(unit))
         return pDMG
     end
     return 0
 end
 
-function incdmgphys(unit)
+function RubimRH.incdmgphys(unit)
     if UnitExists(unit) then
-        local pDMG = select(3, getDMG(unit))
+        local pDMG = select(3, RubimRH.getDMG(unit))
         return pDMG
     end
     return 0
 end
 
-function incdmgmagic(unit)
+function RubimRH.incdmgmagic(unit)
     if UnitExists(unit) then
-        local mDMG = select(4, getDMG(unit))
+        local mDMG = select(4, RubimRH.getDMG(unit))
         return mDMG
     end
     return 0

@@ -12,6 +12,7 @@ embeds.xml
 
 Rubim-RH.lua
 Rubim-RHc.lua
+Modules\Listener.lua
 Modules\Custom.lua
 Modules\Debug.lua
 Modules\Icons.lua

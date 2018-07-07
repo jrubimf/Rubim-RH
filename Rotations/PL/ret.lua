@@ -195,7 +195,7 @@ local function Generators()
     end
 
     --actions.generators+=/consecration
-    if S.Consecration:IsReady(10, true) and Cache.EnemiesCount[8] >= 1 and lastMoved() > 1 then
+    if S.Consecration:IsReady(10, true) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 1 then
         return S.Consecration:ID()
     end
 

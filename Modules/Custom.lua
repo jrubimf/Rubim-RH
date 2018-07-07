@@ -4,11 +4,14 @@
 --- DateTime: 01/06/2018 02:40
 ---
 
+local addonName, addonTable = ...;
 local AC = AethysCore;
 local Cache = AethysCache;
 local Unit = AC.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local Spell = AC.Spell;
+local Item = AC.Item;
 
 --- ============================   CUSTOM   ============================
 function TargetIsValid()
@@ -17,14 +20,12 @@ function TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-    AC.GetEnemies(8)
-    if Cache.Enemies[8] ~= nil then
-        for _, CycleUnit in pairs(Cache.Enemies[8]) do
-            if CycleUnit:Exists() then
-                isValid = true
-            end
-        end
+    AC.GetEnemies(8, true)
+
+    if Cache.EnemiesCount[8] >= 1 then
+        isValid = true
     end
+
     return isValid
 end
 
@@ -97,20 +98,15 @@ local function RemoveNameplate(unitID)
     activeUnitPlates[unitframe] = nil
 end
 
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
-frame:SetScript("OnEvent", function(self, event, ...)
-    if event == "NAME_PLATE_UNIT_ADDED" then
-        local unitID = ...
-        AddNameplate(unitID)
-    end
+RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
+    local unitID = ...
+    AddNameplate(unitID)
+end)
 
-    if event == "NAME_PLATE_UNIT_REMOVED" then
-        local unitID = ...
-        RemoveNameplate(unitID)
-    end
+RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
+local unitID = ...
+    RemoveNameplate(unitID)
 end)
 
 function DiyingIn()
@@ -159,49 +155,6 @@ function GetMobsDying()
     return (dyingmobs / totalmobs) * 100
 end
 
-local activeUnitPlates = {}
-
-local function AddNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-
-    -- store nameplate and its unitID
-    activeUnitPlates[unitframe] = unitID
-end
-
-local function RemoveNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-
-    -- recycle the nameplate
-    activeUnitPlates[unitframe] = nil
-end
-
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-frame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
-frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
-
-frame:SetScript("OnEvent", function(self, event, ...)
-    if event == "NAME_PLATE_UNIT_ADDED" then
-        local unitID = ...
-        AddNameplate(unitID)
-    end
-
-    if event == "NAME_PLATE_UNIT_REMOVED" then
-        local unitID = ...
-        RemoveNameplate(unitID)
-    end
-
-    if event == "UNIT_SPELLCAST_SUCCEEDED" then
-        local unit = select(1, ...)
-        local spellID = select(5, ...)
-        if spellID == GetQueueSpell() then
-            SetQueueSpell(nil)
-        end
-    end
-end)
-
 function GetMobs(spellId)
     local totalmobs = 0
     for reference, unit in pairs(activeUnitPlates) do
@@ -210,20 +163,6 @@ function GetMobs(spellId)
         end
     end
     return totalmobs
-end
-
-local QueuedSpell = nil
-local timeElapsed = 0
-function SetQueueSpell(spell)
-    timeElapsed = GetTime()
-    QueuedSpell = spell
-end
-
-function GetQueueSpell()
-    if GetTime() - timeElapsed > 3 then
-        SetQueueSpell(nil)
-    end
-    return QueuedSpell
 end
 
 local SpellsInterrupt = {
@@ -274,15 +213,12 @@ local function ShouldInterrupt()
 end
 
 local movedTimer = 0
-function lastMoved()
+function RubimRH.lastMoved()
     if Player:IsMoving() then
         movedTimer = GetTime()
     end
     return GetTime() - movedTimer
 end
-
-local dmgTaken = {
-}
 
 local playerGUID
 local damageAmounts, damageTimestamps = {}, {}
@@ -327,11 +263,11 @@ combatLOG:SetScript("OnEvent", function(self, event)
     end)
 end)
 
-function lastSwing()
+function RubimRH.lastSwing()
     return GetTime() - lastMeleeHit
 end
 
-function lastDamage(option)
+function RubimRH.lastDamage(option)
     if option == nil then
         return damageInLast3Seconds
     else

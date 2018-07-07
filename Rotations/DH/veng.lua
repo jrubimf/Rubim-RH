@@ -90,7 +90,7 @@ function VengRotation()
         return S.Felblade:ID()
     end
     -- actions+=/fel_devastation
-    if CDsON() and S.FelDevastation:IsCastable(20, true) and lastMoved() > 1 and Player:Pain() >= 30 then
+    if CDsON() and S.FelDevastation:IsCastable(20, true) and RubimRH.lastMoved() > 1 and Player:Pain() >= 30 then
         return S.FelDevastation:ID()
     end
     -- actions+=/sigil_of_flame

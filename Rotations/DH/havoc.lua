@@ -275,7 +275,7 @@ function HavocRotation()
 
         end
         -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up))
-        if lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
+        if RubimRH.lastMoved() > 0.2 and S.FuryOfTheIllidari:IsReady() and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or (not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))) then
             return S.FuryOfTheIllidari:ID()
 
         end
@@ -298,7 +298,7 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
-        if (classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
+        if (classSpell[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and ((Cache.EnemiesCount[CleaveRangeID] > 1)
                 or ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70) and
                 (not IsMetaExtendedByDemonic() or (AC.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)))) then
             return S.EyeBeam:ID()
@@ -325,7 +325,7 @@ function HavocRotation()
 
         end
         -- fel_rush,if=!talent.momentum.enabled&talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-        if classSpell[1].isActive and lastMoved() > 0.2 and S.FelRush:IsReady(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
+        if classSpell[1].isActive and RubimRH.lastMoved() > 0.2 and S.FelRush:IsReady(20, true) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
             return S.FelRush:ID()
 
         end
@@ -396,7 +396,7 @@ function HavocRotation()
 
         end
         -- fury_of_the_illidari,if=(active_enemies>desired_targets)|(raid_event.adds.in>55&(!talent.momentum.enabled|buff.momentum.up)&(!talent.chaos_blades.enabled|buff.chaos_blades.up|cooldown.chaos_blades.remains>30|target.time_to_die<cooldown.chaos_blades.remains))
-        if lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
+        if RubimRH.lastMoved() > 0.2 and (S.FuryOfTheIllidari:IsReady()) and Cache.EnemiesCount[6] >= 1 and (S.FuryOfTheIllidari:IsReady(6, true) and (Cache.EnemiesCount[6] > 1) or ((not S.Momentum:IsAvailable() or Player:BuffP(S.MomentumBuff))
                 and (not S.ChaosBlades:IsAvailable() or Player:BuffP(S.ChaosBlades) or S.ChaosBlades:CooldownRemainsP() > 30
                 or Target:TimeToDie() < S.ChaosBlades:CooldownRemainsP()))) then
             return S.FuryOfTheIllidari:ID()
@@ -419,13 +419,13 @@ function HavocRotation()
 
         end
         -- eye_beam,if=spell_targets.eye_beam_tick>desired_targets|buff.havoc_t21_4pc.remains<2&(!talent.blind_fury.enabled|fury.deficit>=70)&((spell_targets.eye_beam_tick>=3&raid_event.adds.in>cooldown)|talent.blind_fury.enabled|set_bonus.tier21_2pc)
-        if classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
+        if classSpell[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) then
             if (Cache.EnemiesCount[CleaveRangeID] > 1) or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
                     and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
                 return S.EyeBeam:ID()
             end
         end
-        --    if (classSpell[2].isActive and lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and (Cache.EnemiesCount[CleaveRangeID] > 1)
+        --    if (classSpell[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true)) and (Cache.EnemiesCount[CleaveRangeID] > 1)
         --            or (Player:BuffP(S.T21_4pc_Buff) and ((not S.BlindFury:IsAvailable() or Player:FuryDeficitWithCSRefund() >= 70)
         --            and ((S.BlindFury:IsAvailable() and Player:FuryDeficitWithCSRefund() >= 35) or AC.Tier21_2Pc))) then
         --      return S.EyeBeam:ID()

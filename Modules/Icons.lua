@@ -185,7 +185,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
-        if #classSpell > 0 then
+        if classSpell ~= nil and    #classSpell > 0 then
             info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
             info.checked = false
             info.func = function(self)
@@ -195,26 +195,16 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     elseif menuList == "Spells" then
         --SKILL 1
         for i = 1, #classSpell do
-            if classSpell[i].spellID == 193316 then
-                info.text = "Open Roll the Bones"
-                info.checked = false
-                info.func = function(self)
-                    PlaySound(891, "Master");
-                    OUT_rollthebonesMenu()
+            info.text = GetSpellInfo(classSpell[i].spellID)
+            info.checked = classSpell[i].isActive
+            info.func = function(self)
+                PlaySound(891, "Master");
+                if classSpell[i].isActive then
+                    classSpell[i].isActive = false
+                else
+                    classSpell[i].isActive = true
                 end
-
-            else
-                info.text = GetSpellInfo(classSpell[i].spellID)
-                info.checked = classSpell[i].isActive
-                info.func = function(self)
-                    PlaySound(891, "Master");
-                    if classSpell[i].isActive then
-                        classSpell[i].isActive = false
-                    else
-                        classSpell[i].isActive = true
-                    end
-                    print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
-                end
+                print("|cFF69CCF0" .. GetSpellInfo(classSpell[i].spellID) .. "|r: |cFF00FF00" .. tostring(classSpell[i].isActive))
             end
             UIDropDownMenu_AddButton(info, level)
         end
@@ -287,7 +277,7 @@ IconRotationCDText:SetJustifyH("LEFT") --
 IconRotationCDText:SetPoint("CENTER", IconRotation, "CENTER", -10, -15)
 IconRotationCDText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
 IconRotationCDText:SetShadowOffset(1, -1)
-IconRotationCDText:SetTextColor(1,1,1, 0.5)
+IconRotationCDText:SetTextColor(1, 1, 1, 0.5)
 
 local IconRotationAoEText = IconRotation:CreateFontString("AoEText", "OVERLAY")
 IconRotationAoEText:SetFontObject(GameFontNormalSmall)
@@ -295,12 +285,14 @@ IconRotationAoEText:SetJustifyH("RIGHT") --
 IconRotationAoEText:SetPoint("CENTER", IconRotation, "CENTER", 10, -15)
 IconRotationAoEText:SetFont("Fonts\\FRIZQT__.TTF", 8, "THICKOUTLINE")
 IconRotationAoEText:SetShadowOffset(1, -1)
-IconRotationAoEText:SetTextColor(1,1,1, 0.5)
+IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
-        --RubimRH.createMacro()
-        --RubimRH.editMacro()
+        if ExtraPvP == true then
+            RubimRH.createMacro()
+            RubimRH.editMacro()
+        end
         self:StartMoving();
         self.isMoving = true;
     end

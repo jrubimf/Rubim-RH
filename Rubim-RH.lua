@@ -95,8 +95,8 @@ local defaults = {
                 cooldown = true,
                 smartds = 30,
                 spells = {
-                    { spellID = DeathStrike, isActive = true },
-                    { spellID = RuneTap, isActive = true }
+                    { spellID = DeathStrike, isActive = false },
+                    { spellID = RuneTap, isActive = false }
                 }
             },
             frost = {
@@ -480,11 +480,15 @@ function MainRotation()
         return 0, 975746
     end
 
-    if not Player:AffectingCombat() then
-        SetNextAbility(0, 462338)
-    else
-        SetNextAbility(0, 975743)
+    if RubimRH.breakableCC(Target) == true then
+        return 243762
     end
+
+--    if not Player:AffectingCombat() then
+--        SetNextAbility(0, 462338)
+--    else
+--        SetNextAbility(0, 975743)
+    --end
 
     --    shiftDown = IsShiftKeyDown()
     --    if shiftDown then

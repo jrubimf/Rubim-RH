@@ -149,7 +149,7 @@ function PaladinProtection()
             return S.AvengersShield:ID()
         end
         -- Consecration
-        if S.Consecration:IsCastable("Melee") and lastMoved() > 1 then
+        if S.Consecration:IsCastable("Melee") and RubimRH.lastMoved() > 1 then
             return S.Consecration:ID()
         end
         -- Judgment

@@ -477,10 +477,7 @@ function RogueOutlaw()
     if UnitName("player") == "Saberslash" and S.CrimsonVial:IsReady() and Player:HealthPercentage() <= 80 then
         return 20594
     end
-
-    if RubimRH.breakableCC(Target) == true then
-        return 243762
-    end
+w
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth

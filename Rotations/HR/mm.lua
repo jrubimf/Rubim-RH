@@ -204,7 +204,7 @@ local function Burst()
         return S.TrueShot:ID()
     end
 
-    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and lastMoved() > 0.5  then
+    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and RubimRH.lastMoved() > 0.5  then
         return S.AimedShot:ID()
     end
 
@@ -216,7 +216,7 @@ local function Burst()
         return S.MarkedShot:ID()
     end
 
-    if S.AimedShot:IsReady() and lastMoved() > 0.5 then
+    if S.AimedShot:IsReady() and RubimRH.lastMoved() > 0.5 then
         return S.AimedShot:ID()
     end
 
@@ -246,7 +246,7 @@ local function Sustained()
         return 224806
     end
 
-    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and lastMoved() > 0.5  then
+    if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and RubimRH.lastMoved() > 0.5  then
         return S.AimedShot:ID()
     end
 
