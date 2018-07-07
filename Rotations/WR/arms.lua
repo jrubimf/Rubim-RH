@@ -381,31 +381,31 @@ function WarriorArms()
         end
         -- Racial
         -- actions+=/blood_fury,if=buff.battle_cry.up|target.time_to_die<=16
-        if S.BloodFury:IsReady() and CDsON() and (Player:Buff(S.BattleCryBuff) or Target:TimeToDie() <= 16) then
+        if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:Buff(S.BattleCryBuff) or Target:TimeToDie() <= 16) then
             return S.BloodFury:ID()
         end
 
         -- Racial
         -- actions+=/berserking,if=buff.battle_cry.up|target.time_to_die<=11
-        if S.Berserking:IsReady() and CDsON() and (Player:Buff(S.BattleCryBuff) or Target:TimeToDie() <= 11) then
+        if S.Berserking:IsReady() and RubimRH.CDsON() and (Player:Buff(S.BattleCryBuff) or Target:TimeToDie() <= 11) then
             return S.Berserking:ID()
         end
 
         -- Racial
         -- actions+=/arcane_torrent,if=buff.battle_cry_deadly_calm.down&rage.deficit>40&cooldown.battle_cry.remains
-        if S.ArcaneTorrent:IsReady() and CDsON() and (not battle_cry_deadly_calm() and Player:RageDeficit() > 40 and S.BattleCry:CooldownRemainsP() > 0) then
+        if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (not battle_cry_deadly_calm() and Player:RageDeficit() > 40 and S.BattleCry:CooldownRemainsP() > 0) then
             return S.ArcaneTorrent:ID()
         end
 
         -- Omit gcd.remains on this offGCD because we can't react quickly enough otherwise (the intention is to cast this before the next GCD ability, but is a OffGCD abiltiy).
         -- actions+=/avatar,if=gcd.remains<0.25&(buff.battle_cry.up|cooldown.battle_cry.remains<15)|target.time_to_die<=20
-        if S.Avatar:IsReady() and CDsON() and ((Player:Buff(S.BattleCryBuff) or S.BattleCry:CooldownRemainsP() < 15) or Target:TimeToDie() <= 20) then
+        if S.Avatar:IsReady() and RubimRH.CDsON() and ((Player:Buff(S.BattleCryBuff) or S.BattleCry:CooldownRemainsP() < 15) or Target:TimeToDie() <= 20) then
             return S.Avatar:ID()
         end
 
         -- Omit gcd.remains on this offGCD because we can't react quickly enough otherwise (the intention is to cast this before the next GCD ability, but is a OffGCD abiltiy).
         -- actions+=/battle_cry,if=target.time_to_die<=6|(gcd.remains<=0.5&prev_gcd.1.ravager)|!talent.ravager.enabled&!gcd.remains&target.debuff.colossus_smash.remains>=5&(!cooldown.bladestorm.remains|!set_bonus.tier20_4pc)&(!talent.rend.enabled|dot.rend.remains>4)
-        if S.BattleCry:IsReady() and CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not AC.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
+        if S.BattleCry:IsReady() and RubimRH.CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not AC.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
             return S.BattleCry:ID()
         end
 

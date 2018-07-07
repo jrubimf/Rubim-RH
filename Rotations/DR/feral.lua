@@ -250,7 +250,7 @@ local function Generators()
     end
 
     --actions.st_generators+=/pool_resource,for_next=1
-    if not S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
+    if not S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and RubimRH.AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
         poolResource[1].skill = S.Swipe
         poolResource[1].spellName = "Swipe"
         poolResource[1].isActive = true
@@ -258,7 +258,7 @@ local function Generators()
     end
 
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
-        if S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
+        if S.Swipe:IsReady() and not S.BrutalSlash:IsAvailable() and RubimRH.AoEON() and Cache.EnemiesCount[AoERadius] >= 2 then
         return 194612
     end
 
@@ -327,7 +327,7 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
-    if CDsON() and S.Berserk:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 5 or Player:Buff(S.TigersFury)) then
+    if RubimRH.CDsON() and S.Berserk:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 5 or Player:Buff(S.TigersFury)) then
         return S.Berserk:ID()
     end
 
@@ -337,7 +337,7 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/berserking
-    if CDsON() and S.Berserking:IsReady() then
+    if RubimRH.CDsON() and S.Berserking:IsReady() then
         return S.Berserking:ID()
     end
 
@@ -347,7 +347,7 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-    if CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
+    if RubimRH.CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
         return 210631
     end
 
@@ -355,7 +355,7 @@ local function Cooldowns()
 
 
     -- actions.cooldowns+=/ashamanes_frenzy,if=combo_points>=2&(!talent.bloodtalons.enabled|buff.bloodtalons.up)
-    if CDsON() and S.AshamanesFrenzy:IsReady() and Player:ComboPoints() >= 2 and (not S.Bloodtalons:IsAvailable() or Player:Buff(S.BloodtalonsBuff)) then
+    if RubimRH.CDsON() and S.AshamanesFrenzy:IsReady() and Player:ComboPoints() >= 2 and (not S.Bloodtalons:IsAvailable() or Player:Buff(S.BloodtalonsBuff)) then
         return S.AshamanesFrenzy:ID()
     end
 
@@ -466,7 +466,7 @@ function DruidFeral()
         return S.Regrowth:ID()
     end
 
-    if not TargetIsValid() then
+    if not RubimRH.TargetIsValid() then
         return 0, 975743
     end
 
@@ -532,7 +532,7 @@ function DruidFeral()
 
     -- actions+=/berserk
     -- actions+=/incarnation
-    if CDsON() then
+    if RubimRH.CDsON() then
         -- berserk
         if S.Berserk:IsReady() then
             return S.Berserk:ID()
@@ -549,7 +549,7 @@ function DruidFeral()
     end
 
     -- actions+=/ashamanes_frenzy
-    if CDsON() and S.AshamanesFrenzy:IsReady() then
+    if RubimRH.CDsON() and S.AshamanesFrenzy:IsReady() then
         return S.AshamanesFrenzy:ID()
     end
 

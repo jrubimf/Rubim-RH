@@ -409,7 +409,7 @@ end
 --return true
 --end
 --- ============================              ============================
-function CDsON()
+function RubimRH.CDsON()
     if Player:Level() < 109 then
         return true
     end
@@ -439,7 +439,7 @@ function CDsON()
     return false
 end
 
-function AoEON()
+function RubimRH.AoEON()
     if RubimRH.useAoE == true then
         return true
     else
@@ -480,7 +480,7 @@ function MainRotation()
         return 0, 975746
     end
 
-    if RubimRH.breakableCC(Target) == true then
+    if RubimRH.breakableCC(Target) == true and RubimRHPvP.active == true then
         return 243762
     end
 

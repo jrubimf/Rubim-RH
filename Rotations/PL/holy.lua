@@ -162,7 +162,7 @@ function PaladinHoly()
 		end
 	end
 
-	if Player:AffectingCombat() and TargetIsValid() then
+	if Player:AffectingCombat() and RubimRH.TargetIsValid() then
 		if S.Judgement:IsUsable() and S.Judgement:IsCastable() then
 			return S.Judgement:ID()
 		end	

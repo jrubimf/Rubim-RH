@@ -113,11 +113,11 @@ function WarriorProt()
         return S.Shockwave:ID()
     end
 
-    if CDsON() and S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
+    if RubimRH.CDsON() and S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.BattleCry:ID()
     end
 
-    if CDsON() and S.Avatar:IsAvailable() and S.Avatar:IsReady() and Cache.EnemiesCount[8] >= 1 then
+    if RubimRH.CDsON() and S.Avatar:IsAvailable() and S.Avatar:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.Avatar:ID()
     end
 

@@ -140,7 +140,7 @@ local function CDs()
     return S.ArcaneTorrent:ID()
   end
   --actions.cds+=/blood_fury,if=buff.pillar_of_frost.up
-  if CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() and Player:Buff(S.PillarOfFrost) then
+  if RubimRH.CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() and Player:Buff(S.PillarOfFrost) then
     return S.BloodFury:ID()
   end
   --actions.cds+=/berserking,if=buff.pillar_of_frost.up
@@ -181,11 +181,11 @@ local function CDs()
     end
   end
   --actions.cds+=/obliteration,if=rune>=1&runic_power>=20&(!talent.frozen_pulse.enabled|rune<2|buff.pillar_of_frost.remains<=12)&(!talent.gathering_storm.enabled|!cooldown.remorseless_winter.ready)&(buff.pillar_of_frost.up|!talent.icecap.enabled)
-  if CDsON() and S.Obliteration:IsCastable() and Player:Runes() >= 1 and Player:RunicPower() >= 20 and (not S.FrozenPulse:IsAvailable() or Player:Runes() < 2 or Player:BuffRemains(S.PillarOfFrost) <= 12) and (not S.GatheringStorm:IsAvailable() or not S.RemorselessWinter:IsReady()) and (Player:Buff(S.PillarOfFrost) or not S.Icecap:IsAvailable()) then
+  if RubimRH.CDsON() and S.Obliteration:IsCastable() and Player:Runes() >= 1 and Player:RunicPower() >= 20 and (not S.FrozenPulse:IsAvailable() or Player:Runes() < 2 or Player:BuffRemains(S.PillarOfFrost) <= 12) and (not S.GatheringStorm:IsAvailable() or not S.RemorselessWinter:IsReady()) and (Player:Buff(S.PillarOfFrost) or not S.Icecap:IsAvailable()) then
     return S.Obliteration:ID()
   end
   --actions.cds+=/hungering_rune_weapon,if=!buff.hungering_rune_weapon.up&rune.time_to_2>gcd&runic_power<40
-  if CDsON() and Target:IsInRange("Melee") and S.HungeringRuneWeapon:IsCastable() and S.HungeringRuneWeapon:Charges() >= 1 and not Player:Buff(S.HungeringRuneWeapon) and Player:RuneTimeToX(2) > Player:GCD() and Player:RunicPower() < 40 then
+  if RubimRH.CDsON() and Target:IsInRange("Melee") and S.HungeringRuneWeapon:IsCastable() and S.HungeringRuneWeapon:Charges() >= 1 and not Player:Buff(S.HungeringRuneWeapon) and Player:RuneTimeToX(2) > Player:GCD() and Player:RunicPower() < 40 then
     return S.EmpowerRuneWeapon:ID()
   end
 end
@@ -259,7 +259,7 @@ local function BoSPool()
     return S.Obliterate:ID()
   end
   --actions.bos_pooling+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-  if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+  if classSpell[3].isActive and RubimRH.CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
     return S.SindragosasFury:ID()
   end
   --actions.bos_pooling+=/frost_strike,if=runic_power.deficit<=30&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>rune.time_to_4)
@@ -318,7 +318,7 @@ local function BoSTick()
     return S.Obliterate:ID()
   end
   --actions.bos_ticking+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-  if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+  if classSpell[3].isActive and RubimRH.CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
     return S.SindragosasFury:ID()
   end
   --actions.bos_ticking+=/horn_of_winter,if=runic_power.deficit>=30&rune.time_to_3>gcd
@@ -342,7 +342,7 @@ local function BoSTick()
     return S.Obliterate:ID()
   end
   --actions.bos_ticking+=/empower_rune_weapon,if=runic_power<30&rune.time_to_2>gcd
-  if CDsON() and S.EmpowerRuneWeapon:IsCastable() and Player:RunicPower() < 30 and Player:RuneTimeToX(2) > Player:GCD() then
+  if RubimRH.CDsON() and S.EmpowerRuneWeapon:IsCastable() and Player:RunicPower() < 30 and Player:RuneTimeToX(2) > Player:GCD() then
     return S.EmpowerRuneWeapon:ID()
   end
 end
@@ -376,7 +376,7 @@ local function Standard()
     return S.Obliterate:ID()
   end
   --actions.standard+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-  if classSpell[3].isActive and CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
+  if classSpell[3].isActive and RubimRH.CDsON() and S.SindragosasFury:IsCastable() and (I.ConsortsColdCore:IsEquipped() or Player:Buff(S.PillarOfFrost)) and Player:Buff(S.UnholyStrength) and Target:DebuffStack(S.RazorIce) == 5 then
     return S.SindragosasFury:ID()
   end
   --actions.standard+=/frost_strike,if=runic_power.deficit<10&!buff.hungering_rune_weapon.up
@@ -420,7 +420,7 @@ local function Standard()
     return S.FrostStrike:ID()
   end
   --actions.standard+=/empower_rune_weapon,if=!talent.breath_of_sindragosa.enabled|target.time_to_die<cooldown.breath_of_sindragosa.remains
-  if CDsON() and Target:IsInRange("Melee") and S.EmpowerRuneWeapon:IsCastable() and (S.EmpowerRuneWeapon:Charges() >= 1 and not S.BreathofSindragosa:IsAvailable() or Target:TimeToDie() < S.BreathofSindragosa:CooldownRemains()) then
+  if RubimRH.CDsON() and Target:IsInRange("Melee") and S.EmpowerRuneWeapon:IsCastable() and (S.EmpowerRuneWeapon:Charges() >= 1 and not S.BreathofSindragosa:IsAvailable() or Target:TimeToDie() < S.BreathofSindragosa:CooldownRemains()) then
     return S.EmpowerRuneWeapon:ID()
   end
 end
@@ -447,7 +447,7 @@ function FrostRotation()
     return S.DeathStrike:ID()
   end
 
-  if Target:IsInRange("Melee") and TargetIsValid() then
+  if Target:IsInRange("Melee") and RubimRH.TargetIsValid() then
     if CDs() ~= nil then
       return CDs()
     end

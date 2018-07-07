@@ -180,7 +180,7 @@ end
 
 -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)&(!variable.waiting_for_chaos_blades|cooldown.chaos_blades.remains<6)
 local function PoolingForMeta()
-    if not CDsON() then
+    if not RubimRH.CDsON() then
         return false;
     end ;
     return not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficitWithCSRefund() > 30
@@ -495,7 +495,7 @@ function HavocRotation()
     AC.GetEnemies("Melee"); -- Melee
 
     -- call_action_list,name=cooldown,if=gcd.remains=0
-    if CDsON() then
+    if RubimRH.CDsON() then
         if Cooldown() ~= nil then
             return Cooldown()
         end

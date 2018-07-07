@@ -345,18 +345,18 @@ local function BladeFlurry()
 end
 
 local function CDs()
-    if CDsON() then
+    if RubimRH.CDsON() then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|buff.adrenaline_rush.up
         -- TODO: Add Potion
         -- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
         -- TODO: Add Items
         -- actions.cds+=/cannonball_barrage,if=spell_targets.cannonball_barrage>=1
-        if AoEON() and S.CannonballBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
+        if RubimRH.AoEON() and S.CannonballBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.CannonballBarrage:ID()
         end
     end
     if Target:IsInRange(S.SaberSlash) then
-        if CDsON() then
+        if RubimRH.CDsON() then
             -- actions.cds+=/blood_fury
             if S.BloodFury:IsReady() then
                 return S.BloodFury:ID()
@@ -385,7 +385,7 @@ local function CDs()
                 return S.MarkedforDeath:ID()
             end
         end
-        if CDsON() then
+        if RubimRH.CDsON() then
             if I.ThraxisTricksyTreads:IsEquipped() and not SS_Useable() then
                 -- actions.cds+=/sprint,if=!talent.death_from_above.enabled&equipped.thraxis_tricksy_treads&!variable.ss_useable
                 if S.Sprint:IsReady() and not S.DeathfromAbove:IsAvailable() then
@@ -414,7 +414,7 @@ local function Stealth()
         if Player:IsStealthed(true, true) and S.Ambush:IsReady() and Ambush_Condition then
             return S.Ambush:ID()
         else
-            if CDsON() and not Player:IsTanking(Target) then
+            if RubimRH.CDsON() and not Player:IsTanking(Target) then
                 -- actions.stealth+=/vanish,if=(variable.ambush_condition|equipped.mantle_of_the_master_assassin&!variable.rtb_reroll&!variable.ss_useable)&mantle_duration=0
                 if S.Vanish:IsReady() and (Ambush_Condition or (I.MantleoftheMasterAssassin:IsEquipped() and not RtB_Reroll() and not SS_Useable()))
                         and MantleDuration() == 0 then
@@ -477,7 +477,7 @@ function RogueOutlaw()
     if UnitName("player") == "Saberslash" and S.CrimsonVial:IsReady() and Player:HealthPercentage() <= 80 then
         return 20594
     end
-w
+
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
@@ -489,14 +489,14 @@ w
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-        if TargetIsValid() and Target:IsInRange(S.SaberSlash) then
+        if RubimRH.TargetIsValid() and Target:IsInRange(S.SaberSlash) then
             if Player:ComboPoints() >= 5 then
                 if S.RunThrough:IsReady() then
                     return S.RunThrough:ID()
                 end
             else
                 -- actions.precombat+=/curse_of_the_dreadblades,if=combo_points.deficit>=4
-                if CDsON() and S.CurseoftheDreadblades:IsReady() and Player:ComboPointsDeficit() >= 4 then
+                if RubimRH.CDsON() and S.CurseoftheDreadblades:IsReady() and Player:ComboPointsDeficit() >= 4 then
                     return S.CurseoftheDreadblades:ID()
                 end
                 if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
@@ -512,10 +512,10 @@ w
     -- In Combat
     -- MfD Sniping
     --MfDSniping(S.MarkedforDeath);
-    if TargetIsValid() then
+    if RubimRH.TargetIsValid() then
         -- Mythic Dungeon
         -- actions+=/call_action_list,name=bf
-        if AoEON() and BladeFlurry() ~= nil then
+        if RubimRH.AoEON() and BladeFlurry() ~= nil then
             return BladeFlurry()
         end
 
@@ -568,7 +568,7 @@ w
             return S.RolltheBones:ID()
         end
         -- actions+=/killing_spree,if=energy.time_to_max>5|energy<15
-        if CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
+        if RubimRH.CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
             return S.KillingSpree:ID()
         end
         -- actions+=/call_action_list,name=build

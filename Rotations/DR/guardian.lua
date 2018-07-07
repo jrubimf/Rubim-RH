@@ -136,7 +136,7 @@ function DruidGuardian()
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-        if TargetIsValid() then
+        if RubimRH.TargetIsValid() then
             if Player:Buff(S.CatForm) then
                 -- Shred
                 if S.Shred:IsCastable(MeleeRange) then
@@ -163,7 +163,7 @@ function DruidGuardian()
 
 
     -- In Combat
-    if TargetIsValid() then
+    if RubimRH.TargetIsValid() then
         if Player:Buff(S.CatForm) then
             -- Thrash
             -- Note: Due to an in-game bug, you cannot apply a new thrash if there is the bear one.
@@ -188,7 +188,7 @@ function DruidGuardian()
             end
         end
         if Player:Buff(S.BearForm) then
-            local UseMaul = not CDsON() and Cache.EnemiesCount[AoERadius] < 5 and Player:HealthPercentage() >= 60;
+            local UseMaul = not RubimRH.CDsON() and Cache.EnemiesCount[AoERadius] < 5 and Player:HealthPercentage() >= 60;
             local IsTanking = Player:IsTankingAoE(AoERadius) or Player:IsTanking(Target);
             -- # Executed every time the actor is available.
             -- actions=auto_attack

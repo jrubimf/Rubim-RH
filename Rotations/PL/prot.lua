@@ -129,7 +129,7 @@ function PaladinProtection()
             return S.ShieldoftheRighteous:ID()
         end
         -- Avengin Wrath (CDs On)
-        if CDsON() and S.AvengingWrath:IsCastable("Melee") then
+        if RubimRH.CDsON() and S.AvengingWrath:IsCastable("Melee") then
             return S.AvengingWrath:ID()
         end
         -- Defensives

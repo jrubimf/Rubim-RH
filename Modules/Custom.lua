@@ -14,7 +14,7 @@ local Spell = AC.Spell;
 local Item = AC.Item;
 
 --- ============================   CUSTOM   ============================
-function TargetIsValid()
+function RubimRH.TargetIsValid()
     local isValid = false
 
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then

@@ -264,7 +264,7 @@ function BloodRotation()
     end
 
     --BloodFury
-    if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
+    if RubimRH.CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
         return S.BloodFury:ID()
     end
 

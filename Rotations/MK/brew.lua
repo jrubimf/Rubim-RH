@@ -143,19 +143,19 @@ function BrewMasterRotation()
         return S.BlackOxBrew:ID()
     end
     -- blood_fury
-    if CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
+    if RubimRH.CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
         return S.BloodFury:ID()
     end
     -- berserking
-    if CDsON() and S.Berserking:IsCastable("Melee") and S.Berserking:IsAvailable() then
+    if RubimRH.CDsON() and S.Berserking:IsCastable("Melee") and S.Berserking:IsAvailable() then
         return S.Berserking:ID()
     end
     -- invoke_niuzao_the_black_ox
-    if S.InvokeNiuzaotheBlackOx:IsCastableP(40) and CDsON() then
+    if S.InvokeNiuzaotheBlackOx:IsCastableP(40) and RubimRH.CDsON() then
         return S.InvokeNiuzaotheBlackOx:ID()
     end
     -- arcane_torrent,if=energy<31
-    if CDsON() and S.ArcaneTorrent:IsCastableP() and Player:Energy() < 31 and Cache.EnemiesCount[8] >= 1 then
+    if RubimRH.CDsON() and S.ArcaneTorrent:IsCastableP() and Player:Energy() < 31 and Cache.EnemiesCount[8] >= 1 then
         return S.ArcaneTorrent:ID()
     end
     -- keg_smash,if=spell_targets>=3

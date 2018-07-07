@@ -283,7 +283,7 @@ end
 function HunterMM()
     aethysHealer()
 
-    if S.TrueShot:TimeSinceLastCast() >= 15 and S.TrueShot:TimeSinceLastCast() <= 16 and CDsON() then
+    if S.TrueShot:TimeSinceLastCast() >= 15 and S.TrueShot:TimeSinceLastCast() <= 16 and RubimRH.CDsON() then
         RubimRH.CDToggle()
     end
 
@@ -342,12 +342,12 @@ function HunterMM()
         end
     end
 
-    if TargetIsValid() then
+    if RubimRH.TargetIsValid() then
 
-        if CDsON() and Burst() ~= nil then
+        if RubimRH.CDsON() and Burst() ~= nil then
             return Burst()
         end
-        if not CDsON() and Sustained() ~= nil then
+        if not RubimRH.CDsON() and Sustained() ~= nil then
             return Sustained()
         end
     end

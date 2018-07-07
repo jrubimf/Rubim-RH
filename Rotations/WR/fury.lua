@@ -89,7 +89,7 @@ local function AoE()
         return S.Bloodthirst:ID()
     end
     -- actions.aoe+=bladestorm,if=buff.enrage.remains>2&(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)
-    if CDsON() and S.Bladestorm:IsReady() and Player:BuffRemainsP(S.Enrage) > 2 and Cache.EnemiesCount[8] > 1 then
+    if RubimRH.CDsON() and S.Bladestorm:IsReady() and Player:BuffRemainsP(S.Enrage) > 2 and Cache.EnemiesCount[8] > 1 then
         return S.Bladestorm:ID()
     end
     -- actions.aoe+=/whirlwind,if=buff.meat_cleaver.down
@@ -341,7 +341,7 @@ function WarriorFury()
     if S.Bloodthirst:IsReady() and I.KazzalaxFujiedasFury:IsEquipped() and not Player:BuffP(S.FujiedasFury) then
         return S.Bloodthirst:ID()
     end
-    if CDsON() then
+    if RubimRH.CDsON() then
         -- actions+=/avatar,if=((buff.battle_cry.remains>5|cooldown.battle_cry.remains<12)&target.time_to_die>80)|((target.time_to_die<40)&(buff.battle_cry.remains>6|cooldown.battle_cry.remains<12|(target.time_to_die<20)))
         if S.Avatar:IsReady()
                 and (((Player:BuffRemainsP(S.BattleCry) > 5 or S.BattleCry:CooldownRemainsP() < 12) and Target:TimeToDie() > 80)
@@ -399,7 +399,7 @@ function WarriorFury()
         end
     end
 
-    if not CDsON() then
+    if not RubimRH.CDsON() then
         -- actions+=/battle_cry,if=gcd.remains=0&talent.reckless_abandon.enabled&!talent.bloodbath.enabled&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
         if S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1
                 and (S.RecklessAbandon:IsAvailable() and not S.Bloodbath:IsAvailable()

@@ -258,7 +258,7 @@ function ShamanEnh ()
         end
 
         -- actions+=/call_action_list,name=cds
-        if CDsON() then
+        if RubimRH.CDsON() then
             -- Racial
             -- actions.cds+=/berserking,if=buff.ascendance.up|(cooldown.doom_winds.up)|level<100
             if S.Berserking:IsCastable() and (Player:Buff(S.AscendanceBuff) or S.DoomWinds:CooldownRemainsP() > 0) then

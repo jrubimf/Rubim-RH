@@ -451,7 +451,7 @@ local function SEF()
 
     end
     -- actions.sef+=/storm_earth_and_fire,if=!buff.storm_earth_and_fire.up
-    if CDsON() and not Player:BuffP(S.StormEarthAndFire) then
+    if RubimRH.CDsON() and not Player:BuffP(S.StormEarthAndFire) then
         return S.StormEarthAndFire:ID()
 
     end
@@ -470,7 +470,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/serenity
-    if CDsON() and S.Serenity:IsReady() then
+    if RubimRH.CDsON() and S.Serenity:IsReady() then
         return S.Serenity:ID()
 
     end
@@ -574,7 +574,7 @@ function WindWalkerRotation()
 
     end
     -- actions+=/touch_of_death
-    if CDsON() and S.TouchOfDeath:Ready() and Target:TimeToDie() >= 9 then
+    if RubimRH.CDsON() and S.TouchOfDeath:Ready() and Target:TimeToDie() >= 9 then
         return S.TouchOfDeath:ID()
 
     end

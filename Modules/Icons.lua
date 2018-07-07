@@ -257,6 +257,18 @@ Sephul:Hide()
 --RubimRH.Interrupt:Hide()
 --RubimRH.SetFramePos(Interrupt, 1, 0, 1, 1)
 
+local MainIcons = CreateFrame("Frame", nil)
+MainIcons:SetBackdrop(nil)
+MainIcons:SetFrameStrata("BACKGROUND")
+MainIcons:SetSize(320, 40)
+MainIcons:SetPoint("CENTER", 0, -200)
+MainIcons.texture = MainIcons:CreateTexture(nil, "BACKGROUND")
+MainIcons.texture:SetAllPoints(true)
+MainIcons.texture:SetColorTexture(0, 0, 0, 0)
+MainIcons:SetScale(1)
+MainIcons:Show(1)
+
+
 local IconRotation = CreateFrame("Frame", nil)
 IconRotation:SetBackdrop(nil)
 IconRotation:SetFrameStrata("BACKGROUND")
@@ -289,7 +301,7 @@ IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
 IconRotation:SetScript("OnMouseDown", function(self, button)
     if button == "LeftButton" and not self.isMoving then
-        if ExtraPvP == true then
+        if RubimRHPvP.active == true then
             RubimRH.createMacro()
             RubimRH.editMacro()
         end

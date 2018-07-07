@@ -139,7 +139,7 @@ local function Generic()
         return 192464
     end
     --actions.generic+=/call_action_list,name=aoe,if=active_enemies>=2
-    if AoEON() and Cache.EnemiesCount[10] >= 2 then
+    if RubimRH.AoEON() and Cache.EnemiesCount[10] >= 2 then
         if AoE() ~= nil then
             return AoE()
         end
@@ -246,7 +246,7 @@ local function Cooldowns()
         end
     end
     -- t20 gameplay
-    if CDsON() and (S.ArmyOfDead:IsReady() or S.ArmyOfDead:CooldownRemainsP() <= 5) and S.DarkArbiter:TimeSinceLastCast() > 20 and Player:Runes() <= 3 and T204PC then
+    if RubimRH.CDsON() and (S.ArmyOfDead:IsReady() or S.ArmyOfDead:CooldownRemainsP() <= 5) and S.DarkArbiter:TimeSinceLastCast() > 20 and Player:Runes() <= 3 and T204PC then
         return 0, 975743
     end
     --actions.cooldowns+=/apocalypse,if=debuff.festering_wound.stack>=6
@@ -292,7 +292,7 @@ function UnholyRotation()
             return S.SummonPet:ID()
         end
         -- outbreak if virulent_plague is not  the target and we are not in combat
-        if TargetIsValid() and Target:IsInRange(30) and not Target:Debuff(S.VirulentPlagueDebuff) then
+        if RubimRH.TargetIsValid() and Target:IsInRange(30) and not Target:Debuff(S.VirulentPlagueDebuff) then
             return S.Outbreak:ID()
         end
         return 0, 462338
@@ -308,15 +308,15 @@ function UnholyRotation()
 
     --# Racials, Items, and other ogcds
     --actions+=/arcane_torrent,if=runic_power.deficit>20&(pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled)
-    if CDsON() and useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 20 and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
+    if RubimRH.CDsON() and useRACIAL and S.ArcaneTorrent:IsCastableP("Melee") and Player:RunicPowerDeficit() >= 20 and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
         return S.ArcaneTorrent:ID()
     end
     --actions+=/blood_fury,if=pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled
-    if CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
+    if RubimRH.CDsON() and useRACIAL and S.BloodFury:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
         return S.BloodFury:ID()
     end
     --actions+=/berserking,if=pet.valkyr_battlemaiden.active|!talent.dark_arbiter.enabled
-    if CDsON() and useRACIAL and S.Berserking:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
+    if RubimRH.CDsON() and useRACIAL and S.Berserking:IsCastableP("Melee") and S.BloodFury:IsAvailable() and (S.DarkArbiter:TimeSinceLastCast() <= 22 or not S.DarkArbiter:IsAvailable()) then
         return S.Berserking:ID()
     end
     --actions+=/use_items
@@ -339,7 +339,7 @@ function UnholyRotation()
     end
 
     --actions+=/call_action_list,name=cooldowns
-    if TargetIsValid() and CDsON() then
+    if RubimRH.TargetIsValid() and RubimRH.CDsON() then
         if Cooldowns() ~= nil then
             return Cooldowns()
         end

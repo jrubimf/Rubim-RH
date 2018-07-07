@@ -83,16 +83,16 @@ local function Cooldowns()
     --actions.cooldowns+=/arcane_torrent,if=(buff.crusade.up|buff.avenging_wrath.up)&holy_power=2&(cooldown.blade_of_justice.remains>gcd|cooldown.divine_hammer.remains>gcd)
     --actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>15)&cooldown.judgment.remains>gcd&(cooldown.divine_hammer.remains>gcd|cooldown.blade_of_justice.remains>gcd)&(buff.avenging_wrath.up|buff.crusade.stack>=15)
     --actions.cooldowns+=/holy_wrath
-    if CDsON() and S.HolyWrath:IsCastable() then
+    if RubimRH.CDsON() and S.HolyWrath:IsCastable() then
         return S.HolyWrath:ID()
     end
     --actions.cooldowns+=/shield_of_vengeance
     --actions.cooldowns+=/avenging_wrath
-    if CDsON() and S.AvengingWrath:IsCastable() then
+    if RubimRH.CDsON() and S.AvengingWrath:IsCastable() then
         return 55748
     end
     --actions.cooldowns+=/crusade,if=holy_power>=3|((equipped.137048|race.blood_elf)&holy_power>=2)
-	 if CDsON() and S.Crusade:IsCastable() and ((Player:HolyPower() >= 3 and not I.LiadrinsFuryUnleashed:IsEquipped()) or ((I.LiadrinsFuryUnleashed:IsEquipped() or Player:Race() == "BloodElf") and Player:HolyPower() >= 2)) then
+	 if RubimRH.CDsON() and S.Crusade:IsCastable() and ((Player:HolyPower() >= 3 and not I.LiadrinsFuryUnleashed:IsEquipped()) or ((I.LiadrinsFuryUnleashed:IsEquipped() or Player:Race() == "BloodElf") and Player:HolyPower() >= 2)) then
         return 55748
     end
 end
@@ -107,7 +107,7 @@ local function Finishers()
         return S.DivineStorm:ID()
     end
     --actions.finishers+=/divine_storm,if=debuff.judgment.up&variable.ds_castable&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
-    if S.DivineStorm:IsReady() and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and ((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) or not CDsON()) then
+    if S.DivineStorm:IsReady() and Target:Debuff(S.JudgmentDebuff) and Var_DS_Castable and ((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) or not RubimRH.CDsON()) then
         return S.DivineStorm:ID()
     end
 
@@ -122,15 +122,15 @@ local function Finishers()
     end
 
     --actions.finishers+=/templars_verdict,if=debuff.judgment.up&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd)
-    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) or not CDsON()) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()))  then
+    if S.TemplarsVerdict:IsReady("Melee") and Target:Debuff(S.JudgmentDebuff) and (((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemains() > Player:GCD() * 2) or not RubimRH.CDsON()) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemains() > Player:GCD()))  then
         return S.TemplarsVerdict:ID()
     end
 end
 
 local function Generators()
     --actions.generators=variable,name=ds_castable,value=spell_targets.divine_storm>=2|(buff.scarlet_inquisitors_expurgation.stack>=29&(equipped.144358&(dot.wake_of_ashes.ticking&time>10|dot.wake_of_ashes.remains<gcd))|(buff.scarlet_inquisitors_expurgation.stack>=29&(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack>=15|cooldown.crusade.remains>15&!buff.crusade.up)|cooldown.avenging_wrath.remains>15)&!equipped.144358)
-    Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()
-    --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()
+    Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not RubimRH.CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and RubimRH.AoEON()
+    --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not RubimRH.CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and RubimRH.AoEON()
     --Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (I.AshesToDust:IsEquipped() and (Target:Debuff(S.WakeofAshes) and AC.CombatTime() > 10 or Target:DebuffRemains(S.WakeofAshes) < Player:GCD())) or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade) and Player:BuffStack(S.Crusade) >= 15 or S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or S.AvengingWrath:CooldownRemains() > 15) and not I.AshesToDust:IsEquipped()))
     --actions.generators+=/judgment,if=set_bonus.tier21_4pc
     if S.Judgment:IsReady(30) and T214PC then
@@ -249,7 +249,7 @@ function PaladinRetribution()
     AC.GetEnemies(8, true);
     AC.GetEnemies(10, true);
     AC.GetEnemies(20, true);
-	Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and AoEON()	
+	Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not RubimRH.CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and RubimRH.AoEON()	
     --Out of Combat
 
     if not Player:AffectingCombat() then
