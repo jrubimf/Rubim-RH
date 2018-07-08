@@ -483,7 +483,7 @@ function MainRotation()
         return 0, 975746
     end
 
-    if RubimRH.breakableCC(Target) == true and RubimRHPvP.active == true then
+    if RubimPVP ~= nil and RubimRH.breakableCC(Target) == true then
         return 243762
     end
 

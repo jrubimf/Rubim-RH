@@ -192,7 +192,7 @@ local updateConfigFunc = function()
         IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
         IconRotation:SetScript("OnMouseDown", function(self, button)
-            if RubimRHPvP.active == true and button == "MiddleButton" then
+            if RubimPVP ~= nil and button == "MiddleButton" then
                 RubimRH.createMacro()
                 RubimRH.editMacro()
             end
