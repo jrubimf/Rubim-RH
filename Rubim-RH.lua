@@ -467,6 +467,8 @@ end
 
 --- ============================   MAIN_ROT   ============================
 function MainRotation()
+    AC.GetEnemies(30)
+
     if error == 1 then
         return "ERROR: Missing an addon"
     end
@@ -503,6 +505,10 @@ function MainRotation()
     --    end
 
     --DK
+    if Cache.EnemiesCount[30] == 0 then
+        return 0, 975743
+    end
+
     if RubimRH.currentSpec == "blood" then
         return BloodRotation()
     end

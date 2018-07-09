@@ -123,7 +123,7 @@ local function Cleave()
     end
 
     --	actions.cleave+=/warbreaker,if=raid_event.adds.in>90&buff.shattered_defenses.down
-    if Cache.EnemiesCount[8] >= 1 and  classSpell[1].isActive and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if Cache.EnemiesCount[8] >= 1 and classSpell[1].isActive and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.Warbreaker:ID()
     end
 
@@ -359,6 +359,10 @@ local function Single()
     end
 end
 
+local enemyHEALtarget = "None"
+local enemyDPS1 = "None"
+local enemyDPS2 = "None"
+local SpellHealer = 28730
 function WarriorArms()
     -- Unit Update
     AC.GetEnemies(8); -- WhirlWind
@@ -369,6 +373,29 @@ function WarriorArms()
     end
 
     -- Interrupts
+
+    if UnitIsPlayer("target") and PvPExtra ~= nil then
+        if enemyHealer[1] ~= nil then
+            if enemyHealer[1].Unit == "arena1" then
+                enemyHEALtarget = Arena[1]
+                local enemyDPS1 = Arena[2]
+                local enemyDPS2 = Arena[3]
+            elseif enemyHealer[1].Unit.Unit == "arena2" then
+                local enemyDPS1 = Arena[1]
+                enemyHEALtarget = Arena[2]
+                local enemyDPS2 = Arena[3]
+            elseif enemyHealer[1].Unit.Unit == "arena3" then
+                local enemyDPS1 = Arena[1]
+                local enemyDPS2 = Arena[2]
+                enemyHEALtarget = Arena[3]
+            end
+        end
+
+        if enemyHEALtarget:IsInRange(22) and S.Charge:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) then
+            return SpellHealer
+        end
+    end
+
     -- In Combat
     if RubimRH.TargetIsValid() then
         if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.arms.victoryrush then

@@ -552,10 +552,6 @@ function WindWalkerRotation()
         return 0, 462338
     end
 
-    if Cache.EnemiesCount[8] <= 0 then
-        return "0, 975743"
-    end
-
     if Player:IsChanneling(S.FistsOfFury) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
@@ -620,7 +616,7 @@ function WindWalkerRotation()
             return SingleTarget()
         end
     end
-    return "0, 975743"
+    return 0, 975743
 end
 
 -- SimulationCraft APL, taken 2018-01-11

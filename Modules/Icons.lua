@@ -138,7 +138,14 @@ local updateConfigFunc = function()
         print("|cFF69CCF0R Rotation Assist:")
         print("|cFF00FF96Right-Click on the Main")
         print("|cFF00FF96Icon to more options")
+        print("|cFF00FF96ENABLE NAMEPLATES")
         print("===================")
+
+        if GetCVar("nameplateShowEnemies") == 0 and GetCVar("nameplateShowAll") == 0 then
+            SetCVar("nameplateShowEnemies", 1)
+        end
+        SetCVar("nameplateOtherBottomInset", 0.1)
+        SetCVar("nameplateOtherTopInset", 0.08)
 
         local mainOption = RubimRH.db.profile.mainOption
         Icons.MainIcon = CreateFrame("Frame", nil)
@@ -187,6 +194,14 @@ local updateConfigFunc = function()
         IconRotation:SetMovable(true)
         IconRotation:EnableMouse(true)
 
+        local IconRotationInfoText = IconRotation:CreateFontString("InfoText", "OVERLAY")
+        IconRotationInfoText:SetFontObject(GameFontNormalSmall)
+        IconRotationInfoText:SetJustifyH("LEFT") --
+        IconRotationInfoText:SetPoint("CENTER", IconRotation, "CENTER", 0, 0)
+        IconRotationInfoText:SetFont("Fonts\\FRIZQT__.TTF", 10, "THICKOUTLINE")
+        IconRotationInfoText:SetShadowOffset(1, -1)
+        IconRotationInfoText:SetTextColor(1, 0, 0, 0.9)
+
         local IconRotationCDText = IconRotation:CreateFontString("CDText", "OVERLAY")
         IconRotationCDText:SetFontObject(GameFontNormalSmall)
         IconRotationCDText:SetJustifyH("LEFT") --
@@ -204,7 +219,7 @@ local updateConfigFunc = function()
         IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
         IconRotation:SetScript("OnMouseDown", function(self, button)
-            if RubimPVP ~= nil and button == "Left" then
+            if RubimPVP ~= nil and button == "MiddleButton" then
                 RubimRH.createMacro()
                 RubimRH.editMacro()
             end
@@ -237,11 +252,6 @@ local updateConfigFunc = function()
         end)
         runonce = 1
     end
-    if GetCVar("nameplateShowEnemies") == 0 then
-        SetCVar("nameplateShowEnemies", 1)
-    end
-    SetCVar("nameplateOtherBottomInset", 0.1)
-    SetCVar("nameplateOtherTopInset", 0.08)
 
     --Default
     local QuestionMark = 212812
