@@ -465,7 +465,7 @@ function WarriorFury()
             return single_target()
         end
     end
-    return "0, 975743"
+    return 0, 975743
 end
 
 --- Last Update: 11/26/2017

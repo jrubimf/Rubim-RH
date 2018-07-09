@@ -30,14 +30,12 @@ end
 
 function RubimRH.AttackToggle()
     PlaySound(891, "Master");
-    if RubimRH.useCD == false then
-        varClass.cooldown = true
-        RubimRH.useCD = true
+    if RubimRH.db.profile.mainOption.startattack == false then
+        RubimRH.db.profile.mainOption.startattack = true
     else
-        RubimRH.useCD = false
-        varClass.cooldown = false
+        RubimRH.db.profile.mainOption.startattack = false
     end
-    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useCD))
+    print("|cFF69CCF0Auto-Skill: " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.startattack))
 end
 
 function RubimRH.AoEToggle()
@@ -79,17 +77,39 @@ local function getOptions()
                                 RubimRH.db.profile.mainOption[key] = value
                             end,
                             args = {
-                                startattack = {
+                                description = {
                                     order = 1,
+                                    type = "description",
+                                    name = "Controls if we should suggest skills without a target.",
+                                },
+                                startattack = {
+                                    order = 2,
                                     type = "toggle",
                                     get = function()
-                                        return startattack
+                                        return RubimRH.db.profile.mainOption.startattack
                                     end,
                                     set = function(info, v)
-                                        RubimRH.CDToggle()
+                                        RubimRH.AttackToggle()
                                     end,
-                                    name = "AutoAttack"
+                                    name = "Skills without a target."
                                 },
+                            }
+                        },
+                        keybind = {
+                            order = 1,
+                            type = "group",
+                            childGroups = "tree",
+                            inline = true,
+                            name = "Keybinds",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.mainOption[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.mainOption[key] = value
+                            end,
+                            args = {
                                 cooldownbind = {
                                     order = 3,
                                     type = "keybinding",

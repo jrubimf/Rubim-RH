@@ -100,7 +100,7 @@ local function AOE()
         return S.Epidemic:ID()
     end
     --actions.aoe+=/scourge_strike,if=spell_targets.scourge_strike>=2&(death_and_decay.ticking|defile.ticking)
-    if S.ScourgeStrike:IsReady() and (Cache.EnemiesCount[10] >= 2 and Player:Buff(S.DeathAndDecayBuff)) or Target:Debuff(S.FesteringWounds) then
+    if S.ScourgeStrike:IsReady("Melee") and (Cache.EnemiesCount[10] >= 2 and Player:Buff(S.DeathAndDecayBuff)) or Target:Debuff(S.FesteringWounds) then
         return S.ScourgeStrike:ID()
     end
     --actions.aoe+=/clawing_shadows,if=spell_targets.clawing_shadows>=2&(dot.death_and_decay.ticking|dot.defile.ticking)
@@ -115,7 +115,7 @@ end
 
 local function Generic()
     --actions.generic=scourge_strike,if=debuff.soul_reaper.up&debuff.festering_wound.up
-    if S.ScourgeStrike:IsReady() and Target:Debuff(S.SoulReaperDebuff) and Target:Debuff(S.FesteringWounds) then
+    if S.ScourgeStrike:IsReady("Melee") and Target:Debuff(S.SoulReaperDebuff) and Target:Debuff(S.FesteringWounds) then
         return S.ScourgeStrike:ID()
     end
     --actions.generic+=/clawing_shadows,if=debuff.soul_reaper.up&debuff.festering_wound.up
@@ -131,7 +131,7 @@ local function Generic()
         return S.DeathCoil:ID()
     end
     --actions.generic+=/festering_strike,if=debuff.festering_wound.stack<6&cooldown.apocalypse.remains<=6
-    if S.FesteringStrike:IsReady() and Target:DebuffStack(S.FesteringWounds) < 6 and S.Apocalypse:CooldownRemains() <= 6 then
+    if S.FesteringStrike:IsReady("Melee") and Target:DebuffStack(S.FesteringWounds) < 6 and S.Apocalypse:CooldownRemains() <= 6 then
         return S.FesteringStrike:ID()
     end
     --actions.generic+=/defile
@@ -145,7 +145,7 @@ local function Generic()
         end
     end
     --actions.generic+=/festering_strike,if=(buff.blighted_rune_weapon.stack*2+debuff.festering_wound.stack)<=2|((buff.blighted_rune_weapon.stack*2+debuff.festering_wound.stack)<=4&talent.castigator.enabled)&(cooldown.army_of_the_dead.remains>5|rune.time_to_4<=gcd)
-    if S.FesteringStrike:IsReady() and (Player:BuffStack(S.BlightedRuneWeapon) * 2 + Target:DebuffStack(S.FesteringWounds)) <= 2 or ((Player:BuffStack(S.BlightedRuneWeapon) * 2 + Target:DebuffStack(S.FesteringWounds)) <= 4 and S.Castigator:IsAvailable()) and (S.ArmyOfDead:CooldownRemainsP() > 5 or Player:RuneTimeToX(4) <= Player:GCD()) then
+    if S.FesteringStrike:IsReady("Melee") and (Player:BuffStack(S.BlightedRuneWeapon) * 2 + Target:DebuffStack(S.FesteringWounds)) <= 2 or ((Player:BuffStack(S.BlightedRuneWeapon) * 2 + Target:DebuffStack(S.FesteringWounds)) <= 4 and S.Castigator:IsAvailable()) and (S.ArmyOfDead:CooldownRemainsP() > 5 or Player:RuneTimeToX(4) <= Player:GCD()) then
         return S.FesteringStrike:ID()
     end
     --actions.generic+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune.time_to_4>=gcd
@@ -153,7 +153,7 @@ local function Generic()
         return S.DeathCoil:ID()
     end
     --actions.generic+=/scourge_strike,if=(buff.necrosis.up|buff.unholy_strength.react|rune>=2)&debuff.festering_wound.stack>=1&(debuff.festering_wound.stack>=3|!(talent.castigator.enabled|equipped.132448))&(cooldown.army_of_the_dead.remains>5|rune.time_to_4<=gcd)
-    if S.ScourgeStrike:IsReady() and (Player:Buff(S.NecrosisBuff) or Player:Buff(S.UnholyStrength) or Player:Runes() >= 2) and Target:DebuffStack(S.FesteringWounds) >= 1 and (Target:DebuffStack(S.FesteringWounds) >= 3 or not (S.Castigator:IsAvailable() or I.InstructorsFourthLesson:IsEquipped())) and (S.ArmyOfDead:CooldownRemainsP() > 5 or Player:RuneTimeToX(4) <= Player:GCD()) then
+    if S.ScourgeStrike:IsReady("Melee") and (Player:Buff(S.NecrosisBuff) or Player:Buff(S.UnholyStrength) or Player:Runes() >= 2) and Target:DebuffStack(S.FesteringWounds) >= 1 and (Target:DebuffStack(S.FesteringWounds) >= 3 or not (S.Castigator:IsAvailable() or I.InstructorsFourthLesson:IsEquipped())) and (S.ArmyOfDead:CooldownRemainsP() > 5 or Player:RuneTimeToX(4) <= Player:GCD()) then
         return S.ScourgeStrike:ID()
     end
     --actions.generic+=/clawing_shadows,if=(buff.necrosis.up|buff.unholy_strength.react|rune>=2)&debuff.festering_wound.stack>=1&(debuff.festering_wound.stack>=3|!equipped.132448)&(cooldown.army_of_the_dead.remains>5|rune.time_to_4<=gcd)
@@ -173,7 +173,7 @@ local function DarkArbiter()
         return S.DeathCoil:ID()
     end
     --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<6&cooldown.apocalypse.remains<3
-    if S.FesteringStrike:IsReady() and Target:DebuffStack(S.FesteringWounds) < 6 and S.Apocalypse:CooldownRemainsP() < 3 then
+    if S.FesteringStrike:IsReady("Melee") and Target:DebuffStack(S.FesteringWounds) < 6 and S.Apocalypse:CooldownRemainsP() < 3 then
         return S.FesteringStrike:ID()
     end
     --actions.valkyr+=/call_action_list,name=aoe,if=active_enemies>=2
@@ -183,7 +183,7 @@ local function DarkArbiter()
         end
     end
     --actions.valkyr+=/festering_strike,if=debuff.festering_wound.stack<=4
-    if S.FesteringStrike:IsReady() and Target:DebuffStack(S.FesteringWounds) <= 4 then
+    if S.FesteringStrike:IsReady("Melee") and Target:DebuffStack(S.FesteringWounds) <= 4 then
         return S.FesteringStrike:ID()
     end
     --actions.valkyr+=/clawing_shadows,if=debuff.festering_wound.up
@@ -191,7 +191,7 @@ local function DarkArbiter()
         return 241367
     end
     --actions.valkyr+=/scourge_strike,if=debuff.festering_wound.up
-    if S.ScourgeStrike:IsReady() and Target:Debuff(S.FesteringWounds) then
+    if S.ScourgeStrike:IsReady("Melee") and Target:Debuff(S.FesteringWounds) then
         return S.ScourgeStrike:ID()
     end
 end
@@ -250,7 +250,7 @@ local function Cooldowns()
         return 0, 975743
     end
     --actions.cooldowns+=/apocalypse,if=debuff.festering_wound.stack>=6
-    if S.Apocalypse:IsReady() and Target:DebuffStack(S.FesteringWounds) >= 6 then
+    if S.Apocalypse:IsReady("Melee") and Target:DebuffStack(S.FesteringWounds) >= 6 then
         return S.Apocalypse:ID()
     end
     --actions.cooldowns+=/dark_arbiter,if=(!equipped.137075|cooldown.dark_transformation.remains<2)&runic_power.deficit<30

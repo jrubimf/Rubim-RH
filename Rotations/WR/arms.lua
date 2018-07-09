@@ -118,12 +118,12 @@ local function Cleave()
     end
 
     --	actions.cleave+=/colossus_smash,cycle_targets=1,if=debuff.colossus_smash.down
-    if S.ColossusSmash:IsReady() and not Target:Debuff(S.ColossusSmashDebuff) then
+    if S.ColossusSmash:IsReady("Melee") and not Target:Debuff(S.ColossusSmashDebuff) then
         return S.ColossusSmash:ID()
     end
 
     --	actions.cleave+=/warbreaker,if=raid_event.adds.in>90&buff.shattered_defenses.down
-    if classSpell[1].isActive and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if Cache.EnemiesCount[8] >= 1 and  classSpell[1].isActive and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.Warbreaker:ID()
     end
 
@@ -133,39 +133,39 @@ local function Cleave()
     end
 
     --	actions.cleave+=/rend,cycle_targets=1,if=remains<=duration*0.3
-    if S.Rend:IsReady() and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) then
         return S.Rend:ID()
     end
 
     --	actions.cleave+=/mortal_strike
-    if S.MortalStrike:IsReady() then
+    if S.MortalStrike:IsReady("Melee") then
         return S.MortalStrike:ID()
     end
 
     --	actions.cleave+=/execute
-    if S.Execute:IsReady() then
+    if S.Execute:IsReady("Melee") then
         return S.Execute:ID()
     end
 
     --	actions.cleave+=/cleave
-    if S.Cleave:IsReady() then
+    if S.Cleave:IsReady("Melee") then
         return S.Cleave:ID()
     end
 
     --	actions.cleave+=/whirlwind
-    if S.WhirlWind:IsReady() then
+    if S.WhirlWind:IsReady("Melee") then
         return S.WhirlWind:ID()
     end
 end
 
 local function AoE()
     -- actions.aoe=warbreaker,if=(cooldown.bladestorm.up|cooldown.bladestorm.remains<=gcd)&(cooldown.battle_cry.up|cooldown.battle_cry.remains<=gcd)
-    if classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.Bladestorm:CooldownRemainsP() == 0 or S.Bladestorm:CooldownRemainsP() <= Player:GCD()) and (S.BattleCry:CooldownRemainsP() == 0 or S.BattleCry:CooldownRemainsP() <= Player:GCD())) then
+    if Cache.EnemiesCount[8] >= 1 and classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.Bladestorm:CooldownRemainsP() == 0 or S.Bladestorm:CooldownRemainsP() <= Player:GCD()) and (S.BattleCry:CooldownRemainsP() == 0 or S.BattleCry:CooldownRemainsP() <= Player:GCD())) then
         return S.Warbreaker:ID()
     end
 
     --actions.aoe+=/bladestorm,if=buff.battle_cry.up&!talent.ravager.enabled
-    if S.Bladestorm:IsReady() and Player:Buff(S.BattleCryBuff) and not S.Ravager:IsAvailable() then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and Player:Buff(S.BattleCryBuff) and not S.Ravager:IsAvailable() then
         return S.Bladestorm:ID()
     end
 
@@ -175,17 +175,17 @@ local function AoE()
     end
 
     -- actions.aoe+=/colossus_smash,if=buff.in_for_the_kill.down&talent.in_for_the_kill.enabled
-    if S.ColossusSmash:IsReady() and (not Player:Buff(S.InForTheKillBuff) and S.InForTheKill:IsAvailable()) then
+    if S.ColossusSmash:IsReady("Melee") and (not Player:Buff(S.InForTheKillBuff) and S.InForTheKill:IsAvailable()) then
         return S.ColossusSmash:ID()
     end
 
     -- actions.aoe+=/colossus_smash,cycle_targets=1,if=debuff.colossus_smash.down&spell_targets.whirlwind<=10
-    if S.ColossusSmash:IsReady() and (not Target:Debuff(S.ColossusSmashDebuff) and Cache.EnemiesCount[8] <= 10) then
+    if S.ColossusSmash:IsReady("Melee") and (not Target:Debuff(S.ColossusSmashDebuff) and Cache.EnemiesCount[8] <= 10) then
         return S.ColossusSmash:ID()
     end
 
     -- actions.aoe+=/cleave,if=spell_targets.whirlwind>=5
-    if S.Cleave:IsReady() and (Cache.EnemiesCount[8] >= 5) then
+    if S.Cleave:IsReady("Melee") and (Cache.EnemiesCount[8] >= 5) then
         return S.Cleave:ID()
     end
 
@@ -200,39 +200,39 @@ local function AoE()
     end
 
     -- actions.aoe+=/colossus_smash,if=buff.shattered_defenses.down
-    if S.ColossusSmash:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if S.ColossusSmash:IsReady("Melee") and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.ColossusSmash:ID()
     end
 
     -- actions.aoe+=/execute,if=buff.stone_heart.react
-    if S.Execute:IsReady() and (Player:Buff(S.StoneHeartBuff)) then
+    if S.Execute:IsReady("Melee") and (Player:Buff(S.StoneHeartBuff)) then
         return S.Execute:ID()
     end
 
     -- actions.aoe+=/mortal_strike,if=buff.shattered_defenses.up|buff.executioners_precision.down
-    if S.MortalStrike:IsReady() and (Player:Buff(S.ShatteredDefensesBuff) or not Target:Debuff(S.ExecutionersPrecisionDebuff)) then
+    if S.MortalStrike:IsReady("Melee") and (Player:Buff(S.ShatteredDefensesBuff) or not Target:Debuff(S.ExecutionersPrecisionDebuff)) then
         return S.MortalStrike:ID()
     end
 
     -- actions.aoe+=/rend,cycle_targets=1,if=remains<=duration*0.3&spell_targets.whirlwind<=3
-    if S.Rend:IsReady() and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) and Cache.EnemiesCount[8] <= 3 then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) and Cache.EnemiesCount[8] <= 3 then
         return S.Rend:ID()
     end
 
     -- actions.aoe+=/cleave
-    if S.Cleave:IsReady() then
+    if S.Cleave:IsReady("Melee") then
         return S.Cleave:ID()
     end
 
     -- actions.aoe+=/whirlwind
-    if S.WhirlWind:IsReady() then
+    if S.WhirlWind:IsReady("Melee") then
         return S.WhirlWind:ID()
     end
 end
 
 local function Execute()
     -- actions.execute=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
-    if S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
     end
 
@@ -242,7 +242,7 @@ local function Execute()
     end
 
     -- actions.execute+=/warbreaker,if=(raid_event.adds.in>90|!raid_event.adds.exists)&cooldown.mortal_strike.remains<=gcd.remains&buff.shattered_defenses.down&buff.executioners_precision.stack=2
-    if classSpell[1].isActive and S.Warbreaker:IsReady() and (S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains() and not Player:Buff(S.ShatteredDefensesBuff) and Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2) then
+    if Cache.EnemiesCount[8] >= 1 and classSpell[1].isActive and S.Warbreaker:IsReady() and (S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains() and not Player:Buff(S.ShatteredDefensesBuff) and Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2) then
         return S.Warbreaker:ID()
     end
 
@@ -252,7 +252,7 @@ local function Execute()
     end
 
     -- actions.execute+=/rend,if=remains<5&cooldown.battle_cry.remains<2&(cooldown.bladestorm.remains<2|!set_bonus.tier20_4pc)
-    if S.Rend:IsReady() and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
         return S.Rend:ID()
     end
 
@@ -262,7 +262,7 @@ local function Execute()
     end
 
     -- actions.execute+=/mortal_strike,if=buff.executioners_precision.stack=2&buff.shattered_defenses.up
-    if S.MortalStrike:IsReady() and (Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2 and Player:Buff(S.ShatteredDefensesBuff)) then
+    if S.MortalStrike:IsReady("Melee") and (Target:DebuffStack(S.ExecutionersPrecisionDebuff) == 2 and Player:Buff(S.ShatteredDefensesBuff)) then
         return S.MortalStrike:ID()
     end
 
@@ -272,12 +272,12 @@ local function Execute()
     end
 
     -- actions.execute+=/overpower,if=rage<40
-    if S.Overpower:IsReady() and (Player:Rage() < 40) then
+    if S.Overpower:IsReady("Melee") and (Player:Rage() < 40) then
         return S.Overpower:ID()
     end
 
     -- actions.execute+=/execute,if=buff.shattered_defenses.down|rage>=40|talent.dauntless.enabled&rage>=36
-    if S.Execute:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff) or Player:Rage() >= 40 or S.Dauntless:IsAvailable() and Player:Rage() >= 36) then
+    if S.Execute:IsReady("Melee") and (not Player:Buff(S.ShatteredDefensesBuff) or Player:Rage() >= 40 or S.Dauntless:IsAvailable() and Player:Rage() >= 36) then
         return S.Execute:ID()
     end
 
@@ -289,17 +289,17 @@ end
 
 local function Single()
     -- actions.single=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
-    if S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
     end
 
     -- actions.single+=/colossus_smash,if=buff.shattered_defenses.down
-    if S.ColossusSmash:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if S.ColossusSmash:IsReady("Melee") and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.ColossusSmash:ID()
     end
 
     -- actions.single+=/warbreaker,if=(raid_event.adds.in>90|!raid_event.adds.exists)&((talent.fervor_of_battle.enabled&debuff.colossus_smash.remains<gcd)|!talent.fervor_of_battle.enabled&((buff.stone_heart.up|cooldown.mortal_strike.remains<=gcd.remains)&buff.shattered_defenses.down))
-    if classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.FervorOfBattle:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) < Player:GCD()) or not S.FervorOfBattle:IsAvailable() and ((Player:Buff(S.StoneHeartBuff) or S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains()) and not Player:Buff(S.ShatteredDefensesBuff))) then
+    if Cache.EnemiesCount[8] >= 1 and classSpell[1].isActive and S.Warbreaker:IsReady() and ((S.FervorOfBattle:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) < Player:GCD()) or not S.FervorOfBattle:IsAvailable() and ((Player:Buff(S.StoneHeartBuff) or S.MortalStrike:CooldownRemainsP() <= Player:GCDRemains()) and not Player:Buff(S.ShatteredDefensesBuff))) then
         return S.Warbreaker:ID()
     end
 
@@ -309,7 +309,7 @@ local function Single()
     end
 
     -- actions.single+=/rend,if=remains<=gcd.max|remains<5&cooldown.battle_cry.remains<2&(cooldown.bladestorm.remains<2|!set_bonus.tier20_4pc)
-    if S.Rend:IsReady() and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
         return S.Rend:ID()
     end
 
@@ -319,42 +319,42 @@ local function Single()
     end
 
     -- actions.single+=/execute,if=buff.stone_heart.react
-    if S.Execute:IsReady() and (Player:Buff(S.StoneHeartBuff)) then
+    if S.Execute:IsReady("Melee") and (Player:Buff(S.StoneHeartBuff)) then
         return S.Execute:ID()
     end
 
     -- actions.single+=/overpower,if=buff.battle_cry.down
-    if S.Overpower:IsReady() and (not Player:Buff(S.BattleCryBuff)) then
+    if S.Overpower:IsReady("Melee") and (not Player:Buff(S.BattleCryBuff)) then
         return S.Overpower:ID()
     end
 
     -- actions.single+=/mortal_strike,if=buff.shattered_defenses.up|buff.executioners_precision.down
-    if S.MortalStrike:IsReady() and (Player:Buff(S.ShatteredDefensesBuff) or not Target:Debuff(S.ExecutionersPrecisionDebuff)) then
+    if S.MortalStrike:IsReady("Melee") and (Player:Buff(S.ShatteredDefensesBuff) or not Target:Debuff(S.ExecutionersPrecisionDebuff)) then
         return S.MortalStrike:ID()
     end
 
     -- actions.single+=/rend,if=remains<=duration*0.3
-    if S.Rend:IsReady() and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) <= Target:DebuffDuration(S.RendDebuff) * 0.3) then
         return S.Rend:ID()
     end
 
     -- actions.single+=/whirlwind,if=spell_targets.whirlwind>1|talent.fervor_of_battle.enabled
-    if S.WhirlWind:IsReady() and (Cache.EnemiesCount[8] > 1 or S.FervorOfBattle:IsAvailable()) then
+    if S.WhirlWind:IsReady("Melee") and (Cache.EnemiesCount[8] > 1 or S.FervorOfBattle:IsAvailable()) then
         return S.WhirlWind:ID()
     end
 
     -- actions.single+=/slam,if=spell_targets.whirlwind=1&!talent.fervor_of_battle.enabled&(rage>=52|!talent.rend.enabled|!talent.ravager.enabled)
-    if S.Slam:IsReady() and (Cache.EnemiesCount[8] <= 1 and not S.FervorOfBattle:IsAvailable() and (Player:Rage() >= 52 or not S.Rend:IsAvailable() or not S.Ravager:IsAvailable())) then
+    if S.Slam:IsReady("Melee") and (Cache.EnemiesCount[8] <= 1 and not S.FervorOfBattle:IsAvailable() and (Player:Rage() >= 52 or not S.Rend:IsAvailable() or not S.Ravager:IsAvailable())) then
         return S.Slam:ID()
     end
 
     -- actions.single+=/overpower
-    if S.Overpower:IsReady() then
+    if S.Overpower:IsReady("Melee") then
         return S.Overpower:ID()
     end
 
     -- actions.single+=/bladestorm,if=(raid_event.adds.in>90|!raid_event.adds.exists)&!set_bonus.tier20_4pc
-    if S.Bladestorm:IsReady() and (not AC.Tier20_4Pc) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (not AC.Tier20_4Pc) then
         return S.Bladestorm:ID()
     end
 end
@@ -370,8 +370,7 @@ function WarriorArms()
 
     -- Interrupts
     -- In Combat
-    if Target:Exists() and Target:IsInRange("Melee") then
-
+    if RubimRH.TargetIsValid() then
         if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.arms.victoryrush then
             return S.VictoryRush:ID()
         end
@@ -410,39 +409,30 @@ function WarriorArms()
         end
 
         -- actions+=/run_action_list,name=cleave,if=spell_targets.whirlwind>=2&talent.sweeping_strikes.enabled
-        if Cache.EnemiesCount[8] >= 2 and S.SweepingStrikes:IsAvailable() then
-            if Cleave() ~= nil then
-                return Cleave()
-            end
+        if Cache.EnemiesCount[8] >= 2 and S.SweepingStrikes:IsAvailable() and Cleave() ~= nil then
+            return Cleave()
         end
 
         -- actions+=/run_action_list,name=execute,target_if=target.health.pct<=20&spell_targets.whirlwind<5
-        if Target:Exists() and Target:HealthPercentage() <= 20 and Cache.EnemiesCount[8] < 5 then
-            if Execute() ~= nil then
-                return Execute()
-            end
+        if Target:Exists() and Target:HealthPercentage() <= 20 and Cache.EnemiesCount[8] < 5 and Execute() ~= nil then
+            return Execute()
         end
 
         -- actions+=/run_action_list,name=aoe,if=spell_targets.whirlwind>=4
-        if Cache.EnemiesCount[8] >= 2 then
-            if AoE() ~= nil then
-                return AoE()
-            end
+        if Cache.EnemiesCount[8] >= 2 and AoE() ~= nil then
+            return AoE()
         end
 
         -- actions+=/run_action_list,name=cleave,if=spell_targets.whirlwind>=2
-        if Cache.EnemiesCount[8] >= 2 then
-            if Cleave() ~= nil then
-                return Cleave()
-            end
+        if Cache.EnemiesCount[8] >= 2 and Cleave() ~= nil then
+            return Cleave()
         end
 
         -- actions+=/run_action_list,name=single,if=target.health.pct>20
-        if Target:Exists() and Target:HealthPercentage() > 20 then
-            if Single() ~= nil then
-                return Single()
-            end
+        if ((Target:Exists() and Target:HealthPercentage() > 20) or true) and Single() ~= nil then
+            return Single()
         end
+
     end
-    return "0, 975743"
+    return 0, 975743
 end

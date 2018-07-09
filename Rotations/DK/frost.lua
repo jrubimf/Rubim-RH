@@ -212,7 +212,7 @@ local function Obliteration()
     return S.HowlingBlast:ID()
   end
   --actions.obliteration+=/frost_strike,if=!buff.rime.up|rune.time_to_1>=gcd|runic_power.deficit<20
-  if S.FrostStrike:IsReady(S.FrostStrike) and (not Player:Buff(S.Rime) or Player:RuneTimeToX(1) >= Player:GCD() or Player:RunicPowerDeficit() < 20) then
+  if S.FrostStrike:IsReady("Melee") and (not Player:Buff(S.Rime) or Player:RuneTimeToX(1) >= Player:GCD() or Player:RunicPowerDeficit() < 20) then
     return S.FrostStrike:ID()
   end
   --actions.obliteration+=/howling_blast,if=buff.rime.up
@@ -243,7 +243,7 @@ local function BoSPool()
     return S.Obliterate:ID()
   end
   --actions.bos_pooling+=/frost_strike,if=runic_power>=95&set_bonus.tier19_4pc&cooldown.breath_of_sindragosa.remains&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>6)
-  if S.FrostStrike:IsReady(S.FrostStrike) and Player:RunicPowerDeficit() < 5 and T194 and S.BreathofSindragosa:CooldownRemains() and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
+  if S.FrostStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 5 and T194 and S.BreathofSindragosa:CooldownRemains() and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
     return S.FrostStrike:ID()
   end
   --actions.bos_pooling+=/remorseless_winter,if=buff.rime.react&equipped.perseverance_of_the_ebon_martyr
@@ -263,7 +263,7 @@ local function BoSPool()
     return S.SindragosasFury:ID()
   end
   --actions.bos_pooling+=/frost_strike,if=runic_power.deficit<=30&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>rune.time_to_4)
-  if S.FrostStrike:IsReady(S.FrostStrike) and Player:RunicPowerDeficit() <= 30 and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4)) then
+  if S.FrostStrike:IsReady("Melee") and Player:RunicPowerDeficit() <= 30 and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4)) then
     return S.FrostStrike:ID()
   end
   --actions.bos_pooling+=/frostscythe,if=buff.killing_machine.up&(!equipped.koltiras_newfound_will|spell_targets.frostscythe>=2)
@@ -283,7 +283,7 @@ local function BoSPool()
     return S.FrostScythe:ID()
   end
   --actions.bos_pooling+=/frost_strike,if=(cooldown.remorseless_winter.remains<(gcd*2)|buff.gathering_storm.stack=10)&cooldown.breath_of_sindragosa.remains>rune.time_to_4&talent.gathering_storm.enabled&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>6)
-  if S.FrostStrike:IsReady(S.FrostStrike) and (S.RemorselessWinter:CooldownRemains() < (Player:GCD() * 2) or Player:BuffStack(S.GatheringStormBuff) == 10) and S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4) and S.GatheringStorm:IsAvailable() and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
+  if S.FrostStrike:IsReady("Melee") and (S.RemorselessWinter:CooldownRemains() < (Player:GCD() * 2) or Player:BuffStack(S.GatheringStormBuff) == 10) and S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4) and S.GatheringStorm:IsAvailable() and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
     return S.FrostStrike:ID()
   end
   --actions.bos_pooling+=/obliterate,if=!buff.rime.react&(!talent.gathering_storm.enabled|cooldown.remorseless_winter.remains>gcd)
@@ -291,14 +291,14 @@ local function BoSPool()
     return S.Obliterate:ID()
   end
   --actions.bos_pooling+=/frost_strike,if=cooldown.breath_of_sindragosa.remains>rune.time_to_4&(!talent.shattering_strikes.enabled|debuff.razorice.stack<5|cooldown.breath_of_sindragosa.remains>6)
-  if S.FrostStrike:IsReady(S.FrostStrike) and S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4) and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
+  if S.FrostStrike:IsReady("Melee") and S.BreathofSindragosa:CooldownRemains() > Player:RuneTimeToX(4) and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5 or S.BreathofSindragosa:CooldownRemains() > 6) then
     return S.FrostStrike:ID()
   end
 end
 
 local function BoSTick()
   --actions.bos_ticking=frost_strike,if=talent.shattering_strikes.enabled&runic_power<40&rune.time_to_2>2&cooldown.empower_rune_weapon.remains&debuff.razorice.stack=5&(cooldown.horn_of_winter.remains|!talent.horn_of_winter.enabled)
-  if S.FrostStrike:IsReady(S.FrostStrike) and S.ShatteringStrikes:IsAvailable() and Player:RunicPower() < 40 and Player:RuneTimeToX(2) > 2 and S.EmpowerRuneWeapon:CooldownRemains() and Target:DebuffStack(S.RazorIce) == 5 and (S.HornOfWinter:CooldownRemains() or not S.HornOfWinter:IsAvailable()) then
+  if S.FrostStrike:IsReady("Melee") and S.ShatteringStrikes:IsAvailable() and Player:RunicPower() < 40 and Player:RuneTimeToX(2) > 2 and S.EmpowerRuneWeapon:CooldownRemains() and Target:DebuffStack(S.RazorIce) == 5 and (S.HornOfWinter:CooldownRemains() or not S.HornOfWinter:IsAvailable()) then
     return S.FrostStrike:ID()
   end
   --actions.bos_ticking+=/remorseless_winter,if=(runic_power>=30|buff.hungering_rune_weapon.up)&((buff.rime.react&equipped.perseverance_of_the_ebon_martyr)|(talent.gathering_storm.enabled&(buff.remorseless_winter.remains<=gcd|!buff.remorseless_winter.remains)))
@@ -310,7 +310,7 @@ local function BoSTick()
     return S.HowlingBlast:ID()
   end
   --actions.bos_ticking+=/frost_strike,if=set_bonus.tier20_2pc&runic_power.deficit<=15&rune<=3&buff.pillar_of_frost.up&!talent.shattering_strikes.enabled
-  if S.FrostStrike:IsReady(S.FrostStrike) and T202PC and Player:RunicPowerDeficit() <= 15 and Player:Runes() <= 3 and Player:Buff(S.PillarOfFrost) and not S.ShatteringStrikes:IsAvailable() then
+  if S.FrostStrike:IsReady("Melee") and T202PC and Player:RunicPowerDeficit() <= 15 and Player:Runes() <= 3 and Player:Buff(S.PillarOfFrost) and not S.ShatteringStrikes:IsAvailable() then
     return S.FrostStrike:ID()
   end
   --actions.bos_ticking+=/obliterate,if=runic_power<=45|rune.time_to_5<gcd|buff.hungering_rune_weapon.remains>=2
@@ -348,11 +348,11 @@ local function BoSTick()
 end
 
 local function Standard()
-  if S.FrostStrike:IsReady(S.FrostStrike) and S.IcyTalons:IsAvailable() and Player:BuffRemains(S.IcyTalonsBuff) <= Player:GCD() then
+  if S.FrostStrike:IsReady("Melee") and S.IcyTalons:IsAvailable() and Player:BuffRemains(S.IcyTalonsBuff) <= Player:GCD() then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/frost_strike,if=talent.shattering_strikes.enabled&debuff.razorice.stack=5&buff.gathering_storm.stack<2&!buff.rime.up
-  if S.FrostStrike:IsReady(S.FrostStrike) and S.ShatteringStrikes:IsAvailable() and Target:DebuffStack(S.RazorIce) == 5 and Player:BuffStack(S.GatheringStormBuff) < 2 and not Player:Buff(S.Rime) then
+  if S.FrostStrike:IsReady("Melee") and S.ShatteringStrikes:IsAvailable() and Target:DebuffStack(S.RazorIce) == 5 and Player:BuffStack(S.GatheringStormBuff) < 2 and not Player:Buff(S.Rime) then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/remorseless_winter,if=(buff.rime.react&equipped.perseverance_of_the_ebon_martyr)|talent.gathering_storm.enabled
@@ -364,7 +364,7 @@ local function Standard()
     return S.Obliterate:ID()
   end
   --actions.standard+=/frost_strike,if=(!talent.shattering_strikes.enabled|debuff.razorice.stack<5)&runic_power.deficit<10
-  if S.FrostStrike:IsReady(S.FrostStrike) and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5) and Player:RunicPowerDeficit() < 10 then
+  if S.FrostStrike:IsReady("Melee") and (not S.ShatteringStrikes:IsAvailable() or Target:DebuffStack(S.RazorIce) < 5) and Player:RunicPowerDeficit() < 10 then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/howling_blast,if=buff.rime.react
@@ -380,7 +380,7 @@ local function Standard()
     return S.SindragosasFury:ID()
   end
   --actions.standard+=/frost_strike,if=runic_power.deficit<10&!buff.hungering_rune_weapon.up
-  if S.FrostStrike:IsReady(S.FrostStrike) and Player:RunicPowerDeficit() < 10 and not Player:Buff(S.HungeringRuneWeapon) then
+  if S.FrostStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 10 and not Player:Buff(S.HungeringRuneWeapon) then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/frostscythe,if=buff.killing_machine.up&(!equipped.koltiras_newfound_will|spell_targets.frostscythe>=2)
@@ -392,7 +392,7 @@ local function Standard()
     return S.Obliterate:ID()
   end
   --actions.standard+=/frost_strike,if=runic_power.deficit<20
-  if S.FrostStrike:IsReady(S.FrostStrike) and Player:RunicPowerDeficit() < 20 then
+  if S.FrostStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 20 then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/remorseless_winter,if=spell_targets.remorseless_winter>=2
@@ -416,7 +416,7 @@ local function Standard()
     return S.HornOfWinter:ID()
   end
   --actions.standard+=/frost_strike,if=!(runic_power<50&talent.obliteration.enabled&cooldown.obliteration.remains<=gcd)
-  if S.FrostStrike:IsReady(S.FrostStrike) and not (Player:RunicPower() < 50 and S.Obliteration:IsAvailable() and S.Obliteration:CooldownRemains() <= Player:GCD()) then
+  if S.FrostStrike:IsReady("Melee") and not (Player:RunicPower() < 50 and S.Obliteration:IsAvailable() and S.Obliteration:CooldownRemains() <= Player:GCD()) then
     return S.FrostStrike:ID()
   end
   --actions.standard+=/empower_rune_weapon,if=!talent.breath_of_sindragosa.enabled|target.time_to_die<cooldown.breath_of_sindragosa.remains

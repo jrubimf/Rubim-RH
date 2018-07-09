@@ -5,6 +5,8 @@
 ---
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local Icons = {}
+local AC = AethysCore;
+local Cache = AethysCache;
 
 --INTERRUPTS---
 local int_smart = true
@@ -330,6 +332,8 @@ local updateConfigFunc = function()
         classSpell = {}
         classSpell = RubimRH.db.profile.dr.feral.spells
     end
+
+    --MK
 end
 
 local updateConfig = CreateFrame("frame")

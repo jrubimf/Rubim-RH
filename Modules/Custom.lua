@@ -98,14 +98,13 @@ local function RemoveNameplate(unitID)
     activeUnitPlates[unitframe] = nil
 end
 
-
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
     local unitID = ...
     AddNameplate(unitID)
 end)
 
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
-local unitID = ...
+    local unitID = ...
     RemoveNameplate(unitID)
 end)
 
@@ -304,4 +303,15 @@ function RubimRH.ColorOnOff(boolean)
     else
         return "|cFFFF0000"
     end
+end
+
+function Spell:IsReady(Range, AoESpell, ThisUnit)
+    local name, rank, icon, castTime, minRange, maxRange  = GetSpellInfo(self:ID())
+  if maxRange ~= nil then
+        AC.GetEnemies(maxRange, true);
+        if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
+            return true
+        end
+    end
+    return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end

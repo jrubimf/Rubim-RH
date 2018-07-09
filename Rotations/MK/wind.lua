@@ -97,7 +97,7 @@ local I = Item.Monk.Windwalker;
 local BaseCost = {}
 
 -- Functions --
-function Spell:IsUsableP()
+function Spell:IsUsablePS()
     if Player:Level() ~= nil then
         BaseCost = {
             [S.BlackoutKick] = (Player:Level() < 12 and 3 or (Player:Level() < 22 and 2 or 1)),
@@ -197,7 +197,7 @@ local function AoE()
 
     end
     -- actions.aoe+=/rising_sun_kick,target_if=cooldown.whirling_dragon_punch.remains>=gcd&!prev_gcd.1.rising_sun_kick&cooldown.fists_of_fury.remains>gcd
-    if S.RisingSunKick:IsReady() and S.RisingSunKick:CooldownRemainsP() >= Player:GCD() and not Player:PrevGCD(1, S.RisingSunKick) and S.FistsOfFury:CooldownRemainsP() > Player:GCD() then
+    if S.RisingSunKick:IsReady("Melee") and S.RisingSunKick:CooldownRemainsP() >= Player:GCD() and not Player:PrevGCD(1, S.RisingSunKick) and S.FistsOfFury:CooldownRemainsP() > Player:GCD() then
         return S.RisingSunKick:ID()
 
     end
@@ -237,7 +237,7 @@ local function AoE()
 
     end
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&(!set_bonus.tier19_2pc|talent.serenity.enabled)
-    if S.BlackoutKick:IsReady()
+    if S.BlackoutKick:IsReady("Melee")
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
             and T214PC
@@ -248,7 +248,7 @@ local function AoE()
     end
 
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(chi>1|buff.bok_proc.up|(talent.energizing_elixir.enabled&cooldown.energizing_elixir.remains<cooldown.fists_of_fury.remains))&((cooldown.rising_sun_kick.remains>1&(!artifact.strike_of_the_windlord.enabled|cooldown.strike_of_the_windlord.remains>1)|chi>4)&(cooldown.fists_of_fury.remains>1|chi>2)|prev_gcd.1.tiger_palm)&!prev_gcd.1.blackout_kick
-    if S.BlackoutKick:IsReady() and (Player:Chi() > 1 or Player:BuffP(S.BlackoutKickBuff) or
+    if S.BlackoutKick:IsReady("Melee") and (Player:Chi() > 1 or Player:BuffP(S.BlackoutKickBuff) or
             (S.EnergizingElixir:IsAvailable() and S.EnergizingElixir:CooldownRemainsP() < S.FistsOfFury:CooldownRemainsP())) and
             ((S.RisingSunKick:CooldownRemainsP() > 1 and (not S.StrikeOfTheWindlord:IsAvailable() or S.StrikeOfTheWindlord:CooldownRemainsP() > 1) or Player:Chi() > 4) and
                     (S.FistsOfFury:CooldownRemainsP() > 1 or Player:Chi() > 2) or Player:PrevGCD(1, S.TigerPalm)) and not Player:PrevGCD(1, S.BlackoutKick) then
@@ -269,7 +269,7 @@ local function AoE()
 
     end
     -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
-    if S.BlackoutKick:IsReady()
+    if S.BlackoutKick:IsReady("Melee")
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
             and T214PC
@@ -317,7 +317,7 @@ local function SingleTarget()
 
     end
     -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
-    if S.BlackoutKick:IsReady()
+    if S.BlackoutKick:IsReady("Melee")
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
             and T214PC
@@ -343,7 +343,7 @@ local function SingleTarget()
 
     end
     -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=((chi>=3&energy>=40)|chi>=5)&(!talent.serenity.enabled|cooldown.serenity.remains>=6)
-    if S.RisingSunKick:IsReady() and ((Player:Chi() >= 3 and Player:EnergyPredicted() >= 40) or Player:Chi() == 5) and
+    if S.RisingSunKick:IsReady("Melee") and ((Player:Chi() >= 3 and Player:EnergyPredicted() >= 40) or Player:Chi() == 5) and
             (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() >= 6) then
         return S.RisingSunKick:ID()
 
@@ -370,11 +370,11 @@ local function SingleTarget()
         return S.FistsOfFury:ID()
     end
     -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!talent.serenity.enabled|cooldown.serenity.remains>=5
-    if S.RisingSunKick:IsReady() and (not S.Serenity:IsAvailable() or (S.Serenity:CooldownRemainsP() >= 5)) then
+    if S.RisingSunKick:IsReady("Melee") and (not S.Serenity:IsAvailable() or (S.Serenity:CooldownRemainsP() >= 5)) then
         return S.RisingSunKick:ID()
     end
     -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&(!set_bonus.tier19_2pc|talent.serenity.enabled)
-    if S.BlackoutKick:IsReady()
+    if S.BlackoutKick:IsReady("Melee")
             and (not Player:PrevGCD(1, S.BlackoutKick)
             and Player:ChiDeficit() >= 1
             and T214PC
@@ -413,7 +413,7 @@ local function SingleTarget()
     -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(chi>1|buff.bok_proc.up|(talent.energizing_elixir.enabled&cooldown.energizing_elixir.remains<cooldown.fists_of_fury.remains))&
     -- ((cooldown.rising_sun_kick.remains>1&(!artifact.strike_of_the_windlord.enabled|cooldown.strike_of_the_windlord.remains>1)|chi>4)&
     -- (cooldown.fists_of_fury.remains>1|chi>2)|prev_gcd.1.tiger_palm)&!prev_gcd.1.blackout_kick
-    if S.BlackoutKick:IsReady() and (Player:Chi() > 1 or Player:BuffP(S.BlackoutKickBuff) or
+    if S.BlackoutKick:IsReady("Melee") and (Player:Chi() > 1 or Player:BuffP(S.BlackoutKickBuff) or
             (S.EnergizingElixir:IsAvailable() and S.EnergizingElixir:CooldownRemainsP() < S.FistsOfFury:CooldownRemainsP())) and
             ((S.RisingSunKick:CooldownRemainsP() > 1 and (not S.StrikeOfTheWindlord:IsAvailable() or S.StrikeOfTheWindlord:CooldownRemainsP() > 1) or Player:Chi() > 4) and
                     (S.FistsOfFury:CooldownRemainsP() > 1 or Player:Chi() > 2) or Player:PrevGCD(1, S.TigerPalm)) and not Player:PrevGCD(1, S.BlackoutKick) then
@@ -475,7 +475,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=active_enemies<3
-    if S.RisingSunKick:IsReady() and Cache.EnemiesCount[8] < 3 then
+    if S.RisingSunKick:IsReady("Melee") and Cache.EnemiesCount[8] < 3 then
         return S.RisingSunKick:ID()
 
     end
@@ -485,7 +485,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(!prev_gcd.1.blackout_kick)&(prev_gcd.1.strike_of_the_windlord|prev_gcd.1.fists_of_fury)&active_enemies<2
-    if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) and (Player:PrevGCD(1, S.StrikeOfTheWindlord) or Player:PrevGCD(1, S.FistsOfFury)) and Cache.EnemiesCount[8] < 2 then
+    if S.BlackoutKick:IsReady("Melee") and not Player:PrevGCD(1, S.BlackoutKick) and (Player:PrevGCD(1, S.StrikeOfTheWindlord) or Player:PrevGCD(1, S.FistsOfFury)) and Cache.EnemiesCount[8] < 2 then
         return S.BlackoutKick:ID()
 
     end
@@ -510,7 +510,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=active_enemies>=3
-    if S.RisingSunKick:IsReady() and Cache.EnemiesCount[8] >= 3 then
+    if S.RisingSunKick:IsReady("Melee") and Cache.EnemiesCount[8] >= 3 then
         return S.RisingSunKick:ID()
 
     end
@@ -525,7 +525,7 @@ local function Serenity()
 
     end
     -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-    if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) then
+    if S.BlackoutKick:IsReady("Melee") and not Player:PrevGCD(1, S.BlackoutKick) then
         return S.BlackoutKick:ID()
 
     end

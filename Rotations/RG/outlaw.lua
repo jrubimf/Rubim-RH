@@ -443,7 +443,7 @@ local function Build()
         return 242277
     end
     -- actions.build+=/saber_slash,if=variable.ss_useable
-    if S.SaberSlash:IsReady(S.SaberSlash) and SS_Useable() then
+    if S.SaberSlash:IsReady("Melee") and SS_Useable() then
         return S.SaberSlash:ID()
     end
 end
@@ -455,7 +455,7 @@ local function Finish()
         return S.BetweentheEyes:ID()
     end
     -- actions.finish+=/run_through,if=!talent.death_from_above.enabled|energy.time_to_max<cooldown.death_from_above.remains+3.5
-    if S.RunThrough:IsReady() and (not S.DeathfromAbove:IsAvailable()
+    if S.RunThrough:IsReady("Melee") and (not S.DeathfromAbove:IsAvailable()
             or EnergyTimeToMaxRounded() < S.DeathfromAbove:CooldownRemainsP() + 3.5) then
         return S.RunThrough:ID()
     end
@@ -491,7 +491,7 @@ function RogueOutlaw()
         -- Opener
         if RubimRH.TargetIsValid() and Target:IsInRange(S.SaberSlash) then
             if Player:ComboPoints() >= 5 then
-                if S.RunThrough:IsReady() then
+                if S.RunThrough:IsReady("Melee") then
                     return S.RunThrough:ID()
                 end
             else
@@ -544,7 +544,7 @@ function RogueOutlaw()
             if S.AdrenalineRush:IsReady() then
             end
         end
-        if S.SliceandDice:IsAvailable() and S.SliceandDice:IsReady() then
+        if S.SliceandDice:IsAvailable() and S.SliceandDice:IsReady("Melee") then
             -- actions+=/slice_and_dice,if=!variable.ss_useable&buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8&!buff.slice_and_dice.improved&!buff.loaded_dice.up
             -- Note: Added Player:BuffRemainsP(S.SliceandDice) == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
             if not SS_Useable() and (Target:FilteredTimeToDie(">", Player:BuffRemainsP(S.SliceandDice)) or Player:BuffRemainsP(S.SliceandDice) == 0)
