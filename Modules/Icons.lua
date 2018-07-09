@@ -31,6 +31,16 @@ UIDropDownMenu_SetText(dropDown, "Nothing")
 UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
     if (level or 1) == 1 then
+        if RubimPVP ~= nil then
+            info.text, info.hasArrow = "PvP Stuff", nil
+            info.checked = false
+            info.func = function(self)
+                RubimRH.PvPConfig()
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+
+
         info.text, info.hasArrow = "Class Config", nil
         info.checked = false
         info.func = function(self)
@@ -194,7 +204,7 @@ local updateConfigFunc = function()
         IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
         IconRotation:SetScript("OnMouseDown", function(self, button)
-            if RubimPVP ~= nil and button == "MiddleButton" then
+            if RubimPVP ~= nil and button == "Left" then
                 RubimRH.createMacro()
                 RubimRH.editMacro()
             end
