@@ -303,7 +303,11 @@ updateClassVariables:RegisterEvent("PLAYER_LOGIN")
 local playerSpec = 0
 updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     playerSpec = Cache.Persistent.Player.Spec[1] or 0
-    Player:RegisterListenedSpells(playerSpec)
+    if playerSpec ~= 0 then
+        Player:RegisterListenedSpells(playerSpec)
+    end
+    RubimRH.varClass = {}
+    RubimRH.varSpells = {}
 
     --DeathKnight
     if playerSpec == 250 then
@@ -461,6 +465,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         RubimRH.varClass = RubimRH.db.profile.Warrior.Protection
         RubimRH.varSpells = AethysCore.Spell.Warrior.Protection
     end
+
 
     RubimRH.useCD = RubimRH.varClass.cooldown or false
     ccBreak = RubimRH.db.profile.mainOption.ccbreak

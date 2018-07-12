@@ -354,21 +354,30 @@ local function createIcon(loopVar, xOffset, description)
 end
 
 RubimRH.Listener:Add('Rubim_Events', 'ACTIVE_TALENT_GROUP_CHANGED', function(...)
+    if classSpell == nil then
+        return
+    end
     for i = 1, #SkillFramesArray do
         SkillFramesArray[i]:Hide()
     end
-
-    for i = 1, #classSpell do
-        createIcon(i, 40 * (i), classSpell[i].description)
+    if #classSpell ~= nil then
+        for i = 1, #classSpell do
+            createIcon(i, 40 * (i), classSpell[i].description)
+        end
     end
 end)
 
 RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function(...)
-    for i = 1, #SkillFramesArray do
+    if classSpell == nil then
+        return
     end
-
-    for i = 1, #classSpell do
-        createIcon(i, 40 * (i), classSpell[i].description)
+    for i = 1, #SkillFramesArray do
+        SkillFramesArray[i]:Hide()
+    end
+    if #classSpell ~= nil then
+        for i = 1, #classSpell do
+            createIcon(i, 40 * (i), classSpell[i].description)
+        end
     end
 end)
 
@@ -414,7 +423,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
         end
 
         local singleRotation, singleRotation2 = RubimRH.shouldStop()
-        local passiveRotation, passiveRotation2 = RubimRH.shouldStop()
+        local passiveRotation, passiveRotation2 = nil
         if RubimRH.shouldStop() == nil then
             singleRotation, singleRotation2 = RubimRH.Rotation.APLs[playerSpec]()
             _, passiveRotation2 = RubimRH.Rotation.PASSIVEs[playerSpec]()
@@ -432,7 +441,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
             if select(2, RubimRH.Rotation.APLs[playerSpec]()) ~= nil then
                 RubimRH.stIcon.texture:SetTexture(nil)
             else
-                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(RubimRH.Rotation.APLs[playerSpec]()))
+                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(singleRotation))
             end
         end
         self.sinceLastUpdate = 0;
