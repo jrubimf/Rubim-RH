@@ -2,35 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a6d15cf-6783-43a9-b72a-b65fca495572" name="Default" comment="Comment strings.">
-      <change beforePath="" afterPath="$PROJECT_DIR$/Modules/MiniMap.lua" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/Rotations/Shared.lua" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Modules/Custom.lua" afterPath="$PROJECT_DIR$/Modules/Custom.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/Icons.lua" afterPath="$PROJECT_DIR$/Modules/Icons.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/UI.lua" afterPath="$PROJECT_DIR$/Modules/UI.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DH/havoc.lua" afterPath="$PROJECT_DIR$/Rotations/DH/havoc.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DH/veng.lua" afterPath="$PROJECT_DIR$/Rotations/DH/veng.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/blood.lua" afterPath="$PROJECT_DIR$/Rotations/DK/blood.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/frost.lua" afterPath="$PROJECT_DIR$/Rotations/DK/frost.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rotations/DK/unholy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rotations/DR/feral.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DR/guardian.lua" afterPath="$PROJECT_DIR$/Rotations/DR/guardian.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/HR/mm.lua" afterPath="$PROJECT_DIR$/Rotations/HR/mm.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/HR/survival.lua" afterPath="$PROJECT_DIR$/Rotations/HR/survival.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/MK/brew.lua" afterPath="$PROJECT_DIR$/Rotations/MK/brew.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/MK/wind.lua" afterPath="$PROJECT_DIR$/Rotations/MK/wind.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/holy.lua" afterPath="$PROJECT_DIR$/Rotations/PL/holy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/prot.lua" afterPath="$PROJECT_DIR$/Rotations/PL/prot.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/ret.lua" afterPath="$PROJECT_DIR$/Rotations/PL/ret.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/RG/outlaw.lua" afterPath="$PROJECT_DIR$/Rotations/RG/outlaw.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/SM/enha.lua" afterPath="$PROJECT_DIR$/Rotations/SM/enha.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/arms.lua" afterPath="$PROJECT_DIR$/Rotations/WR/arms.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/fury.lua" afterPath="$PROJECT_DIR$/Rotations/WR/fury.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/prot.lua" afterPath="$PROJECT_DIR$/Rotations/WR/prot.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/dk.lua" afterPath="" />
       <change beforePath="$PROJECT_DIR$/Rubim-RH.lua" afterPath="$PROJECT_DIR$/Rubim-RH.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RHc.lua" afterPath="$PROJECT_DIR$/Rubim-RHc.lua" />
-      <change beforePath="$PROJECT_DIR$/rubim-rh.toc" afterPath="$PROJECT_DIR$/rubim-rh.toc" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,61 +17,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="130" column="22" lean-forward="false" selection-start-line="130" selection-start-column="12" selection-end-line="130" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1306">
-              <caret line="91" column="22" lean-forward="false" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Icons.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="126">
+              <caret line="300" column="36" lean-forward="true" selection-start-line="300" selection-start-column="36" selection-end-line="300" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rotations/DK/frost.lua">
+      <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-702">
-              <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="blood.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rotations/DK/blood.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-408">
-              <caret line="27" column="28" lean-forward="false" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Rubim-RHc.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RHc.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="37" />
+            <state relative-caret-position="228">
+              <caret line="306" column="0" lean-forward="true" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -251,7 +184,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -536,7 +469,7 @@
     <option name="totallyTimeSpent" value="396463000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -928,10 +861,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DK/blood.lua">
+    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-408">
-          <caret line="27" column="28" lean-forward="false" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        <state relative-caret-position="1306">
+          <caret line="91" column="22" lean-forward="false" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -944,10 +877,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
+    <entry file="file://$PROJECT_DIR$/Rotations/DK/blood.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-408">
+          <caret line="27" column="28" lean-forward="false" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -960,18 +893,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
+    <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1306">
-          <caret line="91" column="22" lean-forward="false" selection-start-line="91" selection-start-column="17" selection-end-line="91" selection-end-column="22" />
+        <state relative-caret-position="126">
+          <caret line="300" column="36" lean-forward="true" selection-start-line="300" selection-start-column="36" selection-end-line="300" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="130" column="22" lean-forward="false" selection-start-line="130" selection-start-column="12" selection-end-line="130" selection-end-column="22" />
+        <state relative-caret-position="228">
+          <caret line="306" column="0" lean-forward="true" selection-start-line="306" selection-start-column="0" selection-end-line="306" selection-end-column="0" />
           <folding />
         </state>
       </provider>

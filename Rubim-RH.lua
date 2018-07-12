@@ -302,7 +302,7 @@ updateClassVariables:RegisterEvent("PLAYER_LOGIN")
 
 local playerSpec = 0
 updateClassVariables:SetScript("OnEvent", function(self, event, ...)
-    playerSpec = Cache.Persistent.Player.Spec[1]
+    playerSpec = Cache.Persistent.Player.Spec[1] or 0
     Player:RegisterListenedSpells(playerSpec)
 
     --DeathKnight
