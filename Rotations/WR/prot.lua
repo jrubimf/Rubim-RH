@@ -96,7 +96,7 @@ local function Vengeance()
 	end	
 end
 
-function WarriorProt()
+local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
@@ -178,5 +178,12 @@ function WarriorProt()
     if S.Devastate:IsReady() then
         return S.Devastate:ID()
     end
-    return "0, 975743"
+    return 0, 975743
 end
+RubimRH.Rotation.SetAPL(73, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(73, PASSIVE);

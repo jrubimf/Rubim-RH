@@ -106,7 +106,7 @@ local I = Item.Druid.Guardian;
 
 
 --- ======= MAIN =======
-function DruidGuardian()
+local function APL()
     -- Unit Update
     local MeleeRange, AoERadius, RangedRange;
     if S.BalanceAffinity:IsAvailable() then
@@ -276,29 +276,10 @@ function DruidGuardian()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(104, APL);
 
+local function PASSIVE()
+    return RubimRH.Shared()
+end
 
---- ======= SIMC =======
---- Last Update: 09/24/2017
-
--- # Executed every time the actor is available.
--- actions=auto_attack
--- actions+=/blood_fury
--- actions+=/berserking
--- actions+=/arcane_torrent
--- actions+=/use_item,slot=trinket2
--- actions+=/incarnation
--- actions+=/rage_of_the_sleeper
--- actions+=/lunar_beam
--- actions+=/frenzied_regeneration,if=incoming_damage_5s%health.max>=0.5|health<=health.max*0.4
--- actions+=/bristling_fur,if=buff.ironfur.stack=1|buff.ironfur.down
--- actions+=/ironfur,if=(buff.ironfur.up=0)|(buff.gory_fur.up=1)|(rage>=80)
--- actions+=/moonfire,if=buff.incarnation.up=1&dot.moonfire.remains<=4.8
--- actions+=/thrash_bear,if=buff.incarnation.up=1&dot.thrash.remains<=4.5
--- actions+=/mangle
--- actions+=/thrash_bear
--- actions+=/pulverize,if=buff.pulverize.up=0|buff.pulverize.remains<=6
--- actions+=/moonfire,if=buff.galactic_guardian.up=1&(!ticking|dot.moonfire.remains<=4.8)
--- actions+=/moonfire,if=buff.galactic_guardian.up=1
--- actions+=/moonfire,if=dot.moonfire.remains<=4.8
--- actions+=/swipe_bear
+RubimRH.Rotation.SetPASSIVE(104, PASSIVE);

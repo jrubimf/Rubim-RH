@@ -40,7 +40,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             UIDropDownMenu_AddButton(info)
         end
 
-
         info.text, info.hasArrow = "Class Config", nil
         info.checked = false
         info.func = function(self)
@@ -153,7 +152,7 @@ local updateConfigFunc = function()
         Icons.MainIcon:SetFrameStrata("BACKGROUND")
         Icons.MainIcon:SetSize(currentSize, 40)
         --Icons.MainIcon:SetPoint("CENTER", 0, -200)
-        Icons.MainIcon:SetPoint(mainOption.align, mainOption.xCord,mainOption.yCord)
+        Icons.MainIcon:SetPoint(mainOption.align, mainOption.xCord, mainOption.yCord)
         Icons.MainIcon.texture = Icons.MainIcon:CreateTexture(nil, "BACKGROUND")
         Icons.MainIcon.texture:SetAllPoints(true)
         Icons.MainIcon.texture:SetColorTexture(0, 0, 0, 0)
@@ -236,7 +235,7 @@ local updateConfigFunc = function()
             end
 
             if button == "LeftButton" and Icons.MainIcon.isMoving then
-                local _,_,arg2, arg3, arg4 = Icons.MainIcon:GetPoint()
+                local _, _, arg2, arg3, arg4 = Icons.MainIcon:GetPoint()
                 mainOption.align = arg2
                 mainOption.xCord = arg3
                 mainOption.yCord = arg4
@@ -252,112 +251,8 @@ local updateConfigFunc = function()
         end)
         runonce = 1
     end
-
-    --Default
-    local QuestionMark = 212812
-    --DK
-    local DeathStrike = 49998
-    local RuneTap = 194679
-    local BreathOfSindragosa = 152279
-    local SindragosasFury = 190778
-    local PillarOfFrost = 51271
-
-    --DH
-    local FelRush = 195072
-    local EyeBeam = 198013
-
-    --Warrior
-    local Warbreaker = 209577
-    local Ravager = 152277
-    local OdynsFury = 205545
-
-    --Paladin
-    local JusticarVengeance = 215661
-    local WordofGlory = 210191
-
-    --Shaman
-    local HealingSurge = 188070
-
-    --Rogue
-    local RolltheBones = 193316
-
-    --DK
-    if select(2, UnitClass("player")) == "DEATHKNIGHT" then
-        --Blood
-        if GetSpecialization() == 1 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.dk.blood.spells
-            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
-            --table.insert(classSpell, { spellID = RuneTap, isActive = true })
-            --Frost
-        elseif GetSpecialization() == 2 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.dk.frost.spells
-            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
-            --table.insert(classSpell, { spellID = BreathOfSindragosa, isActive = true })
-            --table.insert(classSpell, { spellID = SindragosasFury, isActive = true })
-            --table.insert(classSpell, { spellID = PillarOfFrost, isaCtive = true})
-            --Unholy
-        elseif GetSpecialization() == 3 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.dk.unholy.spells
-            --table.insert(classSpell, { spellID = DeathStrike, isActive = true })
-        end
-    end
-
-    --DEMON HUNTER
-    if select(3, UnitClass("player")) == 12 then
-        if GetSpecialization() == 1 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.dh.havoc.spells
-        end
-    end
-
-    --WARRIOR
-    if select(3, UnitClass("player")) == 1 then
-        if GetSpecialization() == 1 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.wr.arms.spells
-        elseif GetSpecialization() == 2 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.wr.fury.spells
-        end
-    end
-
-    --PALADIN
-    if select(3, UnitClass("player")) == 2 then
-        if GetSpecialization() == 2 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.pl.prot.spells
-        end
-        if GetSpecialization() == 3 then
-            classSpell = {}
-            classSpell = RubimRH.db.profile.pl.ret.spells
-        end
-    end
-    --SHAMAN
-    if select(3, UnitClass("player")) == 7 then
-        classSpell = {}
-        classSpell = RubimRH.db.profile.sh.enh.spells
-    end
-
-    --ROGUE
-    if select(3, UnitClass("player")) == 4 then
-        classSpell = {}
-        classSpell = RubimRH.db.profile.rg.out.spells
-    end
-
-    --DRUID
-    if select(3, UnitClass("player")) == 11 then
-        classSpell = {}
-        classSpell = RubimRH.db.profile.dr.feral.spells
-    end
-
-    --MK
-    if select(3, UnitClass("player")) == 10 then
-        classSpell = {}
-        --classSpell = RubimRH.db.profile.mk.wind.spells
-    end
+    classSpell = {}
+    classSpell = RubimRH.varClass.Spells
 end
 
 local updateConfig = CreateFrame("frame")
@@ -380,14 +275,14 @@ end
 
 -- if text is provided, sets up the button to show a tooltip when moused over. Otherwise, removes the tooltip.
 function RubimRH.appendTooltip(self, text)
-        if text then
-            self.tooltipText = text
-            self:SetScript("OnEnter", RubimRH.tooltipShow)
-            self:SetScript("OnLeave", RubimRH.tooltipHide)
-        else
-            self:SetScript("OnEnter", nil)
-            self:SetScript("OnLeave", nil)
-        end
+    if text then
+        self.tooltipText = text
+        self:SetScript("OnEnter", RubimRH.tooltipShow)
+        self:SetScript("OnLeave", RubimRH.tooltipHide)
+    else
+        self:SetScript("OnEnter", nil)
+        self:SetScript("OnLeave", nil)
+    end
 end
 
 SkillFramesArray = {}
@@ -512,20 +407,32 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
+        local playerSpec = Cache.Persistent.Player.Spec[1]
         if CDText ~= nil then
-            CDText:SetText(RubimRH.ColorOnOff(RubimRH.useCD) .. "CD")
+            CDText:SetText(RubimRH.ColorOnOff(RubimRH.varClass.cooldown) .. "CD")
             AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
         end
-        if select(2, MainRotation()) ~= nil and MainIconFrame ~= nil then
-            MainIconFrame.texture:SetTexture(select(2, MainRotation()))
-        else
-            MainIconFrame.texture:SetTexture(GetSpellTexture(MainRotation()))
+
+        local singleRotation, singleRotation2 = RubimRH.shouldStop()
+        local passiveRotation, passiveRotation2 = RubimRH.shouldStop()
+        if RubimRH.shouldStop() == nil then
+            singleRotation, singleRotation2 = RubimRH.Rotation.APLs[playerSpec]()
+            _, passiveRotation2 = RubimRH.Rotation.PASSIVEs[playerSpec]()
         end
+
+        if singleRotation2 ~= nil then
+            MainIconFrame.texture:SetTexture(singleRotation2)
+        else
+            MainIconFrame.texture:SetTexture(GetSpellTexture(singleRotation))
+        end
+
         if RubimExtra then
-            if select(2, MainRotation()) ~= nil then
-                RubimRH.stIcon.texture:SetTexture(0)
+            RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
+
+            if select(2, RubimRH.Rotation.APLs[playerSpec]()) ~= nil then
+                RubimRH.stIcon.texture:SetTexture(nil)
             else
-                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(MainRotation()))
+                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(RubimRH.Rotation.APLs[playerSpec]()))
             end
         end
         self.sinceLastUpdate = 0;

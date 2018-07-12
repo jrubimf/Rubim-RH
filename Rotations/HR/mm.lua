@@ -280,7 +280,7 @@ local function aethysHealer()
     end
 end
 
-function HunterMM()
+local function APL()
     aethysHealer()
 
     if S.TrueShot:TimeSinceLastCast() >= 15 and S.TrueShot:TimeSinceLastCast() <= 16 and RubimRH.CDsON() then
@@ -354,3 +354,10 @@ function HunterMM()
 
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(254, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(254, PASSIVE);

@@ -426,7 +426,7 @@ local function Standard()
 end
 
 
-function FrostRotation()
+local function APL()
   if not Player:AffectingCombat() then
     rotationMode = "Out of Combat"
     return 0, 462338
@@ -481,3 +481,10 @@ function FrostRotation()
   end
   return 0, 975743
 end
+RubimRH.Rotation.SetAPL(251, APL);
+
+local function PASSIVE()
+  return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(251, PASSIVE);

@@ -204,7 +204,7 @@ end
 
 
 local lastSephuz = 0
-function BloodRotation()
+local function APL()
     ----RANGE
     AC.GetEnemies("Melee");
     AC.GetEnemies(8, true);
@@ -376,3 +376,11 @@ function BloodRotation()
 
     return 0, 975743
 end
+
+RubimRH.Rotation.SetAPL(250, APL);
+
+local function PASSIVE()
+   return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(250, PASSIVE);

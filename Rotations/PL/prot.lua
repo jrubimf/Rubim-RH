@@ -73,7 +73,7 @@ local T212PC, T214PC = AC.HasTier("T21");
 
 
 --- ======= MAIN =======
-function PaladinProtection()
+local function APL()
     -- Unit Update
     AC.GetEnemies(10, true);
 
@@ -173,7 +173,10 @@ function PaladinProtection()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(66, APL);
 
---- ======= SIMC =======
---- Last Update: 04/30/2017
--- I did it for my Paladin alt to tank Dungeons, so I took these talents: 3133121
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(66, PASSIVE);

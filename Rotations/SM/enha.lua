@@ -411,3 +411,10 @@ function ShamanEnh ()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(263, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(263, PASSIVE);

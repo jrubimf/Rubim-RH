@@ -1,28 +1,101 @@
+local foundError = false
 local errorEvent = CreateFrame("Frame")
 errorEvent:RegisterEvent("PLAYER_LOGIN")
 errorEvent:SetScript("OnEvent", function(self, event)
-
     if AethysCore == nil then
-        message("ERROR: Aethyhs Core is missing. Please download it.")
+        message("Missing dependency: Aethys Core")
+        foundError = true
     end
     if AethysCache == nil then
-        message("ERROR: Aethyhs Cache is missing. Please download it.")
+        message("Missing dependency: Aetyhs Cache")
+        foundError = true
     end
 
-    if RubimExtra == true and RubimExtraVer ~= "02072018" then
-        message("ERROR: RubimExtra outdated. Please update it.")
+    if RubimExtra == false then
+        message("Missing dependency: RubimExtra")
+        foundError = true
+    end
+
+    if GetCVar("nameplateShowEnemies") ~= "1" then
+        message("Is nameplates off? You need it in order to get the most optimal results..");
     end
 end)
 
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
 _G["RubimRH"] = RubimRH
 local AceGUI = LibStub("AceGUI-3.0")
-
-
---local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
---[[ The defaults a user without a profile will get. ]]--
 RubimRH.varClass = {}
 RubimRH.currentSpec = "None"
+
+-- Defines the APL
+RubimRH.Rotation = {}
+RubimRH.Rotation.APLs = {}
+RubimRH.Rotation.PASSIVEs = {}
+
+function RubimRH.Rotation.SetAPL (Spec, APL)
+    RubimRH.Rotation.APLs[Spec] = APL;
+end
+
+function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
+    RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
+end
+
+local AC = AethysCore;
+local Cache = AethysCache;
+local Unit = AC.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+
+local EnabledRotation = {
+    -- Death Knight
+    [250] = true, -- Blood
+    [251] = true, -- Frost
+    [252] = true, -- Unholy
+    -- Demon Hunter
+    [577] = true, -- Havoc
+    [581] = true, -- Vengeance
+    -- Druid
+    [102] = false, -- Balance
+    [103] = true, -- Feral
+    [104] = true, -- Guardian
+    [105] = false, -- Restoration
+    -- Hunter
+    [253] = false, -- Beast Mastery
+    [254] = true, -- Marksmanship
+    [255] = true, -- Survival
+    -- Mage
+    [62] = false, -- Arcane
+    [63] = false, -- Fire
+    [64] = false, -- Frost
+    -- Monk
+    [268] = true, -- Brewmaster
+    [269] = true, -- Windwalker
+    [270] = false, -- Mistweaver
+    -- Paladin
+    [65] = true, -- Holy
+    [66] = true, -- Protection
+    [70] = true, -- Retribution
+    -- Priest
+    [256] = false, -- Discipline
+    [257] = false, -- Holy
+    [258] = false, -- Shadow
+    -- Rogue
+    [259] = false, -- Assassination
+    [260] = true, -- Outlaw
+    [261] = false, -- Subtlety
+    -- Shaman
+    [262] = false, -- Elemental
+    [263] = true, -- Enhancement
+    [264] = false, -- Restoration
+    -- Warlock
+    [265] = false, -- Affliction
+    [266] = false, -- Demonology
+    [267] = false, -- Destruction
+    -- Warrior
+    [71] = true, -- Arms
+    [72] = true, -- Fury
+    [73] = true  -- Protection
+}
 
 --DK
 local DeathStrike = 49998
@@ -35,195 +108,178 @@ local DeathandDecay = 43265
 local FelRush = 195072
 local EyeBeam = 198013
 local FelBarrage = 211053
-
 --Warrior
 local Warbreaker = 209577
 local Ravager = 152277
 local OdynsFury = 205545
 local Charge = 100
-
 --Paladin
 local JusticarVengeance = 215661
 local WordofGlory = 210191
-local layonahands = 633
-local guardianofancientkings = 86659
-local ardentdefender = 31850
-
+local LayonHands = 633
+local GuardianofAncientKings = 86659
+local ArdentDefender = 31850
 --Shaman
 local HealingSurge = 188070
-
 --Druid
 local Regrowth = 8936
 local Renewal = 108238
 
---MK
-local FistofFury = 113656
-
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-
-useRACIAL = true
----SKILLS---
-useS1 = true
-useS2 = true
-useS3 = true
-RubimRH.useAoE = true
-
 local defaults = {
     profile = {
         mainOption = {
+            updateConf = "yes",
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
             ccbreak = true,
             startattack = false,
+            healthstoneper = 20,
             align = "CENTER",
             xCord = 0,
             yCord = -200,
+            disabledSpells = {}
         },
-        dh = {
-            havoc = {
+        DemonHunter = {
+            Havoc = {
                 cooldown = true,
-                spells = {
+                Spells = {
                     { spellID = FelRush, isActive = true },
                     { spellID = EyeBeam, isActive = true },
                     { spellID = FelBarrage, isActive = true }
                 }
             },
-            veng = {
+            Vengeance = {
                 cooldown = true,
             },
         },
-        dk = {
-            blood = {
+        DeathKnight = {
+            Blood = {
                 cooldown = true,
                 smartds = 30,
                 deficitds = 10,
-                spells = {
+                Spells = {
                     { spellID = DeathStrike, isActive = false, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
                     { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },
                     { spellID = DeathandDecay, isActive = true, description = "Disable Death and Decay." }
                 }
             },
-            frost = {
+            Frost = {
                 cooldown = true,
                 deathstrike = 85,
-                spells = {
+                Spells = {
                     { spellID = DeathStrike, isActive = true },
                     { spellID = BreathOfSindragosa, isActive = true },
                     { spellID = SindragosasFury, isActive = true },
                     { spellID = PillarOfFrost, isActive = true }
                 }
             },
-            unholy = {
+            Unholy = {
                 cooldown = true,
                 deathstrike = 85,
-                spells = {
+                Spells = {
                     { spellID = DeathStrike, isActive = true },
                     { spellID = RuneTap, isActive = true }
                 }
             },
         },
-        pl = {
-            ret = {
+        Paladin = {
+            Retribution = {
                 cooldown = true,
                 justicarglory = 50,
-                spells = {
+                Spells = {
                     { spellID = JusticarVengeance, isActive = true }
                 }
             },
-            holy = {
+            Holy = {
                 cooldown = true,
             },
-            prot = {
+            Protection = {
                 cooldown = true,
                 lightoftheprotectorpct = 90,
                 layonahandspct = 20,
                 ardentdefenderpct = 5,
                 guardianofancientkingspct = 50,
-                spells = {
-                    { spellID = layonahands, isActive = false },
-                    { spellID = ardentdefender, isActive = false },
-                    { spellID = guardianofancientkings, isActive = false },
+                Spells = {
+                    { spellID = LayonHands, isActive = false },
+                    { spellID = ArdentDefender, isActive = false },
+                    { spellID = GuardianofAncientKings, isActive = false },
                 }
             },
         },
-        wr = {
-            arms = {
+        Warrior = {
+            Arms = {
                 cooldown = true,
                 victoryrush = 80,
-                spells = {
+                Spells = {
                     { spellID = Warbreaker, isActive = true },
                     { spellID = Ravager, isActive = true },
                     { spellID = Charge, isActive = true }
                 }
             },
-            fury = {
+            Fury = {
                 cooldown = true,
-                spells = {
+                Spells = {
                     { spellID = OdynsFury, isActive = true },
                     { spellID = Charge, isActive = true }
                 }
             },
-            prot = {
+            Protection = {
                 cooldown = true,
                 victoryrush = 80,
             }
         },
-        rg = {
-            out = {
+        Rogue = {
+            Outlaw = {
                 cooldown = true,
             },
-            sub = {
+            Subtlety = {
                 cooldown = true,
             },
-            ass = {
+            Assassination = {
                 cooldown = true,
             }
         },
-        hr = {
-            mm = {
+        Hunter = {
+            Marksmanship = {
                 cooldown = true,
             },
-            bm = {
+            Beastmaster = {
                 cooldown = true,
             },
 
-            surv = {
+            Survival = {
                 cooldown = true,
             }
         },
-        mk = {
-            brew = {
+        Monk = {
+            Brewmaster = {
                 cooldown = true,
             },
-            wind = {
+            Windwalker = {
                 cooldown = true,
             },
         },
-        sh = {
-            enh = {
+        Shaman = {
+            Enhancement = {
                 healingsurge = 80,
                 cooldown = true,
-                spells = {
+                Spells = {
                     { spellID = HealingSurge, isActive = true }
                 }
             },
         },
-        dr = {
-            feral = {
+        Druid = {
+            Feral = {
                 cooldowns = false,
                 renewal = 50,
                 regrowth = 85,
-                spells = {
+                Spells = {
                     { spellID = Renewal, isActive = true },
                     { spellID = Regrowth, isActive = true },
                 }
             },
-            guardian = {
+            Guardian = {
                 cooldowns = false,
             }
         }
@@ -244,149 +300,168 @@ local updateClassVariables = CreateFrame("Frame")
 updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 updateClassVariables:RegisterEvent("PLAYER_LOGIN")
 
+local playerSpec = 0
 updateClassVariables:SetScript("OnEvent", function(self, event, ...)
-    --DK
-    if select(3, UnitClass("player")) == 6 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(250)
-            RubimRH.currentSpec = "blood"
-            RubimRH.varClass = RubimRH.db.profile.dk.blood
-        elseif GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(251)
-            RubimRH.currentSpec = "frost"
-            RubimRH.varClass = RubimRH.db.profile.dk.frost
-        elseif GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(252)
-            RubimRH.currentSpec = "unholy"
-            RubimRH.varClass = RubimRH.db.profile.dk.unholy
-        end
+    playerSpec = Cache.Persistent.Player.Spec[1]
+    Player:RegisterListenedSpells(playerSpec)
+
+    --DeathKnight
+    if playerSpec == 250 then
+        RubimRH.varClass = RubimRH.db.profile.DeathKnight.Blood
+        RubimRH.varSpells = AethysCore.Spell.DeathKnight.Blood
     end
-
-    --Demon HUNTER
-    if select(3, UnitClass("player")) == 12 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(577)
-            RubimRH.currentSpec = "havoc"
-            RubimRH.varClass = RubimRH.db.profile.dh.havoc
-        elseif GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(581)
-            RubimRH.currentSpec = "veng"
-            RubimRH.varClass = RubimRH.db.profile.dh.veng
-        end
+    if playerSpec == 251 then
+        RubimRH.varClass = RubimRH.db.profile.DeathKnight.Frost
+        RubimRH.varSpells = AethysCore.Spell.DeathKnight.Frost
     end
-
-    --Rogue
-    if select(3, UnitClass("player")) == 4 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(259)
-            RubimRH.currentSpec = "ass"
-            RubimRH.varClass = RubimRH.db.profile.rg.ass
-        end
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(260)
-            RubimRH.currentSpec = "out"
-            RubimRH.varClass = RubimRH.db.profile.rg.out
-        end
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(261)
-            RubimRH.varClass = RubimRH.db.profile.rg.sub
-        end
+    if playerSpec == 252 then
+        RubimRH.varClass = RubimRH.db.profile.DeathKnight.Unholy
+        RubimRH.varSpells = AethysCore.Spell.DeathKnight.Unholy
     end
-
-    --Monk
-    if select(3, UnitClass("player")) == 10 then
-        if GetSpecialization() == 1 then
-            RubimRH.currentSpec = "brew"
-            RubimRH.varClass = RubimRH.db.profile.mk.brew
-        end
-        if GetSpecialization() == 3 then
-            RubimRH.currentSpec = "wind"
-            RubimRH.varClass = RubimRH.db.profile.mk.wind
-        end
+    --DemonHunter
+    if playerSpec == 577 then
+        RubimRH.varClass = RubimRH.db.profile.DemonHunter.Havoc
+        RubimRH.varSpells = AethysCore.Spell.DemonHunter.Havoc
     end
-
-    --Warrior
-    if select(3, UnitClass("player")) == 1 then
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(71)
-            RubimRH.currentSpec = "arms"
-            RubimRH.varClass = RubimRH.db.profile.wr.arms
-        end
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(72)
-            RubimRH.currentSpec = "fury"
-            RubimRH.varClass = RubimRH.db.profile.wr.fury
-        end
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(73)
-            RubimRH.currentSpec = "prot"
-            RubimRH.varClass = RubimRH.db.profile.wr.prot
-        end
+    if playerSpec == 581 then
+        RubimRH.varClass = RubimRH.db.profile.DemonHunter.Vengeance
+        RubimRH.varSpells = AethysCore.Spell.DemonHunter.Vengeance
     end
-
-    --Hunter
-    if select(3, UnitClass("player")) == 3 then
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(255)
-            RubimRH.currentSpec = "surv"
-            RubimRH.varClass = RubimRH.db.profile.hr.surv
-        end
-
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(254)
-            RubimRH.currentSpec = "mm"
-            RubimRH.varClass = RubimRH.db.profile.hr.mm
-        end
-    end
-
-    --Shaman
-    if select(3, UnitClass("player")) == 7 then
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(263)
-            RubimRH.currentSpec = "enh"
-            RubimRH.varClass = RubimRH.db.profile.sh.enh
-        end
-    end
-
-    --Paladin
-    if select(3, UnitClass("player")) == 2 then
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(65)
-            RubimRH.currentSpec = "ret"
-            RubimRH.varClass = RubimRH.db.profile.pl.ret
-        end
-
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(66)
-            RubimRH.currentSpec = "pprot"
-            RubimRH.varClass = RubimRH.db.profile.pl.prot
-        end
-
-        if GetSpecialization() == 1 then
-            Player:RegisterListenedSpells(70)
-            RubimRH.currentSpec = "holy"
-            RubimRH.varClass = RubimRH.db.profile.pl.holy
-        end
-    end
-
     --Druid
-    if select(3, UnitClass("player")) == 11 then
-        if GetSpecialization() == 2 then
-            Player:RegisterListenedSpells(103)
-            RubimRH.currentSpec = "feral"
-            RubimRH.varClass = RubimRH.db.profile.dr.feral
-        end
-
-        if GetSpecialization() == 3 then
-            Player:RegisterListenedSpells(104)
-            RubimRH.currentSpec = "guardian"
-            RubimRH.varClass = RubimRH.db.profile.dr.guardian
-        end
+    if playerSpec == 102 then
+        RubimRH.varClass = RubimRH.db.profile.Druid.Balance
+        RubimRH.varSpells = AethysCore.Spell.Druid.Balance
+    end
+    if playerSpec == 103 then
+        RubimRH.varClass = RubimRH.db.profile.Druid.Feral
+        RubimRH.varSpells = AethysCore.Spell.Druid.Feral
+    end
+    if playerSpec == 104 then
+        RubimRH.varClass = RubimRH.db.profile.Druid.Guardian
+        RubimRH.varSpells = AethysCore.Spell.Druid.Guardian
+    end
+    if playerSpec == 105 then
+        RubimRH.varClass = RubimRH.db.profile.Druid.Restoration
+        RubimRH.varSpells = AethysCore.Spell.Druid.Restoration
+    end
+    --Hunter
+    if playerSpec == 253 then
+        RubimRH.varClass = RubimRH.db.profile.Hunter.BeastMastery
+        RubimRH.varSpells = AethysCore.Spell.Hunter.BeastMastery
+    end
+    if playerSpec == 254 then
+        RubimRH.varClass = RubimRH.db.profile.Hunter.Marksmanship
+        RubimRH.varSpells = AethysCore.Spell.Hunter.Marksmanship
+    end
+    if playerSpec == 255 then
+        RubimRH.varClass = RubimRH.db.profile.Hunter.Survival
+        RubimRH.varSpells = AethysCore.Spell.Hunter.Survival
+    end
+    --Mage
+    if playerSpec == 62 then
+        RubimRH.varClass = RubimRH.db.profile.Mage.Arcane
+        RubimRH.varSpells = AethysCore.Spell.Mage.Arcane
+    end
+    if playerSpec == 63 then
+        RubimRH.varClass = RubimRH.db.profile.Mage.Fire
+        RubimRH.varSpells = AethysCore.Spell.Mage.Fire
+    end
+    if playerSpec == 64 then
+        RubimRH.varClass = RubimRH.db.profile.Mage.Frost
+        RubimRH.varSpells = AethysCore.Spell.Mage.Frost
+    end
+    --Monk
+    if playerSpec == 268 then
+        RubimRH.varClass = RubimRH.db.profile.Monk.Brewmaster
+        RubimRH.varSpells = AethysCore.Spell.Monk.Brewmaster
+    end
+    if playerSpec == 269 then
+        RubimRH.varClass = RubimRH.db.profile.Monk.Windwalker
+        RubimRH.varSpells = AethysCore.Spell.Monk.Windwalker
+    end
+    if playerSpec == 270 then
+        RubimRH.varClass = RubimRH.db.profile.Monk.Mistweaver
+        RubimRH.varSpells = AethysCore.Spell.Monk.Mistweaver
+    end
+    --Paladin
+    if playerSpec == 65 then
+        RubimRH.varClass = RubimRH.db.profile.Paladin.Holy
+        RubimRH.varSpells = AethysCore.Spell.Paladin.Holy
+    end
+    if playerSpec == 66 then
+        RubimRH.varClass = RubimRH.db.profile.Paladin.Protection
+        RubimRH.varSpells = AethysCore.Spell.Paladin.Protection
+    end
+    if playerSpec == 70 then
+        RubimRH.varClass = RubimRH.db.profile.Paladin.Retribution
+        RubimRH.varSpells = AethysCore.Spell.Paladin.Retribution
+    end
+    --Priest
+    if playerSpec == 256 then
+        RubimRH.varClass = RubimRH.db.profile.Priest.Discipline
+        RubimRH.varSpells = AethysCore.Spell.Priest.Discipline
+    end
+    if playerSpec == 257 then
+        RubimRH.varClass = RubimRH.db.profile.Priest.Holy
+        RubimRH.varSpells = AethysCore.Spell.Priest.Holy
+    end
+    if playerSpec == 258 then
+        RubimRH.varClass = RubimRH.db.profile.Priest.Shadow
+        RubimRH.varSpells = AethysCore.Spell.Priest.Shadow
+    end
+    --Rogue
+    if playerSpec == 259 then
+        RubimRH.varClass = RubimRH.db.profile.Rogue.Assassination
+        RubimRH.varSpells = AethysCore.Spell.Rogue.Assassination
+    end
+    if playerSpec == 260 then
+        RubimRH.varClass = RubimRH.db.profile.Rogue.Outlaw
+        RubimRH.varSpells = AethysCore.Spell.Rogue.Outlaw
+    end
+    if playerSpec == 261 then
+        RubimRH.varClass = RubimRH.db.profile.Rogue.Subtlety
+        RubimRH.varSpells = AethysCore.Spell.Rogue.Subtlety
+    end
+    --Shaman
+    if playerSpec == 262 then
+        RubimRH.varClass = RubimRH.db.profile.Shaman.Elemental
+        RubimRH.varSpells = AethysCore.Spell.Shaman.Elemental
+    end
+    if playerSpec == 263 then
+        RubimRH.varClass = RubimRH.db.profile.Shaman.Enhancement
+        RubimRH.varSpells = AethysCore.Spell.Shaman.Enhancement
+    end
+    if playerSpec == 264 then
+        RubimRH.varClass = RubimRH.db.profile.Shaman.Restoration
+        RubimRH.varSpells = AethysCore.Spell.Shaman.Restoration
+    end
+    --Warlock
+    if playerSpec == 265 then
+        RubimRH.varClass = RubimRH.db.profile.Warlock.Affliction
+        RubimRH.varSpells = AethysCore.Spell.Warlock.Affliction
+    end
+    if playerSpec == 266 then
+        RubimRH.varClass = RubimRH.db.profile.Warlock.Demonology
+        RubimRH.varSpells = AethysCore.Spell.Warlock.Demonology
+    end
+    if playerSpec == 267 then
+        RubimRH.varClass = RubimRH.db.profile.Warlock.Destruction
+        RubimRH.varSpells = AethysCore.Spell.Warlock.Destruction
+    end
+    --Warrior
+    if playerSpec == 71 then
+        RubimRH.varClass = RubimRH.db.profile.Warrior.Arms
+        RubimRH.varSpells = AethysCore.Spell.Warrior.Arms
+    end
+    if playerSpec == 72 then
+        RubimRH.varClass = RubimRH.db.profile.Warrior.Fury
+        RubimRH.varSpells = AethysCore.Spell.Warrior.Fury
+    end
+    if playerSpec == 73 then
+        RubimRH.varClass = RubimRH.db.profile.Warrior.Protection
+        RubimRH.varSpells = AethysCore.Spell.Warrior.Protection
     end
 
-    if RubimRH.currentSpec == "None" then
-        message("ERROR: Class not supported")
-    end
     RubimRH.useCD = RubimRH.varClass.cooldown or false
     ccBreak = RubimRH.db.profile.mainOption.ccbreak
 end)
@@ -419,66 +494,15 @@ end
 --if isEqual(thisobj:GetRealSettings().Name) == true then
 --return true
 --end
---- ============================              ============================
-function RubimRH.CDsON()
-    if Player:Level() < 109 then
-        return true
-    end
-
-    if RubimRH.useCD == true then
-        if UnitExists("boss1") == true or UnitClassification("target") == "worldboss" then
-            return true
-        end
-
-        if UnitExists("target") and UnitHealthMax("target") >= UnitHealthMax("player") then
-            return true
-        end
-
-        if Target:IsDummy() then
-            return true
-        end
-
-        if UnitIsPlayer("target") then
-            return true
-        end
-    end
-
-    if RubimRH.useCD == false then
-        return false
-    end
-
-    return false
-end
-
-function RubimRH.AoEON()
-    if RubimRH.useAoE == true then
-        return true
-    else
-        return false
-    end
-end
-
---- ============================              ============================
-local nextAbility
-function GetNextAbility()
-    return nextAbility
-end
-
-function SetNextAbility(skill)
-    if skill == nil then
-        print("ERROR")
-        return 0
-    else
-        nextAbility = skill
-    end
-end
 
 --- ============================   MAIN_ROT   ============================
-function MainRotation()
-    AC.GetEnemies(30)
+function RubimRH.shouldStop()
+    if foundError == 1 then
+        return "ERROR"
+    end
 
-    if error == 1 then
-        return "ERROR: Missing an addon"
+    if EnabledRotation[playerSpec] == false then
+        return "ERROR"
     end
 
     if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
@@ -494,113 +518,10 @@ function MainRotation()
     end
 
     if RubimPVP ~= nil and RubimRH.breakableCC(Target) == true then
-        return 243762
+        return 0, 135860
     end
 
-    --    if not Player:AffectingCombat() then
-    --        SetNextAbility(0, 462338)
-    --    else
-    --        SetNextAbility(0, 975743)
-    --end
-
-    --    shiftDown = IsShiftKeyDown()
-    --    if shiftDown then
-    --        return 69042
-    --    end
-
-    --    if Player:Level() < 10 then
-    --        return 91344
-    --    end
-
-    --DK
     if Cache.EnemiesCount[30] == 0 then
         return 0, 975743
     end
-
-    if RubimRH.currentSpec == "blood" then
-        return BloodRotation()
-    end
-
-    if RubimRH.currentSpec == "frost" then
-        return FrostRotation()
-    end
-
-    if RubimRH.currentSpec == "unholy" then
-        return UnholyRotation()
-    end
-
-    --DH
-    if RubimRH.currentSpec == "havoc" then
-        return HavocRotation()
-    end
-    if RubimRH.currentSpec == "veng" then
-        return VengRotation()
-    end
-
-    --RG
-    if RubimRH.currentSpec == "ass" then
-        return RogueAss()
-    end
-    if RubimRH.currentSpec == "out" then
-        return RogueOutlaw()
-    end
-    if RubimRH.currentSpec == "sub" then
-        return RogueSub()
-    end
-
-
-
-    --MK
-    if RubimRH.currentSpec == "brew" then
-        return BrewMasterRotation()
-    end
-    if RubimRH.currentSpec == "wind" then
-        return WindWalkerRotation()
-    end
-
-
-    --Warrior
-    if RubimRH.currentSpec == "arms" then
-        return WarriorArms()
-    end
-    if RubimRH.currentSpec == "fury" then
-        return WarriorFury()
-    end
-    if RubimRH.currentSpec == "prot" then
-        return WarriorProt()
-    end
-
-
-    --Hunter
-    if RubimRH.currentSpec == "mm" then
-        return HunterMM()
-    end
-    if RubimRH.currentSpec == "surv" then
-        return HunterSurvival()
-    end
-
-    --Shaman
-    if RubimRH.currentSpec == "enh" then
-        return ShamanEnh()
-    end
-
-    --Paladin
-    if RubimRH.currentSpec == "holy" then
-        return PaladinHoly()
-    end
-    if RubimRH.currentSpec == "pprot" then
-        return PaladinProtection()
-    end
-    if RubimRH.currentSpec == "ret" then
-        return PaladinRetribution()
-    end
-
-    --Druid
-    if RubimRH.currentSpec == "feral" then
-        return DruidFeral()
-    end
-    if RubimRH.currentSpec == "guardian" then
-        return DruidGuardian()
-    end
-    return nil
 end

@@ -243,7 +243,7 @@ local function Opener()
     end
 end
 
-function PaladinRetribution()
+local function APL()
     --Area Enemies
     AC.GetEnemies("Melee");
     AC.GetEnemies(8, true);
@@ -297,3 +297,10 @@ function PaladinRetribution()
     --Nothing to CAST
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(70, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(70, PASSIVE);

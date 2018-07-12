@@ -3,7 +3,14 @@
 --- Created by Rubim.
 --- DateTime: 02/06/2018 12:53
 ---
+
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
+local AC = AethysCore;
+local Cache = AethysCache;
+local Unit = AC.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+
 function RubimRH.CCToggle()
     PlaySound(891, "Master");
     if ccBreak == false then
@@ -18,14 +25,12 @@ end
 
 function RubimRH.CDToggle()
     PlaySound(891, "Master");
-        if RubimRH.useCD == false then
-        varClass.cooldown = true
-        RubimRH.useCD = true
+    if RubimRH.varClass.cooldown == false then
+        RubimRH.varClass.cooldown = true
     else
-        RubimRH.useCD = false
-        varClass.cooldown = false
+        RubimRH.varClass.cooldown = false
     end
-    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useCD))
+    print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.varClass.cooldown))
 end
 
 function RubimRH.AttackToggle()
@@ -38,6 +43,7 @@ function RubimRH.AttackToggle()
     print("|cFF69CCF0Auto-Skill: " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.startattack))
 end
 
+RubimRH.useAoE = true
 function RubimRH.AoEToggle()
     PlaySound(891, "Master");
     if RubimRH.useAoE == false then
@@ -46,6 +52,39 @@ function RubimRH.AoEToggle()
         RubimRH.useAoE = false
     end
     print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useAoE))
+end
+
+function RubimRH.CDsON()
+    if Player:Level() < 109 then
+        return true
+    end
+
+    if RubimRH.varClass.cooldown == true then
+        if UnitExists("boss1") == true or UnitClassification("target") == "worldboss" then
+            return true
+        end
+
+        if UnitExists("target") and UnitHealthMax("target") >= UnitHealthMax("player") then
+            return true
+        end
+
+        if Target:IsDummy() then
+            return true
+        end
+
+        if UnitIsPlayer("target") then
+            return true
+        end
+    end
+    return false
+end
+
+function RubimRH.AoEON()
+    if RubimRH.useAoE == true then
+        return true
+    else
+        return false
+    end
 end
 
 local options, configOptions = nil, {}
@@ -92,6 +131,37 @@ local function getOptions()
                                         RubimRH.AttackToggle()
                                     end,
                                     name = "Skills without a target."
+                                },
+                            }
+                        },
+                        items = {
+                            order = 1,
+                            type = "group",
+                            childGroups = "tree",
+                            inline = true,
+                            name = "Items",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.mainOption[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.mainOption[key] = value
+                            end,
+                            args = {
+                                description = {
+                                    order = 1,
+                                    type = "description",
+                                    name = "When to use Healthstone. 0 to Disable",
+                                },
+                                healthstoneper = {
+                                    order = 3,
+                                    type = "range",
+                                    min = 0,
+                                    max = 95,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Healthstone"
                                 },
                             }
                         },
@@ -145,6 +215,36 @@ local function getOptions()
                                         SaveBindings(GetCurrentBindingSet())
                                     end,
                                     name = "AoE"
+                                },
+                            }
+                        },
+                        extraconfig = {
+                            order = 1,
+                            type = "group",
+                            childGroups = "tree",
+                            inline = true,
+                            name = "Config",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.mainOption[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.mainOption[key] = value
+                            end,
+                            args = {
+                                description = {
+                                    order = 1,
+                                    type = "description",
+                                    name = "Changing this can break your rotation, PAY ATTENTION.",
+                                    fontSize = "large",
+                                },
+                                execute = {
+                                    type = "execute",
+                                    name = "Block Spell",
+                                    func = function()
+                                        RubimRH.spellDisabler()
+                                    end,
                                 },
                             }
                         },
@@ -428,9 +528,9 @@ function RubimRH:SetupOptions()
     LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("RubimRH", getOptions)
     self.optionsFrames.RubimRH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", nil, nil, "mainOptions")
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Classes", "RubimRH", "Classes")
---    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
---    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
---    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
+    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
+    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
+    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
     configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
 

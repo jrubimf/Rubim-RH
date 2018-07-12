@@ -95,7 +95,7 @@ function lowDmg()
 end
 
 
-function PaladinHoly()
+local function APL()
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
 	AC.GetEnemies("Melee"); -- Melee
 	AC.GetEnemies(6, true); -- 
@@ -178,3 +178,10 @@ function PaladinHoly()
 	
 	return 0, 975743
 end
+RubimRH.Rotation.SetAPL(65, APL);
+
+local function PASSIVE()
+	return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(65, PASSIVE);

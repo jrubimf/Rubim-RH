@@ -43,7 +43,7 @@ local S = Spell.DemonHunter.Vengeance;
 local T202PC, T204PC = AC.HasTier("T20");
 local T212PC, T214PC = AC.HasTier("T21");
 -- APL Main
-function VengRotation()
+local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
@@ -121,3 +121,10 @@ function VengRotation()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(581, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(581, PASSIVE);

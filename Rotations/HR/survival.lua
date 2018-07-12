@@ -229,7 +229,7 @@ function bitePhase()
     end
 end
 
-function HunterSurvival()
+local function APL()
     -- AoE Check
     AC.GetEnemies(8);
     AC.GetEnemies(5);
@@ -280,3 +280,10 @@ function HunterSurvival()
 
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(255, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(255, PASSIVE);

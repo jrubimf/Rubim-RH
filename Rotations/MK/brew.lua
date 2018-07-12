@@ -93,7 +93,7 @@ local function ShouldPurify()
 end
 
 --- ======= ACTION LISTS =======
-function BrewMasterRotation()
+local function APL()
     -- Unit Update
     AC.GetEnemies(8, true);
 
@@ -205,3 +205,10 @@ function BrewMasterRotation()
     -- Trick to take in consideration the Recovery Setting
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(268, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(268, PASSIVE);

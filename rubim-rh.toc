@@ -20,6 +20,8 @@ Modules\UI.lua
 Modules\CombatTracker.lua
 Modules\HealingEngine.lua
 Modules\PVP.lua
+Modules\MiniMap.lua
+Rotations\Shared.lua
 Rotations\DK\blood.lua
 Rotations\DK\frost.lua
 Rotations\DK\unholy.lua

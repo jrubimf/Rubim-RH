@@ -413,7 +413,7 @@ local function SingleTarget()
     end
 end
 
-function DruidFeral()
+local function APL()
     if I.LuffaWrappings:IsEquipped() then
         useTrash = 1
     else
@@ -575,3 +575,10 @@ function DruidFeral()
     
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(103, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(103, PASSIVE);

@@ -315,3 +315,31 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
+
+function RubimRH.isSpellDisabled(spellIDs)
+    local isDisabled = true
+    for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
+        if spellIDs == spellID then
+            isDisabled = false
+        end
+    end
+    return isDisabled
+end
+
+function RubimRH.addSpellDisabled(spellIDs)
+    local exists = false
+    for pos, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
+        if spellIDs == spellID then
+            table.remove(RubimRH.db.profile.mainOption.disabledSpells, pos)
+            exists = true
+            print("|cFF00FF00Unblocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
+            break
+        end
+    end
+
+    if exists == false then
+        table.insert(RubimRH.db.profile.mainOption.disabledSpells, spellIDs)
+        print("|cFFFF0000Blocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
+    end
+
+end

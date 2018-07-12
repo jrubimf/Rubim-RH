@@ -466,7 +466,7 @@ local function Finish()
 end
 
 -- APL Main
-function RogueOutlaw()
+local function APL()
     -- Unit Update
     AC.GetEnemies(8); -- Cannonball Barrage
     AC.GetEnemies(S.RunThrough); -- Blade Flurry
@@ -592,3 +592,10 @@ function RogueOutlaw()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(260, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(260, PASSIVE);
