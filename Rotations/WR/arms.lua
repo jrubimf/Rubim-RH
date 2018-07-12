@@ -359,11 +359,7 @@ local function Single()
     end
 end
 
-local enemyHEALtarget = "None"
-local enemyDPS1 = "None"
-local enemyDPS2 = "None"
-local SpellHealer = 28730
-function WarriorArms()
+local function APL()
     -- Unit Update
     AC.GetEnemies(8); -- WhirlWind
     -- Out of Combat
@@ -372,32 +368,12 @@ function WarriorArms()
         return 0, 462338
     end
 
-    -- Interrupts
-
-    if UnitIsPlayer("target") and PvPExtra ~= nil then
-        if enemyHealer[1] ~= nil then
-            if enemyHealer[1].Unit == "arena1" then
-                enemyHEALtarget = Arena[1]
-                local enemyDPS1 = Arena[2]
-                local enemyDPS2 = Arena[3]
-            elseif enemyHealer[1].Unit.Unit == "arena2" then
-                local enemyDPS1 = Arena[1]
-                enemyHEALtarget = Arena[2]
-                local enemyDPS2 = Arena[3]
-            elseif enemyHealer[1].Unit.Unit == "arena3" then
-                local enemyDPS1 = Arena[1]
-                local enemyDPS2 = Arena[2]
-                enemyHEALtarget = Arena[3]
-            end
-        end
-
-        if enemyHEALtarget:IsInRange(22) and S.Charge:IsReady() and RubimRH.HealerInterrupt(enemyHEALtarget) then
-            return SpellHealer
-        end
-    end
-
     -- In Combat
     if RubimRH.TargetIsValid() then
+        if classSpell[3].isActive and S.Charge:IsReady() and Target:IsInRange(S.Charge) then
+            return S.Charge:ID()
+        end
+
         if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.arms.victoryrush then
             return S.VictoryRush:ID()
         end
@@ -425,13 +401,13 @@ function WarriorArms()
 
         -- Omit gcd.remains on this offGCD because we can't react quickly enough otherwise (the intention is to cast this before the next GCD ability, but is a OffGCD abiltiy).
         -- actions+=/avatar,if=gcd.remains<0.25&(buff.battle_cry.up|cooldown.battle_cry.remains<15)|target.time_to_die<=20
-        if S.Avatar:IsReady() and RubimRH.CDsON() and ((Player:Buff(S.BattleCryBuff) or S.BattleCry:CooldownRemainsP() < 15) or Target:TimeToDie() <= 20) then
+        if S.Avatar:IsReady("Melee") and RubimRH.CDsON() and ((Player:Buff(S.BattleCryBuff) or S.BattleCry:CooldownRemainsP() < 15) or Target:TimeToDie() <= 20) then
             return S.Avatar:ID()
         end
 
         -- Omit gcd.remains on this offGCD because we can't react quickly enough otherwise (the intention is to cast this before the next GCD ability, but is a OffGCD abiltiy).
         -- actions+=/battle_cry,if=target.time_to_die<=6|(gcd.remains<=0.5&prev_gcd.1.ravager)|!talent.ravager.enabled&!gcd.remains&target.debuff.colossus_smash.remains>=5&(!cooldown.bladestorm.remains|!set_bonus.tier20_4pc)&(!talent.rend.enabled|dot.rend.remains>4)
-        if S.BattleCry:IsReady() and RubimRH.CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not AC.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
+        if S.BattleCry:IsReady("Melee") and RubimRH.CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not AC.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
             return S.BattleCry:ID()
         end
 
@@ -463,3 +439,10 @@ function WarriorArms()
     end
     return 0, 975743
 end
+RubimRH.Rotation.SetAPL(71, APL);
+
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(71, PASSIVE);
