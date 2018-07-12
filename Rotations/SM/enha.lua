@@ -195,7 +195,7 @@ local function APL()
         -- Use healthstone if we have it and our health is low.
 
         -- Heal when we have less than the set health threshold!
-            if S.HealingSurge:IsReady() and classSpell[1].isActive and Player:HealthPercentage() <= RubimRH.db.profile.sh.enh.healingsurge then
+            if S.HealingSurge:IsReady() and classSpell[1].isActive and Player:HealthPercentage() <= RubimRH.db.profile.Shaman.Enhancement.healingsurge then
             -- Instant casts using maelstrom only.
             if Player:Maelstrom() >= 20 then
                 return S.HealingSurge:ID()

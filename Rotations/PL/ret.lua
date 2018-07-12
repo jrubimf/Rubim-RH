@@ -259,22 +259,22 @@ local function APL()
 
     if classSpell[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose 
-        if Player:HealthPercentage() <= RubimRH.db.profile.pl.ret.justicarglory and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:ID()
         end
         -- Regular
-        if Player:HealthPercentage() <= RubimRH.db.profile.pl.ret.justicarglory - 5 and Player:HolyPower() >= 5 then
+        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory - 5 and Player:HolyPower() >= 5 then
             return S.JusticarsVengeance:ID()
         end
     end
 
 --    if classSpell[1].isActive and S.WorldofGlory:IsReady() then
         -- Divine Purpose 
---        if Player:HealthPercentage() <= RubimRH.db.profile.pl.ret.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
+--        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
 --            return S.JusticarsVengeance:ID()
 --        end
 --        -- Regular
---        if Player:HealthPercentage() <= RubimRH.db.profile.pl.ret.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
+--        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
 --            return S.JusticarsVengeance:ID()
 --        end
 --    end

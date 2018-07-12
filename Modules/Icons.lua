@@ -13,6 +13,7 @@ local int_smart = true
 
 --RUN ONCE
 local runonce = 0
+local playerSpec = 0
 
 --
 local currentSize = 40
@@ -43,7 +44,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow = "Class Config", nil
         info.checked = false
         info.func = function(self)
-            RubimRH.ClassConfig()
+            RubimRH.ClassConfig(playerSpec)
         end
         UIDropDownMenu_AddButton(info)
         --
@@ -416,7 +417,7 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
-        local playerSpec = Cache.Persistent.Player.Spec[1]
+        playerSpec = Cache.Persistent.Player.Spec[1]
         if CDText ~= nil then
             CDText:SetText(RubimRH.ColorOnOff(RubimRH.varClass.cooldown) .. "CD")
             AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")

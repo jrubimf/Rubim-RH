@@ -103,19 +103,19 @@ local function APL()
 
 
     -- Defensives --
-    if classSpell[1].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.layonahandspct and S.LayOnHands:IsReady() then
+    if classSpell[1].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.layonahandspct and S.LayOnHands:IsReady() then
         RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.LayOnHands:ID()))
     else
         RubimRH.passiveIcon.texture:SetTexture(nil)
     end
 
-    if classSpell[2].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.ardentdefenderpct and S.ArdentDefender:IsReady() then
+    if classSpell[2].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.ardentdefenderpct and S.ArdentDefender:IsReady() then
         RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.ArdentDefender:ID()))
     else
         RubimRH.passiveIcon.texture:SetTexture(nil)
     end
 
-    if classSpell[3].isActive and Player:HealthPercentage() < RubimRH.db.profile.pl.prot.guardianofancientkingspct and S.GuardianofAncientKings:IsReady() then
+    if classSpell[3].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.guardianofancientkingspct and S.GuardianofAncientKings:IsReady() then
         RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.GuardianofAncientKings:ID()))
     else
         RubimRH.passiveIcon.texture:SetTexture(nil)
@@ -136,7 +136,7 @@ local function APL()
         if Target:IsInRange(10) then
             if not Player:HealingAbsorbed() then
                 -- LotP (HP) / HotP (HP)
-                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.pl.prot.lightoftheprotectorpct then
+                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Protection.lightoftheprotectorpct then
                     return S.LightoftheProtector:ID()
                 end
                 if S.HandoftheProtector:IsCastable() and Player:HealthPercentage() <= 75 then

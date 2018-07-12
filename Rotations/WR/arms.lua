@@ -374,7 +374,7 @@ local function APL()
             return S.Charge:ID()
         end
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.wr.arms.victoryrush then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.Warrior.Arms.victoryrush then
             return S.VictoryRush:ID()
         end
 

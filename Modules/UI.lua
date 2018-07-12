@@ -16,14 +16,14 @@ local function BloodMenu()
     bloodGUI:SetHeight(240)
 
     local smartDStext = AceGUI:Create("Label")
-    smartDStext:SetText("If the DMG Taken is above " .. RubimRH.db.profile.dk.blood.smartds .. " percent, it will suggest an DS.")
+    smartDStext:SetText("If the DMG Taken is above " .. RubimRH.db.profile.DeathKnight.Blood.smartds .. " percent, it will suggest an DS.")
     bloodGUI:AddChild(smartDStext)
 
     local smartDS = AceGUI:Create("Slider")
     smartDS:SetLabel("Smart DS (Percent):")
     smartDS:SetWidth(260)
-    smartDS:SetValue(RubimRH.db.profile.dk.blood.smartds)
-    smartDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.dk.blood.smartds = value end)
+    smartDS:SetValue(RubimRH.db.profile.DeathKnight.Blood.smartds)
+    smartDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.DeathKnight.Blood.smartds = value end)
     smartDS:SetSliderValues(5,95,5)
     bloodGUI:AddChild(smartDS)
 
@@ -32,14 +32,14 @@ local function BloodMenu()
     bloodGUI:AddChild(blankLine)
 
     local deficitDStext = AceGUI:Create("Label")
-    deficitDStext:SetText("If the RP Max Deficit equals to " .. RubimRH.db.profile.dk.blood.deficitds .. " then it will suggest an DS.")
+    deficitDStext:SetText("If the RP Max Deficit equals to " .. RubimRH.db.profile.DeathKnight.Blood.deficitds .. " then it will suggest an DS.")
     bloodGUI:AddChild(deficitDStext)
 
     local deficitDS = AceGUI:Create("Slider")
     deficitDS:SetLabel("RP Deficit to use DS (Value):")
     deficitDS:SetWidth(260)
-    deficitDS:SetValue(RubimRH.db.profile.dk.blood.deficitds)
-    deficitDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.dk.blood.deficitds = value end)
+    deficitDS:SetValue(RubimRH.db.profile.DeathKnight.Blood.deficitds)
+    deficitDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.DeathKnight.Blood.deficitds = value end)
     deficitDS:SetSliderValues(5,95,5)
     bloodGUI:AddChild(deficitDS)
 
@@ -172,10 +172,10 @@ function RubimRH.spellDisabler()
 
 end
 
-function RubimRH.ClassConfig()
-    if RubimRH.currentSpec == "blood" then
+function RubimRH.ClassConfig(specID)
+    if specID == 250 then
         BloodMenu()
-    elseif RubimRH.currentSpec == "out" then
+    elseif specID == 260 then
         OutlawMenu()
     end
 end

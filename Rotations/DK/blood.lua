@@ -278,7 +278,7 @@ local function APL()
     end
 
     --DSEmergency
-    if RubimRH.lastDamage("percent") > RubimRH.db.profile.dk.blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
+    if RubimRH.lastDamage("percent") > RubimRH.db.profile.DeathKnight.Blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
         return S.DeathStrike:ID()
     end
 
@@ -288,7 +288,7 @@ local function APL()
     end
 
     --Overcap
-    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile.dk.blood.deficitds then
+    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile.DeathKnight.Blood.deficitds then
         return S.DeathStrike:ID()
     end
 

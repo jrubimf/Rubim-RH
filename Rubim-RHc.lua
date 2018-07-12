@@ -263,11 +263,11 @@ local function getOptions()
                             name = "Death Knight - Frost",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dk.frost[key]
+                                return RubimRH.db.profile.DeathKnight.frost[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dk.frost[key] = value
+                                RubimRH.db.profile.DeathKnight.frost[key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -300,11 +300,11 @@ local function getOptions()
                             name = "Death Knight - Unholy",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dk.unholy[key]
+                                return RubimRH.db.profile.DeathKnight.unholy[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dk.unholy[key] = value
+                                RubimRH.db.profile.DeathKnight.unholy[key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -337,11 +337,11 @@ local function getOptions()
                             name = "Paladin - Protection",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.pl.prot[key]
+                                return RubimRH.db.profile.Paladin.Protection[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.pl.prot[key] = value
+                                RubimRH.db.profile.Paladin.Protection[key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -392,11 +392,11 @@ local function getOptions()
                             name = "Paladin - Retribution",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.pl.ret[key]
+                                return RubimRH.db.profile.Paladin.Retribution[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.pl.ret[key] = value
+                                RubimRH.db.profile.Paladin.Retribution[key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -475,11 +475,11 @@ local function getOptions()
                             name = "Warrior - Arms",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.wr.arms[key]
+                                return RubimRH.db.profile.Warrior.Arms[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.wr.arms[key] = value
+                                RubimRH.db.profile.Warrior.Arms[key] = value
                             end,
                             args = {
                                 cooldown = {
