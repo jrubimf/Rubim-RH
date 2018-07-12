@@ -14,14 +14,14 @@ errorEvent:SetScript("OnEvent", function(self, event)
     end
 end)
 
-
-
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
 _G["RubimRH"] = RubimRH
 local AceGUI = LibStub("AceGUI-3.0")
+
+
 --local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --[[ The defaults a user without a profile will get. ]]--
-
+RubimRH.varClass = {}
 RubimRH.currentSpec = "None"
 
 --DK
@@ -30,7 +30,7 @@ local RuneTap = 194679
 local BreathOfSindragosa = 152279
 local SindragosasFury = 190778
 local PillarOfFrost = 51271
-
+local DeathandDecay = 43265
 --DH
 local FelRush = 195072
 local EyeBeam = 198013
@@ -40,6 +40,7 @@ local FelBarrage = 211053
 local Warbreaker = 209577
 local Ravager = 152277
 local OdynsFury = 205545
+local Charge = 100
 
 --Paladin
 local JusticarVengeance = 215661
@@ -54,6 +55,9 @@ local HealingSurge = 188070
 --Druid
 local Regrowth = 8936
 local Renewal = 108238
+
+--MK
+local FistofFury = 113656
 
 local AC = AethysCore;
 local Cache = AethysCache;
@@ -97,9 +101,11 @@ local defaults = {
             blood = {
                 cooldown = true,
                 smartds = 30,
+                deficitds = 10,
                 spells = {
                     { spellID = DeathStrike, isActive = false, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
-                    { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." }
+                    { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },
+                    { spellID = DeathandDecay, isActive = true, description = "Disable Death and Decay." }
                 }
             },
             frost = {
@@ -151,13 +157,15 @@ local defaults = {
                 victoryrush = 80,
                 spells = {
                     { spellID = Warbreaker, isActive = true },
-                    { spellID = Ravager, isActive = true }
+                    { spellID = Ravager, isActive = true },
+                    { spellID = Charge, isActive = true }
                 }
             },
             fury = {
                 cooldown = true,
                 spells = {
-                    { spellID = OdynsFury, isActive = true }
+                    { spellID = OdynsFury, isActive = true },
+                    { spellID = Charge, isActive = true }
                 }
             },
             prot = {
@@ -194,6 +202,9 @@ local defaults = {
             },
             wind = {
                 cooldown = true,
+                spells = {
+                    { spellID = FistofFury, isActive = true}
+                }
             },
         },
         sh = {
@@ -242,15 +253,15 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(250)
             RubimRH.currentSpec = "blood"
-            varClass = RubimRH.db.profile.dk.blood
+            RubimRH.varClass = RubimRH.db.profile.dk.blood
         elseif GetSpecialization() == 2 then
             Player:RegisterListenedSpells(251)
             RubimRH.currentSpec = "frost"
-            varClass = RubimRH.db.profile.dk.frost
+            RubimRH.varClass = RubimRH.db.profile.dk.frost
         elseif GetSpecialization() == 3 then
             Player:RegisterListenedSpells(252)
             RubimRH.currentSpec = "unholy"
-            varClass = RubimRH.db.profile.dk.unholy
+            RubimRH.varClass = RubimRH.db.profile.dk.unholy
         end
     end
 
@@ -259,11 +270,11 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(577)
             RubimRH.currentSpec = "havoc"
-            varClass = RubimRH.db.profile.dh.havoc
+            RubimRH.varClass = RubimRH.db.profile.dh.havoc
         elseif GetSpecialization() == 2 then
             Player:RegisterListenedSpells(581)
             RubimRH.currentSpec = "veng"
-            varClass = RubimRH.db.profile.dh.veng
+            RubimRH.varClass = RubimRH.db.profile.dh.veng
         end
     end
 
@@ -272,16 +283,16 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(259)
             RubimRH.currentSpec = "ass"
-            varClass = RubimRH.db.profile.rg.ass
+            RubimRH.varClass = RubimRH.db.profile.rg.ass
         end
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(260)
             RubimRH.currentSpec = "out"
-            varClass = RubimRH.db.profile.rg.out
+            RubimRH.varClass = RubimRH.db.profile.rg.out
         end
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(261)
-            varClass = RubimRH.db.profile.rg.sub
+            RubimRH.varClass = RubimRH.db.profile.rg.sub
         end
     end
 
@@ -289,11 +300,11 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if select(3, UnitClass("player")) == 10 then
         if GetSpecialization() == 1 then
             RubimRH.currentSpec = "brew"
-            varClass = RubimRH.db.profile.mk.brew
+            RubimRH.varClass = RubimRH.db.profile.mk.brew
         end
         if GetSpecialization() == 3 then
             RubimRH.currentSpec = "wind"
-            varClass = RubimRH.db.profile.mk.wind
+            RubimRH.varClass = RubimRH.db.profile.mk.wind
         end
     end
 
@@ -302,17 +313,17 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(71)
             RubimRH.currentSpec = "arms"
-            varClass = RubimRH.db.profile.wr.arms
+            RubimRH.varClass = RubimRH.db.profile.wr.arms
         end
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(72)
             RubimRH.currentSpec = "fury"
-            varClass = RubimRH.db.profile.wr.fury
+            RubimRH.varClass = RubimRH.db.profile.wr.fury
         end
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(73)
             RubimRH.currentSpec = "prot"
-            varClass = RubimRH.db.profile.wr.prot
+            RubimRH.varClass = RubimRH.db.profile.wr.prot
         end
     end
 
@@ -321,13 +332,13 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(255)
             RubimRH.currentSpec = "surv"
-            varClass = RubimRH.db.profile.hr.surv
+            RubimRH.varClass = RubimRH.db.profile.hr.surv
         end
 
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(254)
             RubimRH.currentSpec = "mm"
-            varClass = RubimRH.db.profile.hr.mm
+            RubimRH.varClass = RubimRH.db.profile.hr.mm
         end
     end
 
@@ -336,7 +347,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(263)
             RubimRH.currentSpec = "enh"
-            varClass = RubimRH.db.profile.sh.enh
+            RubimRH.varClass = RubimRH.db.profile.sh.enh
         end
     end
 
@@ -345,19 +356,19 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(65)
             RubimRH.currentSpec = "ret"
-            varClass = RubimRH.db.profile.pl.ret
+            RubimRH.varClass = RubimRH.db.profile.pl.ret
         end
 
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(66)
             RubimRH.currentSpec = "pprot"
-            varClass = RubimRH.db.profile.pl.prot
+            RubimRH.varClass = RubimRH.db.profile.pl.prot
         end
 
         if GetSpecialization() == 1 then
             Player:RegisterListenedSpells(70)
             RubimRH.currentSpec = "holy"
-            varClass = RubimRH.db.profile.pl.holy
+            RubimRH.varClass = RubimRH.db.profile.pl.holy
         end
     end
 
@@ -366,21 +377,21 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
         if GetSpecialization() == 2 then
             Player:RegisterListenedSpells(103)
             RubimRH.currentSpec = "feral"
-            varClass = RubimRH.db.profile.dr.feral
+            RubimRH.varClass = RubimRH.db.profile.dr.feral
         end
 
         if GetSpecialization() == 3 then
             Player:RegisterListenedSpells(104)
             RubimRH.currentSpec = "guardian"
-            varClass = RubimRH.db.profile.dr.guardian
+            RubimRH.varClass = RubimRH.db.profile.dr.guardian
         end
     end
 
     if RubimRH.currentSpec == "None" then
         message("ERROR: Class not supported")
     end
-    RubimRH.useCD = varClass.cooldown or false
-    ccBreak =  RubimRH.db.profile.mainOption.ccbreak
+    RubimRH.useCD = RubimRH.varClass.cooldown or false
+    ccBreak = RubimRH.db.profile.mainOption.ccbreak
 end)
 
 function RubimRH:OnEnable()
@@ -489,10 +500,10 @@ function MainRotation()
         return 243762
     end
 
---    if not Player:AffectingCombat() then
---        SetNextAbility(0, 462338)
---    else
---        SetNextAbility(0, 975743)
+    --    if not Player:AffectingCombat() then
+    --        SetNextAbility(0, 462338)
+    --    else
+    --        SetNextAbility(0, 975743)
     --end
 
     --    shiftDown = IsShiftKeyDown()

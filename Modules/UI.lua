@@ -10,7 +10,7 @@ local function BloodMenu()
     bloodGUI:SetLayout("Flow")
     --rogueGUI:SetLayout("Fill")
     bloodGUI:SetWidth(260)
-    bloodGUI:SetHeight(140)
+    bloodGUI:SetHeight(240)
 
     local smartDStext = AceGUI:Create("Label")
     smartDStext:SetText("If the DMG Taken is above " .. RubimRH.db.profile.dk.blood.smartds .. " percent, it will suggest an DS.")
@@ -23,6 +23,23 @@ local function BloodMenu()
     smartDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.dk.blood.smartds = value end)
     smartDS:SetSliderValues(5,95,5)
     bloodGUI:AddChild(smartDS)
+
+    local blankLine = AceGUI:Create("Label")
+    blankLine:SetText("                                          ")
+    bloodGUI:AddChild(blankLine)
+
+    local deficitDStext = AceGUI:Create("Label")
+    deficitDStext:SetText("If the RP Max Deficit equals to " .. RubimRH.db.profile.dk.blood.deficitds .. " then it will suggest an DS.")
+    bloodGUI:AddChild(deficitDStext)
+
+    local deficitDS = AceGUI:Create("Slider")
+    deficitDS:SetLabel("RP Deficit to use DS (Value):")
+    deficitDS:SetWidth(260)
+    deficitDS:SetValue(RubimRH.db.profile.dk.blood.deficitds)
+    deficitDS:SetCallback("OnValueChanged", function(widget, event, value) RubimRH.db.profile.dk.blood.deficitds = value end)
+    deficitDS:SetSliderValues(5,95,5)
+    bloodGUI:AddChild(deficitDS)
+
     bloodGUI:Show()
 end
 

@@ -110,7 +110,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             UIDropDownMenu_AddButton(info, level)
         end
         -- Show the "Games" sub-menu
-        --        for s in (tostring(GetSpellInfo(ClassSpell1)) .. "; " .. tostring(GetSpellInfo(ClassSpell2))):gmatch("[^;%s][^;]*") do
+        --        for s in (tostring(GetSpellInfo(classSpell1)) .. "; " .. tostring(GetSpellInfo(classSpell2))):gmatch("[^;%s][^;]*") do
         --            info.text = s
         --            UIDropDownMenu_AddButton(info, level)
         --        end
@@ -354,6 +354,10 @@ local updateConfigFunc = function()
     end
 
     --MK
+    if select(3, UnitClass("player")) == 10 then
+        classSpell = {}
+        classSpell = RubimRH.db.profile.mk.wind.spells
+    end
 end
 
 local updateConfig = CreateFrame("frame")

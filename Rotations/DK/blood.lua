@@ -136,7 +136,7 @@ local function simcraftMode()
     end
 
     --actions.standard+=/death_and_decay,if=talent.rapid_decomposition.enabled&!buff.dancing_rune_weapon.up
-    if S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
         return S.DeathandDecay:ID()
     end
 
@@ -177,7 +177,7 @@ local function simcraftMode()
     end
 
     --actions.standard+=/death_and_decay,if=buff.crimson_scourge.up
-    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
         return S.DeathandDecay:ID()
     end
 
@@ -186,7 +186,7 @@ local function simcraftMode()
         return S.BloodBoil:ID()
     end
     --actions.standard+=/death_and_decay
-    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 then
         return S.DeathandDecay:ID()
     end
 
@@ -288,7 +288,7 @@ function BloodRotation()
     end
 
     --Overcap
-    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 10 then
+    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile.dk.blood.deficitds then
         return S.DeathStrike:ID()
     end
 
@@ -303,7 +303,7 @@ function BloodRotation()
     end
 
     --actions.standard+=/death_and_decay,if=talent.rapid_decomposition.enabled&!buff.dancing_rune_weapon.up
-    if S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
         return S.DeathandDecay:ID()
     end
 
@@ -348,7 +348,7 @@ function BloodRotation()
     end
 
     --actions.standard+=/death_and_decay,if=buff.crimson_scourge.up
-    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
         return S.DeathandDecay:ID()
     end
 
@@ -357,11 +357,11 @@ function BloodRotation()
         return S.BloodBoil:ID()
     end
     --actions.standard+=/death_and_decay
-    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and not classSpell[2].isActive then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and not classSpell[2].isActive then
         return S.DeathandDecay:ID()
     end
 
-    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and classSpell[2].isActive and Player:Runes() >= 3 then
+    if classSpell[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and classSpell[2].isActive and Player:Runes() >= 3 then
         return S.DeathandDecay:ID()
     end
 
