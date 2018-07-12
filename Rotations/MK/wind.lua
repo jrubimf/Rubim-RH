@@ -5,6 +5,7 @@
 -- Addon
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
+
 -- AethysCore
 local AC = AethysCore;
 local Cache = AethysCache;
@@ -15,7 +16,6 @@ local Spell = AC.Spell;
 local Item = AC.Item;
 -- Lua
 local pairs = pairs;
-
 
 --- ============================ CONTENT ============================
 -- Spells
@@ -164,26 +164,26 @@ local function AoE()
     end
     -- actions.aoe+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
-    if classSpell[1].isActive and S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
+    if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
             S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
 
     end
 
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
-    if classSpell[1].isActive and S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
+    if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
             (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
 
     end
 
     -- actions.aoe+=/fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
-    if classSpell[1].isActive and S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
+    if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
         return S.FistsOfFury:ID()
 
     end
     -- actions.aoe+=/fists_of_fury,if=cooldown.rising_sun_kick.remains>=3.5&chi<=5
-    if classSpell[1].isActive and S.FistsOfFury:IsReady() and S.RisingSunKick:CooldownRemainsP() >= 3.5 and Player:Chi() <= 5 then
+    if S.FistsOfFury:IsReady() and S.RisingSunKick:CooldownRemainsP() >= 3.5 and Player:Chi() <= 5 then
         return S.FistsOfFury:ID()
 
     end
@@ -528,6 +528,7 @@ local function Serenity()
     -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
     if S.BlackoutKick:IsReady("Melee") and not Player:PrevGCD(1, S.BlackoutKick) then
         return S.BlackoutKick:ID()
+
     end
 end
 

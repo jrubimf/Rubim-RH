@@ -202,9 +202,6 @@ local defaults = {
             },
             wind = {
                 cooldown = true,
-                spells = {
-                    { spellID = FistofFury, isActive = true}
-                }
             },
         },
         sh = {

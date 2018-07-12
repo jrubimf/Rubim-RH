@@ -356,7 +356,7 @@ local updateConfigFunc = function()
     --MK
     if select(3, UnitClass("player")) == 10 then
         classSpell = {}
-        classSpell = RubimRH.db.profile.mk.wind.spells
+        --classSpell = RubimRH.db.profile.mk.wind.spells
     end
 end
 
