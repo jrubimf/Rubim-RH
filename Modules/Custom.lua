@@ -306,8 +306,13 @@ function RubimRH.ColorOnOff(boolean)
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
-    local name, rank, icon, castTime, minRange, maxRange  = GetSpellInfo(self:ID())
-  if maxRange ~= nil then
+    local name, rank, icon, castTime, minRange, maxRange = GetSpellInfo(self:ID())
+
+    if not RubimRH.isSpellEnabled(self:ID()) then
+        return false
+    end
+
+    if maxRange ~= nil then
         AC.GetEnemies(maxRange, true);
         if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
             return true
@@ -316,7 +321,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
-function RubimRH.isSpellDisabled(spellIDs)
+function RubimRH.isSpellEnabled(spellIDs)
     local isDisabled = true
     for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
         if spellIDs == spellID then

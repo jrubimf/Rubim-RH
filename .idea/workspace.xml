@@ -2,105 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a6d15cf-6783-43a9-b72a-b65fca495572" name="Default" comment="Comment strings.">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" afterPath="$PROJECT_DIR$/.gitattributes" />
-      <change beforePath="$PROJECT_DIR$/.idea/Rubim-RH.iml" afterPath="$PROJECT_DIR$/.idea/Rubim-RH.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/LastMod.xml" afterPath="$PROJECT_DIR$/.idea/copyright/LastMod.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Defaults.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Defaults.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Bindings.xml" afterPath="$PROJECT_DIR$/Bindings.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceAddon-3.0/AceAddon-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceAddon-3.0/AceAddon-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceAddon-3.0/AceAddon-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceAddon-3.0/AceAddon-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfig-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfig-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfig-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfig-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigCmd-3.0/AceConfigCmd-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceConfig-3.0/AceConfigRegistry-3.0/AceConfigRegistry-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConsole-3.0/AceConsole-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceConsole-3.0/AceConsole-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceConsole-3.0/AceConsole-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceConsole-3.0/AceConsole-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceDB-3.0/AceDB-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceDB-3.0/AceDB-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceDB-3.0/AceDB-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceDB-3.0/AceDB-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceDBOptions-3.0/AceDBOptions-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceDBOptions-3.0/AceDBOptions-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceDBOptions-3.0/AceDBOptions-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceDBOptions-3.0/AceDBOptions-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceEvent-3.0/AceEvent-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceEvent-3.0/AceEvent-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceEvent-3.0/AceEvent-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceEvent-3.0/AceEvent-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/AceGUI-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/AceGUI-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/AceGUI-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/AceGUI-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-BlizOptionsGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-DropDownGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-InlineGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-ScrollFrame.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-SimpleGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-TabGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIContainer-Window.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Button.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Button.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-CheckBox.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-ColorPicker.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown-Items.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-DropDown.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-EditBox.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Heading.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Icon.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-InteractiveLabel.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Keybinding.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Label.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Label.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-MultiLineEditBox.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua" afterPath="$PROJECT_DIR$/Libs/AceGUI-3.0/widgets/AceGUIWidget-Slider.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceLocale-3.0/AceLocale-3.0.lua" afterPath="$PROJECT_DIR$/Libs/AceLocale-3.0/AceLocale-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/AceLocale-3.0/AceLocale-3.0.xml" afterPath="$PROJECT_DIR$/Libs/AceLocale-3.0/AceLocale-3.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua" afterPath="$PROJECT_DIR$/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml" afterPath="$PROJECT_DIR$/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/CallbackHandler-1.0/CallbackHandler-1.0.lua" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/CallbackHandler-1.0/CallbackHandler-1.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.toc" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.toc" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0/LibSharedMedia-3.0.lua" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0/LibSharedMedia-3.0.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0/lib.xml" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0/lib.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibStub/LibStub.lua" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/LibStub/LibStub.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/lib.xml" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/lib.xml" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/tests/LibSharedMedia-3.0 tests.lua" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/tests/LibSharedMedia-3.0 tests.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/tests/wow_api.lua" afterPath="$PROJECT_DIR$/Libs/LibSharedMedia-3.0/tests/wow_api.lua" />
-      <change beforePath="$PROJECT_DIR$/Libs/LibStub/LibStub.lua" afterPath="$PROJECT_DIR$/Libs/LibStub/LibStub.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/CombatTracker.lua" afterPath="$PROJECT_DIR$/Modules/CombatTracker.lua" />
       <change beforePath="$PROJECT_DIR$/Modules/Custom.lua" afterPath="$PROJECT_DIR$/Modules/Custom.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/Debug.lua" afterPath="$PROJECT_DIR$/Modules/Debug.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/HealingEngine.lua" afterPath="$PROJECT_DIR$/Modules/HealingEngine.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/Icons.lua" afterPath="$PROJECT_DIR$/Modules/Icons.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/Listener.lua" afterPath="$PROJECT_DIR$/Modules/Listener.lua" />
-      <change beforePath="$PROJECT_DIR$/Modules/MiniMap.lua" afterPath="$PROJECT_DIR$/Modules/MiniMap.lua" />
       <change beforePath="$PROJECT_DIR$/Modules/UI.lua" afterPath="$PROJECT_DIR$/Modules/UI.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DH/havoc.lua" afterPath="$PROJECT_DIR$/Rotations/DH/havoc.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DH/veng.lua" afterPath="$PROJECT_DIR$/Rotations/DH/veng.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/blood.lua" afterPath="$PROJECT_DIR$/Rotations/DK/blood.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/frost.lua" afterPath="$PROJECT_DIR$/Rotations/DK/frost.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rotations/DK/unholy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rotations/DR/feral.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/DR/guardian.lua" afterPath="$PROJECT_DIR$/Rotations/DR/guardian.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/HR/mm.lua" afterPath="$PROJECT_DIR$/Rotations/HR/mm.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/HR/survival.lua" afterPath="$PROJECT_DIR$/Rotations/HR/survival.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/MK/brew.lua" afterPath="$PROJECT_DIR$/Rotations/MK/brew.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/MK/wind.lua" afterPath="$PROJECT_DIR$/Rotations/MK/wind.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/holy.lua" afterPath="$PROJECT_DIR$/Rotations/PL/holy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/prot.lua" afterPath="$PROJECT_DIR$/Rotations/PL/prot.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/PL/ret.lua" afterPath="$PROJECT_DIR$/Rotations/PL/ret.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/RG/ass.lua" afterPath="$PROJECT_DIR$/Rotations/RG/ass.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/RG/outlaw.lua" afterPath="$PROJECT_DIR$/Rotations/RG/outlaw.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/RG/rogue.lua" afterPath="$PROJECT_DIR$/Rotations/RG/rogue.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/RG/sub.lua" afterPath="$PROJECT_DIR$/Rotations/RG/sub.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/SM/eleme.lua" afterPath="$PROJECT_DIR$/Rotations/SM/eleme.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/SM/enha.lua" afterPath="$PROJECT_DIR$/Rotations/SM/enha.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/SM/resto.lua" afterPath="$PROJECT_DIR$/Rotations/SM/resto.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/Shared.lua" afterPath="$PROJECT_DIR$/Rotations/Shared.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/arms.lua" afterPath="$PROJECT_DIR$/Rotations/WR/arms.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/fury.lua" afterPath="$PROJECT_DIR$/Rotations/WR/fury.lua" />
-      <change beforePath="$PROJECT_DIR$/Rotations/WR/prot.lua" afterPath="$PROJECT_DIR$/Rotations/WR/prot.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RHc.lua" afterPath="$PROJECT_DIR$/Rubim-RHc.lua" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -114,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Icons.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Icons.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="52" lean-forward="true" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+            <state relative-caret-position="482">
+              <caret line="449" column="3" lean-forward="true" selection-start-line="449" selection-start-column="3" selection-end-line="449" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -127,7 +30,7 @@
       <file leaf-file-name="enha.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/SM/enha.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
+            <state relative-caret-position="2907">
               <caret line="171" column="28" lean-forward="false" selection-start-line="171" selection-start-column="28" selection-end-line="171" selection-end-column="28" />
               <folding />
             </state>
@@ -137,7 +40,7 @@
       <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
+            <state relative-caret-position="7140">
               <caret line="420" column="24" lean-forward="false" selection-start-line="420" selection-start-column="21" selection-end-line="420" selection-end-column="24" />
               <folding />
             </state>
@@ -147,7 +50,7 @@
       <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/DK/frost.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
+            <state relative-caret-position="7480">
               <caret line="440" column="0" lean-forward="false" selection-start-line="440" selection-start-column="0" selection-end-line="440" selection-end-column="0" />
               <folding />
             </state>
@@ -164,10 +67,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Custom.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="311" column="11" lean-forward="false" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="blood.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/DK/blood.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
+            <state relative-caret-position="4675">
               <caret line="275" column="144" lean-forward="false" selection-start-line="275" selection-start-column="144" selection-end-line="275" selection-end-column="144" />
               <folding />
             </state>
@@ -177,18 +90,18 @@
       <file leaf-file-name="survival.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/HR/survival.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1060">
+            <state relative-caret-position="3672">
               <caret line="216" column="28" lean-forward="false" selection-start-line="216" selection-start-column="28" selection-end-line="216" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="174" column="28" lean-forward="false" selection-start-line="174" selection-start-column="17" selection-end-line="174" selection-end-column="28" />
+            <state relative-caret-position="184">
+              <caret line="160" column="80" lean-forward="true" selection-start-line="160" selection-start-column="80" selection-end-line="160" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -205,7 +118,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rubimrh</find>
       <find>slash</find>
       <find>mainO</find>
       <find>command</find>
@@ -235,6 +147,7 @@
       <find>playe</find>
       <find>player</find>
       <find>playerSpec</find>
+      <find>isSpellDisabled</find>
     </findStrings>
     <replaceStrings>
       <replace>BlackoutKick:IsReady(&quot;Melee&quot;)</replace>
@@ -305,7 +218,6 @@
         <option value="$PROJECT_DIR$/../TargetNameplateIndicator/core.lua" />
         <option value="$PROJECT_DIR$/../Rubim-RH_Extra/rubim-rh_extra.lua" />
         <option value="$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
-        <option value="$PROJECT_DIR$/Modules/Custom.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.toc" />
         <option value="$PROJECT_DIR$/Rotations/Shared.lua" />
         <option value="$PROJECT_DIR$/Modules/MiniMap.lua" />
@@ -330,8 +242,9 @@
         <option value="$PROJECT_DIR$/Rotations/SM/enha.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.lua" />
         <option value="$PROJECT_DIR$/Rotations/DK/blood.lua" />
-        <option value="$PROJECT_DIR$/Modules/UI.lua" />
         <option value="$PROJECT_DIR$/Modules/Icons.lua" />
+        <option value="$PROJECT_DIR$/Modules/Custom.lua" />
+        <option value="$PROJECT_DIR$/Modules/UI.lua" />
       </list>
     </option>
   </component>
@@ -378,9 +291,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -637,7 +550,6 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32946146" sideWeight="0.50416666" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32946146" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="LuaCheck" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -662,6 +574,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32946146" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -818,13 +731,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="331" column="0" lean-forward="false" selection-start-line="331" selection-start-column="0" selection-end-line="331" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/dk.lua" />
     <entry file="file://$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
       <provider selected="true" editor-type-id="text-editor">
@@ -893,7 +799,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="213" column="31" lean-forward="false" selection-start-line="213" selection-start-column="31" selection-end-line="213" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -901,7 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="627" column="31" lean-forward="false" selection-start-line="627" selection-start-column="31" selection-end-line="627" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -916,7 +820,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="573">
           <caret line="181" column="30" lean-forward="false" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -924,7 +827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="305" column="30" lean-forward="false" selection-start-line="305" selection-start-column="30" selection-end-line="305" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -932,7 +834,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="600" column="31" lean-forward="false" selection-start-line="600" selection-start-column="31" selection-end-line="600" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -940,7 +841,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="573">
           <caret line="447" column="30" lean-forward="false" selection-start-line="447" selection-start-column="30" selection-end-line="447" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -962,7 +862,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="524" column="31" lean-forward="false" selection-start-line="524" selection-start-column="31" selection-end-line="524" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -983,7 +882,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DK/frost.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
+        <state relative-caret-position="7480">
           <caret line="440" column="0" lean-forward="false" selection-start-line="440" selection-start-column="0" selection-end-line="440" selection-end-column="0" />
           <folding />
         </state>
@@ -993,13 +892,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DK/blood.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
+        <state relative-caret-position="4675">
           <caret line="275" column="144" lean-forward="false" selection-start-line="275" selection-start-column="144" selection-end-line="275" selection-end-column="144" />
           <folding />
         </state>
@@ -1007,7 +905,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/HR/survival.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1060">
+        <state relative-caret-position="3672">
           <caret line="216" column="28" lean-forward="false" selection-start-line="216" selection-start-column="28" selection-end-line="216" selection-end-column="28" />
           <folding />
         </state>
@@ -1015,7 +913,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/SM/enha.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
+        <state relative-caret-position="2907">
           <caret line="171" column="28" lean-forward="false" selection-start-line="171" selection-start-column="28" selection-end-line="171" selection-end-column="28" />
           <folding />
         </state>
@@ -1023,24 +921,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
+        <state relative-caret-position="7140">
           <caret line="420" column="24" lean-forward="false" selection-start-line="420" selection-start-column="21" selection-end-line="420" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="174" column="28" lean-forward="false" selection-start-line="174" selection-start-column="17" selection-end-line="174" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="52" lean-forward="true" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+        <state relative-caret-position="482">
+          <caret line="449" column="3" lean-forward="true" selection-start-line="449" selection-start-column="3" selection-end-line="449" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="311" column="11" lean-forward="false" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="160" column="80" lean-forward="true" selection-start-line="160" selection-start-column="80" selection-end-line="160" selection-end-column="80" />
           <folding />
         </state>
       </provider>
