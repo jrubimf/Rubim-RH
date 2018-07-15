@@ -439,7 +439,7 @@ local function APL()
     return S.HowlingBlast:ID()
   end
 
-  if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.DeathKnight.frost.deathstrike then
+  if classSpell[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsCastable("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.DeathKnight.Frost.deathstrike then
     return S.DeathStrike:ID()
   end
 

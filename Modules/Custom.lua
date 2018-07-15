@@ -305,6 +305,28 @@ function RubimRH.ColorOnOff(boolean)
     end
 end
 
+RubimRH.nextSpell = nil
+function Spell:IsCastableP ( Range, AoESpell, ThisUnit, BypassRecovery, Offset )
+    RubimRH.nextSpell = self:ID()
+    if Range then
+        local RangeUnit = ThisUnit or Target;
+        return self:IsLearned() and self:CooldownRemainsP( BypassRecovery, Offset or "Auto") == 0 and RangeUnit:IsInRange( Range, AoESpell );
+    else
+        return self:IsLearned() and self:CooldownRemainsP( BypassRecovery, Offset or "Auto") == 0;
+    end
+end
+
+function Spell:IsCastable ( Range, AoESpell, ThisUnit )
+    RubimRH.nextSpell = self:ID()
+    if Range then
+        local RangeUnit = ThisUnit or Target;
+        return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange( Range, AoESpell );
+    else
+        return self:IsLearned() and self:CooldownUp();
+    end
+end
+
+
 function Spell:IsReady(Range, AoESpell, ThisUnit)
     local name, rank, icon, castTime, minRange, maxRange = GetSpellInfo(self:ID())
 
@@ -315,9 +337,11 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     if maxRange ~= nil then
         AC.GetEnemies(maxRange, true);
         if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
+            RubimRH.nextSpell = self:ID()
             return true
         end
     end
+    RubimRH.nextSpell = self:ID()
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
