@@ -308,11 +308,31 @@ function RubimRH.ColorOnOff(boolean)
     end
 end
 
-RubimRH.queuedSpell = {nil, 0}
+RubimRH.castSpellSequence = {}
+local lastCast = 1
+
+function RubimRH.CastSequence()
+    if not Player:AffectingCombat() then
+        lastCast = 1
+        return nil
+    end
+
+    if RubimRH.castSpellSequence ~= nil and Player:PrevGCD(1, RubimRH.castSpellSequence[lastCast]) then
+        lastCast = lastCast + 1
+    end
+
+    if lastCast > #RubimRH.castSpellSequence then
+        return nil
+    end
+
+    return RubimRH.castSpellSequence[lastCast]
+end
+
+RubimRH.queuedSpell = { nil, 0 }
 
 function Spell:Queue(powerExtra)
     local powerEx = powerExtra or 0
-    RubimRH.queuedSpell = {self, powerEx}
+    RubimRH.queuedSpell = { self, powerEx }
 end
 
 --/run RubimRH.queuedSpell ={ HeroLib.Spell(49020), 0 }
@@ -329,7 +349,6 @@ function Spell:Queued(powerEx)
     local costTypeQ = nil
     local costs = nil
     local costsQ = nil
-
 
     for i = 1, #powerCost do
         if powerCost[i].cost > 0 then
@@ -391,18 +410,32 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
     end
 end
 
+function RubimRH.TargetNext(Range, Texture)
+    if Target:Exists() then return nil end
+
+    if Range == "Melee" then
+        HL.GetEnemies(10, true);
+        if RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[10] >= 1 then
+            return Texture
+        end
+    end
+
+    if Range == "Ranged" then
+        HL.GetEnemies(40, true);
+        if RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[40] >= 1 then
+            return Texture
+        end
+    end
+
+    return nil
+end
+
 function Spell:IsReady(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:Queued() then
         return false
     end
     if not RubimRH.isSpellDisabled(self:ID()) then
         return false
-    end
-    if maxRange ~= nil then
-        HL.GetEnemies(maxRange, true);
-        if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
-            return true
-        end
     end
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
@@ -432,7 +465,6 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
-
 function RubimRH.isSpellDisabled(spellIDs)
     local isDisabled = true
 
@@ -459,5 +491,41 @@ function RubimRH.addSpellDisabled(spellIDs)
         table.insert(RubimRH.db.profile.mainOption.disabledSpells, spellIDs)
         print("|cFFFF0000Blocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
     end
+end
 
+function Spell:Cast()
+    return RubimRH.GetTexture(self)
+end
+
+function Spell:SetTexture(id)
+    self.TextureID = id
+end
+
+function RubimRH.GetTexture (Object)
+    -- Spells
+    local SpellID = Object.SpellID;
+
+    if SpellID then
+        if Object.TextureSpellID ~= nil then
+            if #Object.TextureSpellID == 1 then
+                return GetSpellTexture(Object.TextureSpellID[1]);
+            else
+                return Object.TextureSpellID[2];
+            end
+        else
+            return GetSpellTexture(SpellID);
+        end
+
+    end
+    -- Items
+    local ItemID = Object.ItemID;
+    if ItemID then
+        local TextureCache = Cache.Persistent.Texture.Item;
+        if not TextureCache[ItemID] then
+            -- name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice
+            local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
+            TextureCache[ItemID] = texture;
+        end
+        return TextureCache[ItemID];
+    end
 end

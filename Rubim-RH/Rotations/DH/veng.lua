@@ -40,6 +40,7 @@ Spell.DemonHunter.Vengeance = {
     InfernalStrike = Spell(189110)
 };
 local S = Spell.DemonHunter.Vengeance;
+S.Fracture.TextureSpellID = { 279450 }
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -59,70 +60,74 @@ local function APL()
     --- Defensives
     -- Demon Spikes
     if S.DemonSpikes:IsCastable("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 85) and (IsTanking or not Player:HealingAbsorbed()) then
-        return S.DemonSpikes:ID()
+        return S.DemonSpikes:Cast()
     end
 
     if S.DemonSpikes:IsCastable("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
-        return S.DemonSpikes:ID()
+        return S.DemonSpikes:Cast()
     end
-    if S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsCastable("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
-        return S.InfernalStrike:ID()
+    if RubimRH.config.Spells[1].isActive and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsCastable("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+        return S.InfernalStrike:Cast()
     end
     -- actions+=/spirit_bomb,if=soul_fragments=5|debuff.frailty.down
     -- Note: Looks like the debuff takes time to refresh so we add TimeSinceLastCast to offset that.
-    if S.SpiritBomb:IsCastable() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
-        return S.SpiritBomb:ID()
+    if S.Fracture:IsAvailable() and S.Fracture:IsReady("Melee") and SoulFragments <= 3 and Player:PainDeficit() <= 25 then
+        return S.Fracture:Cast()
     end
 
-    if S.FieryBrand:IsCastable("Melee") then
-        return S.FieryBrand:ID()
+    if S.SpiritBomb:IsCastable() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
+        return S.SpiritBomb:Cast()
+    end
+
+    if RubimRH.config.Spells[2].isActive and S.FieryBrand:IsCastable("Melee") then
+        return S.FieryBrand:Cast()
     end
     -- actions+=/soul_carver
     if S.SoulCarver:IsCastable("Melee") then
-        return S.SoulCarver:ID()
+        return S.SoulCarver:Cast()
     end
     -- actions+=/immolation_aura,if=pain<=80
     if S.ImmolationAura:IsCastable() and Cache.EnemiesCount[8] >= 1 and not Player:Buff(S.ImmolationAura) and Player:Pain() <= 80 then
-        return S.ImmolationAura:ID()
+        return S.ImmolationAura:Cast()
     end
     -- actions+=/felblade,if=pain<=70
     if S.Felblade:IsCastable(15) and Player:Pain() <= 75 then
-        return S.Felblade:ID()
+        return S.Felblade:Cast()
     end
     -- actions+=/fel_devastation
     if RubimRH.CDsON() and S.FelDevastation:IsCastable(20, true) and RubimRH.lastMoved() > 1 and Player:Pain() >= 30 then
-        return S.FelDevastation:ID()
+        return S.FelDevastation:Cast()
     end
     -- actions+=/sigil_of_flame
     if S.SigilofFlame:IsCastable() and Cache.EnemiesCount[8] >= 1 then
-        return S.SigilofFlame:ID()
+        return S.SigilofFlame:Cast()
     end
     if Target:IsInRange("Melee") then
         -- actions+=/soul_cleave,if=pain>=80
         if not S.Fracture:IsAvailable() and S.SoulCleave:IsCastable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
-            return S.SoulCleave:ID()
+            return S.SoulCleave:Cast()
         end
 
         if S.Fracture:IsAvailable() and S.SoulCleave:IsCastable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
-            return S.SoulCleave:ID()
+            return S.SoulCleave:Cast()
         end
         -- actions+=/sever
-        if S.Sever:IsCastable() then
+        if S.Sever:IsReady("Melee") then
             --Hacky Stuff
             return 203783
         end
 
-        if S.Fracture:IsAvailable() and S.Fracture:IsReady() then
+        if S.Fracture:IsAvailable() and S.Fracture:IsReady("Melee") then
             return 279450
         end
 
         -- actions+=/shear
-        if S.Shear:IsCastable() then
-            return S.Shear:ID()
+        if S.Shear:IsCastable("Melee") then
+            return S.Shear:Cast()
         end
     end
     if Target:IsInRange(30) and S.ThrowGlaive:IsCastable() then
-        return S.ThrowGlaive:ID()
+        return S.ThrowGlaive:Cast()
     end
     return 0, 975743
 end

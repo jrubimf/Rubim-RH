@@ -263,11 +263,11 @@ local function getOptions()
                             name = "Death Knight - Frost",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.DeathKnight.frost[key]
+                                return RubimRH.db.profile.DeathKnight.Frost[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.DeathKnight.frost[key] = value
+                                RubimRH.db.profile.DeathKnight.Frost[key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -300,11 +300,11 @@ local function getOptions()
                             name = "Death Knight - Unholy",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.DeathKnight.unholy[key]
+                                return RubimRH.db.profile.DeathKnight.Unholy[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.DeathKnight.unholy[key] = value
+                                RubimRH.db.profile.DeathKnight.Unholy[key] = value
                             end,
                             args = {
                                 cooldown = {

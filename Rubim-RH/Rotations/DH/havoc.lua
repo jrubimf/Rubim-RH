@@ -106,8 +106,6 @@ Spell.DemonHunter.Havoc = {
 
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),
-    -- Misc
-    PoolEnergy = Spell(9999000010),
 };
 -- Items
 if not Item.DemonHunter then
@@ -131,6 +129,13 @@ Item.DemonHunter.Havoc = {
 };
 local I = Item.DemonHunter.Havoc;
 local S = Spell.DemonHunter.Havoc;
+
+S.Annihilation.TextureSpellID = { 204317 }
+S.DeathSweep.TextureSpellID = { 199552 }
+S.Metamorphosis.TextureSpellID = { 187827 }
+S.DarkSlash.TextureSpellID = { S.ArcaneTorrent:ID() }
+S.ImmolationAura.TextureSpellID = { S.Shadowmeld:ID() }
+
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
@@ -243,33 +248,33 @@ local function APL()
         -- chaos_blades,if=buff.metamorphosis.up|cooldown.metamorphosis.adjusted_remains>60|target.time_to_die<=duration
         if S.ChaosBlades:IsReady("Melee")
                 and (Player:BuffP(S.MetamorphosisBuff) or MetamorphosisCooldownAdjusted() > 60 or Target:TimeToDie() <= 18) then
-            return S.ChaosBlades:ID()
+            return S.ChaosBlades:Cast()
         end
         -- nemesis,if=!raid_event.adds.exists&(buff.chaos_blades.up|buff.metamorphosis.up|cooldown.metamorphosis.adjusted_remains<20|target.time_to_die<=60)
         if S.Nemesis:IsAvailable() and S.Nemesis:IsReady("Melee") and ((Player:BuffP(S.ChaosBlades)
                 or Player:BuffP(S.MetamorphosisBuff) or MetamorphosisCooldownAdjusted() < 20 or Target:TimeToDie() <= 60)) then
-            return S.Nemesis:ID()
+            return S.Nemesis:Cast()
         end
 
         if S.FelBarrage:IsAvailable() and S.FelBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.FelBarrage:ID()
+            return S.FelBarrage:Cast()
         end
         -- potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
     end
 
     local function DarkSlash()
         -- dark_slash,if=fury>=80&(!variable.blade_dance|!cooldown.blade_dance.ready)
-        if S.DarkSlash:IsCastable() and Player:Fury() >= 80
-                and (not BladeDance() or (not S.BladeDance:IsReady() and not S.DeathSweep:IsReadyMorph())) then
-            return S.DarkSlash:ID()
+        if S.DarkSlash:IsReady("Melee") and (Player:Fury() >= 80
+                and (not BladeDance() or (not S.BladeDance:IsReady() and not S.DeathSweep:IsReadyMorph()))) then
+            return S.DarkSlash:Cast()
         end
         -- annihilation,if=debuff.dark_slash.up
-        if S.Annihilation:IsReadyMorph() and Target:DebuffP(S.DarkSlash) then
-            return S.Annihilation:ID()
+        if S.Annihilation:IsReadyMorph("Melee") and Target:DebuffP(S.DarkSlash) then
+            return S.Annihilation:Cast()
         end
         -- chaos_strike,if=debuff.dark_slash.up
-        if S.ChaosStrike:IsReady() and Target:DebuffP(S.DarkSlash) then
-            return S.ChaosStrike:ID()
+        if S.ChaosStrike:IsReady("Melee") and Target:DebuffP(S.DarkSlash) then
+            return S.ChaosStrike:Cast()
         end
     end
 
@@ -278,60 +283,60 @@ local function APL()
 
         -- fel_barrage,if=active_enemies>desired_targets|raid_event.adds.in>30
         if RubimRH.config.Spells[3].isActive and S.FelBarrage:IsCastable(8, true) then
-            return S.FelBarrage:ID()
+            return S.FelBarrage:Cast()
         end
         -- death_sweep,if=variable.blade_dance
         if S.DeathSweep:IsReadyMorph(8, true) and BladeDance() then
-            return 199552
+            return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
         if S.BladeDance:IsReady(8, true)
                 and BladeDance() and S.EyeBeam:CooldownRemainsP() > 5 and not S.Metamorphosis:IsReady() then
-            return S.BladeDance:ID()
+            return S.BladeDance:Cast()
         end
         -- immolation_aura
         if S.ImmolationAura:IsAvailable() and S.ImmolationAura:IsCastable(8, true) then
-            return S.Shadowmeld:ID()
+            return S.ImmolationAura:Cast()
         end
         -- felblade,if=fury<40|(buff.metamorphosis.down&fury.deficit>=40)
         if S.Felblade:IsCastable(S.Felblade)
                 and (Player:Fury() < 40 or (not Player:BuffP(S.MetamorphosisBuff) and Player:FuryDeficit() >= 40)) then
-            return S.Felblade:ID()
+            return S.Felblade:Cast()
         end
         -- eye_beam,if=(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and (not S.BlindFury:IsAvailable() or Player:FuryDeficit() >= 70)
                 and (not IsMetaExtendedByDemonic() or (HL.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)) then
-            return S.EyeBeam:ID()
+            return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.blind_fury.enabled|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance
-        if InMeleeRange and S.Annihilation:IsReadyMorph()
+        if InMeleeRange and S.Annihilation:IsReadyMorph("Melee")
                 and (S.BlindFury:IsAvailable() or Player:FuryDeficit() < 30 or Player:BuffRemainsP(S.MetamorphosisBuff) < 5) and not PoolingForBladeDance() then
-            return 204317
+            return S.Annihilation:Cast()
         end
         -- chaos_strike,if=(talent.blind_fury.enabled|fury.deficit<30)&!variable.pooling_for_meta&!variable.pooling_for_blade_dance
-        if InMeleeRange and S.ChaosStrike:IsReady()
+        if InMeleeRange and S.ChaosStrike:IsReady("Melee")
                 and (S.BlindFury:IsAvailable() or Player:FuryDeficit() < 30) and not PoolingForBladeDance() then
-            return S.ChaosStrike:ID()
+            return S.ChaosStrike:Cast()
         end
         -- fel_rush,if=talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
         if RubimRH.config.Spells[1].isActive and S.FelRush:IsCastable(20, true) and S.DemonBlades:IsAvailable() and not S.EyeBeam:IsReady() then
-            return S.FelRush:ID()
+            return S.FelRush:Cast()
         end
         -- demons_bite
         if InMeleeRange and S.DemonsBite:IsCastable() then
-            return S.DemonsBite:ID()
+            return S.DemonsBite:Cast()
         end
         -- throw_glaive,if=buff.out_of_range.up
         if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and not IsInMeleeRange() then
-            return S.ThrowGlaive:ID()
+            return S.ThrowGlaive:Cast()
         end
         -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
         if RubimRH.config.Spells[1].isActive and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
-            return S.FelRush:ID()
+            return S.FelRush:Cast()
         end
         -- throw_glaive,if=talent.demon_blades.enabled
         if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and S.DemonBlades:IsAvailable() then
-            return S.ThrowGlaive:ID()
+            return S.ThrowGlaive:Cast()
         end
     end
 
@@ -339,24 +344,24 @@ local function APL()
         local InMeleeRange = IsInMeleeRange()
 
         -- vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down
-        if S.VengefulRetreat:IsCastable("Melee", true) and S.Momentum:IsAvailable() and Player:BuffDownP(S.PreparedBuff) then
-            return S.VengefulRetreat:ID()
+        if S.VengefulRetreat:IsCastable("Melee", true) and S.Momentum:IsAvailable() then
+            return S.VengefulRetreat:Cast()
         end
         -- fel_rush,if=(variable.waiting_for_momentum|talent.fel_mastery.enabled)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
         if RubimRH.config.Spells[1].isActive and S.FelRush:IsCastable(20, true) and (S.Momentum:IsAvailable() or S.FelMastery:IsAvailable()) then
-            return S.FelRush:ID()
+            return S.FelRush:Cast()
         end
         -- fel_barrage,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>30)
         if RubimRH.config.Spells[3].isActive and S.FelBarrage:IsCastable(8, true) and not WaitingForMomentum() then
-            return S.FelBarrage:ID()
+            return S.FelBarrage:Cast()
         end
         -- immolation_aura
         if S.ImmolationAura:IsAvailable() and S.ImmolationAura:IsCastable(8, true) then
-            return S.Shadowmeld:ID()
+            return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and RubimRH.AoEON() and Cache.EnemiesCount[CleaveRangeID] > 1 and not WaitingForMomentum() then
-            return S.EyeBeam:ID()
+            return S.EyeBeam:Cast()
         end
         -- death_sweep,if=variable.blade_dance
         if S.DeathSweep:IsReadyMorph(8, true) and BladeDance() then
@@ -364,51 +369,51 @@ local function APL()
         end
         -- blade_dance,if=variable.blade_dance
         if S.BladeDance:IsReady(8, true) and BladeDance() then
-            return S.BladeDance:ID()
+            return S.BladeDance:Cast()
         end
         -- felblade,if=fury.deficit>=40
         if S.Felblade:IsCastable(S.Felblade) and Player:FuryDeficit() >= 40 then
-            return S.Felblade:ID()
+            return S.Felblade:Cast()
         end
         -- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_dark_slash&raid_event.adds.in>cooldown
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and not S.BlindFury:IsAvailable() and not WaitingForDarkSlash() then
-            return S.EyeBeam:ID()
+            return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_dark_slash
-        if InMeleeRange and S.Annihilation:IsReadyMorph()
+        if InMeleeRange and S.Annihilation:IsReadyMorph("Melee")
                 and (S.DemonBlades:IsAvailable() or not WaitingForMomentum() or Player:FuryDeficit() < 30 or Player:BuffRemainsP(S.MetamorphosisBuff) < 5)
                 and not PoolingForBladeDance() and not WaitingForDarkSlash() then
-            return 204317
+            return S.Annihilation:Cast()
         end
         -- chaos_strike,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30)&!variable.pooling_for_meta&!variable.pooling_for_blade_dance&!variable.waiting_for_dark_slash
-        if InMeleeRange and S.ChaosStrike:IsReady()
+        if InMeleeRange and S.ChaosStrike:IsReady("Melee")
                 and (S.DemonBlades:IsAvailable() or not WaitingForMomentum() or Player:FuryDeficit() < 30)
                 and not PoolingForBladeDance() and not WaitingForDarkSlash() then
-            return S.ChaosStrike:ID()
+            return S.ChaosStrike:Cast()
         end
         -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and S.BlindFury:IsAvailable() then
-            return S.EyeBeam:ID()
+            return S.EyeBeam:Cast()
         end
         -- demons_bite
         if InMeleeRange and S.DemonsBite:IsCastable() then
-            return S.DemonsBite:ID()
+            return S.DemonsBite:Cast()
         end
         -- fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
         if RubimRH.config.Spells[1].isActive and S.FelRush:IsCastable(20) and not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable() then
-            return S.FelRush:ID()
+            return S.FelRush:Cast()
         end
         -- felblade,if=movement.distance>15|buff.out_of_range.up
         if S.Felblade:IsCastable(S.Felblade) and (not IsInMeleeRange()) then
-            return S.Felblade:ID()
+            return S.Felblade:Cast()
         end
         -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
         if RubimRH.config.Spells[1].isActive and S.FelRush:IsCastable(20) and (not IsInMeleeRange() and not S.Momentum:IsAvailable()) then
-            return S.FelRush:ID()
+            return S.FelRush:Cast()
         end
         -- throw_glaive,if=talent.demon_blades.enabled
         if S.ThrowGlaive:IsCastable(S.ThrowGlaive) and S.DemonBlades:IsAvailable() then
-            return S.ThrowGlaive:ID()
+            return S.ThrowGlaive:Cast()
         end
     end
 
@@ -428,7 +433,7 @@ local function APL()
 
     -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
     if S.DarkSlash:IsAvailable() and (WaitingForDarkSlash() or Target:DebuffP(S.DarkSlash)) and DarkSlash() ~= nil then
-        return S.ArcaneTorrent:ID()
+        return S.DarkSlash:Cast()
     end
 
     -- run_action_list,name=demonic,if=talent.demonic.enabled

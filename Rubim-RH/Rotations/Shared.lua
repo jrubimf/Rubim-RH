@@ -29,13 +29,11 @@ function RubimRH.PvP()
     if playerSpec == 72 then
         return RubimRH.FuryPVP()
     end
-
-
-
-
 end
 
 
+local trinket1 = 1030910
+local trinket2 = 1030902
 function RubimRH.Shared()
     if RubimRH.db.profile.mainOption.healthstoneper > 0 and Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
         return 0, 538745

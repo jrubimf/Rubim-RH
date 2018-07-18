@@ -6,7 +6,6 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
--- AethysRotation
 -- Lua
 local pairs = pairs;
 local tableinsert = table.insert;
@@ -318,7 +317,7 @@ local function APL()
 
     -- actions+=/call_action_list,name=stealth_cds,if=energy.deficit<=variable.stealth_threshold&combo_points.deficit>=4
     if (Player:EnergyDeficit() <= Stealth_Threshold() and Player:ComboPointsDeficit() >= 4) and stealth_cds() ~= nil then
-            return stealth_cds()
+        return stealth_cds()
     end
 
     -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
@@ -328,12 +327,12 @@ local function APL()
     end
 
     -- actions+=/call_action_list,name=build,if=energy.deficit<=variable.stealth_threshold-40*!(talent.alacrity.enabled|talent.shadow_focus.enabled|talent.master_of_shadows.enabled)
-    if build() ~= nil and Player:EnergyDeficitHeroLib() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
+    if build() ~= nil and Player:EnergyDeficitPredicted() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
         return build()
     end
 
     -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-    if S.ArcaneTorrent:IsCastable() and Player:EnergyDeficitHeroLib() > 15 + Player:EnergyRegen() then
+    if S.ArcaneTorrent:IsCastable() and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
         return RubimRH.nS
     end
     -- actions+=/arcane_pulse

@@ -42,6 +42,7 @@ Rotations\SM\resto.lua
 Rotations\PL\ret.lua
 Rotations\PL\prot.lua
 Rotations\PL\holy.lua
+Rotations\HR\bm.lua
 Rotations\HR\survival.lua
 Rotations\HR\mm.lua
 Rotations\DR\feral.lua

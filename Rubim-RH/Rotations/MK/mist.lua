@@ -4,4 +4,6 @@
 --- DateTime: 15/07/2018 18:15
 ---
 
-local Nothing = nil
+local function Nothing()
+
+end

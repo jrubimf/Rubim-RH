@@ -316,7 +316,7 @@ end
 
 local function EnergyTimeToMaxRounded()
     -- Round to the nearesth 10th to reduce prediction instability on very high regen rates
-    return math.floor(Player:EnergyTimeToMaxHeroLib() * 10 + 0.5) / 10;
+    return math.floor(Player:EnergyTimeToMaxPredicted() * 10 + 0.5) / 10;
 end
 
 local function BladeFlurry()
@@ -366,11 +366,11 @@ local function CDs()
                 return S.Berserking:ID()
             end
             -- actions.cds+=/arcane_torrent,if=energy.deficit>40
-            if S.ArcaneTorrent:IsReady() and Player:EnergyDeficitHeroLib() > 40 then
+            if S.ArcaneTorrent:IsReady() and Player:EnergyDeficitPredicted() > 40 then
                 return S.ArcaneTorrent:ID()
             end
             -- actions.cds+=/adrenaline_rush,if=!buff.adrenaline_rush.up&energy.deficit>0
-            if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitHeroLib() > 0 then
+            if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitPredicted() > 0 then
                 return S.AdrenalineRush:ID()
             end
         end
@@ -409,7 +409,7 @@ local function Stealth()
     if Target:IsInRange(S.SaberSlash) then
         -- actions.stealth=variable,name=ambush_condition,value=combo_points.deficit>=2+2*(talent.ghostly_strike.enabled&!debuff.ghostly_strike.up)+buff.broadsides.up&energy>60&!buff.jolly_roger.up&!buff.hidden_blade.up
         local Ambush_Condition = (Player:ComboPointsDeficit() >= 2 + 2 * ((S.GhostlyStrike:IsAvailable() and not Target:Debuff(S.GhostlyStrike)) and 1 or 0)
-                + (Player:Buff(S.Broadsides) and 1 or 0) and Player:EnergyHeroLib() > 60 and not Player:Buff(S.JollyRoger) and not Player:Buff(S.HiddenBlade)) and true or false;
+                + (Player:Buff(S.Broadsides) and 1 or 0) and Player:EnergyPredicted() > 60 and not Player:Buff(S.JollyRoger) and not Player:Buff(S.HiddenBlade)) and true or false;
         -- actions.stealth+=/ambush,if=variable.ambush_condition
         if Player:IsStealthed(true, true) and S.Ambush:IsReady() and Ambush_Condition then
             return S.Ambush:ID()
@@ -568,7 +568,7 @@ local function APL()
             return S.RolltheBones:ID()
         end
         -- actions+=/killing_spree,if=energy.time_to_max>5|energy<15
-        if RubimRH.CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyHeroLib() < 15) then
+        if RubimRH.CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
             return S.KillingSpree:ID()
         end
         -- actions+=/call_action_list,name=build
@@ -586,7 +586,7 @@ local function APL()
         end
         -- OutofRange Pistol Shot
         if not Target:IsInRange(10) and (S.PistolShot:IsReady(20) or S.Blunderbuss:IsReady(20)) and not Player:IsStealthed(true, true)
-                and Player:EnergyDeficitHeroLib() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
+                and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
             return 242277
         end
     end

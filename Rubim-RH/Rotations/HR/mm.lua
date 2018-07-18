@@ -181,15 +181,15 @@ end
 
 local function Burst()
     if S.BlackArrow:IsReady() then
-        return S.BlackArrow:ID()
+        return S.BlackArrow:Cast()
     end
 
     if S.Windburst:IsReady() then
-        return S.Windburst:ID()
+        return S.Windburst:Cast()
     end
 
     if S.AMurderofCrows:IsReady() then
-        return S.AMurderofCrows:ID()
+        return S.AMurderofCrows:Cast()
     end
 
     if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() then
@@ -197,15 +197,15 @@ local function Burst()
     end
 
     if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30) then
-        return S.MarkedShot:ID()
+        return S.MarkedShot:Cast()
     end
 
     if S.TrueShot:IsReady() then
-        return S.TrueShot:ID()
+        return S.TrueShot:Cast()
     end
 
     if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and RubimRH.lastMoved() > 0.5  then
-        return S.AimedShot:ID()
+        return S.AimedShot:Cast()
     end
 
     if S.Sidewinders:Ready() and not RubimRH.breakableAreaCC(30) then
@@ -213,25 +213,25 @@ local function Burst()
     end
 
     if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < 3 and not RubimRH.breakableAreaCC(30) then
-        return S.MarkedShot:ID()
+        return S.MarkedShot:Cast()
     end
 
     if S.AimedShot:IsReady() and RubimRH.lastMoved() > 0.5 then
-        return S.AimedShot:ID()
+        return S.AimedShot:Cast()
     end
 
     if S.AMurderofCrows:IsAvailable() and S.AMurderofCrows:IsReady() then
-        return S.AMurderofCrows:ID()
+        return S.AMurderofCrows:Cast()
     end
 end
 
 local function Sustained()
     if S.BlackArrow:IsAvailable() and S.BlackArrow:IsReady() then
-        return S.BlackArrow:ID()
+        return S.BlackArrow:Cast()
     end
 
     if Player:IsMoving() and S.MarkedShot:IsReady() and not RubimRH.breakableAreaCC(30) then
-        return S.MarkedShot:ID()
+        return S.MarkedShot:Cast()
     end
 
     if Player:IsMoving() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD()and not RubimRH.breakableAreaCC(30) then
@@ -239,7 +239,7 @@ local function Sustained()
     end
 
     if S.MarkedShot:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30) then
-        return S.MarkedShot:ID()
+        return S.MarkedShot:Cast()
     end
 
     if S.Sidewinders:IsAvailable() and S.Sidewinders:IsReady() and Target:DebuffRemains(S.Vulnerability) < Player:GCD() and not RubimRH.breakableAreaCC(30)  then
@@ -247,11 +247,11 @@ local function Sustained()
     end
 
     if S.AimedShot:IsReady() and Target:DebuffRemainsP(S.Vulnerability) > S.AimedShot:CastTime() and RubimRH.lastMoved() > 0.5  then
-        return S.AimedShot:ID()
+        return S.AimedShot:Cast()
     end
 
     if S.Windburst:IsReady() then
-        return S.Windburst:ID()
+        return S.Windburst:Cast()
     end
 
     if S.Sidewinders:Ready() and not RubimRH.breakableAreaCC(30) then

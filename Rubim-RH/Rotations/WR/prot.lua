@@ -62,37 +62,37 @@ local T212PC, T214PC = HL.HasTier("T21");
 
 local function AoE()
     if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
-        return S.IgnorePain:ID()
+        return S.IgnorePain:Cast()
     end
 
     if S.Revenge:IsReady() and S.Revenge:IsReady() and Player:RageDeficit() <= 30 then
-        return S.Revenge:ID()
+        return S.Revenge:Cast()
     end
 
     if S.ThunderClap:IsReady() and Cache.EnemiesCount[12] >= 1 then
-        return S.ThunderClap:ID()
+        return S.ThunderClap:Cast()
     end
 
     if S.ShieldSlam:IsReady("Melee") then
-        return S.ShieldSlam:ID()
+        return S.ShieldSlam:Cast()
     end
 
     if S.Devastate:IsReady() then
-        return S.Devastate:ID()
+        return S.Devastate:Cast()
     end
 end
 
 local function Vengeance()
 	if not Player:Buff(S.VegeanceIP) and not Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
-		return S.Revenge:ID()
+		return S.Revenge:Cast()
 	end
 
 	if Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
-		return S.Revenge:ID()
+		return S.Revenge:Cast()
 	end	
 	
 	if Player:Buff(S.VegeanceIP) and S.IgnorePain:IsReady() then
-		return S.IgnorePain:ID()
+		return S.IgnorePain:Cast()
 	end	
 end
 
@@ -110,15 +110,15 @@ local function APL()
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
     if LeftCtrl and LeftShift and S.Shockwave:IsReady() then
-        return S.Shockwave:ID()
+        return S.Shockwave:Cast()
     end
 
     if RubimRH.CDsON() and S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.BattleCry:ID()
+        return S.BattleCry:Cast()
     end
 
     if RubimRH.CDsON() and S.Avatar:IsAvailable() and S.Avatar:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.Avatar:ID()
+        return S.Avatar:Cast()
     end
 
 	if Vengeance() ~= nil and S.Vengeance:IsAvailable() then
@@ -126,35 +126,35 @@ local function APL()
 	end	
 	
     if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
-        return S.IgnorePain:ID()
+        return S.IgnorePain:Cast()
     end
 
     if S.ShieldBlock:IsReady("Melee") and Player:Rage() >= 15 and not Player:Buff(S.ShieldBlockB) and IsTanking and S.ShieldBlock:ChargesFractional() >= 1.8 then
-        return S.ShieldBlock:ID()
+        return S.ShieldBlock:Cast()
     end
 
     if S.ImpendingVictory:IsAvailable() and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:ID()
+        return S.VictoryRush:Cast()
     end
 
     if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:ID()
+        return S.VictoryRush:Cast()
     end
 
     if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
-        return S.VictoryRush:ID()
+        return S.VictoryRush:Cast()
     end
 
     if Player:Buff(S.Victorious) and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:ID()
+        return S.VictoryRush:Cast()
     end
 
     if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.ImpendingVictory:IsReady() then
-        return S.VictoryRush:ID()
+        return S.VictoryRush:Cast()
     end
 
     if S.Revenge:IsReady() and Player:RageDeficit() <= 30 and Cache.EnemiesCount[8] >= 1 then
-        return S.Revenge:ID()
+        return S.Revenge:Cast()
     end
 
     if Cache.EnemiesCount[12] >= 3 and RubimRH.useAoE then
@@ -164,19 +164,19 @@ local function APL()
     end
 
     if S.ShieldSlam:IsReady("Melee") then
-        return S.ShieldSlam:ID()
+        return S.ShieldSlam:Cast()
     end
 
     if S.ThunderClap:IsReady() and Cache.EnemiesCount[12] >= 1 then
-        return S.ThunderClap:ID()
+        return S.ThunderClap:Cast()
     end
 
     if not S.Vengeance:IsAvailable() and S.Revenge:IsReady() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
-        return S.Revenge:ID()
+        return S.Revenge:Cast()
     end
 
     if S.Devastate:IsReady() then
-        return S.Devastate:ID()
+        return S.Devastate:Cast()
     end
     return 0, 975743
 end

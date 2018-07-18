@@ -23,12 +23,21 @@ end)
 
 local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
 _G["RubimRH"] = RubimRH
-RubimRH.version = "bfa_1.0"
+RubimRH.version = "bfa_1.0_c"
 RubimRH.debug = false
 
 local AceGUI = LibStub("AceGUI-3.0")
 RubimRH.config = {}
 RubimRH.currentSpec = "None"
+
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+local Spell = HL.Spell;
+local Item = HL.Item;
+
 
 -- Defines the APL
 RubimRH.Rotation = {}
@@ -42,12 +51,6 @@ end
 function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
     RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
 end
-
-local HL = HeroLib;
-local Cache = HeroCache;
-local Unit = HL.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
 
 local EnabledRotation = {
     -- Death Knight
@@ -63,7 +66,7 @@ local EnabledRotation = {
     [104] = true, -- Guardian
     [105] = false, -- Restoration
     -- Hunter
-    [253] = false, -- Beast Mastery
+    [253] = true, -- Beast Mastery
     [254] = true, -- Marksmanship
     [255] = true, -- Survival
     -- Mage
@@ -112,6 +115,9 @@ local DeathandDecay = 43265
 local FelRush = 195072
 local EyeBeam = 198013
 local FelBarrage = 211053
+local FieryBrand = 204021
+local InfernalStrike = 189110
+
 --Warrior
 local Warbreaker = 209577
 local Ravager = 152277
@@ -155,6 +161,10 @@ local defaults = {
             },
             Vengeance = {
                 cooldown = true,
+                Spells = {
+                    { spellID = InfernalStrike, isActive = true },
+                    { spellID = FieryBrand, isActive = true },
+                }
             },
         },
         DeathKnight = {
@@ -251,7 +261,7 @@ local defaults = {
             Marksmanship = {
                 cooldown = true,
             },
-            Beastmaster = {
+            BeastMastery = {
                 cooldown = true,
             },
 
@@ -518,6 +528,12 @@ function RubimRH.shouldStop()
 
     if EnabledRotation[playerSpec] == false then
         return "ERROR"
+    end
+
+    if Player:AffectingCombat() and not Target:Exists() then
+        if RubimRH.TargetNext("Melee", 1030902) ~= nil then
+            return 1, RubimRH.TargetNext("Melee", 1030902)
+        end
     end
 
     if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then

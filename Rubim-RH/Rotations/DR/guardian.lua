@@ -140,22 +140,22 @@ local function APL()
             if Player:Buff(S.CatForm) then
                 -- Shred
                 if S.Shred:IsCastable(MeleeRange) then
-                    return S.Shred:ID()
+                    return S.Shred:Cast()
                 end
             end
             if Player:Buff(S.BearForm) then
                 if S.Mangle:IsCastable(MeleeRange) then
-                    return S.Mangle:ID()
+                    return S.Mangle:Cast()
                 end
                 if S.ThrashBear:IsCastable(AoERadius, true) then
-                    return S.ThrashBear:ID()
+                    return S.ThrashBear:Cast()
                 end
                 if S.SwipeBear:IsCastable(AoERadius, true) then
-                    return S.SwipeBear:ID()
+                    return S.SwipeBear:Cast()
                 end
             end
             if S.Moonfire:IsCastable(RangedRange) then
-                return S.Moonfire:ID()
+                return S.Moonfire:Cast()
             end
         end
         return 0, 462338
@@ -168,23 +168,23 @@ local function APL()
             -- Thrash
             -- Note: Due to an in-game bug, you cannot apply a new thrash if there is the bear one.
             if S.ThrashCat:IsCastable() and Cache.EnemiesCount[AoERadius] >= 1 and Target:DebuffRefreshable(S.ThrashCat, 4.5) and not Target:Debuff(S.ThrashBearDebuff) then
-                return S.ThrashCat:ID()
+                return S.ThrashCat:Cast()
             end
             -- Rip
             if S.Rip:IsCastable(MeleeRange) and Player:ComboPoints() >= 5 and Target:DebuffRefreshable(S.Rip, 7.2) then
-                return S.Rip:ID()
+                return S.Rip:Cast()
             end
             -- Rake
             if S.Rake:IsCastable(MeleeRange) and Target:DebuffRefreshable(S.RakeDebuff, 4.5) then
-                return S.Rake:ID()
+                return S.Rake:Cast()
             end
             -- Swipe
             if S.SwipeCat:IsCastable() and Cache.EnemiesCount[AoERadius] >= 2 then
-                return S.SwipeCat:ID()
+                return S.SwipeCat:Cast()
             end
             -- Shred
             if S.Shred:IsCastable(MeleeRange) then
-                return S.Shred:ID()
+                return S.Shred:Cast()
             end
         end
         if Player:Buff(S.BearForm) then
@@ -203,16 +203,16 @@ local function APL()
             -- actions+=/frenzied_regeneration,if=incoming_damage_5s%health.max>=0.5|health<=health.max*0.4
             if not UseMaul and S.FrenziedRegeneration:IsCastable() and Player:Rage() > 10
                     and lastDamage("percent") > 5 and not Player:Buff(S.FrenziedRegeneration) and not Player:HealingAbsorbed() and S.FrenziedRegeneration:ChargesFractional() >= 1.8 then
-                return S.FrenziedRegeneration:ID()
+                return S.FrenziedRegeneration:Cast()
             end
             if not UseMaul and S.Ironfur:IsCastable() and Player:Rage() >= S.Ironfur:Cost() + 1
                     and ( ( IsTanking and ( not Player:Buff(S.Ironfur) or ( Player:BuffStack(S.Ironfur) < 2 and ( Player:Buff(S.GoryFur) or Player:BuffRefreshableP(S.Ironfur, 2.4) ) ) ) )
                     or Player:Rage() >= 85 or Player:ActiveMitigationNeeded() ) then
-                return S.Ironfur:ID()
+                return S.Ironfur:Cast()
             end
 
             if S.Moonfire:IsCastable(RangedRange) and not Target:IsInRange(MeleeRange) and Target:DebuffRefreshableP(S.MoonfireDebuff, 0) then
-                return S.Moonfire:ID()
+                return S.Moonfire:Cast()
             end
 
             -- Get aggro on units near
@@ -231,46 +231,46 @@ local function APL()
             end
             if UnitsNotTankedCount > 0 then
                 if S.ThrashBear:IsCastable() then
-                    return S.ThrashBear:ID()
+                    return S.ThrashBear:Cast()
                 end
                 if S.SwipeBear:IsCastable() then
-                    return S.SwipeBear:ID()
+                    return S.SwipeBear:Cast()
                 end
             end
 
             if S.Moonfire:IsCastable(RangedRange) and Player:Buff(S.Incarnation) and Target:DebuffRefreshableP(S.MoonfireDebuff, 4.8) then
-                return S.Moonfire:ID()
+                return S.Moonfire:Cast()
             end
             if UseMaul and S.Maul:IsCastable(MeleeRange) and Player:Rage() >= 85 then
-                return S.Maul:ID()
+                return S.Maul:Cast()
             end
             if S.ThrashBear:IsCastable(AoERadius, true) and Cache.EnemiesCount[AoERadius] >= 2 then
-                return S.ThrashBear:ID()
+                return S.ThrashBear:Cast()
             end
             if S.Mangle:IsCastable(MeleeRange) then
-                return S.Mangle:ID()
+                return S.Mangle:Cast()
             end
             if S.ThrashBear:IsCastable(AoERadius, true) then
-                return S.ThrashBear:ID()
+                return S.ThrashBear:Cast()
             end
             -- actions+=/pulverize,if=buff.pulverize.up=0|buff.pulverize.remains<=6
             if S.Pulverize:IsCastable(MeleeRange) and Target:DebuffStack(S.ThrashBearDebuff) >= 2 and Player:BuffRefreshableP(S.PulverizeBuff, 6) then
-                return S.Pulverize:ID()
+                return S.Pulverize:Cast()
             end
             if S.Moonfire:IsCastable(RangedRange) and (Player:Buff(S.GalacticGuardianBuff) or Target:DebuffRefreshableP(S.MoonfireDebuff, 4.8)) then
-                return S.Moonfire:ID()
+                return S.Moonfire:Cast()
             end
             if S.ThrashBear:IsCastable() and Cache.EnemiesCount[AoERadius] >= 1 then
-                return S.ThrashBear:ID()
+                return S.ThrashBear:Cast()
             end
             if UseMaul and S.Maul:IsCastable(MeleeRange) and Player:Rage() >= 70 then
-                return S.Maul:ID()
+                return S.Maul:Cast()
             end
             if S.SwipeBear:IsCastable() and Cache.EnemiesCount[AoERadius] >= 1 then
-                return S.SwipeBear:ID()
+                return S.SwipeBear:Cast()
             end
             if S.Moonfire:IsCastable(RangedRange) then
-                return S.Moonfire:ID()
+                return S.Moonfire:Cast()
             end
         end
     end

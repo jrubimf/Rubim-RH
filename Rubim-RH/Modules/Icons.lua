@@ -442,7 +442,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
         if singleRotation == 0 or singleRotation == 1 then
             MainIconFrame.texture:SetTexture(singleRotation2)
         else
-            MainIconFrame.texture:SetTexture(GetSpellTexture(singleRotation))
+            MainIconFrame.texture:SetTexture(singleRotation)
         end
 
         if RubimExtra then
@@ -453,7 +453,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
             elseif singleRotation == 1 then
                 RubimRH.stIcon.texture:SetTexture(singleRotation2)
             else
-                RubimRH.stIcon.texture:SetTexture(GetSpellTexture(singleRotation))
+                RubimRH.stIcon.texture:SetTexture(singleRotation)
             end
         end
         self.sinceLastUpdate = 0;
