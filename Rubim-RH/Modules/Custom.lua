@@ -243,7 +243,7 @@ combatLOG:SetScript("OnEvent", function(self, event)
             lastMeleeHit = GetTime()
             amount = arg12
         elseif event == "ENVIRONMENTAL_DAMAGE" then
-            amount = arg12
+            amount = arg13
         end
         if amount then
             -- Record new damage at the top of the log:
