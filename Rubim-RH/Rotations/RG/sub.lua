@@ -206,7 +206,7 @@ local function Stealthed (ReturnSpellOnly, StealthSpell)
     -- # If stealth is up, we really want to use Shadowstrike to benefits from the passive bonus, even if we are at max cp (from the precombat MfD).
     -- actions.stealthed=shadowstrike,if=buff.stealth.up
     if StealthBuff and S.Shadowstrike:IsCastable() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
-        S.Shadowstrike:Cast()
+        return S.Shadowstrike:Cast()
     end
     -- actions.stealthed+=/call_action_list,name=finish,if=combo_points.deficit<=1-(talent.deeper_stratagem.enabled&buff.vanish.up)
     if Player:ComboPointsDeficit() <= 1 - num(S.DeeperStratagem:IsAvailable() and Player:BuffP(VanishBuff)) then
@@ -216,11 +216,11 @@ local function Stealthed (ReturnSpellOnly, StealthSpell)
     -- !!!NYI!!! (Is this worth it? How do we want to display it in an understandable way?)
     -- actions.stealthed+=/shuriken_storm,if=spell_targets.shuriken_storm>=3
     if RubimRH.AoEON() and S.ShurikenStorm:IsCastable() and Cache.EnemiesCount[10] >= 3 then
-        S.ShurikenStorm:Cast()
+        return S.ShurikenStorm:Cast()
     end
     -- actions.stealthed+=/shadowstrike
-    if S.Shadowstrike:IsCastable() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
-        S.Shadowstrike:Cast()
+    if StealthBuff and S.Shadowstrike:IsCastable() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
+        return S.Shadowstrike:Cast()
     end
 end
 
@@ -335,15 +335,15 @@ local function APL()
         VanishBuff = S.VanishBuff;
     end
 
+    local StealthBuff = Player:Buff(Stealth) or (StealthSpell and StealthSpell:ID() == Stealth:ID())
     if not Player:AffectingCombat() then
-
-        if not Player:Buff(S.ShadowDanceBuff) and not Player:Buff(VanishBuff) then
-            Stealth:Cast()
+        if not StealthBuff then
+            return Stealth:Cast()
         end
 
         if RubimRH.TargetIsValid() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
             if Player:IsStealthed(true, true) and Stealthed() ~= nil then
-                return Stealthed();
+                return Stealthed()
             end
             if Player:EnergyPredicted() < 30 then
                 return 0, 462338
@@ -352,7 +352,7 @@ local function APL()
             return Finish()
         end
         if S.Backstab:IsCastable() then
-            S.Backstab:Cast()
+            return S.Backstab:Cast()
         end
         return 0, 462338
     end
@@ -416,7 +416,8 @@ local function APL()
             return S.ShurikenToss:Cast()
         end
         -- Trick to take in consideration the Recovery Setting
-        if S.Shadowstrike:IsCastable() and IsInMeleeRange() then
+        local StealthBuff = Player:Buff(Stealth) or (StealthSpell and StealthSpell:ID() == Stealth:ID())
+        if StealthBuff and S.Shadowstrike:IsCastable() and IsInMeleeRange() then
             return S.Shadowstrike:Cast()
         end
     end
