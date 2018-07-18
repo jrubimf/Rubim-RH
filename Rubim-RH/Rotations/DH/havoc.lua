@@ -238,12 +238,12 @@ local function APL()
         -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis|variable.waiting_for_chaos_blades)|target.time_to_die<25
         if S.Metamorphosis:IsReady("Melee")
                 and (not (S.Demonic:IsAvailable() or PoolingForMeta() or WaitingForNemesis() or WaitingForChaosBlades()) or Target:TimeToDie() < 25) then
-            return 187827
+            return S.Metamorphosis:Cast()
 
         end
         -- metamorphosis,if=talent.demonic.enabled&buff.metamorphosis.up
         if S.Metamorphosis:IsReady("Melee") and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
-            return 187827
+            return S.Metamorphosis:Cast()
         end
         -- chaos_blades,if=buff.metamorphosis.up|cooldown.metamorphosis.adjusted_remains>60|target.time_to_die<=duration
         if S.ChaosBlades:IsReady("Melee")
@@ -365,7 +365,7 @@ local function APL()
         end
         -- death_sweep,if=variable.blade_dance
         if S.DeathSweep:IsReadyMorph(8, true) and BladeDance() then
-            return 199552
+            return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance
         if S.BladeDance:IsReady(8, true) and BladeDance() then

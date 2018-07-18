@@ -46,7 +46,7 @@ local function BloodMenu()
     bloodGUI:Show()
 end
 
-local selectedBuff = "Simcraft"
+local Dice = "Simcraft"
 local function OutlawMenu()
     local rogueGUI = AceGUI:Create("Frame")
     rogueGUI:SetTitle("Rogue - Roll the Boness")
@@ -78,11 +78,11 @@ local function OutlawMenu()
     local dropdown = AceGUI:Create("Dropdown")
     dropdown:SetValue("Choose a Buff")
     dropdown:SetList(rollBones)
-    dropdown:SetText(selectedBuff)
+    dropdown:SetText(Dice)
     --dropdown:SetLabel("Pick a Buff")
     dropdown:SetCallback("OnValueChanged", function(self, event, pos)
         print("Roll the Bones: " .. rollBones[pos])
-        selectedBuff = rollBones[pos]
+       Dice = rollBones[pos]
 
     end)
     rogueGUI:AddChild(dropdown)
