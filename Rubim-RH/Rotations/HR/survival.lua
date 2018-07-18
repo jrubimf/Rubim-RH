@@ -1,15 +1,15 @@
 --- Localize Vars
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local Pet = Unit.Pet;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Spells
 if not Spell.Hunter then Spell.Hunter = {}; end
 Spell.Hunter.Survival = {
@@ -135,12 +135,12 @@ local function fillers()
     end
 
     --actions.fillers+=/butchery,if=variable.frizzosEquipped&dot.lacerate.refreshable&(focus>((50+40)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Butchery:IsReady() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Butchery:IsReady() and Player:FocusHeroLib(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Butchery:ID()
     end
 
     --actions.fillers+=/carve,if=variable.frizzosEquipped&dot.lacerate.refreshable&(focus>((50+40)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Carve:IsReady() and Player:FocusPredicted(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Carve:IsReady() and Player:FocusHeroLib(0.2) > 40 and FrizzosEquipped() and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 40 > (50 - ((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Carve:ID()
     end
 
@@ -157,7 +157,7 @@ end
 
 function biteTrigger()
     --actions.biteTrigger=lacerate,if=remains<14&set_bonus.tier20_4pc&cooldown.mongoose_bite.remains<gcd*3
-    if S.Lacerate:IsReady() and Target:DebuffRemainsP(S.Lacerate) < 14 and AC.Tier20_4Pc and S.MongooseBite:CooldownRemains() < Player:GCD() * 3 then
+    if S.Lacerate:IsReady() and Target:DebuffRemainsP(S.Lacerate) < 14 and HL.Tier20_4Pc and S.MongooseBite:CooldownRemains() < Player:GCD() * 3 then
         return S.Lacerate:ID()
     end
 
@@ -189,12 +189,12 @@ function bitePhase()
     end
 
     --actions.bitePhase+=/lacerate,if=dot.lacerate.refreshable&(focus>((50+35)-((cooldown.flanking_strike.remains%gcd)*(focus.regen*gcd))))
-    if S.Lacerate:IsReady() and Player:FocusPredicted(0.2) > 30 and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 35 >(45 -((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
+    if S.Lacerate:IsReady() and Player:FocusHeroLib(0.2) > 30 and Target:DebuffRefreshable(S.Lacerate, 3.6) and (Player:Focus() + 35 >(45 -((S.FlankingStrike:CooldownRemains() / Player:GCD()) * (Player:FocusRegen() * Player:GCD())))) then
         return S.Lacerate:ID()
     end
 
     --actions.bitePhase+=/raptor_strike,if=buff.t21_2p_exposed_flank.up
-    if S.RaptorStrike:IsReady() and Player:FocusPredicted(0.2) > 25 and Player:BuffP(S.ExposedFlank) then
+    if S.RaptorStrike:IsReady() and Player:FocusHeroLib(0.2) > 25 and Player:BuffP(S.ExposedFlank) then
         return S.RaptorStrike:ID()
     end
 
@@ -231,8 +231,8 @@ end
 
 local function APL()
     -- AoE Check
-    AC.GetEnemies(8);
-    AC.GetEnemies(5);
+    HL.GetEnemies(8);
+    HL.GetEnemies(5);
 
     --NO COMBAT
     if not Player:AffectingCombat() then

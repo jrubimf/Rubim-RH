@@ -2,15 +2,15 @@
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...
--- AethysCore
-local AC = AethysCore
-local Cache = AethysCache
-local Unit = AC.Unit
+-- HeroLib
+local HL = HeroLib
+local Cache = HeroCache
+local Unit = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
 local Pet = Unit.Pet
-local Spell = AC.Spell
-local Item = AC.Item
+local Spell = HL.Spell
+local Item = HL.Item
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -95,7 +95,7 @@ end
 --- ======= ACTION LISTS =======
 local function APL()
     -- Unit Update
-    AC.GetEnemies(8, true);
+    HL.GetEnemies(8, true);
 
     -- Misc
     local BrewMaxCharge = 3 + (S.LightBrewing:IsAvailable() and 1 or 0);

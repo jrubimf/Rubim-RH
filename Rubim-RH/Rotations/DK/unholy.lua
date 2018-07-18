@@ -2,15 +2,15 @@
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Pet = Unit.Pet;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 
 --- ============================ CONTENT ============================
@@ -99,8 +99,8 @@ Item.DeathKnight.Unholy = {
 local I = Item.DeathKnight.Unholy;
 --Rotation Var
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 local function aoe()
     --# AoE rotation
@@ -204,8 +204,8 @@ end
 
 local function APL()
     --UnitUpdate
-    AC.GetEnemies(8);
-    AC.GetEnemies(10);
+    HL.GetEnemies(8);
+    HL.GetEnemies(10);
     --Defensives
     --OutOf Combat
     -- Reset Combat Variables

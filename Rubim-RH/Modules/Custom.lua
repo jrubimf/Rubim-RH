@@ -5,13 +5,13 @@
 ---
 
 --local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 --- ============================   CUSTOM   ============================
 function RubimRH.TargetIsValid()
@@ -20,7 +20,7 @@ function RubimRH.TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-    AC.GetEnemies(8, true)
+    HL.GetEnemies(8, true)
 
     if Cache.EnemiesCount[8] >= 1 then
         isValid = true
@@ -109,7 +109,7 @@ RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
 end)
 
 function DiyingIn()
-    AC.GetEnemies(10, true); -- Blood Boil
+    HL.GetEnemies(10, true); -- Blood Boil
     totalmobs = 0
     dyingmobs = 0
     for _, CycleUnit in pairs(Cache.Enemies[10]) do
@@ -315,7 +315,7 @@ function Spell:Queue(powerExtra)
     RubimRH.queuedSpell = {self, powerEx}
 end
 
---/run RubimRH.queuedSpell ={ AethysCore.Spell(49020), 0 }
+--/run RubimRH.queuedSpell ={ HeroLib.Spell(49020), 0 }
 
 function Spell:Queued(powerEx)
     local powerExtra = powerEx or 0
@@ -399,7 +399,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
     if maxRange ~= nil then
-        AC.GetEnemies(maxRange, true);
+        HL.GetEnemies(maxRange, true);
         if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
             return true
         end
@@ -424,7 +424,7 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
         return false
     end
     if maxRange ~= nil then
-        AC.GetEnemies(maxRange, true);
+        HL.GetEnemies(maxRange, true);
         if RubimRH.db.profile.mainOption.startattack == true and self:IsCastable() and self:IsUsable() and Cache.EnemiesCount[maxRange] >= 1 then
             return true
         end

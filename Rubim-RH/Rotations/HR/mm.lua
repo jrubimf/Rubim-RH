@@ -7,16 +7,16 @@
 --- Localize Vars
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local Party = Unit.Party;
 local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 -- Spells
 if not Spell.Hunter then
@@ -134,7 +134,7 @@ local function DebuffRemains (Spell, AnyCaster, Offset)
         if Offset then
             ExpirationTime = OffsetRemainsAuto(ExpirationTime, Offset);
         end
-        local Remains = ExpirationTime - AC.GetTime();
+        local Remains = ExpirationTime - HL.GetTime();
         return Remains >= 0 and Remains or 0;
     else
         return 0;
@@ -169,9 +169,9 @@ end
 
 local function IsCastableP (Spell)
     if Spell == S.AimedShot then
-        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost();
+        return Spell:IsCastable() and PlayerFocusHeroLib() > Spell:Cost();
     elseif Spell == S.MarkedShot then
-        return Spell:IsCastable() and PlayerFocusPredicted() > Spell:Cost() and TargetDebuffP(S.HuntersMark);
+        return Spell:IsCastable() and PlayerFocusHeroLib() > Spell:Cost() and TargetDebuffP(S.HuntersMark);
     elseif Spell == S.Windburst then
         return Spell:IsCastable() and not Player:PrevGCDP(1, S.Windburst, true) and not Player:IsCasting(S.Windburst);
     else

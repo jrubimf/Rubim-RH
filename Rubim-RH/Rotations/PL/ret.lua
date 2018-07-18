@@ -2,14 +2,14 @@
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 
@@ -81,8 +81,8 @@ local function Judged()
     return Target:Debuff(S.JudgmentDebuff) or S.Judgment:CooldownRemains() > Player:GCD() * 2;
 end
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 local function Cooldowns()
     --actions.cooldowns=use_item,name=faulty_countermeasure,if=(buff.avenging_wrath.up|buff.crusade.up)
@@ -222,10 +222,10 @@ end
 
 local function APL()
     --Area Enemies
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
-    AC.GetEnemies(20, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
+    HL.GetEnemies(20, true);
     Var_DS_Castable = (Cache.EnemiesCount[8] >= 2 or (Player:BuffStack(S.ScarletInquisitorsExpurgation) >= 29 and (Player:Buff(S.AvengingWrath) or Player:BuffStack(S.Crusade) >= 15 or not RubimRH.CDsON() or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemains() > 15 and not Player:Buff(S.Crusade)) or (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemains() > 15)))) and RubimRH.AoEON()
     --Out of Combat
 
@@ -259,7 +259,7 @@ local function APL()
     --actions=auto_attack
     --actions+=/rebuke
     --actions+=/call_action_list,name=opener,if=time<2
-    --if Opener() ~= nil and AC.CombatTime() < 2 then
+    --if Opener() ~= nil and HL.CombatTime() < 2 then
     --    return Opener()
   --  end
     --actions+=/call_action_list,name=cooldowns

@@ -8,14 +8,14 @@
 -- Addon
 local addonName, addonTable = ...;
 
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 -- APL from T21_Shaman_Elemental on 2017-12-06
 
@@ -185,7 +185,7 @@ local function single_target()
     end
 
     --actions.single_target+=/ascendance,if=(time>=60|buff.bloodlust.up)&cooldown.lava_burst.remains>0
-    if S.Ascendance:IsReady() and RubimRH.CDsON() and ((AC.CombatTime() >= 60 or Player:Buff(S.BloodLustBuff)) and S.LavaBurst:CooldownRemains() > 0) then
+    if S.Ascendance:IsReady() and RubimRH.CDsON() and ((HL.CombatTime() >= 60 or Player:Buff(S.BloodLustBuff)) and S.LavaBurst:CooldownRemains() > 0) then
         return RubimRH.nS
     end
 
@@ -264,7 +264,7 @@ local function single_target()
 end
 
 local function APL ()
-    AC.GetEnemies(40)  -- General casting range
+    HL.GetEnemies(40)  -- General casting range
     --# Executed before combat begins. Accepts non-harmful actions only.
     --actions.precombat=flask
     --actions.precombat+=/food

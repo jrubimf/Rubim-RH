@@ -1,14 +1,14 @@
 --- Localize Vars
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 
@@ -41,16 +41,16 @@ Spell.DemonHunter.Vengeance = {
 };
 local S = Spell.DemonHunter.Vengeance;
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 -- APL Main
 local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
     -- Unit Update
-    AC.GetEnemies(20, true); -- Fel Devastation (I think it's 20 thp)
-    AC.GetEnemies(8, true); -- Sigil of Flame & Spirit Bomb
+    HL.GetEnemies(20, true); -- Fel Devastation (I think it's 20 thp)
+    HL.GetEnemies(8, true); -- Sigil of Flame & Spirit Bomb
 
     -- Misc
     local SoulFragments = Player:BuffStack(S.SoulFragments);

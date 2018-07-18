@@ -1,5 +1,5 @@
-local AC = AethysCore;
-local Cache = AethysCache;
+local HL = HeroLib;
+local Cache = HeroCache;
 
 local AceGUI = LibStub("AceGUI-3.0")
 local function BloodMenu()

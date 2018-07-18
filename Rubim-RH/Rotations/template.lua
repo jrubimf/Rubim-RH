@@ -1,13 +1,13 @@
 --- ============================ HEADER ============================
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 local activeUnitPlates = {}
 
@@ -28,17 +28,17 @@ Item.CLASS.Spec = {
 local S = Spell.CLASS.SPEC;
 local I = Item.CLASS.SPEC;
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 
 local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
 
     return 0, 975743
 end

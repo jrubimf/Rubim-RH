@@ -2,14 +2,14 @@
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Spells
 if not Spell.Warrior then Spell.Warrior = {}; end
 Spell.Warrior.Fury = {
@@ -82,8 +82,8 @@ Item.Warrior.Fury = {
     PotionoftheOldWar = Item(127844),
 };
 local I = Item.Warrior.Fury;
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 --- APL Action Lists (and Variables)
 -- # AoE
@@ -214,7 +214,7 @@ local function Execute()
     end
     -- actions.execute+=/execute
     -- TODO : implement RageTimeToX
-    -- or (AC.Tier19_2Pc and Target:TimeToDie() >= 10 and Player:RageTimeToX(25,0) <= S.Bloodthirst:CooldownRemainsP())
+    -- or (HL.Tier19_2Pc and Target:TimeToDie() >= 10 and Player:RageTimeToX(25,0) <= S.Bloodthirst:CooldownRemainsP())
     if S.Execute:IsReady("Melee") then
         return S.Execute:ID()
     end
@@ -298,8 +298,8 @@ end
 -- APL Main
 local function APL()
     -- Unit Update
-    AC.GetEnemies(8);
-    AC.GetEnemies(10);
+    HL.GetEnemies(8);
+    HL.GetEnemies(10);
 
     if not Player:AffectingCombat() then
         return 0, 462338

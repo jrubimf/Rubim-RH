@@ -3,15 +3,15 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local Party = Unit.Party;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 
 --- ============================ CONTENT ============================
@@ -64,8 +64,8 @@ Item.Paladin.Protection = {
 };
 local I = Item.Paladin.Protection;
 -- Rotation Var
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 -- GUI Settings
 
 
@@ -75,7 +75,7 @@ local T212PC, T214PC = AC.HasTier("T21");
 --- ======= MAIN =======
 local function APL()
     -- Unit Update
-    AC.GetEnemies(10, true);
+    HL.GetEnemies(10, true);
 
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
     LeftCtrl = IsLeftControlKeyDown();

@@ -32,7 +32,7 @@ local BestUnit, BestUnitTTD;
 function Rogue.MfDSniping (MarkedforDeath)
     if MarkedforDeath:IsCastable() then
         -- Get Units up to 30y for MfD.
-        AC.GetEnemies(30);
+        HL.GetEnemies(30);
 
         BestUnit, BestUnitTTD = nil, 60;
         local MOTTD = MouseOver:IsInRange(30) and MouseOver:TimeToDie() or 11111;
@@ -126,7 +126,7 @@ local PoisonedBleedsCount = 0;
 function Rogue.PoisonedBleeds ()
     PoisonedBleedsCount = 0;
     -- Get Units up to 50y (not really worth the potential performance loss to go higher).
-    AC.GetEnemies(50);
+    HL.GetEnemies(50);
     for _, Unit in pairs(Cache.Enemies[50]) do
         if Commons.Poisoned(Unit) then
             -- TODO: For loop for this ? Not sure it's worth considering we would have to make 2 times spell object (Assa is init after Commons)

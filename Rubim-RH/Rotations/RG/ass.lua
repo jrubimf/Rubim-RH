@@ -1,13 +1,13 @@
 --- ============================ HEADER ============================
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 
 local activeUnitPlates = {}
@@ -113,8 +113,8 @@ Item.Rogue.Assassination = {
 };
 local I = Item.Rogue.Assassination;
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 local Stealth
 local energyCombined
 local poisonedBleedCount
@@ -188,7 +188,7 @@ end
 local function PoisonedBleeds ()
     poisonedBleedCount = 0;
     -- Get Units up to 50y (not really worth the potential performance loss to go higher).
-    AC.GetEnemies(50);
+    HL.GetEnemies(50);
     for _, Unit in pairs(Cache.Enemies[50]) do
         if Poisoned(Unit) then
             -- TODO: For loop for this ? Not sure it's worth considering we would have to make 2 times spell object (Assa is init after Commons)
@@ -323,7 +323,7 @@ local function Dot()
     --actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
     if S.Rupture:IsReady("Melee") and S.Exsanguinate:IsAvailable()
             and ((Player:ComboPoints() >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1)
-            or (not Target:DebuffP(S.Rupture) and (AC.CombatTime() > 10 or (Player:ComboPoints() >= 2)))) then
+            or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or (Player:ComboPoints() >= 2)))) then
         return S.Rupture:ID()
     end
 
@@ -375,9 +375,9 @@ end
 
 local function APL()
     Stealth = S.Subterfuge:IsAvailable() and S.Stealth2 or S.Stealth; -- w/ or w/o Subterfuge Talent
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
 
     if not Player:AffectingCombat() then
         --actions.precombat+=/stealth

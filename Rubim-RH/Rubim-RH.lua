@@ -2,11 +2,11 @@ local foundError = false
 local errorEvent = CreateFrame("Frame")
 errorEvent:RegisterEvent("PLAYER_LOGIN")
 errorEvent:SetScript("OnEvent", function(self, event)
-    if AethysCore == nil then
-        message("Missing dependency: Aethys Core")
+    if HeroLib == nil then
+        message("Missing dependency: HeroLib")
         foundError = true
     end
-    if AethysCache == nil then
+    if HeroCache == nil then
         message("Missing dependency: Aetyhs Cache")
         foundError = true
     end
@@ -43,9 +43,9 @@ function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
     RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
 end
 
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 
@@ -322,159 +322,159 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     --DeathKnight
     if playerSpec == 250 then
         RubimRH.config = RubimRH.db.profile.DeathKnight.Blood
-        RubimRH.allSpells = AethysCore.Spell.DeathKnight.Blood
+        RubimRH.allSpells = HeroLib.Spell.DeathKnight.Blood
         RubimRH.configSpells = RubimRH.config.spells
     end
     if playerSpec == 251 then
         RubimRH.config = RubimRH.db.profile.DeathKnight.Frost
-        RubimRH.allSpells = AethysCore.Spell.DeathKnight.Frost
+        RubimRH.allSpells = HeroLib.Spell.DeathKnight.Frost
     end
     if playerSpec == 252 then
         RubimRH.config = RubimRH.db.profile.DeathKnight.Unholy
-        RubimRH.allSpells = AethysCore.Spell.DeathKnight.Unholy
+        RubimRH.allSpells = HeroLib.Spell.DeathKnight.Unholy
     end
     --DemonHunter
     if playerSpec == 577 then
         RubimRH.config = RubimRH.db.profile.DemonHunter.Havoc
-        RubimRH.allSpells = AethysCore.Spell.DemonHunter.Havoc
+        RubimRH.allSpells = HeroLib.Spell.DemonHunter.Havoc
     end
     if playerSpec == 581 then
         RubimRH.config = RubimRH.db.profile.DemonHunter.Vengeance
-        RubimRH.allSpells = AethysCore.Spell.DemonHunter.Vengeance
+        RubimRH.allSpells = HeroLib.Spell.DemonHunter.Vengeance
     end
     --Druid
     if playerSpec == 102 then
         RubimRH.config = RubimRH.db.profile.Druid.Balance
-        RubimRH.allSpells = AethysCore.Spell.Druid.Balance
+        RubimRH.allSpells = HeroLib.Spell.Druid.Balance
     end
     if playerSpec == 103 then
         RubimRH.config = RubimRH.db.profile.Druid.Feral
-        RubimRH.allSpells = AethysCore.Spell.Druid.Feral
+        RubimRH.allSpells = HeroLib.Spell.Druid.Feral
     end
     if playerSpec == 104 then
         RubimRH.config = RubimRH.db.profile.Druid.Guardian
-        RubimRH.allSpells = AethysCore.Spell.Druid.Guardian
+        RubimRH.allSpells = HeroLib.Spell.Druid.Guardian
     end
     if playerSpec == 105 then
         RubimRH.config = RubimRH.db.profile.Druid.Restoration
-        RubimRH.allSpells = AethysCore.Spell.Druid.Restoration
+        RubimRH.allSpells = HeroLib.Spell.Druid.Restoration
     end
     --Hunter
     if playerSpec == 253 then
         RubimRH.config = RubimRH.db.profile.Hunter.BeastMastery
-        RubimRH.allSpells = AethysCore.Spell.Hunter.BeastMastery
+        RubimRH.allSpells = HeroLib.Spell.Hunter.BeastMastery
     end
     if playerSpec == 254 then
         RubimRH.config = RubimRH.db.profile.Hunter.Marksmanship
-        RubimRH.allSpells = AethysCore.Spell.Hunter.Marksmanship
+        RubimRH.allSpells = HeroLib.Spell.Hunter.Marksmanship
     end
     if playerSpec == 255 then
         RubimRH.config = RubimRH.db.profile.Hunter.Survival
-        RubimRH.allSpells = AethysCore.Spell.Hunter.Survival
+        RubimRH.allSpells = HeroLib.Spell.Hunter.Survival
     end
     --Mage
     if playerSpec == 62 then
         RubimRH.config = RubimRH.db.profile.Mage.Arcane
-        RubimRH.allSpells = AethysCore.Spell.Mage.Arcane
+        RubimRH.allSpells = HeroLib.Spell.Mage.Arcane
     end
     if playerSpec == 63 then
         RubimRH.config = RubimRH.db.profile.Mage.Fire
-        RubimRH.allSpells = AethysCore.Spell.Mage.Fire
+        RubimRH.allSpells = HeroLib.Spell.Mage.Fire
     end
     if playerSpec == 64 then
         RubimRH.config = RubimRH.db.profile.Mage.Frost
-        RubimRH.allSpells = AethysCore.Spell.Mage.Frost
+        RubimRH.allSpells = HeroLib.Spell.Mage.Frost
     end
     --Monk
     if playerSpec == 268 then
         RubimRH.config = RubimRH.db.profile.Monk.Brewmaster
-        RubimRH.allSpells = AethysCore.Spell.Monk.Brewmaster
+        RubimRH.allSpells = HeroLib.Spell.Monk.Brewmaster
     end
     if playerSpec == 269 then
         RubimRH.config = RubimRH.db.profile.Monk.Windwalker
-        RubimRH.allSpells = AethysCore.Spell.Monk.Windwalker
+        RubimRH.allSpells = HeroLib.Spell.Monk.Windwalker
     end
     if playerSpec == 270 then
         RubimRH.config = RubimRH.db.profile.Monk.Mistweaver
-        RubimRH.allSpells = AethysCore.Spell.Monk.Mistweaver
+        RubimRH.allSpells = HeroLib.Spell.Monk.Mistweaver
     end
     --Paladin
     if playerSpec == 65 then
         RubimRH.config = RubimRH.db.profile.Paladin.Holy
-        RubimRH.allSpells = AethysCore.Spell.Paladin.Holy
+        RubimRH.allSpells = HeroLib.Spell.Paladin.Holy
     end
     if playerSpec == 66 then
         RubimRH.config = RubimRH.db.profile.Paladin.Protection
-        RubimRH.allSpells = AethysCore.Spell.Paladin.Protection
+        RubimRH.allSpells = HeroLib.Spell.Paladin.Protection
     end
     if playerSpec == 70 then
         RubimRH.config = RubimRH.db.profile.Paladin.Retribution
-        RubimRH.allSpells = AethysCore.Spell.Paladin.Retribution
+        RubimRH.allSpells = HeroLib.Spell.Paladin.Retribution
     end
     --Priest
     if playerSpec == 256 then
         RubimRH.config = RubimRH.db.profile.Priest.Discipline
-        RubimRH.allSpells = AethysCore.Spell.Priest.Discipline
+        RubimRH.allSpells = HeroLib.Spell.Priest.Discipline
     end
     if playerSpec == 257 then
         RubimRH.config = RubimRH.db.profile.Priest.Holy
-        RubimRH.allSpells = AethysCore.Spell.Priest.Holy
+        RubimRH.allSpells = HeroLib.Spell.Priest.Holy
     end
     if playerSpec == 258 then
         RubimRH.config = RubimRH.db.profile.Priest.Shadow
-        RubimRH.allSpells = AethysCore.Spell.Priest.Shadow
+        RubimRH.allSpells = HeroLib.Spell.Priest.Shadow
     end
     --Rogue
     if playerSpec == 259 then
         RubimRH.config = RubimRH.db.profile.Rogue.Assassination
-        RubimRH.allSpells = AethysCore.Spell.Rogue.Assassination
+        RubimRH.allSpells = HeroLib.Spell.Rogue.Assassination
     end
     if playerSpec == 260 then
         RubimRH.config = RubimRH.db.profile.Rogue.Outlaw
-        RubimRH.allSpells = AethysCore.Spell.Rogue.Outlaw
+        RubimRH.allSpells = HeroLib.Spell.Rogue.Outlaw
     end
     if playerSpec == 261 then
         RubimRH.config = RubimRH.db.profile.Rogue.Subtlety
-        RubimRH.allSpells = AethysCore.Spell.Rogue.Subtlety
+        RubimRH.allSpells = HeroLib.Spell.Rogue.Subtlety
     end
     --Shaman
     if playerSpec == 262 then
         RubimRH.config = RubimRH.db.profile.Shaman.Elemental
-        RubimRH.allSpells = AethysCore.Spell.Shaman.Elemental
+        RubimRH.allSpells = HeroLib.Spell.Shaman.Elemental
     end
     if playerSpec == 263 then
         RubimRH.config = RubimRH.db.profile.Shaman.Enhancement
-        RubimRH.allSpells = AethysCore.Spell.Shaman.Enhancement
+        RubimRH.allSpells = HeroLib.Spell.Shaman.Enhancement
     end
     if playerSpec == 264 then
         RubimRH.config = RubimRH.db.profile.Shaman.Restoration
-        RubimRH.allSpells = AethysCore.Spell.Shaman.Restoration
+        RubimRH.allSpells = HeroLib.Spell.Shaman.Restoration
     end
     --Warlock
     if playerSpec == 265 then
         RubimRH.config = RubimRH.db.profile.Warlock.Affliction
-        RubimRH.allSpells = AethysCore.Spell.Warlock.Affliction
+        RubimRH.allSpells = HeroLib.Spell.Warlock.Affliction
     end
     if playerSpec == 266 then
         RubimRH.config = RubimRH.db.profile.Warlock.Demonology
-        RubimRH.allSpells = AethysCore.Spell.Warlock.Demonology
+        RubimRH.allSpells = HeroLib.Spell.Warlock.Demonology
     end
     if playerSpec == 267 then
         RubimRH.config = RubimRH.db.profile.Warlock.Destruction
-        RubimRH.allSpells = AethysCore.Spell.Warlock.Destruction
+        RubimRH.allSpells = HeroLib.Spell.Warlock.Destruction
     end
     --Warrior
     if playerSpec == 71 then
         RubimRH.config = RubimRH.db.profile.Warrior.Arms
-        RubimRH.allSpells = AethysCore.Spell.Warrior.Arms
+        RubimRH.allSpells = HeroLib.Spell.Warrior.Arms
     end
     if playerSpec == 72 then
         RubimRH.config = RubimRH.db.profile.Warrior.Fury
-        RubimRH.allSpells = AethysCore.Spell.Warrior.Fury
+        RubimRH.allSpells = HeroLib.Spell.Warrior.Fury
     end
     if playerSpec == 73 then
         RubimRH.config = RubimRH.db.profile.Warrior.Protection
-        RubimRH.allSpells = AethysCore.Spell.Warrior.Protection
+        RubimRH.allSpells = HeroLib.Spell.Warrior.Protection
     end
 
     RubimRH.useCD = RubimRH.config.cooldown or false

@@ -6,14 +6,14 @@
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
 
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 
@@ -110,7 +110,7 @@ function Spell:IsUsablePS()
         }
     end
     if self:Cost(2) > 0 and self:CostInfo(1, "type") == 3 then
-        return Player:EnergyPredicted() >= self:Cost(2);
+        return Player:EnergyHeroLib() >= self:Cost(2);
     elseif self:Cost(1) == 0 and self:CostInfo(1, "type") == 12 and BaseCost[self] ~= nil then
         return Player:BuffP(S.Serenity) and self:IsUsable() or Player:Chi() >= BaseCost[self];
     else
@@ -126,7 +126,7 @@ local function EnergyTimeToXP(Amount, Offset)
     if Player:EnergyRegen() == 0 then
         return -1;
     end
-    return Amount > Player:EnergyPredicted() and (Amount - Player:EnergyPredicted()) / (Player:EnergyRegen() * (1 - (Offset or 0))) or 0;
+    return Amount > Player:EnergyHeroLib() and (Amount - Player:EnergyHeroLib()) / (Player:EnergyRegen() * (1 - (Offset or 0))) or 0;
 end
 
 -- ReadyTime - Returns a normalized number based on spell usability and cooldown so you can easliy compare.
@@ -150,14 +150,14 @@ function Spell:Ready(Index)
     return self:IsReady();
 end
 
-local T192PC, T194PC = AC.HasTier("T20");
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T192PC, T194PC = HL.HasTier("T20");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 --- ======= MAIN =======
 local function AoE()
     -- actions.aoe=call_action_list,name=cd
     -- actions.aoe+=/energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&(cooldown.rising_sun_kick.remains=0|(artifact.strike_of_the_windlord.enabled&cooldown.strike_of_the_windlord.remains=0)|energy<50)
-    if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitPredicted() >= 20 and
+    if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitHeroLib() >= 20 and
             (S.RisingSunKick:CooldownRemainsP() == 0 or (S.StrikeOfTheWindlord:IsAvailable() and S.StrikeOfTheWindlord:CooldownRemainsP() == 0)) then
         return S.EnergizingElixir:ID()
 
@@ -165,20 +165,20 @@ local function AoE()
     -- actions.aoe+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
-            S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2 then
+            S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
 
     -- actions.aoe+=/fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
-            (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2 then
+            (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
 
     -- actions.aoe+=/fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
-    if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
+    if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
@@ -259,13 +259,13 @@ local function AoE()
 
     -- actions.aoe+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and
-            Player:BuffStack(S.TheEmperorsCapacitor) >= 19 and Player:EnergyTimeToMaxPredicted() > 3 then
+            Player:BuffStack(S.TheEmperorsCapacitor) >= 19 and Player:EnergyTimeToMaxHeroLib() > 3 then
         return S.CracklingJadeLightning:ID()
 
     end
     -- actions.aoe+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=14&cooldown.serenity.remains<13&talent.serenity.enabled&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStack(S.TheEmperorsCapacitor) >= 14 and
-            S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 3 then
+            S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxHeroLib() > 3 then
         return S.CracklingJadeLightning:ID()
 
     end
@@ -281,13 +281,13 @@ local function AoE()
 
     -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
-            (Player:EnergyTimeToMaxPredicted() < 3 or Player:ChiDeficit() >= 2) then
+            (Player:EnergyTimeToMaxHeroLib() < 3 or Player:ChiDeficit() >= 2) then
         return S.TigerPalm:ID()
 
     end
     -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy.time_to_max<=1&chi.max-chi>=2
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
-            Player:EnergyTimeToMaxPredicted() <= 1 and Player:ChiDeficit() >= 2 then
+            Player:EnergyTimeToMaxHeroLib() <= 1 and Player:ChiDeficit() >= 2 then
         return S.TigerPalm:ID()
 
     end
@@ -307,13 +307,13 @@ end
 local function SingleTarget()
     -- actions.st=call_action_list,name=cd
     -- actions.st+=/energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&(cooldown.rising_sun_kick.remains=0|(artifact.strike_of_the_windlord.enabled&cooldown.strike_of_the_windlord.remains=0)|energy<50)
-    if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitPredicted() >= 20 and
+    if S.EnergizingElixir:Ready() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyDeficitHeroLib() >= 20 and
             (S.RisingSunKick:CooldownRemainsP() == 0 or (S.StrikeOfTheWindlord:IsAvailable() and S.StrikeOfTheWindlord:CooldownRemainsP() == 0)) then
         return S.EnergizingElixir:ID()
 
     end
     -- actions.st+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-    if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5 then
+    if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxHeroLib() >= 0.5 then
         return S.ArcaneTorrent:ID()
 
     end
@@ -328,7 +328,7 @@ local function SingleTarget()
     end
     -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy.time_to_max<=1&chi.max-chi>=2
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
-            Player:EnergyTimeToMaxPredicted() <= 1 and Player:ChiDeficit() >= 2 then
+            Player:EnergyTimeToMaxHeroLib() <= 1 and Player:ChiDeficit() >= 2 then
         return S.TigerPalm:ID()
 
     end
@@ -344,25 +344,25 @@ local function SingleTarget()
 
     end
     -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=((chi>=3&energy>=40)|chi>=5)&(!talent.serenity.enabled|cooldown.serenity.remains>=6)
-    if S.RisingSunKick:IsReady("Melee") and ((Player:Chi() >= 3 and Player:EnergyPredicted() >= 40) or Player:Chi() == 5) and
+    if S.RisingSunKick:IsReady("Melee") and ((Player:Chi() >= 3 and Player:EnergyHeroLib() >= 40) or Player:Chi() == 5) and
             (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() >= 6) then
         return S.RisingSunKick:ID()
 
     end
     -- actions.st+=/fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and
-            S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2 then
+            S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
     -- actions.st+=/fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
     if S.FistsOfFury:IsReady() and S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and
-            (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2 then
+            (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
     -- actions.st+=/fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
-    if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2 then
+    if S.FistsOfFury:IsReady() and not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxHeroLib() > 2 then
         return S.FistsOfFury:ID()
 
     end
@@ -394,12 +394,12 @@ local function SingleTarget()
     end
     -- actions.st+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and
-            Player:BuffStack(S.TheEmperorsCapacitor) >= 19 and Player:EnergyTimeToMaxPredicted() > 3 then
+            Player:BuffStack(S.TheEmperorsCapacitor) >= 19 and Player:EnergyTimeToMaxHeroLib() > 3 then
         return S.CracklingJadeLightning:ID()
     end
     -- actions.st+=/crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=14&cooldown.serenity.remains<13&talent.serenity.enabled&energy.time_to_max>3
     if S.CracklingJadeLightning:IsReady() and I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStack(S.TheEmperorsCapacitor) >= 14 and
-            S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 3 then
+            S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxHeroLib() > 3 then
         return S.CracklingJadeLightning:ID()
     end
     -- actions.st+=/spinning_crane_kick,if=active_enemies>=3&!prev_gcd.1.spinning_crane_kick
@@ -433,7 +433,7 @@ local function SingleTarget()
     end
     -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir) and
-            (Player:EnergyTimeToMaxPredicted() < 3 or Player:ChiDeficit() >= 2) then
+            (Player:EnergyTimeToMaxHeroLib() < 3 or Player:ChiDeficit() >= 2) then
         return S.TigerPalm:ID()
     end
 end
@@ -442,12 +442,12 @@ end
 local function SEF()
     -- actions.sef=tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy=energy.max&chi<1
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir)
-            and Player:EnergyTimeToMaxPredicted() <= 0 and Player:Chi() < 1 then
+            and Player:EnergyTimeToMaxHeroLib() <= 0 and Player:Chi() < 1 then
         return S.TigerPalm:ID()
 
     end
     -- actions.sef+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-    if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
+    if S.ArcaneTorrent:Ready() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxHeroLib() > 0.5 then
         return S.ArcaneTorrent:ID()
 
     end
@@ -466,7 +466,7 @@ end
 local function Serenity()
     -- actions.serenity=tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy=energy.max&chi<1&!buff.serenity.up
     if S.TigerPalm:Ready(2) and not Player:PrevGCD(1, S.TigerPalm) and not Player:PrevGCD(1, S.EnergizingElixir)
-            and Player:EnergyPredicted() >= Player:EnergyMax() and Player:Chi() < 1 and not Player:BuffP(S.Serenity) then
+            and Player:EnergyHeroLib() >= Player:EnergyMax() and Player:Chi() < 1 and not Player:BuffP(S.Serenity) then
         return S.TigerPalm:ID()
 
     end
@@ -547,8 +547,8 @@ end
 --- ======= MAIN =======
 -- APL Main
 local function APL()
-    AC.GetEnemies(5);
-    AC.GetEnemies(8);
+    HL.GetEnemies(5);
+    HL.GetEnemies(8);
     if not Player:AffectingCombat() then
         return 0, 462338
     end

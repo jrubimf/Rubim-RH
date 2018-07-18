@@ -1,13 +1,13 @@
 --- ============================ HEADER ============================
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 local activeUnitPlates = {}
 
@@ -92,8 +92,8 @@ Item.DeathKnight.Frost = {
 local S = Spell.DeathKnight.Frost;
 local I = Item.DeathKnight.Frost;
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 local function ColdHeart()
     --actions.cold_heart=chains_of_ice,if=buff.cold_heart.stack=20&buff.unholy_strength.up&cooldown.pillar_of_frost.remains>6
@@ -120,18 +120,18 @@ end
 
 local function Cooldowns()
     --actions.cds=arcane_torrent,if=runic_power.deficit>=20&!talent.breath_of_sindragosa.enabled
-    if RubimRH.CDsON() and  S.ArcaneTorrent:IsReady() and Player:RunicPowerDeficit() >= 20 and not S.BreathofSindragosa:IsAvailable() then
+    if RubimRH.CDsON() and S.ArcaneTorrent:IsReady() and Player:RunicPowerDeficit() >= 20 and not S.BreathofSindragosa:IsAvailable() then
         return S.ArcaneTorrent:ID()
     end
 
     --actions.cooldowns+=/blood_fury,if=buff.pillar_of_frost.up
     if RubimRH.CDsON() and S.BloodFury:IsReady("Melee") and Player:Buff(S.PillarOfFrost) then
-        return S.BloodFury
+        return S.BloodFury:ID()
     end
 
     --actions.cooldowns+=/berserking,if=buff.pillar_of_frost.up
-    if RubimRH.CDsON() and  S.Berserking:IsReady("Melee") and Player:Buff(S.PillarOfFrost) then
-        return S.Berserking
+    if RubimRH.CDsON() and S.Berserking:IsReady("Melee") and Player:Buff(S.PillarOfFrost) then
+        return S.Berserking:ID()
     end
 
     --actions.cooldowns+=/use_items
@@ -184,6 +184,7 @@ local function Obliteration()
     if S.HowlingBlast:IsReady() and not Player:Buff(S.Rime) and Cache.EnemiesCount[10] > 2 and Player:Runes() > 3 and S.FreezingFog:IsAvailable() and S.GatheringStorm:IsAvailable() then
         return S.HowlingBlast:ID()
     end
+
     --actions.obliteration+=/frost_strike,if=!buff.rime.up|rune.time_to_1>=gcd|runic_power.deficit<20
     if S.FrostStrike:IsReady("Melee") and (not Player:Buff(S.Rime) or Player:RuneTimeToX(1) >= Player:GCD() or Player:RunicPowerDeficit() < 20) then
         return S.FrostStrike:ID()
@@ -299,7 +300,7 @@ local function BoSTick()
         return S.HornOfWinter:ID()
     end
     --actions.bos_ticking+=/frostscythe,if=buff.killing_machine.up&(!equipped.koltiras_newfound_will|talent.gathering_storm.enabled|spell_targets.FrostScythe>=2)
-    if FrostScythe:IsAvailable() and S.FrostScythe:IsCastable() and Player:Buff(S.KillingMachine) and (not I.KoltirasNewfoundWill:IsEquipped() or S.GatheringStorm:IsAvailable() or Cache.EnemiesCount[8] >= 2) then
+    if S.FrostScythe:IsAvailable() and S.FrostScythe:IsCastable() and Player:Buff(S.KillingMachine) and (not I.KoltirasNewfoundWill:IsEquipped() or S.GatheringStorm:IsAvailable() or Cache.EnemiesCount[8] >= 2) then
         return S.FrostScythe:ID()
     end
     --actions.bos_ticking+=/glacial_advance,if=spell_targets.remorseless_winter>=2
@@ -362,7 +363,7 @@ local function Standard()
     end
     --actions.standard+=/frost_strike,if=runic_power.deficit<20
     if S.FrostStrike:IsReady("Melee") and Player:RunicPowerDeficit() < 20 then
-        return S.FrostScythe:ID()
+        return S.FrostStrike:ID()
     end
     --actions.standard+=/remorseless_winter,if=spell_targets.remorseless_winter>=2
     if S.RemorselessWinter:IsCastable() and Cache.EnemiesCount[8] >= 2 then
@@ -386,7 +387,7 @@ local function Standard()
     end
     --actions.standard+=/frost_strike,if=!(runic_power<50&talent.obliteration.enabled&cooldown.obliteration.remains<=gcd)
     if S.FrostStrike:IsReady("Melee") and not (Player:RunicPower() < 50 and S.Obliteration:IsAvailable() and S.Obliteration:CooldownRemains() <= Player:GCD()) then
-        return S.FrostSrike:ID()
+        return S.FrostStrike:ID()
     end
     --actions.standard+=/empower_rune_weapon,if=!talent.breath_of_sindragosa.enabled|target.time_to_die<cooldown.breath_of_sindragosa.remains
     if RubimRH.CDsON() and Target:IsInRange("Melee") and S.EmpowerRuneWeapon:IsCastable() and (S.EmpowerRuneWeapon:Charges() >= 1 and not S.BreathofSindragosa:IsAvailable() or Target:TimeToDie() < S.BreathofSindragosa:CooldownRemains()) then
@@ -398,9 +399,9 @@ local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
 
     if Target:IsInRange(30) and not Target:Debuff(S.FrostFever) then
         return S.HowlingBlast:ID()
@@ -435,11 +436,9 @@ local function APL()
         end
     end
 
-    --actions+=/run_action_list,name=obliteration,if=buff.pillar_of_frost.up&talent.obliteration.enabled
-    if Player:Buff(S.PillarOfFrost) and S.Obliteration:IsAvailable() then
-        if Obliteration() ~= nil then
-            return Obliteration()
-        end
+    --actions +=/run_action_list, name = obliteration, if = buff.pillar_of_frost.up&talent.obliteration.enabled
+    if Player:Buff(S.PillarOfFrost) and S.Obliteration:IsAvailable() and Obliteration() ~= nil then
+        return Obliteration()
     end
 
     --actions+=/call_action_list,name=standard

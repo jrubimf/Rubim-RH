@@ -4,14 +4,14 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
 
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 -- Spells
 if not Spell.Warrior then
@@ -104,8 +104,8 @@ local function battle_cry_deadly_calm()
     end
 end
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 local function Cleave()
     --	actions.cleave=bladestorm,if=buff.battle_cry.up&!talent.ravager.enabled
@@ -233,7 +233,7 @@ end
 
 local function Execute()
     -- actions.execute=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
-    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (HL.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
     end
 
@@ -253,7 +253,7 @@ local function Execute()
     end
 
     -- actions.execute+=/rend,if=remains<5&cooldown.battle_cry.remains<2&(cooldown.bladestorm.remains<2|!set_bonus.tier20_4pc)
-    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not HL.Tier20_4Pc)) then
         return S.Rend:ID()
     end
 
@@ -283,7 +283,7 @@ local function Execute()
     end
 
     -- actions.execute+=/bladestorm,interrupt=1,if=(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)&!set_bonus.tier20_4pc
-    if S.Bladestorm:IsReady() and (Cache.EnemiesCount[8] > 1 and not AC.Tier20_4Pc) then
+    if S.Bladestorm:IsReady() and (Cache.EnemiesCount[8] > 1 and not HL.Tier20_4Pc) then
         return S.Bladestorm:ID()
     end
 end
@@ -295,7 +295,7 @@ local function Single()
     end
 
     -- actions.single=bladestorm,if=buff.battle_cry.up&(set_bonus.tier20_4pc|equipped.the_great_storms_eye)
-    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (AC.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (Player:Buff(S.BattleCryBuff) and (HL.Tier20_4Pc or I.TheGreatStormsEye:IsEquipped())) then
         return S.Bladestorm:ID()
     end
 
@@ -315,7 +315,7 @@ local function Single()
     end
 
     -- actions.single+=/rend,if=remains<=gcd.max|remains<5&cooldown.battle_cry.remains<2&(cooldown.bladestorm.remains<2|!set_bonus.tier20_4pc)
-    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not AC.Tier20_4Pc)) then
+    if S.Rend:IsReady("Melee") and (Target:DebuffRemainsP(S.RendDebuff) < 5 and S.BattleCry:CooldownRemainsP() < 2 and (S.Bladestorm:CooldownRemainsP() < 2 or not HL.Tier20_4Pc)) then
         return S.Rend:ID()
     end
 
@@ -360,14 +360,14 @@ local function Single()
     end
 
     -- actions.single+=/bladestorm,if=(raid_event.adds.in>90|!raid_event.adds.exists)&!set_bonus.tier20_4pc
-    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (not AC.Tier20_4Pc) then
+    if Cache.EnemiesCount[8] >= 1 and S.Bladestorm:IsReady() and (not HL.Tier20_4Pc) then
         return S.Bladestorm:ID()
     end
 end
 
 local function APL()
     -- Unit Update
-    AC.GetEnemies(8); -- Whirlwind
+    HL.GetEnemies(8); -- Whirlwind
     -- Out of Combat
 
     if not Player:AffectingCombat() then
@@ -413,7 +413,7 @@ local function APL()
 
         -- Omit gcd.remains on this offGCD because we can't react quickly enough otherwise (the intention is to cast this before the next GCD ability, but is a OffGCD abiltiy).
         -- actions+=/battle_cry,if=target.time_to_die<=6|(gcd.remains<=0.5&prev_gcd.1.ravager)|!talent.ravager.enabled&!gcd.remains&target.debuff.colossus_smash.remains>=5&(!cooldown.bladestorm.remains|!set_bonus.tier20_4pc)&(!talent.rend.enabled|dot.rend.remains>4)
-        if S.BattleCry:IsReady("Melee") and RubimRH.CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not AC.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
+        if S.BattleCry:IsReady("Melee") and RubimRH.CDsON() and (Target:TimeToDie() <= 6 or (Player:PrevGCD(1, S.Ravager)) or not S.Ravager:IsAvailable() and Target:DebuffRemainsP(S.ColossusSmashDebuff) >= 5 and (S.Bladestorm:CooldownRemainsP() == 0 or not HL.Tier20_4Pc) and (not S.Rend:IsAvailable() or Target:DebuffRemainsP(S.RendDebuff) > 4)) then
             return S.BattleCry:ID()
         end
 

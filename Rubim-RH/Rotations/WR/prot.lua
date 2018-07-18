@@ -2,14 +2,14 @@
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 --- APL Local Vars
 -- Spells
@@ -57,8 +57,8 @@ if not Item.Warrior then Item.Warrior = {}; end
 Item.Warrior.Portection = {};
 local I = Item.Warrior.Protection;
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 
 local function AoE()
     if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
@@ -101,10 +101,10 @@ local function APL()
         return 0, 462338
     end
 
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
-    AC.GetEnemies(12, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
+    HL.GetEnemies(12, true);
 
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
     LeftCtrl = IsLeftControlKeyDown();

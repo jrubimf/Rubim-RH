@@ -1,14 +1,14 @@
 --- Localize Vars
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 local MouseOver = Unit.MouseOver;
 -- Lua
 local pairs = pairs;
@@ -115,7 +115,7 @@ local BestUnit, BestUnitTTD;
 local function MfDSniping(MarkedforDeath)
     if MarkedforDeath:IsReady() then
         -- Get Units up to 30y for MfD.
-        AC.GetEnemies(30);
+        HL.GetEnemies(30);
 
         BestUnit, BestUnitTTD = nil, 60;
         local MOTTD = MouseOver:IsInRange(30) and MouseOver:TimeToDie() or 11111;
@@ -316,20 +316,20 @@ end
 
 local function EnergyTimeToMaxRounded()
     -- Round to the nearesth 10th to reduce prediction instability on very high regen rates
-    return math.floor(Player:EnergyTimeToMaxPredicted() * 10 + 0.5) / 10;
+    return math.floor(Player:EnergyTimeToMaxHeroLib() * 10 + 0.5) / 10;
 end
 
 local function BladeFlurry()
     -- Blade Flurry Expiration Offset
     if Cache.EnemiesCount[RTIdentifier] == 1 and BFReset then
-        BFTimer, BFReset = AC.GetTime(), false;
+        BFTimer, BFReset = HL.GetTime(), false;
     elseif Cache.EnemiesCount[RTIdentifier] > 1 then
         BFReset = true;
     end
 
     if Player:Buff(S.BladeFlurry) then
         -- actions.bf=cancel_buff,name=blade_flurry,if=spell_targets.blade_flurry<2&buff.blade_flurry.up
-        if Cache.EnemiesCount[RTIdentifier] < 2 and AC.GetTime() > BFTimer then
+        if Cache.EnemiesCount[RTIdentifier] < 2 and HL.GetTime() > BFTimer then
             return S.BladeFlurry:ID()
         end
         -- actions.bf+=/cancel_buff,name=blade_flurry,if=equipped.shivarran_symmetry&cooldown.blade_flurry.up&buff.blade_flurry.up&spell_targets.blade_flurry>=2
@@ -366,11 +366,11 @@ local function CDs()
                 return S.Berserking:ID()
             end
             -- actions.cds+=/arcane_torrent,if=energy.deficit>40
-            if S.ArcaneTorrent:IsReady() and Player:EnergyDeficitPredicted() > 40 then
+            if S.ArcaneTorrent:IsReady() and Player:EnergyDeficitHeroLib() > 40 then
                 return S.ArcaneTorrent:ID()
             end
             -- actions.cds+=/adrenaline_rush,if=!buff.adrenaline_rush.up&energy.deficit>0
-            if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitPredicted() > 0 then
+            if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and Player:EnergyDeficitHeroLib() > 0 then
                 return S.AdrenalineRush:ID()
             end
         end
@@ -409,7 +409,7 @@ local function Stealth()
     if Target:IsInRange(S.SaberSlash) then
         -- actions.stealth=variable,name=ambush_condition,value=combo_points.deficit>=2+2*(talent.ghostly_strike.enabled&!debuff.ghostly_strike.up)+buff.broadsides.up&energy>60&!buff.jolly_roger.up&!buff.hidden_blade.up
         local Ambush_Condition = (Player:ComboPointsDeficit() >= 2 + 2 * ((S.GhostlyStrike:IsAvailable() and not Target:Debuff(S.GhostlyStrike)) and 1 or 0)
-                + (Player:Buff(S.Broadsides) and 1 or 0) and Player:EnergyPredicted() > 60 and not Player:Buff(S.JollyRoger) and not Player:Buff(S.HiddenBlade)) and true or false;
+                + (Player:Buff(S.Broadsides) and 1 or 0) and Player:EnergyHeroLib() > 60 and not Player:Buff(S.JollyRoger) and not Player:Buff(S.HiddenBlade)) and true or false;
         -- actions.stealth+=/ambush,if=variable.ambush_condition
         if Player:IsStealthed(true, true) and S.Ambush:IsReady() and Ambush_Condition then
             return S.Ambush:ID()
@@ -468,9 +468,9 @@ end
 -- APL Main
 local function APL()
     -- Unit Update
-    AC.GetEnemies(8); -- Cannonball Barrage
-    AC.GetEnemies(S.RunThrough); -- Blade Flurry
-    AC.GetEnemies(S.SaberSlash); -- Melee
+    HL.GetEnemies(8); -- Cannonball Barrage
+    HL.GetEnemies(S.RunThrough); -- Blade Flurry
+    HL.GetEnemies(S.SaberSlash); -- Melee
 
     -- Defensives
     -- Crimson Vial
@@ -568,7 +568,7 @@ local function APL()
             return S.RolltheBones:ID()
         end
         -- actions+=/killing_spree,if=energy.time_to_max>5|energy<15
-        if RubimRH.CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
+        if RubimRH.CDsON() and S.KillingSpree:IsReady(10) and (EnergyTimeToMaxRounded() > 5 or Player:EnergyHeroLib() < 15) then
             return S.KillingSpree:ID()
         end
         -- actions+=/call_action_list,name=build
@@ -586,7 +586,7 @@ local function APL()
         end
         -- OutofRange Pistol Shot
         if not Target:IsInRange(10) and (S.PistolShot:IsReady(20) or S.Blunderbuss:IsReady(20)) and not Player:IsStealthed(true, true)
-                and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
+                and Player:EnergyDeficitHeroLib() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
             return 242277
         end
     end

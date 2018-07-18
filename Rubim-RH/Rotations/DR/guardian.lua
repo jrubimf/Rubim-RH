@@ -2,14 +2,14 @@
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- AethysRotation
 local AR = AethysRotation;
 -- Lua
@@ -123,7 +123,7 @@ local function APL()
         AoERadius = I.LuffaWrappings:IsEquipped() and 10 or 8;
         RangedRange = 40;
     end
-    AC.GetEnemies(AoERadius, true); -- Thrash & Swipe
+    HL.GetEnemies(AoERadius, true); -- Thrash & Swipe
 
     if S.FrenziedRegeneration:TimeSinceLastCast() <= Player:GCD() then
         damageInLast3Seconds = 0

@@ -9,14 +9,14 @@
 -- Addon
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 --- ============================ CONTENT ============================
 -- Spells
 if not Spell.Druid then
@@ -126,7 +126,7 @@ function Player:EnergyTimeToXP (Amount, Offset)
     if self:EnergyRegen() == 0 then
         return -1;
     end
-    return Amount > self:EnergyPredicted() and (Amount - self:EnergyPredicted()) / (self:EnergyRegen() * (1 - (Offset or 0))) or 0;
+    return Amount > self:EnergyHeroLib() and (Amount - self:EnergyHeroLib()) / (self:EnergyRegen() * (1 - (Offset or 0))) or 0;
 end
 
 local useTrash = 0
@@ -327,12 +327,12 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
-    if RubimRH.CDsON() and S.Berserk:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 5 or Player:Buff(S.TigersFury)) then
+    if RubimRH.CDsON() and S.Berserk:IsReady() and Player:EnergyHeroLib() >= 30 and (S.TigersFury:CooldownRemainsP() > 5 or Player:Buff(S.TigersFury)) then
         return S.Berserk:ID()
     end
 
     -- actions.cooldowns+=/tigers_fury,if=energy.deficit>=60
-    if S.TigersFury:IsReady() and Player:EnergyDeficitPredicted() >= 60 then
+    if S.TigersFury:IsReady() and Player:EnergyDeficitHeroLib() >= 60 then
         return S.TigersFury:ID()
     end
 
@@ -342,12 +342,12 @@ local function Cooldowns()
     end
 
     -- actions.cooldowns+=/elunes_guidance,if=combo_points=0&energy>=50
-    if S.ElunesGuidance:IsReady() and Player:ComboPoints() == 0 and Player:EnergyPredicted() >= 50 then
+    if S.ElunesGuidance:IsReady() and Player:ComboPoints() == 0 and Player:EnergyHeroLib() >= 50 then
         return S.ElunesGuidance:ID()
     end
 
     -- actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-    if RubimRH.CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
+    if RubimRH.CDsON() and S.Incarnation:IsAvailable() and S.Incarnation:IsReady() and Player:EnergyHeroLib() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:Buff(S.TigersFury)) then
         return 210631
     end
 
@@ -444,8 +444,8 @@ local function APL()
     end
 
     -- Unit Update
-    AC.GetEnemies(ThrashRadius, true); -- Thrash
-    AC.GetEnemies(AoERadius, true); -- Swipe
+    HL.GetEnemies(ThrashRadius, true); -- Thrash
+    HL.GetEnemies(AoERadius, true); -- Swipe
 
 
     if not Player:AffectingCombat() then
@@ -508,7 +508,7 @@ local function APL()
     --debugVarText = Player:PrevGCD()
 
     -- actions=run_action_list,name=single_target,if=dot.rip.ticking|time>15
-    if SingleTarget() ~= nil and (Target:DebuffRemainsP(S.Rip) > 0 or AC.CombatTime() > 15) then
+    if SingleTarget() ~= nil and (Target:DebuffRemainsP(S.Rip) > 0 or HL.CombatTime() > 15) then
         return SingleTarget()
     end
 

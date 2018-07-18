@@ -1,11 +1,11 @@
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- AethysRotation
 -- Lua
 local pairs = pairs;
@@ -260,8 +260,8 @@ local function stealthed (ReturnSpellOnly, StealthSpell)
 end
 
 local function APL()
-    AC.GetEnemies(10, true); -- Shuriken Storm & Death from Above
-    AC.GetEnemies("Melee"); -- Melee
+    HL.GetEnemies(10, true); -- Shuriken Storm & Death from Above
+    HL.GetEnemies("Melee"); -- Melee
 
     if S.Subterfuge:IsAvailable() then
         Stealth = S.Stealth2;
@@ -312,7 +312,7 @@ local function APL()
     -- actions+=/nightblade,if=target.time_to_die>6&remains<gcd.max&combo_points>=4-(time<10)*2
     if S.Nightblade:IsCastableP() and IsInMeleeRange()
             and (Target:FilteredTimeToDie(">", 6) or Target:TimeToDieIsNotValid())
-            and Target:DebuffRemainsP(S.Nightblade) < Player:GCD() and Player:ComboPoints() >= 4 - (AC.CombatTime() < 10 and 2 or 0) then
+            and Target:DebuffRemainsP(S.Nightblade) < Player:GCD() and Player:ComboPoints() >= 4 - (HL.CombatTime() < 10 and 2 or 0) then
         return RubimRH.nS
     end
 
@@ -328,12 +328,12 @@ local function APL()
     end
 
     -- actions+=/call_action_list,name=build,if=energy.deficit<=variable.stealth_threshold-40*!(talent.alacrity.enabled|talent.shadow_focus.enabled|talent.master_of_shadows.enabled)
-    if build() ~= nil and Player:EnergyDeficitPredicted() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
+    if build() ~= nil and Player:EnergyDeficitHeroLib() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
         return build()
     end
 
     -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-    if S.ArcaneTorrent:IsCastable() and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+    if S.ArcaneTorrent:IsCastable() and Player:EnergyDeficitHeroLib() > 15 + Player:EnergyRegen() then
         return RubimRH.nS
     end
     -- actions+=/arcane_pulse

@@ -1,12 +1,12 @@
 --- ============================ HEADER ============================
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 --- -
 if not Spell.DeathKnight then
@@ -208,10 +208,10 @@ end
 local lastSephuz = 0
 local function APL()
     ----RANGE
-    AC.GetEnemies("Melee");
-    AC.GetEnemies(8, true);
-    AC.GetEnemies(10, true);
-    AC.GetEnemies(20, true);
+    HL.GetEnemies("Melee");
+    HL.GetEnemies(8, true);
+    HL.GetEnemies(10, true);
+    HL.GetEnemies(20, true);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
 

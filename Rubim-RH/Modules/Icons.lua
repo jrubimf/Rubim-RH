@@ -5,13 +5,13 @@
 ---
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local Icons = {}
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 --INTERRUPTS---
 local int_smart = true

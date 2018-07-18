@@ -1,15 +1,15 @@
 --- Localize Vars
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local MouseOver = Unit.MouseOver;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 
@@ -97,8 +97,8 @@ end
 
 local function APL()
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
-	AC.GetEnemies("Melee"); -- Melee
-	AC.GetEnemies(6, true); -- 
+	HL.GetEnemies("Melee"); -- Melee
+	HL.GetEnemies(6, true); -- 
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
 	LeftAlt = IsLeftAltKeyDown();

@@ -5,13 +5,13 @@
 ---
 
 local addonName, addonTable = ...;
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 --- ============================   CUSTOM   ============================
 function TargetIsValid()
@@ -20,7 +20,7 @@ function TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-    AC.GetEnemies(8, true)
+    HL.GetEnemies(8, true)
 
     if Cache.EnemiesCount[8] >= 1 then
         isValid = true
@@ -110,7 +110,7 @@ local unitID = ...
 end)
 
 function DiyingIn()
-    AC.GetEnemies(10, true); -- Blood Boil
+    HL.GetEnemies(10, true); -- Blood Boil
     totalmobs = 0
     dyingmobs = 0
     for _, CycleUnit in pairs(Cache.Enemies[10]) do

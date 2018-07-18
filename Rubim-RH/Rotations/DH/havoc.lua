@@ -2,14 +2,14 @@
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...;
--- AethysCore
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+-- HeroLib
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 local select = select;
@@ -22,32 +22,32 @@ local ChaosStrikeMHDamageID = 222031;
 local AnnihilationMHDamageID = 227518;
 local ChaosStrikeEnergizeId = 193840;
 
--- Return CS adjusted Fury Predicted
+-- Return CS adjusted Fury HeroLib
 function Player:FuryWithCSRefund()
     return math.min(Player:Fury() + Player.CSPrediction.CritCount * 20, Player:FuryMax());
 end
 
--- Return CS adjusted Fury Deficit Predicted
+-- Return CS adjusted Fury Deficit HeroLib
 function Player:FuryDeficitWithCSRefund()
     return math.max(Player:FuryDeficit() - Player.CSPrediction.CritCount * 20, 0);
 end
 
 -- Zero CSPrediction after receiving any Chaos Strike energize
-AC:RegisterForSelfCombatEvent(function(...)
+HL:RegisterForSelfCombatEvent(function(...)
     local rsspellid = select(12, ...)
     if (rsspellid == ChaosStrikeEnergizeId) then
         Player.CSPrediction.CritCount = 0;
-        --AC.Print("Refund!");
+        --HL.Print("Refund!");
     end
 end, "SPELL_ENERGIZE");
 
 -- Set CSPrediction on the MH impact from Chaos Strike or Annihilation
-AC:RegisterForSelfCombatEvent(function(...)
+HL:RegisterForSelfCombatEvent(function(...)
     local spellID = select(12, ...)
     local spellCrit = select(21, ...)
     if (spellCrit and (spellID == ChaosStrikeMHDamageID or spellID == AnnihilationMHDamageID)) then
         Player.CSPrediction.CritCount = Player.CSPrediction.CritCount + 1;
-        --AC.Print("Crit!");
+        --HL.Print("Crit!");
     end
 end, "SPELL_DAMAGE");
 --- ============================ CONTENT ============================
@@ -194,7 +194,7 @@ end
 
 -- variable,name=blade_dance,value=talent.first_blood.enabled|set_bonus.tier20_4pc|spell_targets.blade_dance1>=3+(talent.chaos_cleave.enabled*3)
 local function BladeDance()
-    return S.FirstBlood:IsAvailable() or AC.Tier20_4Pc or (Cache.EnemiesCount[8] >= 3 + (S.ChaosCleave:IsAvailable() and 3 or 0));
+    return S.FirstBlood:IsAvailable() or HL.Tier20_4Pc or (Cache.EnemiesCount[8] >= 3 + (S.ChaosCleave:IsAvailable() and 3 or 0));
 end
 
 -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
@@ -215,8 +215,8 @@ local function PoolingForChaosStrike()
     return false;
 end
 
-local T202PC, T204PC = AC.HasTier("T20");
-local T212PC, T214PC = AC.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20");
+local T212PC, T214PC = HL.HasTier("T21");
 -- Main APL
 local function APL()
     if not Player:AffectingCombat() then
@@ -291,7 +291,7 @@ local function APL()
         end
         -- immolation_aura
         if S.ImmolationAura:IsAvailable() and S.ImmolationAura:IsCastable(8, true) then
-            return S.ImmolationAura:ID()
+            return S.Shadowmeld:ID()
         end
         -- felblade,if=fury<40|(buff.metamorphosis.down&fury.deficit>=40)
         if S.Felblade:IsCastable(S.Felblade)
@@ -300,7 +300,7 @@ local function APL()
         end
         -- eye_beam,if=(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and (not S.BlindFury:IsAvailable() or Player:FuryDeficit() >= 70)
-                and (not IsMetaExtendedByDemonic() or (AC.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)) then
+                and (not IsMetaExtendedByDemonic() or (HL.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16)) then
             return S.EyeBeam:ID()
         end
         -- annihilation,if=(talent.blind_fury.enabled|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance
@@ -352,7 +352,7 @@ local function APL()
         end
         -- immolation_aura
         if S.ImmolationAura:IsAvailable() and S.ImmolationAura:IsCastable(8, true) then
-            return S.ImmolationAura:ID()
+            return S.Shadowmeld:ID()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
         if RubimRH.config.Spells[2].isActive and RubimRH.lastMoved() > 0.2 and S.EyeBeam:IsReady(20, true) and RubimRH.AoEON() and Cache.EnemiesCount[CleaveRangeID] > 1 and not WaitingForMomentum() then
@@ -413,10 +413,10 @@ local function APL()
     end
 
     -- Unit Update
-    AC.GetEnemies(6, true); -- Fury of the Illidari
-    AC.GetEnemies(8, true); -- Blade Dance/Chaos Nova
-    AC.GetEnemies(S.ConsumeMagic, true); -- 20y, use for TG Bounce and Eye Beam
-    AC.GetEnemies("Melee"); -- Melee
+    HL.GetEnemies(6, true); -- Fury of the Illidari
+    HL.GetEnemies(8, true); -- Blade Dance/Chaos Nova
+    HL.GetEnemies(S.ConsumeMagic, true); -- 20y, use for TG Bounce and Eye Beam
+    HL.GetEnemies("Melee"); -- Melee
 
     -- call_action_list,name=cooldown,if=gcd.remains=0
     if RubimRH.CDsON() and Cooldown() ~= nil then
@@ -428,7 +428,7 @@ local function APL()
 
     -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
     if S.DarkSlash:IsAvailable() and (WaitingForDarkSlash() or Target:DebuffP(S.DarkSlash)) and DarkSlash() ~= nil then
-        return DarkSlash:ID()
+        return S.ArcaneTorrent:ID()
     end
 
     -- run_action_list,name=demonic,if=talent.demonic.enabled

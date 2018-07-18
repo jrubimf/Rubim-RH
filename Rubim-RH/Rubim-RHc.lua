@@ -5,9 +5,9 @@
 ---
 
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 

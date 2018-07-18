@@ -4,13 +4,13 @@
 --- DateTime: 12/07/2018 07:01
 ---
 
-local AC = AethysCore;
-local Cache = AethysCache;
-local Unit = AC.Unit;
+local HL = HeroLib;
+local Cache = HeroCache;
+local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
-local Spell = AC.Spell;
-local Item = AC.Item;
+local Spell = HL.Spell;
+local Item = HL.Item;
 
 local ProlongedPower = Item(142117)
 local Healthstone = 5512
