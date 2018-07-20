@@ -16,6 +16,10 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
 
+    if RubimExtra == true and RubimExtraVer ~= "20072018" then
+        message("Update the RubimRH Extra")
+    end
+
     if GetCVar("nameplateShowEnemies") ~= "1" then
         message("Is nameplates off? You need it in order to get the most optimal results..");
     end
