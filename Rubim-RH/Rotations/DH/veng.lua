@@ -41,6 +41,7 @@ Spell.DemonHunter.Vengeance = {
 };
 local S = Spell.DemonHunter.Vengeance;
 S.Fracture.TextureSpellID = { 279450 }
+S.Sever.TextureSpellID = { 279450 }
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -114,11 +115,11 @@ local function APL()
         -- actions+=/sever
         if S.Sever:IsReady("Melee") then
             --Hacky Stuff
-            return 203783
+            return S.Sever:Cast()
         end
 
         if S.Fracture:IsAvailable() and S.Fracture:IsReady("Melee") then
-            return 279450
+            return S.Fracture:Cast()
         end
 
         -- actions+=/shear
