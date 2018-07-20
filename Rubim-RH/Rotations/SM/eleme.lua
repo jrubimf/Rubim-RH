@@ -110,12 +110,25 @@ local I = Item.Shaman.Elemental
 -- APL Main
 
 function TotemMastery()
-    for i = 1, 4 do
-        if select(3, GetTotemInfo(i)) ~= nil and select(3, GetTotemInfo(i)) ~= 0 then
-            return select(3, GetTotemInfo(i)) + select(4, GetTotemInfo(i)) - GetTime()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and textureId == 511726 then
+            return startTime + duration - GetTime()
         end
     end
-    return 120
+    return 0
+end
+
+--136024 - Earth
+--135790 - Fire
+function ElementalUp()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and (textureId == 135790 or textureId == 136024 or textureId == 1020304) then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
 end
 
 local function aoe()
