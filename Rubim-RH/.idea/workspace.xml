@@ -24,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ret.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ret.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/PL/ret.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="123" column="2" lean-forward="true" selection-start-line="123" selection-start-column="2" selection-end-line="128" selection-end-column="0" />
+            <state relative-caret-position="485">
+              <caret line="211" column="63" lean-forward="false" selection-start-line="211" selection-start-column="63" selection-end-line="211" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -46,10 +46,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
+            <state relative-caret-position="1257">
               <caret line="142" column="31" lean-forward="true" selection-start-line="142" selection-start-column="31" selection-end-line="142" selection-end-column="31" />
               <folding />
             </state>
@@ -127,7 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Spell</find>
       <find>Razor</find>
       <find>DebuffStacks</find>
       <find>hasTale</find>
@@ -151,12 +150,13 @@
       <find>Clea</find>
       <find>RubimExtra</find>
       <find>RubimExtraVer</find>
-      <find>SavageRoar</find>
       <find>45438</find>
       <find>Aura</find>
       <find>pvpImmunity</find>
       <find>CastSeque</find>
       <find>Inquisition</find>
+      <find>SavageRoar</find>
+      <find>I</find>
     </findStrings>
     <replaceStrings>
       <replace>return /1:ID()</replace>
@@ -252,8 +252,8 @@
         <option value="$PROJECT_DIR$/Rotations/DR/feral.lua" />
         <option value="$PROJECT_DIR$/../Rubim-TE/rubim-te.lua" />
         <option value="$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
-        <option value="$PROJECT_DIR$/Rotations/PL/ret.lua" />
         <option value="$PROJECT_DIR$/Modules/Custom.lua" />
+        <option value="$PROJECT_DIR$/Rotations/PL/ret.lua" />
       </list>
     </option>
   </component>
@@ -263,7 +263,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -552,7 +552,7 @@
     <option name="totallyTimeSpent" value="396463000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -957,18 +957,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/PL/ret.lua">
+    <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="123" column="2" lean-forward="true" selection-start-line="123" selection-start-column="2" selection-end-line="128" selection-end-column="0" />
+        <state relative-caret-position="1257">
+          <caret line="142" column="31" lean-forward="true" selection-start-line="142" selection-start-column="31" selection-end-line="142" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
+    <entry file="file://$PROJECT_DIR$/Rotations/PL/ret.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="142" column="31" lean-forward="true" selection-start-line="142" selection-start-column="31" selection-end-line="142" selection-end-column="31" />
+        <state relative-caret-position="485">
+          <caret line="211" column="63" lean-forward="false" selection-start-line="211" selection-start-column="63" selection-end-line="211" selection-end-column="63" />
           <folding />
         </state>
       </provider>

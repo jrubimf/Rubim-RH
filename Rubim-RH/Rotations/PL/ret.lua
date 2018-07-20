@@ -68,7 +68,7 @@ S.Crusade.TextureSpellID = { 55748 }
 
 S.WakeofAshes.TextureSpellID = { 20594 }
 S.HammerofWrath.TextureSpellID = { 20549 }
-
+S.Inquisition.TextureSpellID = { 28730 }
 
 -- Items
 if not Item.Paladin then
@@ -192,7 +192,7 @@ local function Generators()
     end
 
     --actions.generators+ = /call_action_list, name = finishers, if = talent.hammer_of_wrath.enabled&(target.health.pct<=20|buff.avenging_wrath.up|buff.crusade.up)&(buff.divine_purpose.up|buff.crusade.stack<10)
-    if Finishers() ~= nil and (S.HammerofWrath:IsAvailable() and ((Target:HealthPercentage() <= 20 or Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade)) and (Player:Buff(S.DivinePurposeBuff) or Player:BuffStack(S.Crusade) < 10))) then
+    if Finishers() ~= nil and (S.HammerofWrath:IsAvailable() and (((Target:Exists() and Target:HealthPercentage()) <= 20 or Player:Buff(S.AvengingWrath) or Player:Buff(S.Crusade)) and (Player:Buff(S.DivinePurposeBuff) or Player:BuffStack(S.Crusade) < 10))) then
         return Finishers()
     end
 
