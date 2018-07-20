@@ -322,6 +322,7 @@ function RubimRH.CastSequence()
     end
 
     if lastCast > #RubimRH.castSpellSequence then
+        RubimRH.castSpellSequence = {}
         return nil
     end
 

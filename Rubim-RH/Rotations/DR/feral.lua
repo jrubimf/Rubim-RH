@@ -160,7 +160,7 @@ local function APL()
         return S.Rake:Cast()
     end
 
-    if S.SavageRoar:IsReady("Melee") and Player:BuffRemains(S.SavageRoar) >= 3 then
+    if S.SavageRoar:IsReady("Melee") and Player:BuffRemains(S.SavageRoar) <= 3 then
         return S.SavageRoar:Cast()
     end
 
@@ -176,11 +176,11 @@ local function APL()
         return S.Thrash:Cast()
     end
 
-    if S.FerociousBite:IsReady("Melee") and Player:ComboPoints() == 5 and Player:BuffRemains(S.SavageRoar) >= 10 and S.SavageRoar:IsAvailable() and Target:DebuffRemains(S.Rip) >= 10 then
+    if S.FerociousBite:IsReady("Melee") and Player:ComboPoints() == 5 and Player:BuffRemains(S.SavageRoar) >= 7 and S.SavageRoar:IsAvailable() and Target:DebuffRemains(S.Rip) >= 7 then
         return S.FerociousBite:Cast()
     end
 
-    if S.FerociousBite:IsReady("Melee") and Player:ComboPoints() == 5 and not S.SavageRoar:IsAvailable() and Target:DebuffRemains(S.Rip) >= 10 then
+    if S.FerociousBite:IsReady("Melee") and Player:ComboPoints() == 5 and not S.SavageRoar:IsAvailable() and Target:DebuffRemains(S.Rip) >= 7 then
         return S.FerociousBite:Cast()
     end
 
