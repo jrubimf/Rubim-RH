@@ -36,7 +36,7 @@ local VictoryRush = Spell(34428)
 local Victorious = Spell(32216)
 local LastStand = Spell(12975)
 local Avatar = Spell(107574)
-local BattleShout = Spell(27578)
+local BattleShout = Spell(6673)
 -- Talents
 local BoomingVoice = Spell(202743)
 local ImpendingVictory = Spell(202168)
@@ -66,6 +66,7 @@ local T212PC, T214PC = HL.HasTier("T21"); -- Unused
 
 --- Class-specific Spell:CanCast function, spellRage optional
 function Spell:CanCast(spellRange, spellRage)
+    spellRange = spellRange or 0
     spellRage = spellRage or 0
 
     return self:IsCastable(spellRange) and (Player:Rage() >= spellRage)
@@ -75,7 +76,8 @@ end
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
 local function APL()
     -- Re-buff when Battle Shout is down
-    if not Player:Buff(BattleShout) and BattleShout:CanCast() then return BattleShout:Cast() end
+    -- TODO: Need to wait for GGLoader to include this texture
+    -- if not Player:Buff(BattleShout) and BattleShout:IsReady() then return BattleShout:Cast() end
 
     -- Player not in combat
     if not Player:AffectingCombat() then return 0, 462338 end
@@ -153,12 +155,11 @@ local function APL()
     -- TODO: Re-work Vengeance Logic for proper Revenge/Ignore Pain usage
     if Player:Buff(VegeanceRV)
             and Player:Rage() >= 20
-            and (Player:Buff(ShieldBlockBuff) and Player:BuffRemains(ShieldBlockBuff) >= Player:GCD() and ShieldBlock:CanCast("Melee"))
+            and (Player:Buff(ShieldBlockBuff) and Player:BuffRemains(ShieldBlockBuff) >= Player:GCD() and ShieldBlock:CanCast("Melee", 30))
             and Revenge:CanCast("Melee") then
         return Revenge:Cast()
     end
 
-    -- TODO: Evaluate proper AoE handling
     if Ravager:CanCast("Melee")
             and Cache.EnemiesCount[8] >= 3 then
         return Ravager:Cast()
@@ -166,6 +167,12 @@ local function APL()
 
     if ShieldBash:CanCast("Melee") then
         return ShieldBash:Cast()
+    end
+
+    if Player:Buff(VegeanceIP)
+            and Player:Rage() >= ((40 / 3) * 2)
+            and not Player:Buff(IgnorePain) then
+        return IgnorePain:Cast()
     end
 
     if Revenge:CanCast("Melee", 30) and
