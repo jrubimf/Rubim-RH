@@ -131,7 +131,9 @@ local function APL()
 
     -- Revenge Rage Dump
     local RevengeDumpRage = BoomingVoice:IsAvailable() and 60 or 80
-    if Revenge:CanCast("Melee", RevengeDumpRage) or Player:Buff(RevengeBuff) then
+    if Revenge:CanCast("Melee", RevengeDumpRage)
+            or (Player:Buff(RevengeBuff) and Revenge:CanCast("Melee"))
+            or (Revenge:CanCast("Melee") and Vengeance:IsAvailable() and Player:Buff(VegeanceRV)) then
         return Revenge:Cast()
     end
 
