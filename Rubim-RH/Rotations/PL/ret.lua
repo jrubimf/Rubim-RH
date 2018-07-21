@@ -123,7 +123,7 @@ local function Finishers()
     --cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
     if (S.Inquisition:IsAvailable() and S.Inquisition:IsReady()) and (not Player:Buff(S.Inquisition)
             or Player:BuffRemains(S.Inquisition) < 5 and Player:HolyPower() >= 3
-            or S.ExecutionSentence:IsAvailable() and S.ExecutionSentence:CooldownRemains() < 10 and Player.BuffRemains(S.Inquisition) < 15 or S.AvengingWrath:CooldownRemains() < 15 and S.Inquisition:BuffRemais() < 20 and Player:HolyPower() >= 3) then
+            or S.ExecutionSentence:IsAvailable() and S.ExecutionSentence:CooldownRemains() < 10 and Player:BuffRemains(S.Inquisition) < 15 or S.AvengingWrath:CooldownRemains() < 15 and Player:BuffRemains(S.Inquisition) < 20 and Player:HolyPower() >= 3) then
         return S.Inquisition:Cast()
     end
 
