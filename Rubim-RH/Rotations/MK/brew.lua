@@ -150,7 +150,7 @@ local function APL()
         return HealingElixir:Cast()
     end
 
-    if Player:Buff(HeavyStagger)
+    if Player:Debuff(HeavyStagger)
         and Player:HealthPercentage() <= 80
         and Guard:CanCast() then
         return Guard:Cast()
@@ -169,11 +169,11 @@ local function APL()
     end
 
     -- TODO: Handle proper logic for locating distance to statue
---    if Cache.EnemiesCount[8] >= 3
---            and BlackOxStatue:CanCast(8)
---            and (not Pet:IsActive() or Player:FindRange("pet") > 8) then
---        return BlackOxStatue:Cast()
---    end
+    --    if Cache.EnemiesCount[8] >= 3
+    --            and BlackOxStatue:CanCast(8)
+    --            and (not Pet:IsActive() or Player:FindRange("pet") > 8) then
+    --        return BlackOxStatue:Cast()
+    --    end
 
     --- Universal Rotation - Does not change based on targets
 
