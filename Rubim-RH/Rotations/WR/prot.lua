@@ -158,6 +158,7 @@ local function APL()
         return Revenge:Cast()
     end
 
+    -- TODO: Evaluate proper AoE handling
     if Ravager:CanCast("Melee")
             and Cache.EnemiesCount[8] >= 3 then
         return Ravager:Cast()
