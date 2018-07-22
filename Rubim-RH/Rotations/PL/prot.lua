@@ -148,7 +148,7 @@ local function APL()
 
     --- Main damage rotation: all executed as soon as they're available
     if not Player:Buff(ProtSpells.Consecration)
-            and ((RubimRH.lastMoved() >= 1 and IsTanking) or (Player:IsTanking(Target) and Target:IsInRange(8)))
+            and (Target:Exists() and Target:IsInRange("Melee"))
             and ProtSpells.Consecration:CanCast() then
         return ProtSpells.Consecration:Cast()
     end
@@ -161,7 +161,9 @@ local function APL()
         return ProtSpells.AvengersShield:Cast()
     end
 
-    if ProtSpells.BlessedHammer:CanCast("Melee") then
+    if ProtSpells.BlessedHammer:CanCast()
+        and Target:Exists()
+        and Target:IsInRange("Melee") then
         return ProtSpells.BlessedHammer:Cast()
     end
 
@@ -169,7 +171,8 @@ local function APL()
         return ProtSpells.HammerOfTheRighteous:Cast()
     end
 
-    if ProtSpells.Consecration:CanCast() then
+    if ProtSpells.Consecration:CanCast()
+            and (Target:Exists() and Target:IsInRange("Melee")) then
         return ProtSpells.Consecration:Cast()
     end
 
