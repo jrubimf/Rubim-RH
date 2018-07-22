@@ -16,64 +16,63 @@ if not Spell.Warrior then
 end
 Spell.Warrior.Fury = {
     -- Racials
-    ArcaneTorrent                 = Spell(80483),
-    AncestralCall                 = Spell(274738),
-    Berserking                    = Spell(26297),
-    BloodFury                     = Spell(20572),
-    Fireblood                     = Spell(265221),
-    GiftoftheNaaru                = Spell(59547),
-    LightsJudgment                = Spell(255647),
+    ArcaneTorrent = Spell(80483),
+    AncestralCall = Spell(274738),
+    Berserking = Spell(26297),
+    BloodFury = Spell(20572),
+    Fireblood = Spell(265221),
+    GiftoftheNaaru = Spell(59547),
+    LightsJudgment = Spell(255647),
     -- Abilities
-    BattleShout                   = Spell(6673),
-    BerserkerRage                 = Spell(18499),
-    Bloodthirst                   = Spell(23881),
-    Charge                        = Spell(100),
-    Execute                       = Spell(5308),
-    ExecuteMassacre               = Spell(280735),
-    HeroicLeap                    = Spell(6544),
-    HeroicThrow                   = Spell(57755),
-    RagingBlow                    = Spell(85288),
-    Rampage                       = Spell(184367),
-    Recklessness                  = Spell(1719),
-    VictoryRush                   = Spell(34428),
-    Whirlwind                     = Spell(190411),
-    WhirlwindBuff                 = Spell(85739),
-    Enrage                        = Spell(184362),
+    BattleShout = Spell(6673),
+    BerserkerRage = Spell(18499),
+    Bloodthirst = Spell(23881),
+    Charge = Spell(100),
+    Execute = Spell(5308),
+    ExecuteMassacre = Spell(280735),
+    HeroicLeap = Spell(6544),
+    HeroicThrow = Spell(57755),
+    RagingBlow = Spell(85288),
+    Rampage = Spell(184367),
+    Recklessness = Spell(1719),
+    VictoryRush = Spell(34428),
+    Whirlwind = Spell(190411),
+    WhirlwindBuff = Spell(85739),
+    Enrage = Spell(184362),
     -- Talents
-    WarMachine                    = Spell(262231),
-    EndlessRage                   = Spell(202296),
-    FreshMeat                     = Spell(215568),
-    DoubleTime                    = Spell(103827),
-    ImpendingVictory              = Spell(202168),
-    StormBolt                     = Spell(107570),
-    InnerRage                     = Spell(215573),
-    FuriousSlash                  = Spell(100130),
-    FuriousSlashBuff              = Spell(202539),
-    Carnage                       = Spell(202922),
-    Massacre                      = Spell(206315),
-    FrothingBerserker             = Spell(215571),
-    MeatCleaver                   = Spell(280392),
-    DragonRoar                    = Spell(118000),
-    Bladestorm                    = Spell(46924),
-    RecklessAbandon               = Spell(202751),
-    AngerManagement               = Spell(152278),
-    Siegebreaker                  = Spell(280772),
-    SiegebreakerDebuff            = Spell(280773),
-    SuddenDeath                   = Spell(280721),
-    SuddenDeathBuff               = Spell(280776),
-    SuddenDeathBuffLeg            = Spell(225947),
+    WarMachine = Spell(262231),
+    EndlessRage = Spell(202296),
+    FreshMeat = Spell(215568),
+    DoubleTime = Spell(103827),
+    ImpendingVictory = Spell(202168),
+    StormBolt = Spell(107570),
+    InnerRage = Spell(215573),
+    FuriousSlash = Spell(100130),
+    FuriousSlashBuff = Spell(202539),
+    Carnage = Spell(202922),
+    Massacre = Spell(206315),
+    FrothingBerserker = Spell(215571),
+    MeatCleaver = Spell(280392),
+    DragonRoar = Spell(118000),
+    Bladestorm = Spell(46924),
+    RecklessAbandon = Spell(202751),
+    AngerManagement = Spell(152278),
+    Siegebreaker = Spell(280772),
+    SiegebreakerDebuff = Spell(280773),
+    SuddenDeath = Spell(280721),
+    SuddenDeathBuff = Spell(280776),
+    SuddenDeathBuffLeg = Spell(225947),
     -- Defensive
     -- Utility
-    Pummel                         = Spell(6552),
+    Pummel = Spell(6552),
     -- Legendaries
-    FujiedasFury                  = Spell(207776),
-    StoneHeart                    = Spell(225947),
+    FujiedasFury = Spell(207776),
+    StoneHeart = Spell(225947),
     -- Misc
-    UmbralMoonglaives             = Spell(242553),
+    UmbralMoonglaives = Spell(242553),
 };
 local S = Spell.Warrior.Fury;
 
-S.SiegeBreaker.TextureSpellID = { 58984 }
 -- Items
 if not Item.Warrior then
     Item.Warrior = {};
@@ -111,7 +110,7 @@ local function single_target ()
         return S.Execute:Cast()
     end
     -- actions.single_target+=/bloodthirst,if=buff.enrage.down
-    if S.Bloodthirst:IsIsReady() and not Player:Buff(S.Enrage) then
+    if S.Bloodthirst:IsReady() and not Player:Buff(S.Enrage) then
         return S.Bloodthirst:Cast()
     end
     -- actions.single_target+=/raging_blow,if=charges=2
@@ -119,15 +118,15 @@ local function single_target ()
         return S.RagingBlow:Cast()
     end
     -- actions.single_target+=/bloodthirst
-    if S.Bloodthirst:IsIsReady() then
+    if S.Bloodthirst:IsReady() then
         return S.Bloodthirst:Cast()
     end
     -- actions.single_target+=/bladestorm,if=prev_gcd.1.rampage&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-    if RubimRH.CDsON() and S.Bladestorm:IsIsReady() and Player:PrevGCDP(1, S.Rampage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
+    if RubimRH.CDsON() and S.Bladestorm:IsReady() and Player:PrevGCDP(1, S.Rampage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
         return S.Bladestorm:Cast()
     end
     -- actions.single_target+=/dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-    if RubimRH.CDsON() and S.DragonRoar:IsIsReady() and Player:Buff(S.Enrage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
+    if RubimRH.CDsON() and S.DragonRoar:IsReady() and Player:Buff(S.Enrage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
         return S.DragonRoar:Cast()
     end
     -- actions.single_target+=/raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
@@ -135,11 +134,11 @@ local function single_target ()
         return S.RagingBlow:Cast()
     end
     -- actions.single_target+=/furious_slash,if=talent.furious_slash.enabled
-    if S.FuriousSlash:IsIsReady() and S.FuriousSlash:IsAvailable() then
+    if S.FuriousSlash:IsReady() and S.FuriousSlash:IsAvailable() then
         return S.FuriousSlash:Cast()
     end
     -- actions.single_target+=/whirlwind
-    if S.Whirlwind:IsIsReady() then
+    if S.Whirlwind:IsReady() then
         return S.Whirlwind:Cast()
     end
 end
@@ -213,10 +212,11 @@ local function APL()
     end
     return 0, 975743
 end
-    RubimRH.Rotation.SetAPL(72, APL);
 
-    local function PASSIVE()
-        return RubimRH.Shared()
-    end
+RubimRH.Rotation.SetAPL(72, APL);
 
-    RubimRH.Rotation.SetPASSIVE(72, PASSIVE);
+local function PASSIVE()
+    return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(72, PASSIVE);
