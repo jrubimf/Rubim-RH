@@ -92,7 +92,7 @@ local function APL()
     LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
     local ShouldLotP = Player:Health() <= (Player:MaxHealth() - LotPHeal) and true or false
     if (LightOfTheProtector:CanCast(nil, Player) or HandOfTheProtector:CanCast(nil, Player))
-        and ShouldLotP then
+            and ShouldLotP then
         return LightOfTheProtector:Cast()
     end
 
@@ -113,11 +113,11 @@ local function APL()
     end
 
     -- Blessing Of Sacrifice
---    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and MouseoverUnit:TimeToDie() ~= 8888 and MouseoverUnit:HealthPercentage() <= 90) and true or false
---    if MouseoverUnitNeedsBlessingOfSacrifice
---        and BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
---        return BlessingOfSacrifice:Cast()
---    end
+    --    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and MouseoverUnit:TimeToDie() ~= 8888 and MouseoverUnit:HealthPercentage() <= 90) and true or false
+    --    if MouseoverUnitNeedsBlessingOfSacrifice
+    --        and BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
+    --        return BlessingOfSacrifice:Cast()
+    --    end
 
     local MovementSpeed = select(1, GetUnitSpeed("player"))
     if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
