@@ -60,7 +60,7 @@ local function APL()
         return 0, 462338
     end
 
-    print(RubimRH.incdmg(Player))
+    print(RubimRH.getDMG(Player))
 
     --- Determine if we're tanking
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
@@ -130,11 +130,13 @@ local function APL()
 
     if Target:Exists()
             and HammerOfJustice:CanCast(10)
-            and LeftCtrl and LeftShift then
+            and LeftCtrl
+            and LeftShift then
         return HammerOfJustice:Cast()
     end
 
     --- Offensive CDs
+    --print(Target:TimeToDie())
     if RubimRH.CDsON()
             and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
             and AvengingWrath:IsReady() then
