@@ -238,7 +238,6 @@ local defaults = {
             Fury = {
                 cooldown = true,
                 Spells = {
-                    { spellID = OdynsFury, isActive = true },
                     { spellID = Charge, isActive = true }
                 }
             },
