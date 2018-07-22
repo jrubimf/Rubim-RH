@@ -80,8 +80,6 @@ Spell.DeathKnight.Unholy = {
     KiljaedensBurningWish = Spell(144259),
     --SummonGargoyle HiddenAura
     SummonGargoyleActive = Spell(212412), --tbc
-    -- Misc
-    PoolForArmy = Spell(9999000010)
 };
 
 local S = Spell.DeathKnight.Unholy;
