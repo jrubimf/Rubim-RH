@@ -65,8 +65,6 @@ local function APL()
         return 0, 462338
     end
 
-    print(RubimRH.getDMG(Player))
-
     --- Determine if we're tanking
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
     LeftCtrl = IsLeftControlKeyDown();
@@ -120,7 +118,7 @@ local function APL()
     end
 
     --Blessing Of Sacrifice
-    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and RubimRH.getDMG(MouseoverUnit) >= (MouseoverUnit:MaxHealth() / 20)) and true or false
+    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 95) and true or false
     if MouseoverUnitNeedsBlessingOfSacrifice
             and Spells.BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
         return Spells.BlessingOfSacrifice:Cast()
