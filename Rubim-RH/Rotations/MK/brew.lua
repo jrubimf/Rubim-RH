@@ -1,5 +1,5 @@
 --- Last Edit: Bishop : 7/21/18
-
+--- BfA Brewmaster v1.0.2
 local addonName, addonTable = ...
 -- HeroLib
 local HL = HeroLib
@@ -61,39 +61,39 @@ local function EnergyWillCap()
 end
 
 local function AoE()
-    if BrewSpells.BreathOfFire:IsCastable("Melee") then
+    if BrewSpells.BreathOfFire:IsReady("Melee") then
         return BrewSpells.BreathOfFire:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsCastable(8)
+    if BrewSpells.RushingJadeWind:IsReady(8)
             and not Player:Buff(BrewSpells.RushingJadeWind) then
         return BrewSpells.RushingJadeWind:Cast()
     end
 
-    if BrewSpells.ChiBurst:IsCastable(40)
+    if BrewSpells.ChiBurst:IsReady(40)
             and RubimRH.lastMoved() >= 1 then
         return BrewSpells.ChiBurst:Cast()
     end
 
     if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
-            and BrewSpells.TigerPalm:IsCastable("Melee") then
+            and BrewSpells.TigerPalm:IsReady("Melee") then
         return BrewSpells.TigerPalm:Cast()
     end
 
-    if BrewSpells.BlackoutStrike:IsCastable("Melee") then
+    if BrewSpells.BlackoutStrike:IsReady("Melee") then
         return BrewSpells.BlackoutStrike:Cast()
     end
 
-    if BrewSpells.ChiWave:IsCastable(40) then
+    if BrewSpells.ChiWave:IsReady(40) then
         return BrewSpells.ChiWave:Cast()
     end
 
-    if BrewSpells.TigerPalm:IsCastable("Melee")
+    if BrewSpells.TigerPalm:IsReady("Melee")
             and Player:Energy() >= 55 then
         return BrewSpells.TigerPalm:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsCastable(8) then
+    if BrewSpells.RushingJadeWind:IsReady(8) then
         return BrewSpells.RushingJadeWind:Cast()
     end
 
@@ -117,7 +117,7 @@ local function APL()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
     -- Kick
-    if BrewSpells.SpearHandStrike:IsCastable("Melee")
+    if BrewSpells.SpearHandStrike:IsReady("Melee")
             and Target:IsInterruptible()
             and Target:CastRemains() <= 0.5 then
         return BrewSpells.SpearHandStrike:Cast()
@@ -127,7 +127,7 @@ local function APL()
 
     if BrewSpells.Brews:ChargesFractional() <= 1
             and BrewSpells.BlackOxBrew:IsAvailable()
-            and BrewSpells.BlackOxBrew:IsCastable() then
+            and BrewSpells.BlackOxBrew:IsReady() then
         return BrewSpells.BlackOxBrew:Cast()
     end
 
@@ -145,31 +145,31 @@ local function APL()
     end
 
     if Player:HealthPercentage() <= 85
-            and BrewSpells.HealingElixir:IsCastable() then
+            and BrewSpells.HealingElixir:IsReady() then
         return BrewSpells.HealingElixir:Cast()
     end
 
     if Player:Debuff(BrewSpells.HeavyStagger)
             and Player:HealthPercentage() <= 80
-            and BrewSpells.Guard:IsCastable() then
+            and BrewSpells.Guard:IsReady() then
         return BrewSpells.Guard:Cast()
     end
 
     --- Cooldowns
 
     if RubimRH.CDsON()
-            and BrewSpells.BloodFury:IsCastable("Melee") then
+            and BrewSpells.BloodFury:IsReady("Melee") then
         return BrewSpells.BloodFury:ID()
     end
 
     if RubimRH.CDsON()
-            and BrewSpells.Berserking:IsCastable("Melee") then
+            and BrewSpells.Berserking:IsReady("Melee") then
         return BrewSpells.Berserking:ID()
     end
 
     -- TODO: Handle proper logic for locating distance to statue
     --    if Cache.EnemiesCount[8] >= 3
-    --            and BlackOxStatue:IsCastable(8)
+    --            and BlackOxStatue:IsReady(8)
     --            and (not Pet:IsActive() or Player:FindRange("pet") > 8) then
     --        return BlackOxStatue:Cast()
     --    end
@@ -177,11 +177,11 @@ local function APL()
     --- Universal Rotation - Does not change based on targets
 
     if BrewSpells.InvokeNiuzaotheBlackOx:IsAvailable()
-            and BrewSpells.InvokeNiuzaotheBlackOx:IsCastable(40) then
+            and BrewSpells.InvokeNiuzaotheBlackOx:IsReady(40) then
         return BrewSpells.InvokeNiuzaotheBlackOx:Cast()
     end
 
-    if BrewSpells.KegSmash:IsCastable(15) then
+    if BrewSpells.KegSmash:IsReady(15) then
         return BrewSpells.KegSmash:Cast()
     end
 
@@ -192,40 +192,40 @@ local function APL()
     end
 
     --- Single-Target priority
-    if BrewSpells.BlackoutStrike:IsCastable("Melee")
+    if BrewSpells.BlackoutStrike:IsReady("Melee")
             and (not Player:Buff(BrewSpells.BlackoutComboBuff) or not BrewSpells.BlackoutCombo:IsAvailable()) then
         return BrewSpells.BlackoutStrike:Cast()
     end
 
     if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
-            and BrewSpells.TigerPalm:IsCastable("Melee") then
+            and BrewSpells.TigerPalm:IsReady("Melee") then
         return BrewSpells.TigerPalm:Cast()
     end
 
-    if BrewSpells.BreathOfFire:IsCastable("Melee") then
+    if BrewSpells.BreathOfFire:IsReady("Melee") then
         return BrewSpells.BreathOfFire:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsCastable(8)
+    if BrewSpells.RushingJadeWind:IsReady(8)
             and not Player:Buff(BrewSpells.RushingJadeWind) then
         return BrewSpells.RushingJadeWind:Cast()
     end
 
-    if BrewSpells.ChiBurst:IsCastable(40)
+    if BrewSpells.ChiBurst:IsReady(40)
             and RubimRH.lastMoved() >= 1 then
         return BrewSpells.ChiBurst:Cast()
     end
 
-    if BrewSpells.ChiWave:IsCastable(40) then
+    if BrewSpells.ChiWave:IsReady(40) then
         return BrewSpells.ChiWave:Cast()
     end
 
-    if BrewSpells.TigerPalm:IsCastable()
+    if BrewSpells.TigerPalm:IsReady()
             and Player:Energy() >= 55 then
         return BrewSpells.TigerPalm:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsCastable() then
+    if BrewSpells.RushingJadeWind:IsReady() then
         return BrewSpells.RushingJadeWind:Cast()
     end
 
