@@ -553,12 +553,6 @@ function RubimRH.shouldStop()
         return 0, 975746
     end
 
-    if RubimPVP ~= nil then
-        if RubimRH.breakableCC(Target) == true or RubimRH.PvPImmunity(Target) == true then
-            return 243762
-        end
-    end
-
     if RubimRH.PvP() ~= nil then
         return RubimRH.PvP()
     end
