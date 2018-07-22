@@ -112,8 +112,6 @@ local function APL()
     HL.GetEnemies(8, true);
     HL.GetEnemies(10, true);
 
-
-
     if S.Berserk:IsReady("Melee") and RubimRH.CDsON() and Cache.EnemiesCount[8] >= 1 then
         return S.Berserk:Cast()
     end
