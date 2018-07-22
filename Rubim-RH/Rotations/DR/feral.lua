@@ -122,7 +122,7 @@ local function APL()
         return S.TigersFury:Cast()
     end
 
-    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and Player:Buff(S.BloodtalonsBuff) then
+    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and not Player:Buff(S.BloodtalonsBuff) then
         return S.Regrowth:Cast()
     end
 
