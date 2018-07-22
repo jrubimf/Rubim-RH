@@ -174,7 +174,7 @@ function RubimRH.SpellDamage(_, unit, spellID)
 end
 
 RubimRH.Listener:Add('Rubim_Events', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
-    local _, EVENT, _, SourceGUID, _,_,_, DestGUID = CombatLogGetCurrentEventInfo()
+        local _, EVENT, _, SourceGUID, _,_,_, DestGUID = CombatLogGetCurrentEventInfo()
     -- Add the unit to our data if we dont have it
     addToData(SourceGUID)
     addToData(DestGUID)

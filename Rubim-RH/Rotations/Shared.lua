@@ -18,6 +18,7 @@ local Healthstone = 5512
 local playerSpec = nil
 function RubimRH.PvP()
     playerSpec = Cache.Persistent.Player.Spec[1]
+
     if RubimPVP == nil or not Target:IsAPlayer() or not Player:CanAttack(Target) then
         return nil
     end
