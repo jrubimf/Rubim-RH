@@ -110,12 +110,12 @@ local function APL()
     end
 
     -- TODO: Waiting for GGLoader to add spell texture for Blessing of Sacrifice
-    --Blessing Of Sacrifice
-    --    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
-    --    if MouseoverUnitNeedsBlessingOfSacrifice
-    --            and ProtSpells.BlessingOfSacrifice:IsReady(40, false, MouseoverUnit) then
-    --        return ProtSpells.BlessingOfSacrifice:Cast()
-    --    end
+    --    Blessing Of Sacrifice
+    --        local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
+    --        if MouseoverUnitNeedsBlessingOfSacrifice
+    --                and ProtSpells.BlessingOfSacrifice:IsReady(40, false, MouseoverUnit) then
+    --            return ProtSpells.BlessingOfSacrifice:Cast()
+    --        end
 
     local MovementSpeed = select(1, GetUnitSpeed("player"))
     if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
