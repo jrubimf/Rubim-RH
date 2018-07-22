@@ -1,5 +1,5 @@
 --- Last Edit: Bishop - 7/20/18
---- Version: BFA-1.0.0
+--- BfA Protection Warrior v1.0.2
 
 --- Localize Vars
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
@@ -69,20 +69,6 @@ local I = Item.Warrior.Protection; -- Unused
 local T202PC, T204PC = HL.HasTier("T20"); -- Unused
 local T212PC, T214PC = HL.HasTier("T21"); -- Unused
 
---- Class-specific Spell:CanCast function, spellRage optional
-function Spell:CanCast(spellRange, spellRage, playerRage)
-    spellRange = spellRange or nil
-    spellRage = spellRage or nil
-    playerRage = playerRage or 0
-
-    if spellRage then
-        return self:IsCastable(spellRange) and playerRage >= spellRage
-    else
-        return self:IsCastable(spellRange)
-    end
-
-end
-
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
 local function APL()
@@ -107,6 +93,12 @@ local function APL()
 
     if LeftCtrl and LeftShift and ProtSpells.Shockwave:IsCastable(8) then
         return ProtSpells.Shockwave:Cast()
+    end
+
+    if ProtSpells.Pummel:IsReady("Melee")
+            and Target:IsInterruptible()
+            and Target:CastRemains() <= 0.5 then
+        return ProtSpells.Pummel:Cast()
     end
 
     -- SHIELD BLOCK PRIMARY RAGE DUMP
