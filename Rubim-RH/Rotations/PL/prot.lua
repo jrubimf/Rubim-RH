@@ -46,7 +46,7 @@ Spell.Paladin.Protection = {
     -- Utility
     Rebuke = Spell(96231)
 }
-local Spells = Spell.Paladin.Retribution;
+local ProtSpells = Spell.Paladin.Protection;
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -74,20 +74,20 @@ local function APL()
     HL.GetEnemies(10, true);
 
     --- Kick
-    if Spells.Rebuke:CanCast("Melee")
+    if ProtSpells.Rebuke:CanCast("Melee")
             and Target:IsInterruptible()
             and Target:CastRemains() <= 0.5 then
-        return Spells.Rebuke:Cast()
+        return ProtSpells.Rebuke:Cast()
     end
 
     --- Defensives / Healing
 
     -- Shield of the Righteous
-    if (not Player:Buff(Spells.ShieldOfTheRighteousBuff) or (Player:Buff(Spells.ShieldOfTheRighteousBuff) and Player:BuffRemains(Spells.ShieldOfTheRighteousBuff) <= Player:GCD()))
-            and Spells.ShieldOfTheRighteous:CanCast("Melee")
-            and (Spells.ShieldOfTheRighteous:ChargesFractional() >= 2 or Player:ActiveMitigationNeeded())
-            and (Player:Buff(Spells.AvengersValor) or (not Player:Buff(Spells.AvengersValor) and Spells.AvengersShield:CooldownRemains() >= Player:GCD() * 2)) then
-        return Spells.ShieldOfTheRighteous:Cast()
+    if (not Player:Buff(ProtSpells.ShieldOfTheRighteousBuff) or (Player:Buff(ProtSpells.ShieldOfTheRighteousBuff) and Player:BuffRemains(ProtSpells.ShieldOfTheRighteousBuff) <= Player:GCD()))
+            and ProtSpells.ShieldOfTheRighteous:CanCast("Melee")
+            and (ProtSpells.ShieldOfTheRighteous:ChargesFractional() >= 2 or Player:ActiveMitigationNeeded())
+            and (Player:Buff(ProtSpells.AvengersValor) or (not Player:Buff(ProtSpells.AvengersValor) and ProtSpells.AvengersShield:CooldownRemains() >= Player:GCD() * 2)) then
+        return ProtSpells.ShieldOfTheRighteous:Cast()
     end
 
     -- Light of the Protector
@@ -96,81 +96,81 @@ local function APL()
     local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
     LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
     local ShouldLotP = Player:Health() <= (Player:MaxHealth() - LotPHeal) and true or false
-    if (Spells.LightOfTheProtector:CanCast(nil, Player) or Spells.HandOfTheProtector:CanCast(nil, Player))
+    if (ProtSpells.LightOfTheProtector:CanCast(nil, Player) or ProtSpells.HandOfTheProtector:CanCast(nil, Player))
             and ShouldLotP then
-        return Spells.LightOfTheProtector:Cast()
+        return ProtSpells.LightOfTheProtector:Cast()
     end
 
     -- Hand of the Protector
     local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover")) and true or false
     local MouseoverUnit = (MouseoverUnitValid) and Unit("mouseover") or nil
     local MouseoverUnitNeedsHelp = (MouseoverUnitValid and (LotPHeal <= (MouseoverUnit:MaxHealth() - MouseoverUnit:Health()))) and true or false
-    if Spells.HandOfTheProtector:CanCast(40, MouseoverUnit)
+    if ProtSpells.HandOfTheProtector:CanCast(40, MouseoverUnit)
             and MouseoverUnitNeedsHelp then
-        return Spells.HandOfTheProtector:Cast()
+        return ProtSpells.HandOfTheProtector:Cast()
     end
 
     -- Blessing of Protection
     local MouseoverUnitNeedsBoP = (MouseoverUnitValid and (MouseoverUnit:HealthPercentage() <= 40)) and true or false
-    if Spells.BlessingOfProtection:CanCast(40, MouseoverUnit)
+    if ProtSpells.BlessingOfProtection:CanCast(40, MouseoverUnit)
             and MouseoverUnitNeedsBoP then
-        return Spells.BlessingOfProtection:Cast()
+        return ProtSpells.BlessingOfProtection:Cast()
     end
 
     --Blessing Of Sacrifice
     local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 95) and true or false
     if MouseoverUnitNeedsBlessingOfSacrifice
-            and Spells.BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
-        return Spells.BlessingOfSacrifice:Cast()
+            and ProtSpells.BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
+        return ProtSpells.BlessingOfSacrifice:Cast()
     end
 
     local MovementSpeed = select(1, GetUnitSpeed("player"))
     if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
             and MovementSpeed ~= 0 -- 0 move speed = not moving
-            and Spells.BlessingOfFreedom:CanCast() then
-        return Spells.BlessingOfFreedom:Cast()
+            and ProtSpells.BlessingOfFreedom:CanCast() then
+        return ProtSpells.BlessingOfFreedom:Cast()
     end
 
     if Target:Exists()
-            and Spells.HammerOfJustice:CanCast(10)
+            and ProtSpells.HammerOfJustice:CanCast(10)
             and LeftCtrl
             and LeftShift then
-        return Spells.HammerOfJustice:Cast()
+        return ProtSpells.HammerOfJustice:Cast()
     end
 
     --- Offensive CDs
     --print(Target:TimeToDie())
     if RubimRH.CDsON()
-            and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and Spells.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
-            and Spells.AvengingWrath:IsReady() then
-        return Spells.AvengingWrath:Cast()
+            and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and ProtSpells.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
+            and ProtSpells.AvengingWrath:IsReady() then
+        return ProtSpells.AvengingWrath:Cast()
     end
 
     --- Main damage rotation: all executed as soon as they're available
-    if not Player:Buff(Spells.Consecration)
+    if not Player:Buff(ProtSpells.Consecration)
             and ((RubimRH.lastMoved() >= 1 and IsTanking) or (Player:IsTanking(Target) and Target:IsInRange(8)))
-            and Spells.Consecration:CanCast() then
-        return Spells.Consecration:Cast()
+            and ProtSpells.Consecration:CanCast() then
+        return ProtSpells.Consecration:Cast()
     end
 
-    if Spells.Judgment:CanCast(30) then
-        return Spells.Judgment:Cast()
+    if ProtSpells.Judgment:CanCast(30) then
+        return ProtSpells.Judgment:Cast()
     end
 
-    if Spells.AvengersShield:CanCast(30) then
-        return Spells.AvengersShield:Cast()
+    if ProtSpells.AvengersShield:CanCast(30) then
+        return ProtSpells.AvengersShield:Cast()
     end
 
-    if Spells.BlessedHammer:CanCast("Melee") then
-        return Spells.BlessedHammer:Cast()
+    if ProtSpells.BlessedHammer:CanCast("Melee") then
+        return ProtSpells.BlessedHammer:Cast()
     end
 
-    if Spells.HammerOfTheRighteous:CanCast("Melee") then
-        return Spells.HammerOfTheRighteous:Cast()
+    if ProtSpells.HammerOfTheRighteous:CanCast("Melee") then
+        return ProtSpells.HammerOfTheRighteous:Cast()
     end
 
-    if Spells.Consecration:CanCast() then
-        return Spells.Consecration:Cast()
+    if ProtSpells.Consecration:CanCast() then
+        return ProtSpells.Consecration:Cast()
     end
 
     return 0, 975743
