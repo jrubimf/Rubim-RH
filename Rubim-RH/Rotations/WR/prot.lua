@@ -56,6 +56,8 @@ local Pummel = Spell(6552) -- TODO: Implement with new Rubim PvP logic
 local ShieldBlock = Spell(2565)
 local ShieldBlockBuff = Spell(132404)
 
+local PrintDebug = false
+
 -- Items : Currentl unused
 if not Item.Warrior then Item.Warrior = {}; end
 Item.Warrior.Protection = {};
@@ -70,6 +72,10 @@ function Spell:CanCast(spellRange, spellRage)
     spellRage = spellRage or 0
 
     return self:IsCastable(spellRange) and (Player:Rage() >= spellRage)
+end
+
+local function Log(condition)
+    print(condition .. " : " .. tostring(loadstring(condition)))
 end
 
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
@@ -98,12 +104,16 @@ local function APL()
         return Shockwave:Cast()
     end
 
+    if PrintDebug then
+        Log('ShieldBlock:CanCast(\"Melee\", 30)')
+    end
+
     -- SHIELD BLOCK PRIMARY RAGE DUMP
-    if ShieldBlock:CanCast("Melee", 30)
+    if ShieldBlock:CanCast(nil, 30)
             and not Player:Buff(ShieldBlockBuff)
             and not Player:Buff(LastStand)
             and ShieldBlock:ChargesFractional() >= 1
-            and IsTanking then
+            and IsTanking then -- TODO: See IsTanking note
         return ShieldBlock:Cast()
     end
 
@@ -111,6 +121,12 @@ local function APL()
             and Target:TimeToDie() >= 10
             and Player:RageDeficit() >= 20 then
         return Avatar:Cast()
+    end
+
+    -- PvP Shield Bash
+    if ShieldBash:CanCast("Melee")
+            and Target:IsCasting() then
+        return ShieldBash:Cast()
     end
 
     -- USE ON COOLDOWN WITH BOOMING VOICE
@@ -148,13 +164,6 @@ local function APL()
         return VictoryRush:Cast()
     end
 
-    -- PvP Shield Bash
-    if ShieldBash:CanCast("Melee")
-            and Target:IsCasting() then
-        return ShieldBash:Cast()
-    end
-
-    -- TODO: Re-work Vengeance Logic for proper Revenge/Ignore Pain usage
     if Player:Buff(VegeanceRV)
             and Player:Rage() >= 20
             and (Player:Buff(ShieldBlockBuff) and Player:BuffRemains(ShieldBlockBuff) >= Player:GCD() and ShieldBlock:CanCast("Melee", 30))
@@ -190,7 +199,7 @@ local function APL()
 
     if IgnorePain:CanCast("Melee", 40)
             and not Player:Buff(IgnorePain)
-            and IsTanking then
+            and IsTanking then -- TODO: See IsTanking note
         return IgnorePain:Cast()
     end
 
