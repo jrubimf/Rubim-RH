@@ -354,12 +354,6 @@ local function APL()
         return S.FuriousSlash:Cast()
     end
     -- actions+=/use_item,name=umbral_moonglaives,if=equipped.umbral_moonglaives&(cooldown.battle_cry.remains>gcd&cooldown.battle_cry.remains<2|cooldown.battle_cry.remains=0)
-    if I.UmbralMoonglaives:IsReady() and I.UmbralMoonglaives:IsEquipped()
-            and (S.BattleCry:CooldownRemainsP() > Player:GCD()
-            and S.BattleCry:CooldownRemainsP() < 2
-            or S.BattleCry:CooldownRemainsP() == 0) then
-        return I.UmbralMoonglaives:Cast()
-    end
     -- actions+=/bloodthirst,if=equipped.kazzalax_fujiedas_fury&buff.fujiedas_fury.down
     if S.Bloodthirst:IsReady("Melee") and I.KazzalaxFujiedasFury:IsEquipped() and not Player:BuffP(S.FujiedasFury) then
         return S.Bloodthirst:Cast()
