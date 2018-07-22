@@ -97,7 +97,7 @@ local T212PC, T214PC = HL.HasTier("T21");
 local function single_target ()
     -- actions.single_target=siegebreaker,if=buff.recklessness.up|cooldown.recklessness.remains>28
     if RubimRH.CDsON() and S.Siegebreaker:IsReady() and S.Siegebreaker:IsAvailable() and (Player:Buff(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 28) then
-        return S.SiegeBreaker:Cast()
+        return S.Siegebreaker:Cast()
     end
     -- actions.single_target+=/rampage,if=buff.recklessness.up|(talent.frothing_berserker.enabled|talent.carnage.enabled&(buff.enrage.remains<gcd|rage>90)|talent.massacre.enabled&(buff.enrage.remains<gcd|rage>90))
     if S.Rampage:IsReady() and (Player:Buff(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
@@ -202,7 +202,7 @@ local function APL()
             end
             -- actions+=/lights_judgment,if=cooldown.recklessness.remains<3
             if S.LightsJudgment:IsCastable() and S.Recklessness:CooldownRemainsP() < 3 then
-                return S.LightsJudgment:cast()
+                return S.LightsJudgment:Cast()
             end
         end
         -- # Action list
