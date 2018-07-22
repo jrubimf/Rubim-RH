@@ -60,6 +60,8 @@ local function APL()
         return 0, 462338
     end
 
+    print(RubimRH.incdmg(Player))
+
     --- Determine if we're tanking
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
     LeftCtrl = IsLeftControlKeyDown();
@@ -106,18 +108,18 @@ local function APL()
     end
 
     -- Blessing of Protection
-    local MouseoverUnitNeedsBoP = (MouseoverUnitValid and ((MouseoverUnit:Health() / MouseoverUnit:MaxHealth()) * 100) <= 50) and true or false
+    local MouseoverUnitNeedsBoP = (MouseoverUnitValid and (MouseoverUnit:HealthPercentage() <= 40)) and true or false
     if BlessingOfProtection:CanCast(40, MouseoverUnit)
             and MouseoverUnitNeedsBoP then
         return BlessingOfProtection:Cast()
     end
 
-    -- Blessing Of Sacrifice
-    --    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and MouseoverUnit:TimeToDie() ~= 8888 and MouseoverUnit:HealthPercentage() <= 90) and true or false
-    --    if MouseoverUnitNeedsBlessingOfSacrifice
-    --        and BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
-    --        return BlessingOfSacrifice:Cast()
-    --    end
+     --Blessing Of Sacrifice
+    local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and RubimRH.getDMG(MouseoverUnit) >= (MouseoverUnit:MaxHealth() / 20)) and true or false
+    if MouseoverUnitNeedsBlessingOfSacrifice
+        and BlessingOfSacrifice:CanCast(40, MouseoverUnit) then
+        return BlessingOfSacrifice:Cast()
+    end
 
     local MovementSpeed = select(1, GetUnitSpeed("player"))
     if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
@@ -152,6 +154,10 @@ local function APL()
 
     if AvengersShield:CanCast(30) then
         return AvengersShield:Cast()
+    end
+
+    if BlessedHammer:CanCast("Melee") then
+        return BlessedHammer:Cast()
     end
 
     if HammerOfTheRighteous:CanCast("Melee") then
