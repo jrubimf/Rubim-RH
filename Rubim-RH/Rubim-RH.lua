@@ -552,8 +552,7 @@ function RubimRH.shouldStop()
     if _G.LootFrame:IsShown() then
         return 0, 975746
     end
-
-    if RubimRH.PvP() ~= nil then
+    if RubimPVP and RubimRH.PvP() ~= nil then
         return RubimRH.PvP()
     end
 
