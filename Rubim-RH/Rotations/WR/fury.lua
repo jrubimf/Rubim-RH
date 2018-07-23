@@ -11,51 +11,57 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 -- Spells
-if not Spell.Warrior then Spell.Warrior = {}; end
+if not Spell.Warrior then
+    Spell.Warrior = {};
+end
 Spell.Warrior.Fury = {
     -- Racials
-    ArcaneTorrent = Spell(69179),
+    ArcaneTorrent = Spell(80483),
+    AncestralCall = Spell(274738),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
+    Fireblood = Spell(265221),
+    GiftoftheNaaru = Spell(59547),
+    LightsJudgment = Spell(255647),
     -- Abilities
-    BattleCry = Spell(1719),
+    BattleShout = Spell(6673),
     BerserkerRage = Spell(18499),
     Bloodthirst = Spell(23881),
     Charge = Spell(100),
-    Enrage = Spell(184362),
-    EnragedRegeneration = Spell(184364),
     Execute = Spell(5308),
+    ExecuteMassacre = Spell(280735),
     HeroicLeap = Spell(6544),
     HeroicThrow = Spell(57755),
-    MeatCleaver = Spell(85739),
     RagingBlow = Spell(85288),
     Rampage = Spell(184367),
+    Recklessness = Spell(1719),
+    VictoryRush = Spell(34428),
     Whirlwind = Spell(190411),
+    WhirlwindBuff = Spell(85739),
+    Enrage = Spell(184362),
     -- Talents
-    Avatar = Spell(107574),
-    Bladestorm = Spell(46924),
-    Bloodbath = Spell(12292),
-    BoundingStride = Spell(202163),
-    Carnage = Spell(202922),
-    DragonRoar = Spell(118000),
-    Frenzy = Spell(206313),
-    FrenzyBuff = Spell(202539),
-    FrothingBerserker = Spell(215571),
+    WarMachine = Spell(262231),
+    EndlessRage = Spell(202296),
+    FreshMeat = Spell(215568),
+    DoubleTime = Spell(103827),
+    ImpendingVictory = Spell(202168),
+    StormBolt = Spell(107570),
     InnerRage = Spell(215573),
-    Massacre = Spell(206315),
-    MassacreBuff = Spell(206316),
-    Outburst = Spell(206320),
-    RecklessAbandon = Spell(202751),
-    WreckingBall = Spell(215570),
-    WreckingBallTalent = Spell(215569),
-    -- Artifact
-    Juggernaut = Spell(980),
-    OdynsFury = Spell(205545),
-
-    -- Talents
-    SiegeBreaker = Spell(280772),
     FuriousSlash = Spell(100130),
-
+    FuriousSlashBuff = Spell(202539),
+    Carnage = Spell(202922),
+    Massacre = Spell(206315),
+    FrothingBerserker = Spell(215571),
+    MeatCleaver = Spell(280392),
+    DragonRoar = Spell(118000),
+    Bladestorm = Spell(46924),
+    RecklessAbandon = Spell(202751),
+    AngerManagement = Spell(152278),
+    Siegebreaker = Spell(280772),
+    SiegebreakerDebuff = Spell(280773),
+    SuddenDeath = Spell(280721),
+    SuddenDeathBuff = Spell(280776),
+    SuddenDeathBuffLeg = Spell(225947),
     -- Defensive
     -- Utility
     Pummel = Spell(6552),
@@ -67,9 +73,10 @@ Spell.Warrior.Fury = {
 };
 local S = Spell.Warrior.Fury;
 
-S.SiegeBreaker.TextureSpellID = {58984 }
 -- Items
-if not Item.Warrior then Item.Warrior = {}; end
+if not Item.Warrior then
+    Item.Warrior = {};
+end
 Item.Warrior.Fury = {
     -- Legendaries
     KazzalaxFujiedasFury = Item(137053, { 15 }),
@@ -86,225 +93,55 @@ local I = Item.Warrior.Fury;
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 
---- APL Action Lists (and Variables)
--- # AoE
-local function AoE()
-    -- actions.aoe=bloodthirst,if=buff.enrage.down&rage<90
-    if S.Bloodthirst:IsReady("Melee") and not Player:Buff(S.Enrage) and Player:Rage() < 90 then
-        return S.Bloodthirst:Cast()
+local function single_target ()
+    -- actions.single_target=siegebreaker,if=buff.recklessness.up|cooldown.recklessness.remains>28
+    if RubimRH.CDsON() and S.Siegebreaker:IsReady() and S.Siegebreaker:IsAvailable() and (Player:Buff(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 28) then
+        return S.Siegebreaker:Cast()
     end
-    -- actions.aoe+=bladestorm,if=buff.enrage.remains>2&(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)
-    if RubimRH.CDsON() and S.Bladestorm:IsReady() and Player:BuffRemainsP(S.Enrage) > 2 and Cache.EnemiesCount[8] > 1 then
-        return S.Bladestorm:Cast()
-    end
-    -- actions.aoe+=/whirlwind,if=buff.meat_cleaver.down
-    if S.Whirlwind:IsReady() and not Player:Buff(S.MeatCleaver) then
-        return S.Whirlwind:Cast()
-    end
-    -- actions.aoe+=/rampage,if=buff.meat_cleaver.up&(buff.enrage.down&!talent.frothing_berserker.enabled|buff.massacre.react|rage>=100)
-    if S.Rampage:IsReady("Melee") and Player:BuffP(S.MeatCleaver) and (not Player:BuffP(S.Enrage) and not S.FrothingBerserker:IsAvailable() or Player:BuffP(S.MassacreBuff) or Player:Rage() >= 100) then
+    -- actions.single_target+=/rampage,if=buff.recklessness.up|(talent.frothing_berserker.enabled|talent.carnage.enabled&(buff.enrage.remains<gcd|rage>90)|talent.massacre.enabled&(buff.enrage.remains<gcd|rage>90))
+    if S.Rampage:IsReady() and (Player:Buff(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
         return S.Rampage:Cast()
     end
-
-    if S.Execute:IsReady("Melee") then
+    -- actions.single_target+=/execute,if=buff.enrage.up
+    if S.Execute:IsReady() and Player:Buff(S.Enrage) then
         return S.Execute:Cast()
     end
-
-    -- actions.aoe+=/bloodthirst
-    if S.Bloodthirst:IsReady("Melee") then
+    if S.ExecuteMassacre:IsReady() and Player:Buff(S.Enrage) then
+        return S.Execute:Cast()
+    end
+    -- actions.single_target+=/bloodthirst,if=buff.enrage.down
+    if S.Bloodthirst:IsReady() and not Player:Buff(S.Enrage) then
         return S.Bloodthirst:Cast()
     end
-    -- actions.aoe+=/whirlwind
-    if S.Whirlwind:IsReady() then
-        return S.Whirlwind:Cast()
-    end
-end
-
--- # CDs
-local function CDs()
-    -- actions.cooldowns=rampage,if=buff.massacre.react&buff.enrage.remains<1
-    if S.Rampage:IsReady("Melee") and S.Massacre:IsAvailable() and Player:BuffP(S.MassacreBuff) and Player:BuffRemainsP(S.Enrage) < 1 then
-        return S.Rampage:Cast()
-    end
-
-    if S.Execute:IsReady("Melee") then
-        return S.Execute:Cast()
-    end
-    -- actions.cooldowns+=/bloodthirst,if=target.health.pct<20&buff.enrage.remains<1
-    if S.Bloodthirst:IsReady("Melee") and Target:Exists() and Target:HealthPercentage() < 20 and Player:BuffRemainsP(S.Enrage) < Player:GCD() then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.cooldowns+=/execute
-    if S.Execute:IsReady("Melee") then
-        return S.Execute:Cast()
-    end
-    -- actions.cooldowns+=/raging_blow,if=talent.inner_rage.enabled&buff.enrage.up
-    if S.RagingBlow:IsReady("Melee") and S.InnerRage:IsAvailable() and Player:BuffP(S.Enrage) then
+    -- actions.single_target+=/raging_blow,if=charges=2
+    if S.RagingBlow:IsReady() and S.RagingBlow:Charges() == 2 then
         return S.RagingBlow:Cast()
-    end
-        -- actions.cooldowns+=/rampage,if=(rage>=100&talent.frothing_berserker.enabled&!set_bonus.tier21_4pc)|set_bonus.tier21_4pc|!talent.frothing_berserker.enabled
-    if S.Rampage:IsReady("Melee") and ((Player:Rage() >= 100 and S.FrothingBerserker:IsAvailable() and not T214PC) or T214PC or not S.FrothingBerserker:IsAvailable()) then
-        return S.Rampage:Cast()
-    end
-    -- actions.cooldowns+=/odyns_fury,if=buff.enrage.up&(cooldown.raging_blow.remains>0|!talent.inner_rage.enabled)
-    if RubimRH.config.Spells[1].isActive and S.OdynsFury:IsReady() and Player:BuffP(S.Enrage) and (S.RagingBlow:CooldownRemainsP() > 0 or not S.InnerRage:IsAvailable()) then
-        return S.OdynsFury:Cast()
-    end
-    -- actions.cooldowns+=/berserker_rage,if=talent.outburst.enabled&buff.enrage.down&buff.battle_cry.up
-    if S.BerserkerRage:IsReady() and S.Outburst:IsAvailable() and not Player:Buff(S.Enrage) and Player:BuffP(S.BattleCry) then
-        return S.BerserkerRage:Cast()
-    end
-    -- actions.cooldowns+=/bloodthirst,if=(buff.enrage.remains<1&!talent.outburst.enabled)|!talent.inner_rage.enabled
-    if S.Bloodthirst:IsReady("Melee") and ((Player:BuffRemainsP(S.Enrage) < 1 and not S.Outburst:IsAvailable()) or not S.InnerRage:IsAvailable()) then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.cooldowns+=/whirlwind,if=buff.wrecking_ball.react&buff.enrage.up
-    -- add S.WreckingBallTalent:IsAvailable() for buff.wrecking_ball.react
-    if S.Whirlwind:IsReady() and S.WreckingBallTalent:IsAvailable() and Player:BuffP(S.WreckingBall) and Player:BuffP(S.Enrage) then
-        return S.Whirlwind:Cast()
-    end
-    -- actions.cooldowns+=/raging_blow
-    if S.RagingBlow:IsReady("Melee") then
-        return S.RagingBlow:Cast()
-    end
-    -- actions.cooldowns+=/bloodthirst
-    if S.Bloodthirst:IsReady("Melee") then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.cooldowns+=/furious_slash
-    if S.FuriousSlash:IsReady("Melee") then
-        return S.FuriousSlash:Cast()
-    end
-end
-
--- Cleave
-local function Cleave()
-    -- actions.three_targets+=/execute,if=buff.stone_heart.react
-    if S.Execute:IsReady("Melee") and Player:BuffP(S.StoneHeart) then
-        return S.Execute:Cast()
-    end
-    -- actions.three_targets+=/rampage,if=buff.meat_cleaver.up&((buff.enrage.down&!talent.frothing_berserker.enabled)|(rage>=100&talent.frothing_berserker.enabled))|buff.massacre.react
-    if S.Rampage:IsReady("Melee") and Player:BuffP(S.MeatCleaver) and ((not Player:Buff(S.Enrage) and not S.FrothingBerserker:IsAvailable()) or
-            (Player:Rage() >= 100 and S.FrothingBerserker:IsAvailable())) or Player:BuffP(S.MassacreBuff) then
-        return S.Rampage:Cast()
-    end
-    -- actions.three_targets+=/raging_blow,if=talent.inner_rage.enabled&(spell_targets.whirlwind=2|(spell_targets.whirlwind=3&!equipped.najentuss_vertebrae))
-    if S.RagingBlow:IsReady("Melee") and S.InnerRage:IsAvailable() and (Cache.EnemiesCount[8] == 2 or (Cache.EnemiesCount[8] == 3 and not I.NajentussVertebrae:IsEquipped())) then
-        return S.RagingBlow:Cast()
-    end
-    -- actions.three_targets+=/bloodthirst
-    if S.Bloodthirst:IsReady("Melee") then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.three_targets+=/whirlwind
-    if S.Whirlwind:IsReady() then
-        return S.Whirlwind:Cast()
-    end
-end
-
-
-
--- # execute
-local function Execute()
-    -- actions.execute+=bloodthirst,if=buff.fujiedas_fury.up&buff.fujiedas_fury.remains<2
-    if S.Bloodthirst:IsReady("Melee") and I.KazzalaxFujiedasFury:IsEquipped() and (not Player:BuffP(S.FujiedasFury) or Player:BuffRemainsP(S.FujiedasFury) <= Player:GCD() / 2) then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.execute+=/execute,if=artifact.juggernaut.enabled&(!buff.juggernaut.up|buff.juggernaut.remains<2)|buff.stone_heart.react
-    if S.Execute:IsReady("Melee") and S.Juggernaut:IsAvailable() and (not Player:BuffP(S.Juggernaut) or Player:BuffRemainsP(S.Juggernaut) < 2) or Player:BuffP(S.StoneHeart) then
-        return S.Execute:Cast()
-    end
-    -- actions.execute+=/furious_slash,if=talent.frenzy.enabled&buff.frenzy.remains<=2
-    if S.FuriousSlash:IsReady("Melee") and S.Frenzy:IsAvailable() and Player:BuffRemainsP(S.FrenzyBuff) <= 2 then
-        return S.FuriousSlash:Cast()
-    end
-    -- actions.execute+=/rampage,if=buff.massacre.react&buff.enrage.remains<1
-    if S.Rampage:IsReady("Melee") and (Player:BuffP(S.MassacreBuff) and Player:BuffRemainsP(S.Enrage) < Player:GCD()) then
-        return S.Rampage:Cast()
-    end
-    -- actions.execute+=/execute
-    -- TODO : implement RageTimeToX
-    -- or (HL.Tier19_2Pc and Target:TimeToDie() >= 10 and Player:RageTimeToX(25,0) <= S.Bloodthirst:CooldownRemainsP())
-    if S.Execute:IsReady("Melee") then
-        return S.Execute:Cast()
-    end
-    -- actions.execute+=/odyns_fury
-    if RubimRH.config.Spells[1].isActive and S.OdynsFury:IsReady() then
-        return S.OdynsFury:Cast()
-    end
-    -- actions.execute+=/bloodthirst
-    if S.Bloodthirst:IsReady("Melee") then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.execute+=/furious_slash,if=set_bonus.tier19_2pc
-    if S.FuriousSlash:IsReady("Melee") and T192 and Target:TimeToDie() >= 10 then
-        return S.FuriousSlash:Cast()
-    end
-    -- actions.execute+=/raging_blow
-    if S.RagingBlow:IsReady("Melee") and (not T192 or (T192 and Target:TimeToDie() < 10)) then
-        return S.RagingBlow:Cast()
-    end
-    -- actions.execute+=/furious_slash
-    if S.FuriousSlash:IsReady("Melee") then
-        return S.FuriousSlash:Cast()
-    end
-end
-
--- # single_target
-local function Single_Target()
-    -- actions.single_target+=bloodthirst,if=buff.fujiedas_fury.up&buff.fujiedas_fury.remains<2
-    if S.Bloodthirst:IsReady("Melee") and I.KazzalaxFujiedasFury:IsEquipped() and (not Player:BuffP(S.FujiedasFury) or Player:BuffRemainsP(S.FujiedasFury) <= Player:GCD()) then
-        return S.Bloodthirst:Cast()
-    end
-    -- actions.single_target+=/furious_slash,if=talent.frenzy.enabled&(buff.frenzy.down|buff.frenzy.remains<=2)
-    if S.FuriousSlash:IsReady("Melee") and S.Frenzy:IsAvailable() and (not Player:Buff(S.FrenzyBuff) or Player:BuffRemainsP(S.FrenzyBuff) <= 2) then
-        return S.FuriousSlash:Cast()
-    end
-    -- actions.single_target+=/raging_blow,if=buff.enrage.up&talent.inner_rage.enabled
-    if S.RagingBlow:IsReady("Melee") and Player:BuffP(S.Enrage) and S.InnerRage:IsAvailable() then
-        return S.RagingBlow:Cast()
-    end
-    -- actions.single_target+=/rampage,if=target.health.pct>21&(rage>=100|!talent.frothing_berserker.enabled)&(((cooldown.battle_cry.remains>5|cooldown.bloodbath.remains>5)&!talent.carnage.enabled)|((cooldown.battle_cry.remains>3|cooldown.bloodbath.remains>3)&talent.carnage.enabled))|buff.massacre.react
-    if S.Rampage:IsReady("Melee") and (Target:Exists() and Target:HealthPercentage() > 21
-            and (Player:Rage() >= 100 or not S.FrothingBerserker:IsAvailable())
-            and (((S.BattleCry:CooldownRemainsP() > 5 or S.Bloodbath:CooldownRemainsP() > 5) and not S.Carnage:IsAvailable())
-            or ((S.BattleCry:CooldownRemainsP() > 3 or S.Bloodbath:CooldownRemainsP() > 3) and S.Carnage:IsAvailable()))
-            or Player:BuffP(S.MassacreBuff)) then
-        return S.Rampage:Cast()
-    end
-    -- actions.single_target+=/execute,if=buff.stone_heart.react&((talent.inner_rage.enabled&cooldown.raging_blow.remains>1)|buff.enrage.up)
-    if S.Execute:IsReady("Melee") and Player:BuffP(S.StoneHeart) and ((S.InnerRage:IsAvailable() and S.RagingBlow:CooldownRemainsP() > Player:GCD()) or Player:BuffP(S.Enrage)) then
-        return S.Execute:Cast()
     end
     -- actions.single_target+=/bloodthirst
-    if S.Bloodthirst:IsReady("Melee") then
+    if S.Bloodthirst:IsReady() then
         return S.Bloodthirst:Cast()
     end
-    -- actions.single_target+=/furious_slash,if=set_bonus.tier19_2pc&!talent.inner_rage.enabled
-    if S.FuriousSlash:IsReady("Melee") and T192 and not S.InnerRage:IsAvailable() then
-        return S.FuriousSlash:Cast()
+    -- actions.single_target+=/bladestorm,if=prev_gcd.1.rampage&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
+    if RubimRH.CDsON() and S.Bladestorm:IsReady() and Player:PrevGCDP(1, S.Rampage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
+        return S.Bladestorm:Cast()
     end
-    -- actions.single_target+=/whirlwind,if=buff.wrecking_ball.react&buff.enrage.up
-    -- add S.WreckingBallTalent:IsAvailable() for buff.wrecking_ball.react
-    if S.Whirlwind:IsReady() and S.WreckingBallTalent:IsAvailable() and Player:BuffP(S.WreckingBall) and Player:BuffP(S.Enrage) then
-        return S.Whirlwind:Cast()
+    -- actions.single_target+=/dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
+    if RubimRH.CDsON() and S.DragonRoar:IsReady() and Player:Buff(S.Enrage) and (Target:Debuff(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable()) then
+        return S.DragonRoar:Cast()
     end
-
-    --actions.single_target+=/whirlwind,if=!buff.meat_cleaver.up&spell_targets.whirlwind=2
-    if S.Whirlwind:IsReady() and not Player:Buff(S.MeatCleaver) and Cache.EnemiesCount[8] == 2 then
-        return S.Whirlwind:Cast()
-    end
-
-    -- actions.single_target+=/raging_blow
-    if S.RagingBlow:IsReady("Melee") then
+    -- actions.single_target+=/raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
+    if S.RagingBlow:IsReady() and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
         return S.RagingBlow:Cast()
     end
-    -- actions.single_target+=/furious_slash
-    if S.FuriousSlash:IsReady("Melee") then
+    -- actions.single_target+=/furious_slash,if=talent.furious_slash.enabled
+    if S.FuriousSlash:IsReady() and S.FuriousSlash:IsAvailable() then
         return S.FuriousSlash:Cast()
     end
+    -- actions.single_target+=/whirlwind
+    if S.Whirlwind:IsReady() then
+        return S.Whirlwind:Cast()
+    end
 end
-
 -- APL Main
 local function APL()
     -- Unit Update
@@ -315,175 +152,67 @@ local function APL()
         return 0, 462338
     end
 
-    --- In Combat
-    -- actions+=/charge
-    if RubimRH.config.Spells[2].isActive and S.Charge:IsReady() and Target:IsInRange(S.Charge) then
-        return S.Charge:Cast()
-    end
-
-    if Player:Buff(S.EnragedRegeneration) and S.Bloodthirst:IsReady("Melee") and Player:HealthPercentage() <= 90 then
-        return S.Bloodthirst:Cast()
-    end
-
-    -- actions+=/potion,name=old_war,if=buff.battle_cry.up&(buff.avatar.up|!talent.avatar.enabled)
-
-    -- actions+=/dragon_roar,if=(equipped.convergence_of_fates&cooldown.battle_cry.remains<2)|!equipped.convergence_of_fates&(!cooldown.battle_cry.remains<=10|cooldown.battle_cry.remains<2)|(talent.bloodbath.enabled&(cooldown.bloodbath.remains<1|buff.bloodbath.up))
-    if S.DragonRoar:IsReady() and Cache.EnemiesCount[10] >= 1
-            and ((I.ConvergenceofFates:IsEquipped() and S.BattleCry:CooldownRemainsP() < 2)
-            or not I.ConvergenceofFates:IsEquipped() and (S.BattleCry:CooldownRemainsP() > 10 or S.BattleCry:CooldownRemainsP() < 2)
-            or (not S.Bloodbath:IsAvailable() and (S.Bloodbath:CooldownRemainsP() < 1 or Player:BuffP(S.Bloodbath)))) then
-        return S.DragonRoar:Cast()
-    end
-
-    if S.SiegeBreaker:IsAvailable() and S.SiegeBreaker:IsReady("Melee") and Player:Buff(S.Enrage) then
-        S.SiegeBreaker:Cast()
-    end
-
-    -- actions+=/rampage,if=cooldown.battle_cry.remains<1&cooldown.bloodbath.remains<1&target.health.pct>20
-    if S.Rampage:IsReady("Melee") and S.BattleCry:CooldownRemainsP() < 1 and S.Bloodbath:CooldownRemainsP() < 1 and Target:Exists() and Target:HealthPercentage() > 20 then
-        return S.Rampage:Cast()
-    end
-
-    if S.Execute:IsReady("Melee") then
-        return S.Execute:Cast()
-    end
-    -- actions+=/furious_slash,if=talent.frenzy.enabled&(buff.frenzy.stack<3|buff.frenzy.remains<3|(cooldown.battle_cry.remains<1&buff.frenzy.remains<9))
-    if S.FuriousSlash:IsReady("Melee") and S.Frenzy:IsAvailable()
-            and (Player:BuffStack(S.FrenzyBuff) < 3 or Player:BuffRemainsP(S.FrenzyBuff) < 3
-            or (S.BattleCry:CooldownRemainsP() < 1 and Player:BuffRemainsP(S.FrenzyBuff) < 9)) then
-        return S.FuriousSlash:Cast()
-    end
-    -- actions+=/use_item,name=umbral_moonglaives,if=equipped.umbral_moonglaives&(cooldown.battle_cry.remains>gcd&cooldown.battle_cry.remains<2|cooldown.battle_cry.remains=0)
-    -- actions+=/bloodthirst,if=equipped.kazzalax_fujiedas_fury&buff.fujiedas_fury.down
-    if S.Bloodthirst:IsReady("Melee") and I.KazzalaxFujiedasFury:IsEquipped() and not Player:BuffP(S.FujiedasFury) then
-        return S.Bloodthirst:Cast()
-    end
-    if RubimRH.CDsON() then
-        -- actions+=/avatar,if=((buff.battle_cry.remains>5|cooldown.battle_cry.remains<12)&target.time_to_die>80)|((target.time_to_die<40)&(buff.battle_cry.remains>6|cooldown.battle_cry.remains<12|(target.time_to_die<20)))
-        if S.Avatar:IsReady("Melee")
-                and (((Player:BuffRemainsP(S.BattleCry) > 5 or S.BattleCry:CooldownRemainsP() < 12) and Target:TimeToDie() > 80)
-                or ((Target:TimeToDie() < 40) and Player:BuffRemainsP(S.BattleCry) > 6
-                or S.BattleCry:CooldownRemainsP() < 12
-                or (Target:TimeToDie() < 20))) then
-            return S.Avatar:Cast()
+    if RubimRH.TargetIsValid() then
+        --- In Combat
+        -- actions+=/charge
+        if RubimRH.config.Spells[1].isActive and S.Charge:IsReady() and Target:IsInRange(S.Charge) then
+            return S.Charge:Cast()
         end
-        -- actions+=/battle_cry,if=gcd.remains=0&talent.reckless_abandon.enabled&!talent.bloodbath.enabled&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1
-                and (S.RecklessAbandon:IsAvailable() and not S.Bloodbath:IsAvailable()
-                and (I.UmbralMoonglaives:IsEquipped()
-                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
-                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
-                or not I.UmbralMoonglaives:IsEquipped()) then
-            return S.BattleCry:Cast()
+        -- actions+=/furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
+        if S.FuriousSlash:IsCastable() and S.FuriousSlash:IsAvailable() and (Player:BuffStack(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9)) then
+            return S.FuriousSlash:Cast()
         end
-        -- actions+=/battle_cry,if=gcd.remains=0&talent.bladestorm.enabled&(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)
-        if S.BattleCry:IsReady("Melee") and S.Bladestorm:IsAvailable() and Cache.EnemiesCount[8] >= 1 then
-            return S.BattleCry:Cast()
+        -- actions+=/bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
+        if S.Bloodthirst:IsCastable() and I.KazzalaxFujiedasFury:IsEquipped() and (not Player:BuffP(S.FujiedasFury) or Player:BuffRemainsP(S.FujiedasFury) < 2) then
+            return S.Bloodthirst:Cast()
         end
-        -- actions+=/battle_cry,if=gcd.remains=0&buff.dragon_roar.up&(cooldown.bloodthirst.remains=0|buff.enrage.remains>cooldown.bloodthirst.remains)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and Player:BuffP(S.DragonRoar) and (S.Bloodthirst:CooldownRemainsP() == 0 or Player:BuffRemainsP(S.Enrage) > S.Bloodthirst:CooldownRemainsP()) then
-            return S.BattleCry:Cast()
+        -- actions+=/rampage,if=cooldown.recklessness.remains<3
+        if S.Rampage:IsReady() and S.Recklessness:CooldownRemainsP() < 3 then
+            return S.Rampage:Cast()
         end
-        -- actions+=/battle_cry,if=(gcd.remains=0|gcd.remains<=0.4&prev_gcd.1.rampage)&(cooldown.bloodbath.remains=0|buff.bloodbath.up|!talent.bloodbath.enabled|(target.time_to_die<12))&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1
-                and ((Player:GCDRemains() == 0 or (Player:GCDRemains() <= 0.4 and Player:PrevGCDP(1, S.Rampage)))
-                and (S.Bloodbath:CooldownRemainsP() == 0 or Player:BuffP(S.Bloodbath)
-                or not S.Bloodbath:IsAvailable()
-                or (Target:TimeToDie() < 12))
-                and (I.UmbralMoonglaives:IsEquipped()
-                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
-                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
-                or not I.UmbralMoonglaives:IsEquipped()) then
-            return S.BattleCry:Cast()
+        -- actions+=/recklessness
+        if RubimRH.CDsON() and S.Recklessness:IsCastable() then
+            return S.Recklessness:Cast()
         end
-        -- actions+=/bloodbath,if=buff.battle_cry.up|(target.time_to_die<14)|(cooldown.battle_cry.remains<2&prev_gcd.1.rampage)
-        if S.Bloodbath:IsReady() and (Player:BuffP(S.BattleCry) or (Target:TimeToDie() < 14) or (S.BattleCry:CooldownRemainsP() < 2 and Player:PrevGCDP(1, S.Rampage))) then
-            return S.Bloodbath:Cast()
+        -- actions+=/whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
+        if RubimRH.AoEON() and S.Whirlwind:IsCastable() and (Cache.EnemiesCount[8] > 1 and not Player:Buff(S.WhirlwindBuff)) then
+            return S.Whirlwind:Cast()
         end
-        -- actions+=/blood_fury,if=buff.battle_cry.up
-        if S.BloodFury:IsReady() and Player:BuffP(S.BattleCry) then
-            return S.BloodFury:Cast()
+        if RubimRH.CDsON() then
+            -- actions+=/arcane_torrent,if=rage<40&!buff.recklessness.up
+            if S.ArcaneTorrent:IsCastable() and Player:Rage() < 40 and not Player:Buff(S.Recklessness) then
+                return S.ArcaneTorrent:Cast()
+            end
+            -- actions+=/berserking,if=buff.recklessness.up
+            if S.Berserking:IsCastable() and Player:Buff(S.Recklessness) then
+                return S.Berserking:Cast()
+            end
+            -- actions+=/blood_fury,if=buff.recklessness.up
+            if S.BloodFury:IsCastable() and Player:Buff(S.Recklessness) then
+                return S.BloodFury:Cast()
+            end
+            -- actions+=/ancestral_call,if=buff.recklessness.up
+            if S.AncestralCall:IsCastable() and Player:Buff(S.Recklessness) then
+                return S.AncestralCall:Cast()
+            end
+            -- actions+=/fireblood,if=buff.recklessness.up
+            if S.Fireblood:IsCastable() and Player:Buff(S.Recklessness) then
+                return S.Fireblood:Cast()
+            end
+            -- actions+=/lights_judgment,if=cooldown.recklessness.remains<3
+            if S.LightsJudgment:IsCastable() and S.Recklessness:CooldownRemainsP() < 3 then
+                return S.LightsJudgment:Cast()
+            end
         end
-        -- actions+=/berserking,if=(buff.battle_cry.up&(buff.avatar.up|!talent.avatar.enabled))|(buff.battle_cry.up&target.time_to_die<40)
-        if S.Berserking:IsReady() and ((Player:BuffP(S.BattleCry)
-                and (Player:BuffP(S.Avatar) or not S.Avatar:IsAvailable()))
-                or (Player:BuffP(S.BattleCry) and Target:TimeToDie() < 40)) then
-            return S.Berserking:Cast()
-        end
-        -- actions+=/arcane_torrent,if=rage<rage.max-40
-        if S.ArcaneTorrent:IsReady() and Player:Rage() < Player:RageMax() - 40 then
-            return S.ArcaneTorrent:Cast()
-        end
-    end
-
-    if not RubimRH.CDsON() then
-        -- actions+=/battle_cry,if=gcd.remains=0&talent.reckless_abandon.enabled&!talent.bloodbath.enabled&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1
-                and (S.RecklessAbandon:IsAvailable() and not S.Bloodbath:IsAvailable()
-                and (I.UmbralMoonglaives:IsEquipped()
-                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
-                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
-                or not I.UmbralMoonglaives:IsEquipped()) then
-            return S.BattleCry:Cast()
-        end
-        -- actions+=/battle_cry,if=gcd.remains=0&talent.bladestorm.enabled&(raid_event.adds.in>90|!raid_event.adds.exists|spell_targets.bladestorm_mh>desired_targets)
-        if S.BattleCry:IsReady("Melee") and S.Bladestorm:IsAvailable() and Cache.EnemiesCount[8] >= 1 then
-            return S.BattleCry:Cast()
-        end
-        -- actions+=/battle_cry,if=gcd.remains=0&buff.dragon_roar.up&(cooldown.bloodthirst.remains=0|buff.enrage.remains>cooldown.bloodthirst.remains)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 and Player:BuffP(S.DragonRoar) and (S.Bloodthirst:CooldownRemainsP() == 0 or Player:BuffRemainsP(S.Enrage) > S.Bloodthirst:CooldownRemainsP()) then
-            return S.BattleCry:Cast()
-        end
-        -- actions+=/battle_cry,if=(gcd.remains=0|gcd.remains<=0.4&prev_gcd.1.rampage)&(cooldown.bloodbath.remains=0|buff.bloodbath.up|!talent.bloodbath.enabled|(target.time_to_die<12))&(equipped.umbral_moonglaives&(prev_off_gcd.umbral_moonglaives|(trinket.cooldown.remains>3&trinket.cooldown.remains<90))|!equipped.umbral_moonglaives)
-        if S.BattleCry:IsReady("Melee") and Cache.EnemiesCount[8] >= 1
-                and ((Player:GCDRemains() == 0 or (Player:GCDRemains() <= 0.4 and Player:PrevGCDP(1, S.Rampage)))
-                and (S.Bloodbath:CooldownRemainsP() == 0 or Player:BuffP(S.Bloodbath)
-                or not S.Bloodbath:IsAvailable()
-                or (Target:TimeToDie() < 12))
-                and (I.UmbralMoonglaives:IsEquipped()
-                and (Player:PrevOffGCDP(1, S.UmbralMoonglaives)
-                or (S.UmbralMoonglaives:CooldownRemainsP() > 3 and S.UmbralMoonglaives:CooldownRemainsP() < 90)))
-                or not I.UmbralMoonglaives:IsEquipped()) then
-            return S.BattleCry:Cast()
-        end
-        -- actions+=/bloodbath,if=buff.battle_cry.up|(target.time_to_die<14)|(cooldown.battle_cry.remains<2&prev_gcd.1.rampage)
-        if S.Bloodbath:IsReady() and (Player:BuffP(S.BattleCry) or (Target:TimeToDie() < 14) or (S.BattleCry:CooldownRemainsP() < 2 and Player:PrevGCDP(1, S.Rampage))) then
-            return S.Bloodbath:Cast()
-        end
-    end
-    -- # Action list
-    -- actions+=/run_action_list,name=cooldowns,if=buff.battle_cry.up&spell_targets.whirlwind=1
-    if Player:BuffP(S.BattleCry) and Cache.EnemiesCount[8] == 1 then
-        if CDs() ~= nil then
-            return CDs()
-        end
-    end
-    -- actions+=/run_action_list,name=three_targets,if=target.health.pct>20&(spell_targets.whirlwind=3|spell_targets.whirlwind=4)
-    if Target:Exists() and Target:HealthPercentage() > 20 and (Cache.EnemiesCount[8] == 3 or Cache.EnemiesCount[8] == 4) and RubimRH.useAoE then
-        if Cleave() ~= nil then
-            return Cleave()
-        end
-    end
-    -- actions+=/run_action_list,name=aoe,if=spell_targets.whirlwind>4
-    if Cache.EnemiesCount[8] > 4 and RubimRH.useAoE then
-        if AoE() ~= nil then
-            return AoE()
-        end
-    end
-    -- actions+=/call_action_list,name=execute,if=target.health.pct<20
-    if Target:Exists() and Target:HealthPercentage() < 20 then
-        if Execute() ~= nil then
-            return Execute()
-        end
-    end
-    -- actions+=/call_action_list,name=single_target,if=target.health.pct>20
-    if Target:Exists() and Target:HealthPercentage() > 20 then
-        if Single_Target() ~= nil then
-            return Single_Target()
+        -- # Action list
+        -- actions+=/run_action_list,name=single_target
+        if single_target() ~= nil then
+            return single_target()
         end
     end
     return 0, 975743
 end
+
 RubimRH.Rotation.SetAPL(72, APL);
 
 local function PASSIVE()
