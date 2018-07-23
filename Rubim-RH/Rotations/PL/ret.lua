@@ -40,6 +40,15 @@ Spell.Paladin.Retribution = {
     TheFiresofJusticeBuff = Spell(209785),
     Zeal = Spell(217020),
     FinalVerdict = Spell(198038),
+	
+	-- Heal stuff for Leveling
+	FlashOfLight = Spell(19750),
+	SelfLessHealer = Spell (114250),
+	
+	-- PvP Talent
+	HammerOfReckoning = Spell(247675),
+	HammerOfReckoningBuff = Spell(247677),
+	
     -- Offensive
     AvengingWrath = Spell(31884),
     Crusade = Spell(231895),
@@ -107,6 +116,12 @@ local function Cooldowns()
     if RubimRH.CDsON() and S.AvengingWrath:IsCastable() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
         return S.AvengingWrath:Cast()
     end
+	
+	-- Hammer of Reckoning
+	  if RubimRH.CDsON() and Player:BuffStack(S.HammerOfReckoningBuff) >= 50 and S.AvengingWrath:CooldownRemains() > 20 and not Player:Buff(S.AvengingWrath) and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+        return S.HammerOfReckoning:Cast()
+    end
+	
     --actions.cooldowns+=/crusade,if=holy_power>=4
     if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
         return S.Crusade:Cast()
@@ -312,7 +327,11 @@ local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
-
+    -- 
+	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealer) == 4 and Player:HealthPercentage() <= 60 then
+	return S.FlashOfLight:Cast()
+	end
+	
     if RubimRH.config.Spells[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose
         if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory and Player:Buff(S.DivinePurposeBuff) then
