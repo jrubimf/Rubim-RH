@@ -1,3 +1,6 @@
+--- Last Edit: Bishop - 7/20/18
+--- BfA Protection Warrior v1.0.2
+
 --- Localize Vars
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 -- Addon
@@ -11,173 +14,188 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
---- APL Local Vars
--- Spells
-if not Spell.Warrior then Spell.Warrior = {}; end
+--- Spells
+--- Ability declarations
+if not Spell.Warrior then
+    Spell.Warrior = {};
+end
 Spell.Warrior.Protection = {
-    -- Racials
     ArcaneTorrent = Spell(69179),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     Shadowmeld = Spell(58984),
     -- Abilities
-    BattleCry = Spell(1719),
-    BerserkerRage = Spell(18499),
-    Charge = Spell(100),
+    BerserkerRage = Spell(18499), -- TODO: Implement cast while feared
+    Charge = Spell(100), -- Unused
     DemoralizingShout = Spell(1160),
     Devastate = Spell(20243),
-    FuriousSlash = Spell(100130),
-    HeroicLeap = Spell(6544),
-    HeroicThrow = Spell(57755),
+    HeroicLeap = Spell(6544), -- Unused
+    HeroicThrow = Spell(57755), -- Unused
     Revenge = Spell(6572),
-    RevengeB = Spell(5302),
+    RevengeBuff = Spell(5302),
     ShieldSlam = Spell(23922),
     ThunderClap = Spell(6343),
     VictoryRush = Spell(34428),
     Victorious = Spell(32216),
+    LastStand = Spell(12975),
+    Avatar = Spell(107574),
+    BattleShout = Spell(6673),
     -- Talents
+    BoomingVoice = Spell(202743),
     ImpendingVictory = Spell(202168),
     Shockwave = Spell(46968),
-    Vengeance = Spell(202572),
-    VegeanceIP = Spell(202574),
+    CracklingThunder = Spell(203201),
+    Vengeance = Spell(202572), -- TODO: See below
+    VegeanceIP = Spell(202574), -- TODO: Vengeance logic, currently very weak talent to use
     VegeanceRV = Spell(202573),
-    -- Artifact
-    NeltharionsFury = Spell(203524),
+    UnstoppableForce = Spell(275336), -- TODO: Implement higher priority Thunderclap during Avatar
+    Ravager = Spell(228920),
+    Bolster = Spell(280001),
+    -- PVP Talents
+    ShieldBash = Spell(198912),
     -- Defensive
     IgnorePain = Spell(190456),
-    LastStand = Spell(12975),
-    Pummel = Spell(6552),
+    Pummel = Spell(6552), -- TODO: Implement with new Rubim PvP logic
     ShieldBlock = Spell(2565),
-    ShieldBlockB = Spell(132404),
-    Avatar = Spell(107574),
-};
-local S = Spell.Warrior.Protection;
--- Items
+    ShieldBlockBuff = Spell(132404)
+}
+local ProtSpells = Spell.Warrior.Protection;
+
+-- Items : Currently unused
 if not Item.Warrior then Item.Warrior = {}; end
-Item.Warrior.Portection = {};
-local I = Item.Warrior.Protection;
+Item.Warrior.Protection = {};
+local I = Item.Warrior.Protection; -- Unused
 
-local T202PC, T204PC = HL.HasTier("T20");
-local T212PC, T214PC = HL.HasTier("T21");
+local T202PC, T204PC = HL.HasTier("T20"); -- Unused
+local T212PC, T214PC = HL.HasTier("T21"); -- Unused
 
-local function AoE()
-    if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
-        return S.IgnorePain:Cast()
-    end
-
-    if S.Revenge:IsReady() and S.Revenge:IsReady() and Player:RageDeficit() <= 30 then
-        return S.Revenge:Cast()
-    end
-
-    if S.ThunderClap:IsReady() and Cache.EnemiesCount[12] >= 1 then
-        return S.ThunderClap:Cast()
-    end
-
-    if S.ShieldSlam:IsReady("Melee") then
-        return S.ShieldSlam:Cast()
-    end
-
-    if S.Devastate:IsReady() then
-        return S.Devastate:Cast()
-    end
-end
-
-local function Vengeance()
-	if not Player:Buff(S.VegeanceIP) and not Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
-		return S.Revenge:Cast()
-	end
-
-	if Player:Buff(S.VegeanceRV) and S.Revenge:IsReady() then
-		return S.Revenge:Cast()
-	end	
-	
-	if Player:Buff(S.VegeanceIP) and S.IgnorePain:IsReady() then
-		return S.IgnorePain:Cast()
-	end	
-end
-
+--- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
+-- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
 local function APL()
-    if not Player:AffectingCombat() then
-        return 0, 462338
-    end
+    -- Re-buff when Battle Shout is down
+    -- TODO: Need to wait for GGLoader to include this texture
+    -- if not Player:Buff(ProtSpells.BattleShout) and ProtSpells.BattleShout:IsReady() then return ProtSpells.BattleShout:Cast() end
 
-    HL.GetEnemies("Melee");
-    HL.GetEnemies(8, true);
-    HL.GetEnemies(10, true);
-    HL.GetEnemies(12, true);
+    -- Player not in combat
+    if not Player:AffectingCombat() then return 0, 462338 end
 
-    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
+    -- Update Surrounding Enemies
+    HL.GetEnemies("Melee")
+    HL.GetEnemies(8, true)
+    HL.GetEnemies(10, true)
+    HL.GetEnemies(12, true)
+
+    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target) -- TODO: Implement logic for PvP scenarios : IsTanking returns false, yet Shield Block is still needed
+    local ThunderClapRadius = ProtSpells.CracklingThunder:IsAvailable() and 12 or 8
+
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
-    if LeftCtrl and LeftShift and S.Shockwave:IsReady() then
-        return S.Shockwave:Cast()
+
+    if LeftCtrl and LeftShift and ProtSpells.Shockwave:IsCastable(8) then
+        return ProtSpells.Shockwave:Cast()
     end
 
-    if RubimRH.CDsON() and S.BattleCry:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.BattleCry:Cast()
+    if ProtSpells.Pummel:IsReady("Melee")
+            and Target:IsInterruptible()
+            and Target:CastRemains() <= 0.5 then
+        return ProtSpells.Pummel:Cast()
     end
 
-    if RubimRH.CDsON() and S.Avatar:IsAvailable() and S.Avatar:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.Avatar:Cast()
+    -- SHIELD BLOCK PRIMARY RAGE DUMP
+    if ProtSpells.ShieldBlock:IsCastable("Melee")
+            and Player:Rage() >= 30
+            and not Player:Buff(ProtSpells.ShieldBlockBuff)
+            and ((not ProtSpells.Bolster:IsAvailable()) or (ProtSpells.Bolster:IsAvailable() and not Player:Buff(ProtSpells.LastStand)))
+            and ProtSpells.ShieldBlock:ChargesFractional() >= 1
+            and IsTanking then -- TODO: See IsTanking note
+        return ProtSpells.ShieldBlock:Cast()
     end
 
-	if Vengeance() ~= nil and S.Vengeance:IsAvailable() then
-		return Vengeance()
-	end	
-	
-    if S.IgnorePain:IsReady() and Player:RageDeficit() <= 50 and not Player:Buff(S.IgnorePain) and S.IgnorePain:TimeSinceLastCast() >= 1.5 and IsTanking then
-        return S.IgnorePain:Cast()
+    if ProtSpells.Avatar:IsCastable("Melee")
+            and Target:TimeToDie() >= 10
+            and Player:RageDeficit() >= 20 then
+        return ProtSpells.Avatar:Cast()
     end
 
-    if S.ShieldBlock:IsReady("Melee") and Player:Rage() >= 15 and not Player:Buff(S.ShieldBlockB) and IsTanking and S.ShieldBlock:ChargesFractional() >= 1.8 then
-        return S.ShieldBlock:Cast()
+    -- PvP Shield Bash
+    if ProtSpells.ShieldBash:IsCastable("Melee")
+            and Target:IsCasting() then
+        return ProtSpells.ShieldBash:Cast()
     end
 
-    if S.ImpendingVictory:IsAvailable() and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:Cast()
+    -- USE ON COOLDOWN WITH BOOMING VOICE
+    if ((ProtSpells.BoomingVoice:IsAvailable() and Player:Rage() <= 60) or Cache.EnemiesCount[ThunderClapRadius] >= 3)
+            and ProtSpells.DemoralizingShout:IsCastable("Melee") then
+        return ProtSpells.DemoralizingShout:Cast()
     end
 
-    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:Cast()
+    if ProtSpells.ShieldSlam:IsCastable("Melee")
+            and Player:RageDeficit() >= 15 then
+        return ProtSpells.ShieldSlam:Cast()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
-        return S.VictoryRush:Cast()
+    if ProtSpells.ThunderClap:IsCastable(ThunderClapRadius)
+            and Player:RageDeficit() >= 5 then
+        return ProtSpells.ThunderClap:Cast()
     end
 
-    if Player:Buff(S.Victorious) and S.ImpendingVictory:IsReady() and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:Cast()
+    -- Revenge Rage Dump
+    local RevengeDumpRage = ProtSpells.BoomingVoice:IsAvailable() and 60 or 80
+    if ProtSpells.Revenge:IsCastable("Melee")
+            and (((Player:Rage() >= RevengeDumpRage) or Player:Buff(ProtSpells.RevengeBuff))
+            or (ProtSpells.Revenge:IsCastable("Melee") and ProtSpells.Vengeance:IsAvailable() and Player:Buff(ProtSpells.VegeanceRV) and Player:Rage() >= 20)) then
+        return ProtSpells.Revenge:Cast()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.ImpendingVictory:IsReady() then
-        return S.VictoryRush:Cast()
+    if ProtSpells.ImpendingVictory:IsCastable("Melee")
+            and Player:HealthPercentage() <= 85 then
+        return ProtSpells.VictoryRush:Cast()
     end
 
-    if S.Revenge:IsReady() and Player:RageDeficit() <= 30 and Cache.EnemiesCount[8] >= 1 then
-        return S.Revenge:Cast()
+    if Player:Buff(ProtSpells.Victorious)
+            and ProtSpells.VictoryRush:IsCastable("Melee")
+            and Player:HealthPercentage() <= 85 then
+        return ProtSpells.VictoryRush:Cast()
     end
 
-    if Cache.EnemiesCount[12] >= 3 and RubimRH.useAoE then
-        if AoE() ~= nil then
-            return AoE()
-        end
+    if ProtSpells.Ravager:IsCastable("Melee")
+            and Cache.EnemiesCount[8] >= 3 then
+        return ProtSpells.Ravager:Cast()
     end
 
-    if S.ShieldSlam:IsReady("Melee") then
-        return S.ShieldSlam:Cast()
+    if ProtSpells.ShieldBash:IsCastable("Melee") then
+        return ProtSpells.ShieldBash:Cast()
     end
 
-    if S.ThunderClap:IsReady() and Cache.EnemiesCount[12] >= 1 then
-        return S.ThunderClap:Cast()
+    if Player:Buff(ProtSpells.VegeanceIP)
+            and Player:Rage() >= ((40 / 3) * 2)
+            and not Player:Buff(ProtSpells.IgnorePain) then
+        return ProtSpells.IgnorePain:Cast()
     end
 
-    if not S.Vengeance:IsAvailable() and S.Revenge:IsReady() and Player:Buff(S.RevengeB) and Cache.EnemiesCount[8] >= 1 then
-        return S.Revenge:Cast()
+    if ProtSpells.Revenge:IsCastable("Melee")
+            and ProtSpells.ShieldBlock:ChargesFractional() < 0.6
+            and Player:Rage() >= 30 then
+        return ProtSpells.Revenge:Cast()
     end
 
-    if S.Devastate:IsReady() then
-        return S.Devastate:Cast()
+    if Player:Buff(ProtSpells.Victorious)
+            and Player:BuffRemains(ProtSpells.Victorious) <= 2
+            and ProtSpells.VictoryRush:IsCastable("Melee") then
+        return ProtSpells.VictoryRush:Cast()
     end
+
+    if ProtSpells.IgnorePain:IsCastable("Melee")
+            and Player:Rage() >= 40
+            and not Player:Buff(ProtSpells.IgnorePain)
+            and IsTanking then -- TODO: See IsTanking note
+        return ProtSpells.IgnorePain:Cast()
+    end
+
+    if ProtSpells.Devastate:IsCastable("Melee") then
+        return ProtSpells.Devastate:Cast()
+    end
+
     return 0, 975743
 end
 RubimRH.Rotation.SetAPL(73, APL);

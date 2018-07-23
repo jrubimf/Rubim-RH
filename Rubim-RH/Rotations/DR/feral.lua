@@ -112,8 +112,6 @@ local function APL()
     HL.GetEnemies(8, true);
     HL.GetEnemies(10, true);
 
-
-
     if S.Berserk:IsReady("Melee") and RubimRH.CDsON() and Cache.EnemiesCount[8] >= 1 then
         return S.Berserk:Cast()
     end
@@ -122,7 +120,7 @@ local function APL()
         return S.TigersFury:Cast()
     end
 
-    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and Player:Buff(S.BloodtalonsBuff) then
+    if S.Regrowth:IsReady() and S.Bloodtalons:IsAvailable() and not Player:Buff(S.BloodtalonsBuff) then
         return S.Regrowth:Cast()
     end
 

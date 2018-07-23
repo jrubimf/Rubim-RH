@@ -1,9 +1,8 @@
---- ============================ HEADER ============================
+--- Last Update: Bishop 7/21/18
+
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
---- ======= LOCALIZE =======
--- Addon
+
 local addonName, addonTable = ...;
--- HeroLib
 local HL = HeroLib;
 local Cache = HeroCache;
 local Unit = HL.Unit;
@@ -13,164 +12,163 @@ local Party = Unit.Party;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-
---- ============================ CONTENT ============================
-
+--- Ability declarations
 if not Spell.Paladin then
     Spell.Paladin = {};
 end
 Spell.Paladin.Protection = {
     -- Racials
-
-    -- Abilities
+    ArcaneTorrent = Spell(155145),
+    -- Primary rotation abilities
     AvengersShield = Spell(31935),
+    AvengersValor = Spell(197561),
     AvengingWrath = Spell(31884),
     Consecration = Spell(26573),
-    ConsecrationBuff = Spell(188370),
-    HammeroftheRighteous = Spell(53595),
-    Judgment = Spell(20271),
-    ShieldoftheRighteous = Spell(53600),
-    ShieldoftheRighteousBuff = Spell(132403),
+    HammerOfTheRighteous = Spell(53595),
+    Judgment = Spell(275779),
+    ShieldOfTheRighteous = Spell(53600),
+    ShieldOfTheRighteousBuff = Spell(132403),
     GrandCrusader = Spell(85043),
     -- Talents
     BlessedHammer = Spell(204019),
     ConsecratedHammer = Spell(203785),
     CrusadersJudgment = Spell(204023),
-    -- Artifact
-    EyeofTyr = Spell(209202),
-    -- Defensive
-    LightoftheProtector = Spell(184092),
-    HandoftheProtector = Spell(213652),
+    -- Defensive / Utility
+    LightOfTheProtector = Spell(184092),
+    HandOfTheProtector = Spell(213652),
     LayOnHands = Spell(633),
     GuardianofAncientKings = Spell(86659),
     ArdentDefender = Spell(31850),
+    BlessingOfFreedom = Spell(1044),
+    HammerOfJustice = Spell(853),
+    BlessingOfProtection = Spell(1022),
+    BlessingOfSacrifice = Spell(6940),
     -- Utility
-    Rebuke = Spell(96231),
-    -- Legendaries
+    Rebuke = Spell(96231)
+}
+local ProtSpells = Spell.Paladin.Protection;
 
-    -- Misc
-    ArcaneTorrent = Spell(155145),
-    -- Macros
-
-};
-local S = Spell.Paladin.Protection;
--- Items
-if not Item.Paladin then
-    Item.Paladin = {};
-end
-Item.Paladin.Protection = {
-    -- Legendaries
-
-};
-local I = Item.Paladin.Protection;
--- Rotation Var
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
--- GUI Settings
 
-
---- ======= ACTION LISTS =======
-
-
---- ======= MAIN =======
 local function APL()
-    -- Unit Update
-    HL.GetEnemies(10, true);
 
-    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
-    LeftCtrl = IsLeftControlKeyDown();
-    LeftShift = IsLeftShiftKeyDown();
-    --INTERRUPT
-    -- Out of Combat
     if not Player:AffectingCombat() then
-        -- Flask
-        -- Food
-        -- Rune
-        -- PrePot w/ Bossmod Countdown
-        -- Opener
-        if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
-            -- Avenger's Shield
-            if S.AvengersShield:IsCastable() then
-                return S.AvengersShield:ID()
-            end
-            -- Judgment
-            if S.Judgment:IsCastable() then
-                return S.Judgment:ID()
-            end
-        end
         return 0, 462338
     end
 
+    --- Determine if we're tanking
+    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
+    LeftCtrl = IsLeftControlKeyDown();
+    LeftShift = IsLeftShiftKeyDown();
 
-    -- Defensives --
-    if RubimRH.config.Spells[1].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.layonahandspct and S.LayOnHands:IsReady() then
-        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.LayOnHands:ID()))
-    else
-        RubimRH.passiveIcon.texture:SetTexture(nil)
+    --- Unit update
+    HL.GetEnemies(10, true);
+
+    --- Kick
+    if ProtSpells.Rebuke:IsReady("Melee")
+            and Target:IsInterruptible()
+            and Target:CastRemains() <= 0.5 then
+        return ProtSpells.Rebuke:Cast()
     end
 
-    if RubimRH.config.Spells[2].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.ardentdefenderpct and S.ArdentDefender:IsReady() then
-        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.ArdentDefender:ID()))
-    else
-        RubimRH.passiveIcon.texture:SetTexture(nil)
+    --- Defensives / Healing
+
+    -- Shield of the Righteous
+    if (not Player:Buff(ProtSpells.ShieldOfTheRighteousBuff) or (Player:Buff(ProtSpells.ShieldOfTheRighteousBuff) and Player:BuffRemains(ProtSpells.ShieldOfTheRighteousBuff) <= Player:GCD()))
+            and ProtSpells.ShieldOfTheRighteous:IsReady("Melee")
+            and (ProtSpells.ShieldOfTheRighteous:ChargesFractional() >= 2 or Player:ActiveMitigationNeeded())
+            and (Player:Buff(ProtSpells.AvengersValor) or (not Player:Buff(ProtSpells.AvengersValor) and ProtSpells.AvengersShield:CooldownRemains() >= Player:GCD() * 2)) then
+        return ProtSpells.ShieldOfTheRighteous:Cast()
     end
 
-    if RubimRH.config.Spells[3].isActive and Player:HealthPercentage() < RubimRH.db.profile.Paladin.Protection.guardianofancientkingspct and S.GuardianofAncientKings:IsReady() then
-        RubimRH.passiveIcon.texture:SetTexture(GetSpellTexture(S.GuardianofAncientKings:ID()))
-    else
-        RubimRH.passiveIcon.texture:SetTexture(nil)
+    -- Light of the Protector
+    local VersatilityHealIncrease = (GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100
+    local SpellPower = GetSpellBonusDamage(2) -- Same result for all schools
+    local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
+    LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
+    local ShouldLotP = Player:Health() <= (Player:MaxHealth() - LotPHeal) and true or false
+    if (ProtSpells.LightOfTheProtector:IsReady() or ProtSpells.HandOfTheProtector:IsReady())
+            and ShouldLotP then
+        return ProtSpells.LightOfTheProtector:Cast()
     end
 
-    -- In Combat
-    if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
-        -- CDs
-        -- SotR (HP or (AS on CD and 3 Charges))
-        if S.ShieldoftheRighteous:IsCastable("Melee") and IsTanking and Player:BuffRefreshable(S.ShieldoftheRighteousBuff, 4) and (Player:ActiveMitigationNeeded() or (not S.AvengersShield:CooldownUp() and S.ShieldoftheRighteous:ChargesFractional() >= 2.65)) then
-            return S.ShieldoftheRighteous:ID()
-        end
-        -- Avengin Wrath (CDs On)
-        if RubimRH.CDsON() and S.AvengingWrath:IsCastable("Melee") then
-            return S.AvengingWrath:ID()
-        end
-        -- Defensives
-        if Target:IsInRange(10) then
-            if not Player:HealingAbsorbed() then
-                -- LotP (HP) / HotP (HP)
-                if S.LightoftheProtector:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Protection.lightoftheprotectorpct then
-                    return S.LightoftheProtector:ID()
-                end
-                if S.HandoftheProtector:IsCastable() and Player:HealthPercentage() <= 75 then
-                    return 250389
-                end
-            end
-        end
-        -- Avenger's Shield
-        if S.AvengersShield:IsCastable(30) then
-            return S.AvengersShield:ID()
-        end
-        -- Consecration
-        if S.Consecration:IsCastable("Melee") and RubimRH.lastMoved() > 1 then
-            return S.Consecration:ID()
-        end
-        -- Judgment
-        if S.Judgment:IsCastable(30) then
-            return S.Judgment:ID()
-        end
-        -- Blessed Hammer
-        if S.BlessedHammer:IsCastable(10, true) and S.BlessedHammer:Charges() > 1 then
-            return S.BlessedHammer:ID()
-        end
-        if Target:IsInRange("Melee") then
-            -- Shield of the Righteous
-            if S.ShieldoftheRighteous:IsCastable() and S.ShieldoftheRighteous:Charges() == 3 and IsTanking then
-                return S.ShieldoftheRighteous:ID()
-            end
-            -- Hammer of the Righteous
-            if (S.ConsecratedHammer:IsAvailable() or S.HammeroftheRighteous:IsCastable()) then
-                return S.HammeroftheRighteous:ID()
-            end
-        end
+    -- Hand of the Protector
+    local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover")) and true or false
+    local MouseoverUnit = (MouseoverUnitValid) and Unit("mouseover") or nil
+    local MouseoverUnitNeedsHelp = (MouseoverUnitValid and (LotPHeal <= (MouseoverUnit:MaxHealth() - MouseoverUnit:Health()))) and true or false
+    if ProtSpells.HandOfTheProtector:IsReady(40, false, MouseoverUnit)
+            and MouseoverUnitNeedsHelp then
+        return ProtSpells.HandOfTheProtector:Cast()
     end
+
+    -- Blessing of Protection
+    local MouseoverUnitNeedsBoP = (MouseoverUnitValid and (MouseoverUnit:HealthPercentage() <= 40)) and true or false
+    if ProtSpells.BlessingOfProtection:IsReady(40, false, MouseoverUnit)
+            and MouseoverUnitNeedsBoP then
+        return ProtSpells.BlessingOfProtection:Cast()
+    end
+
+    -- TODO: Waiting for GGLoader to add spell texture for Blessing of Sacrifice
+    --    Blessing Of Sacrifice
+    --        local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
+    --        if MouseoverUnitNeedsBlessingOfSacrifice
+    --                and ProtSpells.BlessingOfSacrifice:IsReady(40, false, MouseoverUnit) then
+    --            return ProtSpells.BlessingOfSacrifice:Cast()
+    --        end
+
+    local MovementSpeed = select(1, GetUnitSpeed("player"))
+    if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
+            and MovementSpeed ~= 0 -- 0 move speed = not moving
+            and ProtSpells.BlessingOfFreedom:IsReady() then
+        return ProtSpells.BlessingOfFreedom:Cast()
+    end
+
+    if Target:Exists()
+            and ProtSpells.HammerOfJustice:IsReady(10)
+            and LeftCtrl
+            and LeftShift then
+        return ProtSpells.HammerOfJustice:Cast()
+    end
+
+    --- Offensive CDs
+    --print(Target:TimeToDie())
+    if RubimRH.CDsON()
+            and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and ProtSpells.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
+            and ProtSpells.AvengingWrath:IsReady() then
+        return ProtSpells.AvengingWrath:Cast()
+    end
+
+    --- Main damage rotation: all executed as soon as they're available
+    if not Player:Buff(ProtSpells.Consecration)
+            and (Target:Exists() and Target:IsInRange("Melee"))
+            and ProtSpells.Consecration:IsReady() then
+        return ProtSpells.Consecration:Cast()
+    end
+
+    if ProtSpells.Judgment:IsReady(30) then
+        return ProtSpells.Judgment:Cast()
+    end
+
+    if ProtSpells.AvengersShield:IsReady(30) then
+        return ProtSpells.AvengersShield:Cast()
+    end
+
+    if ProtSpells.BlessedHammer:IsReady()
+            and Target:Exists()
+            and Target:IsInRange("Melee") then
+        return ProtSpells.BlessedHammer:Cast()
+    end
+
+    if ProtSpells.HammerOfTheRighteous:IsReady("Melee") then
+        return ProtSpells.HammerOfTheRighteous:Cast()
+    end
+
+    if ProtSpells.Consecration:IsReady()
+            and (Target:Exists() and Target:IsInRange("Melee")) then
+        return ProtSpells.Consecration:Cast()
+    end
+
     return 0, 975743
 end
 RubimRH.Rotation.SetAPL(66, APL);

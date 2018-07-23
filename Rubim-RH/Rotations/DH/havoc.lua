@@ -344,7 +344,7 @@ local function APL()
         local InMeleeRange = IsInMeleeRange()
 
         -- vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down
-        if S.VengefulRetreat:IsCastable("Melee", true) and S.Momentum:IsAvailable() then
+        if S.VengefulRetreat:IsCastable("Melee", true) and S.Momentum:IsAvailable() and S.FelRush:ChargesFractional() >= 1 then
             return S.VengefulRetreat:Cast()
         end
         -- fel_rush,if=(variable.waiting_for_momentum|talent.fel_mastery.enabled)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))

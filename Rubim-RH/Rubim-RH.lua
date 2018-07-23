@@ -67,12 +67,12 @@ local EnabledRotation = {
     -- Druid
     [102] = false, -- Balance
     [103] = true, -- Feral
-    [104] = true, -- Guardian
+    [104] = false, -- Guardian
     [105] = false, -- Restoration
     -- Hunter
     [253] = true, -- Beast Mastery
-    [254] = true, -- Marksmanship
-    [255] = true, -- Survival
+    [254] = false, -- Marksmanship
+    [255] = false, -- Survival
     -- Mage
     [62] = false, -- Arcane
     [63] = false, -- Fire
@@ -91,11 +91,11 @@ local EnabledRotation = {
     [258] = false, -- Shadow
     -- Rogue
     [259] = false, -- Assassination
-    [260] = true, -- Outlaw
+    [260] = false, -- Outlaw
     [261] = true, -- Subtlety
     -- Shaman
     [262] = true, -- Elemental
-    [263] = true, -- Enhancement
+    [263] = false, -- Enhancement
     [264] = false, -- Restoration
     -- Warlock
     [265] = false, -- Affliction
@@ -238,7 +238,6 @@ local defaults = {
             Fury = {
                 cooldown = true,
                 Spells = {
-                    { spellID = OdynsFury, isActive = true },
                     { spellID = Charge, isActive = true }
                 }
             },
@@ -323,6 +322,7 @@ end
 local updateClassVariables = CreateFrame("Frame")
 updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 updateClassVariables:RegisterEvent("PLAYER_LOGIN")
+updateClassVariables:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 local playerSpec = 0
 updateClassVariables:SetScript("OnEvent", function(self, event, ...)
@@ -551,14 +551,7 @@ function RubimRH.shouldStop()
     if _G.LootFrame:IsShown() then
         return 0, 975746
     end
-
-    if RubimPVP ~= nil then
-        if RubimRH.breakableCC(Target) == true or RubimRH.PvPImmunity(Target) == true then
-            return 243762
-        end
-    end
-
-    if RubimRH.PvP() ~= nil then
+    if RubimPVP and RubimRH.PvP() ~= nil then
         return RubimRH.PvP()
     end
 

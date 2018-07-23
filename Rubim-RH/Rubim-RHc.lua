@@ -429,11 +429,11 @@ local function getOptions()
                             name = "Druid - Feral",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.dr.feral[key]
+                                return RubimRH.db.profile.Druid.Feral[key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.dr.feral[key] = value
+                                RubimRH.db.profile.Druid.Feral[key] = value
                             end,
                             args = {
                                 cooldown = {

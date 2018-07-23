@@ -1,6 +1,5 @@
---- ============================ HEADER ============================
---- ======= LOCALIZE =======
--- Addon
+--- Last Edit: Bishop : 7/21/18
+--- BfA Brewmaster v1.0.2
 local addonName, addonTable = ...
 -- HeroLib
 local HL = HeroLib
@@ -8,17 +7,14 @@ local Cache = HeroCache
 local Unit = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
-local Pet = Unit.Pet
 local Spell = HL.Spell
-local Item = HL.Item
 
---- ============================ CONTENT ===========================
---- ======= APL LOCALS =======
--- luacheck: max_line_length 9999
-
--- Spells
-if not Spell.Monk then Spell.Monk = {} end
+--- Ability declarations
+if not Spell.Monk then
+    Spell.Monk = {};
+end
 Spell.Monk.Brewmaster = {
+    -- Spells
     ArcaneTorrent = Spell(50613),
     Berserking = Spell(26297),
     BlackoutCombo = Spell(196736),
@@ -26,7 +22,7 @@ Spell.Monk.Brewmaster = {
     BlackoutStrike = Spell(205523),
     BlackOxBrew = Spell(115399),
     BloodFury = Spell(20572),
-    BreathofFire = Spell(115181),
+    BreathOfFire = Spell(115181),
     BreathofFireDotDebuff = Spell(123725),
     Brews = Spell(115308),
     ChiBurst = Spell(123986),
@@ -48,161 +44,191 @@ Spell.Monk.Brewmaster = {
     HeavyStagger = Spell(124273),
     ModerateStagger = Spell(124274),
     LightStagger = Spell(124275),
-	SpearHandStrike = Spell(116705),
+    SpearHandStrike = Spell(116705),
+    ModerateStagger = Spell(124274),
+    HeavyStagger = Spell(124273),
+    HealingElixir = Spell(122281),
+    BlackOxStatue = Spell(115315),
+    Guard = Spell(202162),
     -- Misc
     PoolEnergy = Spell(9999000010)
-};
-local S = Spell.Monk.Brewmaster;
+}
+local BrewSpells = Spell.Monk.Brewmaster;
 
--- Items
-if not Item.Monk then Item.Monk = {} end
-Item.Monk.Brewmaster = {
-    ProlongedPower = Item(142117),
-    StormstoutsLastGasp = Item((248044), { 3 }),
-};
-local I = Item.Monk.Brewmaster;
-
-local ForceOffGCD = { true, false };
-
-
--- Variables
-local BrewmasterToolsEnabled = BrewmasterTools and true or false;
-if not BrewmasterToolsEnabled then
-    print("Purifying disabled. You need Brewmaster Tools to enable it.");
+--- Returns if energy will cap within the next GCD
+local function EnergyWillCap()
+    return (Player:Energy() + (Player:EnergyRegen() * Player:GCDRemains())) >= 100
 end
 
-local function ShouldPurify()
-    if not BrewmasterToolsEnabled then
-        return false;
+local function AoE()
+    if BrewSpells.BreathOfFire:IsReady("Melee") then
+        return BrewSpells.BreathOfFire:Cast()
     end
-    local NormalizedStagger = BrewmasterTools.GetNormalStagger();
-    local NextStaggerTick = BrewmasterTools.GetNextTick();
-    local NStaggerPct = NextStaggerTick > 0 and NextStaggerTick / Player:MaxHealth() or 0;
-    local ProgressPct = NormalizedStagger > 0 and Player:Stagger() / NormalizedStagger or 0;
-    if NStaggerPct > 0.015 and ProgressPct > 0 then
-        if NStaggerPct <= 0.03 then -- Yellow (> 80%)
-            return true and ProgressPct > 0.8 or false;
-        elseif NStaggerPct <= 0.05 then -- Orange (> 70%)
-            return true and NStaggerPct > 0.7 or false;
-        elseif NStaggerPct <= 0.1 then -- Red (> 50%)
-            return true and ProgressPct > 0.5 or false;
-        else -- Magenta
-            return true;
-        end
+
+    if BrewSpells.RushingJadeWind:IsReady(8)
+            and not Player:Buff(BrewSpells.RushingJadeWind) then
+        return BrewSpells.RushingJadeWind:Cast()
     end
+
+    if BrewSpells.ChiBurst:IsReady(40)
+            and RubimRH.lastMoved() >= 1 then
+        return BrewSpells.ChiBurst:Cast()
+    end
+
+    if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
+            and BrewSpells.TigerPalm:IsReady("Melee") then
+        return BrewSpells.TigerPalm:Cast()
+    end
+
+    if BrewSpells.BlackoutStrike:IsReady("Melee") then
+        return BrewSpells.BlackoutStrike:Cast()
+    end
+
+    if BrewSpells.ChiWave:IsReady(40) then
+        return BrewSpells.ChiWave:Cast()
+    end
+
+    if BrewSpells.TigerPalm:IsReady("Melee")
+            and Player:Energy() >= 55 then
+        return BrewSpells.TigerPalm:Cast()
+    end
+
+    if BrewSpells.RushingJadeWind:IsReady(8) then
+        return BrewSpells.RushingJadeWind:Cast()
+    end
+
+    return nil
+
 end
 
---- ======= ACTION LISTS =======
+--- Preliminary APL based on Peak of Serenity Rotation Priority for 8.0.1
+-- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
+
+    --- Not in combat
+    if not Player:AffectingCombat() then
+        return 0, 462338
+    end
+
     -- Unit Update
     HL.GetEnemies(8, true);
 
     -- Misc
-    local BrewMaxCharge = 3 + (S.LightBrewing:IsAvailable() and 1 or 0);
-    local IronskinDuration = (6 + S.PotentKick:ArtifactRank() * 0.5);
-    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
+    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
-    --- Defensives
-    -- purifying_brew,if=stagger.heavy|(stagger.moderate&cooldown.brews.charges_fractional>=cooldown.brews.max_charges-0.5&buff.ironskin_brew.remains>=buff.ironskin_brew.duration*2.5)
-    if S.PurifyingBrew:IsCastableP() and ShouldPurify() then
-        return S.PurifyingBrew:ID()
-    end
-    -- ironskin_brew,if=buff.blackout_combo.down&cooldown.brews.charges_fractional>=cooldown.brews.max_charges-0.1-(1+buff.ironskin_brew.remains<=buff.ironskin_brew.duration*0.5)&buff.ironskin_brew.remains<=buff.ironskin_brew.duration*2
-    -- Note: Extra handling of the charge management only while tanking.
-    --       "- (IsTanking and 1 + (Player:BuffRemains(S.IronskinBrewBuff) <= IronskinDuration * 0.5 and 0.5 or 0) or 0)"
-    if S.IronskinBrew:IsCastableP() and Player:BuffDownP(S.BlackoutComboBuff)
-            and S.Brews:ChargesFractional() >= BrewMaxCharge - 0.1 - (IsTanking and 1 + (Player:BuffRemains(S.IronskinBrewBuff) <= IronskinDuration * 0.5 and 0.5 or 0) or 0)
-            and Player:BuffRemains(S.IronskinBrewBuff) <= IronskinDuration * 2 then
-        return S.IronskinBrew:ID()
-    end
-    -- BlackoutCombo Stagger Pause w/ Ironskin Brew
-    if S.IronskinBrew:IsCastableP() and Player:BuffP(S.BlackoutComboBuff) and Player:HealingAbsorbed() and ShouldPurify() then
-        return S.IronskinBrew:ID()
-    end
-    -- black_ox_brew,if=incoming_damage_1500ms&stagger.heavy&cooldown.brews.charges_fractional<=0.75
-    if S.BlackOxBrew:IsCastableP() and S.Brews:ChargesFractional() <= 0.75 and (ShouldPurify() or Player:BuffRemains(S.IronskinBrewBuff) <= IronskinDuration) then
-        return S.BlackOxBrew:ID()
+    -- Kick
+    if BrewSpells.SpearHandStrike:IsReady("Melee")
+            and Target:IsInterruptible()
+            and Target:CastRemains() <= 0.5 then
+        return BrewSpells.SpearHandStrike:Cast()
     end
 
-    --- Out of Combat
-    if not Player:AffectingCombat() then
-        return 0, 462338
+    --- Defensive Rotation
+
+    if BrewSpells.Brews:ChargesFractional() <= 1
+            and BrewSpells.BlackOxBrew:IsAvailable()
+            and BrewSpells.BlackOxBrew:IsReady() then
+        return BrewSpells.BlackOxBrew:Cast()
     end
-	
-	--INTERRUPT
-	if S.SpearHandStrike:IsCastable() and ShouldInterrupt() then
-		GRInterrupt:Show()
-	else
-		GRInterrupt:Hide()
-	end	
-	
-    --- In Combat
-    -- black_ox_brew,if=(energy+(energy.regen*(cooldown.keg_smash.remains)))<40&buff.blackout_combo.down&cooldown.keg_smash.up
-    -- black_ox_brew,if=(energy+(energy.regen*cooldown.keg_smash.remains))<40&buff.blackout_combo.down&cooldown.keg_smash.up
-    if S.BlackOxBrew:IsCastableP() and (Player:Energy() + (Player:EnergyRegen() * S.KegSmash:CooldownRemainsP())) < 40 and Player:BuffDownP(S.BlackoutComboBuff) and S.KegSmash:CooldownUpP() then
-        return S.BlackOxBrew:ID()
+
+    if BrewSpells.Brews:ChargesFractional() >= 1
+            and (not Player:Buff(BrewSpells.IronskinBrewBuff) or (Player:Buff(BrewSpells.IronskinBrewBuff) and Player:BuffRemains(BrewSpells.IronskinBrewBuff) <= Player:GCD()))
+            and IsTanking then
+        return BrewSpells.IronskinBrew:Cast()
     end
-    -- blood_fury
-    if RubimRH.CDsON() and S.BloodFury:IsCastable("Melee") and S.BloodFury:IsAvailable() then
-        return S.BloodFury:ID()
+
+    if Player:Debuff(BrewSpells.HeavyStagger)
+            and Player:Buff(BrewSpells.IronskinBrewBuff)
+            and Player:BuffRemains(BrewSpells.IronskinBrewBuff) > Player:GCD() * 2
+            and IsTanking then
+        return BrewSpells.PurifyingBrew:Cast()
     end
-    -- berserking
-    if RubimRH.CDsON() and S.Berserking:IsCastable("Melee") and S.Berserking:IsAvailable() then
-        return S.Berserking:ID()
+
+    if Player:HealthPercentage() <= 85
+            and BrewSpells.HealingElixir:IsReady() then
+        return BrewSpells.HealingElixir:Cast()
     end
-    -- invoke_niuzao_the_black_ox
-    if S.InvokeNiuzaotheBlackOx:IsCastableP(40) and RubimRH.CDsON() then
-        return S.InvokeNiuzaotheBlackOx:ID()
+
+    if Player:Debuff(BrewSpells.HeavyStagger)
+            and Player:HealthPercentage() <= 80
+            and BrewSpells.Guard:IsReady() then
+        return BrewSpells.Guard:Cast()
     end
-    -- arcane_torrent,if=energy<31
-    if RubimRH.CDsON() and S.ArcaneTorrent:IsCastableP() and Player:Energy() < 31 and Cache.EnemiesCount[8] >= 1 then
-        return S.ArcaneTorrent:ID()
+
+    --- Cooldowns
+
+    if RubimRH.CDsON()
+            and BrewSpells.BloodFury:IsReady("Melee") then
+        return BrewSpells.BloodFury:ID()
     end
-    -- keg_smash,if=spell_targets>=3
-    if S.KegSmash:IsCastableP(25) and Cache.EnemiesCount[8] >= 3 then
-        return S.KegSmash:ID()
+
+    if RubimRH.CDsON()
+            and BrewSpells.Berserking:IsReady("Melee") then
+        return BrewSpells.Berserking:ID()
     end
-    -- tiger_palm,if=buff.blackout_combo.up
-    if S.TigerPalm:IsCastableP("Melee") and Player:BuffP(S.BlackoutComboBuff) then
-        return S.TigerPalm:ID()
+
+    -- TODO: Handle proper logic for locating distance to statue
+    --    if Cache.EnemiesCount[8] >= 3
+    --            and BlackOxStatue:IsReady(8)
+    --            and (not Pet:IsActive() or Player:FindRange("pet") > 8) then
+    --        return BlackOxStatue:Cast()
+    --    end
+
+    --- Universal Rotation - Does not change based on targets
+
+    if BrewSpells.InvokeNiuzaotheBlackOx:IsAvailable()
+            and BrewSpells.InvokeNiuzaotheBlackOx:IsReady(40) then
+        return BrewSpells.InvokeNiuzaotheBlackOx:Cast()
     end
-    -- keg_smash
-    if S.KegSmash:IsCastableP(25) then
-        return S.KegSmash:ID()
+
+    if BrewSpells.KegSmash:IsReady(15) then
+        return BrewSpells.KegSmash:Cast()
     end
-    -- blackout_strike
-    if S.BlackoutStrike:IsCastableP("Melee") then
-        return S.BlackoutStrike:ID()
+
+    --- Return different priority for 3+ target AoE
+    if Cache.EnemiesCount[8] >= 3
+            and AoE() ~= nil then
+        return AoE()
     end
-    -- breath_of_fire,if=buff.blackout_combo.down&(buff.bloodlust.down|(buff.bloodlust.up&&dot.breath_of_fire_dot.refreshable))
-    if S.BreathofFire:IsCastableP(10, true) and (Player:BuffDownP(S.BlackoutComboBuff) and (Player:HasNotHeroism() or (Player:HasHeroism() and true and Target:DebuffRefreshableCP(S.BreathofFireDotDebuff)))) then
-        return S.BreathofFire:ID()
+
+    --- Single-Target priority
+    if BrewSpells.BlackoutStrike:IsReady("Melee")
+            and (not Player:Buff(BrewSpells.BlackoutComboBuff) or not BrewSpells.BlackoutCombo:IsAvailable()) then
+        return BrewSpells.BlackoutStrike:Cast()
     end
-    -- rushing_jade_wind
-    if S.RushingJadeWind:IsCastableP() then
-        return S.RushingJadeWind:ID()
+
+    if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
+            and BrewSpells.TigerPalm:IsReady("Melee") then
+        return BrewSpells.TigerPalm:Cast()
     end
-    -- chi_burst
-    if S.ChiBurst:IsCastableP(10) then
-        return S.ChiBurst:ID()
+
+    if BrewSpells.BreathOfFire:IsReady("Melee") then
+        return BrewSpells.BreathOfFire:Cast()
     end
-    -- chi_wave
-    if S.ChiWave:IsCastableP(25) then
-        return S.ChiWave:ID()
+
+    if BrewSpells.RushingJadeWind:IsReady(8)
+            and not Player:Buff(BrewSpells.RushingJadeWind) then
+        return BrewSpells.RushingJadeWind:Cast()
     end
-    -- tiger_palm,if=!talent.blackout_combo.enabled&cooldown.keg_smash.remains>gcd&(energy+(energy.regen*(cooldown.keg_smash.remains+gcd)))>=55
-    if S.TigerPalm:IsCastableP("Melee") and (not S.BlackoutCombo:IsAvailable() and S.KegSmash:CooldownRemainsP() > Player:GCD() and (Player:Energy() + (Player:EnergyRegen() * (S.KegSmash:CooldownRemainsP() + Player:GCD()))) >= 55) then
-        return S.TigerPalm:ID()
+
+    if BrewSpells.ChiBurst:IsReady(40)
+            and RubimRH.lastMoved() >= 1 then
+        return BrewSpells.ChiBurst:Cast()
     end
-    -- rjw > ks if SLG
-    if S.RushingJadeWind:IsCastableP() and I.StormstoutsLastGasp:IsEquipped() and S.RushingJadeWind:CooldownRemainsP() + 0.5 <= S.KegSmash:CooldownRemainsP() then
-        return S.RushingJadeWind:ID()
+
+    if BrewSpells.ChiWave:IsReady(40) then
+        return BrewSpells.ChiWave:Cast()
     end
-    -- Keg Smash coming back during the next GCD
-    if Target:IsInRange(25) and S.KegSmash:CooldownRemainsP() < Player:GCD() then
-        return S.KegSmash:ID()
+
+    if BrewSpells.TigerPalm:IsReady()
+            and Player:Energy() >= 55 then
+        return BrewSpells.TigerPalm:Cast()
     end
-    -- Trick to take in consideration the Recovery Setting
+
+    if BrewSpells.RushingJadeWind:IsReady() then
+        return BrewSpells.RushingJadeWind:Cast()
+    end
+
     return 0, 975743
 end
 RubimRH.Rotation.SetAPL(268, APL);
