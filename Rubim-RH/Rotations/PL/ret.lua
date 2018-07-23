@@ -317,7 +317,7 @@ local function APL()
         return 0, 462338
     end
     -- 
-	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealer) => 4 and Player:HealthPercentage() <= 60 then
+	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealer) == 4 and Player:HealthPercentage() <= 60 then
 	return S.FlashOfLight:Cast()
 	end
 	
