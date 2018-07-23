@@ -118,7 +118,7 @@ local function Cooldowns()
     end
 	
 	-- Hammer of Reckoning
-	  if RubimRH.CDsON() and Player:BuffStack(S.HammerOfReckoningBuff) >= 50 and S.AvengingWrath:CooldownRemains() > 20 and not Player:Buff(S.AvengingWrath) and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+	  if RubimRH.CDsON() and S.HammerOfReckoning:IsCastable() and Player:BuffStack(S.HammerOfReckoningBuff) >= 50 and S.AvengingWrath:CooldownRemains() > 20 and not Player:Buff(S.AvengingWrath) and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
         return S.HammerOfReckoning:Cast()
     end
 	
