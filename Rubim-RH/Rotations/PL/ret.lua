@@ -43,7 +43,7 @@ Spell.Paladin.Retribution = {
 	
 	-- Heal stuff for Leveling
 	FlashOfLight = Spell(19750),
-	SelfLessHealer = Spell (114250),
+	SelfLessHealerBuff = Spell (114250),
 	
 	-- PvP Talent
 	HammerOfReckoning = Spell(247675),
@@ -328,7 +328,7 @@ local function APL()
         return 0, 462338
     end
     -- 
-	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealer) == 4 and Player:HealthPercentage() <= 60 then
+	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= 60 then
 	return S.FlashOfLight:Cast()
 	end
 	
