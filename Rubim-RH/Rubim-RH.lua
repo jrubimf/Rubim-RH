@@ -206,9 +206,10 @@ local defaults = {
             Retribution = {
                 cooldown = true,
                 justicarglory = 50,
+				flashOfLightPercent = 70,
                 Spells = {
                     { spellID = JusticarVengeance, isActive = true },
-		{ spellID = FlashOfLight, isActive = true }
+					{ spellID = FlashOfLight, isActive = true }
                 }
             },
             Holy = {
