@@ -14,6 +14,7 @@ Spell.Druid.Guardian = {
     WarStomp             = Spell(20549),
     -- Abilities
     FrenziedRegeneration = Spell(22842),
+	Gore				 = Spell(210706),
     GoreBuff             = Spell(93622),
     GoryFur              = Spell(201671),
     Ironfur              = Spell(192081),
@@ -21,8 +22,16 @@ Spell.Druid.Guardian = {
     Maul                 = Spell(6807),
     Moonfire             = Spell(8921),
     MoonfireDebuff       = Spell(164812),
+    Sunfire              = Spell(197630),
+    SunfireDebuff        = Spell(164815),
+    Starsurge            = Spell(197626),
+    LunarEmpowerment     = Spell(164547),
+    SolarEmpowerment     = Spell(164545),
+    LunarStrike          = Spell(197628),
+    Wrath                = Spell(197629),
+    -- Solar: 164545 Lunar: 164547)
     Regrowth             = Spell(8936),
-    SwipeBear            = Spell(213771),
+    Swipe                = Spell(213771),
     SwipeCat             = Spell(106785),
     Thrash               = Spell(77758),
     ThrashDebuff         = Spell(192090),
@@ -38,8 +47,8 @@ Spell.Druid.Guardian = {
     FeralAffinity        = Spell(202155),
     GalacticGuardian     = Spell(203964),
     GalacticGuardianBuff = Spell(213708),
-    GuardianOfElune = Spell(155578),
-    GuardianOfEluneBuff = Spell(213680),
+    GuardianOfElune 	 = Spell(155578),
+    GuardianOfEluneBuff  = Spell(213680),
     Incarnation          = Spell(102558),
     LunarBeam            = Spell(204066),
     Pulverize            = Spell(80313),
@@ -60,16 +69,11 @@ Spell.Druid.Guardian = {
     -- Affinity
     FerociousBite        = Spell(22568),
     HealingTouch         = Spell(5185),
-    LunarStrike          = Spell(197628),
     Rake                 = Spell(1822),
     RakeDebuff           = Spell(155722),
     Rejuvenation         = Spell(774),
     Rip                  = Spell(1079),
     Shred                = Spell(5221),
-    SolarWrath           = Spell(197629),
-    Starsurge            = Spell(197626),
-    Sunfire              = Spell(197630),
-    SunfireDebuff        = Spell(164815),
     Swiftmend            = Spell(18562),
     -- Shapeshift
     BearForm             = Spell(5487),
@@ -84,7 +88,7 @@ Spell.Druid.Guardian = {
 
 };
 local S = Spell.Druid.Guardian;
--- Items
+
 if not Item.Druid then Item.Druid = {}; end
 Item.Druid.Guardian = {
     -- Legendaries
@@ -126,6 +130,7 @@ local function Bear()
     -- Survival Instincts
     if S.SurvivalInstincts:IsReady()
             and not Player:Buff(S.Barkskin)
+            and not Player:Buff(S.SurvivalInstincts)
             and NeedBigHealing then
         return S.SurvivalInstincts:Cast()
     end
@@ -134,6 +139,7 @@ local function Bear()
     -- Barkskin
     if S.Barkskin:IsReady()
             and not Player:Buff(S.SurvivalInstincts)
+            and not Player:Buff(S.Barkskin)
             and NeedMinorHealing then
         return S.WarStomp:Cast()
     end
@@ -160,7 +166,7 @@ local function Bear()
     --- Main Damage Rotation
 
     -- Moonfire
-    if (not Target:Debuff(S.MoonfireDebuff) or (Target:Debuff(S.MoonfireDebuff) and Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD()))
+    if Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD()
             and S.Moonfire:IsReadyMorph(AbilityRange.Moonfire) then
         return S.Moonfire:Cast()
     end
@@ -172,8 +178,7 @@ local function Bear()
     end
 
     -- Pulverize
-    if Target:Debuff(S.ThrashDebuff)
-            and Target:DebuffStack(S.ThrashDebuff) == 3
+    if Target:DebuffStack(S.ThrashDebuff) == 3
             and S.Pulverize:IsReadyMorph(AbilityRange.Pulverize) then
         return S.Pulverize:Cast()
     end
@@ -201,8 +206,8 @@ local function Bear()
     end
 
     -- Swipe
-    if S.SwipeBear:IsReadyMorph(AbilityRange.Swipe) then
-        return S.SwipeBear:Cast()
+    if S.Swipe:IsReadyMorph(AbilityRange.Swipe) then
+        return S.Swipe:Cast()
     end
 end
 
@@ -241,8 +246,45 @@ local function Cat()
     return S.Shred:Cast()
 end
 
--- TODO: Moonkin damage rotation
 local function Moonkin()
+    -- Base cast range for Balance Affinity is 43 yards on all abilities
+    local AbilityRange = 43
+
+    -- Moonfire
+    if S.Moonfire:IsReady(AbilityRange)
+            and (Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD() or Player:Buff(S.GalacticGuardianBuff)) then
+        return S.Moonfire:Cast()
+    end
+
+    -- Sunfire
+    if S.Sunfire:IsReady(AbilityRange)
+            and Target:DebuffRemains(S.SunfireDebuff) <= Player:GCD() then
+        return S.Sunfire:Cast()
+    end
+
+    -- Stationary damage rotation
+    if not Player:IsMoving() then
+
+        -- Starsurge
+        if S.Starsurge:IsReady(AbilityRange)
+            and not Player:Buff(S.LunarEmpowerment)
+            and not Player:Buff(S.SolarEmpowerment) then
+            return S.Starsurge:Cast()
+        end
+
+        -- Lunar Strike
+        if S.LunarStrike:IsReady(AbilityRange) and
+                Player:Buff(S.LunarEmpowerment) then
+            return S.LunarStrike:Cast()
+        end
+
+        -- Wrath spam
+        if S.Wrath:IsReady(AbilityRange) then return S.Wrath:Cast() end
+    else
+        -- Moonfire spam on the move
+        if S.Moonfire:IsReady(AbilityRange) then return S.Moonfire:Cast() end
+    end
+
     return nil
 end
 
