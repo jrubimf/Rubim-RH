@@ -12,41 +12,7 @@ local Party = Unit.Party;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
---- Ability declarations
-if not Spell.Paladin then
-    Spell.Paladin = {};
-end
-Spell.Paladin.Protection = {
-    -- Racials
-    ArcaneTorrent = Spell(155145),
-    -- Primary rotation abilities
-    AvengersShield = Spell(31935),
-    AvengersValor = Spell(197561),
-    AvengingWrath = Spell(31884),
-    Consecration = Spell(26573),
-    HammerOfTheRighteous = Spell(53595),
-    Judgment = Spell(275779),
-    ShieldOfTheRighteous = Spell(53600),
-    ShieldOfTheRighteousBuff = Spell(132403),
-    GrandCrusader = Spell(85043),
-    -- Talents
-    BlessedHammer = Spell(204019),
-    ConsecratedHammer = Spell(203785),
-    CrusadersJudgment = Spell(204023),
-    -- Defensive / Utility
-    LightOfTheProtector = Spell(184092),
-    HandOfTheProtector = Spell(213652),
-    LayOnHands = Spell(633),
-    GuardianofAncientKings = Spell(86659),
-    ArdentDefender = Spell(31850),
-    BlessingOfFreedom = Spell(1044),
-    HammerOfJustice = Spell(853),
-    BlessingOfProtection = Spell(1022),
-    BlessingOfSacrifice = Spell(6940),
-    -- Utility
-    Rebuke = Spell(96231)
-}
-local ProtSpells = Spell.Paladin.Protection;
+local ProtSpells = RubimRH.Spell[66]
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");

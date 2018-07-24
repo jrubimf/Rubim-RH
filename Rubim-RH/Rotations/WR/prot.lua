@@ -14,52 +14,13 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
---- Spells
---- Ability declarations
-if not Spell.Warrior then
-    Spell.Warrior = {};
-end
-Spell.Warrior.Protection = {
-    ArcaneTorrent = Spell(69179),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    Shadowmeld = Spell(58984),
-    -- Abilities
-    BerserkerRage = Spell(18499), -- TODO: Implement cast while feared
-    Charge = Spell(100), -- Unused
-    DemoralizingShout = Spell(1160),
-    Devastate = Spell(20243),
-    HeroicLeap = Spell(6544), -- Unused
-    HeroicThrow = Spell(57755), -- Unused
-    Revenge = Spell(6572),
-    RevengeBuff = Spell(5302),
-    ShieldSlam = Spell(23922),
-    ThunderClap = Spell(6343),
-    VictoryRush = Spell(34428),
-    Victorious = Spell(32216),
-    LastStand = Spell(12975),
-    Avatar = Spell(107574),
-    BattleShout = Spell(6673),
-    -- Talents
-    BoomingVoice = Spell(202743),
-    ImpendingVictory = Spell(202168),
-    Shockwave = Spell(46968),
-    CracklingThunder = Spell(203201),
-    Vengeance = Spell(202572), -- TODO: See below
-    VegeanceIP = Spell(202574), -- TODO: Vengeance logic, currently very weak talent to use
-    VegeanceRV = Spell(202573),
-    UnstoppableForce = Spell(275336), -- TODO: Implement higher priority Thunderclap during Avatar
-    Ravager = Spell(228920),
-    Bolster = Spell(280001),
-    -- PVP Talents
-    ShieldBash = Spell(198912),
-    -- Defensive
-    IgnorePain = Spell(190456),
-    Pummel = Spell(6552), -- TODO: Implement with new Rubim PvP logic
-    ShieldBlock = Spell(2565),
-    ShieldBlockBuff = Spell(132404)
-}
-local ProtSpells = Spell.Warrior.Protection;
+--TODO
+--Berserker Rage: Implement cast while feared.
+--Vengenace: Very Weak
+--UnstoppableForce: Implement higher priority Thunderclap during Avatar
+--Implement with new Rubim PvP logic
+
+local ProtSpells = RubimRH.Spell[73]
 
 -- Items : Currently unused
 if not Item.Warrior then Item.Warrior = {}; end

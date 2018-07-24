@@ -25,10 +25,10 @@ end
 
 function RubimRH.CDToggle()
     PlaySound(891, "Master");
-    if RubimRH.config.cooldown == false then
-        RubimRH.config.cooldown = true
+    if RubimRH.db.profile[RubimRH.playerSpec].cooldown == false then
+        RubimRH.db.profile[RubimRH.playerSpec].cooldown = true
     else
-        RubimRH.config.cooldown = false
+        RubimRH.db.profile[RubimRH.playerSpec].cooldown = false
     end
     print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.config.cooldown))
 end
@@ -263,11 +263,11 @@ local function getOptions()
                             name = "Death Knight - Frost",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.DeathKnight.Frost[key]
+                                return RubimRH.db.profile[251][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.DeathKnight.Frost[key] = value
+                                RubimRH.db.profile[251][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -300,11 +300,11 @@ local function getOptions()
                             name = "Death Knight - Unholy",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.DeathKnight.Unholy[key]
+                                return RubimRH.db.profile[252][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.DeathKnight.Unholy[key] = value
+                                RubimRH.db.profile[252][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -337,11 +337,11 @@ local function getOptions()
                             name = "Paladin - Protection",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.Paladin.Protection[key]
+                                return RubimRH.db.profile[66][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.Paladin.Protection[key] = value
+                                RubimRH.db.profile[66][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -392,11 +392,11 @@ local function getOptions()
                             name = "Paladin - Retribution",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.Paladin.Retribution[key]
+                                return RubimRH.db.profile[70][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.Paladin.Retribution[key] = value
+                                RubimRH.db.profile[70][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -429,11 +429,11 @@ local function getOptions()
                             name = "Druid - Feral",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.Druid.Feral[key]
+                                return RubimRH.db.profile[103][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.Druid.Feral[key] = value
+                                RubimRH.db.profile[103][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -475,11 +475,11 @@ local function getOptions()
                             name = "Warrior - Arms",
                             get = function(info)
                                 local key = info.arg or info[#info]
-                                return RubimRH.db.profile.Warrior.Arms[key]
+                                return RubimRH.db.profile[71][key]
                             end,
                             set = function(info, value)
                                 local key = info.arg or info[#info]
-                                RubimRH.db.profile.Warrior.Arms[key] = value
+                                RubimRH.db.profile[71][key] = value
                             end,
                             args = {
                                 cooldown = {
@@ -528,9 +528,6 @@ function RubimRH:SetupOptions()
     LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("RubimRH", getOptions)
     self.optionsFrames.RubimRH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", nil, nil, "mainOptions")
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Classes", "RubimRH", "Classes")
-    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin", "RubimRH", "Paladin")
-    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Warrior", "RubimRH", "Warrior")
-    --    self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid", "RubimRH", "Druid")
     configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
 

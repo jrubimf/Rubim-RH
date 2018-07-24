@@ -51,63 +51,13 @@ HL:RegisterForSelfCombatEvent(function(...)
     end
 end, "SPELL_DAMAGE");
 --- ============================ CONTENT ============================
+---
+---
+--- GetSpell
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
 
--- Spells
-if not Spell.DemonHunter then
-    Spell.DemonHunter = {};
-end
-Spell.DemonHunter.Havoc = {
-    -- Racials
-    ArcaneTorrent = Spell(80483),
-    Shadowmeld = Spell(58984),
-    -- Abilities
-    Annihilation = Spell(201427),
-    BladeDance = Spell(188499),
-    ConsumeMagic = Spell(183752),
-    ChaosStrike = Spell(162794),
-    ChaosNova = Spell(179057),
-    DeathSweep = Spell(210152),
-    DemonsBite = Spell(162243),
-    EyeBeam = Spell(198013),
-    FelRush = Spell(195072),
-    Metamorphosis = Spell(191427),
-    MetamorphosisImpact = Spell(200166),
-    MetamorphosisBuff = Spell(162264),
-    ThrowGlaive = Spell(185123),
-    VengefulRetreat = Spell(198793),
-    -- Talents
-    BlindFury = Spell(203550),
-    Bloodlet = Spell(206473),
-    ChaosBlades = Spell(247938),
-    ChaosCleave = Spell(206475),
-    DemonBlades = Spell(203555),
-    Demonic = Spell(213410),
-    DemonicAppetite = Spell(206478),
-    DemonReborn = Spell(193897),
-    FelBarrage = Spell(211053),
-    Felblade = Spell(232893),
-    FelEruption = Spell(211881),
-    FelMastery = Spell(192939),
-    FirstBlood = Spell(206416),
-    MasterOfTheGlaive = Spell(203556),
-    Momentum = Spell(206476),
-    MomentumBuff = Spell(208628),
-    Nemesis = Spell(206491),
-    -- Artifact
-    FuryOfTheIllidari = Spell(201467),
 
-
-    -- Talents
-    ImmolationAura = Spell(258920),
-    FelBarrage = Spell(21862),
-    DarkSlash = Spell(258860),
-
-    -- Set Bonuses
-    T21_4pc_Buff = Spell(252165),
-};
--- Items
 if not Item.DemonHunter then
     Item.DemonHunter = {};
 end
@@ -128,7 +78,7 @@ Item.DemonHunter.Havoc = {
     ProlongedPower = Item(142117),
 };
 local I = Item.DemonHunter.Havoc;
-local S = Spell.DemonHunter.Havoc;
+local S = RubimRH.Spell[577]
 
 S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }

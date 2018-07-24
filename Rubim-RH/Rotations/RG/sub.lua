@@ -12,62 +12,7 @@ local tableinsert = table.insert;
 local mathmin = math.min;
 
 -- Spells
-if not Spell.Rogue then
-    Spell.Rogue = {};
-end
-Spell.Rogue.Subtlety = {
-    -- Racials
-    ArcanePulse = Spell(260364),
-    ArcaneTorrent = Spell(50613),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    Shadowmeld = Spell(58984),
-    -- Abilities
-    Backstab = Spell(53),
-    Eviscerate = Spell(196819),
-    Nightblade = Spell(195452),
-    ShadowBlades = Spell(121471),
-    ShurikenComboBuff = Spell(245640),
-    ShadowDance = Spell(185313),
-    ShadowDanceBuff = Spell(185422),
-    Shadowstrike = Spell(185438),
-    ShurikenStorm = Spell(197835),
-    ShurikenToss = Spell(114014),
-    Stealth = Spell(1784),
-    Stealth2 = Spell(115191), -- w/ Subterfuge Talent
-    SymbolsofDeath = Spell(212283),
-    Vanish = Spell(1856),
-    VanishBuff = Spell(11327),
-    VanishBuff2 = Spell(115193), -- w/ Subterfuge Talent
-    -- Talents
-    Alacrity = Spell(193539),
-    DarkShadow = Spell(245687),
-    DeeperStratagem = Spell(193531),
-    EnvelopingShadows = Spell(238104),
-    FindWeaknessDebuff = Spell(91021),
-    Gloomblade = Spell(200758),
-    MarkedforDeath = Spell(137619),
-    MasterofShadows = Spell(196976),
-    Nightstalker = Spell(14062),
-    SecretTechnique = Spell(280719),
-    ShadowFocus = Spell(108209),
-    ShurikenTornado = Spell(277925),
-    Subterfuge = Spell(108208),
-    Vigor = Spell(14983),
-    -- Azerite Traits
-    SharpenedBladesBuff = Spell(272916),
-    -- Defensive
-    CrimsonVial = Spell(185311),
-    Feint = Spell(1966),
-    -- Utility
-    Blind = Spell(2094),
-    CheapShot = Spell(1833),
-    Kick = Spell(1766),
-    KidneyShot = Spell(408),
-    Sprint = Spell(2983),
-    -- Misc
-};
-local S = Spell.Rogue.Subtlety;
+local S = RubimRH.Spell[261]
 
 local Stealth, VanishBuff
 

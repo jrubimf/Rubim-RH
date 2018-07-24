@@ -385,7 +385,7 @@ function Spell:IsAvailable (CheckPet)
 end
 
 function Spell:IsCastableP (Range, AoESpell, ThisUnit, BypassRecovery, Offset)
-    if not RubimRH.isSpellDisabled(self:ID()) then
+    if not RubimRH.isSpellEnabled(self:ID()) then
         return false
     end
     if Range then
@@ -400,7 +400,7 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:Queued() then
         return false
     end
-    if not RubimRH.isSpellDisabled(self:ID()) then
+    if not RubimRH.isSpellEnabled(self:ID()) then
         return false
     end
     if Range then
@@ -435,14 +435,14 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:Queued() then
         return false
     end
-    if not RubimRH.isSpellDisabled(self:ID()) then
+    if not RubimRH.isSpellEnabled(self:ID()) then
         return false
     end
-    return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
+        return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
 function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
-    if not RubimRH.isSpellDisabled(self:ID()) then
+    if not RubimRH.isSpellEnabled(self:ID()) then
         return false
     end
     if Range then
@@ -454,7 +454,7 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
-    if not RubimRH.isSpellDisabled(self:ID()) then
+    if not RubimRH.isSpellEnabled(self:ID()) then
         return false
     end
     if maxRange ~= nil then
@@ -466,15 +466,15 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
-function RubimRH.isSpellDisabled(spellIDs)
-    local isDisabled = true
+function RubimRH.isSpellEnabled(spellIDs)
+    local isEnabled = true
 
     for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
         if spellIDs == spellID then
-            isDisabled = false
+            isEnabled = false
         end
     end
-    return isDisabled
+    return isEnabled
 end
 
 function RubimRH.addSpellDisabled(spellIDs)
@@ -495,7 +495,7 @@ function RubimRH.addSpellDisabled(spellIDs)
 end
 
 function Spell:Cast()
-    return RubimRH.GetTexture(self)
+        return RubimRH.GetTexture(self)
 end
 
 function Spell:SetTexture(id)

@@ -13,54 +13,7 @@ local pairs = pairs;
 local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 
 --- APL Local Vars
--- Spells
-if not Spell.Paladin then
-    Spell.Paladin = {};
-end
-Spell.Paladin.Retribution = {
-    -- Racials
-    ArcaneTorrent = Spell(25046),
-    GiftoftheNaaru = Spell(59547),
-    -- Abilities
-    BladeofJustice = Spell(184575),
-    Consecration = Spell(205228),
-    CrusaderStrike = Spell(35395),
-    DivineHammer = Spell(198034),
-    DivinePurpose = Spell(223817),
-    DivinePurposeBuff = Spell(223819),
-    DivineStorm = Spell(53385),
-    ExecutionSentence = Spell(267798),
-    GreaterJudgment = Spell(218718),
-    HolyWrath = Spell(210220),
-    Judgment = Spell(20271),
-    JudgmentDebuff = Spell(197277),
-    JusticarsVengeance = Spell(215661),
-    TemplarsVerdict = Spell(85256),
-    TheFiresofJustice = Spell(203316),
-    TheFiresofJusticeBuff = Spell(209785),
-    Zeal = Spell(217020),
-    FinalVerdict = Spell(198038),
-    -- Offensive
-    AvengingWrath = Spell(31884),
-    Crusade = Spell(231895),
-    --Talent
-    Inquisition = Spell(84963),
-    DivineJudgement = Spell(271580),
-    HammerofWrath = Spell(24275),
-    WakeofAshes = Spell(255937),
-
-    -- Defensive
-    -- Utility
-    HammerofJustice = Spell(853),
-    Rebuke = Spell(96231),
-    DivineSteed = Spell(190784),
-    WorldofGlory = Spell(210191),
-    -- Legendaries
-    LiadrinsFuryUnleashed = Spell(208408),
-    ScarletInquisitorsExpurgation = Spell(248289);
-    WhisperoftheNathrezim = Spell(207635)
-};
-local S = Spell.Paladin.Retribution;
+local S = RubimRH.Spell[70]
 
 S.BladeofJustice.TextureSpellID = { 0, 1394971 }
 S.AvengingWrath.TextureSpellID = { 55748 }
@@ -315,11 +268,11 @@ local function APL()
 
     if RubimRH.config.Spells[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Divine Purpose
-        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory and Player:Buff(S.DivinePurposeBuff) then
+        if Player:HealthPercentage() <= RubimRH.db.profile[70].justicarglory and Player:Buff(S.DivinePurposeBuff) then
             return S.JusticarsVengeance:Cast()
         end
         -- Regular
-        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory - 5 and Player:HolyPower() >= 5 then
+        if Player:HealthPercentage() <= RubimRH.db.profile[70].justicarglory - 5 and Player:HolyPower() >= 5 then
             return S.JusticarsVengeance:Cast()
         end
     end

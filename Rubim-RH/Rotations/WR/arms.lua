@@ -13,73 +13,9 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
--- Spells
-if not Spell.Warrior then
-    Spell.Warrior = {};
-end
-Spell.Warrior.Arms = {
-    -- Racials
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    ArcaneTorrent = Spell(28730),
+local S = RubimRH.Spell[71]
 
-    -- Abilities
-    BattleCry = Spell(1719),
-    BattleCryBuff = Spell(1719),
-    ColossusSmash = Spell(167105),
-    ColossusSmashDebuff = Spell(208086),
-    Execute = Spell(163201),
-    ExecutionersPrecisionDebuff = Spell(242188),
-    Cleave = Spell(845),
-    CleaveBuff = Spell(231833),
-    Charge = Spell(100),
-    Bladestorm = Spell(227847),
-    MortalStrike = Spell(12294),
-    Whirlwind = Spell(1680),
-    HeroicThrow = Spell(57755),
-    Slam = Spell(1464),
 
-    -- Talents
-    Dauntless = Spell(202297),
-    Avatar = Spell(107574),
-    AvatarBuff = Spell(107574),
-    FocusedRage = Spell(207982),
-    FocusedRageBuff = Spell(207982),
-    Rend = Spell(772),
-    RendDebuff = Spell(772),
-    Overpower = Spell(7384),
-    Ravager = Spell(152277),
-    StormBolt = Spell(107570),
-    DeadlyCalm = Spell(227266),
-    FervorOfBattle = Spell(202316),
-    SweepingStrikes = Spell(202161),
-    AngerManagement = Spell(152278),
-    InForTheKill = Spell(248621),
-    InForTheKillBuff = Spell(248622),
-    -- Talents
-    SkullSplinter = Spell(260643),
-    Warbreaker = Spell(262161),
-
-    -- Defensive
-    CommandingShout = Spell(97462),
-    DefensiveStance = Spell(197690),
-    DiebytheSword = Spell(118038),
-    Victorious = Spell(32216),
-    VictoryRush = Spell(34428),
-
-    -- Utility
-    Pummel = Spell(6552),
-    Shockwave = Spell(46968),
-    ShatteredDefensesBuff = Spell(248625),
-    PreciseStrikesBuff = Spell(209492),
-
-    -- Legendaries
-    StoneHeartBuff = Spell(225947),
-
-    -- Misc
-    WeightedBlade = Spell(253383)
-}
-local S = Spell.Warrior.Arms;
 S.SkullSplinter.TextureSpellID = { 58984 }
 
 -- Items
