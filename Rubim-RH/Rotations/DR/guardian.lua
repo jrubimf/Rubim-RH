@@ -14,7 +14,7 @@ Spell.Druid.Guardian = {
     WarStomp             = Spell(20549),
     -- Abilities
     FrenziedRegeneration = Spell(22842),
-	Gore				 = Spell(210706),
+    Gore				 = Spell(210706),
     GoreBuff             = Spell(93622),
     GoryFur              = Spell(201671),
     Ironfur              = Spell(192081),
@@ -29,10 +29,8 @@ Spell.Druid.Guardian = {
     SolarEmpowerment     = Spell(164545),
     LunarStrike          = Spell(197628),
     Wrath                = Spell(197629),
-    -- Solar: 164545 Lunar: 164547)
     Regrowth             = Spell(8936),
     Swipe                = Spell(213771),
-    SwipeCat             = Spell(106785),
     Thrash               = Spell(77758),
     ThrashDebuff         = Spell(192090),
     ThrashCat            = Spell(106830),
@@ -79,13 +77,7 @@ Spell.Druid.Guardian = {
     BearForm             = Spell(5487),
     CatForm              = Spell(768),
     MoonkinForm          = Spell(197625),
-    TravelForm           = Spell(783),
-    -- Legendaries
-
-    -- Misc
-
-    -- Macros
-
+    TravelForm           = Spell(783)
 };
 local S = Spell.Druid.Guardian;
 
@@ -97,6 +89,65 @@ Item.Druid.Guardian = {
 };
 local I = Item.Druid.Guardian;
 
+function Spell:CanCast(RANGE, UNIT)
+
+    local DebugCanCast = false
+    if RANGE ~= nil then
+        if tostring(RANGE) == "Melee" then RANGE = 5 end
+    end
+
+    -- Spell Cooldown
+    local SpellCooldownUp
+
+    local CurrentTime = GetTime()
+    local GCDStart, GCDDuration, _ = GetSpellCooldown(61304)
+    local GCDRemains = (GCDStart ~= 0) and (CurrentTime - (GCDStart + GCDDuration)) or 0
+
+    local SpellCDStart, SpellCDDuration, _ = GetSpellCooldown(self:ID())
+    local SpellCDRemains = (SpellCDStart ~= 0) and (CurrentTime - (SpellCDStart + SpellCDDuration)) or 0
+
+    if GetSpellCharges(self:ID()) ~= nil then
+        -- Spell has charges
+        SpellCooldownUp = (select(1, GetSpellCharges(self:ID())) >= 1) and true or false
+    else
+        if SpellCDStart == 0 then
+            SpellCooldownUp = true
+        else
+            SpellCooldownUp = HeroLib.Spell(self:ID()):CooldownUp()
+        end
+    end
+
+    -- Spell Known
+    local SpellKnown = (GetSpellInfo(self:Name()) ~= nil) and true or false
+
+    -- Spell In Range
+    local SpellInRange
+    if RANGE ~= nil then
+        if UNIT then
+            SpellInRange = HeroLib.Unit(UNIT:ID()):IsInRange(RANGE)
+        else
+            SpellInRange = HeroLib.Unit("target"):IsInRange(RANGE)
+        end
+    else
+        SpellInRange = true
+    end
+
+    -- Spell Usable
+    local SpellUsable = IsUsableSpell(self:ID())
+
+    if DebugCanCast then
+        print("Spell name: " .. tostring(self:Name()))
+        print("Range: " .. tostring(RANGE))
+        print("Spell on cooldown: " .. tostring(SpellCooldownUp))
+        print("Spell Known: " .. tostring(SpellKnown))
+        print("Spell in range: " .. tostring(SpellInRange))
+        print("Spell usable: " .. tostring(SpellUsable))
+        print("Should use: " .. tostring((SpellCooldownUp) and SpellKnown and SpellInRange and SpellUsable))
+    end
+
+    return SpellCooldownUp and SpellKnown and SpellInRange and SpellUsable
+end
+
 local function Bear()
 
     --- Declarations
@@ -104,8 +155,8 @@ local function Bear()
 
     local IncomingDamage = select(1, RubimRH.getDMG("player"))
 
-    local NeedMinorHealing = (IncomingDamage >= (Player:MaxHealth() * 0.05)) and true or false -- Taking 5% max HP in DPS
-    local NeedBigHealing = (IncomingDamage >= (Player:MaxHealth() * 0.1)) and true or false -- Taking 10% max HP in DPS
+    local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS
+    local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.1))) and true or false -- Taking 10% max HP in DPS
 
     local RangeMod = S.BalanceAffinity:IsAvailable() and true or false
     local AbilityRange = {
@@ -122,13 +173,13 @@ local function Bear()
     --- Defensives / Healing
 
     -- Bristling Fur
-    if S.BristlingFur:IsReady()
+    if S.BristlingFur:IsReadyMorph()
             and NeedMinorHealing then
         return S.BristlingFur:Cast()
     end
 
     -- Survival Instincts
-    if S.SurvivalInstincts:IsReady()
+    if S.SurvivalInstincts:IsReadyMorph()
             and not Player:Buff(S.Barkskin)
             and not Player:Buff(S.SurvivalInstincts)
             and NeedBigHealing then
@@ -146,7 +197,7 @@ local function Bear()
 
     -- Ironfur
     local WaitForGuardianOfElune = not (Player:Buff(S.GuardianOfEluneBuff) or (not Player:Buff(S.GuardianOfEluneBuff) and S.Mangle:CooldownRemains() > Player:GCD() * 2))
-    if S.Ironfur:IsReady()
+    if S.Ironfur:IsReadyMorph()
             and Player:BuffRemains(S.Ironfur) <= 0.5
             and not WaitForGuardianOfElune
             and IsTanking then
@@ -156,7 +207,7 @@ local function Bear()
     -- Frenzied Regeneration
     local FrenziedRegenerationHeal = (Player:Buff(S.GuardianOfEluneBuff)) and 21 or 18
     local FrenziedOverHeal = (FrenziedRegenerationHeal + Player:HealthPercentage() >= 100) and true or false
-    if S.FrenziedRegeneration:IsReady()
+    if S.FrenziedRegeneration:IsReadyMorph()
             and not FrenziedOverHeal
             and NeedMinorHealing
             and S.FrenziedRegeneration:ChargesFractional() >= 1 then
@@ -173,7 +224,7 @@ local function Bear()
 
     -- Thrash
     if S.Thrash:IsReadyMorph(AbilityRange.Thrash)
-            and Target:DebuffStack(S.ThrashDebuff) ~= 3 then
+            and Target:DebuffStack(S.ThrashDebuff) < 3 then
         return S.Thrash:Cast()
     end
 
@@ -222,13 +273,13 @@ local function Cat()
     if CatWeave then
         if Player:ComboPoints() == 5
                 and Target:DebuffRemains(S.Rip) <= Player:GCD() * 5
-                and S.Rip:IsReady("Melee") then
+                and S.Rip:IsReadyMorph("Melee") then
             return S.Rip:Cast()
         end
 
         if Player:ComboPoints() == 5
                 and Target:DebuffRemains(S.Rip) >= Player:GCD() * 5
-                and S.FerociousBite:IsReady("Melee") then
+                and S.FerociousBite:IsReadyMorph("Melee") then
             return S.FerociousBite:Cast()
         end
 
@@ -238,7 +289,7 @@ local function Cat()
         end
     end
 
-    if S.ThrashCat:IsReady("Melee")
+    if S.ThrashCat:IsReadyMorph("Melee")
             and Target:DebuffRemains(S.ThrashCat) <= Player:GCD() then
         return S.ThrashCat:Cast()
     end
@@ -251,13 +302,13 @@ local function Moonkin()
     local AbilityRange = 43
 
     -- Moonfire
-    if S.Moonfire:IsReady(AbilityRange)
+    if S.Moonfire:IsReadyMorph(AbilityRange)
             and (Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD() or Player:Buff(S.GalacticGuardianBuff)) then
         return S.Moonfire:Cast()
     end
 
     -- Sunfire
-    if S.Sunfire:IsReady(AbilityRange)
+    if S.Sunfire:IsReadyMorph(AbilityRange)
             and Target:DebuffRemains(S.SunfireDebuff) <= Player:GCD() then
         return S.Sunfire:Cast()
     end
@@ -266,23 +317,23 @@ local function Moonkin()
     if not Player:IsMoving() then
 
         -- Starsurge
-        if S.Starsurge:IsReady(AbilityRange)
-            and not Player:Buff(S.LunarEmpowerment)
-            and not Player:Buff(S.SolarEmpowerment) then
+        if S.Starsurge:IsReadyMorph(AbilityRange)
+                and not Player:Buff(S.LunarEmpowerment)
+                and not Player:Buff(S.SolarEmpowerment) then
             return S.Starsurge:Cast()
         end
 
         -- Lunar Strike
-        if S.LunarStrike:IsReady(AbilityRange) and
+        if S.LunarStrike:IsReadyMorph(AbilityRange) and
                 Player:Buff(S.LunarEmpowerment) then
             return S.LunarStrike:Cast()
         end
 
         -- Wrath spam
-        if S.Wrath:IsReady(AbilityRange) then return S.Wrath:Cast() end
+        if S.Wrath:IsReadyMorph(AbilityRange) then return S.Wrath:Cast() end
     else
         -- Moonfire spam on the move
-        if S.Moonfire:IsReady(AbilityRange) then return S.Moonfire:Cast() end
+        if S.Moonfire:IsReadyMorph(AbilityRange) then return S.Moonfire:Cast() end
     end
 
     return nil
@@ -305,9 +356,9 @@ local function APL()
     --    local CTRL = IsLeftControlKeyDown()
     --    local SHIFT = IsLeftShiftKeyDown()
     --    if CTRL and SHIFT then
-    --        if S.Typhoon:IsReady(15) then return S.Typhoon:Cast() end
-    --        if S.MightyBash:IsReady("Melee") then return S.MightyBash:Cast() end
-    --        if S.Entanglement:IsReady("Melee") then return S.Entanglement:Cast() end
+    --        if S.Typhoon:IsReadyMorph(15) then return S.Typhoon:Cast() end
+    --        if S.MightyBash:IsReadyMorph("Melee") then return S.MightyBash:Cast() end
+    --        if S.Entanglement:IsReadyMorph("Melee") then return S.Entanglement:Cast() end
     --    end
 
     if ShapeshiftStance.Bear and Bear() ~= nil then return Bear() end
