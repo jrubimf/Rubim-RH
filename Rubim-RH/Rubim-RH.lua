@@ -129,6 +129,7 @@ local OdynsFury = 205545
 local Charge = 100
 --Paladin
 local JusticarVengeance = 215661
+local FlashOfLight = 19750
 local WordofGlory = 210191
 local LayonHands = 633
 local GuardianofAncientKings = 86659
@@ -205,8 +206,10 @@ local defaults = {
             Retribution = {
                 cooldown = true,
                 justicarglory = 50,
+				flashOfLightPercent = 70,
                 Spells = {
-                    { spellID = JusticarVengeance, isActive = true }
+                    { spellID = JusticarVengeance, isActive = true },
+					{ spellID = FlashOfLight, isActive = true }
                 }
             },
             Holy = {
