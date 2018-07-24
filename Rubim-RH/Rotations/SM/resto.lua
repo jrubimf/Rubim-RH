@@ -1,4 +1,1 @@
-
-local function Nothing()
-
-end
+local nothing = nil;

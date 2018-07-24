@@ -1,5 +1,4 @@
 --- ============================ HEADER ============================
-local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local addonName, addonTable = ...;
 local HL = HeroLib;
 local Cache = HeroCache;
@@ -11,63 +10,7 @@ local Item = HL.Item;
 
 local activeUnitPlates = {}
 
-if not Spell.DeathKnight then
-    Spell.DeathKnight = {};
-end
 
-Spell.DeathKnight.Frost = {
-    -- Racials
-    ArcaneTorrent = Spell(50613),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    GiftoftheNaaru = Spell(59547),
-
-    -- Abilities
-    ChainsOfIce = Spell(45524),
-    EmpowerRuneWeapon = Spell(47568),
-    FrostFever = Spell(55095),
-    FrostStrike = Spell(49143),
-    HowlingBlast = Spell(49184),
-    Obliterate = Spell(49020),
-    PillarOfFrost = Spell(51271),
-    RazorIce = Spell(51714),
-    RemorselessWinter = Spell(196770),
-    KillingMachine = Spell(51124),
-    Rime = Spell(59052),
-    UnholyStrength = Spell(53365),
-    -- Talents
-    BreathofSindragosa = Spell(152279),
-    BreathofSindragosaTicking = Spell(155166),
-    FrostScythe = Spell(207230),
-    FrozenPulse = Spell(194909),
-    FreezingFog = Spell(207060),
-    GatheringStorm = Spell(194912),
-    GatheringStormBuff = Spell(211805),
-    GlacialAdvance = Spell(194913),
-    HornOfWinter = Spell(57330),
-    IcyTalons = Spell(194878),
-    IcyTalonsBuff = Spell(194879),
-    MurderousEfficiency = Spell(207061),
-    Obliteration = Spell(281238),
-    RunicAttenuation = Spell(207104),
-    ShatteringStrikes = Spell(207057),
-    Icecap = Spell(207126),
-    ColdHeartTalent = Spell(281208),
-    ColdHeartBuff = Spell(281209),
-    ColdHeartItemBuff = Spell(235599),
-    FrostwyrmsFury = Spell(279302),
-    -- Defensive
-    AntiMagicShell = Spell(48707),
-    DeathStrike = Spell(49998),
-    IceboundFortitude = Spell(48792),
-    DarkSuccor = Spell(101568),
-    -- Utility
-    ControlUndead = Spell(45524),
-    DeathGrip = Spell(49576),
-    MindFreeze = Spell(47528),
-    PathOfFrost = Spell(3714),
-    WraithWalk = Spell(212552),
-};
 
 -- Items
 if not Item.DeathKnight then
@@ -89,7 +32,7 @@ Item.DeathKnight.Frost = {
     ProlongedPower = Item(142117)
 };
 
-local S = Spell.DeathKnight.Frost;
+local S = RubimRH.Spell[251]
 local I = Item.DeathKnight.Frost;
 
 local T202PC, T204PC = HL.HasTier("T20");
@@ -407,7 +350,7 @@ local function APL()
         return S.HowlingBlast:Cast()
     end
 
-    if RubimRH.config.Spells[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile.DeathKnight.Frost.deathstrike then
+    if RubimRH.config.Spells[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
         S.DeathStrike:Queue()
         return S.DeathStrike:Cast()
     end

@@ -9,51 +9,7 @@ local Player = Unit.Player
 local Target = Unit.Target
 local Spell = HL.Spell
 
---- Ability declarations
-if not Spell.Monk then
-    Spell.Monk = {};
-end
-Spell.Monk.Brewmaster = {
-    -- Spells
-    ArcaneTorrent = Spell(50613),
-    Berserking = Spell(26297),
-    BlackoutCombo = Spell(196736),
-    BlackoutComboBuff = Spell(228563),
-    BlackoutStrike = Spell(205523),
-    BlackOxBrew = Spell(115399),
-    BloodFury = Spell(20572),
-    BreathOfFire = Spell(115181),
-    BreathofFireDotDebuff = Spell(123725),
-    Brews = Spell(115308),
-    ChiBurst = Spell(123986),
-    ChiWave = Spell(115098),
-    DampenHarm = Spell(122278),
-    DampenHarmBuff = Spell(122278),
-    ExplodingKeg = Spell(214326),
-    FortifyingBrew = Spell(115203),
-    FortifyingBrewBuff = Spell(115203),
-    InvokeNiuzaotheBlackOx = Spell(132578),
-    IronskinBrew = Spell(115308),
-    IronskinBrewBuff = Spell(215479),
-    KegSmash = Spell(121253),
-    LightBrewing = Spell(196721),
-    PotentKick = Spell(213047),
-    PurifyingBrew = Spell(119582),
-    RushingJadeWind = Spell(116847),
-    TigerPalm = Spell(100780),
-    HeavyStagger = Spell(124273),
-    ModerateStagger = Spell(124274),
-    LightStagger = Spell(124275),
-    SpearHandStrike = Spell(116705),
-    ModerateStagger = Spell(124274),
-    HeavyStagger = Spell(124273),
-    HealingElixir = Spell(122281),
-    BlackOxStatue = Spell(115315),
-    Guard = Spell(202162),
-    -- Misc
-    PoolEnergy = Spell(9999000010)
-}
-local BrewSpells = Spell.Monk.Brewmaster;
+local BrewSpells = RubimRH.Spell[268]
 
 --- Returns if energy will cap within the next GCD
 local function EnergyWillCap()

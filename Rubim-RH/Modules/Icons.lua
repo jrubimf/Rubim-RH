@@ -18,7 +18,6 @@ local int_smart = true
 
 --RUN ONCE
 local runonce = 0
-local playerSpec = 0
 
 --
 local currentSize = 40
@@ -49,7 +48,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow = "Class Config", nil
         info.checked = false
         info.func = function(self)
-            RubimRH.ClassConfig(playerSpec)
+            RubimRH.ClassConfig(RubimRH.playerSpec)
         end
         UIDropDownMenu_AddButton(info)
         --
@@ -153,7 +152,7 @@ local updateConfigFunc = function()
         SetCVar("nameplateOtherTopInset", 0.08)
 
         local mainOption = RubimRH.db.profile.mainOption
-        Icons.MainIcon = CreateFrame("Frame", nil)
+        Icons.MainIcon = CreateFrame("Frame", nil, UIParent)
         Icons.MainIcon:SetBackdrop(nil)
         Icons.MainIcon:SetFrameStrata("BACKGROUND")
         Icons.MainIcon:SetSize(currentSize, 40)
@@ -162,7 +161,9 @@ local updateConfigFunc = function()
         Icons.MainIcon.texture = Icons.MainIcon:CreateTexture(nil, "BACKGROUND")
         Icons.MainIcon.texture:SetAllPoints(true)
         Icons.MainIcon.texture:SetColorTexture(0, 0, 0, 0)
-        Icons.MainIcon:SetScale(1)
+        Icons.MainIcon:SetScale(1.0 / Icons.MainIcon.GetEffectiveScale(UIParent))
+        --Icons.MainIcon:SetEffectiveScale(1)
+
         Icons.MainIcon:Show(1)
         Icons.MainIcon:SetMovable(true)
         Icons.MainIcon:EnableMouse(true)
@@ -458,13 +459,12 @@ function updateIcon:onUpdate(sinceLastUpdate)
         end
         self.sinceLastUpdate = 0;
     end
-
 end
 
-    CinematicFrame:HookScript("OnShow", function(self, ...)
-        MainIconFrame:Hide()
-    end)
+CinematicFrame:HookScript("OnShow", function(self, ...)
+    MainIconFrame:Hide()
+end)
 
-    CinematicFrame:HookScript("OnHide", function(self, ...)
-        MainIconFrame:Show()
-    end)
+CinematicFrame:HookScript("OnHide", function(self, ...)
+    MainIconFrame:Show()
+end)

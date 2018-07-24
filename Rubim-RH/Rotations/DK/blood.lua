@@ -8,46 +8,6 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
---- -
-if not Spell.DeathKnight then
-    Spell.DeathKnight = {};
-end
-Spell.DeathKnight.Blood = {
-    -- Racials
-    ArcaneTorrent = Spell(50613),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    -- Abilities
-    BloodBoil = Spell(50842),
-    Blooddrinker = Spell(206931),
-    BloodMirror = Spell(206977),
-    BloodPlague = Spell(55078),
-    BloodShield = Spell(77535),
-    BoneShield = Spell(195181),
-    Bonestorm = Spell(194844),
-    Consumption = Spell(274156),
-    CrimsonScourge = Spell(81141),
-    DancingRuneWeapon = Spell(49028),
-    DancingRuneWeaponBuff = Spell(81256),
-    DeathandDecay = Spell(43265),
-    DeathsCaress = Spell(195292),
-    DeathStrike = Spell(49998),
-    HeartBreaker = Spell(221536),
-    HeartStrike = Spell(206930),
-    Marrowrend = Spell(195182),
-    MindFreeze = Spell(47528),
-    Ossuary = Spell(219786),
-    RapidDecomposition = Spell(194662),
-    RuneTap = Spell(194679),
-    RuneStrike = Spell(210764),
-    RuneStrikeTalent = Spell(19217),
-    UmbilicusEternus = Spell(193249),
-    VampiricBlood = Spell(55233),
-    -- Legendaries
-    HaemostasisBuff = Spell(235558),
-    SephuzBuff = Spell(208052)
-};
-
 -- Items
 if not Item.DeathKnight then
     Item.DeathKnight = {};
@@ -56,7 +16,7 @@ Item.DeathKnight.Blood = {
     SephuzSecret = Item(132452, { 11, 12 }), --11/12
 }
 
-local S = Spell.DeathKnight.Blood;
+local S = RubimRH.Spell[250]
 local I = Item.DeathKnight.Blood;
 
 S.RuneStrike.TextureSpellID = { 158731 }
@@ -126,8 +86,8 @@ end
 
 local function simcraftMode()
     --actions+=/dancing_rune_weapon,if=(!talent.blooddrinker.enabled|!cooldown.blooddrinker.ready)&!cooldown.death_and_decay.ready
---    if S.DancingRuneWeapo:IsReady() and (not S.Blooddrinker:IsAvailable() or not S.Blooddrinker:IsReady()) and not S.DeathandDecay:IsReady() then
---        return S.DancingRuneWeapon()
+    --    if S.DancingRuneWeapo:IsReady() and (not S.Blooddrinker:IsAvailable() or not S.Blooddrinker:IsReady()) and not S.DeathandDecay:IsReady() then
+    --        return S.DancingRuneWeapon()
     --end
 
     --actions+=/vampiric_blood,if=!equipped.archimondes_hatred_reborn|cooldown.trinket.ready
@@ -206,7 +166,6 @@ end
 function runeTAP()
 end
 
-
 local lastSephuz = 0
 local function APL()
     ----RANGE
@@ -215,7 +174,6 @@ local function APL()
     HL.GetEnemies(10, true);
     HL.GetEnemies(20, true);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
-
 
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.Blooddrinker) then
@@ -227,9 +185,9 @@ local function APL()
         return 0, 462338
     end
 
---    if not IsCurrentSpell(6603) and Cache.EnemiesCount[8] >= 1 then
---        return 58984
---    end
+    --    if not IsCurrentSpell(6603) and Cache.EnemiesCount[8] >= 1 then
+    --        return 58984
+    --    end
 
     if I.SephuzSecret:IsEquipped() then
         if Player:Buff(S.SephuzBuff) then
@@ -273,21 +231,21 @@ local function APL()
     end
 
     --if not IsTanking and simcraftMode() ~= nil then
---        return simcraftMode()
---    end
+    --        return simcraftMode()
+    --    end
 
     --Get Runes
-    if S.RuneStrike:IsAvailable() and  S.RuneStrike:IsReady("Melee") and Player:Runes() <= 4 then
+    if S.RuneStrike:IsAvailable() and S.RuneStrike:IsReady("Melee") and Player:Runes() <= 4 then
         return S.RuneStrike:Cast()
     end
 
     --Needs Marrowrend
-    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or  Player:BuffStack(S.BoneShield) <= 5) then
+    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 5) then
         return S.Marrowrend:Cast()
     end
 
     --DSEmergency
-    if RubimRH.lastDamage("percent") > RubimRH.db.profile.DeathKnight.Blood.smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
+    if RubimRH.lastDamage("percent") > RubimRH.db.profile[250].smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
         return S.DeathStrike:Cast()
     end
 
@@ -297,7 +255,7 @@ local function APL()
     end
 
     --Overcap
-    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile.DeathKnight.Blood.deficitds then
+    if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile[250].deficitds then
         return S.DeathStrike:Cast()
     end
 
@@ -389,7 +347,7 @@ end
 RubimRH.Rotation.SetAPL(250, APL);
 
 local function PASSIVE()
-   return RubimRH.Shared()
+    return RubimRH.Shared()
 end
 
 RubimRH.Rotation.SetPASSIVE(250, PASSIVE);

@@ -22,4 +22,3 @@ function RubimRH.Shared()
         return 0, 538745
     end
 end
-
