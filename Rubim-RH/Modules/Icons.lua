@@ -422,23 +422,17 @@ function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.2) then
 
-        if RubimRH.shouldStop() == "ERROR" then
+        if RubimRH.mainRotation() == "ERROR" then
             MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
             return
         end
-
-        playerSpec = Cache.Persistent.Player.Spec[1]
         if CDText ~= nil then
             CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
             AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
         end
 
-        local singleRotation, singleRotation2 = RubimRH.shouldStop()
-        local passiveRotation, passiveRotation2 = nil
-        if RubimRH.shouldStop() == nil then
-            singleRotation, singleRotation2 = RubimRH.Rotation.APLs[playerSpec]()
-            _, passiveRotation2 = RubimRH.Rotation.PASSIVEs[playerSpec]()
-        end
+        local singleRotation, singleRotation2 = RubimRH.mainRotation()
+        local passiveRotation, passiveRotation2 = RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
 
         if singleRotation == 0 or singleRotation == 1 then
             MainIconFrame.texture:SetTexture(singleRotation2)
@@ -448,7 +442,6 @@ function updateIcon:onUpdate(sinceLastUpdate)
 
         if RubimExtra then
             RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
-
             if singleRotation == 0 then
                 RubimRH.stIcon.texture:SetTexture(nil)
             elseif singleRotation == 1 then

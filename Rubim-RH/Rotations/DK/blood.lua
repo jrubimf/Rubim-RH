@@ -185,20 +185,9 @@ local function APL()
         return 0, 462338
     end
 
-    --    if not IsCurrentSpell(6603) and Cache.EnemiesCount[8] >= 1 then
-    --        return 58984
-    --    end
-
     if I.SephuzSecret:IsEquipped() then
         if Player:Buff(S.SephuzBuff) then
             lastSephuz = GetTime()
-        end
-
-        --ShowFrame
-        if I.SephuzSecret:IsEquipped() and ((GetTime() - lastSephuz) + 9) >= 30 then
-            Sephul:Show()
-        else
-            Sephul:Hide()
         end
 
         --We Should Iterrupt
@@ -215,6 +204,11 @@ local function APL()
     LeftShift = IsLeftShiftKeyDown();
     if LeftCtrl and LeftShift and S.DeathStrike:IsReady() then
         return S.DeathStrike:Cast()
+    end
+
+    --Argus Cooldown
+    if Player:IsTanking(Target) and Target:IsCasting(Spell(248499)) and S.RuneTap:IsReady() and S.RuneTap:TimeSinceLastCast() >= 2 then
+        return S.RuneTap:Cast()
     end
 
     -- Units without Blood Plague
@@ -259,6 +253,16 @@ local function APL()
         return S.DeathStrike:Cast()
     end
 
+    --DnD AoE
+    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[10] >= 3 and Player:IsTankingAoE() then
+        return S.DeathandDecay:Cast()
+    end
+
+    --BloodBoil
+    if Player:IsTankingAoE() and S.BloodBoil:IsReady(10) and Cache.EnemiesCount[10] >= 3 then
+        return S.BloodBoil:Cast()
+    end
+
     --Overcap Math
     if S.DeathStrike:IsReady("Melee") and (Player:RunicPower() + (5 + math.min(Cache.EnemiesCount[8], 5) * 2)) >= Player:RunicPowerMax() then
         return S.DeathStrike:Cast()
@@ -275,7 +279,7 @@ local function APL()
     end
 
     --actions.standard+=/blooddrinker,if=!buff.dancing_rune_weapon.up
-    if S.Blooddrinker:IsAvailable() and S.Blooddrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) and Player:BuffRemains(S.BoneShield) >= 3 and Player:Runes() >= 2 then
+    if S.Blooddrinker:IsReady() and S.Blooddrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) and Player:BuffRemains(S.BoneShield) >= 3 and Player:Runes() >= 2 then
         return S.Blooddrinker:Cast()
     end
 

@@ -632,7 +632,12 @@ RubimRH.Spell[250] = {
     VampiricBlood = Spell(55233),
     -- Legendaries
     HaemostasisBuff = Spell(235558),
-    SephuzBuff = Spell(208052)
+    SephuzBuff = Spell(208052),
+
+    -- PVP
+    MurderousIntent =   Spell(207018),
+    Intimidated     =   Spell(206891),
+    DeathChain      =   Spell(203173),
 }
 --FROST
 RubimRH.Spell[251] = {

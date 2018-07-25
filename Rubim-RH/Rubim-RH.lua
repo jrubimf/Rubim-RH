@@ -331,7 +331,6 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if RubimRH.playerSpec ~= 0 then
         RubimRH.config = RubimRH.db.profile[RubimRH.playerSpec]
         for pos, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
-            spell:AddToListenedSpells()
             if spell:IsAvailable() then
                 table.insert(RubimRH.allSpells, spell)
             end
@@ -371,7 +370,7 @@ end
 --end
 
 --- ============================   MAIN_ROT   ============================
-function RubimRH.shouldStop()
+function RubimRH.mainRotation()
     if foundError == 1 then
         return "ERROR"
     end
@@ -380,11 +379,11 @@ function RubimRH.shouldStop()
         return "ERROR"
     end
 
-    if Player:AffectingCombat() and not Target:Exists() then
-        if RubimRH.TargetNext("Melee", 1030902) ~= nil then
-            return 1, RubimRH.TargetNext("Melee", 1030902)
-        end
-    end
+    --    if Player:AffectingCombat() and not Target:Exists() then
+    --        if RubimRH.TargetNext("Melee", 1030902) ~= nil then
+    --            return 1, RubimRH.TargetNext("Melee", 1030902)
+    --end
+    --endd
 
     if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
         return 0, 975744
@@ -397,11 +396,16 @@ function RubimRH.shouldStop()
     if _G.LootFrame:IsShown() then
         return 0, 975746
     end
+
     if RubimPVP and RubimRH.PvP() ~= nil then
         return RubimRH.PvP()
     end
 
     if Cache.EnemiesCount[30] == 0 then
         return 0, 975743
+    end
+
+    if true then
+        return RubimRH.Rotation.APLs[RubimRH.playerSpec]()
     end
 end

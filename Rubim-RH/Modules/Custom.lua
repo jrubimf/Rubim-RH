@@ -530,3 +530,52 @@ function RubimRH.GetTexture (Object)
         return TextureCache[ItemID];
     end
 end
+
+
+-- Player On Cast Success Listener
+HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    for i, spell in ipairs(RubimRH.allSpells) do
+        if SpellID == spell.SpellID then
+            spell.LastCastTime = HL.GetTime()
+            spell.LastHitTime = HL.GetTime() + spell:TravelTime()
+        end
+    end
+end, "SPELL_CAST_SUCCESS")
+
+-- Pet On Cast Success Listener
+HL:RegisterForPetCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    for i, spell in ipairs(RubimRH.allSpells) do
+        if SpellID == spell.SpellID then
+            spell.LastCastTime = HL.GetTime()
+            spell.LastHitTime = HL.GetTime() + spell:TravelTime()
+        end
+    end
+end, "SPELL_CAST_SUCCESS")
+
+-- Player Aura Applied Listener
+HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    for i, spell in ipairs(RubimRH.allSpells) do
+        if SpellID == spell.SpellID then
+            spell.LastAppliedOnPlayerTime = HL.GetTime()
+        end
+    end
+end, "SPELL_AURA_APPLIED")
+
+-- Player Aura Removed Listener
+HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    for i, spell in ipairs(RubimRH.allSpells) do
+        if SpellID == spell.SpellID then
+            spell.LastRemovedFromPlayerTime = HL.GetTime()
+        end
+    end
+end, "SPELL_AURA_REMOVED")
+
+local PvPDummyUnits = {
+    -- City (SW, Orgri, ...)
+    [114840] = true, -- Raider's Training Dummy
+}
+
+function Unit:IsPvPDummy()
+    local NPCID = self:NPCID()
+    return NPCID >= 0 and PvPDummyUnits[NPCID] == true
+end
