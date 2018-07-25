@@ -265,7 +265,7 @@ local function Build ()
     if S.PistolShot:IsReady(20)
             and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0) + (S.QuickDraw:IsAvailable() and 1 or 0))
             and Player:BuffP(S.Opportunity) then
-        return S.PisolShot:Cast()
+        return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
     if S.SaberSlash:IsReady(S.SaberSlash) then
@@ -304,7 +304,7 @@ local function APL ()
                 end
             end
         end
-        return ;
+        return 0, 462338
     end
 
     -- In Combat
@@ -345,9 +345,10 @@ local function APL ()
         -- OutofRange Pistol Shot
         if not Target:IsInRange(10) and S.PistolShot:IsReady(20) and not Player:IsStealthed(true, true)
                 and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
-            return S.PisolShot:Cast()
+            return S.PistolShot:Cast()
         end
     end
+    return 0, 975743
 end
 
 RubimRH.Rotation.SetAPL(260, APL)

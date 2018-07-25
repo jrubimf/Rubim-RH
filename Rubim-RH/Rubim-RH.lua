@@ -33,7 +33,7 @@ RubimRH.debug = false
 local AceGUI = LibStub("AceGUI-3.0")
 RubimRH.config = {}
 RubimRH.currentSpec = "None"
-RubimRH.Spell = {};
+RubimRH.Spell = {}
 
 local HL = HeroLib;
 local Cache = HeroCache;
@@ -251,6 +251,7 @@ local defaults = {
         [261] = {
             cooldown = true,
             stealthOOC = true,
+            dice = "Simcraft"
         },
         [259] = {
             cooldown = true,
