@@ -46,7 +46,6 @@ local function BloodMenu()
     bloodGUI:Show()
 end
 
-local Dice = "Simcraft"
 local function OutlawMenu()
     local rogueGUI = AceGUI:Create("Frame")
     rogueGUI:SetTitle("Rogue - Roll the Boness")
@@ -78,11 +77,11 @@ local function OutlawMenu()
     local dropdown = AceGUI:Create("Dropdown")
     dropdown:SetValue("Choose a Buff")
     dropdown:SetList(rollBones)
-    dropdown:SetText(Dice)
+    dropdown:SetText(RubimRH.db.profile[250].dice)
     --dropdown:SetLabel("Pick a Buff")
     dropdown:SetCallback("OnValueChanged", function(self, event, pos)
         print("Roll the Bones: " .. rollBones[pos])
-       Dice = rollBones[pos]
+        RubimRH.db.profile[250].dice = rollBones[pos]
 
     end)
     rogueGUI:AddChild(dropdown)
@@ -95,7 +94,7 @@ function RubimRH.spellDisabler()
 
     for _, Spell in pairs(RubimRH.allSpells) do
         if GetSpellInfo(Spell:ID()) ~= nil then
-            table.insert(currentSpells, tostring("" .. tostring(RubimRH.ColorOnOff(RubimRH.isSpellDisabled(Spell:ID())) .. GetSpellInfo(Spell:ID()) .. " (" .. Spell:ID() .. ")")))
+            table.insert(currentSpells, tostring("" .. tostring(RubimRH.ColorOnOff(RubimRH.isSpellEnabled(Spell:ID())) .. GetSpellInfo(Spell:ID()) .. " (" .. Spell:ID() .. ")")))
             table.insert(currentSpellsNum, Spell:ID())
         end
     end

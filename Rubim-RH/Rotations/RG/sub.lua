@@ -16,10 +16,9 @@ local S = RubimRH.Spell[261]
 
 local Stealth, VanishBuff
 
--- cp_max_spend
 local function CPMaxSpend()
     -- Should work for all 3 specs since they have same Deeper Stratagem Spell ID.
-    return Spell.Rogue.Subtlety.DeeperStratagem:IsAvailable() and 6 or 5;
+    return RubimRH.Spell[261].DeeperStratagem:IsAvailable() and 6 or 5;
 end
 
 -- "cp_spend"
@@ -37,11 +36,6 @@ end
 
 local function Stealth_Threshold()
     return 60 + num(S.Vigor:IsAvailable()) * 35 + num(S.MasterofShadows:IsAvailable()) * 10;
-end
-
-local function CPMaxSpend()
-    -- Should work for all 3 specs since they have same Deeper Stratagem Spell ID.
-    return Spell.Rogue.Subtlety.DeeperStratagem:IsAvailable() and 6 or 5;
 end
 
 local function IsInMeleeRange()

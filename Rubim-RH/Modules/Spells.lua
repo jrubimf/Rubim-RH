@@ -403,6 +403,50 @@ RubimRH.Spell[261] = {
     Sprint = Spell(2983),
     -- Misc
 }
+--Outlaw
+RubimRH.Spell[260] = {
+    -- Racials
+    ArcanePulse                     = Spell(260364),
+    ArcaneTorrent                   = Spell(25046),
+    Berserking                      = Spell(26297),
+    BloodFury                       = Spell(20572),
+    LightsJudgment                  = Spell(255647),
+    Shadowmeld                      = Spell(58984),
+    -- Abilities
+    AdrenalineRush                  = Spell(13750),
+    Ambush                          = Spell(8676),
+    BetweentheEyes                  = Spell(199804),
+    BladeFlurry                     = Spell(13877),
+    Opportunity                     = Spell(195627),
+    PistolShot                      = Spell(185763),
+    RolltheBones                    = Spell(193316),
+    Dispatch                        = Spell(2098),
+    SaberSlash                      = Spell(193315),
+    Stealth                         = Spell(1784),
+    Vanish                          = Spell(1856),
+    VanishBuff                      = Spell(11327),
+    -- Talents
+    BladeRush                       = Spell(271877),
+    DeeperStratagem                 = Spell(193531),
+    GhostlyStrike                   = Spell(196937),
+    KillingSpree                    = Spell(51690),
+    LoadedDiceBuff                  = Spell(256171),
+    MarkedforDeath                  = Spell(137619),
+    QuickDraw                       = Spell(196938),
+    SliceandDice                    = Spell(5171),
+    -- Defensive
+    CrimsonVial                     = Spell(185311),
+    Feint                           = Spell(1966),
+    -- Utility
+    Kick                            = Spell(1766),
+    -- Roll the Bones
+    Broadside                       = Spell(193356),
+    BuriedTreasure                  = Spell(199600),
+    GrandMelee                      = Spell(193358),
+    RuthlessPrecision               = Spell(193357),
+    SkullandCrossbones              = Spell(199603),
+    TrueBearing                     = Spell(193359)
+};
 
 ----PALADIN
 --Prot
@@ -632,7 +676,12 @@ RubimRH.Spell[250] = {
     VampiricBlood = Spell(55233),
     -- Legendaries
     HaemostasisBuff = Spell(235558),
-    SephuzBuff = Spell(208052)
+    SephuzBuff = Spell(208052),
+
+    -- PVP
+    MurderousIntent =   Spell(207018),
+    Intimidated     =   Spell(206891),
+    DeathChain      =   Spell(203173),
 }
 --FROST
 RubimRH.Spell[251] = {
