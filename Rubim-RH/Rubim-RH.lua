@@ -92,7 +92,7 @@ local EnabledRotation = {
     [258] = false, -- Shadow
     -- Rogue
     [259] = false, -- Assassination
-    [260] = false, -- Outlaw
+    [260] = true, -- Outlaw
     [261] = true, -- Subtlety
     -- Shaman
     [262] = true, -- Elemental
