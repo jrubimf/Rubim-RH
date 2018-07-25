@@ -101,28 +101,28 @@ end
 local function RtB_Reroll ()
     if not Cache.APLVar.RtB_Reroll then
         -- Defensive Override : Grand Melee if HP < 60
-        if RubimRH[250].Dice == "SoloMode" and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
+        if RubimRH.db.profile[250].dice == "SoloMode" and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
             -- 1+ Buff
-        elseif RubimRH[250].Dice == "1+ Buff" then
+        elseif RubimRH.db.profile[250].dice == "1+ Buff" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
             -- Broadside
-        elseif RubimRH[250].Dice == "Broadside" then
+        elseif RubimRH.db.profile[250].dice == "Broadside" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadside)) and true or false;
             -- Buried Treasure
-        elseif RubimRH[250].Dice == "Buried Treasure" then
+        elseif RubimRH.db.profile[250].dice == "Buried Treasure" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.BuriedTreasure)) and true or false;
             -- Grand Melee
-        elseif RubimRH[250].Dice == "Grand Melee" then
+        elseif RubimRH.db.profile[250].dice == "Grand Melee" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
             -- Jolly Roger
-        elseif RubimRH[250].Dice == "Jolly Roger" then
+        elseif RubimRH.db.profile[250].dice == "Jolly Roger" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.JollyRoger)) and true or false;
             -- Shark Infested Waters
-        elseif RubimRH[250].Dice == "Shark Infested Waters" then
+        elseif RubimRH.db.profile[250].dice == "Shark Infested Waters" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.SharkInfestedWaters)) and true or false;
             -- True Bearing
-        elseif RubimRH[250].Dice == "True Bearing" then
+        elseif RubimRH.db.profile[250].dice == "True Bearing" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
             -- SimC Default
             -- # Reroll for 2+ buffs with Loaded Dice up. Otherwise reroll for 2+ or Grand Melee or Ruthless Precision.
