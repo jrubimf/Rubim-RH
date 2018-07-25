@@ -52,9 +52,7 @@ local function APL()
         -- Pummel -> 0.5 sec of cast has elapsed, or 1 second of channeling has elapsed
         if ISpell.Pummel:IsReady("Melee")
         and Target:IsInterruptible()
-        and (Target:CastRemains() <= 0.7
-            or (Target:IsChanneling()
-                and (Target:CastRemains() >= (Target:CastDuration() - 1)))) then
+        and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
             return ISpell.Pummel:Cast()
         end
 
