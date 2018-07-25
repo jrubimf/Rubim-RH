@@ -11,6 +11,7 @@ local tableconcat = table.concat;
 local tostring = tostring;
 
 local S = RubimRH.Spell[260]
+S.SaberSlash.TextureSpellID = { 225096 }
 
 local function num(val)
     if val then
