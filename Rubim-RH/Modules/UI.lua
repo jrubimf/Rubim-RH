@@ -94,7 +94,7 @@ function RubimRH.spellDisabler()
 
     for _, Spell in pairs(RubimRH.allSpells) do
         if GetSpellInfo(Spell:ID()) ~= nil then
-            table.insert(currentSpells, tostring("" .. tostring(RubimRH.ColorOnOff(RubimRH.isSpellDisabled(Spell:ID())) .. GetSpellInfo(Spell:ID()) .. " (" .. Spell:ID() .. ")")))
+            table.insert(currentSpells, tostring("" .. tostring(RubimRH.ColorOnOff(RubimRH.isSpellEnabled(Spell:ID())) .. GetSpellInfo(Spell:ID()) .. " (" .. Spell:ID() .. ")")))
             table.insert(currentSpellsNum, Spell:ID())
         end
     end
