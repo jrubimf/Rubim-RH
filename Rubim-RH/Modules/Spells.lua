@@ -879,4 +879,50 @@ RubimRH.Spell[577] = {
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),
 }
+--- Warlock
+
+-- Affliction
+RubimRH.Spell[265] = {
+    -- Baseline
+    DemonicGateway = Spell(111771),
+    CreateSoulwell = Spell(29893),
+    EnslaveDemon = Spell(1098),
+    UnendingResolve = Spell(104773),
+    Soulstone = Spell(20707),
+    RitualOfSummoning = Spell(698),
+    CommandDemon = Spell(119898),
+    SummonFelhunter = Spell(691),
+    Banish = Spell(710),
+    SummonSuccubus = Spell(712),
+    UnendingBreath = Spell(5697),
+    HealthFunnel = Spell(755),
+    SummonVoidwalker = Spell(697),
+    CreateHealthstone = Spell(6201),
+    Fear = Spell(5782),
+    SummonImp = Spell(688),
+    -- Specialization
+    PotentAfflictions = Spell(77215),
+    Shadowfury = Spell(30283),
+    SummonDarkglare = Spell(205180),
+    Agony =  Spell(980),
+    SeedOfCorruption = Spell(27243),
+    UnstableAffliction = Spell(30108),
+    DrainLife = Spell(234153),
+    Corruption = Spell(172),
+    ShadowBolt = Spell(232670),
+    -- Talents
+    CreepingDeath = Spell(264000),
+    Deathbolt = Spell(264106),
+    DarkSoulMisery = Spell(113860),
+    SoulConduit = Spell(215941),
+    GrimoireOfSacrifice = Spell(108503),
+    Haunt = Spell(48181),
+    PhantomSingularity = Spell(205179),
+    SowTheSeeds = Spell(196226),
+    VileTaint = Spell(278350),
+    AbsoluteCorruption = Spell(196103),
+    WritheInAgony = Spell(196102),
+    DrainSoul = Spell(198590),
+    Nightfall = Spell(108558)
+}
 
