@@ -40,22 +40,22 @@
 
 	--- Defensives / Healing
 	local IncomingDamage = select(1, RubimRH.getDMG("player"))
-	local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.1))) and true or false -- Taking 10% max HP in DPS
+	local NeedMinorHealing = (IncomingDamage >= (Player:MaxHealth() * 0.02)) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 10% max HP in DPS
 	local PanicHeals = (Player:HealthPercentage() <= 40) and true or false
 
 	-- Lay on Hands
-	if ISpell.LayOnHands:IsReady()
-		and Player:HealthPercentage() <= 20 then
-		return ISpell.LayOnHands:Cast()
-	end
+	-- if ISpell.LayOnHands:IsReady()
+	-- 	and Player:HealthPercentage() <= 20 then
+	-- 	return ISpell.LayOnHands:Cast()
+	-- end
 
 	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
-	if ISpell.GuardianOfAncientKings:IsReady()
-		and PanicHeals 
-		and NeedBigHealing then
-		return ISpell.GuardianOfAncientKings:Cast()
-	end
+	-- if ISpell.GuardianOfAncientKings:IsReady()
+	-- 	and PanicHeals 
+	-- 	and NeedBigHealing then
+	-- 	return ISpell.GuardianOfAncientKings:Cast()
+	-- end
 
 	-- Shield of the Righteous
 	if (not Player:Buff(ISpell.ShieldOfTheRighteousBuff) or (Player:Buff(ISpell.ShieldOfTheRighteousBuff) and Player:BuffRemains(ISpell.ShieldOfTheRighteousBuff) <= Player:GCD()))
@@ -77,17 +77,17 @@
 	local SpellPower = GetSpellBonusDamage(2) -- Same result for all schools
 	local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
 	LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
-	local ShouldLotP = ((NeedMinorHealing or NeedBigHealing) and Player:Health() <= 80) and true or false
+	local ShouldLotP = (((NeedMinorHealing or NeedBigHealing) and Player:Health() <= 80) or Player:Health() <= 75) and true or false
 	if (ISpell.LightOfTheProtector:IsReady() or ISpell.HandOfTheProtector:IsReady())
 		and ShouldLotP then
-		return ISpell.LightOfTheProtector:Cast()
+		return (ISpell.HandOfTheProtector:IsAvailable()) and ISpell.HandOfTheProtector:Cast() or ISpell.LightOfTheProtector:Cast()
 	end
 
 	-- Hand of the Protector
 	local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover")) and true or false
 	local MouseoverUnit = (MouseoverUnitValid) and Unit("mouseover") or nil
 	local MouseoverUnitNeedsHelp = (MouseoverUnitValid and (LotPHeal <= (MouseoverUnit:MaxHealth() - MouseoverUnit:Health()))) and true or false
-	if ISpell.HandOfTheProtector:IsReady(40)
+	if ISpell.HandOfTheProtector:IsReady()
 		and (MouseoverUnitNeedsHelp or ShouldLotP) then
 		return ISpell.HandOfTheProtector:Cast()
 	end
