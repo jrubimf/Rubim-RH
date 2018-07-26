@@ -105,7 +105,9 @@ local EnabledRotation = {
     -- Warrior
     [71] = true, -- Arms
     [72] = true, -- Fury
-    [73] = true  -- Protection
+    [73] = true,  -- Protection
+	-- Warlock
+	[265] = true -- Affliction
 }
 
 --DK
@@ -298,6 +300,12 @@ local defaults = {
         },
         [104] = {
             cooldowns = false,
+        },
+        --- WARLOCK
+
+        -- Affliction
+        [265] = {
+            cooldowns = false
         }
     }
 }
