@@ -27,13 +27,15 @@ local function APL()
     if not Player:AffectingCombat() then return 0, 462338 end
 
     if Target:Exists()
-    and Player:CanAttack(Unit("target")) then
+        and Player:CanAttack(Unit("target")) then
+
         -- Update Surrounding Enemies
         HL.GetEnemies("Melee")
         HL.GetEnemies(8, true)
         HL.GetEnemies(10, true)
         HL.GetEnemies(12, true)
 
+        -- Localize Vars
         local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target) -- TODO: Implement logic for PvP scenarios : IsTanking returns false, yet Shield Block is still needed
         local ThunderClapRadius = ISpell.CracklingThunder:IsAvailable() and 12 or 8
         local IncomingDamage = select(1, RubimRH.getDMG("player"))

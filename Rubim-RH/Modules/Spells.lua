@@ -169,7 +169,8 @@ RubimRH.Spell[73] = {
     IgnorePain = Spell(190456),
     Pummel = Spell(6552),
     ShieldBlock = Spell(2565),
-    ShieldBlockBuff = Spell(132404)
+    ShieldBlockBuff = Spell(132404),
+    ShieldWall = Spell(871)
 }
 
 
@@ -477,6 +478,8 @@ RubimRH.Spell[66] = {
     HammerOfJustice = Spell(853),
     BlessingOfProtection = Spell(1022),
     BlessingOfSacrifice = Spell(6940),
+    DivineShield = Spell(642),
+
     -- Utility
     Rebuke = Spell(96231)
 }
@@ -520,7 +523,7 @@ RubimRH.Spell[70] = {
     DivineSteed = Spell(190784),
     WorldofGlory = Spell(210191),
     FlashOfLight = Spell(19750),
-   SelfLessHealerBuff = Spell (114250),
+    SelfLessHealerBuff = Spell (114250),
     -- Legendaries
     LiadrinsFuryUnleashed = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289),
