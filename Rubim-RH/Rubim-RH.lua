@@ -68,7 +68,7 @@ local EnabledRotation = {
     -- Druid
     [102] = false, -- Balance
     [103] = true, -- Feral
-    [104] = false, -- Guardian
+    [104] = true, -- Guardian
     [105] = false, -- Restoration
     -- Hunter
     [253] = true, -- Beast Mastery
@@ -321,12 +321,13 @@ function RubimRH:OnInitialize()
 end
 
 local updateClassVariables = CreateFrame("Frame")
-updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-updateClassVariables:RegisterEvent("PLAYER_LOGIN")
-updateClassVariables:RegisterEvent("PLAYER_ENTERING_WORLD")
-updateClassVariables:RegisterEvent("PLAYER_PVP_TALENT_UPDATE")
-updateClassVariables:RegisterEvent("PLAYER_TALENT_UPDATE")
-updateClassVariables:SetScript("OnEvent", function(self, event, ...)
+    updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+    updateClassVariables:RegisterEvent("PLAYER_LOGIN")
+    updateClassVariables:RegisterEvent("PLAYER_ENTERING_WORLD")
+    updateClassVariables:RegisterEvent("PLAYER_PVP_TALENT_UPDATE")
+    updateClassVariables:RegisterEvent("PLAYER_TALENT_UPDATE")
+    updateClassVariables:SetScript("OnEvent", function(self, event, ...)
+
     RubimRH.playerSpec = Cache.Persistent.Player.Spec[1] or 0
     if RubimRH.playerSpec == 0 then
         return
