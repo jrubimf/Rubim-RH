@@ -39,13 +39,21 @@
 	end
 
 	--- Defensives / Healing
+	local IncomingDamage = select(1, RubimRH.getDMG("player"))
 	local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS or <= 50% HP
 	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.1))) and true or false -- Taking 10% max HP in DPS
-	local PanicHeals = (Player:HealthPercentage() <= 35) and true or false
+	local PanicHeals = (Player:HealthPercentage() <= 40) and true or false
+
+	-- Lay on Hands
+	if ISpell.LayOnHands:IsReady()
+		and Player:HealthPercentage() <= 20 then
+		return ISpell.LayOnHands:Cast()
+	end
 
 	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
 	if ISpell.GuardianOfAncientKings:IsReady()
-		and PanicHeals then
+		and PanicHeals 
+		and NeedBigHealing then
 		return ISpell.GuardianOfAncientKings:Cast()
 	end
 
