@@ -520,15 +520,15 @@ RubimRH.Spell[70] = {
     DivineSteed = Spell(190784),
     WorldofGlory = Spell(210191),
     FlashOfLight = Spell(19750),
-+   SelfLessHealerBuff = Spell (114250),
+   SelfLessHealerBuff = Spell (114250),
     -- Legendaries
     LiadrinsFuryUnleashed = Spell(208408),
-    ScarletInquisitorsExpurgation = Spell(248289);
-    WhisperoftheNathrezim = Spell(207635)
+    ScarletInquisitorsExpurgation = Spell(248289),
+    WhisperoftheNathrezim = Spell(207635),
 
     -- PvP Talent
-+   HammerOfReckoning = Spell(247675),
-+   HammerOfReckoningBuff = Spell(247677),
+   HammerOfReckoning = Spell(247675),
+   HammerOfReckoningBuff = Spell(247677),
 }
 
 ----HUNTER

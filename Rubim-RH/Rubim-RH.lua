@@ -206,8 +206,8 @@ local defaults = {
             cooldown = true,
             justicarglory = 50,
             Spells = {
-                { spellID = JusticarVengeance, isActive = true }
-                { spellID = FlashofLight, isActive = true }
+                { spellID = JusticarVengeance, isActive = true },
+                { spellID = FlashofLight, isActive = true },
             }
         },
         [65] = {
