@@ -641,6 +641,77 @@ RubimRH.Spell[103] = {
 
 }
 
+RubimRH.Spell[104] = {
+    -- Racials
+    WarStomp             = Spell(20549),
+    -- Abilities
+    FrenziedRegeneration = Spell(22842),
+    Gore				 = Spell(210706),
+    GoreBuff             = Spell(93622),
+    GoryFur              = Spell(201671),
+    Ironfur              = Spell(192081),
+    Mangle               = Spell(33917),
+    Maul                 = Spell(6807),
+    Moonfire             = Spell(8921),
+    MoonfireDebuff       = Spell(164812),
+    Sunfire              = Spell(197630),
+    SunfireDebuff        = Spell(164815),
+    Starsurge            = Spell(197626),
+    LunarEmpowerment     = Spell(164547),
+    SolarEmpowerment     = Spell(164545),
+    LunarStrike          = Spell(197628),
+    Wrath                = Spell(197629),
+    Regrowth             = Spell(8936),
+    Swipe                = Spell(213771),
+    Thrash               = Spell(77758),
+    ThrashDebuff         = Spell(192090),
+    ThrashCat            = Spell(106830),
+    Prowl                = Spell(5215),
+    -- Talents
+    BalanceAffinity      = Spell(197488),
+    BloodFrenzy          = Spell(203962),
+    Brambles             = Spell(203953),
+    BristlingFur         = Spell(155835),
+    Earthwarden          = Spell(203974),
+    EarthwardenBuff      = Spell(203975),
+    FeralAffinity        = Spell(202155),
+    GalacticGuardian     = Spell(203964),
+    GalacticGuardianBuff = Spell(213708),
+    GuardianOfElune 	 = Spell(155578),
+    GuardianOfEluneBuff  = Spell(213680),
+    Incarnation          = Spell(102558),
+    LunarBeam            = Spell(204066),
+    Pulverize            = Spell(80313),
+    PulverizeBuff        = Spell(158792),
+    RestorationAffinity  = Spell(197492),
+    SouloftheForest      = Spell(158477),
+    MightyBash           = Spell(5211),
+    Typhoon              = Spell(132469),
+    Entanglement         = Spell(102359),
+    -- Artifact
+    RageoftheSleeper     = Spell(200851),
+    -- Defensive
+    SurvivalInstincts    = Spell(61336),
+    Barkskin             = Spell(22812),
+    -- Utility
+    Growl                = Spell(6795),
+    SkullBash            = Spell(106839),
+    -- Affinity
+    FerociousBite        = Spell(22568),
+    HealingTouch         = Spell(5185),
+    Rake                 = Spell(1822),
+    RakeDebuff           = Spell(155722),
+    Rejuvenation         = Spell(774),
+    Rip                  = Spell(1079),
+    Shred                = Spell(5221),
+    Swiftmend            = Spell(18562),
+    -- Shapeshift
+    BearForm             = Spell(5487),
+    CatForm              = Spell(768),
+    MoonkinForm          = Spell(197625),
+    TravelForm           = Spell(783)
+}
+
 ----DEATH KNIGHT
 -- Blood
 RubimRH.Spell[250] = {
