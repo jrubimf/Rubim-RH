@@ -35,6 +35,19 @@ local T212PC, T214PC = HL.HasTier("T21");
 
 local poolingforgargoyle
 
+
+local function SummonGargoyle()
+    local gargoyleDuration = 0
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and textureId == 458967 then
+            gargoyleDuration = startTime + duration - GetTime()
+        end
+    end
+    return gargoyleDuration
+end
+
+
 local function aoe()
     --# AoE rotation
     --actions.aoe=death_and_decay,if=cooldown.apocalypse.remains
@@ -108,12 +121,13 @@ local function cooldowns()
     end
 
     --actions.cooldowns+=/army_of_the_dead
+
     --actions.cooldowns+=/apocalypse,if=debuff.festering_wound.stack>=4
     if S.Apocalypse:IsReady() and Target:DebuffStack(S.FesteringWounds) >= 4 then
         return S.Apocalypse:Cast()
     end
     --actions.cooldowns+=/dark_transformation,if=(equipped.137075&cooldown.summon_gargoyle.remains>40)|(!equipped.137075|!talent.summon_gargoyle.enabled)
-    if S.DarkTransformation:Ready() and ((I.Taktheritrixs:IsEquipped() and (S.SummonGargoyle:CooldownRemains() > 40 or RubimRH.CDsON())) or (not I.Taktheritrixs:IsEquipped() or not S.SummonGargoyle:IsAvailable())) then
+    if S.DarkTransformation:IsReady() and ((I.Taktheritrixs:IsEquipped() and (S.SummonGargoyle:CooldownRemains() > 40 or RubimRH.CDsON())) or (not I.Taktheritrixs:IsEquipped() or not S.SummonGargoyle:IsAvailable())) then
         return S.DarkTransformation:Cast()
     end
 
@@ -145,7 +159,7 @@ end
 
 local function generic()
     --actions.generic=death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
-    if S.DeathCoil:IsReady() and (Player:Buff(S.SuddenDoom) and not poolingforgargoyle or S.SummonGargoyle:TimeSinceLastCast() <= 29) then
+    if S.DeathCoil:IsReady() and (Player:Buff(S.SuddenDoom) and not poolingforgargoyle or SummonGargoyle() > 0) then
         return S.DeathCoil:Cast()
     end
 
@@ -211,12 +225,12 @@ local function APL()
 
     --actions+=/arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
     --actions+=/blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.BloodFury:IsReady() and (S.SummonGargoyle:TimeSinceLastCast() <= 39 or not S.SummonGargoyle:IsAvailable()) then
+    if S.BloodFury:IsReady() and (SummonGargoyle() > 0 or not S.SummonGargoyle:IsAvailable()) then
         return S.BloodFury:Cast()
     end
 
     --actions+=/berserking,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.Berserking:IsReady() and (S.SummonGargoyle:TimeSinceLastCast() <= 39 or not S.SummonGargoyle:IsAvailable()) then
+    if S.Berserking:IsReady() and (SummonGargoyle() > 0 or not S.SummonGargoyle:IsAvailable()) then
         return S.Berserking:Cast()
     end
     --actions+=/use_items

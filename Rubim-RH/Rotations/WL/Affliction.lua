@@ -113,7 +113,7 @@ local function APL()
   end
 
   -- Siphon Life
-  if ISpells:SiphonLife:IsReady(40)
+  if ISpells.SiphonLife:IsReady(40)
   and ISpells.SiphonLife:IsAvailable()
   and Target:DebuffRemains(ISpells.SiphonLife) <= DoTRefresh.SiphonLife then
     return ISpells.SiphonLife:Cast()
