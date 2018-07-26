@@ -449,7 +449,7 @@ RubimRH.Spell[260] = {
 };
 
 ----PALADIN
---Prot
+--Protection
 RubimRH.Spell[66] = {
     -- Racials
     ArcaneTorrent = Spell(155145),
@@ -480,7 +480,7 @@ RubimRH.Spell[66] = {
     -- Utility
     Rebuke = Spell(96231)
 }
---Ret
+--Retribution
 RubimRH.Spell[70] = {
     -- Racials
     ArcaneTorrent = Spell(25046),
@@ -519,10 +519,16 @@ RubimRH.Spell[70] = {
     Rebuke = Spell(96231),
     DivineSteed = Spell(190784),
     WorldofGlory = Spell(210191),
+    FlashOfLight = Spell(19750),
++   SelfLessHealerBuff = Spell (114250),
     -- Legendaries
     LiadrinsFuryUnleashed = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289);
     WhisperoftheNathrezim = Spell(207635)
+
+    -- PvP Talent
++   HammerOfReckoning = Spell(247675),
++   HammerOfReckoningBuff = Spell(247677),
 }
 
 ----HUNTER

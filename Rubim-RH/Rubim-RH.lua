@@ -134,6 +134,7 @@ local WordofGlory = 210191
 local LayonHands = 633
 local GuardianofAncientKings = 86659
 local ArdentDefender = 31850
+local FlashofLight = 19750
 --Shaman
 local HealingSurge = 188070
 --Druid
@@ -206,6 +207,7 @@ local defaults = {
             justicarglory = 50,
             Spells = {
                 { spellID = JusticarVengeance, isActive = true }
+                { spellID = FlashofLight, isActive = true }
             }
         },
         [65] = {
