@@ -48,3 +48,4 @@ Rotations\HR\survival.lua
 Rotations\HR\mm.lua
 Rotations\DR\feral.lua
 Rotations\DR\guardian.lua
+Rotations\WL\Affliction.lua
