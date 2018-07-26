@@ -175,6 +175,10 @@ local function APL()
     HL.GetEnemies(20, true);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
+    if IsTanking and Target:IsCasting(Spell(248499)) and S.RuneTap:IsReady() and S.RuneTap:TimeSinceLastCast() >= 2 then
+        return S.RuneTap:Cast()
+    end
+
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.Blooddrinker) then
         return 0, 236353
@@ -202,13 +206,9 @@ local function APL()
 
     LeftCtrl = IsLeftControlKeyDown();
     LeftShift = IsLeftShiftKeyDown();
-    if LeftCtrl and LeftShift and S.DeathStrike:IsReady() then
+    LeftAlt = IsLeftAltKeyDown();
+    if LeftAlt and S.DeathStrike:IsReady() then
         return S.DeathStrike:Cast()
-    end
-
-    --Argus Cooldown
-    if Player:IsTanking(Target) and Target:IsCasting(Spell(248499)) and S.RuneTap:IsReady() and S.RuneTap:TimeSinceLastCast() >= 2 then
-        return S.RuneTap:Cast()
     end
 
     -- Units without Blood Plague
@@ -351,7 +351,9 @@ end
 RubimRH.Rotation.SetAPL(250, APL);
 
 local function PASSIVE()
-    return RubimRH.Shared()
+    if RubimRH.Shared() ~= nil then
+        return RubimRH.Shared()
+    end
 end
 
 RubimRH.Rotation.SetPASSIVE(250, PASSIVE);

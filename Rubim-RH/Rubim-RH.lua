@@ -16,7 +16,7 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
 
-    if RubimExtra == true and RubimExtraVer ~= "20072018" then
+    if RubimExtra == true and RubimExtraVer ~= "25072018" then
         message("Update the RubimRH Extra")
     end
 
@@ -99,15 +99,13 @@ local EnabledRotation = {
     [263] = false, -- Enhancement
     [264] = false, -- Restoration
     -- Warlock
-    [265] = false, -- Affliction
+    [265] = true, -- Affliction
     [266] = false, -- Demonology
     [267] = false, -- Destruction
     -- Warrior
     [71] = true, -- Arms
     [72] = true, -- Fury
-    [73] = true,  -- Protection
-	-- Warlock
-	[265] = true -- Affliction
+    [73] = true  -- Protection
 }
 
 --DK
@@ -300,12 +298,6 @@ local defaults = {
         },
         [104] = {
             cooldowns = false,
-        },
-        --- WARLOCK
-
-        -- Affliction
-        [265] = {
-            cooldowns = false
         }
     }
 }
@@ -321,13 +313,12 @@ function RubimRH:OnInitialize()
 end
 
 local updateClassVariables = CreateFrame("Frame")
-    updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-    updateClassVariables:RegisterEvent("PLAYER_LOGIN")
-    updateClassVariables:RegisterEvent("PLAYER_ENTERING_WORLD")
-    updateClassVariables:RegisterEvent("PLAYER_PVP_TALENT_UPDATE")
-    updateClassVariables:RegisterEvent("PLAYER_TALENT_UPDATE")
-    updateClassVariables:SetScript("OnEvent", function(self, event, ...)
-
+updateClassVariables:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+updateClassVariables:RegisterEvent("PLAYER_LOGIN")
+updateClassVariables:RegisterEvent("PLAYER_ENTERING_WORLD")
+updateClassVariables:RegisterEvent("PLAYER_PVP_TALENT_UPDATE")
+updateClassVariables:RegisterEvent("PLAYER_TALENT_UPDATE")
+updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     RubimRH.playerSpec = Cache.Persistent.Player.Spec[1] or 0
     if RubimRH.playerSpec == 0 then
         return
@@ -380,7 +371,8 @@ end
 --end
 
 --- ============================   MAIN_ROT   ============================
-function RubimRH.mainRotation()
+function RubimRH.mainRotation(option)
+    local Rotation = option or "SingleTarget"
     if foundError == 1 then
         return "ERROR"
     end
@@ -415,7 +407,11 @@ function RubimRH.mainRotation()
         return 0, 975743
     end
 
-    if true then
+    if Rotation == "Passive" then
+        return RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
+    end
+
+    if Rotation == "SingleTarget" then
         return RubimRH.Rotation.APLs[RubimRH.playerSpec]()
     end
 end

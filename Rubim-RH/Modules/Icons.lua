@@ -431,8 +431,8 @@ function updateIcon:onUpdate(sinceLastUpdate)
             AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
         end
 
-        local singleRotation, singleRotation2 = RubimRH.mainRotation()
-        local passiveRotation, passiveRotation2 = RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
+        local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
+        local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
 
         if singleRotation == 0 or singleRotation == 1 then
             MainIconFrame.texture:SetTexture(singleRotation2)
@@ -442,6 +442,14 @@ function updateIcon:onUpdate(sinceLastUpdate)
 
         if RubimExtra then
             RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
+            if passiveRotation == 0 then
+                RubimRH.passiveIcon.texture:SetTexture(nil)
+            elseif passiveRotation == 1 then
+                RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
+            else
+                RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
+            end
+
             if singleRotation == 0 then
                 RubimRH.stIcon.texture:SetTexture(nil)
             elseif singleRotation == 1 then
