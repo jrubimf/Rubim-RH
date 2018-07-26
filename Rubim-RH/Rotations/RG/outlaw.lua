@@ -301,7 +301,7 @@ local function APL ()
                 if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
                     return S.Ambush:Cast()
                 elseif S.SaberSlash:IsReady() then
-                    return S.SaberSlas:Cast()
+                    return S.SaberSlash:Cast()
                 end
             end
         end
