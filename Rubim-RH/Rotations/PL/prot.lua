@@ -87,8 +87,8 @@
 	local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover")) and true or false
 	local MouseoverUnit = (MouseoverUnitValid) and Unit("mouseover") or nil
 	local MouseoverUnitNeedsHelp = (MouseoverUnitValid and (LotPHeal <= (MouseoverUnit:MaxHealth() - MouseoverUnit:Health()))) and true or false
-	if ISpell.HandOfTheProtector:IsReady(40, false, MouseoverUnit)
-		and MouseoverUnitNeedsHelp then
+	if ISpell.HandOfTheProtector:IsReady(40)
+		and (MouseoverUnitNeedsHelp or ShouldLotP) then
 		return ISpell.HandOfTheProtector:Cast()
 	end
 
