@@ -27,8 +27,8 @@ local function Bear()
 
     local IncomingDamage = select(1, RubimRH.getDMG("player"))
 
-    local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS
-    local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.1))) and true or false -- Taking 10% max HP in DPS
+    local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.01)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS
+    local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.3))) and true or false -- Taking 10% max HP in DPS
 
     local RangeMod = ISpell.BalanceAffinity:IsAvailable() and true or false
     local AbilityRange = {
