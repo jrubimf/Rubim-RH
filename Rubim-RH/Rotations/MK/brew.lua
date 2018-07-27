@@ -9,7 +9,7 @@ local Player = Unit.Player
 local Target = Unit.Target
 local Spell = HL.Spell
 
-local BrewSpells = RubimRH.Spell[268]
+local ISpell = RubimRH.Spell[268]
 
 --- Returns if energy will cap within the next GCD
 local function EnergyWillCap()
@@ -17,40 +17,40 @@ local function EnergyWillCap()
 end
 
 local function AoE()
-    if BrewSpells.BreathOfFire:IsReady("Melee") then
-        return BrewSpells.BreathOfFire:Cast()
+    if ISpell.BreathOfFire:IsReady("Melee") then
+        return ISpell.BreathOfFire:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsReady(8)
-            and not Player:Buff(BrewSpells.RushingJadeWind) then
-        return BrewSpells.RushingJadeWind:Cast()
+    if ISpell.RushingJadeWind:IsReady(8)
+            and not Player:Buff(ISpell.RushingJadeWind) then
+        return ISpell.RushingJadeWind:Cast()
     end
 
-    if BrewSpells.ChiBurst:IsReady(40)
+    if ISpell.ChiBurst:IsReady(40)
             and RubimRH.lastMoved() >= 1 then
-        return BrewSpells.ChiBurst:Cast()
+        return ISpell.ChiBurst:Cast()
     end
 
-    if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
-            and BrewSpells.TigerPalm:IsReady("Melee") then
-        return BrewSpells.TigerPalm:Cast()
+    if (Player:Buff(ISpell.BlackoutComboBuff) or EnergyWillCap())
+            and ISpell.TigerPalm:IsReady("Melee") then
+        return ISpell.TigerPalm:Cast()
     end
 
-    if BrewSpells.BlackoutStrike:IsReady("Melee") then
-        return BrewSpells.BlackoutStrike:Cast()
+    if ISpell.BlackoutStrike:IsReady("Melee") then
+        return ISpell.BlackoutStrike:Cast()
     end
 
-    if BrewSpells.ChiWave:IsReady(40) then
-        return BrewSpells.ChiWave:Cast()
+    if ISpell.ChiWave:IsReady(40) then
+        return ISpell.ChiWave:Cast()
     end
 
-    if BrewSpells.TigerPalm:IsReady("Melee")
+    if ISpell.TigerPalm:IsReady("Melee")
             and Player:Energy() >= 55 then
-        return BrewSpells.TigerPalm:Cast()
+        return ISpell.TigerPalm:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsReady(8) then
-        return BrewSpells.RushingJadeWind:Cast()
+    if ISpell.RushingJadeWind:IsReady(8) then
+        return ISpell.RushingJadeWind:Cast()
     end
 
     return nil
@@ -73,54 +73,54 @@ local function APL()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
     -- Kick
-    if BrewSpells.SpearHandStrike:IsReady("Melee")
+    if ISpell.SpearHandStrike:IsReady("Melee")
             and Target:IsInterruptible()
             and Target:CastRemains() <= 0.5 then
-        return BrewSpells.SpearHandStrike:Cast()
+        return ISpell.SpearHandStrike:Cast()
     end
 
     --- Defensive Rotation
 
-    if BrewSpells.Brews:ChargesFractional() <= 1
-            and BrewSpells.BlackOxBrew:IsAvailable()
-            and BrewSpells.BlackOxBrew:IsReady() then
-        return BrewSpells.BlackOxBrew:Cast()
+    if ISpell.Brews:ChargesFractional() < 1
+            and ISpell.BlackOxBrew:IsAvailable()
+            and ISpell.BlackOxBrew:IsReady() then
+        return ISpell.BlackOxBrew:Cast()
     end
 
-    if BrewSpells.Brews:ChargesFractional() >= 1
-            and (not Player:Buff(BrewSpells.IronskinBrewBuff) or (Player:Buff(BrewSpells.IronskinBrewBuff) and Player:BuffRemains(BrewSpells.IronskinBrewBuff) <= Player:GCD()))
+    if ISpell.Brews:ChargesFractional() >= 1
+            and (not Player:Buff(ISpell.IronskinBrewBuff) or (Player:Buff(ISpell.IronskinBrewBuff) and Player:BuffRemains(ISpell.IronskinBrewBuff) <= Player:GCD()))
             and IsTanking then
-        return BrewSpells.IronskinBrew:Cast()
+        return ISpell.IronskinBrew:Cast()
     end
 
-    if Player:Debuff(BrewSpells.HeavyStagger)
-            and Player:Buff(BrewSpells.IronskinBrewBuff)
-            and Player:BuffRemains(BrewSpells.IronskinBrewBuff) > Player:GCD() * 2
+    if Player:Debuff(ISpell.HeavyStagger)
+            and Player:Buff(ISpell.IronskinBrewBuff)
+            and Player:BuffRemains(ISpell.IronskinBrewBuff) > Player:GCD() * 2
             and IsTanking then
-        return BrewSpells.PurifyingBrew:Cast()
+        return ISpell.PurifyingBrew:Cast()
     end
 
     if Player:HealthPercentage() <= 85
-            and BrewSpells.HealingElixir:IsReady() then
-        return BrewSpells.HealingElixir:Cast()
+            and ISpell.HealingElixir:IsReady() then
+        return ISpell.HealingElixir:Cast()
     end
 
-    if Player:Debuff(BrewSpells.HeavyStagger)
+    if Player:Debuff(ISpell.HeavyStagger)
             and Player:HealthPercentage() <= 80
-            and BrewSpells.Guard:IsReady() then
-        return BrewSpells.Guard:Cast()
+            and ISpell.Guard:IsReady() then
+        return ISpell.Guard:Cast()
     end
 
     --- Cooldowns
 
     if RubimRH.CDsON()
-            and BrewSpells.BloodFury:IsReady("Melee") then
-        return BrewSpells.BloodFury:ID()
+            and ISpell.BloodFury:IsReady("Melee") then
+        return ISpell.BloodFury:ID()
     end
 
     if RubimRH.CDsON()
-            and BrewSpells.Berserking:IsReady("Melee") then
-        return BrewSpells.Berserking:ID()
+            and ISpell.Berserking:IsReady("Melee") then
+        return ISpell.Berserking:ID()
     end
 
     -- TODO: Handle proper logic for locating distance to statue
@@ -132,13 +132,13 @@ local function APL()
 
     --- Universal Rotation - Does not change based on targets
 
-    if BrewSpells.InvokeNiuzaotheBlackOx:IsAvailable()
-            and BrewSpells.InvokeNiuzaotheBlackOx:IsReady(40) then
-        return BrewSpells.InvokeNiuzaotheBlackOx:Cast()
+    if ISpell.InvokeNiuzaotheBlackOx:IsAvailable()
+            and ISpell.InvokeNiuzaotheBlackOx:IsReady(40) then
+        return ISpell.InvokeNiuzaotheBlackOx:Cast()
     end
 
-    if BrewSpells.KegSmash:IsReady(15) then
-        return BrewSpells.KegSmash:Cast()
+    if ISpell.KegSmash:IsReady(15) then
+        return ISpell.KegSmash:Cast()
     end
 
     --- Return different priority for 3+ target AoE
@@ -148,41 +148,41 @@ local function APL()
     end
 
     --- Single-Target priority
-    if BrewSpells.BlackoutStrike:IsReady("Melee")
-            and (not Player:Buff(BrewSpells.BlackoutComboBuff) or not BrewSpells.BlackoutCombo:IsAvailable()) then
-        return BrewSpells.BlackoutStrike:Cast()
+    if ISpell.BlackoutStrike:IsReady("Melee")
+            and (not Player:Buff(ISpell.BlackoutComboBuff) or not ISpell.BlackoutCombo:IsAvailable()) then
+        return ISpell.BlackoutStrike:Cast()
     end
 
-    if (Player:Buff(BrewSpells.BlackoutComboBuff) or EnergyWillCap())
-            and BrewSpells.TigerPalm:IsReady("Melee") then
-        return BrewSpells.TigerPalm:Cast()
+    if (Player:Buff(ISpell.BlackoutComboBuff) or EnergyWillCap())
+            and ISpell.TigerPalm:IsReady("Melee") then
+        return ISpell.TigerPalm:Cast()
     end
 
-    if BrewSpells.BreathOfFire:IsReady("Melee") then
-        return BrewSpells.BreathOfFire:Cast()
+    if ISpell.BreathOfFire:IsReady("Melee") then
+        return ISpell.BreathOfFire:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsReady(8)
-            and not Player:Buff(BrewSpells.RushingJadeWind) then
-        return BrewSpells.RushingJadeWind:Cast()
+    if ISpell.RushingJadeWind:IsReady(8)
+            and not Player:Buff(ISpell.RushingJadeWind) then
+        return ISpell.RushingJadeWind:Cast()
     end
 
-    if BrewSpells.ChiBurst:IsReady(40)
+    if ISpell.ChiBurst:IsReady(40)
             and RubimRH.lastMoved() >= 1 then
-        return BrewSpells.ChiBurst:Cast()
+        return ISpell.ChiBurst:Cast()
     end
 
-    if BrewSpells.ChiWave:IsReady(40) then
-        return BrewSpells.ChiWave:Cast()
+    if ISpell.ChiWave:IsReady(40) then
+        return ISpell.ChiWave:Cast()
     end
 
-    if BrewSpells.TigerPalm:IsReady()
+    if ISpell.TigerPalm:IsReady()
             and Player:Energy() >= 55 then
-        return BrewSpells.TigerPalm:Cast()
+        return ISpell.TigerPalm:Cast()
     end
 
-    if BrewSpells.RushingJadeWind:IsReady() then
-        return BrewSpells.RushingJadeWind:Cast()
+    if ISpell.RushingJadeWind:IsReady() then
+        return ISpell.RushingJadeWind:Cast()
     end
 
     return 0, 975743
