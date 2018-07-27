@@ -126,11 +126,19 @@
 	end
 
 	--- Offensive CDs
-	--print(Target:TimeToDie())
+	
+	-- Avenging Wrath
 	if RubimRH.CDsON()
 		and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and ISpell.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
 		and ISpell.AvengingWrath:IsReady() then
 		return ISpell.AvengingWrath:Cast()
+	end
+
+	-- Seraphim
+	if RubimRH.CDsON()
+		and ((Target:TimeToDie() >= 8 and ISpell.ShieldOfTheRighteous:ChargesFractional() == 1) or (Target:TimeToDie() >= 16 and ISpell.ShieldOfTheRighteous:ChargesFractional() >= 2))
+		and ISpell.Seraphim:IsReady() then
+		return ISpell.Seraphim:Cast()
 	end
 
 	--- Main damage rotation: all executed as soon as they're available
