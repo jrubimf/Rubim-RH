@@ -19,29 +19,29 @@
 
 	local function APL()
 
-		if not Player:AffectingCombat() then
-			return 0, 462338
-		end
+	--- Unit update
+	HL.GetEnemies(30, true);
+
+	if not Player:AffectingCombat() then
+		return 0, 462338
+	end
 
 	--- Determine if we're tanking
 	local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 	LeftCtrl = IsLeftControlKeyDown();
 	LeftShift = IsLeftShiftKeyDown();
 
-	--- Unit update
-	HL.GetEnemies(10, true);
-
 	--- Kick
 	if ISpell.Rebuke:IsReady("Melee")
 		and Target:IsInterruptible()
-		and Target:CastRemains() <= 0.5 then
+		and ((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling()) then
 		return ISpell.Rebuke:Cast()
 	end
 
 	--- Defensives / Healing
 	local IncomingDamage = select(1, RubimRH.getDMG("player"))
-	local NeedMinorHealing = (IncomingDamage >= (Player:MaxHealth() * 0.02)) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 10% max HP in DPS
+	local NeedMinorHealing = (IncomingDamage >= (Player:MaxHealth() * 0.01)) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.03)) or Player:HealthPercentage() <= 50) and true or false -- Taking 10% max HP in DPS
 	local PanicHeals = (Player:HealthPercentage() <= 40) and true or false
 
 	-- Lay on Hands
@@ -66,25 +66,29 @@
 	end
 
 	-- Ardent Defender -> Ardent defender @ NeedMinorHealing <= 90% HP, should be proactively cast by the user
-	if ISpell.ArdentDefender:IsReady()
-		and NeedMinorHealing 
-		and Player:Health() <= 90 then
-		return ISpell.ArdentDefender:Cast()
-	end
+	-- if ISpell.ArdentDefender:IsReady()
+	-- 	and NeedMinorHealing 
+	-- 	and Player:HealthPercentage() <= 90 then
+	-- 	return ISpell.ArdentDefender:Cast()
+	-- end
 
-	-- Light of the Protector
+	-- Light of the Protector / Hand of the Protector -> Player
 	local VersatilityHealIncrease = (GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100
 	local SpellPower = GetSpellBonusDamage(2) -- Same result for all schools
 	local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
 	LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
-	local ShouldLotP = (((NeedMinorHealing or NeedBigHealing) and Player:Health() <= 80) or Player:Health() <= 75) and true or false
+	local ShouldLotP = (((NeedMinorHealing or NeedBigHealing) and Player:HealthPercentage() <= 80) or Player:HealthPercentage() <= 75) and true or false
 	if (ISpell.LightOfTheProtector:IsReady() or ISpell.HandOfTheProtector:IsReady())
 		and ShouldLotP then
-		return (ISpell.HandOfTheProtector:IsAvailable()) and ISpell.HandOfTheProtector:Cast() or ISpell.LightOfTheProtector:Cast()
+		if ISpell.HandOfTheProtector:IsAvailable() then
+			return ISpell.HandOfTheProtector:Cast()
+		else
+			return ISpell.LightOfTheProtector:Cast()
+		end
 	end
 
-	-- Hand of the Protector
-	local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover")) and true or false
+	-- Hand of the Protector -> Mouseover
+	local MouseoverUnitValid = (Unit("mouseover"):Exists() and UnitIsFriend("player", "mouseover") and (Unit("mouseover") ~= Unit("player"))) and true or false
 	local MouseoverUnit = (MouseoverUnitValid) and Unit("mouseover") or nil
 	local MouseoverUnitNeedsHelp = (MouseoverUnitValid and (LotPHeal <= (MouseoverUnit:MaxHealth() - MouseoverUnit:Health()))) and true or false
 	if ISpell.HandOfTheProtector:IsReady()
@@ -92,7 +96,7 @@
 		return ISpell.HandOfTheProtector:Cast()
 	end
 
-	-- Blessing of Protection
+	-- Blessing of Protection -> Mousover
 	local MouseoverUnitNeedsBoP = (MouseoverUnitValid and (MouseoverUnit:HealthPercentage() <= 40)) and true or false
 	if ISpell.BlessingOfProtection:IsReady(40, false, MouseoverUnit)
 		and MouseoverUnitNeedsBoP then
