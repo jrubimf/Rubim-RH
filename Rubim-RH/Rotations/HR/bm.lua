@@ -74,7 +74,8 @@ local function APL ()
         -- Counter Shot -> User request
         if S.CounterShot:IsReady(40)
             and ((Target:IsCasting()
-            and Target:IsInterruptible())
+            and Target:IsInterruptible()
+            and Target:CastRemains() <= 0.7)
             or Target:IsChanneling()) then
             return S.CounterShot:Cast()
         end
