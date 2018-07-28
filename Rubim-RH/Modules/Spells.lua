@@ -8,6 +8,13 @@ local HL = HeroLib;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
+
+--20594 DWARF
+--20549 TAUREN
+--28730 ARCANE TORRENT
+--68992 DARK FLIGHT
+--58984 SHADOWMELD
+
 ----WARRIOR
 --FURY
 RubimRH.Spell[72] = {
@@ -528,6 +535,7 @@ RubimRH.Spell[70] = {
     LiadrinsFuryUnleashed = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289),
     WhisperoftheNathrezim = Spell(207635),
+
     -- PvP Talent
    HammerOfReckoning = Spell(247675),
    HammerOfReckoningBuff = Spell(247677),
@@ -654,7 +662,7 @@ RubimRH.Spell[104] = {
     WarStomp             = Spell(20549),
     -- Abilities
     FrenziedRegeneration = Spell(22842),
-    Gore				 = Spell(210706),
+    Gore                 = Spell(210706),
     GoreBuff             = Spell(93622),
     GoryFur              = Spell(201671),
     Ironfur              = Spell(192081),
@@ -685,7 +693,7 @@ RubimRH.Spell[104] = {
     FeralAffinity        = Spell(202155),
     GalacticGuardian     = Spell(203964),
     GalacticGuardianBuff = Spell(213708),
-    GuardianOfElune 	 = Spell(155578),
+    GuardianOfElune      = Spell(155578),
     GuardianOfEluneBuff  = Spell(213680),
     Incarnation          = Spell(102558),
     LunarBeam            = Spell(204066),
@@ -937,7 +945,6 @@ RubimRH.Spell[577] = {
     Demonic = Spell(213410),
     DemonicAppetite = Spell(206478),
     DemonReborn = Spell(193897),
-    FelBarrage = Spell(211053),
     Felblade = Spell(232893),
     FelEruption = Spell(211881),
     FelMastery = Spell(192939),
@@ -952,7 +959,7 @@ RubimRH.Spell[577] = {
 
     -- Talents
     ImmolationAura = Spell(258920),
-    FelBarrage = Spell(21862),
+    FelBarrage = Spell(258925),
     DarkSlash = Spell(258860),
 
     -- Set Bonuses
@@ -1004,4 +1011,3 @@ RubimRH.Spell[265] = {
     DrainSoul = Spell(198590),
     Nightfall = Spell(108558)
 }
-
