@@ -113,8 +113,7 @@
 	--        end
 
 	local MovementSpeed = select(1, GetUnitSpeed("player"))
-	if Player:Speed() < 100 -- Standard base run speed is 7 yards per second
-		and Player:Speed() ~= 0 -- 0 move speed = not moving
+	if Player:IsSnared() -- Standard base run speed is 7 yards per second
 		and ISpell.BlessingOfFreedom:IsReady() then
 		return ISpell.BlessingOfFreedom:Cast()
 	end

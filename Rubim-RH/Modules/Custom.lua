@@ -586,6 +586,14 @@ function Unit:IncDmgPercentage()
     return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
+function Unit:IsSnared()
+    return (self:MaxSpeed() < 100 and self:Speed() ~= 64 and self:Speed() ~= 0) and true or false
+end
+
 function Unit:Speed()
-    return GetUnitSpeed(self.UnitID) / 7 * 100 -- /dump GetUnitSpeed("player") / 7 * 100
+    return math.floor(GetUnitSpeed(self.UnitID) / 7 * 100)
+end
+
+function Unit:MaxSpeed()
+    return math.floor(select(2, GetUnitSpeed(self.UnitID) / 7 * 100))
 end

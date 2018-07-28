@@ -339,7 +339,7 @@ RubimRH.Spell[263] = {
     ResonanceTotemBuff = Spell(262417),
     LandslideBuff = Spell(202004),
     -- Morphed Spells
-    Windstrike = Spell(115357)
+    Windstrike = Spell(115356)
 }
 
 ----ROGUE
