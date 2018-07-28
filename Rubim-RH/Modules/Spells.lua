@@ -528,7 +528,6 @@ RubimRH.Spell[70] = {
     LiadrinsFuryUnleashed = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289),
     WhisperoftheNathrezim = Spell(207635),
-
     -- PvP Talent
    HammerOfReckoning = Spell(247675),
    HammerOfReckoningBuff = Spell(247677),

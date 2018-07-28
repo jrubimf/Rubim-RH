@@ -20,7 +20,7 @@
 	local function APL()
 
 	--- Unit update
-	HL.GetEnemies(30, true);
+	HL.GetEnemies(40, true);
 
 	if not Player:AffectingCombat() then
 		return 0, 462338
@@ -44,6 +44,7 @@
 	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.03)) or Player:HealthPercentage() <= 50) and true or false -- Taking 10% max HP in DPS
 	local PanicHeals = (Player:HealthPercentage() <= 40) and true or false
 
+	-- TODO: Restore these when GGLoader texture updates are complete
 	-- Lay on Hands
 	-- if ISpell.LayOnHands:IsReady()
 	-- 	and Player:HealthPercentage() <= 20 then
@@ -126,7 +127,7 @@
 	end
 
 	--- Offensive CDs
-	
+
 	-- Avenging Wrath
 	if RubimRH.CDsON()
 		and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and ISpell.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
