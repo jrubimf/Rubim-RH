@@ -103,7 +103,7 @@ local function BurstRotation()
 	end
 
 	-- actions.asc+=/windstrike
-	if S.Windstrike:IsReady(R.Windstrike) then
+	if S.Windstrike:IsReadyMorph(R.Windstrike) then
 		return S.Windstrike:Cast()
 	end
 
@@ -164,12 +164,13 @@ end
 
 local function Cooldowns()
 
+	-- TODO: Enabled when GGLoader includes keybind setting for Bloodlust
 	-- Bloodlust
-	if Target:HealthPercentage() < 40 
-		and Target:TimeToDie() > 20 
-		and S.Bloodlust:IsReady() then
-		return S.Bloodlust:Cast()
-	end
+	-- if Target:HealthPercentage() < 40 
+	-- 	and Target:TimeToDie() > 20 
+	-- 	and S.Bloodlust:IsReady() then
+	-- 	return S.Bloodlust:Cast()
+	-- end
 
 	-- actions.cds+=/berserking,if=buff.ascendance.up|(feral_spirit.remains>5)|level<100
 	if S.Berserking:IsReady()
