@@ -580,8 +580,12 @@ function Unit:IsPvPDummy()
 end
 
 -- Incoming damage as percentage of Unit's max health
-function RubimRH.IncDmgPercentage(UIDENTIFIER)
-    UIDENTIFIER = UIDENTIFIER or "player"
-    local IncomingDPS = (RubimRH.getDMG(UIDENTIFIER) / UnitHealthMax(UIDENTIFIER)) * 100
+function Unit:IncDmgPercentage()
+    unit = self.UnitID
+    local IncomingDPS = (RubimRH.getDMG(unit) / UnitHealthMax(unit)) * 100
     return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
+end
+
+function Unit:Speed()
+    return GetUnitSpeed(self.UnitID) / 7 * 100
 end

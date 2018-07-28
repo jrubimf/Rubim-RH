@@ -38,7 +38,7 @@ local function APL()
         -- Localize Vars
         local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target) -- TODO: Implement logic for PvP scenarios : IsTanking returns false, yet Shield Block is still needed
         local ThunderClapRadius = ISpell.CracklingThunder:IsAvailable() and 12 or 8
-        local IncomingDamage = IncDmgPercentage()
+        local IncomingDamage = Player:IncDmgPercentage()
         local NeedMinorHealing = (IncomingDamage > 2) and true or false -- Taking 5% max HP in DPS or <= 50% HP
         local NeedMajorHealing = (IncomingDamage > 5) and true or false -- Taking 10% max HP in DPS
         local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 30) and true or false

@@ -34,14 +34,14 @@ local function APL()
 
     --- Defensives
     -- Demon Spikes
-    if S.DemonSpikes:IsCastable("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 85) and (IsTanking or not Player:HealingAbsorbed()) then
+    if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 85) and (IsTanking or not Player:HealingAbsorbed()) then
         return S.DemonSpikes:Cast()
     end
 
-    if S.DemonSpikes:IsCastable("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
+    if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
         return S.DemonSpikes:Cast()
     end
-    if RubimRH.config.Spells[1].isActive and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsCastable("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+    if RubimRH.config.Spells[1].isActive and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
         return S.InfernalStrike:Cast()
     end
     -- actions+=/spirit_bomb,if=soul_fragments=5|debuff.frailty.down
@@ -50,40 +50,40 @@ local function APL()
         return S.Fracture:Cast()
     end
 
-    if S.SpiritBomb:IsCastable() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
+    if S.SpiritBomb:Ready() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
         return S.SpiritBomb:Cast()
     end
 
-    if RubimRH.config.Spells[2].isActive and S.FieryBrand:IsCastable("Melee") then
+    if RubimRH.config.Spells[2].isActive and S.FieryBrand:IsReady("Melee") then
         return S.FieryBrand:Cast()
     end
     -- actions+=/soul_carver
-    if S.SoulCarver:IsCastable("Melee") then
+    if S.SoulCarver:IsReady("Melee") then
         return S.SoulCarver:Cast()
     end
     -- actions+=/immolation_aura,if=pain<=80
-    if S.ImmolationAura:IsCastable() and Cache.EnemiesCount[8] >= 1 and not Player:Buff(S.ImmolationAura) and Player:Pain() <= 80 then
+    if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 and not Player:Buff(S.ImmolationAura) and Player:Pain() <= 80 then
         return S.ImmolationAura:Cast()
     end
     -- actions+=/felblade,if=pain<=70
-    if S.Felblade:IsCastable(15) and Player:Pain() <= 75 then
+    if S.Felblade:IsReady(15) and Player:Pain() <= 75 then
         return S.Felblade:Cast()
     end
     -- actions+=/fel_devastation
-    if RubimRH.CDsON() and S.FelDevastation:IsCastable(20, true) and RubimRH.lastMoved() > 1 and Player:Pain() >= 30 then
+    if RubimRH.CDsON() and S.FelDevastation:IsReady(20, true) and RubimRH.lastMoved() > 1 and Player:Pain() >= 30 then
         return S.FelDevastation:Cast()
     end
     -- actions+=/sigil_of_flame
-    if S.SigilofFlame:IsCastable() and Cache.EnemiesCount[8] >= 1 then
+    if S.SigilofFlame:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.SigilofFlame:Cast()
     end
     if Target:IsInRange("Melee") then
         -- actions+=/soul_cleave,if=pain>=80
-        if not S.Fracture:IsAvailable() and S.SoulCleave:IsCastable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
+        if not S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
             return S.SoulCleave:Cast()
         end
 
-        if S.Fracture:IsAvailable() and S.SoulCleave:IsCastable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
+        if S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
             return S.SoulCleave:Cast()
         end
         -- actions+=/sever
@@ -97,11 +97,11 @@ local function APL()
         end
 
         -- actions+=/shear
-        if S.Shear:IsCastable("Melee") then
+        if S.Shear:IsReady("Melee") then
             return S.Shear:Cast()
         end
     end
-    if Target:IsInRange(30) and S.ThrowGlaive:IsCastable() then
+    if Target:IsInRange(30) and S.ThrowGlaive:IsReady() then
         return S.ThrowGlaive:Cast()
     end
     return 0, 975743

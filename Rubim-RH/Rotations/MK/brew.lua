@@ -112,7 +112,7 @@ local function APL()
 
     --- Defensive Rotation
 
-    local IncomingDPS = RubimRH.IncDmgPercentage() or 0
+    local IncomingDPS = Player:IncDmgPercentage() or 0
     local NeedMinorHealing = (IncomingDPS > 2) and true or false
     local NeedMajorHealing = (IncomingDPS > 5) and true or false
     local NeedPanicHealing = ((IncomingDPS > 15) or (Player:HealthPercentage() <= 40)) and true or false
