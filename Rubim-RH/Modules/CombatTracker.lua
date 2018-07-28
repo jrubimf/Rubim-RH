@@ -49,9 +49,9 @@ end
 local logDamage = function(...)
     local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount, a, b, c = CombatLogGetCurrentEventInfo()
     -- Chat Output for Debugging
-    --	if SourceGUID == UnitGUID('player') then
-    --		print(spellID)
-    --	end
+    --  if SourceGUID == UnitGUID('player') then
+    --      print(spellID)
+    --  end
     -- Mixed
 
     if Doubles[school] then
@@ -88,7 +88,7 @@ local logSwing = function(...)
 end
 
 --[[ This Logs the healing done for every unit
-		 !!~counting selfhealing only for now~!!]]
+         !!~counting selfhealing only for now~!!]]
 local logHealing = function(...)
     local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _,_, Amount = CombatLogGetCurrentEventInfo()
     Data[DestGUID].heal_taken = Data[DestGUID].heal_taken + Amount
@@ -113,8 +113,8 @@ end
 local EVENTS = {
     ['SPELL_DAMAGE'] = logDamage,
     ['DAMAGE_SHIELD'] = logDamage,
-    ['SPELL_PERIODIC_DAMAGE']	= logDamage,
-    ['SPELL_BUILDING_DAMAGE']	= logDamage,
+    ['SPELL_PERIODIC_DAMAGE']   = logDamage,
+    ['SPELL_BUILDING_DAMAGE']   = logDamage,
     ['RANGE_DAMAGE'] = logDamage,
     ['SWING_DAMAGE'] = logSwing,
     ['SPELL_HEAL'] = logHealing,
@@ -125,7 +125,7 @@ local EVENTS = {
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function RubimRH.CombatTime(UNIT)
-    local GUID = UNIT:GUID()
+    local GUID = UnitGUID(UNIT)
     if Data[GUID] and InCombatLockdown() then
         local combatTime = (GetTime()-Data[GUID].combat_time)
         return combatTime
@@ -135,7 +135,7 @@ end
 
 function RubimRH.getDMG(UNIT)
     local total, Hits, phys, magic = 0, 0, 0, 0
-    local GUID = UNIT:GUID()
+    local GUID = UnitGUID(UNIT)
     if Data[GUID] then
         local time = GetTime()
         -- Remove a unit if it hasnt recived dmg for more then 5 sec
