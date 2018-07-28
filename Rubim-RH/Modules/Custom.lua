@@ -82,7 +82,6 @@ local function ttd(unit)
 end
 
 local activeUnitPlates = {}
-
 local function AddNameplate(unitID)
     local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
     local unitframe = nameplate.UnitFrame
