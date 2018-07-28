@@ -883,6 +883,7 @@ RubimRH.Spell[251] = {
     MindFreeze = Spell(47528),
     PathOfFrost = Spell(3714),
     WraithWalk = Spell(212552),
+    ChillStreak = Spell(204160),
 }
 -- UNHOLY
 RubimRH.Spell[252] = {
