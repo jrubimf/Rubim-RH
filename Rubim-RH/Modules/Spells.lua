@@ -282,6 +282,65 @@ RubimRH.Spell[262] = {
     -- Utility
     WindShear = Spell(57994),
 }
+-- Enhancement
+RubimRH.Spell[263] = {
+    -- Racials
+    BloodFury = Spell(336970),
+    Berserking = Spell(26297),
+    -- Abilities
+    WindShear = Spell(57994),
+    AncestralSpirit = Spell(2008),
+    CrashLightning = Spell(187874),
+    EarthElemental = Spell(198103),
+    AstralShift = Spell(108271),
+    EarthbindTotem = Spell(2484),
+    Bloodlust = Spell(2825),
+    CapacitorTotem = Spell(192058),
+    FeralSpirit = Spell(51533),
+    CleanseSpirit = Spell(51886),
+    Flametongue = Spell(193796),
+    Frostbrand = Spell(196834),
+    Purge = Spell(370),
+    GhostWolf = Spell(2645),
+    Rockbiter = Spell(193786),
+    HealingSurge = Spell(188070),
+    SpiritWalk = Spell(58875),
+    Hex = Spell(51514),
+    Stormstrike = Spell(17364),
+    LavaLash = Spell(60103),
+    TremorTotem = Spell(8143),
+    LightningBolt = Spell(187837),
+    -- Talents
+    LightningShield = Spell(192106),
+    HotHand = Spell(201900),
+    BoulderFist = Spell(246035),
+    Landslide = Spell(197992),
+    ForcefulWinds = Spell(262647),
+    TotemMastery = Spell(262395),
+    SpiritWolf = Spell(260878),
+    EarthShield = Spell(974),
+    StaticCharge = Spell(265046),
+    SearingAssault = Spell(192087),
+    Hailstorm = Spell(210853),
+    Overcharge = Spell(210727),
+    NaturesGuardian = Spell(30884),
+    FeralLunge = Spell(196884),
+    WindRushTotem = Spell(192077),
+    CrashingStorm = Spell(192246),
+    FuryOfAir = Spell(197211),
+    Sundering = Spell(197214),
+    ElementalSpirits = Spell(262624),
+    EarthenSpike = Spell(188089),
+    Ascendance = Spell(114051),
+    TotemMastery = Spell(262395),
+    -- Passives // Buffs
+    GatheringStorms = Spell(198300),
+    Stormbringer = Spell(201845),
+    ResonanceTotemBuff = Spell(262417),
+    LandslideBuff = Spell(202004),
+    -- Morphed Spells
+    Windstrike = Spell(115357)
+}
 
 ----ROGUE
 --ASS

@@ -74,16 +74,11 @@ local function APL()
 
     -- Unit Update
     HL.GetEnemies(8, true);
+    HL.GetEnemies(15, true);
+    HL.GetEnemies(40, true);
 
     -- Misc
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
-
-    -- Leg Sweep -> Cast when left CTRL+SHIFT are pressed
-    local ModKeys = (IsLeftShiftKeyDown() and IsLeftControlKeyDown())
-    if ISpell.LegSweep:IsReady()
-        and ModKeys then
-        return ISpell.LegSweep:Cast()
-    end
 
     --- Player Macro Options
 
@@ -117,33 +112,46 @@ local function APL()
 
     --- Defensive Rotation
 
-    local IncomingDPS = Player:IncDmgPercentage() or 0
-    
-    print(Player:IncDmgPercentage())
+    local IncomingDPS = RubimRH.IncDmgPercentage() or 0
+    local NeedMinorHealing = (IncomingDPS > 2) and true or false
+    local NeedMajorHealing = (IncomingDPS > 5) and true or false
+    local NeedPanicHealing = ((IncomingDPS > 15) or (Player:HealthPercentage() <= 40)) and true or false
+
+    -- Fortifying Brew
+    if ISpell.FortifyingBrew:IsReady()
+        and NeedPanicHealing then
+        return ISpell.FortifyingBrew:Cast()
+    end
+
+    -- Black Ox Brew
     if ISpell.Brews:ChargesFractional() < 1
+        and NeedMajorHealing
         and ISpell.BlackOxBrew:IsAvailable()
         and ISpell.BlackOxBrew:IsReady() then
         return ISpell.BlackOxBrew:Cast()
     end
 
+    -- Ironskin Brew
     if ISpell.Brews:ChargesFractional() >= 1
         and (not Player:Buff(ISpell.IronskinBrewBuff) or (Player:Buff(ISpell.IronskinBrewBuff) and Player:BuffRemains(ISpell.IronskinBrewBuff) <= Player:GCD()))
         and IsTanking then
         return ISpell.IronskinBrew:Cast()
     end
 
-    if Player:Debuff(ISpell.HeavyStagger)
-        and Player:Buff(ISpell.IronskinBrewBuff)
-        and Player:BuffRemains(ISpell.IronskinBrewBuff) > Player:GCD() * 2
-        and IsTanking then
+    -- Purifying Brew
+    if (Player:Debuff(ISpell.HeavyStagger) or (Player:Debuff(ISpell.ModerateStagger) and Player:HealthPercentage() < 70))
+        and ISpell.Brews:ChargesFractional() >= 1
+        and NeedMajorHealing then
         return ISpell.PurifyingBrew:Cast()
     end
 
+    -- Healing Elixir
     if Player:HealthPercentage() <= 85
         and ISpell.HealingElixir:IsReady() then
         return ISpell.HealingElixir:Cast()
     end
 
+    -- Guard
     if Player:Debuff(ISpell.HeavyStagger)
         and Player:HealthPercentage() <= 80
         and ISpell.Guard:IsReady() then
@@ -152,11 +160,13 @@ local function APL()
 
     --- Cooldowns
 
+    -- Blood Fury
     if RubimRH.CDsON()
         and ISpell.BloodFury:IsReady("Melee") then
         return ISpell.BloodFury:ID()
     end
 
+    -- Berserking
     if RubimRH.CDsON()
         and ISpell.Berserking:IsReady("Melee") then
         return ISpell.Berserking:ID()
@@ -171,55 +181,66 @@ local function APL()
 
     --- Universal Rotation - Does not change based on targets
 
+    -- Invoke Niuzao: The Black Ox
     if ISpell.InvokeNiuzaotheBlackOx:IsAvailable()
         and ISpell.InvokeNiuzaotheBlackOx:IsReady(40) then
         return ISpell.InvokeNiuzaotheBlackOx:Cast()
     end
 
+    -- Keg Smash
     if ISpell.KegSmash:IsReady(15) then
         return ISpell.KegSmash:Cast()
     end
 
-    --- Return different priority for 3+ target AoE
+    --- AoE Priority
     if Cache.EnemiesCount[8] >= 3
         and AoE() ~= nil then
         return AoE()
     end
 
-    --- Single-Target priority
+    --- Single-Target Priority
+
+    -- Blackout Strike
     if ISpell.BlackoutStrike:IsReady("Melee")
         and (not Player:Buff(ISpell.BlackoutComboBuff) or not ISpell.BlackoutCombo:IsAvailable()) then
         return ISpell.BlackoutStrike:Cast()
     end
 
+    -- Tiger Palm
     if (Player:Buff(ISpell.BlackoutComboBuff) or EnergyWillCap())
         and ISpell.TigerPalm:IsReady("Melee") then
         return ISpell.TigerPalm:Cast()
     end
 
+    -- Breath of Fire
     if ISpell.BreathOfFire:IsReady("Melee") then
         return ISpell.BreathOfFire:Cast()
     end
 
+    -- Rushing Jade Wind
     if ISpell.RushingJadeWind:IsReady(8)
         and not Player:Buff(ISpell.RushingJadeWind) then
         return ISpell.RushingJadeWind:Cast()
     end
 
+    -- Chi Burst
     if ISpell.ChiBurst:IsReady(40)
         and RubimRH.lastMoved() >= 1 then
         return ISpell.ChiBurst:Cast()
     end
 
+    -- Chi Wave
     if ISpell.ChiWave:IsReady(40) then
         return ISpell.ChiWave:Cast()
     end
 
+    -- Tiger Palm
     if ISpell.TigerPalm:IsReady()
         and Player:Energy() >= 55 then
         return ISpell.TigerPalm:Cast()
     end
 
+    -- Rushing Jade Wind -> Refresh on empty GCD
     if ISpell.RushingJadeWind:IsReady() then
         return ISpell.RushingJadeWind:Cast()
     end

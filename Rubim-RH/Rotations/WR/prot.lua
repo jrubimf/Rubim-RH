@@ -38,10 +38,10 @@ local function APL()
         -- Localize Vars
         local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target) -- TODO: Implement logic for PvP scenarios : IsTanking returns false, yet Shield Block is still needed
         local ThunderClapRadius = ISpell.CracklingThunder:IsAvailable() and 12 or 8
-        local IncomingDamage = select(1, RubimRH.getDMG("player"))
-        local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.05)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-        local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.1))) and true or false -- Taking 10% max HP in DPS
-        local PanicHeals = (Player:HealthPercentage() <= 30) and true or false
+        local IncomingDamage = IncDmgPercentage()
+        local NeedMinorHealing = (IncomingDamage > 2) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+        local NeedMajorHealing = (IncomingDamage > 5) and true or false -- Taking 10% max HP in DPS
+        local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 30) and true or false
 
         local LeftCtrl = IsLeftControlKeyDown()
         local LeftShift = IsLeftShiftKeyDown()
@@ -82,7 +82,7 @@ local function APL()
             or (ISpell.Bolster:IsAvailable() and not Player:Buff(ISpell.LastStand)))
         and ISpell.ShieldBlock:ChargesFractional() >= 1
         and (NeedMinorHealing
-            or NeedBigHealing) then
+            or NeedMajorHealing) then
             return ISpell.ShieldBlock:Cast()
         end
 
@@ -178,7 +178,7 @@ local function APL()
         if ISpell.IgnorePain:IsReady("Melee")
                 and Player:Rage() >= 40
                 and not Player:Buff(ISpell.IgnorePain)
-                and (NeedMinorHealing or NeedBigHealing) then -- TODO: See IsTanking note
+                and (NeedMinorHealing or NeedMajorHealing) then -- TODO: See IsTanking note
             return ISpell.IgnorePain:Cast()
         end
 

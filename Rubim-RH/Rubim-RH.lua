@@ -96,7 +96,7 @@ local EnabledRotation = {
     [261] = true, -- Subtlety
     -- Shaman
     [262] = true, -- Elemental
-    [263] = false, -- Enhancement
+    [263] = true, -- Enhancement
     [264] = false, -- Restoration
     -- Warlock
     [265] = true, -- Affliction
