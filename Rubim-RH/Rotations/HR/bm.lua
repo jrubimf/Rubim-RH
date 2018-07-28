@@ -70,6 +70,15 @@ local function APL ()
     end
     -- In Combat
     if RubimRH.TargetIsValid() then
+
+        -- Counter Shot -> User request
+        if S.CounterShot:IsReady(40)
+            and ((Target:IsCasting()
+            and Target:IsInterruptible())
+            or Target:IsChanneling()) then
+            return S.CounterShot:Cast()
+        end
+
         -- actions+=/counter_shot,if=target.debuff.casting.react // Sephuz Specific
         if RubimRH.CDsON() then
             -- actions+=/arcane_torrent,if=focus.deficit>=30
