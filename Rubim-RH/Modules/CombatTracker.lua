@@ -125,7 +125,7 @@ local EVENTS = {
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function RubimRH.CombatTime(UNIT)
-    local GUID = UnitGUID(UNIT)
+    local GUID = UNIT:GUID()
     if Data[GUID] and InCombatLockdown() then
         local combatTime = (GetTime()-Data[GUID].combat_time)
         return combatTime
@@ -135,7 +135,7 @@ end
 
 function RubimRH.getDMG(UNIT)
     local total, Hits, phys, magic = 0, 0, 0, 0
-    local GUID = UnitGUID(UNIT)
+    local GUID = UNIT:GUID()
     if Data[GUID] then
         local time = GetTime()
         -- Remove a unit if it hasnt recived dmg for more then 5 sec

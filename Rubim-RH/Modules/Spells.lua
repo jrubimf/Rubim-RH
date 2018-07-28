@@ -213,6 +213,7 @@ RubimRH.Spell[268] = {
     HealingElixir = Spell(122281),
     BlackOxStatue = Spell(115315),
     Guard = Spell(202162),
+    LegSweep = Spell(119381)
 }
 
 ----SHAMMY
