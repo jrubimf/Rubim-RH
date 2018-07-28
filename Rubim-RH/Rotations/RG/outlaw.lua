@@ -11,7 +11,15 @@ local tableconcat = table.concat;
 local tostring = tostring;
 
 local S = RubimRH.Spell[260]
+
+--20594 DWARF
+--20549 TAUREN
+--28730 ARCANE TORRENT
+--68992 DARK FLIGHT
 S.SaberSlash.TextureSpellID = { 225096 }
+S.Dispatch.TextureSpellID = { 20594 }
+S.CrimsonVial.TextureSpellID = { 68992 }
+S.ArcanePulse.TextureSpellID = { 28730 }
 
 local function num(val)
     if val then
@@ -22,17 +30,6 @@ local function num(val)
 end
 
 -- APL Action Lists (and Variables)
-local SappedSoulSpells = {
-    { S.Kick, "Cast Kick (Sapped Soul)", function()
-        return Target:IsInRange(S.SaberSlash);
-    end },
-    { S.Feint, "Cast Feint (Sapped Soul)", function()
-        return true;
-    end },
-    { S.CrimsonVial, "Cast Crimson Vial (Sapped Soul)", function()
-        return true;
-    end }
-};
 local RtB_BuffsList = {
     S.Broadside,
     S.BuriedTreasure,
@@ -102,7 +99,7 @@ end
 local function RtB_Reroll ()
     if not Cache.APLVar.RtB_Reroll then
         -- Defensive Override : Grand Melee if HP < 60
-        if RubimRH.db.profile[250].dice == "SoloMode" and Player:HealthPercentage() < Settings.Outlaw.RolltheBonesLeechHP then
+        if RubimRH.db.profile[250].dice == "SoloMode" and Player:HealthPercentage() < 50 then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.GrandMelee)) and true or false;
             -- 1+ Buff
         elseif RubimRH.db.profile[250].dice == "1+ Buff" then
@@ -281,10 +278,14 @@ local function APL ()
     HL.GetEnemies(S.Dispatch); -- Blade Flurry
     HL.GetEnemies(S.SaberSlash); -- Melee
 
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= 70 then
+        return S.CrimsonVial:Cast()
+    end    
+
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
-        if not Player:Buff(S.VanishBuff) then
+        if IsStealthed() == false then
             return S.Stealth:Cast()
         end
         -- Flask

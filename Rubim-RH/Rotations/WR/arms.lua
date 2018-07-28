@@ -316,7 +316,7 @@ local function APL()
             return S.Charge:Cast()
         end
 
-        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.Warrior.Arms.victoryrush then
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].victoryrush then
             return S.VictoryRush:Cast()
         end
 
