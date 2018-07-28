@@ -12,10 +12,6 @@ local tostring = tostring;
 
 local S = RubimRH.Spell[260]
 
---20594 DWARF
---20549 TAUREN
---28730 ARCANE TORRENT
---68992 DARK FLIGHT
 S.SaberSlash.TextureSpellID = { 225096 }
 S.Dispatch.TextureSpellID = { 20594 }
 S.CrimsonVial.TextureSpellID = { 68992 }
