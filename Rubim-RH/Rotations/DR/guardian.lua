@@ -25,10 +25,10 @@ local function Bear()
     --- Declarations
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
-    local IncomingDamage = select(1, RubimRH.getDMG("player"))
-
-    local NeedMinorHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.01)) or Player:HealthPercentage() <= 50) and true or false -- Taking 5% max HP in DPS
-    local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.3))) and true or false -- Taking 10% max HP in DPS
+    local IncomingDamage = Player:IncDmgPercentage()
+    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
+    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
 
     local RangeMod = ISpell.BalanceAffinity:IsAvailable() and true or false
     local AbilityRange = {

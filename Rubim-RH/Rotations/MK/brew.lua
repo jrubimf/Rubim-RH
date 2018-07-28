@@ -60,7 +60,6 @@ local function AoE()
     end
 
     return nil
-
 end
 
 --- Preliminary APL based on Peak of Serenity Rotation Priority for 8.0.1
@@ -112,10 +111,10 @@ local function APL()
 
     --- Defensive Rotation
 
-    local IncomingDPS = Player:IncDmgPercentage() or 0
-    local NeedMinorHealing = (IncomingDPS > 2) and true or false
-    local NeedMajorHealing = (IncomingDPS > 5) and true or false
-    local NeedPanicHealing = ((IncomingDPS > 15) or (Player:HealthPercentage() <= 40)) and true or false
+    local IncomingDamage = Player:IncDmgPercentage()
+    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
+    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
 
     -- Fortifying Brew
     if ISpell.FortifyingBrew:IsReady()

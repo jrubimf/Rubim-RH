@@ -39,10 +39,10 @@
 	end
 
 	--- Defensives / Healing
-	local IncomingDamage = select(1, RubimRH.getDMG("player"))
-	local NeedMinorHealing = (IncomingDamage >= (Player:MaxHealth() * 0.01)) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-	local NeedBigHealing = ((IncomingDamage >= (Player:MaxHealth() * 0.03)) or Player:HealthPercentage() <= 50) and true or false -- Taking 10% max HP in DPS
-	local PanicHeals = (Player:HealthPercentage() <= 40) and true or false
+    local IncomingDamage = Player:IncDmgPercentage()
+    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
+    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
+    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
 
 	-- TODO: Restore these when GGLoader texture updates are complete
 	-- Lay on Hands
@@ -53,7 +53,7 @@
 
 	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
 	-- if ISpell.GuardianOfAncientKings:IsReady()
-	-- 	and PanicHeals 
+	-- 	and NeedPanicHealing 
 	-- 	and NeedBigHealing then
 	-- 	return ISpell.GuardianOfAncientKings:Cast()
 	-- end
@@ -113,8 +113,8 @@
 	--        end
 
 	local MovementSpeed = select(1, GetUnitSpeed("player"))
-	if MovementSpeed < 7 -- Standard base run speed is 7 yards per second
-		and MovementSpeed ~= 0 -- 0 move speed = not moving
+	if Player:Speed() < 100 -- Standard base run speed is 7 yards per second
+		and Player:Speed() ~= 0 -- 0 move speed = not moving
 		and ISpell.BlessingOfFreedom:IsReady() then
 		return ISpell.BlessingOfFreedom:Cast()
 	end

@@ -103,7 +103,7 @@ local function BurstRotation()
 	end
 
 	-- actions.asc+=/windstrike
-	if S.Stormstrike:IsReady(R.Windstrike) then
+	if S.Windstrike:IsReadyMorph(R.Windstrike) then
 		return S.Windstrike:Cast()
 	end
 

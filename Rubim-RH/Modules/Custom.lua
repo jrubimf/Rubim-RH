@@ -587,5 +587,5 @@ function Unit:IncDmgPercentage()
 end
 
 function Unit:Speed()
-    return GetUnitSpeed(self.UnitID) / 7 * 100
+    return GetUnitSpeed(self.UnitID) / 7 * 100 -- /dump GetUnitSpeed("player") / 7 * 100
 end
