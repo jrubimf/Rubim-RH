@@ -597,19 +597,19 @@ end
 -- Minor Defensive Usage (<= 1 Min CDs)
 RubimRH.MinorHealingThreshold = 2
 function Unit:NeedMinorHealing()
-    return (self:IncDmgPercentage() > MinorHealingThreshold or self:HealthPercentage() <= 85)
+    return (self:IncDmgPercentage() > RubimRH.MinorHealingThreshold or self:HealthPercentage() <= 85)
 end
 
 -- Major Defensive Usage (<= 3 Min CDs)
 RubimRH.MajorHealingThreshold = 5
 function Unit:NeedMajorHealing()
-    return (self:IncDmgPercentage() > MajorHealingThreshold or self:HealthPercentage() <= 60)
+    return (self:IncDmgPercentage() > RubimRH.MajorHealingThreshold or self:HealthPercentage() <= 60)
 end
 
 -- Panic Defensive Usage (> 3 Min CDs)
 RubimRH.PanicHealingThreshold = 10
 function Unit:NeedPanicHealing()
-    return (self:IncDmgPercentage() > PanicHealingThreshold or self:HealthPercentage() <= 40)
+    return (self:IncDmgPercentage() > RubimRH.PanicHealingThreshold or self:HealthPercentage() <= 40)
 end
 
 --- Unit Speed Functions

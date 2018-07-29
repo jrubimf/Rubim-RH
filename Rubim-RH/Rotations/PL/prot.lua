@@ -47,8 +47,8 @@
 
 	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
 	-- if ISpell.GuardianOfAncientKings:IsReady()
-	-- 	and NeedPanicHealing 
-	-- 	and NeedMajorHealing() then
+	-- 	and Player:NeedPanicHealing()
+	-- 	and Player:NeedMajorHealing() then
 	-- 	return ISpell.GuardianOfAncientKings:Cast()
 	-- end
 
@@ -60,9 +60,9 @@
 		return ISpell.ShieldOfTheRighteous:Cast()
 	end
 
-	-- Ardent Defender -> Ardent defender @ NeedPanicHealing() <= 90% HP, should be proactively cast by the user
+	-- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the user
 	-- if ISpell.ArdentDefender:IsReady()
-	-- 	and NeedPanicHealing() 
+	-- 	and Player:NeedPanicHealing() 
 	-- 	and Player:HealthPercentage() <= 90 then
 	-- 	return ISpell.ArdentDefender:Cast()
 	-- end
@@ -72,7 +72,7 @@
 	local SpellPower = GetSpellBonusDamage(2) -- Same result for all schools
 	local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
 	LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
-	local ShouldLotP = (((NeedPanicHealing() or NeedMajorHealing()) and Player:HealthPercentage() <= 80) or Player:HealthPercentage() <= 75) and true or false
+	local ShouldLotP = (((Player:NeedPanicHealing() or Player:NeedMajorHealing()) and Player:HealthPercentage() <= 80) or Player:HealthPercentage() <= 75) and true or false
 	if (ISpell.LightOfTheProtector:IsReady() or ISpell.HandOfTheProtector:IsReady())
 		and ShouldLotP then
 		if ISpell.HandOfTheProtector:IsAvailable() then

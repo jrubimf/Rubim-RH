@@ -113,13 +113,13 @@ local function APL()
 
     -- Fortifying Brew
     if ISpell.FortifyingBrew:IsReady()
-        and NeedPanicHealing() then
+        and Player:NeedPanicHealing() then
         return ISpell.FortifyingBrew:Cast()
     end
 
     -- Black Ox Brew
     if ISpell.Brews:ChargesFractional() < 1
-        and NeedMajorHealing()
+        and Player:NeedMajorHealing()
         and ISpell.BlackOxBrew:IsAvailable()
         and ISpell.BlackOxBrew:IsReady() then
         return ISpell.BlackOxBrew:Cast()
@@ -135,7 +135,7 @@ local function APL()
     -- Purifying Brew
     if (Player:Debuff(ISpell.HeavyStagger) or (Player:Debuff(ISpell.ModerateStagger) and Player:HealthPercentage() < 70))
         and ISpell.Brews:ChargesFractional() >= 1
-        and NeedMajorHealing() then
+        and Player:NeedMajorHealing() then
         return ISpell.PurifyingBrew:Cast()
     end
 
