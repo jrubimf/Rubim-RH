@@ -5,7 +5,7 @@
 ---
 
 local pvpRub = false
-local debugRub = false
+local debugRub = true
 
 rotationMode = "Disabled"
 local OneTimeRubim = nil
@@ -95,9 +95,9 @@ if debugRub then
     RubimRH.DebugFrame = CreateFrame("Frame", "DebugFrame")
     RubimRH.DebugFrame:SetBackdrop(nil)
     RubimRH.DebugFrame:SetFrameStrata("HIGH")
-    RubimRH.DebugFrame:SetSize(8, 8)
+    RubimRH.DebugFrame:SetSize(50, 50)
     RubimRH.DebugFrame:SetScale(1);
-    RubimRH.DebugFrame:SetPoint("TOPLEFT", 250, -250)
+    RubimRH.DebugFrame:SetPoint("CENTER", 0, 0)
     RubimRH.DebugFrame.texture = RubimRH.DebugFrame:CreateTexture(nil, "TOOLTIP")
     RubimRH.DebugFrame.texture:SetAllPoints(true)
     RubimRH.DebugFrame.texture:SetColorTexture(0, 1, 0, 1.0)

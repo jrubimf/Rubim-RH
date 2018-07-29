@@ -597,3 +597,35 @@ end
 function Unit:MaxSpeed()
     return math.floor(select(2, GetUnitSpeed(self.UnitID) / 7 * 100))
 end
+
+local random = math.random(40, 70)
+local randomTimer = GetTime()
+local function randomNumber()
+    if GetTime() - randomTimer >= 1 then
+        random = math.random(40, 70)
+        randomTimer = GetTime()
+    end
+    return random
+end    
+
+function Unit:IsInterruptable()
+    local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo(self.UnitID)
+
+    if castName == nil then
+        local castName, nameSubtext, text, texture, startTimeMS, endTimeMS, isTradeSkill, notInterruptible = UnitChannelInfo(self.UnitID)
+    end
+
+    if castName == nil or notInterruptable == true then
+        return false
+    end
+
+    local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
+    local timeLeft = ((GetTime() * 1000 - castEndTime) * -1) / 1000
+    local castTime = castEndTime - castStartTime
+    local currentPercent = timeSinceStart / castTime * 100000
+    local interruptPercent = randomNumber()
+    if currentPercent >= interruptPercent then
+        return true
+    end
+    return false
+end    
