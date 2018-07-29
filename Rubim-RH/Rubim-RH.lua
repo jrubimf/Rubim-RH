@@ -72,7 +72,7 @@ local EnabledRotation = {
     [105] = false, -- Restoration
     -- Hunter
     [253] = true, -- Beast Mastery
-    [254] = false, -- Marksmanship
+    [254] = true, -- Marksmanship
     [255] = false, -- Survival
     -- Mage
     [62] = false, -- Arcane
