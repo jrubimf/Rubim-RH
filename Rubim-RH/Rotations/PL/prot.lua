@@ -13,15 +13,6 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 
 local S = RubimRH.Spell[66]
-local R = {
-	Judgment = 30,
-	AvengersShield = 30,
-	ShieldOfTheRighteous = "Melee",
-	HammerOfTheRighteous = "Melee",
-	BlessedHammer = "Melee",
-	Consecration = 8,
-	HammerOfJustice = 10,
-	Rebuke = "Melee" }
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -31,6 +22,7 @@ local IsTanking = false
 local function UpdateVars()
     -- Check if we're tanking
     IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
+    
     -- Update enemies within ability ranges
     HL.GetEnemies("Melee") -- 5 Yards
     HL.GetEnemies(8) -- 40-43 Yards
@@ -39,21 +31,11 @@ local function UpdateVars()
     HL.GetEnemies(30) -- 8-11 Yards
 end    
 
-function Spell:CanUse(RANGE)
-	RANGE = RANGE or 100
-	return (self:IsReady() and Target:Exists() and Target:IsInRange(RANGE))
-end
-
 local function APL()
 	UpdateVars()
 
 	if not Player:AffectingCombat() then return 0, 462338 end
 
-	--- Kick
-	if S.Rebuke:CanUse(R.Rebuke)
-		and Target:IsInterruptable() then
-		return S.Rebuke:Cast()
-	end
 
 	-- TODO: Restore these when GGLoader texture updates are complete
 	-- Lay on Hands
@@ -69,7 +51,7 @@ local function APL()
 	-- end
 
 	-- Shield of the Righteous
-	if S.ShieldOfTheRighteous:CanUse(R.ShieldOfTheRighteous)
+	if S.ShieldOfTheRighteous:IsReady()
 		and Player:BuffRemains(S.ShieldOfTheRighteousBuff) <= Player:GCD()
 		and (S.ShieldOfTheRighteous:ChargesFractional() >= 2 or Player:ActiveMitigationNeeded() or Player:NeedMinorHealing())
 		and (Player:Buff(S.AvengersValor) or (not Player:Buff(S.AvengersValor) and S.AvengersShield:CooldownRemains() >= Player:GCD() * 2)) then
@@ -142,40 +124,40 @@ local function APL()
 	--- Primary Damage Rotation
 
 	-- Avenger's Shield -> High priority with Crusader's Judgment and < 1 Judgment Charge
-	if S.AvengersShield:CanUse(R.AvengersShield) 
+	if S.AvengersShield:IsReady() 
 		and S.CrusadersJudgment:IsAvailable()
 		and S.Judgment:ChargesFractional() < 1 then
 		return S.AvengersShield:Cast()
 	end
 
 	-- Judgment
-	if S.Judgment:CanUse(R.Judgment) then
+	if S.Judgment:IsReady() then
 		return S.Judgment:Cast()
 	end
 
 	-- Consecration
-	if S.Consecration:CanUse(R.Consecration)
+	if S.Consecration:IsReady()
 		and not Player:Buff(S.Consecration) then
 		return S.Consecration:Cast()
 	end
 
 	-- Avenger's Shield -> Lower priority
-	if S.AvengersShield:CanUse(R.AvengersShield) then
+	if S.AvengersShield:IsReady() then
 		return S.AvengersShield:Cast()
 	end
 
 	-- Blessed Hammer
-	if S.BlessedHammer:CanUse(R.BlessedHammer) then
+	if S.BlessedHammer:IsReady() then
 		return S.BlessedHammer:Cast()
 	end
 
 	-- Hammer of the Righteous
-	if S.HammerOfTheRighteous:CanUse(R.HammerOfTheRighteous) then
+	if S.HammerOfTheRighteous:IsReady() then
 		return S.HammerOfTheRighteous:Cast()
 	end
 
 	-- Consecration -> Cast as filler
-	if S.Consecration:CanUse(R.Consecration) then
+	if S.Consecration:IsReady() and Cache.EnemiesCount[8] >= 1 then
 		return S.Consecration:Cast()
 	end
 

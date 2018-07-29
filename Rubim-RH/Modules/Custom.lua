@@ -626,7 +626,7 @@ end
 
 -- Unit's Maximum Speed
 function Unit:MaxSpeed()
-	return math.floor(select(2, GetUnitSpeed(self.UnitID) / 7 * 100))
+	return math.floor(select(2, GetUnitSpeed(self.UnitID)) / 7 * 100)
 end
 
 local randomChannel = math.random(10, 20)
