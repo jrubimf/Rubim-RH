@@ -14,21 +14,6 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 
 --- ============================   CUSTOM   ============================
-function RubimRH.TargetIsValid()
-    local isValid = false
-
-    if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
-        isValid = true
-    end
-    HL.GetEnemies(8, true)
-
-    if Cache.EnemiesCount[8] >= 1 then
-        isValid = true
-    end
-
-    return isValid
-end
-
 local function round2(num, idp)
     mult = 10 ^ (idp or 0)
     return math.floor(num * mult + 0.5) / mult
@@ -574,10 +559,33 @@ local PvPDummyUnits = {
     [114840] = true, -- Raider's Training Dummy
 }
 
+---- Unit Functions
+
+--- Unit Validation Functions
+
+-- Target Valid
+function RubimRH.TargetIsValid()
+    local isValid = false
+
+    if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
+        isValid = true
+    end
+    HL.GetEnemies(8, true)
+
+    if Cache.EnemiesCount[8] >= 1 then
+        isValid = true
+    end
+
+    return isValid
+end
+
+-- Unit = PvP Dummy
 function Unit:IsPvPDummy()
     local NPCID = self:NPCID()
     return NPCID >= 0 and PvPDummyUnits[NPCID] == true
 end
+
+--- Unit Health Functions
 
 -- Incoming damage as percentage of Unit's max health
 function Unit:IncDmgPercentage()
@@ -586,14 +594,37 @@ function Unit:IncDmgPercentage()
     return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
+-- Minor Defensive Usage (<= 1 Min CDs)
+RubimRH.MinorHealingThreshold = 2
+function Unit:NeedMinorHealing()
+    return (self:IncDmgPercentage() > RubimRH.MinorHealingThreshold or self:HealthPercentage() <= 85)
+end
+
+-- Major Defensive Usage (<= 3 Min CDs)
+RubimRH.MajorHealingThreshold = 5
+function Unit:NeedMajorHealing()
+    return (self:IncDmgPercentage() > RubimRH.MajorHealingThreshold or self:HealthPercentage() <= 60)
+end
+
+-- Panic Defensive Usage (> 3 Min CDs)
+RubimRH.PanicHealingThreshold = 10
+function Unit:NeedPanicHealing()
+    return (self:IncDmgPercentage() > RubimRH.PanicHealingThreshold or self:HealthPercentage() <= 40)
+end
+
+--- Unit Speed Functions
+
+-- Unit Slowed
 function Unit:IsSnared()
     return (self:MaxSpeed() < 100 and self:Speed() ~= 64 and self:Speed() ~= 0) and true or false
 end
 
+-- Unit's Speed
 function Unit:Speed()
     return math.floor(GetUnitSpeed(self.UnitID) / 7 * 100)
 end
 
+-- Unit's Maximum Speed
 function Unit:MaxSpeed()
     return math.floor(select(2, GetUnitSpeed(self.UnitID) / 7 * 100))
 end

@@ -9,233 +9,227 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
-
-local ISpell = RubimRH.Spell[104]
-
+-- Spell Localization
+local S = RubimRH.Spell[104]
+-- Optional debug to chat window
+local PrintDebug = false
+-- Item localization // Declaration
 if not Item.Druid then Item.Druid = {} end
-Item.Druid.Guardian = {
-    -- Legendaries
-    EkowraithCreatorofWorlds = Item(137015, {5}),
-    LuffaWrappings = Item(137056, {9})
-}
-local I = Item.Druid.Guardian;
+Item.Druid.Guardian = { EkowraithCreatorofWorlds = Item(137015, {5}), LuffaWrappings = Item(137056, {9}) }
+local I = Item.Druid.Guardian
+-- Range array declaration
+local RangeMod = S.BalanceAffinity:IsAvailable() and true or false
+local R = {
+    Moonfire = (RangeMod) and 43 or 40,
+    Mangle = (RangeMod) and 8 or "Melee",
+    Thrash = (RangeMod) and 11 or 8,
+    Swipe = (RangeMod) and 11 or 8,
+    Maul = (RangeMod) and 8 or "Melee",
+    Pulverize = (RangeMod) and 8 or "Melee",
+    SkullBash = (RangeMod) and 13 or 10 }
+-- Keep track of whether or not we're tanking
+local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
 local function Bear()
-
-    --- Declarations
-    local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
-
-    local IncomingDamage = Player:IncDmgPercentage()
-    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
-    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
-
-    local RangeMod = ISpell.BalanceAffinity:IsAvailable() and true or false
-    local AbilityRange = {
-        Moonfire = (RangeMod) and 43 or 40,
-        Mangle = (RangeMod) and 8 or "Melee",
-        Thrash = (RangeMod) and 11 or 8,
-        Swipe = (RangeMod) and 11 or 8,
-        Maul = (RangeMod) and 8 or "Melee",
-        Pulverize = (RangeMod) and 8 or "Melee",
-        SkullBash = (RangeMod) and 13 or 10
-    }
-    AbilityRange.Thrash = (I.LuffaWrappings:IsEquipped()) and AbilityRange.Thrash * 1.25 or AbilityRange.Thrash
-
     --- Defensives / Healing
 
     -- Bristling Fur
-    if ISpell.BristlingFur:IsReadyMorph()
-            and NeedMinorHealing then
-        return ISpell.BristlingFur:Cast()
+    if S.BristlingFur:IsReady()
+            and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then
+        return S.BristlingFur:Cast()
     end
 
     -- Survival Instincts
-    if ISpell.SurvivalInstincts:IsReadyMorph()
-            and not Player:Buff(ISpell.Barkskin)
-            and not Player:Buff(ISpell.SurvivalInstincts)
-            and NeedBigHealing then
-        return ISpell.SurvivalInstincts:Cast()
+    if S.SurvivalInstincts:ChargesFractional() >= 1
+            and not Player:Buff(S.Barkskin)
+            and not Player:Buff(S.SurvivalInstincts)
+            and Player:NeedPanicHealing() then
+        return S.Berserking:Cast()
     end
 
     -- TODO: Fix texture after GGLoader properly updates the Barkskin pixels
     -- Barkskin
-    if ISpell.Barkskin:IsReady()
-            and not Player:Buff(ISpell.SurvivalInstincts)
-            and not Player:Buff(ISpell.Barkskin)
-            and NeedMinorHealing then
-        return ISpell.WarStomp:Cast()
+    if S.Barkskin:IsReady()
+            and not Player:Buff(S.SurvivalInstincts)
+            and not Player:Buff(S.Barkskin)
+            and Player:NeedMajorHealing() then
+        return S.WarStomp:Cast()
     end
 
     -- Ironfur
-    local WaitForGuardianOfElune = not (Player:Buff(ISpell.GuardianOfEluneBuff) or (not Player:Buff(ISpell.GuardianOfEluneBuff) and ISpell.Mangle:CooldownRemains() > Player:GCD() * 2))
-    if ISpell.Ironfur:IsReadyMorph()
-            and Player:BuffRemains(ISpell.Ironfur) <= 0.5
-            and not WaitForGuardianOfElune
-            and IsTanking then
-        return ISpell.Ironfur:Cast()
+    if S.Ironfur:IsReady()
+            and Player:BuffRemains(S.Ironfur) <= Player:GCD()
+            and (IsTanking or Player:NeedMinorHealing()) then
+        return S.Ironfur:Cast()
     end
 
     -- Frenzied Regeneration
-    local FrenziedRegenerationHeal = (Player:Buff(ISpell.GuardianOfEluneBuff)) and 21 or 18
+    local FrenziedRegenerationHeal = (Player:Buff(S.GuardianOfEluneBuff)) and 21 or 18
     local FrenziedOverHeal = (FrenziedRegenerationHeal + Player:HealthPercentage() >= 100) and true or false
-    if ISpell.FrenziedRegeneration:IsReadyMorph()
-            and not FrenziedOverHeal
-            and NeedMinorHealing
-            and ISpell.FrenziedRegeneration:ChargesFractional() >= 1 then
-        return ISpell.FrenziedRegeneration:Cast()
+    if S.FrenziedRegeneration:IsReady()
+        and not FrenziedOverHeal
+        and (Player:NeedMinorHealing() or Player:NeedMajorHealing() or Player:NeedPanicHealing()) then
+        return S.FrenziedRegeneration:Cast()
     end
 
     --- Main Damage Rotation
 
     -- Moonfire
-    if Target:DebuffRemains(ISpell.MoonfireDebuff) <= Player:GCD()
-            and ISpell.Moonfire:IsReadyMorph(AbilityRange.Moonfire) then
-        return ISpell.Moonfire:Cast()
+    if Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD()
+            and S.Moonfire:IsReadyMorph(R.Moonfire) then
+        return S.Moonfire:Cast()
     end
 
     -- Thrash
-    if ISpell.Thrash:IsReadyMorph(AbilityRange.Thrash)
-            and Target:DebuffStack(ISpell.ThrashDebuff) < 3 then
-        return ISpell.Thrash:Cast()
+    if S.Thrash:IsReadyMorph(R.Thrash)
+            and Target:DebuffStack(S.ThrashDebuff) < 3 then
+        return S.Thrash:Cast()
     end
 
     -- Pulverize
-    if Target:DebuffStack(ISpell.ThrashDebuff) == 3
-            and ISpell.Pulverize:IsReadyMorph(AbilityRange.Pulverize) then
-        return ISpell.Pulverize:Cast()
+    if Target:DebuffStack(S.ThrashDebuff) == 3
+            and S.Pulverize:IsReadyMorph(R.Pulverize) then
+        return S.Pulverize:Cast()
     end
 
     -- Mangle
-    if ISpell.Mangle:IsReadyMorph(AbilityRange.Mangle) then
-        return ISpell.Mangle:Cast()
+    if S.Mangle:IsReadyMorph(R.Mangle) then
+        return S.Mangle:Cast()
     end
 
     -- Thrash
-    if ISpell.Thrash:IsReadyMorph(AbilityRange.Thrash) then
-        return ISpell.Thrash:Cast()
+    if S.Thrash:IsReadyMorph(R.Thrash, true) then
+        return S.Thrash:Cast()
     end
 
     -- Moonfire
-    if ISpell.Moonfire:IsReadyMorph(AbilityRange.Moonfire)
-            and Player:Buff(ISpell.GalacticGuardianBuff) then
-        return ISpell.Moonfire:Cast()
+    if S.Moonfire:IsReadyMorph(R.Moonfire)
+            and Player:Buff(S.GalacticGuardianBuff) then
+        return S.Moonfire:Cast()
     end
 
     -- Maul
-    if ISpell.Maul:IsReadyMorph(AbilityRange.Maul)
+    if S.Maul:IsReady(R.Maul)
             and Player:Rage() >= 90 then
-        return ISpell.Maul:Cast()
+        return S.Maul:Cast()
     end
 
-    -- Swipe
-    if ISpell.Swipe:IsReadyMorph(AbilityRange.Swipe) then
-        return ISpell.Swipe:Cast()
+    -- Swipe -> Requires IsReadyMorph
+    if S.Swipe:IsReadyMorph(R.Swipe, true) then
+        return S.Swipe:Cast()
     end
 end
 
 -- TODO: Cat AoE
 local function Cat()
-    HL.GetEnemies("Melee");
-    HL.GetEnemies(8, true);
-    HL.GetEnemies(10, true);
-    HL.GetEnemies(20, true);
-
-    local CatWeave = ISpell.FeralAffinity:IsAvailable()
+    local CatWeave = S.FeralAffinity:IsAvailable()
     if CatWeave then
         if Player:ComboPoints() == 5
-                and Target:DebuffRemains(ISpell.Rip) <= Player:GCD() * 5
-                and ISpell.Rip:IsReadyMorph("Melee") then
-            return ISpell.Rip:Cast()
+                and Target:DebuffRemains(S.Rip) <= Player:GCD() * 5
+                and S.Rip:IsReadyMorph("Melee") then
+            return S.Rip:Cast()
         end
 
         if Player:ComboPoints() == 5
-                and Target:DebuffRemains(ISpell.Rip) >= Player:GCD() * 5
-                and ISpell.FerociousBite:IsReadyMorph("Melee") then
-            return ISpell.FerociousBite:Cast()
+                and Target:DebuffRemains(S.Rip) >= Player:GCD() * 5
+                and S.FerociousBite:IsReadyMorph("Melee") then
+            return S.FerociousBite:Cast()
         end
 
         if Player:ComboPoints() <= 5
-                and Target:DebuffRemains(ISpell.RakeDebuff) <= Player:GCD() then
-            return ISpell.Rake:Cast()
+                and Target:DebuffRemains(S.RakeDebuff) <= Player:GCD() then
+            return S.Rake:Cast()
         end
     end
 
-    if ISpell.ThrashCat:IsReadyMorph("Melee")
-            and Target:DebuffRemains(ISpell.ThrashCat) <= Player:GCD() then
-        return ISpell.ThrashCat:Cast()
+    if S.ThrashCat:IsReadyMorph("Melee")
+            and Target:DebuffRemains(S.ThrashCat) <= Player:GCD() then
+        return S.ThrashCat:Cast()
     end
 
-    return ISpell.Shred:Cast()
+    return S.Shred:Cast()
 end
 
 local function Moonkin()
     -- Base cast range for Balance Affinity is 43 yards on all abilities
-    local AbilityRange = 43
+    local R = 43
 
     -- Moonfire
-    if ISpell.Moonfire:IsReadyMorph(AbilityRange)
-            and (Target:DebuffRemains(ISpell.MoonfireDebuff) <= Player:GCD() or Player:Buff(ISpell.GalacticGuardianBuff)) then
-        return ISpell.Moonfire:Cast()
+    if S.Moonfire:IsReadyMorph(R.Moonfire)
+            and (Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD() or Player:Buff(S.GalacticGuardianBuff)) then
+        return S.Moonfire:Cast()
     end
 
     -- Sunfire
-    if ISpell.Sunfire:IsReadyMorph(AbilityRange)
-            and Target:DebuffRemains(ISpell.SunfireDebuff) <= Player:GCD() then
-        return ISpell.Sunfire:Cast()
+    if S.Sunfire:IsReadyMorph(R.Moonfire)
+            and Target:DebuffRemains(S.SunfireDebuff) <= Player:GCD() then
+        return S.Sunfire:Cast()
     end
 
     -- Stationary damage rotation
     if not Player:IsMoving() then
 
         -- Starsurge
-        if ISpell.Starsurge:IsReadyMorph(AbilityRange)
-                and not Player:Buff(ISpell.LunarEmpowerment)
-                and not Player:Buff(ISpell.SolarEmpowerment) then
-            return ISpell.Starsurge:Cast()
+        if S.Starsurge:IsReadyMorph(R.Moonfire)
+                and not Player:Buff(S.LunarEmpowerment)
+                and not Player:Buff(S.SolarEmpowerment) then
+            return S.Starsurge:Cast()
         end
 
         -- Lunar Strike
-        if ISpell.LunarStrike:IsReadyMorph(AbilityRange) and
-                Player:Buff(ISpell.LunarEmpowerment) then
-            return ISpell.LunarStrike:Cast()
+        if S.LunarStrike:IsReadyMorph(R.Moonfire) and
+                Player:Buff(S.LunarEmpowerment) then
+            return S.LunarStrike:Cast()
         end
 
         -- Wrath spam
-        if ISpell.Wrath:IsReadyMorph(AbilityRange) then return ISpell.Wrath:Cast() end
+        if S.Wrath:IsReadyMorph(R.Moonfire) then return S.Wrath:Cast() end
     else
         -- Moonfire spam on the move
-        if ISpell.Moonfire:IsReadyMorph(AbilityRange) then return ISpell.Moonfire:Cast() end
+        if S.Moonfire:IsReadyMorph(R.Moonfire) then return S.Moonfire:Cast() end
     end
 
     return nil
 end
 
+local function UpdateVars()
+    -- Check if we're tanking
+    IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
+    -- Determine if the player is using the Balance affinity
+    RangeMod = S.BalanceAffinity:IsAvailable() and true or false
+    -- Reevaluate ranges -> If player's spec has changed to Balance Affinity
+    R.Moonfire = (RangeMod) and 43 or 40
+    R.Mangle = (RangeMod) and 8 or "Melee"
+    R.Thrash = (RangeMod) and 11 or 8
+    R.Swipe = (RangeMod) and 11 or 8
+    R.Maul = (RangeMod) and 8 or "Melee"
+    R.Pulverize = (RangeMod) and 8 or "Melee"
+    R.SkullBash = (RangeMod) and 13 or 10
+    -- Adjust Thrash range if player has Luffa Wrappings equipped 
+    R.Thrash = (I.LuffaWrappings:IsEquipped()) and R.Thrash * 1.25 or R.Thrash
+    -- Update enemies within ability ranges
+    HL.GetEnemies("Melee") -- 5 Yards
+    HL.GetEnemies(R.Moonfire, true) -- 40-43 Yards
+    HL.GetEnemies(R.Mangle, true) -- 5-8 Yards
+    HL.GetEnemies(R.Thrash, true) -- 8-11 Yards
+    HL.GetEnemies(R.SkullBash, true) -- 10-13 Yards
+end    
+
 local function APL()
+    UpdateVars()
 
     if not Player:AffectingCombat() then return 0, 462338 end
 
-    local ShapeshiftStance = {
-        Bear = (Player:Buff(ISpell.BearForm)),
-        Cat = (Player:Buff(ISpell.CatForm)),
-        Travel = (Player:Buff(ISpell.TravelForm)),
-        Moonkin = (Player:Buff(ISpell.MoonkinForm)),
-        NoStance = false
-    }
-    ShapeshiftStance.NoStance = (not ShapeshiftStance.Bear and not ShapeshiftStance.Cat and not ShapeshiftStance.Travel and not ShapeshiftStance.Moonkin)
+    -- TODO: Mighty Bash, Typhoon, Entanglement -> GGLoader textures not working
 
-    -- TODO: Implement when GGLoader fixes Mighty Bash texture
-    --    local CTRL = IsLeftControlKeyDown()
-    --    local SHIFT = IsLeftShiftKeyDown()
-    --    if CTRL and SHIFT then
-    --        if S.Typhoon:IsReadyMorph(15) then return S.Typhoon:Cast() end
-    --        if S.MightyBash:IsReadyMorph("Melee") then return S.MightyBash:Cast() end
-    --        if S.Entanglement:IsReadyMorph("Melee") then return S.Entanglement:Cast() end
-    --    end
-
-    if ShapeshiftStance.Bear and Bear() ~= nil then return Bear() end
-    if ShapeshiftStance.Cat and Cat() ~= nil then return Cat() end
-    if ShapeshiftStance.Moonkin and Moonkin() ~= nil then return Moonkin() end
+    local Form = GetShapeshiftForm("player")
+    if Form == 1 and Bear() ~= nil then 
+        return Bear() 
+    elseif Form == 2 and Cat() ~= nil 
+        then return Cat()
+    elseif Form == 4 and Moonkin() ~= nil then 
+        return Moonkin() 
+    end
 
     return 0, 975743
 end

@@ -38,12 +38,6 @@
 		return ISpell.Rebuke:Cast()
 	end
 
-	--- Defensives / Healing
-    local IncomingDamage = Player:IncDmgPercentage()
-    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
-    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
-
 	-- TODO: Restore these when GGLoader texture updates are complete
 	-- Lay on Hands
 	-- if ISpell.LayOnHands:IsReady()
@@ -53,8 +47,8 @@
 
 	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
 	-- if ISpell.GuardianOfAncientKings:IsReady()
-	-- 	and NeedPanicHealing 
-	-- 	and NeedBigHealing then
+	-- 	and Player:NeedPanicHealing()
+	-- 	and Player:NeedMajorHealing() then
 	-- 	return ISpell.GuardianOfAncientKings:Cast()
 	-- end
 
@@ -66,9 +60,9 @@
 		return ISpell.ShieldOfTheRighteous:Cast()
 	end
 
-	-- Ardent Defender -> Ardent defender @ NeedMinorHealing <= 90% HP, should be proactively cast by the user
+	-- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the user
 	-- if ISpell.ArdentDefender:IsReady()
-	-- 	and NeedMinorHealing 
+	-- 	and Player:NeedPanicHealing() 
 	-- 	and Player:HealthPercentage() <= 90 then
 	-- 	return ISpell.ArdentDefender:Cast()
 	-- end
@@ -78,7 +72,7 @@
 	local SpellPower = GetSpellBonusDamage(2) -- Same result for all schools
 	local LotPHeal = (SpellPower * 2.8) + ((SpellPower * 2.8) * VersatilityHealIncrease)
 	LotPHeal = (LotPHeal * ((100 - Player:HealthPercentage()) / 100)) + LotPHeal
-	local ShouldLotP = (((NeedMinorHealing or NeedBigHealing) and Player:HealthPercentage() <= 80) or Player:HealthPercentage() <= 75) and true or false
+	local ShouldLotP = (((Player:NeedPanicHealing() or Player:NeedMajorHealing()) and Player:HealthPercentage() <= 80) or Player:HealthPercentage() <= 75) and true or false
 	if (ISpell.LightOfTheProtector:IsReady() or ISpell.HandOfTheProtector:IsReady())
 		and ShouldLotP then
 		if ISpell.HandOfTheProtector:IsAvailable() then

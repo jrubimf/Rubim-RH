@@ -712,6 +712,7 @@ RubimRH.Spell[254] = {
 }
 
 ----DRUID
+-- Feral
 RubimRH.Spell[103] = {
     -- Racials
     Berserking = Spell(26297),
@@ -768,13 +769,13 @@ RubimRH.Spell[103] = {
     ApexPredator = Spell(252752), -- TODO: Verify T21 4-Piece Buff SpellID
     -- Misc
     RipAndTear = Spell(203242),
-    Clearcasting = Spell(135700),
-
+    Clearcasting = Spell(135700)
 }
-
+-- Guardian
 RubimRH.Spell[104] = {
     -- Racials
     WarStomp             = Spell(20549),
+    Berserking           = Spell(26297),
     -- Abilities
     FrenziedRegeneration = Spell(22842),
     Gore                 = Spell(210706),
