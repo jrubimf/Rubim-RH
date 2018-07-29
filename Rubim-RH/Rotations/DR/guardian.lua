@@ -26,9 +26,6 @@ local function Bear()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
     local IncomingDamage = Player:IncDmgPercentage()
-    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
-    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
 
     local RangeMod = ISpell.BalanceAffinity:IsAvailable() and true or false
     local AbilityRange = {
@@ -46,7 +43,7 @@ local function Bear()
 
     -- Bristling Fur
     if ISpell.BristlingFur:IsReadyMorph()
-            and NeedMinorHealing then
+            and NeedMinorHealing() then
         return ISpell.BristlingFur:Cast()
     end
 
@@ -54,7 +51,7 @@ local function Bear()
     if ISpell.SurvivalInstincts:IsReadyMorph()
             and not Player:Buff(ISpell.Barkskin)
             and not Player:Buff(ISpell.SurvivalInstincts)
-            and NeedBigHealing then
+            and NeedMajorHealing then
         return ISpell.SurvivalInstincts:Cast()
     end
 
@@ -63,7 +60,7 @@ local function Bear()
     if ISpell.Barkskin:IsReady()
             and not Player:Buff(ISpell.SurvivalInstincts)
             and not Player:Buff(ISpell.Barkskin)
-            and NeedMinorHealing then
+            and NeedMinorHealing() then
         return ISpell.WarStomp:Cast()
     end
 
@@ -81,7 +78,7 @@ local function Bear()
     local FrenziedOverHeal = (FrenziedRegenerationHeal + Player:HealthPercentage() >= 100) and true or false
     if ISpell.FrenziedRegeneration:IsReadyMorph()
             and not FrenziedOverHeal
-            and NeedMinorHealing
+            and NeedMinorHealing()
             and ISpell.FrenziedRegeneration:ChargesFractional() >= 1 then
         return ISpell.FrenziedRegeneration:Cast()
     end

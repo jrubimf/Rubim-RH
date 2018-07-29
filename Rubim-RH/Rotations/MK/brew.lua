@@ -111,20 +111,15 @@ local function APL()
 
     --- Defensive Rotation
 
-    local IncomingDamage = Player:IncDmgPercentage()
-    local NeedMinorHealing = (IncomingDamage > 2 or Player:HealthPercentage() <= 85) and true or false -- Taking 5% max HP in DPS or <= 50% HP
-    local NeedMajorHealing = (IncomingDamage > 5 or Player:HealthPercentage() <= 60) and true or false -- Taking 10% max HP in DPS
-    local PanicHeals = (IncomingDamage > 15 or Player:HealthPercentage() <= 40) and true or false -- Taking > 15% max HP in DPS or Player HP% <= 40
-
     -- Fortifying Brew
     if ISpell.FortifyingBrew:IsReady()
-        and NeedPanicHealing then
+        and NeedPanicHealing() then
         return ISpell.FortifyingBrew:Cast()
     end
 
     -- Black Ox Brew
     if ISpell.Brews:ChargesFractional() < 1
-        and NeedMajorHealing
+        and NeedMajorHealing()
         and ISpell.BlackOxBrew:IsAvailable()
         and ISpell.BlackOxBrew:IsReady() then
         return ISpell.BlackOxBrew:Cast()
@@ -140,7 +135,7 @@ local function APL()
     -- Purifying Brew
     if (Player:Debuff(ISpell.HeavyStagger) or (Player:Debuff(ISpell.ModerateStagger) and Player:HealthPercentage() < 70))
         and ISpell.Brews:ChargesFractional() >= 1
-        and NeedMajorHealing then
+        and NeedMajorHealing() then
         return ISpell.PurifyingBrew:Cast()
     end
 
