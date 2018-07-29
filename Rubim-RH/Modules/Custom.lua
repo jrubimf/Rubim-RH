@@ -621,12 +621,14 @@ end
 
 -- Unit's Speed
 function Unit:Speed()
-    return math.floor(GetUnitSpeed(self.UnitID) / 7 * 100)
+    local ThisSpeed = math.floor(GetUnitSpeed(self.UnitID) / 7 * 100)
+    return (ThisSpeed == 0) and math.floor(ThisSpeed) or 0
 end
 
 -- Unit's Maximum Speed
 function Unit:MaxSpeed()
-    return math.floor(select(2, GetUnitSpeed(self.UnitID) / 7 * 100))
+    local ThisSpeed = select(2, GetUnitSpeed(self.UnitID) / 7 * 100)
+    return (ThisSpeed == 0) and math.floor(ThisSpeed) or 0
 end
 
 local random = math.random(40, 70)

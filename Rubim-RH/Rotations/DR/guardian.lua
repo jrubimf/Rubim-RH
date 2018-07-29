@@ -28,7 +28,7 @@ local R = {
     Pulverize = (RangeMod) and 8 or "Melee",
     SkullBash = (RangeMod) and 13 or 10 }
 -- Keep track of whether or not we're tanking
-local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
+local IsTanking = false
 
 local function Bear()
     --- Defensives / Healing
@@ -81,7 +81,7 @@ local function Bear()
     end
 
     -- Thrash
-    if S.Thrash:IsReadyMorph(R.Thrash)
+    if S.Thrash:IsReadyMorph(R.Thrash, true)
             and Target:DebuffStack(S.ThrashDebuff) < 3 then
         return S.Thrash:Cast()
     end
@@ -209,10 +209,10 @@ local function UpdateVars()
     R.Thrash = (I.LuffaWrappings:IsEquipped()) and R.Thrash * 1.25 or R.Thrash
     -- Update enemies within ability ranges
     HL.GetEnemies("Melee") -- 5 Yards
-    HL.GetEnemies(R.Moonfire, true) -- 40-43 Yards
-    HL.GetEnemies(R.Mangle, true) -- 5-8 Yards
+    HL.GetEnemies(R.Moonfire) -- 40-43 Yards
+    HL.GetEnemies(R.Mangle) -- 5-8 Yards
     HL.GetEnemies(R.Thrash, true) -- 8-11 Yards
-    HL.GetEnemies(R.SkullBash, true) -- 10-13 Yards
+    HL.GetEnemies(R.SkullBash) -- 10-13 Yards
 end    
 
 local function APL()

@@ -535,6 +535,7 @@ RubimRH.Spell[66] = {
     BlessedHammer = Spell(204019),
     ConsecratedHammer = Spell(203785),
     CrusadersJudgment = Spell(204023),
+    Seraphim = Spell(152262),
     -- Defensive / Utility
     LightOfTheProtector = Spell(184092),
     HandOfTheProtector = Spell(213652),
@@ -546,7 +547,6 @@ RubimRH.Spell[66] = {
     BlessingOfProtection = Spell(1022),
     BlessingOfSacrifice = Spell(6940),
     DivineShield = Spell(642),
-
     -- Utility
     Rebuke = Spell(96231)
 }
