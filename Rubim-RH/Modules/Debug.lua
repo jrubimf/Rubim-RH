@@ -5,7 +5,7 @@
 ---
 
 local pvpRub = false
-local debugRub = true
+local debugRub = false
 
 rotationMode = "Disabled"
 local OneTimeRubim = nil
