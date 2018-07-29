@@ -60,6 +60,12 @@ local function Cooldowns()
     if RubimRH.CDsON() and S.AvengingWrath:IsCastable() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
         return S.AvengingWrath:Cast()
     end
+    
+    -- Hammer of Reckoning
+	  if RubimRH.CDsON() and S.HammerOfReckoning:IsCastable() and Player:BuffStack(S.HammerOfReckoningBuff) >= 50 and S.AvengingWrath:CooldownRemains() > 20 and not Player:Buff(S.AvengingWrath) and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+        return S.HammerOfReckoning:Cast()
+    end
+    
     --actions.cooldowns+=/crusade,if=holy_power>=4
     if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
         return S.Crusade:Cast()

@@ -398,7 +398,7 @@ local function getOptions()
                                 local key = info.arg or info[#info]
                                 RubimRH.db.profile[70][key] = value
                             end,
-                            args = {
+                             args = {
                                 cooldown = {
                                     order = 1,
                                     type = "toggle",
@@ -411,13 +411,23 @@ local function getOptions()
                                     name = "Cooldowns"
                                 },
                                 justicarglory = {
-                                    order = 1,
+                                    order = 2,
                                     type = "range",
                                     min = 5,
                                     max = 95,
                                     step = 5,
                                     --fontSize = "medium",
                                     name = "Justicar/Word of Glory"
+                                },
+								
+								  flashOfLightPercent = {
+                                    order = 2,
+                                    type = "range",
+                                    min = 5,
+                                    max = 95,
+                                    step = 1,
+                                    --fontSize = "medium",
+                                    name = "Flash of Light"
                                 },
                             }
                         },
