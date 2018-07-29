@@ -35,16 +35,16 @@ local function Bear()
 
     -- Bristling Fur
     if S.BristlingFur:IsReady()
-            and Player:NeedMinorHealing() then
+            and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then
         return S.BristlingFur:Cast()
     end
 
     -- Survival Instincts
-    if S.SurvivalInstincts:IsReady()
+    if S.SurvivalInstincts:ChargesFractional() >= 1
             and not Player:Buff(S.Barkskin)
             and not Player:Buff(S.SurvivalInstincts)
             and Player:NeedPanicHealing() then
-        return S.SurvivalInstincts:Cast()
+        return S.Berserking:Cast()
     end
 
     -- TODO: Fix texture after GGLoader properly updates the Barkskin pixels

@@ -775,6 +775,7 @@ RubimRH.Spell[103] = {
 RubimRH.Spell[104] = {
     -- Racials
     WarStomp             = Spell(20549),
+    Berserking           = Spell(26297),
     -- Abilities
     FrenziedRegeneration = Spell(22842),
     Gore                 = Spell(210706),
