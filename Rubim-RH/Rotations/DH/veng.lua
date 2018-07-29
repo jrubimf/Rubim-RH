@@ -50,7 +50,7 @@ local function APL()
         return S.Fracture:Cast()
     end
 
-    if S.SpiritBomb:Ready() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
+    if S.SpiritBomb:IsReady() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
         return S.SpiritBomb:Cast()
     end
 
