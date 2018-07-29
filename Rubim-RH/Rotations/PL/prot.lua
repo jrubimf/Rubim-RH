@@ -20,15 +20,15 @@ local T212PC, T214PC = HL.HasTier("T21");
 local IsTanking = false
 
 local function UpdateVars()
-    -- Check if we're tanking
-    IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
-    
-    -- Update enemies within ability ranges
-    HL.GetEnemies("Melee") -- 5 Yards
-    HL.GetEnemies(8) -- 40-43 Yards
-    HL.GetEnemies(8, true) -- 10-13 Yards
-    HL.GetEnemies(10) -- 5-8 Yards
-    HL.GetEnemies(30) -- 8-11 Yards
+	-- Check if we're tanking
+	IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
+	
+	-- Update enemies within ability ranges
+	HL.GetEnemies("Melee") -- 5 Yards
+	HL.GetEnemies(8) -- 40-43 Yards
+	HL.GetEnemies(8, true) -- 10-13 Yards
+	HL.GetEnemies(10) -- 5-8 Yards
+	HL.GetEnemies(30) -- 8-11 Yards
 end    
 
 local function APL()

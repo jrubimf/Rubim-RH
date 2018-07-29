@@ -52,24 +52,24 @@ local function ttd(unit)
 				end
 			end
 		end
-	elseif not UnitExists(unit) or currtar ~= UnitGUID(unit) then
-		currtar = 0
-		priortar = 0
-		thpstart = 0
-		timestart = 0
-		timeToDie = 9999999999999999
+		elseif not UnitExists(unit) or currtar ~= UnitGUID(unit) then
+			currtar = 0
+			priortar = 0
+			thpstart = 0
+			timestart = 0
+			timeToDie = 9999999999999999
+		end
+		if timeToDie == nil then
+			return 99999999
+		else
+			return timeToDie
+		end
 	end
-	if timeToDie == nil then
-		return 99999999
-	else
-		return timeToDie
-	end
-end
 
-local activeUnitPlates = {}
-local function AddNameplate(unitID)
-	local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-	local unitframe = nameplate.UnitFrame
+	local activeUnitPlates = {}
+	local function AddNameplate(unitID)
+		local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
+		local unitframe = nameplate.UnitFrame
 
 	-- store nameplate and its unitID
 	activeUnitPlates[unitframe] = unitID
@@ -85,12 +85,12 @@ end
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
 	local unitID = ...
 	AddNameplate(unitID)
-end)
+	end)
 
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
 	local unitID = ...
 	RemoveNameplate(unitID)
-end)
+	end)
 
 function DiyingIn()
 	HL.GetEnemies(10, true); -- Blood Boil
@@ -223,13 +223,13 @@ combatLOG:SetScript("OnEvent", function(self, event)
 		if event == "SPELL_DAMAGE" or event == "SPELL_PERIODIC_DAMAGE" or event == "RANGE_DAMAGE" then
 			amount = arg15
 			--amount = camount
-		elseif event == "SWING_DAMAGE" then
-			lastMeleeHit = GetTime()
-			amount = arg12
-		elseif event == "ENVIRONMENTAL_DAMAGE" then
-			amount = arg13
-		end
-		if amount then
+			elseif event == "SWING_DAMAGE" then
+				lastMeleeHit = GetTime()
+				amount = arg12
+				elseif event == "ENVIRONMENTAL_DAMAGE" then
+					amount = arg13
+				end
+				if amount then
 			-- Record new damage at the top of the log:
 			tinsert(damageAmounts, 1, amount)
 			tinsert(damageTimestamps, 1, timestamp)
@@ -246,8 +246,8 @@ combatLOG:SetScript("OnEvent", function(self, event)
 				end
 			end
 		end
+		end)
 	end)
-end)
 
 function RubimRH.lastSwing()
 	return GetTime() - lastMeleeHit
@@ -313,18 +313,22 @@ function RubimRH.CastSequence()
 	return RubimRH.castSpellSequence[lastCast]
 end
 
-RubimRH.queuedSpell = { nil, 0 }
+RubimRH.queuedSpell = { RubimRH.Spell[103].Empty, 0 }
 
 function Spell:Queue(powerExtra)
 	local powerEx = powerExtra or 0
 	RubimRH.queuedSpell = { self, powerEx }
 end
 
---/run RubimRH.queuedSpell ={ HeroLib.Spell(49020), 0 }
+function QueuedSpell()
+	return RubimRH.queuedSpell[1] or RubimRH.Spell[103].Empty
+end
+
+--/run RubimRH.queuedSpell ={ RubimRH.Spell[103].Prowl, 0 }
 
 function Spell:Queued(powerEx)
 	local powerExtra = powerEx or 0
-	if RubimRH.queuedSpell[1] == nil then
+	if RubimRH.queuedSpell[1] == RubimRH.Spell[103].Empty then
 		return false
 	end
 
@@ -350,7 +354,7 @@ function Spell:Queued(powerEx)
 		end
 	end
 	if Player:PrevGCD(1, RubimRH.queuedSpell[1]) and UnitPower("player", costTypeQ) >= costsQ + RubimRH.queuedSpell[2] then
-		RubimRH.queuedSpell = { nil, 0 }
+		RubimRH.queuedSpell = { RubimRH.Spell[103].Empty, 0 }
 		return false
 	end
 
@@ -422,7 +426,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 	if not RubimRH.isSpellEnabled(self:ID()) then
 		return false
 	end
-		return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
+	return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
 function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
@@ -479,7 +483,7 @@ function RubimRH.addSpellDisabled(spellIDs)
 end
 
 function Spell:Cast()
-		return RubimRH.GetTexture(self)
+	return RubimRH.GetTexture(self)
 end
 
 function Spell:SetTexture(id)
@@ -524,7 +528,7 @@ HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 			spell.LastHitTime = HL.GetTime() + spell:TravelTime()
 		end
 	end
-end, "SPELL_CAST_SUCCESS")
+	end, "SPELL_CAST_SUCCESS")
 
 -- Pet On Cast Success Listener
 HL:RegisterForPetCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
@@ -534,7 +538,7 @@ HL:RegisterForPetCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 			spell.LastHitTime = HL.GetTime() + spell:TravelTime()
 		end
 	end
-end, "SPELL_CAST_SUCCESS")
+	end, "SPELL_CAST_SUCCESS")
 
 -- Player Aura Applied Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
@@ -543,7 +547,7 @@ HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 			spell.LastAppliedOnPlayerTime = HL.GetTime()
 		end
 	end
-end, "SPELL_AURA_APPLIED")
+	end, "SPELL_AURA_APPLIED")
 
 -- Player Aura Removed Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
@@ -552,7 +556,7 @@ HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 			spell.LastRemovedFromPlayerTime = HL.GetTime()
 		end
 	end
-end, "SPELL_AURA_REMOVED")
+	end, "SPELL_AURA_REMOVED")
 
 local PvPDummyUnits = {
 	-- City (SW, Orgri, ...)
@@ -641,38 +645,38 @@ local function randomInterrupt(option)
 
 	if option == "Interrupt" then
 		return random
-	elseif option == "Channel" then
-		return randomChannel
-	end     
-end    
+		elseif option == "Channel" then
+			return randomChannel
+		end     
+	end    
 
-function Unit:IsInterruptable()
-	local channeling = false
-	local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo(self.UnitID)
+	function Unit:IsInterruptable()
+		local channeling = false
+		local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo(self.UnitID)
 
-	if castName == nil then
-		local castName, nameSubtext, text, texture, castStartTime, castEndTime, isTradeSkill, notInterruptible = UnitChannelInfo(self.UnitID)
-		if castName ~= nil then
-			channeling = true
+		if castName == nil then
+			local castName, nameSubtext, text, texture, castStartTime, castEndTime, isTradeSkill, notInterruptible = UnitChannelInfo(self.UnitID)
+			if castName ~= nil then
+				channeling = true
+			end
+
 		end
 
-	end
+		if castName == nil or notInterruptable == true then
+			return false
+		end
 
-	if castName == nil or notInterruptable == true then
+		local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
+		local timeLeft = ((GetTime() * 1000 - castEndTime) * -1) / 1000
+		local castTime = castEndTime - castStartTime
+		local currentPercent = timeSinceStart / castTime * 100000
+		local interruptPercent = randomNumber("Interrupt")
+		if channeling == true then 
+			interruptPercent = randomNumber("Channel")
+		end
+
+		if currentPercent >= interruptPercent then
+			return true
+		end
 		return false
-	end
-
-	local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
-	local timeLeft = ((GetTime() * 1000 - castEndTime) * -1) / 1000
-	local castTime = castEndTime - castStartTime
-	local currentPercent = timeSinceStart / castTime * 100000
-	local interruptPercent = randomNumber("Interrupt")
-	if channeling == true then 
-		interruptPercent = randomNumber("Channel")
-	end
-
-	if currentPercent >= interruptPercent then
-		return true
-	end
-	return false
-end    
+	end    
