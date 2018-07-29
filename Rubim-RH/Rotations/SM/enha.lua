@@ -16,22 +16,6 @@ local CombatTimeLapsed = nil
 
 local S = RubimRH.Spell[263]
 
-local R = {
-	CrashLightning = 5,
-	LightningBolt = 40,
-	FeralSpirit = 5,
-	Rockbiter = 5,
-	Flametongue = 5,
-	Stormstrike = 5,
-	LavaLash = 5,
-	FeralLunge = 25,
-	WindShear = 30,
-	EarthenSpike = 10,
-	Sundering = 5,
-	FuryOfAir = 8,
-	Windstrike = 30
-}
-
 local function ResetCombatTime()
 	CombatStartTime = nil
 	CombatTimeLapsed = nil
@@ -85,17 +69,17 @@ end
 
 local function BurstRotation()
 	-- actions.asc=earthen_spike
-	if S.EarthenSpike:IsReady(10) then return S.EarthenSpike:Cast() end
+	if S.EarthenSpike:IsReady() then return S.EarthenSpike:Cast() end
 
 	-- actions.asc+=/crash_lightning,if=!buff.crash_lightning.up&active_enemies>=2
-	if S.CrashLightning:IsReady(5) 
+	if S.CrashLightning:IsReady() 
 		and not Player:Buff(S.CrashLightning)
-		and Cache.EnemiesCount[5] >= 2 then
+		and Cache.EnemiesCount[8] >= 2 then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.asc+=/rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
-	if S.Rockbiter:IsReady(5)
+	if S.Rockbiter:IsReady()
 		and S.Landslide:IsAvailable()
 		and not Player:Buff(S.LandslideBuff)
 		and S.Rockbiter:ChargesFractional() > 1.7 then
@@ -112,7 +96,7 @@ end
 
 local function Buffs()
 	-- actions.buffs=rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
-	if S.Rockbiter:IsReady(R.Rockbiter)
+	if S.Rockbiter:IsReady()
 		and S.Landslide:IsAvailable()
 		and not Player:Buff(S.LandslideBuff)
 		and S.Rockbiter:ChargesFractional() > 1.7 then
@@ -120,20 +104,20 @@ local function Buffs()
 	end
 
 	-- actions.buffs+=/fury_of_air,if=!ticking&maelstrom>22
-	if S.FuryOfAir:IsReady(R.FuryOfAir)
+	if S.FuryOfAir:IsReady()
 		and not Player:Buff(S.FuryOfAir)
 		and Player:Maelstrom() > 22 then
 		return S.FuryOfAir:Cast()
 	end
 
 	-- actions.buffs+=/flametongue,if=!buff.flametongue.up
-	if S.Flametongue:IsReady(R.Flametongue)
+	if S.Flametongue:IsReady()
 		and not Player:Buff(S.Flametongue) then
 		return S.Flametongue:Cast()
 	end
 
 	-- actions.buffs+=/frostbrand,if=talent.hailstorm.enabled&!buff.frostbrand.up&variable.furyCheck45
-	if S.Frostbrand:IsReady(R.Frostbrand)
+	if S.Frostbrand:IsReady()
 		and S.Hailstorm:IsAvailable()
 		and not Player:Buff(S.Frostbrand)
 		and FuryCheck45() then
@@ -141,13 +125,13 @@ local function Buffs()
 	end
 
 	-- actions.buffs+=/flametongue,if=buff.flametongue.remains<6+gcd
-	if S.Flametongue:IsReady(R.Flametongue)
+	if S.Flametongue:IsReady()
 		and Player:BuffRemains(S.Flametongue) < 6 + Player:GCD() then
 		return S.Flametongue:Cast()
 	end
 
 	-- actions.buffs+=/frostbrand,if=talent.hailstorm.enabled&buff.frostbrand.remains<6+gcd
-	if S.Frostbrand:IsReady(R.Frostbrand)
+	if S.Frostbrand:IsReady()
 		and S.Hailstorm:IsAvailable()
 		and Player:BuffRemains(S.Frostbrand) < 6 + Player:GCD() then
 		return S.Frostbrand:Cast()
@@ -215,21 +199,14 @@ local function APL()
     UpdateCombatTime()
 
     -- Update Surrounding Enemies
-    HL.GetEnemies(5, true)
-    HL.GetEnemies(10, true)
-    HL.GetEnemies(25, true)
-    HL.GetEnemies(30, true)
-    HL.GetEnemies(40, true)
+    HL.GetEnemies("Melee");
+	HL.GetEnemies(8, true);
+	HL.GetEnemies(10, true);
 
     -- Kick
-    if S.WindShear:IsReady(R.WindShear)
-    	and ((Target:IsCasting() and Target:CastRemains() <= 0.7)
-    		or Target:IsChanneling()) then
-    	return S.WindShear:Cast()
-    end
 
 	-- actions.opener=rockbiter,if=maelstrom<15&time<gcd
-	if S.Rockbiter:IsReady(R.Rockbiter)
+	if S.Rockbiter:IsReady()
 		and Player:Maelstrom() < 15
 		and CombatTimeLapsed < Player:GCD() then
 		return S.Rockbiter:Cast()
@@ -253,38 +230,38 @@ local function APL()
 	-- Primary Rotation
 
 	-- actions.core=earthen_spike,if=variable.furyCheck25
-	if S.EarthenSpike:IsReady(R.EarthenSpike) 
+	if S.EarthenSpike:IsReady() 
 		and FuryCheck25() then 
 		return S.EarthenSpike:Cast() 
 	end
 
 	-- actions.core+=/crash_lightning,if=!buff.crash_lightning.up&active_enemies>=2
-	if S.CrashLightning:IsReady(R.CrashLightning) 
-		and Cache.EnemiesCount[R.CrashLightning] >= 2 
+	if S.CrashLightning:IsReady() 
+		and Cache.EnemiesCount[8] >= 2 
 		and (not Player:Buff(S.CrashLightning)) then 
 		return S.CrashLightning:Cast() 
 	end
 
 	-- actions.core+=/crash_lightning,if=active_enemies>=8|(active_enemies>=6&talent.crashing_storm.enabled)
-	if S.CrashLightning:IsReady(R.CrashLightning) 
-		and (Cache.EnemiesCount[R.CrashLightning] >= 8 or (Cache.EnemiesCount[R.CrashLightning] >= 6 and S.CrashingStorm:IsAvailable())) then
+	if S.CrashLightning:IsReady() 
+		and (Cache.EnemiesCount[8] >= 8 or (Cache.EnemiesCount[8] >= 6 and S.CrashingStorm:IsAvailable())) then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.core+=/stormstrike,if=buff.stormbringer.up
-	if S.Stormstrike:IsReady(R.Stormstrike) 
+	if S.Stormstrike:IsReady() 
 		and Player:Buff(S.Stormbringer) then
 		return S.Stormstrike:Cast()
 	end
 
 	-- actions.core+=/crash_lightning,if=active_enemies>=4|(active_enemies>=2&talent.crashing_storm.enabled)
-	if S.CrashLightning:IsReady(R.CrashLightning) 
-		and (Cache.EnemiesCount[R.CrashLightning] >= 4 or (Cache.EnemiesCount[R.CrashLightning] >= 2 and S.CrashingStorm:IsAvailable())) then
+	if S.CrashLightning:IsReady() 
+		and (Cache.EnemiesCount[8] >= 4 or (Cache.EnemiesCount[8] >= 2 and S.CrashingStorm:IsAvailable())) then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.core+=/lightning_bolt,if=talent.overcharge.enabled&variable.furyCheck45&maelstrom>=40
-	if S.LightningBolt:IsReady(R.LightningBolt)
+	if S.LightningBolt:IsReady()
 		and S.Overcharge:IsAvailable()
 		and FuryCheck45()
 		and Player:Maelstrom() >= 40 then
@@ -292,55 +269,55 @@ local function APL()
 	end
 
 	-- actions.core+=/stormstrike,if=(!talent.overcharge.enabled&variable.furyCheck35)|(talent.overcharge.enabled&variable.furyCheck80)
-	if S.Stormstrike:IsReady(R.Stormstrike)
+	if S.Stormstrike:IsReady()
 		and ((not S.Overcharge:IsAvailable() and FuryCheck35())
 			or (S.Overcharge:IsAvailable() and FuryCheck80())) then
 		return S.Stormstrike:Cast()
 	end
 
 	-- actions.core+=/sundering
-	if S.Sundering:IsReady(R.Sundering) then
+	if S.Sundering:IsReady() then
 		return S.Sundering:Cast()
 	end
 
 	-- actions.core+=/flametongue,if=talent.searing_assault.enabled
-	if S.Flametongue:IsReady(R.Flametongue)
+	if S.Flametongue:IsReady()
 		and S.SearingAssault:IsAvailable() then
 		return S.Flametongue:Cast()
 	end
 
 	-- actions.core+=/lava_lash,if=buff.hot_hand.react
-	if S.LavaLash:IsReady(R.LavaLash)
+	if S.LavaLash:IsReady()
 		and Player:Buff(S.HotHand) then
 		return S.LavaLash:Cast()
 	end
 
 	-- actions.core+=/crash_lightning,if=active_enemies>=3
-	if S.CrashLightning:IsReady(R.CrashLightning)
-		and Cache.EnemiesCount[R.CrashLightning] >= 3 then
+	if S.CrashLightning:IsReady()
+		and Cache.EnemiesCount[8] >= 3 then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.filler=rockbiter,if=maelstrom<70
-	if S.Rockbiter:IsReady(R.Rockbiter)
+	if S.Rockbiter:IsReady()
 		and Player:Maelstrom() < 70 then
 		return S.Rockbiter:Cast()
 	end
 
 	-- actions.filler+=/flametongue,if=talent.searing_assault.enabled|buff.flametongue.remains<4.8
-	if S.Flametongue:IsReady(R.Flametongue)
+	if S.Flametongue:IsReady()
 		and (S.SearingAssault:IsAvailable() or Player:BuffRemains(S.Flametongue) < 4.8) then
 		return S.Flametongue:Cast()
 	end
 
 	-- actions.filler+=/crash_lightning,if=(talent.crashing_storm.enabled|active_enemies>=2)&debuff.earthen_spike.up&maelstrom>=40&variable.OCPool60
-	if S.CrashLightning:IsReady(R.CrashLightning)
-		and ((S.CrashingStorm:IsAvailable() or Cache.EnemiesCount[R.CrashLightning] >= 2) and Target:Debuff(S.EarthenSpike) and Player:Maelstrom() >= 40 and OCPool60()) then
+	if S.CrashLightning:IsReady()
+		and ((S.CrashingStorm:IsAvailable() or Cache.EnemiesCount[8] >= 2) and Target:Debuff(S.EarthenSpike) and Player:Maelstrom() >= 40 and OCPool60()) then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.filler+=/frostbrand,if=talent.hailstorm.enabled&buff.frostbrand.remains<4.8&maelstrom>40
-	if S.Frostbrand:IsReady(R.Frostbrand)
+	if S.Frostbrand:IsReady()
 		and S.Hailstorm:IsAvailable()
 		and Player:BuffRemains(S.Frostbrand) < 4.8
 		and Player:Maelstrom() > 40 then
@@ -348,7 +325,7 @@ local function APL()
 	end
 
 	-- actions.filler+=/lava_lash,if=maelstrom>=50&variable.OCPool70&variable.furyCheck80
-	if S.LavaLash:IsReady(R.LavaLash)
+	if S.LavaLash:IsReady()
 		and Player:Maelstrom() >= 50
 		and OCPool70
 		and FuryCheck80() then
@@ -356,18 +333,18 @@ local function APL()
 	end
 
 	-- actions.filler+=/rockbiter
-	if S.Rockbiter:IsReady(R.Rockbiter) then return S.Rockbiter:Cast() end
+	if S.Rockbiter:IsReady() then return S.Rockbiter:Cast() end
 
 	-- actions.filler+=/crash_lightning,if=(maelstrom>=65|talent.crashing_storm.enabled|active_enemies>=2)&variable.OCPool60&variable.furyCheck45
-	if S.CrashLightning:IsReady(R.CrashLightning)
-		and (Player:Maelstrom() >= 65 or S.CrashingStorm:IsAvailable() or Cache.EnemiesCount[R.CrashLightning] >= 2)
+	if S.CrashLightning:IsReady()
+		and (Player:Maelstrom() >= 65 or S.CrashingStorm:IsAvailable() or Cache.EnemiesCount[8] >= 2)
 		and OCPool60()
 		and FuryCheck45 then
 		return S.CrashLightning:Cast()
 	end
 
 	-- actions.filler+=/flametongue
-	if S.Flametongue:IsReady(R.Flametongue) then return S.Flametongue:Cast() end
+	if S.Flametongue:IsReady() then return S.Flametongue:Cast() end
 
     return 0, 975743
 end
