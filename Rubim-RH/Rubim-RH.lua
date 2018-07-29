@@ -205,6 +205,7 @@ local defaults = {
         [70] = {
             cooldown = true,
             justicarglory = 50,
+            flashoflight = 50,
             Spells = {
                 { spellID = JusticarVengeance, isActive = true },
                 { spellID = FlashofLight, isActive = true },
