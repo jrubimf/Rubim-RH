@@ -332,6 +332,10 @@ local function APL()
 	HL.GetEnemies(10,true); 
 	HL.GetEnemies(30,true);
 
+	if Player:IsChanneling(S.SpinningCraneKick) or Player:IsChanneling(S.FistsOfFury) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
 	--actions.precombat=flask
 	--actions.precombat+=/food
 	--actions.precombat+=/augmentation
