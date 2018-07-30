@@ -87,7 +87,7 @@ local function BurstRotation()
 	end
 
 	-- actions.asc+=/windstrike
-	if S.Windstrike:IsReadyMorph(R.Windstrike) then
+	if S.Windstrike:IsReadyMorph() then
 		return S.Windstrike:Cast()
 	end
 
@@ -177,7 +177,7 @@ local function Cooldowns()
 
 	-- actions.cds+=/ascendance,if=(cooldown.strike.remains>0)&buff.ascendance.down
 	if S.Ascendance:IsReady()
-		and S.Stormstrike:IsReady(R.Stormstrike)
+		and S.Stormstrike:IsReady()
 		and not Player:Buff(S.Ascendance) then
 		return S.Ascendance:Cast()
 	end
