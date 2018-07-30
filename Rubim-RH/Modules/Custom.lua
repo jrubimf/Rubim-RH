@@ -634,49 +634,51 @@ function Unit:MaxSpeed()
 end
 
 local randomChannel = math.random(10, 20)
-local random = math.random(40, 70)
+local randomInterrupt = math.random(40, 70)
 local randomTimer = GetTime()
-local function randomInterrupt(option)
+local function randomGenerator(option)
 	if GetTime() - randomTimer >= 1 then
-		random = math.random(40, 70)
+		randomInterrupt = math.random(40, 70)
 		randomChannel = math.random(10, 20)
 		randomTimer = GetTime()
 	end
 
 	if option == "Interrupt" then
-		return random
-		elseif option == "Channel" then
-			return randomChannel
-		end     
-	end    
+		return randomInterrupt
+	end	
+	if option == "Channel" then
+		return randomChannel
+	end     
+end
 
-	function Unit:IsInterruptable()
-		local channeling = false
-		local castName, _, _, _, castStartTime, castEndTime, _, _, notInterruptable, spellID = UnitCastingInfo(self.UnitID)
+function Unit:IsInterruptable()
+	local channeling = false
+	local name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId
+	if UnitCastingInfo(self.UnitID) ~= nil then
+		name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId = UnitCastingInfo(self.UnitID)
+	end	
 
-		if castName == nil then
-			local castName, nameSubtext, text, texture, castStartTime, castEndTime, isTradeSkill, notInterruptible = UnitChannelInfo(self.UnitID)
-			if castName ~= nil then
-				channeling = true
-			end
+	if UnitChannelInfo(self.UnitID) ~= nil then
+		name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId = UnitChannelInfo(self.UnitID)
+		channeling = true
+	end
 
-		end
-
-		if castName == nil or notInterruptable == true then
-			return false
-		end
-
-		local timeSinceStart = (GetTime() * 1000 - castStartTime) / 1000
-		local timeLeft = ((GetTime() * 1000 - castEndTime) * -1) / 1000
-		local castTime = castEndTime - castStartTime
-		local currentPercent = timeSinceStart / castTime * 100000
-		local interruptPercent = randomNumber("Interrupt")
-		if channeling == true then 
-			interruptPercent = randomNumber("Channel")
-		end
-
-		if currentPercent >= interruptPercent then
-			return true
-		end
+	
+	if name == nil or notInterruptable == true then
 		return false
-	end    
+	end
+
+	local timeSinceStart = (GetTime() * 1000 - startTimeMS) / 1000
+	local timeLeft = ((GetTime() * 1000 - endTimeMS) * -1) / 1000
+	local castTime = endTimeMS - startTimeMS
+	local currentPercent = timeSinceStart / castTime * 100000
+	local interruptPercent = randomGenerator("Interrupt")
+	if channeling == true then 
+		interruptPercent = randomGenerator("Channel")
+	end
+	
+	if currentPercent >= interruptPercent then
+		return true
+	end
+	return false
+end    

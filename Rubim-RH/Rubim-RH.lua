@@ -338,6 +338,10 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
 		return
 	end
 
+	if RubimRH.db.profile[RubimRH.playerSpec] == nil then
+		return
+	end	
+
 	--if RubimRH.playerSpec ~= 0 then
 	--        Player:RegisterListenedSpells(RubimRH.playerSpec)
 	--    end

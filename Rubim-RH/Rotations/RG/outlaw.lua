@@ -14,7 +14,7 @@ local S = RubimRH.Spell[260]
 
 S.SaberSlash.TextureSpellID = { 225096 }
 S.Dispatch.TextureSpellID = { 20594 }
-S.CrimsonVial.TextureSpellID = { 68992 }
+S.CrimsonVial.TextureSpellID = { 68992 } --
 S.ArcanePulse.TextureSpellID = { 28730 }
 
 local function num(val)
