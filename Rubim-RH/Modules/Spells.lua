@@ -223,6 +223,67 @@ RubimRH.Spell[268] = {
 	LegSweep = Spell(119381)
 }
 
+--Windwalker
+RubimRH.Spell[269] = {
+	  -- Racials
+  Bloodlust                        = Spell(2825),
+  ArcaneTorrent                    = Spell(25046),
+  Berserking                       = Spell(26297),
+  BloodFury                        = Spell(20572),
+  GiftoftheNaaru                   = Spell(59547),
+  Shadowmeld                       = Spell(58984),
+  QuakingPalm                      = Spell(107079),
+  LightsJudgment                   = Spell(255647),
+
+
+  -- Abilities
+  TigerPalm                        = Spell(100780),
+  RisingSunKick                    = Spell(107428),
+  FistsOfFury                      = Spell(113656),
+  SpinningCraneKick                = Spell(101546),
+  StormEarthAndFire                = Spell(137639),
+  FlyingSerpentKick                = Spell(101545),
+  FlyingSerpentKick2               = Spell(115057),
+  TouchOfDeath                     = Spell(115080),
+  CracklingJadeLightning           = Spell(117952),
+  BlackoutKick                     = Spell(100784),
+  BlackoutKickBuff                 = Spell(116768),
+
+  -- Talents
+  ChiWave                          = Spell(115098),
+  InvokeXuentheWhiteTiger          = Spell(123904),
+  RushingJadeWind                  = Spell(116847),
+  HitCombo                         = Spell(196741),
+  Serenity                         = Spell(152173),
+  WhirlingDragonPunch              = Spell(152175),
+  ChiBurst                         = Spell(123986),
+  FistOfTheWhiteTiger			   = Spell(261947),
+
+  -- Artifact
+  StrikeOfTheWindlord              = Spell(205320),
+
+  -- Defensive
+  TouchOfKarma                     = Spell(122470),
+  DiffuseMagic                     = Spell(122783), --Talent
+  DampenHarm                       = Spell(122278), --Talent
+
+  -- Utility
+  Detox                            = Spell(218164),
+  Effuse                           = Spell(116694),
+  EnergizingElixir                 = Spell(115288), --Talent
+  TigersLust                       = Spell(116841), --Talent
+  LegSweep                         = Spell(119381), --Talent
+  Disable                          = Spell(116095),
+  HealingElixir                    = Spell(122281), --Talent
+  Paralysis                        = Spell(115078),
+
+  -- Legendaries
+  TheEmperorsCapacitor             = Spell(235054),
+
+  -- Tier Set
+  PressurePoint                    = Spell(247255),
+}
+
 ----SHAMMY
 --ELE
 RubimRH.Spell[262] = {
