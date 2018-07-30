@@ -119,7 +119,7 @@ local function Generators()
 	end
 
 	--actions.generators+ = /wake_of_ashes, if= (holy_power<=0|holy_power = 1&cooldown.blade_of_justice.remains>gcd)
-	if S.WakeofAshes:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemains() > Player:GCD()) then
+	if S.WakeofAshes:IsReady() and Cache.EnemiesCount["Melee"] >= 1 and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemains() > Player:GCD()) then
 		return S.WakeofAshes:Cast()
 	end
 
