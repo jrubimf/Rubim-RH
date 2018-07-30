@@ -119,7 +119,7 @@ local function Generators()
 	end
 
 	--actions.generators+ = /wake_of_ashes, if= (holy_power<=0|holy_power = 1&cooldown.blade_of_justice.remains>gcd)
-	if S.WakeofAshes:IsReady() and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemains() > Player:GCD()) then
+	if S.WakeofAshes:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemains() > Player:GCD()) then
 		return S.WakeofAshes:Cast()
 	end
 
@@ -174,11 +174,6 @@ local function Generators()
 end
 
 local function Opener()
-	RubimRH.castSpellSequence = {
-		S.Judgment,
-		S.CrusaderStrike,
-		S.BladeofJustice
-	}
 	--actions.opener =  /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
 	--name = wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
 	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
@@ -296,7 +291,7 @@ local function APL()
 	--actions=auto_attack
 	--actions+=/rebuke
 	--actions+=/call_action_list,name=opener,if=time<2
-	if HL.CombatTime() < 2 and Opener~= nil and RubimRH.CDsON() then
+	if HL.CombatTime() < 2 and Opener~= nil and RubimRH.CDsON() and Target:IsInRange("Melee") then
 		return Opener()
 	end
 
