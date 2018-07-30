@@ -419,7 +419,7 @@ local function getOptions()
 									--fontSize = "medium",
 									name = "Justicar/Word of Glory"
 								},
-								flashofthelight = {
+								flashoflight = {
 									order = 2,
 									type = "range",
 									min = 5,
