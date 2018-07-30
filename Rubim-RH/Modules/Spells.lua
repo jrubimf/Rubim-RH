@@ -1094,8 +1094,10 @@ RubimRH.Spell[265] = {
 	Agony =  Spell(980),
 	SeedOfCorruption = Spell(27243),
 	UnstableAffliction = Spell(30108),
+	UnstableAfflictionDot = Spell(233490),
 	DrainLife = Spell(234153),
 	Corruption = Spell(172),
+	CorruptionPerma = Spell(146739),
 	ShadowBolt = Spell(232670),
 	-- Talents
 	CreepingDeath = Spell(264000),
@@ -1110,5 +1112,6 @@ RubimRH.Spell[265] = {
 	AbsoluteCorruption = Spell(196103),
 	WritheInAgony = Spell(196102),
 	DrainSoul = Spell(198590),
-	Nightfall = Spell(108558)
+	Nightfall = Spell(108558),
+	SiphonLife = Spell(63106)
 }

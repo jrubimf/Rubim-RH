@@ -31,10 +31,17 @@ local function AoE()
 end
 
 local function ShouldDB()
-  local DoTs = {
+   local CorruptionID = 0
+if ISpells.AbsoluteCorruption:IsAvailable() then
+  CorruptionID = ISpells.CorruptionPerma
+else
+  CorruptionID = ISpells.Corruption
+end
+
+local DoTs = {
     Agony = ISpells.Agony,
-    Corruption = ISpells.Corruption,
-    UnstableAffliction = ISpells.Corruption,
+    Corruption = CorruptionID,
+    UnstableAffliction = ISpells.UnstableAfflictionDot,
     SiphonLife = (ISpells.SiphonLife:IsAvailable()) and ISpells.SiphonLife or nil,
   }
   
@@ -76,7 +83,7 @@ local function APL()
     
   local PlayerStill = (not Player:IsMoving()) and true or false
   local UARefreshForDeathbolt = (ISpells.Deathbolt:IsAvailable() 
-                                and (not ISpells.Deathbolt:CoolodwnUp() 
+                                and (not ISpells.Deathbolt:IsReady() 
                                     and ISpells.Deathbolt:CooldownRemains() <= 4 
                                     and Target:DebuffRemains(ISpells.UnstableAffliction) < 6)) and true or false
   
