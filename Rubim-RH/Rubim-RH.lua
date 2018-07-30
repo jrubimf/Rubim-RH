@@ -301,6 +301,17 @@ local defaults = {
 		},
 		[104] = {
 			cooldowns = false,
+		},
+		--Warlock
+		[265] = {
+			cooldowns = false,
+				
+		},
+		[266] = {
+			cooldowns = false,
+		},
+		[267] = {
+			cooldowns = false,
 		}
 	}
 }
