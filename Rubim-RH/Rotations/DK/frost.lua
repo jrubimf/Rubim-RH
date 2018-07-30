@@ -89,7 +89,7 @@ local function standard()
     	return S.HornOfWinter:Cast()
     end
     -- arcane_torrent
-    if S.ArcaneTorrent:IsReady() and HR.CDsON() then
+    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() then
     	return S.ArcaneTorrent:Cast()
     end
 end
