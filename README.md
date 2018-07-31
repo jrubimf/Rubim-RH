@@ -64,15 +64,15 @@ Discipline    | :x:   | :x:   |   8.0.1  |   |
 
 ### Rogue
 Spec  | PvE | PvP | patch | Notes
-:------: | :-----: | :---: | -----: | :------:|:----:
+:------: | :-----: | :---: | -----: | :------:
 Assasination    | :x:    |  :x:   |  8.0.1 |  | 
-Subtly    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
-Outlaw    | :heavy_check_mark:   | :x:   |   8.0.1  | Sinister Strike uses Saber Slash, Dispatch uses Stoneform, Crimson Vial uses Dark Flight, Arcane Pulse uses Arcan Torrent  | 
+Subtly    | :x:    |  :x:   |  8.0.1 |   | 
+Outlaw    | :x:   | :x:   |   8.0.1  | Sinister Strike uses Saber Slash, Dispatch uses Stoneform, Crimson Vial uses Dark Flight, Arcane Pulse uses Arcan Torrent  | 
 
 
 ### Shaman
 Spec  | PvE | PvP | patch | Notes
-:------: | :-----: | :---: | -----: | :------:|:----:
+:------: | :-----: | :---: | -----: | :------:
 Elemental    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
 Enhancement    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Restoration    | :x:   | :x:   |   8.0.1  |   | 
