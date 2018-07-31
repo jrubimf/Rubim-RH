@@ -56,10 +56,10 @@ Holy    | :x:   | :x:   |   8.0.1  |   |
 
 ### Priest
 Spec  | PvE | PvP | patch | Notes
-:------: | :-----: | :---: | -----: | :------:|:----:
+:------: | :-----: | :---: | -----: | :------:
 Shadow    | :x:    |  :x:   |  8.0.1 |  | 
 Holy    | :x:    |  :x:   |  8.0.1 |   | 
-Disc    | :x:   | :x:   |   8.0.1  |   | 
+Discipline    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Rogue
@@ -80,10 +80,10 @@ Restoration    | :x:   | :x:   |   8.0.1  |   |
 
 ### Warlock
 Spec  | PvE | PvP | patch | Notes
-:------: | :-----: | :---: | -----: | :------:|:----:
+:------: | :-----: | :---: | -----: | :------:
 Affliction    | :x:    |  :x:   |  8.0.1 |  | 
-Demonology    | :x:    |  :x:   |  8.0.1 |   | 
-Destruction    | :x:   | :x:   |   8.0.1  |   | 
+Destruction    | :x:    |  :x:   |  8.0.1 |   | 
+Demonology    | :x:   | :x:   |   8.0.1  |   | 
 
 
 
