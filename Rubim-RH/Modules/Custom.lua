@@ -285,7 +285,7 @@ function RubimRH.SetFramePos(frame, x, y, w, h)
 end
 
 function RubimRH.ColorOnOff(boolean)
-	if boolean == true then
+	if boolean == false then
 		return "|cFF00FF00"
 	else
 		return "|cFFFF0000"

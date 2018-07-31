@@ -26,8 +26,8 @@ Item.DeathKnight.Unholy = {
     InstructorsFourthLesson = Item(132448, { 9 }),
     Taktheritrixs = Item(137075, { 3 }),
     ColdHeart = Item(151796, { 5 }),
-};
-local I = Item.DeathKnight.Unholy;
+    };
+    local I = Item.DeathKnight.Unholy;
 --Rotation Var
 
 local T202PC, T204PC = HL.HasTier("T20");
@@ -263,6 +263,10 @@ end
 RubimRH.Rotation.SetAPL(252, APL);
 
 local function PASSIVE()
+    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[252].icebound then
+        return S.IceboundFortitude:Cast()
+    end    
+
     return RubimRH.Shared()
 end
 

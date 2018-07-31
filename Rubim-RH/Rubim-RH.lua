@@ -175,8 +175,12 @@ local defaults = {
 		--DK
 		[250] = {
 			cooldown = true,
+			icebound = 60,
+			runetap = 35,
+			vampiricblood = 50,
 			smartds = 30,
 			deficitds = 10,
+			drw = 75,
 			Spells = {
 				{ spellID = DeathStrike, isActive = false, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
 				{ spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },
@@ -186,6 +190,7 @@ local defaults = {
 		[251] = {
 			cooldown = true,
 			deathstrike = 85,
+			icebound = 60,
 			Spells = {
 				{ spellID = DeathStrike, isActive = true },
 				{ spellID = BreathOfSindragosa, isActive = true },
@@ -196,6 +201,7 @@ local defaults = {
 		[252] = {
 			cooldown = true,
 			deathstrike = 85,
+			icebound = 60,
 			Spells = {
 				{ spellID = DeathStrike, isActive = true },
 				{ spellID = RuneTap, isActive = true }
@@ -404,6 +410,10 @@ function RubimRH.mainRotation(option)
 	--            return 1, RubimRH.TargetNext("Melee", 1030902)
 	--end
 	--endd
+
+	if Player:IsDeadOrGhost() then
+		return 0, 236399
+	end	
 
 	if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
 		return 0, 975744

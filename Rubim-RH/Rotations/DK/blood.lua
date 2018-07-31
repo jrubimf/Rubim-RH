@@ -46,42 +46,42 @@ end
 
 function DRW()
     if S.Marrowrend:IsCastableP("Melee") and (Player:BuffStack(S.BoneShield) < 6 or Player:BuffRemains(S.BoneShield) <= 3) then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
-    if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:ChargesFractional() >= 1.8 then
-        return S.BloodBoil:Cast()
-    end
+if S.BloodBoil:IsCastable() and Cache.EnemiesCount[10] >= 1 and S.BloodBoil:ChargesFractional() >= 1.8 then
+    return S.BloodBoil:Cast()
+end
 
-    if RubimRH.config.Spells[1].isActive and S.DeathStrike:IsReady("Melee") and not Player:PrevGCD(1, S.DeathStrike) then
-        return S.DeathStrike:Cast()
-    end
+if RubimRH.config.Spells[1].isActive and S.DeathStrike:IsReady("Melee") and not Player:PrevGCD(1, S.DeathStrike) then
+    return S.DeathStrike:Cast()
+end
 
-    if S.HeartStrike:IsCastableP("Melee") then
-        return S.HeartStrike:Cast()
-    end
+if S.HeartStrike:IsCastableP("Melee") then
+    return S.HeartStrike:Cast()
+end
 
-    if RubimRH.config.Spells[1].isActive and S.DeathStrike:IsReady("Melee") then
-        return S.DeathStrike:Cast()
-    end
+if RubimRH.config.Spells[1].isActive and S.DeathStrike:IsReady("Melee") then
+    return S.DeathStrike:Cast()
+end
 end
 
 function OFF()
     if S.Marrowrend:IsCastableP("Melee") and (Player:BuffStack(S.BoneShield) < 6 or Player:BuffRemains(S.BoneShield) <= 3) then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
-    if S.DeathStrike:IsReady("Melee") and Player:RunicPower() >= 80 then
-        return S.DeathStrike:Cast()
-    end
+if S.DeathStrike:IsReady("Melee") and Player:RunicPower() >= 80 then
+    return S.DeathStrike:Cast()
+end
 
-    if S.DeathStrike:IsReady("Melee") and Player:BuffRemains(S.BloodShield) > 0 then
-        return S.DeathStrike:Cast()
-    end
+if S.DeathStrike:IsReady("Melee") and Player:BuffRemains(S.BloodShield) > 0 then
+    return S.DeathStrike:Cast()
+end
 
-    if S.HeartStrike:IsCastableP("Melee") then
-        return S.HeartStrike:Cast()
-    end
+if S.HeartStrike:IsCastableP("Melee") then
+    return S.HeartStrike:Cast()
+end
 end
 
 local function simcraftMode()
@@ -111,8 +111,8 @@ local function simcraftMode()
 
     --actions.standard+=/marrowrend,if=buff.bone_shield.remains<=gcd*2
     if S.Marrowrend:IsReady("Melee") and Player:BuffRemains(S.BoneShield) <= Player:GCD() * 2 then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
     --actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
     if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
@@ -121,8 +121,8 @@ local function simcraftMode()
 
     --actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
     if S.Marrowrend:IsReady("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or Player:BuffRemains(S.BoneShield) < Player:GCD() * 3) then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
     --actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
     --actions.standard+=/death_strike,if=buff.blood_shield.up|(runic_power.deficit<15&(runic_power.deficit<25|!buff.dancing_rune_weapon.up))
@@ -235,8 +235,8 @@ local function APL()
 
     --Needs Marrowrend
     if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 5) then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
     --DSEmergency
     if RubimRH.lastDamage("percent") > RubimRH.db.profile[250].smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 then
@@ -285,8 +285,8 @@ local function APL()
 
     --actions.standard+=/marrowrend,if=buff.bone_shield.remains<=gcd*2
     if S.Marrowrend:IsReady("Melee") and Player:BuffRemains(S.BoneShield) <= Player:GCD() * 2 then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
     --actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
     if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
@@ -295,8 +295,8 @@ local function APL()
 
     --actions.standard+=/marrowrend,if=(buff.bone_shield.stack<5&talent.ossuary.enabled)|buff.bone_shield.remains<gcd*3
     if S.Marrowrend:IsReady("Melee") and ((Player:BuffStack(S.BoneShield) < 5 and S.Ossuary:IsAvailable()) or Player:BuffRemains(S.BoneShield) < Player:GCD() * 3) then
-        return S.Marrowrend:Cast()
-    end
+    return S.Marrowrend:Cast()
+end
 
     --actions.standard+=/bonestorm,if=runic_power>=100&spell_targets.bonestorm>=3
     --actions.standard+=/death_strike,if=buff.blood_shield.up|(runic_power.deficit<15&(runic_power.deficit<25|!buff.dancing_rune_weapon.up))
@@ -351,8 +351,22 @@ end
 RubimRH.Rotation.SetAPL(250, APL);
 
 local function PASSIVE()
-    if RubimRH.Shared() ~= nil then
-        return RubimRH.Shared()
+    if Player:AffectingCombat() then
+        if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].icebound then
+            return S.IceboundFortitude:Cast()
+        end    
+
+        if S.RuneTap:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].runetap then
+            return S.RuneTap:Cast()
+        end    
+
+        if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].vampiricblood then
+            return S.VampiricBlood:Cast()
+        end    
+
+        if RubimRH.Shared() ~= nil then
+            return RubimRH.Shared()
+        end
     end
 end
 

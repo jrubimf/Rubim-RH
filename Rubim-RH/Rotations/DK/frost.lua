@@ -383,7 +383,7 @@ local function APL()
 	end
 
 	--actions+=/run_action_list,name=bos_pooling,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains<5
-	if RubimRH.config.Spells[2].isActive and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 5 then
+	if RubimRH.config.Spells[2].isActive and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 5 and RubimRH.CDsON() then
 		if bos_pooling() ~= nil then
 			return bos_pooling()
 		end
@@ -408,7 +408,6 @@ local function APL()
 		return aoe()
 	end
 
-
 	--actions+=/call_action_list,name=standard
 	if standard() ~= nil then
 		return standard()
@@ -419,7 +418,10 @@ end
 RubimRH.Rotation.SetAPL(251, APL);
 
 local function PASSIVE()
-	return RubimRH.Shared()
+    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].icebound then
+        return S.IceboundFortitude:Cast()
+    end    
+    return RubimRH.Shared()
 end
 
 RubimRH.Rotation.SetPASSIVE(251, PASSIVE);

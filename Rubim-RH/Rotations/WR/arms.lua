@@ -15,7 +15,7 @@ local Item = HL.Item;
 
 local S = RubimRH.Spell[71]
 
-
+S.Warbreaker.TextureSpellID = { 20594 }
 S.SkullSplinter.TextureSpellID = { 58984 }
 
 -- Items

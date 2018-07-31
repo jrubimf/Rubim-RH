@@ -223,7 +223,7 @@ local function getOptions()
 							type = "group",
 							childGroups = "tree",
 							inline = true,
-							name = "Config",
+							name = "Spell Blocker",
 							get = function(info)
 								local key = info.arg or info[#info]
 								return RubimRH.db.profile.mainOption[key]
@@ -248,19 +248,145 @@ local function getOptions()
 								},
 							}
 						},
+						classConfig = {
+							order = 1,
+							type = "group",
+							childGroups = "tree",
+							inline = true,
+							name = "Class Config",
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Class Config are acessible by right clicking the Main Icon.",
+									fontSize = "large",
+								},
+							}
+						},
 					}
 				},
-				Classes = {
+				dkBlood = {
 					order = 1,
 					type = "group",
-					name = "Classes",
+					name = "Death Knight - Blood",
+					childGroups = "tree",
 					args = {
-						frost = {
-							order = 2,
+						advanced = {
+							order = 1,
 							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Death Knight - Frost",
+							childGroups = "tree",
+							inline = true,
+							name = "Advanced",
+							get = function(info)
+								local key = info.arg or info[#info]
+								return RubimRH.db.profile[250][key]
+							end,
+							set = function(info, value)
+								local key = info.arg or info[#info]
+								RubimRH.db.profile[250][key] = value
+							end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Incoming Damage (percent) to use a Deatk Strike.",
+								},
+								smartds = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Death Strike (inc dmg)"
+								},
+								description2 = {
+									order = 3,
+									type = "description",
+									name = "How much runic power to save.",
+								},
+								deficitds = {
+									order = 4,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Death Strike (defict)"
+								},
+							}
+						},
+						defensivecooldowns = {
+							order = 1,
+							type = "group",
+							childGroups = "tree",
+							inline = true,
+							name = "Cooldowns",
+							get = function(info)
+								local key = info.arg or info[#info]
+								return RubimRH.db.profile[250][key]
+							end,
+							set = function(info, value)
+								local key = info.arg or info[#info]
+								RubimRH.db.profile[250][key] = value
+							end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Defensive Cooldowns.",
+								},
+								icebound = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Icebound Fortitude"
+								},
+								runetap = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Rune Tap"
+								},
+								vampiricblood = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Vampiric Blood"
+								},
+								drw = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Dancing Rune Weapon"
+								},
+							}
+						},
+					},	
+				},				
+				dkFrost = {
+					order = 1,
+					type = "group",
+					name = "Death Knight - Frost",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
 							get = function(info)
 								local key = info.arg or info[#info]
 								return RubimRH.db.profile[251][key]
@@ -279,10 +405,41 @@ local function getOptions()
 									set = function(info, v)
 										RubimRH.CDToggle()
 									end,
-									name = "Cooldowns"
+									name = "Damage Cooldowns"
+								},
+							}
+						},
+						defensivecooldowns = {
+							order = 2,
+							type = "group",
+							childGroups = "tree",
+							inline = true,
+							name = "Cooldowns",
+							get = function(info)
+								local key = info.arg or info[#info]
+								return RubimRH.db.profile[251][key]
+							end,
+							set = function(info, value)
+								local key = info.arg or info[#info]
+								RubimRH.db.profile[251][key] = value
+							end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Defensive Cooldowns.",
+								},
+								icebound = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Icebound Fortitude"
 								},
 								deathstrike = {
-									order = 3,
+									order = 2,
 									type = "range",
 									min = 5,
 									max = 95,
@@ -292,19 +449,26 @@ local function getOptions()
 								},
 							}
 						},
-						unholy = {
-							order = 3,
+					},	
+				},		
+				dkUnholy = {
+					order = 1,
+					type = "group",
+					name = "Death Knight - Unholy",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
 							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Death Knight - Unholy",
+							inline = true,
+							name = "General",
 							get = function(info)
 								local key = info.arg or info[#info]
-								return RubimRH.db.profile[252][key]
+								return RubimRH.db.profile[251][key]
 							end,
 							set = function(info, value)
 								local key = info.arg or info[#info]
-								RubimRH.db.profile[252][key] = value
+								RubimRH.db.profile[251][key] = value
 							end,
 							args = {
 								cooldown = {
@@ -316,10 +480,41 @@ local function getOptions()
 									set = function(info, v)
 										RubimRH.CDToggle()
 									end,
-									name = "Cooldowns"
+									name = "Damage Cooldowns"
+								},
+							}
+						},
+						defensivecooldowns = {
+							order = 2,
+							type = "group",
+							childGroups = "tree",
+							inline = true,
+							name = "Cooldowns",
+							get = function(info)
+								local key = info.arg or info[#info]
+								return RubimRH.db.profile[252][key]
+							end,
+							set = function(info, value)
+								local key = info.arg or info[#info]
+								RubimRH.db.profile[252][key] = value
+							end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Defensive Cooldowns.",
+								},
+								icebound = {
+									order = 2,
+									type = "range",
+									min = 0,
+									max = 95,
+									step = 5,
+									--fontSize = "medium",
+									name = "Icebound Fortitude"
 								},
 								deathstrike = {
-									order = 1,
+									order = 2,
 									type = "range",
 									min = 5,
 									max = 95,
@@ -329,12 +524,280 @@ local function getOptions()
 								},
 							}
 						},
-						prot = {
-							order = 4,
+					},	
+				},		
+				dhHavoc = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
 							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Paladin - Protection",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[577][key]
+							--end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[577][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				dhVeng = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				drBalance = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				drFeral = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				drGuardian = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				drResto = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				hrMM = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				hrBM = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				hrSurv = {
+					order = 1,
+					type = "group",
+					name = "No config options :(",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
+							--get = function(info)
+								--local key = info.arg or info[#info]
+								--return RubimRH.db.profile[581][key]
+							---end,
+							--set = function(info, value)
+								--local key = info.arg or info[#info]
+								--RubimRH.db.profile[581][key] = value
+							--end,
+							args = {
+								description = {
+									order = 1,
+									type = "description",
+									name = "Nothing to configure. Suggest configuration options to the developer :)",
+								},
+							}
+						},
+					},	
+				},		
+				plProt = {
+					order = 1,
+					type = "group",
+					name = "Paladin - Protection",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
+							type = "group",
+							inline = true,
+							name = "General",
 							get = function(info)
 								local key = info.arg or info[#info]
 								return RubimRH.db.profile[66][key]
@@ -356,7 +819,7 @@ local function getOptions()
 									name = "Cooldowns"
 								},
 								layonahandspct = {
-									order = 1,
+									order = 2,
 									type = "range",
 									min = 5,
 									max = 95,
@@ -365,7 +828,7 @@ local function getOptions()
 									name = "Lay on Hands"
 								},
 								ardentdefenderpct = {
-									order = 2,
+									order = 3,
 									type = "range",
 									min = 5,
 									max = 95,
@@ -374,7 +837,7 @@ local function getOptions()
 									name = "Ardent Defender"
 								},
 								guardianofancientkingspct = {
-									order = 3,
+									order = 4,
 									type = "range",
 									min = 5,
 									max = 95,
@@ -384,19 +847,26 @@ local function getOptions()
 								},
 							}
 						},
-						ret = {
-							order = 5,
+					},	
+				},		
+				plRet = {
+					order = 1,
+					type = "group",
+					name = "Paladin - Retribution",
+					childGroups = "tree",
+					args = {
+						general = {
+							order = 1,
 							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Paladin - Retribution",
+							inline = true,
+							name = "General",
 							get = function(info)
 								local key = info.arg or info[#info]
 								return RubimRH.db.profile[70][key]
 							end,
 							set = function(info, value)
 								local key = info.arg or info[#info]
-								RubimRH.db.profile[70][key] = value
+								RubimRH.db.profile[581][70] = value
 							end,
 							args = {
 								cooldown = {
@@ -428,94 +898,11 @@ local function getOptions()
 									--fontSize = "medium",
 									name = "Flash of Light"
 								}
+							}
+						},
+					},	
+				},	
 
-							}
-						},
-						feral = {
-							order = 6,
-							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Druid - Feral",
-							get = function(info)
-								local key = info.arg or info[#info]
-								return RubimRH.db.profile[103][key]
-							end,
-							set = function(info, value)
-								local key = info.arg or info[#info]
-								RubimRH.db.profile[103][key] = value
-							end,
-							args = {
-								cooldown = {
-									order = 1,
-									type = "toggle",
-									get = function()
-										return RubimRH.useCD
-									end,
-									set = function(info, v)
-										RubimRH.CDToggle()
-									end,
-									name = "Cooldowns"
-								},
-								renewal = {
-									order = 1,
-									type = "range",
-									min = 5,
-									max = 95,
-									step = 5,
-									--fontSize = "medium",
-									name = "Renewal"
-								},
-								regrowth = {
-									order = 1,
-									type = "range",
-									min = 5,
-									max = 95,
-									step = 5,
-									--fontSize = "medium",
-									name = "Regrowth"
-								},
-							}
-						},
-						arms = {
-							order = 7,
-							type = "group",
-							childGroups = "tab",
-							inline = false,
-							name = "Warrior - Arms",
-							get = function(info)
-								local key = info.arg or info[#info]
-								return RubimRH.db.profile[71][key]
-							end,
-							set = function(info, value)
-								local key = info.arg or info[#info]
-								RubimRH.db.profile[71][key] = value
-							end,
-							args = {
-								cooldown = {
-									order = 1,
-									type = "toggle",
-									get = function()
-										return RubimRH.useCD
-									end,
-									set = function(info, v)
-										RubimRH.CDToggle()
-									end,
-									name = "Cooldowns"
-								},
-								victoryrush = {
-									order = 1,
-									type = "range",
-									min = 5,
-									max = 95,
-									step = 5,
-									--fontSize = "medium",
-									name = "Victory Rush"
-								},
-							}
-						},
-					}
-				},
 			}
 		}
 		for k, v in pairs(configOptions) do
@@ -529,6 +916,7 @@ end
 local function openConfig()
 	InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.Profiles)
 	InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.RubimRH)
+
 	InterfaceOptionsFrame:Raise()
 end
 
@@ -537,7 +925,30 @@ function RubimRH:SetupOptions()
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("RubimRH", getOptions)
 	self.optionsFrames.RubimRH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", nil, nil, "mainOptions")
-	self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Classes", "RubimRH", "Classes")
+	self.optionsFrames["dkBlood"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "DK - Blood", "RubimRH", "dkBlood")
+	self.optionsFrames["dkFrost"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "DK - Frost", "RubimRH", "dkFrost")
+	self.optionsFrames["dkUnholy"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "DK - Unholy", "RubimRH", "dkUnholy")
+
+	--self.optionsFrames["dhHavoc"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "DH - Havoc", "RubimRH", "dhHavoc")
+	--self.optionsFrames["dhVeng"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "DH - Vengeance", "RubimRH", "dhVeng")
+
+	--self.optionsFrames["drBalance"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid - Balance", "RubimRH", "drBalance")
+	--self.optionsFrames["drFeral"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid - Feral", "RubimRH", "drFeral")
+	--self.optionsFrames["drGuardian"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid - Guardian", "RubimRH", "drGuardian")
+	--self.optionsFrames["drResto"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Druid - Restoration", "RubimRH", "drResto")
+
+	--self.optionsFrames["hrMM"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Hunter - MM", "RubimRH", "hrMM")
+	--self.optionsFrames["hrBM"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Hunter - BM", "RubimRH", "hrBM")
+	--self.optionsFrames["hrSurv"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Hunter - Survival", "RubimRH", "hrSurv")
+
+	self.optionsFrames["plProt"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin - Protection", "RubimRH", "plProt")
+	self.optionsFrames["plRet"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Paladin - Retribution", "RubimRH", "plRet")
+
+
+
+
+	self.optionsFrames["Classes"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Classes", "RubimRH", "Classes")
+
 	configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
 
