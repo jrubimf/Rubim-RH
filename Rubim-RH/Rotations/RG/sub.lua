@@ -100,8 +100,7 @@ local function ShD_Threshold ()
 end
 
 -- # Finishers
--- ReturnSpellOnly and StealthSpell parameters are to Predict Finisher in case of Stealth Macros
-local function Finish (ReturnSpellOnly, StealthSpell)
+local function Finish ()
 	local ShadowDanceBuff = Player:BuffP(S.ShadowDanceBuff) or (StealthSpell and StealthSpell:ID() == S.ShadowDance:ID())
 
 	if S.Nightblade:IsCastable() then
@@ -140,7 +139,7 @@ end
 
 -- # Stealthed Rotation
 -- ReturnSpellOnly and StealthSpell parameters are to Predict Finisher in case of Stealth Macros
-local function Stealthed (ReturnSpellOnly, StealthSpell)
+local function Stealthed ()
 	local StealthBuff = Player:Buff(Stealth) or (StealthSpell and StealthSpell:ID() == Stealth:ID())
 	-- # If stealth is up, we really want to use Shadowstrike to benefits from the passive bonus, even if we are at max cp (from the precombat MfD).
 	-- actions.stealthed=shadowstrike,if=buff.stealth.up

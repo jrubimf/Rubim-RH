@@ -1,117 +1,95 @@
 # Rubim-RH
 Rotation Helper for WoW
 
-### Death Knight (Example)
 
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Blood    | XXXX    |  Raidable   |  8.0.1 |   :white_check_mark: | Use Defensives manually
-Frost    | XXXX    |  Leveling   |  8.0.1 |   :white_check_mark: | Use Defensives manually
-Unholy    | XXXX | Dungeons   |   8.0.1  |  :interrobang: | Workaround: "Use Blank instaead of Blank"
-
-### Death Knight (Example)
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Blood    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Frost    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Unholy    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+### Death Knight
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Blood    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Frost    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Unholy    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
 
 ### Demon Hunter
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Havoc    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Vengeance    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Havoc    | :heavy_check_mark:    |  :x:   |  8.0.1 | DarkSlash uses ArcaneTorrent, ImmolationAura uses Shadowmeld |  
+Vengeance    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 
 ### Druid
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Feral    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Guardian    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Balanace    | XXXX | XXXX   |   8.0.1  |  XXXX | 
-Restoration    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Guardian    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Feral    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Balance    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
+Restoration    | :x:   | :x:   |   8.0.1  |   | 
 
 ### Hunter
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Beastmaster    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Marksmanship    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Survival    | XXXX | XXXX   |   8.0.1  |  XXXX | 
-
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Beastmastery    | :heavy_check_mark:    |  :x:   |  8.0.1 | BardedShot uses War Stomp  | 
+Markmanship    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Survival    | :x:   | :x:   |   8.0.1  |   | 
 
 ### Mage
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Arcane    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Fire    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Frost    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Fire    | :x:    |  :x:   |  8.0.1 |  | 
+Arcane    | :x:    |  :x:   |  8.0.1 |   | 
+Frost    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Monk
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Brewmaster    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Mistweaver    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Windwalker    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Windwalker    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
+Brewmaster    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Mist Weaver    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Paladin
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Retribution    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Protection    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Holy    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Retribution    | :heavy_check_mark:    |  :x:   |  8.0.1 | WakeofAshes uses Stoneform, HammerofWrath uses Warstomp, Inquisition uses Arcane Torrent | 
+Protection    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Holy    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Priest
-
-Spec  | Contact | Quality | patch | Coded | Notes 
+Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:|:----:
-Shadow    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Holy    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Discipline    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Shadow    | :x:    |  :x:   |  8.0.1 |  | 
+Holy    | :x:    |  :x:   |  8.0.1 |   | 
+Disc    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Rogue
-
-Spec  | Contact | Quality | patch | Coded | Notes 
+Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:|:----:
-Assassination    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Outlaw    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Subtlety    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Assasination    | :x:    |  :x:   |  8.0.1 |  | 
+Subtly    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Outlaw    | :heavy_check_mark:   | :x:   |   8.0.1  | Sinister Strike uses Saber Slash, Dispatch uses Stoneform, Crimson Vial uses Dark Flight, Arcane Pulse uses Arcan Torrent  | 
 
 
 ### Shaman
-
-Spec  | Contact | Quality | patch | Coded | Notes 
+Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:|:----:
-Elemental    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Enhancement    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Restoration    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Elemental    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
+Enhancement    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Restoration    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Warlock
-
-Spec  | Contact | Quality | patch | Coded | Notes 
+Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:|:----:
-Affliction    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Demonology    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Destruction    | XXXX | XXXX   |   8.0.1  |  XXXX | 
+Affliction    | :x:    |  :x:   |  8.0.1 |  | 
+Demonology    | :x:    |  :x:   |  8.0.1 |   | 
+Destruction    | :x:   | :x:   |   8.0.1  |   | 
 
 
 
 ### Warrior
-
-
-Spec  | Contact | Quality | patch | Coded | Notes 
-:------: | :-----: | :---: | -----: | :------:|:----:
-Arms    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Fury    | XXXX    |  XXXX   |  8.0.1 |  XXXX | 
-Protection    | XXXX | XXXX   |   8.0.1  |  XXXX | 
-
+Spec  | PvE | PvP | patch | Notes
+:------: | :-----: | :---: | -----: | :------:
+Arms    | :heavy_check_mark:    |  :x:   |  8.0.1 | Warbreaker uses Stoneform, Skullsplinter uses Shadowmeld | 
+Fury    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Protection    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 

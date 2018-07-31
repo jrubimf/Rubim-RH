@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"dr",
+				"drResto"
+			],
+			[
+				"Hea",
+				"HealthPercentage"
+			],
+			[
+				"War",
+				"Warbreaker"
+			],
+			[
+				"Sp",
+				"SpinningCraneKick"
+			],
+			[
+				"obli",
+				"obliteration"
+			],
+			[
+				"Fros",
+				"FrostScythe"
+			],
+			[
+				"Frost",
+				"FrostScythe"
+			],
+			[
+				"Fro",
+				"FrostwyrmsFury"
+			],
+			[
+				"empo",
+				"EmpowerRuneWeapon"
+			],
+			[
+				"Pill",
+				"PillarOfFrost"
+			],
+			[
+				"Enemi",
+				"EnemiesCount"
+			],
+			[
 				"Thr",
 				"ThrashCat"
 			],
@@ -48,11 +92,35 @@
 	"buffers":
 	[
 		{
-			"file": "Rubim-RH/Rubim-RH.lua",
+			"file": "Rubim-RH/Rotations/WR/arms.lua",
 			"settings":
 			{
-				"buffer_size": 9811,
+				"buffer_size": 18670,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Rubim-RH/Rotations/RG/sub.lua",
+			"settings":
+			{
+				"buffer_size": 20640,
 				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Rubim-RH/Rotations/DK/blood.lua",
+			"settings":
+			{
+				"buffer_size": 15203,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Rubim-RH/Rotations/Shared.lua",
+			"settings":
+			{
+				"buffer_size": 630,
 				"line_ending": "Windows"
 			}
 		},
@@ -60,8 +128,7 @@
 			"file": "Rubim-RH/Modules/Spells.lua",
 			"settings":
 			{
-				"buffer_size": 33312,
-				"encoding": "UTF-8",
+				"buffer_size": 35667,
 				"line_ending": "Windows"
 			}
 		}
@@ -77,6 +144,14 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
 			[
 				"reind",
 				"Indentation: Reindent Lines"
@@ -144,10 +219,13 @@
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DH",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DK",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DR",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/HR",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/MK",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/PL",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/RG",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/SM",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WL",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR",
 		"/F/World of Warcraft/Interface/Addons/Rubim-RH_Extra",
@@ -156,12 +234,32 @@
 	],
 	"file_history":
 	[
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rubim-RH.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rubim-RHc.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DK/blood.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Libs/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/MK/wind.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/UI.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DH/havoc.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/fury.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Spells.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DK/unholy.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DK/frost.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/HR/bm.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/HR/survival.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/PL/ret.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/RG/outlaw.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/prot.lua",
+		"/F/World of Warcraft/Interface/Addons/HeroLib/Events/Prev_Spell.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/arms.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/Shared.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Icons.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Custom.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DH/veng.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/RG/outlaw.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/PL/ret.lua",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/SM/enha.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DR/feral.lua",
+		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/auto-save/auto_save.sublime-settings",
+		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/User/auto_save.sublime-settings",
+		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/HR/survival.lua",
 		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/User/Normalize Indentation.sublime-settings",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/RG/sub.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DR/guardian.lua",
@@ -170,33 +268,22 @@
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Debug.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/RG/ass.lua",
 		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/Normalize Indentation/Normalize Indentation.sublime-settings",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rubim-RHc.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/PL/holy.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/PL/prot.lua",
 		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/Normalize Indentation/Default (Windows).sublime-keymap",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Spells.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/Icons.lua",
 		"/F/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua",
 		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/F/World of Warcraft/Interface/Addons/Rubim-RH_Extra/rubim-rh_extra.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/HealingEngine.lua",
 		"/F/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.toc",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/prot.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rubim-RH.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/arms.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/CombatTracker.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/MK/brew.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/PVP.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DH/veng.lua",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/DH/havoc.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Modules/CustomBFA.lua",
 		"/G/Rubim/WoWAPI/wow-api.lua",
 		"/G/Rubim/Rubim-RH/Rubim-RH/Rubim-RH.toc",
-		"/G/Rubim/Rubim-RH/Rubim-RH/Rotations/WR/fury.lua",
 		"/F/World of Warcraft/Interface/Addons/HeroLib/Class/Unit/Aura.lua",
 		"/F/World of Warcraft/Interface/Addons/HeroLib/Class/Spell/Main.lua",
-		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/auto-save/auto_save.sublime-settings",
-		"/C/Users/Rubim/AppData/Roaming/Sublime Text 3/Packages/User/auto_save.sublime-settings",
 		"/G/Rubim/Rubim-RH/RubimRH.sublime-project",
 		"/G/Rubim/WoWAPI/popular-libraries/LibStub.lua",
 		"/F/World of Warcraft/Interface/Addons/Rubim-RH/Rubim-RH.lua"
@@ -218,6 +305,100 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getOptions",
+			"openConfig",
+			"slash",
+			"rubimrh",
+			"slash",
+			"/rubim",
+			"slash",
+			"Pool",
+			"rogueGUI",
+			"bloodGUI",
+			"[250]",
+			"LastCast",
+			"RubimRH.CDsON()",
+			"S.BreathofSindragosa:Cast()",
+			"RubimRH.Cds",
+			"HR.",
+			"Blackout",
+			"Combo",
+			"serenity()",
+			"serenity",
+			"SpinningCraneKick",
+			"aoe()",
+			"SpinningCraneKick",
+			"aoe()",
+			"PrevGCDP",
+			"FistOfTheWhiteTiger",
+			"StormEarthAndFire",
+			"FistsofFury",
+			"TouchofDeath",
+			"LightsJudgment",
+			"Wind",
+			"Windwalker",
+			"BokProcBuff",
+			"TheEmperorsCapacitorBuff",
+			"Buff",
+			"StormEarthandFireBuff",
+			"RushingJadeWindBuff",
+			"Rush",
+			"RushJade",
+			"rushJadewin",
+			"Buff",
+			"SerenityBuff",
+			"Serenity",
+			"FistOfTheWhiteTiger",
+			"fistof",
+			"tiger",
+			"HR.",
+			"IsCastableP",
+			"CastableP",
+			"T21",
+			"HR.",
+			"Racial",
+			"Settings",
+			"if HR.Cast\\((.*)\\).*",
+			" and (true)",
+			"if HR.Cast\\((.*)\\).*",
+			"Monk",
+			"BreathofSindragosa",
+			"S.Remo",
+			"S.rem",
+			"Winter",
+			"bos_ticking",
+			"FrostStrike",
+			"standard",
+			"DeathStrike",
+			"IsCastableP",
+			"if HR.Cast\\((.*)\\).*",
+			"standard",
+			"cooldowns",
+			"251",
+			"HR.",
+			"if HR.Cast\\((.*)\\).*",
+			"IsCastableP",
+			"IsReadyP",
+			"IsCastableP",
+			"IsCastable",
+			"IsCastableP",
+			"S.WakeofAshes:Cast",
+			"[8]",
+			"S.WakeOfAshes:Cast()",
+			"WakeofAshes",
+			"[8]",
+			"Cache",
+			"S.Wake",
+			"Cache.",
+			"Wake",
+			"S.Exexcute",
+			"Execute",
+			"R.",
+			"r.",
+			"R.",
+			"\"Melee\"",
+			"Cache.Enemie",
+			"R.",
 			"CatForm",
 			"Fo",
 			"Form",
@@ -251,57 +432,7 @@
 			"flashofthelight",
 			"db.",
 			"flash",
-			"percent",
-			"flash",
-			"percent",
-			"Paladin",
-			"flash",
-			"(R.",
-			"CanUse",
-			"Judgment",
-			"Jud",
-			"Judgem",
-			"Judgemet",
-			"CanUse",
-			"68992",
-			"Multishot:",
-			"Trueshot:",
-			"Trueshot",
-			"Cast",
-			"UpdateRanges",
-			"):",
-			"{}(",
-			"Marksman",
-			"PreciseShot",
-			"Survival",
-			"GetTime()",
-			"GetTime",
-			"math.rnadom",
-			"profile",
-			"Interrupt",
-			"arena2",
-			"Dmg",
-			"Combat",
-			"Percent",
-			"Frost",
-			"IsCastable",
-			"UnitGUID",
-			"Player",
-			"DarkSlash",
-			"DarkSlash()",
-			"DarkSlash",
-			"FelBarrage",
-			"Castable",
-			"FelBarrage",
-			"ShieldWall",
-			"Settings",
-			"Exists",
-			"IsReady",
-			"\"Melee\"",
-			"IsReady",
-			"Cast()",
-			"Rake",
-			"Stack"
+			"percent"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -309,6 +440,29 @@
 		"regex": false,
 		"replace_history":
 		[
+			"bloodGUI",
+			"PrevGCD",
+			"FistOfTheWhiteTiger",
+			"StormEarthAndFire",
+			"FistsOfFury",
+			"TouchOfDeath",
+			"BlackoutKickBuff",
+			"TheEmperorsCapacitor",
+			"StormEarthandFire",
+			"RushingJadeWind",
+			"Serenity",
+			"IsReady",
+			"RubimRH.",
+			"return \\1\\:Cast\\(\\)",
+			"",
+			"return \\1\\:Cast\\(\\)",
+			"IsReady",
+			"return \\1\\:Cast\\(\\)",
+			"RubimRH",
+			"return \\1\\:Cast\\(\\)",
+			"\\1",
+			"IsReady",
+			"8",
 			"IsReady",
 			"MultiShot:",
 			"TrueShot:",
@@ -325,72 +479,158 @@
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": false
+		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Rubim-RH/Rubim-RH.lua",
+					"file": "Rubim-RH/Rotations/WR/arms.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9811,
+						"buffer_size": 18670,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4576,
-								4576
+								16906,
+								16906
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
 							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4785.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Rubim-RH/Rotations/RG/sub.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20640,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3753,
+								3753
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2694.0,
+						"translation.y": 1509.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Rubim-RH/Rotations/DK/blood.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15203,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14870,
+								14870
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4805.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "Rubim-RH/Modules/Spells.lua",
+					"buffer": 3,
+					"file": "Rubim-RH/Rotations/Shared.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 33312,
+						"buffer_size": 630,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								20856,
-								20838
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Rubim-RH/Modules/Spells.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 35667,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13510,
+								13525
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/WoWDevelopment/WoW Lua.sublime-syntax",
-							"tab_size": 4,
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 10601.0,
+						"translation.y": 6937.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
