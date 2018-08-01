@@ -161,7 +161,7 @@ local function APL()
 		return S.Consecration:Cast()
 	end
 
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(66, APL);

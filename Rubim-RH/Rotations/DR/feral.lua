@@ -97,7 +97,7 @@ local function st_finishers()
     		return S.SavageRoar:Cast()
     	else
     		S.SavageRoar:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -108,7 +108,7 @@ local function st_finishers()
     		return S.Rip:Cast()
     	else
     		S.Rip:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -119,7 +119,7 @@ local function st_finishers()
     		return S.SavageRoar:Cast()
     	else
     		S.SavageRoar:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -152,7 +152,7 @@ local function st_generators()
     		return S.ThrashCat:Cast()
     	else
     		S.ThrashCat:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -163,7 +163,7 @@ local function st_generators()
     		return S.ThrashCat:Cast()
     	else
     		S.ThrashCat:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -175,7 +175,7 @@ local function st_generators()
     		S.Rake:Cast()
     	else
     		S.Rake:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -187,7 +187,7 @@ local function st_generators()
     		return S.Rake:Cast()
     	else
     		S.Rake:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
@@ -208,12 +208,12 @@ local function st_generators()
     		return S.ThrashCat:Cast()
     	else
     		S.ThrashCat:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
     --actions.st_generators+=/thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
-    if S.ThrashCat:IsReady() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and VarUseThrash == 1 and bool(Player:BuffStackP(S.ClearcastingBuff))) then
+    if S.ThrashCat:IsReady() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and VarUseThrash == 1 and Player:BuffStackP(S.ClearcastingBuff)) then
     	return S.ThrashCat:Cast()
     end
 
@@ -224,12 +224,12 @@ local function st_generators()
     		return S.SwipeCat:Cast()
     	else
     		S.SwipeCat:Queue()
-    		return 0, 975743
+    		return 0, 135328
     	end
     end
 
     --actions.st_generators+=/shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
-    if S.Shred:IsReady() and (Target:DebuffRemainsP(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:Energy()) / Player:EnergyRegen() or bool(Player:BuffStackP(S.ClearcastingBuff))) then
+    if S.Shred:IsReady() and (Target:DebuffRemainsP(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:Energy()) / Player:EnergyRegen() or Player:BuffStackP(S.ClearcastingBuff)) then
     	return S.Shred:Cast()
     end
 end
@@ -336,7 +336,7 @@ local function APL()
     	return S.Shred:Cast()
     end
 
-    return 0, 975743
+    return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(103, APL);

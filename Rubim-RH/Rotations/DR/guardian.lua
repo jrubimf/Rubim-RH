@@ -231,7 +231,7 @@ local function APL()
 		return Moonkin() 
 	end
 
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(104, APL);

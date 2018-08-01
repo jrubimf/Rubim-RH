@@ -165,7 +165,7 @@ local function APL ()
 			return S.CobraShot:Cast()
 		end
 	end
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(253, APL);

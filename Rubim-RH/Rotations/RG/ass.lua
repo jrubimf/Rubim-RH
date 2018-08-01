@@ -339,7 +339,7 @@ local function APL()
 	end
 
 	--actions+=/arcane_pulse
-	return 0, 975743
+	return 0, 135328
 end
 RubimRH.Rotation.SetAPL(259, APL);
 

@@ -104,7 +104,7 @@ local function APL()
     if Target:IsInRange(30) and S.ThrowGlaive:IsReady() then
         return S.ThrowGlaive:Cast()
     end
-    return 0, 975743
+    return 0, 135328
 end
 RubimRH.Rotation.SetAPL(581, APL);
 

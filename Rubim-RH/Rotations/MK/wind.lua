@@ -384,7 +384,7 @@ local function APL()
 		return st()
 	end
 
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(269, APL);

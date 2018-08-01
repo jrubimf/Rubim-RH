@@ -346,7 +346,7 @@ local function APL()
 	-- actions.filler+=/flametongue
 	if S.Flametongue:IsReady() then return S.Flametongue:Cast() end
 
-    return 0, 975743
+    return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(263, APL);

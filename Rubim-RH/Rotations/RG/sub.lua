@@ -308,7 +308,7 @@ local function APL()
 		end
 		-- run_action_list forces the return
 		if Player:EnergyPredicted() < 30 then
-			return 0, 975743
+			return 0, 135328
 		end
 
 		-- # Apply Nightblade at 2+ CP during the first 10 seconds, after that 4+ CP if it expires within the next GCD or is not up
@@ -359,7 +359,7 @@ local function APL()
 			return S.Shadowstrike:Cast()
 		end
 	end
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(261, APL);

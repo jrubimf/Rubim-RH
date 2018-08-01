@@ -40,7 +40,7 @@ local function APL()
     HL.GetEnemies(8, true);
     HL.GetEnemies(10, true);
 
-    return 0, 975743
+    return 0, 135328
 end
 RubimRH.Rotation.SetAPL(XXX, APL);
 

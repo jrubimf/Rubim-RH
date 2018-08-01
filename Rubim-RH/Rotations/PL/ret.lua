@@ -305,7 +305,7 @@ local function APL()
 		return Generators()
 	end
 	--Nothing to CAST
-	return 0, 975743
+	return 0, 135328
 end
 RubimRH.Rotation.SetAPL(70, APL);
 

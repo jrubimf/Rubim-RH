@@ -258,7 +258,7 @@ local function APL()
         return generic()
     end
 
-    return 0, 975743
+    return 0, 135328
 end
 RubimRH.Rotation.SetAPL(252, APL);
 

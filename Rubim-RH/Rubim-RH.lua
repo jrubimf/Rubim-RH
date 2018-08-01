@@ -428,7 +428,7 @@ function RubimRH.mainRotation(option)
 	end
 
 	if Cache.EnemiesCount[30] == 0 then
-		return 0, 975743
+		return 0, 135328
 	end
 
 	if Rotation == "Passive" then

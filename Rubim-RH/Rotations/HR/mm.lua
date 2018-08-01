@@ -155,7 +155,7 @@ local function APL()
 	if S.SteadyShot:IsReady() then
 		return S.SteadyShot:Cast()
 	end
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(254, APL)

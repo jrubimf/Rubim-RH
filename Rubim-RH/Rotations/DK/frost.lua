@@ -391,7 +391,7 @@ local function APL()
 		if bos_pooling() ~= nil then
 			return bos_pooling()
 		else
-		  return 0, 975743
+		  return 0, 135328
         end
 	end
 
@@ -400,7 +400,7 @@ local function APL()
 		if bos_ticking() ~= nil then
 			return bos_ticking()
         else
-		  return 0, 975743
+		  return 0, 135328
         end
 	end
 
@@ -419,7 +419,7 @@ local function APL()
 		return standard()
 	end
 
-	return 0, 975743
+	return 0, 135328
 end
 RubimRH.Rotation.SetAPL(251, APL);
 

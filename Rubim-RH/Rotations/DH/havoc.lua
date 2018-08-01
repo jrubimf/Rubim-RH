@@ -396,7 +396,7 @@ local function APL()
         return Normal()
     end
 
-    return 0, 975743
+    return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(577, APL)

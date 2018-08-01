@@ -346,7 +346,7 @@ local function APL ()
 			return S.PistolShot:Cast()
 		end
 	end
-	return 0, 975743
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(260, APL)
