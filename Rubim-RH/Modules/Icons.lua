@@ -412,6 +412,9 @@ Sephul:Hide()
 --RubimRH.SetFramePos(Interrupt, 1, 0, 1, 1)
 
 
+
+local singletargetSpell = nil
+local passiveSpell = nil
 local updateIcon = CreateFrame("Frame");
 updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
     updateIcon:onUpdate(sinceLastUpdate);

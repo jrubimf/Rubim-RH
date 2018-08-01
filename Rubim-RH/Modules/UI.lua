@@ -4,7 +4,7 @@ local StdUi = LibStub('StdUi')
 local AceGUI = LibStub("AceGUI-3.0")
 
 testTable = {}
-function SpellBlocker()
+function RubimRH.SpellBlocker()
     local currentSpellsNum = {}
     local numCount = 1
     local currentSpells = {}
@@ -54,7 +54,7 @@ function SpellBlocker()
         end);
 end
 
-function BloodMenu()
+local function BloodMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Blood', 350, 500);
     window:SetPoint('CENTER');
 
@@ -146,7 +146,7 @@ function BloodMenu()
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
     extra1:SetScript('OnClick', function()
-        SpellBlocker()
+        RubimRH.SpellBlocker()
         end);
 
     local extra2 = StdUi:Checkbox(window, 'Auto Attack');
@@ -157,7 +157,7 @@ function BloodMenu()
     extra2:Hide()
 end
 
-function FrostMenu()
+local function FrostMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Frost', 350, 500);
     window:SetPoint('CENTER');
 
@@ -266,7 +266,7 @@ function FrostMenu()
     extra2:Hide()
 end
 
-function UnholyMenu()
+local function UnholyMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Unholu', 350, 500);
     window:SetPoint('CENTER');
 
@@ -431,7 +431,6 @@ function RubimRH.ClassConfig(specID)
     if specID == 252 then
         UnholyMenu()
     end
-
 
     if specID == 66 then
         InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.plProt)

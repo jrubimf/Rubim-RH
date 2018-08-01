@@ -243,7 +243,7 @@ local function getOptions()
 									type = "execute",
 									name = "Block Spell",
 									func = function()
-										RubimRH.spellDisabler()
+										RubimRH.SpellBlocker()
 									end,
 								},
 							}

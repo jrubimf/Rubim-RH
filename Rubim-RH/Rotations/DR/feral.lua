@@ -286,9 +286,9 @@ local function APL()
 	HL.GetEnemies(8, true);
 	HL.GetEnemies(10, true);
 
-	if QueuedSpell():IsReady() then
-		return QueuedSpell():Cast()
-	end
+    if RubimRH.QueuedSpell():IsReady() and RubimRH.QueuedSpell():ID() ~= 1 then
+        return RubimRH.QueuedSpell():Cast()
+    end    
 
     --PreCombat
     if not Player:AffectingCombat() then

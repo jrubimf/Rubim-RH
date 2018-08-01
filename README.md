@@ -28,7 +28,7 @@ Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
 Beastmastery    | :heavy_check_mark:    |  :x:   |  8.0.1 | BardedShot uses War Stomp  | 
 Markmanship    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
-Survival    | :x:   | :x:   |   8.0.1  |   | 
+Survival    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
 
 ### Mage
 Spec  | PvE | PvP | patch | Notes
@@ -84,7 +84,6 @@ Spec  | PvE | PvP | patch | Notes
 Affliction    | :x:    |  :x:   |  8.0.1 |  | 
 Destruction    | :x:    |  :x:   |  8.0.1 |   | 
 Demonology    | :x:   | :x:   |   8.0.1  |   | 
-
 
 
 ### Warrior

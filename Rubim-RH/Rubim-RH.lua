@@ -427,10 +427,6 @@ function RubimRH.mainRotation(option)
 		return 0, 975746
 	end
 
-	if RubimPVP and RubimRH.PvP() ~= nil then
-		return RubimRH.PvP()
-	end
-
 	if Cache.EnemiesCount[30] == 0 then
 		return 0, 975743
 	end
@@ -440,6 +436,10 @@ function RubimRH.mainRotation(option)
 	end
 
 	if Rotation == "SingleTarget" then
-		return RubimRH.Rotation.APLs[RubimRH.playerSpec]()
+		if RubimPVP and RubimRH.PvP() ~= nil then
+			return RubimRH.PvP()
+		else
+			return RubimRH.Rotation.APLs[RubimRH.playerSpec]()
+		end	
 	end
 end

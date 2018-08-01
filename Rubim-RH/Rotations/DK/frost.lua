@@ -349,6 +349,10 @@ local function APL()
 	HL.GetEnemies(10,true); 
 	HL.GetEnemies(30,true);
 
+    if RubimRH.QueuedSpell():IsReady() and RubimRH.QueuedSpell():ID() ~= 1 then
+        return RubimRH.QueuedSpell():Cast()
+    end    
+
 	if RubimRH.config.Spells[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
 		S.DeathStrike:Queue()
 		return S.DeathStrike:Cast()
@@ -386,16 +390,18 @@ local function APL()
 	if RubimRH.config.Spells[2].isActive and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 5 and RubimRH.CDsON() then
 		if bos_pooling() ~= nil then
 			return bos_pooling()
-		end
-		return 0, 975743
+		else
+		  return 0, 975743
+        end
 	end
 
 	--actions+=/run_action_list,name=bos_ticking,if=dot.breath_of_sindragosa.ticking
 	if Player:Buff(S.BreathofSindragosa) then
 		if bos_ticking() ~= nil then
 			return bos_ticking()
-		end
-		return 0, 975743
+        else
+		  return 0, 975743
+        end
 	end
 
 	--actions+=/run_action_list,name=obliteration,if=buff.pillar_of_frost.up&talent.obliteration.enabled

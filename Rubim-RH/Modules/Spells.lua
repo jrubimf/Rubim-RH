@@ -9,6 +9,19 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 
 
+RubimRH.Spell[1] = {
+	Empty = Spell(1),
+	ArcaneTorrent = Spell(80483),
+	AncestralCall = Spell(274738),
+	Berserking = Spell(26297),
+	BloodFury = Spell(20572),
+	Fireblood = Spell(265221),
+	GiftoftheNaaru = Spell(59547),
+	LightsJudgment = Spell(255647),
+
+
+}
+
 --20594 DWARF
 --20549 TAUREN
 --28730 ARCANE TORRENT
@@ -660,6 +673,7 @@ RubimRH.Spell[70] = {
 	-- PvP Talent
 	HammerOfReckoning = Spell(247675),
 	HammerOfReckoningBuff = Spell(247677),
+	HandOfHidrance = Spell(183218),
 }
 
 ----HUNTER
@@ -774,7 +788,6 @@ LightsJudgment                = Spell(255647),
 ----DRUID
 -- Feral
 RubimRH.Spell[103] = {
-Empty 								= Spell(1),
 Regrowth                            = Spell(8936),
 Bloodtalons                           = Spell(155672),
 CatForm                               = Spell(768),

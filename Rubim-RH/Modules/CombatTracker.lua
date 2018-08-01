@@ -193,6 +193,15 @@ RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_DISABLED', function()
     wipe(Data)
 end)
 
+RubimRH.last5secs = 0
+function RubimRH.incdmg5secs(unit)
+    if UnitExists(unit) then
+        local pDMG = select(1, RubimRH.getDMG(unit))
+        RubimRH.last5secs = pMDG
+    end
+    return 0
+end    
+
 function RubimRH.incdmg(unit)
     if UnitExists(unit) then
         local pDMG = select(1, RubimRH.getDMG(unit))
