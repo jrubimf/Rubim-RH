@@ -245,7 +245,7 @@ local function Finish ()
 		return S.BetweentheEyes:Cast()
 	end
 	-- actions.finish+=/dispatch
-	if S.Dispatch:IsReady(S.Dispatch) then
+	if S.Dispatch:IsReady() then
 		return S.Dispatch:Cast()
 	end
 	-- OutofRange BtE
