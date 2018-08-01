@@ -12,7 +12,7 @@ local tostring = tostring;
 
 local S = RubimRH.Spell[260]
 
-S.SaberSlash.TextureSpellID = { 225096 }
+S.SinisterStrike.TextureSpellID = { 225096 }
 S.Dispatch.TextureSpellID = { 20594 }
 S.CrimsonVial.TextureSpellID = { 68992 } --
 S.ArcanePulse.TextureSpellID = { 28730 }
@@ -157,7 +157,7 @@ local function CDs ()
 	-- TODO: Add Potion
 	-- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
 	-- TODO: Add Items
-	if Target:IsInRange(S.SaberSlash) then
+	if Target:IsInRange(S.SinisterStrike) then
 		if RubimRH.CDsON() then
 			-- actions.cds+=/blood_fury
 			if S.BloodFury:IsReady() then
@@ -189,7 +189,7 @@ local function CDs ()
 				return S.BladeFlurry:Cast()
 			end
 			-- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
-			if S.GhostlyStrike:IsReady(S.SaberSlash) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
+			if S.GhostlyStrike:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
 				return S.GhostlyStrike:Cast()
 			end
 			-- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
@@ -197,7 +197,7 @@ local function CDs ()
 				return S.KillingSpree:Cast()
 			end
 			-- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
-			if S.BladeRush:IsReady(S.SaberSlash) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
+			if S.BladeRush:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
 				return S.BladeRush:Cast()
 			end
 			if not Player:IsStealthed(true, true) then
@@ -216,7 +216,7 @@ local function CDs ()
 end
 
 local function Stealth ()
-	if Target:IsInRange(S.SaberSlash) then
+	if Target:IsInRange(S.SinisterStrike) then
 		-- actions.stealth=ambush
 		if S.Ambush:IsReady() then
 			return S.Ambush:Cast()
@@ -262,8 +262,8 @@ local function Build ()
 		return S.PistolShot:Cast()
 	end
 	-- actions.build+=/sinister_strike
-	if S.SaberSlash:IsReady(S.SaberSlash) then
-		return S.SaberSlash:Cast()
+	if S.SinisterStrike:IsReady(S.SinisterStrike) then
+		return S.SinisterStrike:Cast()
 	end
 end
 
@@ -272,7 +272,7 @@ local function APL ()
 	-- Unit Update
 	HL.GetEnemies(8); -- Cannonball Barrage
 	HL.GetEnemies(S.Dispatch); -- Blade Flurry
-	HL.GetEnemies(S.SaberSlash); -- Melee
+	HL.GetEnemies(S.SinisterStrike); -- Melee
 
 	if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= 70 then
 		return S.CrimsonVial:Cast()
@@ -289,7 +289,7 @@ local function APL ()
 		-- Rune
 		-- PrePot w/ Bossmod Countdown
 		-- Opener
-		if RubimRH.TargetIsValid() and Target:IsInRange(S.SaberSlash) then
+		if RubimRH.TargetIsValid() and Target:IsInRange(S.SinisterStrike) then
 			if Player:ComboPoints() >= 5 then
 				if S.Dispatch:IsReady() then
 					return S.Dispatch:Cast()
@@ -297,8 +297,8 @@ local function APL ()
 			else
 				if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
 					return S.Ambush:Cast()
-				elseif S.SaberSlash:IsReady() then
-					return S.SaberSlash:Cast()
+				elseif S.SinisterStrike:IsReady() then
+					return S.SinisterStrike:Cast()
 				end
 			end
 		end
@@ -329,15 +329,15 @@ local function APL ()
 			return Build()
 		end
 		-- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-		if S.ArcaneTorrent:IsReady(S.SaberSlash) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+		if S.ArcaneTorrent:IsReady(S.SinisterStrike) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
 			return S.ArcaneTorrent:Cast()
 		end
 		-- actions+=/arcane_pulse
-		if S.ArcanePulse:IsReady(S.SaberSlash) then
+		if S.ArcanePulse:IsReady(S.SinisterStrike) then
 			return S.ArcanePulse:Cast()
 		end
 		-- actions+=/lights_judgment
-		if S.LightsJudgment:IsReady(S.SaberSlash) then
+		if S.LightsJudgment:IsReady(S.SinisterStrike) then
 			return S.LightsJudgment:Cast()
 		end
 		-- OutofRange Pistol Shot

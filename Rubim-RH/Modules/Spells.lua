@@ -550,7 +550,7 @@ RubimRH.Spell[260] = {
 	PistolShot                      = Spell(185763),
 	RolltheBones                    = Spell(193316),
 	Dispatch                        = Spell(2098),
-	SaberSlash                      = Spell(193315),
+	SinisterStrike                      = Spell(193315),
 	Stealth                         = Spell(1784),
 	Vanish                          = Spell(1856),
 	VanishBuff                      = Spell(11327),
@@ -1037,7 +1037,7 @@ RubimRH.Spell[252] = {
 	VirulentPlagueDebuff = Spell(191587), -- 13s debuff from Outbreak
 	--Defensives
 	AntiMagicShell = Spell(48707),
-	IcebornFortitute = Spell(48792),
+	IceboundFortitude = Spell(48792),
 	-- Utility
 	ControlUndead = Spell(45524),
 	DeathGrip = Spell(49576),

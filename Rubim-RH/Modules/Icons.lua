@@ -3,7 +3,6 @@
 --- Created by Rubim.
 --- DateTime: 01/06/2018 02:32
 ---
-local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 local Icons = {}
 local HL = HeroLib;
 local Cache = HeroCache;
@@ -53,7 +52,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow = "Cooldowns", nil
-        info.checked = RubimRH.useCD
+        info.checked = RubimRH.config.cooldown
         info.func = function(self)
             RubimRH.CDToggle()
         end

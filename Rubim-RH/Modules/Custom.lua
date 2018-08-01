@@ -285,7 +285,7 @@ function RubimRH.SetFramePos(frame, x, y, w, h)
 end
 
 function RubimRH.ColorOnOff(boolean)
-	if boolean == false then
+	if boolean == true then
 		return "|cFF00FF00"
 	else
 		return "|cFFFF0000"
@@ -336,8 +336,8 @@ function Spell:Queued(powerEx)
 	local powerCostQ = GetSpellPowerCost(RubimRH.queuedSpell[1]:ID())
 	local costType = nil
 	local costTypeQ = nil
-	local costs = nil
-	local costsQ = nil
+	local costs = 0
+	local costsQ = 0
 
 	for i = 1, #powerCost do
 		if powerCost[i].cost > 0 then
@@ -423,14 +423,14 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 	if not self:IsAvailable() or self:Queued() then
 		return false
 	end
-	if not RubimRH.isSpellEnabled(self:ID()) then
+	if self:IsEnabled() == false then
 		return false
 	end
 	return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
 function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
-	if not RubimRH.isSpellEnabled(self:ID()) then
+	if self:IsEnabled() == false then
 		return false
 	end
 	if Range then
@@ -442,7 +442,7 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
-	if not RubimRH.isSpellEnabled(self:ID()) then
+	if self:IsEnabled() == false then
 		return false
 	end
 	if maxRange ~= nil then
@@ -452,6 +452,26 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
 		end
 	end
 	return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
+end
+
+function Spell:IsEnabled()
+	if #RubimRH.db.profile.mainOption.disabledSpells == 0 then
+		return true
+	end	
+
+	for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
+		if self.SpellID == RubimRH.db.profile.mainOption.disabledSpells[i].value then
+			return false
+		end
+	end
+	return true
+end
+
+function RubimRH.updateEnabledSpells()
+	for i,spell in ipairs(table_name) do
+		print(i,v)
+	end
+
 end
 
 function RubimRH.isSpellEnabled(spellIDs)
