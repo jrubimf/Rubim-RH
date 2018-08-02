@@ -195,7 +195,7 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
 	local range = range or 5
 	HL.GetEnemies(range, true)
 	if RubimRH.db.profile.mainOption.startattack ==  true and Cache.EnemiesCount[range] >= 1 then
-		return self:IsCastable() and self:IsUsable();
+		return self:IsCastableMorph() and self:IsUsable();
 	end	
 	return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
