@@ -19,9 +19,6 @@ S.BladeofJustice.TextureSpellID = { 0, 1394971 }
 S.AvengingWrath.TextureSpellID = { 55748 }
 S.Crusade.TextureSpellID = { 55748 }
 
-S.WakeofAshes.TextureSpellID = { 20594 } -- Stoneform DWARF
-S.HammerofWrath.TextureSpellID = { 20549 } -- Warstomp TAUREN
-S.Inquisition.TextureSpellID = { 28730 } -- Arcane Torrent BLOOD ELF
 
 -- Items
 if not Item.Paladin then

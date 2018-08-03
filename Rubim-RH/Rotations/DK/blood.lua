@@ -19,8 +19,6 @@ Item.DeathKnight.Blood = {
 local S = RubimRH.Spell[250]
 local I = Item.DeathKnight.Blood;
 
-S.RuneStrike.TextureSpellID = { 158731 }
-
 --Player:Runes() >= 3
 function BloodBurst()
     if S.Consumption:IsReady("Melee") and Cache.EnemiesCount["Melee"] > 1 then

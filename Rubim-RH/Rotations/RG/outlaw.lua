@@ -12,11 +12,6 @@ local tostring = tostring;
 
 local S = RubimRH.Spell[260]
 
-S.SinisterStrike.TextureSpellID = { 225096 }
-S.Dispatch.TextureSpellID = { 20594 }
-S.CrimsonVial.TextureSpellID = { 68992 } --
-S.ArcanePulse.TextureSpellID = { 28730 }
-
 local function num(val)
 	if val then
 		return 1

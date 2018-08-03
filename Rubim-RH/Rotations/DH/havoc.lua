@@ -83,8 +83,6 @@ local S = RubimRH.Spell[577]
 S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }
 S.Metamorphosis.TextureSpellID = { 187827 }
-S.DarkSlash.TextureSpellID = { S.ArcaneTorrent:ID() }
-S.ImmolationAura.TextureSpellID = { S.Shadowmeld:ID() }
 
 
 -- Rotation Var

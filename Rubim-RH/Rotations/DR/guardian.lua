@@ -53,7 +53,7 @@ local function Bear()
 			and not Player:Buff(S.SurvivalInstincts)
 			and not Player:Buff(S.Barkskin)
 			and Player:NeedMajorHealing() then
-		return S.WarStomp:Cast()
+		return S.Barkskin:Cast()
 	end
 
 	-- Ironfur

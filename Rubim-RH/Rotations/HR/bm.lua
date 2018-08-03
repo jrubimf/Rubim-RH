@@ -13,7 +13,6 @@ local Item = HL.Item;
 -- Spells
 
 local S = RubimRH.Spell[253]
-S.BardedShot.TextureSpellID = { 20549 }
 
 -- Items
 if not Item.Hunter then Item.Hunter = {}; end
