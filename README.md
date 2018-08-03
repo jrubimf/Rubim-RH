@@ -12,7 +12,7 @@ Unholy    | :heavy_check_mark:   | :x:   |   8.0.1  |   |
 ### Demon Hunter
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Havoc    | :heavy_check_mark:    |  :x:   |  8.0.1 | DarkSlash uses ArcaneTorrent, ImmolationAura uses Shadowmeld |  
+Havoc    | :heavy_check_mark:    |  :x:   |  8.0.1 |   |  
 Vengeance    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 
 ### Druid
@@ -26,7 +26,7 @@ Restoration    | :x:   | :x:   |   8.0.1  |   |
 ### Hunter
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Beastmastery    | :heavy_check_mark:    |  :x:   |  8.0.1 | BardedShot uses War Stomp  | 
+Beastmastery    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
 Markmanship    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Survival    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
 
@@ -49,7 +49,7 @@ Mist Weaver    | :x:   | :x:   |   8.0.1  |   |
 ### Paladin
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Retribution    | :heavy_check_mark:    |  :x:   |  8.0.1 | WakeofAshes uses Stoneform, HammerofWrath uses Warstomp, Inquisition uses Arcane Torrent | 
+Retribution    | :heavy_check_mark:    |  :x:   |  8.0.1 | Potion working, Old War for now | 
 Protection    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Holy    | :x:   | :x:   |   8.0.1  |   | 
 
@@ -67,7 +67,7 @@ Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
 Assasination    | :x:    |  :x:   |  8.0.1 |  | 
 Subtly    | :x:    |  :x:   |  8.0.1 |   | 
-Outlaw    | :x:   | :x:   |   8.0.1  | Sinister Strike uses Saber Slash, Dispatch uses Stoneform, Crimson Vial uses Dark Flight, Arcane Pulse uses Arcan Torrent  | 
+Outlaw    | :x:   | :x:   |   8.0.1  |   | 
 
 
 ### Shaman
@@ -89,6 +89,6 @@ Demonology    | :x:   | :x:   |   8.0.1  |   |
 ### Warrior
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Arms    | :heavy_check_mark:    |  :x:   |  8.0.1 | Warbreaker uses Stoneform, Skullsplinter uses Shadowmeld | 
+Arms    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
 Fury    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Protection    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
