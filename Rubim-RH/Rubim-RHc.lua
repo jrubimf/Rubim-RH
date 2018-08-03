@@ -25,14 +25,13 @@ end
 
 function RubimRH.PotionToggle()
 	PlaySound(891, "Master");
-	if Potion == false then
-		RubimRH.db.profile.mainOption.potion = true
-		Potion = true
+	if RubimRH.db.profile[RubimRH.playerSpec].potion == false then
+		RubimRH.db.profile[RubimRH.playerSpec].potion = true
+		
 	else
-		Potion = false
-		RubimRH.db.profile.mainOption.potion = false
+		RubimRH.db.profile[RubimRH.playerSpec].potion = false
 	end
-	print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(Potion))
+	print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(RubimRH.config.potion))
 end
 
 function RubimRH.CDToggle()
@@ -100,7 +99,7 @@ function RubimRH.AoEON()
 end
 
 function RubimRH.PotionON()
-	if Potion == true then
+	if RubimRH.db.profile[RubimRH.playerSpec].potion == true then
 		return true
 	else
 		return false
