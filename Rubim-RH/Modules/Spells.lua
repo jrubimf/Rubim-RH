@@ -10,14 +10,14 @@ local Item = HL.Item;
 
 
 RubimRH.Spell[1] = {
-	Empty = Spell(1),
-	ArcaneTorrent = Spell(80483),
-	AncestralCall = Spell(274738),
-	Berserking = Spell(26297),
-	BloodFury = Spell(20572),
-	Fireblood = Spell(265221),
-	GiftoftheNaaru = Spell(59547),
-	LightsJudgment = Spell(255647),
+Empty = Spell(1),
+ArcaneTorrent = Spell(80483),
+AncestralCall = Spell(274738),
+Berserking = Spell(26297),
+BloodFury = Spell(20572),
+Fireblood = Spell(265221),
+GiftoftheNaaru = Spell(59547),
+LightsJudgment = Spell(255647),
 
 
 }
@@ -1189,4 +1189,88 @@ RubimRH.Spell[265] = {
 	DrainSoul = Spell(198590),
 	Nightfall = Spell(108558),
 	SiphonLife = Spell(63106)
+}
+
+--Demonology
+RubimRH.Spell[266] = {
+	   -- Racials
+	   ArcaneTorrent			= Spell(25046),
+	   Berserking				= Spell(26297),
+	   BloodFury				  = Spell(20572),
+	   GiftoftheNaaru		= Spell(59547),
+	   Shadowmeld        = Spell(58984),
+	   
+    -- Abilities
+    DrainLife 				= Spell(234153),
+    LifeTap 				  = Spell(1454),
+    SummonDoomGuard		= Spell(18540),
+    SummonDoomGuardSuppremacy = Spell(157757),
+    SummonInfernal 		= Spell(1122),
+    SummonInfernalSuppremacy = Spell(157898),
+    SummonImp 				= Spell(688),
+    GrimoireImp 			= Spell(111859),
+    SummonFelguard    = Spell(30146),
+    GrimoireFelguard  = Spell(111898),
+    DemonicEmpowerment= Spell(193396),
+    DemonWrath        = Spell(193440),
+    Doom              = Spell(603),
+    HandOfGuldan      = Spell(105174),
+    ShadowBolt        = Spell(686),
+    CallDreadStalkers = Spell(104316),
+    Fear 			        = Spell(5782),
+    
+    -- Pet abilities
+    CauterizeMaster		= Spell(119905),--imp
+    Suffering				  = Spell(119907),--voidwalker
+    SpellLock				  = Spell(119910),--Dogi
+    Whiplash				  = Spell(119909),--Bitch
+    FelStorm				  = Spell(119914),--FelGuard
+    ShadowLock				= Spell(171140),--doomguard
+    MeteorStrike			= Spell(171152),--infernal
+    AxeToss			      = Spell(89766),--FelGuard
+    
+    -- Talents
+    ShadowyInspiration  = Spell(196269),
+    ShadowFlame         = Spell(205181),
+    DemonicCalling      = Spell(205145),
+    
+    ImpendingDoom       = Spell(196270),
+    ImprovedStalkers    = Spell(196272),
+    Implosion           = Spell(196277),
+    
+    DemonicCircle 		  = Spell(48018),
+    MortalCoil 			    = Spell(6789),
+    ShadowFury 			    = Spell(30283),
+    
+    HandOfDoom          = Spell(196283),
+    PowerTrip           = Spell(196605),
+    SoulHarvest         = Spell(196098),
+    
+    GrimoireOfSupremacy = Spell(152107),
+    GrimoireOfService 	= Spell(108501),
+    GrimoireOfSynergy   = Spell(171975),
+    
+    SummonDarkGlare     = Spell(205180),
+    Demonbolt           = Spell(157695),
+    SoulConduit         = Spell(215941),
+    
+    -- Artifact
+    TalkielConsumption  = Spell(211714),
+    StolenPower         = Spell(211530),
+    ThalkielsAscendance = Spell(238145),
+    
+    -- Defensive	
+    UnendingResolve 	= Spell(104773),
+    
+    -- Utility
+    
+    -- Legendaries
+    SephuzBuff        = Spell(208052),
+    NorgannonsBuff    = Spell(236431),
+    
+    -- Misc
+    Concordance             = Spell(242586),
+    DemonicCallingBuff      = Spell(205146),
+    GrimoireOfSynergyBuff   = Spell(171982),
+    ShadowyInspirationBuff  = Spell(196606)
 }

@@ -15,7 +15,6 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 --- APL Local Vars
 local S = RubimRH.Spell[70]
 
-S.BladeofJustice.TextureSpellID = { 0, 1394971 }
 S.AvengingWrath.TextureSpellID = { 55748 }
 S.Crusade.TextureSpellID = { 55748 }
 
