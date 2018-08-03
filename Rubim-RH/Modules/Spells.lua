@@ -8,7 +8,7 @@ local HL = HeroLib;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-
+-- General Spells / Potion Icon
 RubimRH.Spell[1] = {
 Empty = Spell(1),
 ArcaneTorrent = Spell(80483),
@@ -18,10 +18,7 @@ BloodFury = Spell(20572),
 Fireblood = Spell(265221),
 GiftoftheNaaru = Spell(59547),
 LightsJudgment = Spell(255647),
-}
-
-RubimRH.Spell[2] = {
-	PotionSpell = Spell(176108), -- Spells every Race have
+PotionSpell = Spell(176108),
 }
 
 

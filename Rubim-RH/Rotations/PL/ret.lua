@@ -14,7 +14,7 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 
 --- APL Local Vars
 local S = RubimRH.Spell[70]
-local G = RubimRH.Spell[2] -- Basic Spells, like Racials etc. 
+local G = RubimRH.Spell[1] -- General Skills
 
 S.AvengingWrath.TextureSpellID = { 55748 }
 S.Crusade.TextureSpellID = { 55748 }
