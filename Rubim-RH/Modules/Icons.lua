@@ -73,6 +73,14 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
+        info.text, info.hasArrow = "Potions", nil
+        info.checked = Potion
+        info.func = function(self)
+            PlaySound(891, "Master");
+            RubimRH.PotionToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
         info.text, info.hasArrow, info.menuList = "Interrupts", true, "Interrupts"
         info.checked = false
         info.func = function(self)

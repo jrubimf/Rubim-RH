@@ -20,7 +20,19 @@ function RubimRH.CCToggle()
 		ccBreak = false
 		RubimRH.db.profile.mainOption.ccbreak = false
 	end
-	print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(ccBreak))
+	print("|cFF69CCF0CC Break" .. "|r: |cFF00FF00" .. tostring(ccBreak))
+end
+
+function RubimRH.PotionToggle()
+	PlaySound(891, "Master");
+	if Potion == false then
+		RubimRH.db.profile.mainOption.potion = true
+		Potion = true
+	else
+		Potion = false
+		RubimRH.db.profile.mainOption.potion = false
+	end
+	print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(Potion))
 end
 
 function RubimRH.CDToggle()
@@ -51,7 +63,7 @@ function RubimRH.AoEToggle()
 	else
 		RubimRH.useAoE = false
 	end
-	print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.useAoE))
+	print("|cFF69CCF0AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.useAoE))
 end
 
 function RubimRH.CDsON()
@@ -81,6 +93,14 @@ end
 
 function RubimRH.AoEON()
 	if RubimRH.useAoE == true then
+		return true
+	else
+		return false
+	end
+end
+
+function RubimRH.PotionON()
+	if Potion == true then
 		return true
 	else
 		return false

@@ -60,13 +60,16 @@ local function Cooldowns()
 	if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
 		return S.Crusade:Cast()
 	end
+	-- Potion on passive below 
+
 end
+
 
 local varDSCastable
 local function Finishers()
 	--MISSINGF AZERTIE STUFF
 	--actions.finishers=variable,name=ds_castable,value=spell_targets.divine_storm>=3|talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&target.health.pct<=20&buff.divine_right.down
-	varDSCastable = Cache.EnemiesCount[8] >= 3 or S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2
+	varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2))
 
 	--actions.finishers+=/inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|
 	--cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
@@ -106,7 +109,7 @@ end
 local HoW
 local function Generators()
 
-	--actions.generators = variable, name=HoW, value = (!talent.hammer_of_wrath.enabled|target.health.pct>=20&(buff.avenging_wrath.down|buff.crusade.down))
+--actions.generators = variable, name=HoW, value = (!talent.hammer_of_wrath.enabled|target.health.pct>=20&(buff.avenging_wrath.down|buff.crusade.down))
 	HoW = (not S.HammerofWrath:IsAvailable() or (Target:Exists() and Target:HealthPercentage() >= 20) and (not Player:Buff(S.AvengingWrath) or not Player:Buff(S.Crusade)))
 
 	--actions.generators+ = /call_action_list, name = finishers, if = holy_power>=5
@@ -306,6 +309,10 @@ end
 RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
+	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
+	if RubimRH.PotionON() and It.OldWar:IsReady() and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then
+	return 0, 1385259
+	end
 	return RubimRH.Shared()
 end
 
@@ -337,3 +344,5 @@ RubimRH.Rotation.SetPASSIVE(70, PASSIVE);
 --actions.opener+ = /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled, name = wake_opener_ES_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:execution_sentence
 --actions.opener+ = /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&!talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled, name = wake_opener_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:templars_verdict
 --actions.opener+ = /sequence, if = talent.wake_of_ashes.enabled&talent.inquisition.enabled, name = wake_opener_Inq:shield_of_vengeance:blade_of_justice:judgment:inquisition:avenging_wrath:wake_of_ashes
+
+

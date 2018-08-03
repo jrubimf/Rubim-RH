@@ -18,15 +18,28 @@ BloodFury = Spell(20572),
 Fireblood = Spell(265221),
 GiftoftheNaaru = Spell(59547),
 LightsJudgment = Spell(255647),
-
-
 }
+
+
+-- Potions
+if not Item.Potion then Item.Potion = {} end
+Item.Potion.Usage = {
+	StrenghPotion 				= Item(163224),
+	StaminaPotion 				= Item(163225),
+	AgilityPotion				= Item(163223),
+	IntPotion 					= Item(163222),
+    OldWar                      = Item(127844)
+};
+It = Item.Potion.Usage;
+
+
 
 --20594 DWARF
 --20549 TAUREN
 --28730 ARCANE TORRENT
 --68992 DARK FLIGHT
 --58984 SHADOWMELD
+
 
 ----WARRIOR
 --FURY
@@ -308,7 +321,7 @@ RubimRH.Spell[262] = {
 	FlameShock = Spell(188389),
 	FlameShockDebuff = Spell(188389),
 	BloodLust = Spell(2825),
-	BloodLustBuff = Spell(2825),
+	--BloodLustBuff = Spell(2825),
 
 	TotemMastery = Spell(210643),
 	EmberTotemBuff = Spell(210658),

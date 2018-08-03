@@ -149,6 +149,7 @@ local defaults = {
 			interruptsbind = nil,
 			aoebind = nil,
 			ccbreak = true,
+			Potion = true,
 			startattack = false,
 			healthstoneper = 20,
 			align = "CENTER",
@@ -363,6 +364,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
 	end
 	RubimRH.useCD = false or RubimRH.db.profile[RubimRH.playerSpec].cooldown
 	ccBreak = RubimRH.db.profile.mainOption.ccbreak
+	Potion = RubimRH.db.profile.mainOption.potion
 end)
 
 function RubimRH:OnEnable()
