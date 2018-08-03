@@ -20,6 +20,10 @@ GiftoftheNaaru = Spell(59547),
 LightsJudgment = Spell(255647),
 }
 
+RubimRH.Spell[2] = {
+	PotionSpell = Spell(176108), -- Spells every Race have
+}
+
 
 -- Potions
 if not Item.Potion then Item.Potion = {} end

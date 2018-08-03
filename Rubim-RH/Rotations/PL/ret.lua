@@ -14,6 +14,7 @@ local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 
 --- APL Local Vars
 local S = RubimRH.Spell[70]
+local G = RubimRH.Spell[2] -- Basic Spells, like Racials etc. 
 
 S.AvengingWrath.TextureSpellID = { 55748 }
 S.Crusade.TextureSpellID = { 55748 }
@@ -60,8 +61,11 @@ local function Cooldowns()
 	if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
 		return S.Crusade:Cast()
 	end
-	-- Potion on passive below 
-
+	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
+	if RubimRH.PotionON() and It.OldWar:IsReady() and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then
+	return G.PotionSpell:Cast()
+	end
+	
 end
 
 
@@ -309,11 +313,7 @@ end
 RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
-	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
-	if RubimRH.PotionON() and It.OldWar:IsReady() and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then
-	return 0, 1385259
-	end
-	return RubimRH.Shared()
+
 end
 
 RubimRH.Rotation.SetPASSIVE(70, PASSIVE);
