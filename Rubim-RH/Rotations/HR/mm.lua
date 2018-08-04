@@ -73,15 +73,15 @@ local function APL()
         return S.Berserking:Cast()
     end
     -- blood_fury,if=cooldown.trueshot.remains>30
-    if S.BloodFury:IsReady() and RubimRH.CDsON() and RubimRH.RacialON() (S.TrueShot:CooldownRemainsP() > 30) then
+    if S.BloodFury:IsReady() and RubimRH.CDsON() and RubimRH.RacialON() and (S.TrueShot:CooldownRemainsP() > 30) then
         return S.BloodFury:Cast()
     end
     -- ancestral_call,if=cooldown.trueshot.remains>30
-    if S.AncestralCall:IsReady() and RubimRH.RacialON() (S.TrueShot:CooldownRemainsP() > 30) then
+    if S.AncestralCall:IsReady() and RubimRH.RacialON() and (S.TrueShot:CooldownRemainsP() > 30) then
         return S.AncestralCall:Cast()
     end
     -- fireblood,if=cooldown.trueshot.remains>30
-    if S.Fireblood:IsReady() and RubimRH.RacialON() (S.TrueShot:CooldownRemainsP() > 30) then
+    if S.Fireblood:IsReady() and RubimRH.RacialON() and (S.TrueShot:CooldownRemainsP() > 30) then
         return S.Fireblood:Cast()
     end
     -- lights_judgment
