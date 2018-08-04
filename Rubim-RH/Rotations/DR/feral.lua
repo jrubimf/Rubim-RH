@@ -296,7 +296,7 @@ local function APL()
     end
 
     --actions=run_action_list,name=single_target,if=dot.rip.ticking|time>15
-    if (Target:DebuffP(S.RipDebuff) or HL.CombatTime() > 15) and single_target() ~= nil then
+    if (Target:DebuffP(S.RipDebuff) or HL.CombatTime() > 15) then
     	return single_target()
     end
 

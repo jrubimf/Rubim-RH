@@ -59,83 +59,92 @@ local function BloodMenu()
     window:SetPoint('CENTER');
 
 
-    local general = StdUi:FontString(window, 'General');
-    StdUi:GlueTop(general, window, 0, -40);
-    local generalSep = StdUi:FontString(window, '=======');
-    StdUi:GlueTop(generalSep, general, 0, -12);
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-    local general1 = StdUi:Checkbox(window, 'Cooldown');
-    general1:SetChecked(RubimRH.config.cooldown)
-    StdUi:GlueBelow(general1, generalSep, -100, -34, 'LEFT');
-    function general1:OnValueChanged(value)
-        RubimRH.CDToggle()
-    end
-
-    local general12 = StdUi:Checkbox(window, 'Auto Attack');
-    general12:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(general12, generalSep, 100, -34, 'RIGHT');
-    function general12:OnValueChanged(value)
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
-    local general2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    general2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(general2, general1, 0, -34, 'LEFT');
-    StdUi:AddLabel(window, general2, 'Healthstone', 'TOP');
-    function general2:OnValueChanged(value)
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
 
-    local defensiveCDs = StdUi:FontString(window, 'Defensive Cooldowns');
-    StdUi:GlueTop(defensiveCDs, window, 0, -200);
-    local defensiveCDsSep = StdUi:FontString(window, '===================');
-    StdUi:GlueTop(defensiveCDsSep, defensiveCDs, 0, -12);
 
-    local skill1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].icebound);
-    skill1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill1, defensiveCDsSep, -50, -34, 'LEFT');
-    StdUi:AddLabel(window, skill1, 'Icebound', 'TOP');
-    function skill1:OnValueChanged(value)
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].icebound);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
     end
 
-    local skill12 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
-    skill12:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill12, defensiveCDsSep, 50, -34, 'RIGHT');
-    StdUi:AddLabel(window, skill12, 'Runetap', 'TOP');
-    function skill12:OnValueChanged(value)
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Runetap', 'TOP');
+    function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[250].runetap = value
     end
 
-    local skill2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
-    skill2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill2, skill1, 0, -34, 'LEFT');
-    StdUi:AddLabel(window, skill2, 'Vampiric Blood', 'TOP');
-    function skill2:OnValueChanged(value)
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Vampiric Blood', 'TOP');
+    function sk_2_0:OnValueChanged(value)
         RubimRH.db.profile[250].vampiricblood = value
     end
 
-    local skill22 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
-    skill22:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill22, skill12, 0, -34, 'RIGHT');
-    StdUi:AddLabel(window, skill22, 'DRW', 'TOP');
-    function skill22:OnValueChanged(value)
+    local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
+    sk_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
+    function sk_2_1:OnValueChanged(value)
         RubimRH.db.profile[250].drw = value
     end
 
-    local skill3 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
-    skill3:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill3, skill2, 0, -34, 'LEFT');
-    StdUi:AddLabel(window, skill3, 'DS (HP Percent)', 'TOP');
-    function skill3:OnValueChanged(value)
+    local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
+    sk_3_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_3_0, 'DS (HP Percent)', 'TOP');
+    function sk_3_0:OnValueChanged(value)
         RubimRH.db.profile[250].smartds = value
     end
 
-    local skill32 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
-    skill32:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill32, skill22, 0, -34, 'RIGHT');
-    StdUi:AddLabel(window, skill32, 'DS (Rune Deficit)', 'TOP');
-    function skill32:OnValueChanged(value)
+    local sk_3_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
+    sk_3_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_3_1, 'DS (Rune Deficit)', 'TOP');
+    function sk_3_1:OnValueChanged(value)
         RubimRH.db.profile[250].deficitds = value
     end
     local extra = StdUi:FontString(window, 'Extra');
@@ -148,233 +157,292 @@ local function BloodMenu()
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
         end);
-
-    local extra2 = StdUi:Checkbox(window, 'Auto Attack');
-    StdUi:GlueBelow(extra2, extraSep, 100, -34, 'RIGHT');
-    function extra2:OnValueChanged(value)
-        RubimRH.AttackToggle()
-    end
-    extra2:Hide()
 end
-
 local function FrostMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Frost', 350, 500);
     window:SetPoint('CENTER');
 
 
-    local general = StdUi:FontString(window, 'General');
-    StdUi:GlueTop(general, window, 0, -40);
-    local generalSep = StdUi:FontString(window, '=======');
-    StdUi:GlueTop(generalSep, general, 0, -12);
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-    local general1 = StdUi:Checkbox(window, 'Cooldown');
-    general1:SetChecked(RubimRH.config.cooldown)
-    StdUi:GlueBelow(general1, generalSep, -100, -34, 'LEFT');
-    function general1:OnValueChanged(value)
-        RubimRH.CDToggle()
-    end
-
-    local general12 = StdUi:Checkbox(window, 'Auto Attack');
-    general12:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(general12, generalSep, 100, -34, 'RIGHT');
-    function general12:OnValueChanged(value)
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
-    local general2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    general2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(general2, general1, 0, -34, 'LEFT');
-    function general2:OnValueChanged(value)
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
-    StdUi:AddLabel(window, general2, 'Healthstone', 'TOP');
 
-    local defensiveCDs = StdUi:FontString(window, 'Defensive Cooldowns');
-    StdUi:GlueTop(defensiveCDs, window, 0, -200);
-    local defensiveCDsSep = StdUi:FontString(window, '===================');
-    StdUi:GlueTop(defensiveCDsSep, defensiveCDs, 0, -12);
 
-    local skill1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].icebound);
-    skill1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill1, defensiveCDsSep, -50, -34, 'LEFT')
-    function skill1:OnValueChanged(value)
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].icebound);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
     end
-    StdUi:AddLabel(window, skill1, 'Icebound', 'TOP');
-
-    local skill12 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
-    skill12:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill12, defensiveCDsSep, 50, -34, 'RIGHT');
-    function skill12:OnValueChanged(value)
-        RubimRH.db.profile[250].runetap = value
-    end
-    --StdUi:AddLabel(window, skill12, 'Runetap', 'TOP');
-    skill12:Hide()
-
-    local skill2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
-    skill2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill2, skill1, 0, -34, 'LEFT');
-    function skill2:OnValueChanged(value)
-        RubimRH.db.profile[250].vampiricblood = value
-    end
-    --StdUi:AddLabel(window, skill2, 'Vampiric Blood', 'TOP');
-    skill2:Hide()
-
-    local skill22 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
-    skill22:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill22, skill12, 0, -34, 'RIGHT');
-    function skill22:OnValueChanged(value)
-        RubimRH.db.profile[250].drw = value
-    end
-    --StdUi:AddLabel(window, skill22, 'DRW', 'TOP');
-    skill22:Hide()
-
-    local skill3 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
-    skill3:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill3, skill2, 0, -34, 'LEFT')
-    function skill3:OnValueChanged(value)
-        RubimRH.db.profile[250].smartds = value
-    end
-    --StdUi:AddLabel(window, skill3, 'DS (HP Percent)', 'TOP');
-    skill3:Hide()
-
-    local skill32 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
-    skill32:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill32, skill22, 0, -34, 'RIGHT');
-    function skill32:OnValueChanged(value)
-        RubimRH.db.profile[250].deficitds = value
-    end
-    --StdUi:AddLabel(window, skill32, 'DS (Rune Deficit)', 'TOP');
-    skill32:Hide()
 
     local extra = StdUi:FontString(window, 'Extra');
-    StdUi:GlueTop(extra, window, 0, -410);
-    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extra, window, 0, -310);
+    local extraSep = StdUi:FontString(window, '===================');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -50, -34, 'LEFT');
     extra1:SetScript('OnClick', function()
-        SpellBlocker()
-        end);
-
-    local extra2 = StdUi:Checkbox(window, 'Auto Attack');
-    StdUi:GlueBelow(extra2, extraSep, 100, -34, 'RIGHT');
-    function extra2:OnValueChanged(value)
-        RubimRH.AttackToggle()
-    end
-    extra2:Hide()
+        RubimRH.SpellBlocker()
+    end);
 end
-
 local function UnholyMenu()
-    local window = StdUi:Window(UIParent, 'Death Knight - Unholu', 350, 500);
+    local window = StdUi:Window(UIParent, 'Death Knight - Unholy', 350, 500);
     window:SetPoint('CENTER');
 
 
-    local general = StdUi:FontString(window, 'General');
-    StdUi:GlueTop(general, window, 0, -40);
-    local generalSep = StdUi:FontString(window, '=======');
-    StdUi:GlueTop(generalSep, general, 0, -12);
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-    local general1 = StdUi:Checkbox(window, 'Cooldown');
-    general1:SetChecked(RubimRH.config.cooldown)
-    StdUi:GlueBelow(general1, generalSep, -100, -34, 'LEFT');
-    function general1:OnValueChanged(value)
-        RubimRH.CDToggle()
-    end
-
-    local general12 = StdUi:Checkbox(window, 'Auto Attack');
-    general12:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(general12, generalSep, 100, -34, 'RIGHT');
-    function general12:OnValueChanged(value)
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
-    local general2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    general2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(general2, general1, 0, -34, 'LEFT');
-    function general2:OnValueChanged(value)
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
-    StdUi:AddLabel(window, general2, 'Healthstone', 'TOP');
 
-    local defensiveCDs = StdUi:FontString(window, 'Defensive Cooldowns');
-    StdUi:GlueTop(defensiveCDs, window, 0, -200);
-    local defensiveCDsSep = StdUi:FontString(window, '===================');
-    StdUi:GlueTop(defensiveCDsSep, defensiveCDs, 0, -12);
 
-    local skill1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[252].icebound);
-    skill1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill1, defensiveCDsSep, -50, -34, 'LEFT')
-    function skill1:OnValueChanged(value)
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[252].icebound);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
     end
-    StdUi:AddLabel(window, skill1, 'Icebound', 'TOP');
-
-    local skill12 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
-    skill12:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill12, defensiveCDsSep, 50, -34, 'RIGHT');
-    function skill12:OnValueChanged(value)
-        RubimRH.db.profile[250].runetap = value
-    end
-    --StdUi:AddLabel(window, skill12, 'Runetap', 'TOP');
-    skill12:Hide()
-
-    local skill2 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
-    skill2:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill2, skill1, 0, -34, 'LEFT');
-    function skill2:OnValueChanged(value)
-        RubimRH.db.profile[250].vampiricblood = value
-    end
-    --StdUi:AddLabel(window, skill2, 'Vampiric Blood', 'TOP');
-    skill2:Hide()
-
-    local skill22 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
-    skill22:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill22, skill12, 0, -34, 'RIGHT');
-    function skill22:OnValueChanged(value)
-        RubimRH.db.profile[250].drw = value
-    end
-    --StdUi:AddLabel(window, skill22, 'DRW', 'TOP');
-    skill22:Hide()
-
-    local skill3 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
-    skill3:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill3, skill2, 0, -34, 'LEFT')
-    function skill3:OnValueChanged(value)
-        RubimRH.db.profile[250].smartds = value
-    end
-    --StdUi:AddLabel(window, skill3, 'DS (HP Percent)', 'TOP');
-    skill3:Hide()
-
-    local skill32 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
-    skill32:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(skill32, skill22, 0, -34, 'RIGHT');
-    function skill32:OnValueChanged(value)
-        RubimRH.db.profile[250].deficitds = value
-    end
-    --StdUi:AddLabel(window, skill32, 'DS (Rune Deficit)', 'TOP');
-    skill32:Hide()
 
     local extra = StdUi:FontString(window, 'Extra');
-    StdUi:GlueTop(extra, window, 0, -410);
+    StdUi:GlueTop(extra, window, 0, -310);
+    local extraSep = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -50, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
+local function ArmsMenu()
+    local window = StdUi:Window(UIParent, 'Warrior - Arms', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].diebythesword);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Dy By The Sword', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[71].diebythesword = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].victoryrush);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Victory Rush', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[71].victoryrush = value
+    end
+
+    local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].rallyingcry);
+    sk_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
+    function sk_2_1:OnValueChanged(value)
+        RubimRH.db.profile[71].rallyingcry = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
     extra1:SetScript('OnClick', function()
-        SpellBlocker()
-        end);
+        RubimRH.SpellBlocker()
+    end);
+end
+local function FuryMenu()
+    local window = StdUi:Window(UIParent, 'Warrior - Fury', 350, 500);
+    window:SetPoint('CENTER');
 
-    local extra2 = StdUi:Checkbox(window, 'Auto Attack');
-    StdUi:GlueBelow(extra2, extraSep, 100, -34, 'RIGHT');
-    function extra2:OnValueChanged(value)
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
-    extra2:Hide()
-end
 
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].rallyingcry);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Rallying Cry', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[71].rallyingcry = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].victoryrush);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Victory Rush', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[71].victoryrush = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
 
 local function OutlawMenu()
     local mainWindow = AceGUI:Create("Frame")
@@ -421,8 +489,6 @@ end
 function RubimRH.ClassConfig(specID)
     if specID == 250 then
         BloodMenu()
-        --InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.dkBlood)
-        --InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.dkBlood)
     end        
     if specID == 251 then
         FrostMenu()
@@ -432,9 +498,12 @@ function RubimRH.ClassConfig(specID)
         UnholyMenu()
     end
 
-    if specID == 66 then
-        InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.plProt)
-        InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.plProt)
+    if specID == 71 then
+        ArmsMenu()
+    end
+
+    if specID == 72 then
+        FuryMenu()
     end
 
 

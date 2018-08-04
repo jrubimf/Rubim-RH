@@ -89,6 +89,10 @@ local function APL()
     HL.GetEnemies(10);
 
     if not Player:AffectingCombat() then
+        if not Player:Buff(S.BattleShout) then
+            return S.BattleShout:Cast()
+        end
+
         return 0, 462338
     end
 
@@ -98,6 +102,24 @@ local function APL()
         if RubimRH.config.Spells[1].isActive and S.Charge:IsReady() and Target:IsInRange(S.Charge) then
             return S.Charge:Cast()
         end
+
+        if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].victoryrush then
+            return S.VictoryRush:Cast()
+        end
+
+        if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
+            return S.VictoryRush:Cast()
+        end
+
+        if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebytheword then
+            return S.DiebytheSword:Cast()
+        end
+
+        if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].rallyingcry then
+            return S.RallyingCry:Cast()
+        end
+
+
         -- actions+=/furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
         if S.FuriousSlash:IsCastable() and S.FuriousSlash:IsAvailable() and (Player:BuffStack(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9)) then
             return S.FuriousSlash:Cast()

@@ -242,7 +242,7 @@ local function APL ()
     end
 
     --actions+=/run_action_list,name=aoe,if=active_enemies>2&(spell_targets.chain_lightning>2|spell_targets.lava_beam>2)
-    if Cache.EnemiesCount[40] > 2 and RubimRH.useAoE and aoe() ~= nil then
+    if Cache.EnemiesCount[40] > 2 and RubimRH.useAoE then
         return aoe()
     end
 

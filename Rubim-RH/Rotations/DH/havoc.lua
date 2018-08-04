@@ -204,7 +204,7 @@ local function APL()
             return S.Nemesis:Cast()
         end
 
-        if S.FelBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
+        if RubimRH.config.Spells[3].isActive and S.FelBarrage:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.FelBarrage:Cast()
         end
         -- potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
@@ -386,7 +386,7 @@ local function APL()
 
     -- run_action_list,name=demonic,if=talent.demonic.enabled
     -- run_action_list,name=normal
-    if S.Demonic:IsAvailable() and Demonic() ~= nil then
+    if S.Demonic:IsAvailable() then
         return Demonic()
     end
 

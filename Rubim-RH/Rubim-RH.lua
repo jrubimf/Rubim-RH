@@ -149,7 +149,9 @@ local defaults = {
 			interruptsbind = nil,
 			aoebind = nil,
 			ccbreak = true,
-			Potion = true,
+			usePotion = true,
+			useInterrupts = true,
+			useRacial = true,
 			startattack = false,
 			healthstoneper = 20,
 			align = "CENTER",
@@ -237,6 +239,8 @@ local defaults = {
 		[71] = {
 			cooldown = true,
 			victoryrush = 80,
+			diebythesword = 50,
+			rallyingcry = 30,
 			Spells = {
 				{ spellID = Warbreaker, isActive = true },
 				{ spellID = Ravager, isActive = true },
@@ -245,6 +249,8 @@ local defaults = {
 		},
 		[72] = {
 			cooldown = true,
+			rallyingcry = 30,
+			victoryrush = 80,
 			Spells = {
 				{ spellID = Charge, isActive = true }
 			}
@@ -427,10 +433,6 @@ function RubimRH.mainRotation(option)
 
 	if _G.LootFrame:IsShown() then
 		return 0, 975746
-	end
-
-	if Cache.EnemiesCount[30] == 0 then
-		return 0, 135328
 	end
 
 	if Rotation == "Passive" then

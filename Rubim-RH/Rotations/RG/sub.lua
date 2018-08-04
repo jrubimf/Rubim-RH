@@ -303,7 +303,7 @@ local function APL()
 
 		-- # Run fully switches to the Stealthed Rotation (by doing so, it forces pooling if nothing is available).
 		-- actions+=/run_action_list,name=stealthed,if=stealthed.all
-		if Player:IsStealthed(true, true) and Stealthed() ~= nil then
+		if Player:IsStealthed(true, true) then
 			return Stealthed()
 		end
 		-- run_action_list forces the return

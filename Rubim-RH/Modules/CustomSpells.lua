@@ -10,7 +10,6 @@ local Item = HL.Item;
 local function GetTexture (Object)
 	-- Spells
 	local SpellID = Object.SpellID;
-
 	if SpellID then
 		if Object.TextureSpellID ~= nil then
 			if #Object.TextureSpellID == 1 then
@@ -26,13 +25,9 @@ local function GetTexture (Object)
 	-- Items
 	local ItemID = Object.ItemID;
 	if ItemID then
-		local TextureCache = Cache.Persistent.Texture.Item;
-		if not TextureCache[ItemID] then
-			-- name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice
-			local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
-			TextureCache[ItemID] = texture;
-		end
-		return TextureCache[ItemID];
+		local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
+		print('item')
+		return texture
 	end
 end
 
@@ -151,110 +146,110 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 	if RubimPvP then
 		if RubimRH.db.profile.mainOption.ccbreak then
 			return false
-		elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(Range) then
+			elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(Range) then
+				return false
+			end	
+		end
+
+		if self:IsEnabled() == false then
 			return false
+		end
+		local range = self:MaximumRange() or 5
+		HL.GetEnemies(range, true)
+		if range <= 8 and RubimRH.db.profile.mainOption.startattack ==  true and Cache.EnemiesCount[range] >= 1 then
+			return self:IsCastable() and self:IsUsable();
 		end	
+
+		return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 	end
 
-	if self:IsEnabled() == false then
-		return false
-	end
-	local range = self:MaximumRange() or 5
-	HL.GetEnemies(range, true)
-	if range <= 8 and RubimRH.db.profile.mainOption.startattack ==  true and Cache.EnemiesCount[range] >= 1 then
-		return self:IsCastable() and self:IsUsable();
-	end	
-
-	return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
-end
-
-function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
-	if self:IsEnabled() == false then
-		return false
-	end
-	if Range then
-		local RangeUnit = ThisUnit or Target;
-		return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
-	else
-		return self:IsLearned() and self:CooldownUp();
-	end
-end
-
-function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
-	if RubimPvP then
-		if RubimRH.db.profile.mainOption.ccbreak then
-			return false
-		elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(Range) then
-			return false
-		end	
-	end
-	
-	if self:IsEnabled() == false then
-		return false
-	end
-	local range = range or 5
-	HL.GetEnemies(range, true)
-	if RubimRH.db.profile.mainOption.startattack ==  true and Cache.EnemiesCount[range] >= 1 then
-		return self:IsCastableMorph() and self:IsUsable();
-	end	
-	return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
-end
-
-function Spell:IsEnabled()
-	if #RubimRH.db.profile.mainOption.disabledSpells == 0 then
-		return true
-	end	
-
-	for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
-		if self.SpellID == RubimRH.db.profile.mainOption.disabledSpells[i].value then
+	function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
+		if self:IsEnabled() == false then
 			return false
 		end
-	end
-	return true
-end
-
-function RubimRH.updateEnabledSpells()
-	for i,spell in ipairs(table_name) do
-		print(i,v)
-	end
-
-end
-
-function RubimRH.isSpellEnabled(spellIDs)
-	local isEnabled = true
-
-	for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
-		if spellIDs == spellID then
-			isEnabled = false
-		end
-	end
-	return isEnabled
-end
-
-function RubimRH.addSpellDisabled(spellIDs)
-	local exists = false
-	for pos, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
-		if spellIDs == spellID then
-			table.remove(RubimRH.db.profile.mainOption.disabledSpells, pos)
-			exists = true
-			print("|cFF00FF00Unblocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
-			break
+		if Range then
+			local RangeUnit = ThisUnit or Target;
+			return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
+		else
+			return self:IsLearned() and self:CooldownUp();
 		end
 	end
 
-	if exists == false then
-		table.insert(RubimRH.db.profile.mainOption.disabledSpells, spellIDs)
-		print("|cFFFF0000Blocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
-	end
-end
+	function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
+		if RubimPvP then
+			if RubimRH.db.profile.mainOption.ccbreak then
+				return false
+				elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(Range) then
+					return false
+				end	
+			end
 
-function Spell:Cast()
-	return GetTexture(self)
-end
+			if self:IsEnabled() == false then
+				return false
+			end
+			local range = range or 5
+			HL.GetEnemies(range, true)
+			if RubimRH.db.profile.mainOption.startattack ==  true and Cache.EnemiesCount[range] >= 1 then
+				return self:IsCastableMorph() and self:IsUsable();
+			end	
+			return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
+		end
 
-function Spell:SetTexture(id)
-	self.TextureID = id
-end
+		function Spell:IsEnabled()
+			if #RubimRH.db.profile.mainOption.disabledSpells == 0 then
+				return true
+			end	
+
+			for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
+				if self.SpellID == RubimRH.db.profile.mainOption.disabledSpells[i].value then
+					return false
+				end
+			end
+			return true
+		end
+
+		function RubimRH.updateEnabledSpells()
+			for i,spell in ipairs(table_name) do
+				print(i,v)
+			end
+
+		end
+
+		function RubimRH.isSpellEnabled(spellIDs)
+			local isEnabled = true
+
+			for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
+				if spellIDs == spellID then
+					isEnabled = false
+				end
+			end
+			return isEnabled
+		end
+
+		function RubimRH.addSpellDisabled(spellIDs)
+			local exists = false
+			for pos, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
+				if spellIDs == spellID then
+					table.remove(RubimRH.db.profile.mainOption.disabledSpells, pos)
+					exists = true
+					print("|cFF00FF00Unblocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
+					break
+				end
+			end
+
+			if exists == false then
+				table.insert(RubimRH.db.profile.mainOption.disabledSpells, spellIDs)
+				print("|cFFFF0000Blocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
+			end
+		end
+
+		function Spell:Cast()
+			return GetTexture(self)
+		end
+
+		function Spell:SetTexture(id)
+			self.TextureID = id
+		end
 
 
 -- Player On Cast Success Listener
@@ -294,3 +289,26 @@ HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 		end
 	end
 	end, "SPELL_AURA_REMOVED")
+
+
+local lustBuffs = {
+Spell(80353),
+Spell(2825),
+Spell(32182),
+Spell(90355),
+Spell(160452),
+Spell(178207),
+Spell(35475),
+Spell(230935),
+Spell(256740),
+}
+
+function Unit:LustDuration()
+	for i = 1, #HeroismBuff do
+		local Buff = HeroismBuff[i]
+		if self:Buff(Buff, nil, true) then
+			return ThisUnit:BuffRemains(Buff, true) or 0
+		end
+	end
+	return 0
+end
