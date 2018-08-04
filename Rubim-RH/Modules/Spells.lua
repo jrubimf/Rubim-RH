@@ -638,7 +638,6 @@ RubimRH.Spell[66] = {
     ConsecratedHammer = Spell(203785),
     CrusadersJudgment = Spell(204023),
     Seraphim = Spell(152262),
-
     -- Defensive / Utility
     LightOfTheProtector = Spell(184092),
     HandOfTheProtector = Spell(213652),
@@ -689,7 +688,6 @@ RubimRH.Spell[70] = {
 
     -- Azerite Power
     DivineStormBuffAzerite = Spell(278523),
-
     -- Defensive
     -- Utility
     HammerofJustice = Spell(853),
@@ -722,7 +720,7 @@ RubimRH.Spell[253] = {
     LightsJudgment = Spell(255647),
     -- Abilities
     AspectoftheWild = Spell(193530),
-    BardedShot = Spell(217200),
+    BarbedShot = Spell(217200),
     Frenzy = Spell(272790),
     BeastCleave = Spell(115939),
     BeastCleaveBuff = Spell(118455),
@@ -762,6 +760,73 @@ RubimRH.Spell[253] = {
     SephuzBuff = Spell(208052),
     -- Macros
 }
+
+--Survival
+RubimRH.Spell[255] = {
+    --Racials
+    ArcaneTorrent = Spell(80483),
+    AncestralCall = Spell(274738),
+    Berserking = Spell(26297),
+    BloodFury = Spell(20572),
+    Fireblood = Spell(265221),
+    GiftoftheNaaru = Spell(59547),
+    LightsJudgment = Spell(255647),
+    -- Pet
+    CallPet = Spell(883),
+    Intimidation = Spell(19577),
+    MendPet = Spell(136),
+    RevivePet = Spell(982),
+    -- Abilities
+    AspectoftheEagle = Spell(186289),
+    Carve = Spell(187708),
+    CoordinatedAssault = Spell(266779),
+    Harpoon = Spell(190925),
+    KillCommand = Spell(259489),
+    RaptorStrike = Spell(186270),
+    RaptorStrikeEagle = Spell(265189),
+    SerpentSting = Spell(259491),
+    WildfireBomb = Spell(259495),
+    WildfireBombDebuff = Spell(269747),
+    -- Talents
+    AlphaPredator = Spell(269737),
+    AMurderofCrows = Spell(131894),
+    BirdsofPrey = Spell(260331),
+    Bloodseeker = Spell(260248),
+    KillCommandDot = Spell(259277),
+    Butchery = Spell(212436),
+    Chakrams = Spell(259391),
+    FlankingStrike = Spell(269751),
+    GuerrillaTactics = Spell(264332),
+    InternalBleeding = Spell(270343),
+    HydrasBite = Spell(260241),
+    Muzzle = Spell(187707),
+    MongooseBite = Spell(259387),
+    MongooseFury = Spell(259388),
+    MongooseBiteEagle = Spell(265888),
+    SteelTrap = Spell(162488),
+    SteelTrapDebuff = Spell(162487),
+    TermsofEngagement = Spell(265895),
+    TipoftheSpear = Spell(260285),
+    TipoftheSpearBuff = Spell(260286),
+    VipersVenom = Spell(268501),
+    VipersVenomBuff = Spell(268552),
+    WildfireInfusion = Spell(271014),
+    ShrapnelBomb = Spell(270335),
+    ShrapnelBombDot = Spell(270339),
+    VolatileBomb = Spell(271045),
+    VolatileBombDot = Spell(271049),
+    PheromoneBomb = Spell(270323),
+    PheromoneBombDot = Spell(270332),
+    -- Defensive
+    AspectoftheTurtle = Spell(186265),
+    Exhilaration = Spell(109304),
+    -- Utility
+    -- Legendaries
+    -- Misc
+    ExposedFlank = Spell(252094),
+    PotionOfProlongedPowerBuff = Spell(229206),
+    SephuzBuff = Spell(208052),
+};
 
 --Marksman
 RubimRH.Spell[254] = {

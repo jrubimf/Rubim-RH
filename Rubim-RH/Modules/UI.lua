@@ -444,6 +444,228 @@ local function FuryMenu()
     end);
 end
 
+local function MMMenu()
+    local window = StdUi:Window(UIParent, 'Hunter - Marksman', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[254].exhilaration);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Exhilaration', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[71].rallyingcry = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[254].aspectoftheturtle);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[71].victoryrush = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
+local function SurvivalMenu()
+    local window = StdUi:Window(UIParent, 'Hunter - Survival', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].mendpet);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[71].rallyingcry = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].aspectoftheturtle);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[71].victoryrush = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
+local function BMMenu()
+    local window = StdUi:Window(UIParent, 'Hunter - Beast Mastery', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[253].mendpet);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[71].rallyingcry = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[253].aspectoftheturtle);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[71].victoryrush = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
 local function OutlawMenu()
     local mainWindow = AceGUI:Create("Frame")
     mainWindow:SetTitle("Rogue - Roll the Boness")
@@ -504,6 +726,18 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 72 then
         FuryMenu()
+    end
+
+    if specID == 253 then
+        BMMenu()
+    end
+
+    if specID == 254 then
+        MMMenu()
+    end
+
+    if specID == 254 then
+        SurvivalMenu()
     end
 
 

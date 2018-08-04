@@ -73,7 +73,7 @@ local EnabledRotation = {
 	-- Hunter
 	[253] = true, -- Beast Mastery
 	[254] = true, -- Marksmanship
-	[255] = false, -- Survival
+	[255] = true, -- Survival
 	-- Mage
 	[62] = false, -- Arcane
 	[63] = false, -- Fire
@@ -276,13 +276,19 @@ local defaults = {
 		--HUNTER
 		[254] = {
 			cooldown = true,
+			exhilaration = 65,
+			aspectoftheturtle = 30,
 		},
 		[253] = {
 			cooldown = true,
+			mendpet = 70,
+			aspectoftheturtle = 30,
 		},
 
 		[255] = {
 			cooldown = true,
+			mendpet = 70,
+			aspectoftheturtle = 30,
 		},
 		--MONK
 		[268] = {
@@ -429,6 +435,10 @@ function RubimRH.mainRotation(option)
 
 	if ACTIVE_CHAT_EDIT_BOX ~= nil then
 		return 0, "Interface\\Addons\\Rubim-RH\\Media\\chatting.tga"
+	end
+
+	if SpellIsTargeting() then
+		return 0, 236353
 	end
 
 	if _G.LootFrame:IsShown() then
