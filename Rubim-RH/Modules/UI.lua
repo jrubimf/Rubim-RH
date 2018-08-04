@@ -135,7 +135,7 @@ local function BloodMenu()
     local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
     sk_3_0:SetMinMaxValue(0, 100);
     StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -34, 'LEFT');
-    StdUi:AddLabel(window, sk_3_0, 'DS (HP Percent)', 'TOP');
+    StdUi:AddLabel(window, sk_3_0, 'DS (InC DMG Percent)', 'TOP');
     function sk_3_0:OnValueChanged(value)
         RubimRH.db.profile[250].smartds = value
     end

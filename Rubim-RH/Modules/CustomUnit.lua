@@ -118,4 +118,11 @@ function Unit:IsInterruptable()
 		return true
 	end
 	return false
-end 
+end
+
+function Unit:NeedThreat()
+	if UnitThreatSituation(self.UnitID) == 2 then
+		return true
+	end
+	return false
+end

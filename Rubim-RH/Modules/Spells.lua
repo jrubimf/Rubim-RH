@@ -1098,6 +1098,7 @@ RubimRH.Spell[251] = {
 }
 -- UNHOLY
 RubimRH.Spell[252] = {
+    DarkSuccor = Spell(101568),
     -- Racials
     ArcaneTorrent = Spell(50613),
     Berserking = Spell(26297),
