@@ -43,12 +43,7 @@ local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 
 local function Cooldowns()
-	--actions.cooldowns=use_item,name=faulty_countermeasure,if=(buff.avenging_wrath.up|buff.crusade.up)
-	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
-	--actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
-	--actions.cooldowns+=/shield_of_vengeance
-	--actions.cooldowns+=/avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
-	--actions.cooldowns+=/crusade,if=holy_power>=4
+	
 	if RubimRH.CDsON() and S.HolyWrath:IsCastable() then
 		return S.HolyWrath:Cast()
 	end
@@ -61,6 +56,12 @@ local function Cooldowns()
 	if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
 		return S.Crusade:Cast()
 	end
+
+	--actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
+	if RubimRH.CDsON() and G.LightsJudgment:IsCastable() and Cache.EnemiesCount[8] >= 2 then
+		return G.LightsJudgment:Cast()
+	end
+
 	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
 	if RubimRH.PotionON() and It.OldWar:IsReady() and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then
 	return G.PotionSpell:Cast()
@@ -71,9 +72,11 @@ end
 
 local varDSCastable
 local function Finishers()
-	--MISSINGF AZERTIE STUFF
-	--actions.finishers=variable,name=ds_castable,value=spell_targets.divine_storm>=3|talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&target.health.pct<=20&buff.divine_right.down
-	varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2))
+
+	message("text")
+ --- Azerite should work
+ -- actions.finishers=variable,name=ds_castable,      value=spell_targets.divine_storm>=3|!talent.righteous_verdict.enabled&talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&target.health.pct<=20&buff.divine_right.down
+    varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (not S.RighteousVerdict:IsAvailable() and S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2) or (RubimRH.azerite(5, 453) or RubimRH.azerite(1, 453) or RubimRH.azerite(3, 453) and Target:HealthPercentage() <= 20 and not Player:Buff(S.DivineStormBuffAzerite)))
 
 	--actions.finishers+=/inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|
 	--cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
@@ -177,6 +180,7 @@ local function Generators()
 end
 
 local function Opener()
+
 	--actions.opener =  /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
 	--name = wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
 	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then

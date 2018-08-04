@@ -638,6 +638,7 @@ RubimRH.Spell[66] = {
     ConsecratedHammer = Spell(203785),
     CrusadersJudgment = Spell(204023),
     Seraphim = Spell(152262),
+
     -- Defensive / Utility
     LightOfTheProtector = Spell(184092),
     HandOfTheProtector = Spell(213652),
@@ -684,6 +685,10 @@ RubimRH.Spell[70] = {
     DivineJudgement = Spell(271580),
     HammerofWrath = Spell(24275),
     WakeofAshes = Spell(255937),
+    RighteousVerdict = Spell(267610),
+
+    -- Azerite Power
+    DivineStormBuffAzerite = Spell(278523),
 
     -- Defensive
     -- Utility

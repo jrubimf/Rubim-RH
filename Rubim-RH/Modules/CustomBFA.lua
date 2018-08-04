@@ -22,9 +22,13 @@ local function SpellStacksFrac(spell)
     end
 end
 
+
+
 local function SpellCD(spell)
     return select(2, TMW.CNDT.Env.GetSpellCooldown(spell))
 end
+
+
 
 local function BuffDur(spell)
     return select(1, TMW.CNDT.Env.AuraDur("player", spell, GetSpellInfo(spell)))
