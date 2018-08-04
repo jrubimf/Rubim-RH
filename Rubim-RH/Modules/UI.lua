@@ -736,7 +736,7 @@ function RubimRH.ClassConfig(specID)
         MMMenu()
     end
 
-    if specID == 254 then
+    if specID == 255 then
         SurvivalMenu()
     end
 
