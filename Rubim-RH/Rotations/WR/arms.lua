@@ -220,7 +220,7 @@ local function APL()
         return S.VictoryRush:Cast()
     end
 
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebytheword then
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebythesword then
         return S.DiebytheSword:Cast()
     end
 
