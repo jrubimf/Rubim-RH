@@ -46,7 +46,7 @@ local function single_target ()
     if S.Execute:IsReady() and Player:Buff(S.Enrage) then
         return S.Execute:Cast()
     end
-    if S.ExecuteMassacre:IsReady() and Player:Buff(S.Enrage) then
+    if S.ExecuteMassacre:IsReadyMorph() and Player:Buff(S.Enrage) then
         return S.Execute:Cast()
     end
     -- actions.single_target+=/bloodthirst,if=buff.enrage.down

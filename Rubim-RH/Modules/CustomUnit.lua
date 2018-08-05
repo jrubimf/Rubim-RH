@@ -126,3 +126,10 @@ function Unit:NeedThreat()
 	end
 	return false
 end
+
+function Unit:IsInWarMode()
+	if self:Buff(Spell(269083)) then
+		return true
+	end
+	return false
+end
