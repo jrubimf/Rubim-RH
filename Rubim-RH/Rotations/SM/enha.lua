@@ -345,7 +345,6 @@ local function APL()
 
 	-- actions.filler+=/flametongue
 	if S.Flametongue:IsReady() then return S.Flametongue:Cast() end
-
     return 0, 135328
 end
 

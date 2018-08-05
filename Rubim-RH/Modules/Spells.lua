@@ -606,6 +606,8 @@ RubimRH.Spell[260] = {
     QuickDraw = Spell(196938),
     SliceandDice = Spell(5171),
     -- Defensive
+    Riposte = Spell(199754),
+    CloakofShadows = Spell(31224),
     CrimsonVial = Spell(185311),
     Feint = Spell(1966),
     -- Utility

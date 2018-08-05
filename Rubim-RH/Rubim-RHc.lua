@@ -11,7 +11,7 @@ local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 
-function RubimRH.CCToggle()
+function RubimRH.InterruptsToggle()
 	PlaySound(891, "Master");
 	if RubimRH.db.profile.mainOption.useInterrupts == false then
 		RubimRH.db.profile.mainOption.useInterrupts = true
@@ -110,6 +110,9 @@ function RubimRH.CDsON()
 end
 
 function RubimRH.AoEON()
+	if RubimRH.db == nil then
+		return false
+	end
 	if RubimRH.useAoE == true then
 		return true
 	else
@@ -134,6 +137,9 @@ function RubimRH.azerite(slot, azeriteID)
  end
 
 function RubimRH.RacialON()
+	if RubimRH.db == nil then
+		return false
+	end
 	if RubimRH.db.profile.mainOption.useRacial == true then
 		return true
 	else
@@ -141,7 +147,21 @@ function RubimRH.RacialON()
 	end
 end
 
+function RubimRH.ccbreak()
+	if RubimRH.db == nil then
+		return false
+	end
+	if RubimRH.db.profile.mainOption.ccbreak == true then
+		return true
+	else
+		return false
+	end
+end
+
 function RubimRH.PotionON()
+	if RubimRH.db == nil then
+		return false
+	end
 	if RubimRH.db.profile.mainOption.usePotion == true then
 		return true
 	else
@@ -150,6 +170,9 @@ function RubimRH.PotionON()
 end
 
 function RubimRH.InterruptsON()
+	if RubimRH.db == nil then
+		return false
+	end
 	if RubimRH.db.profile.mainOption.useInterrupts == true then
 		return true
 	else

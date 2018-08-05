@@ -263,11 +263,14 @@ local defaults = {
 		[260] = {
 			cooldown = true,
 			stealthOOC = true,
+            crimsonvial = 65,
+            cloakofshadows = 15,
+            riposte = 50,
+            dice = "Simcraft"
 		},
 		[261] = {
 			cooldown = true,
 			stealthOOC = true,
-			dice = "Simcraft"
 		},
 		[259] = {
 			cooldown = true,
@@ -375,8 +378,6 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
 		end
 	end
 	RubimRH.useCD = false or RubimRH.db.profile[RubimRH.playerSpec].cooldown
-	ccBreak = RubimRH.db.profile.mainOption.ccbreak
-	Potion = RubimRH.db.profile.mainOption.potion
 end)
 
 function RubimRH:OnEnable()

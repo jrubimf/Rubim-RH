@@ -40,7 +40,10 @@ local function addToData(GUID)
             heal_hits_done = 0,
             --shared
             combat_time = GetTime(),
-            spell_value = {}
+            spell_value = {},
+            -- Swing
+            dmgTaken_S = 0,
+            lastSwing = GetTime(),
         }
     end
 end
@@ -85,6 +88,11 @@ local logSwing = function(...)
     Data[SourceGUID].dmgDone_P = Data[SourceGUID].dmgDone_P + Amount
     Data[SourceGUID].dmgDone = Data[SourceGUID].dmgDone + Amount
     Data[SourceGUID].hits_done = Data[SourceGUID].hits_done + 1
+
+    Data[GUID].dmgTaken_S = Data[GUID].dmgTaken_S + Amount
+    Data[SourceGUID].lastSwing = GetTime()
+
+
 end
 
 --[[ This Logs the healing done for every unit
@@ -134,7 +142,7 @@ function RubimRH.CombatTime(UNIT)
 end
 
 function RubimRH.getDMG(UNIT)
-    local total, Hits, phys, magic = 0, 0, 0, 0
+    local total, Hits, phys, magic, swingD = 0, 0, 0, 0, 0
     local GUID = UnitGUID(UNIT)
     if Data[GUID] then
         local time = GetTime()
@@ -147,9 +155,10 @@ function RubimRH.getDMG(UNIT)
             phys = Data[GUID].dmgTaken_P / combatTime
             magic = Data[GUID].dmgTaken_M / combatTime
             Hits = Data[GUID].hits_taken
+            swingD = Data[GUID].dmgTaken_S / combatTime
         end
     end
-    return total, Hits, phys, magic
+    return total, Hits, phys, magic, swingD
 end
 
 function RubimRH.TimeToDie(unit)
@@ -216,6 +225,30 @@ function RubimRH.incdmgphys(unit)
         return pDMG
     end
     return 0
+end
+
+function RubimRH.incdmgmagic(unit)
+    if UnitExists(unit) then
+        local mDMG = select(4, RubimRH.getDMG(unit))
+        return mDMG
+    end
+    return 0
+end
+
+function RubimRH.incdmgswing(unit)
+    if UnitExists(unit) then
+        local mDMG = select(5, RubimRH.getDMG(unit))
+        return mDMG
+    end
+    return 0
+end
+
+function RubimRH.lastSwing(unit)
+    if UnitExists(unit) then
+        local sDMG = (GetTime() - Data[UnitGUID(unit)].lastSwing) or 10000000000
+        return sDMG
+    end
+    return 10000000000
 end
 
 function RubimRH.incdmgmagic(unit)

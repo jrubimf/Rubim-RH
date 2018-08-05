@@ -27,6 +27,17 @@ function Unit:IncDmgPercentage()
 	return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
+function Unit:IncDmgSwing()
+	unit = self.UnitID
+	local IncomingDPS = (RubimRH.incdmgswing(unit) / UnitHealthMax(unit)) * 100
+	return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
+end
+
+function Unit:LastSwinged()
+	unit = self.UnitID
+	return RubimRH.lastSwing(unit)
+end
+
 -- Minor Defensive Usage (<= 1 Min CDs)
 RubimRH.MinorHealingThreshold = 2
 function Unit:NeedMinorHealing()

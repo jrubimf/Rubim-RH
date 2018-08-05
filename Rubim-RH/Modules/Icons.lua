@@ -50,31 +50,25 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         UIDropDownMenu_AddButton(info)
         --
         info.text, info.hasArrow = "AoE", nil
-        info.checked = RubimRH.useAoE
+        info.checked = RubimRH.AoEON()
         info.func = function(self)
             RubimRH.AoEToggle()
         end
         UIDropDownMenu_AddButton(info)
         --
+        info.text, info.hasArrow, info.menuList = "Interrupts", nil
+        info.checked = RubimRH.InterruptsON()
+        info.func = function(self)
+            PlaySound(891, "Master");
+            RubimRH.InterruptsToggle()
+        end
+        UIDropDownMenu_AddButton(info)
+        --
         info.text, info.hasArrow = "CC Break", nil
-        info.checked = ccBreak
+        info.checked = RubimRH.ccbreak()
         info.func = function(self)
             PlaySound(891, "Master");
             RubimRH.CCToggle()
-        end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow = "Potions", nil
-        info.checked = RubimRH.config.potion
-        info.func = function(self)
-            PlaySound(891, "Master");
-            RubimRH.PotionToggle()
-        end
-        UIDropDownMenu_AddButton(info)
-        --
-        info.text, info.hasArrow, info.menuList = "Interrupts", true, "Interrupts"
-        info.checked = false
-        info.func = function(self)
         end
         UIDropDownMenu_AddButton(info)
         --
@@ -116,21 +110,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         --            info.text = s
         --            UIDropDownMenu_AddButton(info, level)
         --        end
-    elseif menuList == "Interrupts" then
-        --2 PIECES
-        info.text = "Smart"
-        info.checked = int_smart
-        info.func = function(self)
-            PlaySound(891, "Master");
-            if int_smart then
-                int_smart = false
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Disabled ")
-            else
-                int_smart = true
-                print("|cFF69CCF0" .. "Interrupting" .. "|r: |cFF00FF00" .. "Smart/Everything")
-            end
-        end
-        UIDropDownMenu_AddButton(info, level)
     end
 end)
 
@@ -357,7 +336,7 @@ local function createIcon(loopVar, xOffset, description)
 end
 
 RubimRH.Listener:Add('Rubim_Events', 'ACTIVE_TALENT_GROUP_CHANGED', function(...)
-    if RubimRH.config.Spells == nil then
+    if RubimRH.db == nil then
         return
     end
     for i = 1, #SkillFramesArray do
@@ -371,7 +350,7 @@ RubimRH.Listener:Add('Rubim_Events', 'ACTIVE_TALENT_GROUP_CHANGED', function(...
 end)
 
 RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function(...)
-    if RubimRH.config.Spells == nil then
+    if RubimRH.db == nil then
         return
     end
     for i = 1, #SkillFramesArray do
@@ -421,7 +400,7 @@ end)
 
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
-    if (self.sinceLastUpdate >= 0.2) then
+    if (self.sinceLastUpdate >= 0.050) then
 
         if RubimRH.mainRotation() == "ERROR" then
             MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
