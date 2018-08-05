@@ -309,7 +309,7 @@ local function APL ()
     -- In Combat
     if RubimRH.TargetIsValid() then
         -- actions+=/call_action_list,name=stealth,if=stealthed.all
-        if Player:IsStealthed(true, true) and Stealth():TimeSinceLastCast() >= 1 then
+        if IsStealthed() == true and Stealth():TimeSinceLastCast() >= 1 then
             if Stealth() ~= nil then
                 return Stealth()
             end
