@@ -718,6 +718,10 @@ RubimRH.Spell[253] = {
     Fireblood = Spell(265221),
     GiftoftheNaaru = Spell(59547),
     LightsJudgment = Spell(255647),
+    -- Pet
+    CallPet = Spell(883),
+    MendPet = Spell(136),
+    RevivePet = Spell(982),
     -- Abilities
     AspectoftheWild = Spell(193530),
     BarbedShot = Spell(217200),
