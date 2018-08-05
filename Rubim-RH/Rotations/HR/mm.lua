@@ -49,6 +49,10 @@ local function APL()
         return 0, 462338
     end
 
+    if Player:IsChanneling(S.RapidFire) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].exhilaration then
         S.Exhilaration:Cast()
     end
