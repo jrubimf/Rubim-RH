@@ -342,7 +342,7 @@ RubimRH.Listener:Add('Rubim_Events', 'ACTIVE_TALENT_GROUP_CHANGED', function(...
     for i = 1, #SkillFramesArray do
         SkillFramesArray[i]:Hide()
     end
-    if #RubimRH.config.Spells ~= nil then
+    if RubimRH.config.Spells ~= nil then
         for i = 1, #RubimRH.config.Spells do
             createIcon(i, 40 * (i), RubimRH.config.Spells[i].description)
         end
