@@ -66,8 +66,8 @@ Discipline    | :x:   | :x:   |   8.0.1  |   |
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
 Assasination    | :x:    |  :x:   |  8.0.1 |  | 
-Subtly    | :x:    |  :x:   |  8.0.1 |   | 
-Outlaw    | :x:   | :x:   |   8.0.1  |   | 
+Subtly    | :x:    |  :heavy_check_mark:   |  8.0.1 |   |
+Outlaw    | :x:   | :heavy_check_mark:   |   8.0.1  |   |
 
 
 ### Shaman
