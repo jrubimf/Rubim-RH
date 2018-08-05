@@ -121,6 +121,7 @@ local function aoe()
     if S.FlameShock:IsReady() and Player:IsMoving() and Target:DebuffRemains(S.FlameShockDebuff) <= 2.5 then
         return S.FlameShock:Cast()
     end
+    return 0, 135328
 end
 
 local function single_target()
@@ -206,7 +207,7 @@ local function single_target()
     if S.FlameShock:IsCastable() and Player:IsMoving() then
         return S.FlameShock:Cast()
     end
-
+    return 0, 135328
 end
 
 local function APL ()
@@ -227,7 +228,7 @@ local function APL ()
         return 0, 462338
     end
 
-    if Player:IsCasting() then
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
@@ -242,12 +243,12 @@ local function APL ()
     end
 
     --actions+=/run_action_list,name=aoe,if=active_enemies>2&(spell_targets.chain_lightning>2|spell_targets.lava_beam>2)
-    if Cache.EnemiesCount[40] > 2 and RubimRH.useAoE then
+    if Cache.EnemiesCount[40] > 2 and RubimRH.AoEON() then
         return aoe()
     end
 
     --actions+=/run_action_list,name=single_target
-    if single_target() ~= nil then
+    if true then
         return single_target()
     end
 
