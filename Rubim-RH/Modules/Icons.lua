@@ -353,6 +353,10 @@ RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function(...)
     if RubimRH.db == nil then
         return
     end
+
+    if RubimRH.config.Spells == nil then
+        return
+    end
     for i = 1, #SkillFramesArray do
         SkillFramesArray[i]:Hide()
     end

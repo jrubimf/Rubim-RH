@@ -666,10 +666,18 @@ local function BMMenu()
     end);
 end
 
+
+--local tex = StdUi:Texture(window, 350, 500, [[Interface\AddOns\AltzUI\media\statusbar]]);
+--tex:SetColorTexture(1, 1, 1, 1)
+--StdUi:GlueTop(tex, window, 0, 0);
 local function OutMenu()
     local window = StdUi:Window(UIParent, 'Rogue - Outlaw', 350, 500);
     window:SetPoint('CENTER');
 
+
+    --window.texture = window:CreateTexture(nil, "BACKGROUND")
+    --window.texture:SetTexture(1, 1, 1, 1)
+    --window.texture:SetColorTexture(1, 1, 1, 1)
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);

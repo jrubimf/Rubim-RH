@@ -369,7 +369,7 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
 	--    end
 	RubimRH.config = {}
 	RubimRH.allSpells = {}
-	if RubimRH.playerSpec ~= 0 then
+	if #RubimRH.playerSpec > 0 then
 		RubimRH.config = RubimRH.db.profile[RubimRH.playerSpec]
 		for pos, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
 			if spell:IsAvailable() then
