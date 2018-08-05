@@ -77,6 +77,10 @@ local function five_target()
         return S.Execute:Cast()
     end
 
+    if S.ExecuteMassacre:IsReady("Melee") then
+        return S.Execute:Cast()
+    end
+
     --	actions.cleave+=/cleave
     if S.Cleave:IsReady("Melee") then
         return S.Cleave:Cast()
@@ -131,7 +135,11 @@ local function Execute()
         return S.Overpower:Cast()
     end
     -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-    if S.Execute:IsReady() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+    if S.Execute:IsReady() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
+        return S.Execute:Cast()
+    end
+
+    if S.ExecuteMassacre:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
         return S.Execute:Cast()
     end
     return 0, 135328
@@ -163,9 +171,14 @@ local function single_target()
         return S.HeroicLeap:Cast()
     end
     -- execute,if=buff.sudden_death.react|buff.stone_heart.react
-    if S.Execute:IsReady() and (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+    if S.Execute:IsReady() and (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
         return S.Execute:Cast()
     end
+
+    if S.ExecuteMassacre:IsReadyMorph() and (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
+        return S.Execute:Cast()
+    end
+
     -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
     if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikes) and Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and (Player:PrevGCDP(1, S.MortalStrike) or Cache.EnemiesCount[8] > 1) and (not Player:BuffP(S.DeadlyCalm) or not S.DeadlyCalm:IsAvailable())) then
         return S.Bladestorm:Cast()

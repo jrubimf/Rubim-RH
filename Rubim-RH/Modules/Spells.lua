@@ -135,9 +135,10 @@ RubimRH.Spell[71] = {
     HeroicThrow = Spell(57755),
     Slam = Spell(1464),
     Massacre = Spell(206315),
-    ExecuteMassacre = Spell(280735),
+    ExecuteMassacre = Spell(281000),
 
     -- Talents
+    SuddenDeathBuff = Spell(52437),
     Dauntless = Spell(202297),
     Avatar = Spell(107574),
     AvatarBuff = Spell(107574),
