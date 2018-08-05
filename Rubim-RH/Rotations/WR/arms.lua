@@ -131,7 +131,7 @@ local function Execute()
         return S.Overpower:Cast()
     end
     -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-    if S.Execute:IsReady() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+    if S.Execute:IsReady() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
         return S.Execute:Cast()
     end
     return 0, 135328
@@ -163,7 +163,7 @@ local function single_target()
         return S.HeroicLeap:Cast()
     end
     -- execute,if=buff.sudden_death.react|buff.stone_heart.react
-    if S.Execute:IsReady() and (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+    if S.Execute:IsReady() and (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
         return S.Execute:Cast()
     end
     -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
