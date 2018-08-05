@@ -35,15 +35,6 @@ UIDropDownMenu_SetText(dropDown, "Nothing")
 UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
     local info = UIDropDownMenu_CreateInfo()
     if (level or 1) == 1 then
-        if RubimPVP ~= nil then
-            info.text, info.hasArrow = "PvP Stuff", nil
-            info.checked = false
-            info.func = function(self)
-                RubimRH.PvPConfig()
-            end
-            UIDropDownMenu_AddButton(info)
-        end
-
         info.text, info.hasArrow = "Class Config", nil
         info.checked = false
         info.func = function(self)

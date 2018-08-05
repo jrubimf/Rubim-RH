@@ -314,7 +314,7 @@ local function APL()
     -- variable,name=pooling_for_gargoyle,value=(cooldown.summon_gargoyle.remains<5&(cooldown.dark_transformation.remains<5|!equipped.137075))&talent.summon_gargoyle.enabled
     poolingforgargoyle = (S.SummonGargoyle:CooldownRemains() < 5 and (S.DarkTransformation:CooldownRemains() < 5 or not I.Taktheritrixs:IsEquipped()) and S.SummonGargoyle:IsAvailable()) and RubimRH.CDsON()
     -- arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
-    if RubimRH.CDsON() and RubimRH.RacialON() and S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:RuneDeficit() >= 5) then
+    if RubimRH.CDsON() and RubimRH.RacialON() and S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:RunicPowerDeficit() >= 5) then
         return S.ArcaneTorrent:Cast()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled

@@ -826,6 +826,10 @@ RubimRH.Spell[255] = {
     ExposedFlank = Spell(252094),
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
+
+    -- PvP
+    WingClip = Spell(195645),
+
 };
 
 --Marksman
