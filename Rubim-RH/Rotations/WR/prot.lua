@@ -43,7 +43,7 @@ local function APL()
         local LeftShift = IsLeftShiftKeyDown()
 
         -- Shovkwave -> Cast when left CTRL+Shift keys are pressed
-        if LeftCtrl and LeftShift and ISpell.Shockwave:IsCastable(8) then
+        if LeftCtrl and LeftShift and ISpell.Shockwave:IsReady(8) then
             return ISpell.Shockwave:Cast()
         end
 
@@ -179,7 +179,7 @@ local function APL()
             return ISpell.IgnorePain:Cast()
         end
 
-        if ISpell.Devastate:IsCastable("Melee") then
+        if ISpell.Devastate:IsReady("Melee") then
             return ISpell.Devastate:Cast()
         end
     end

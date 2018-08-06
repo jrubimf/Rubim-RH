@@ -153,7 +153,7 @@ local function CDs()
 	--actions.cds+=/lights_judgment,if=debuff.vendetta.up
 
 	--actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
-	if S.MarkedforDeath:IsCastable() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+	if S.MarkedforDeath:IsReady() and Player:ComboPointsDeficit() >= CPMaxSpend() then
 		return S.MarkedforDeath:ID()
 	end
 
@@ -300,7 +300,7 @@ local function APL()
 
 	if not Player:AffectingCombat() then
 		--actions.precombat+=/stealth
-		if RubimRH.config.stealthOOC and Stealth:IsCastable() and not Player:IsStealthed() then
+		if RubimRH.config.stealthOOC and Stealth:IsReady() and not Player:IsStealthed() then
 			return Stealth:ID()
 		end
 

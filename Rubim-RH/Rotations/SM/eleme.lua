@@ -199,12 +199,12 @@ local function single_target()
     end
 
     --actions.single_target+=/flame_shock,moving=1,target_if=refreshable
-    if S.FlameShock:IsCastable() and Player:IsMoving() and Target:DebuffRemains(S.FlameShockDebuff) <= 2.5 then
+    if S.FlameShock:IsReady() and Player:IsMoving() and Target:DebuffRemains(S.FlameShockDebuff) <= 2.5 then
         return S.FlameShock:Cast()
     end
 
     --actions.single_target+=/flame_shock,moving=1,if=movement.distance>6
-    if S.FlameShock:IsCastable() and Player:IsMoving() then
+    if S.FlameShock:IsReady() and Player:IsMoving() then
         return S.FlameShock:Cast()
     end
     return 0, 135328

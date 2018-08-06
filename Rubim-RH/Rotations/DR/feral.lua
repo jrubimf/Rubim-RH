@@ -103,7 +103,7 @@ local function st_finishers()
 
     --actions.st_finishers+=/pool_resource,for_next=1
     --actions.st_finishers+=/rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
-    if S.Rip:IsCastableP() and (not Target:DebuffP(S.RipDebuff) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.3) and (Target:HealthPercentage() > 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.8 and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip)) and Target:TimeToDie() > 8) then
+    if S.Rip:IsReady() and (not Target:DebuffP(S.RipDebuff) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.3) and (Target:HealthPercentage() > 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.8 and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip)) and Target:TimeToDie() > 8) then
     	if S.Rip:IsReady() then
     		return S.Rip:Cast()
     	else
@@ -114,7 +114,7 @@ local function st_finishers()
 
     --actions.st_finishers+=/pool_resource,for_next=1
     --actions.st_finishers+=/savage_roar,if=buff.savage_roar.remains<12
-    if S.SavageRoar:IsCastableP() and (Player:BuffRemainsP(S.SavageRoarBuff) < 12) then
+    if S.SavageRoar:IsReady() and (Player:BuffRemainsP(S.SavageRoarBuff) < 12) then
     	if S.SavageRoar:IsReady() then
     		return S.SavageRoar:Cast()
     	else
@@ -124,7 +124,7 @@ local function st_finishers()
     end
 
     --actions.st_finishers+=/ferocious_bite,max_energy=1
-    if S.FerociousBiteMaxEnergy:IsCastableP() and S.FerociousBiteMaxEnergy:IsUsableP() and (true) then
+    if S.FerociousBiteMaxEnergy:IsReady() and S.FerociousBiteMaxEnergy:IsUsableP() and (true) then
     	return S.FerociousBite:Cast()
     end
 end
@@ -147,7 +147,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
-    if S.ThrashCat:IsCastableP() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
+    if S.ThrashCat:IsReady() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
     	if S.ThrashCat:ISReady() then
     		return S.ThrashCat:Cast()
     	else
@@ -158,7 +158,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/thrash_cat,if=spell_targets.thrash_cat>3&equipped.luffa_wrappings&talent.brutal_slash.enabled
-    if S.ThrashCat:IsCastableP() and (Cache.EnemiesCount[8] > 3 and I.LuffaWrappings:IsEquipped() and S.BrutalSlash:IsAvailable()) then
+    if S.ThrashCat:IsReady() and (Cache.EnemiesCount[8] > 3 and I.LuffaWrappings:IsEquipped() and S.BrutalSlash:IsAvailable()) then
     	if S.ThrashCat:IsReady() then
     		return S.ThrashCat:Cast()
     	else
@@ -170,7 +170,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
-    if S.Rake:IsCastableP() and (not Target:DebuffP(S.RakeDebuff) or (not S.Bloodtalons:IsAvailable() and Target:DebuffRemainsP(S.RakeDebuff) < S.RakeDebuff:BaseDuration() * 0.3) and Target:TimeToDie() > 4) then
+    if S.Rake:IsReady() and (not Target:DebuffP(S.RakeDebuff) or (not S.Bloodtalons:IsAvailable() and Target:DebuffRemainsP(S.RakeDebuff) < S.RakeDebuff:BaseDuration() * 0.3) and Target:TimeToDie() > 4) then
     	if S.Rake:IsReady() then
     		S.Rake:Cast()
     	else
@@ -182,7 +182,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
-    if S.Rake:IsCastableP() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4) then
+    if S.Rake:IsReady() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4) then
     	if S.Rake:IsReady() then
     		return S.Rake:Cast()
     	else
@@ -203,7 +203,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
-    if S.ThrashCat:IsCastableP() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
+    if S.ThrashCat:IsReady() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
     	if S.ThrashCat:IsReady() then
     		return S.ThrashCat:Cast()
     	else
@@ -219,7 +219,7 @@ local function st_generators()
 
     --actions.st_generators+=/pool_resource,for_next=1
     --actions.st_generators+=/swipe_cat,if=spell_targets.swipe_cat>1
-    if S.SwipeCat:IsCastableP() and (Cache.EnemiesCount[8] > 1) then
+    if S.SwipeCat:IsReady() and (Cache.EnemiesCount[8] > 1) then
     	if S.SwipeCat:IsReady() then
     		return S.SwipeCat:Cast()
     	else

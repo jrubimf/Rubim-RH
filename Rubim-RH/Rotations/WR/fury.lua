@@ -117,11 +117,11 @@ local function APL()
 
 
         -- actions+=/furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
-        if S.FuriousSlash:IsCastable() and S.FuriousSlash:IsAvailable() and (Player:BuffStack(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9)) then
+        if S.FuriousSlash:IsReady() and S.FuriousSlash:IsAvailable() and (Player:BuffStack(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9)) then
             return S.FuriousSlash:Cast()
         end
         -- actions+=/bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
-        if S.Bloodthirst:IsCastable() and I.KazzalaxFujiedasFury:IsEquipped() and (not Player:BuffP(S.FujiedasFury) or Player:BuffRemainsP(S.FujiedasFury) < 2) then
+        if S.Bloodthirst:IsReady() and I.KazzalaxFujiedasFury:IsEquipped() and (not Player:BuffP(S.FujiedasFury) or Player:BuffRemainsP(S.FujiedasFury) < 2) then
             return S.Bloodthirst:Cast()
         end
         -- actions+=/rampage,if=cooldown.recklessness.remains<3
@@ -129,36 +129,36 @@ local function APL()
             return S.Rampage:Cast()
         end
         -- actions+=/recklessness
-        if RubimRH.CDsON() and S.Recklessness:IsCastable() then
+        if RubimRH.CDsON() and S.Recklessness:IsReady() then
             return S.Recklessness:Cast()
         end
         -- actions+=/whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-        if RubimRH.AoEON() and S.Whirlwind:IsCastable() and (Cache.EnemiesCount[8] > 1 and not Player:Buff(S.WhirlwindBuff)) then
+        if RubimRH.AoEON() and S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:Buff(S.WhirlwindBuff)) then
             return S.Whirlwind:Cast()
         end
         if RubimRH.CDsON() then
             -- actions+=/arcane_torrent,if=rage<40&!buff.recklessness.up
-            if S.ArcaneTorrent:IsCastable() and Player:Rage() < 40 and not Player:Buff(S.Recklessness) then
+            if S.ArcaneTorrent:IsReady() and Player:Rage() < 40 and not Player:Buff(S.Recklessness) then
                 return S.ArcaneTorrent:Cast()
             end
             -- actions+=/berserking,if=buff.recklessness.up
-            if S.Berserking:IsCastable() and Player:Buff(S.Recklessness) then
+            if S.Berserking:IsReady() and Player:Buff(S.Recklessness) then
                 return S.Berserking:Cast()
             end
             -- actions+=/blood_fury,if=buff.recklessness.up
-            if S.BloodFury:IsCastable() and Player:Buff(S.Recklessness) then
+            if S.BloodFury:IsReady() and Player:Buff(S.Recklessness) then
                 return S.BloodFury:Cast()
             end
             -- actions+=/ancestral_call,if=buff.recklessness.up
-            if S.AncestralCall:IsCastable() and Player:Buff(S.Recklessness) then
+            if S.AncestralCall:IsReady() and Player:Buff(S.Recklessness) then
                 return S.AncestralCall:Cast()
             end
             -- actions+=/fireblood,if=buff.recklessness.up
-            if S.Fireblood:IsCastable() and Player:Buff(S.Recklessness) then
+            if S.Fireblood:IsReady() and Player:Buff(S.Recklessness) then
                 return S.Fireblood:Cast()
             end
             -- actions+=/lights_judgment,if=cooldown.recklessness.remains<3
-            if S.LightsJudgment:IsCastable() and S.Recklessness:CooldownRemainsP() < 3 then
+            if S.LightsJudgment:IsReady() and S.Recklessness:CooldownRemainsP() < 3 then
                 return S.LightsJudgment:Cast()
             end
         end

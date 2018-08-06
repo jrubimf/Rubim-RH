@@ -44,21 +44,21 @@ local T212PC, T214PC = HL.HasTier("T21");
 
 local function Cooldowns()
 	
-	if RubimRH.CDsON() and S.HolyWrath:IsCastable() then
+	if RubimRH.CDsON() and S.HolyWrath:IsReady() then
 		return S.HolyWrath:Cast()
 	end
 	--actions.cooldowns+=/shield_of_vengeance
 	--actions.cooldowns+=/avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
-	if RubimRH.CDsON() and S.AvengingWrath:IsCastable() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+	if RubimRH.CDsON() and S.AvengingWrath:IsReady() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
 		return S.AvengingWrath:Cast()
 	end
 	--actions.cooldowns+=/crusade,if=holy_power>=4
-	if RubimRH.CDsON() and S.Crusade:IsCastable() and Player:HolyPower() >= 4 then
+	if RubimRH.CDsON() and S.Crusade:IsReady() and Player:HolyPower() >= 4 then
 		return S.Crusade:Cast()
 	end
 
 	--actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
-	if RubimRH.CDsON() and G.LightsJudgment:IsCastable() and Cache.EnemiesCount[8] >= 2 then
+	if RubimRH.CDsON() and G.LightsJudgment:IsReady() and Cache.EnemiesCount[8] >= 2 then
 		return G.LightsJudgment:Cast()
 	end
 

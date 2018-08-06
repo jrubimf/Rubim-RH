@@ -152,15 +152,15 @@ end
 local function cold_heart()
     --# Cold Heart legendary
     --actions.cold_heart=chains_of_ice,if=buff.unholy_strength.remains<gcd&buff.unholy_strength.react&buff.cold_heart.stack>16
-    if S.ChainsOfIce:IsCastable() and Player:BuffRemainsP(S.UnholyStrength) < Player:GCD() and Player:Buff(S.UnholyStrength) and Player:BuffStack(S.ColdHeartItemBuff) > 16 then
+    if S.ChainsOfIce:IsReady() and Player:BuffRemainsP(S.UnholyStrength) < Player:GCD() and Player:Buff(S.UnholyStrength) and Player:BuffStack(S.ColdHeartItemBuff) > 16 then
         return S.ChainsOfIce:Cast()
     end
     --actions.cold_heart+=/chains_of_ice,if=buff.master_of_ghouls.remains<gcd&buff.master_of_ghouls.up&buff.cold_heart.stack>17
-    --if S.ChainsOfIce:IsCastable() and Player:BuffRemainsP(S.MasterOfGhouls) < Player:GCD() and Player:Buff(S.MasterOfGhouls) and Player:BuffStack(S.ColdHeartItemBuff) > 17 then
+    --if S.ChainsOfIce:IsReady() and Player:BuffRemainsP(S.MasterOfGhouls) < Player:GCD() and Player:Buff(S.MasterOfGhouls) and Player:BuffStack(S.ColdHeartItemBuff) > 17 then
     --  return S.ChainsOfIce:Cast()
     --end
     --actions.cold_heart+=/chains_of_ice,if=buff.cold_heart.stack=20&buff.unholy_strength.react
-    if S.ChainsOfIce:IsCastable() and Player:BuffStack(S.ColdHeartItemBuff) == 20 and Player:Buff(S.UnholyStrength) then
+    if S.ChainsOfIce:IsReady() and Player:BuffStack(S.ColdHeartItemBuff) == 20 and Player:Buff(S.UnholyStrength) then
         return S.ChainsOfIce:Cast()
     end
 end
@@ -293,7 +293,7 @@ local function APL()
 
     if not Player:AffectingCombat() then
         --check if we have our lovely pet with us
-        if not Pet:IsActive() and S.SummonPet:IsCastable() then
+        if not Pet:IsActive() and S.SummonPet:IsReady() then
             return S.SummonPet:Cast()
         end
         return 0, 462338
