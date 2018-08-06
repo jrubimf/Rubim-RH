@@ -367,7 +367,7 @@ local function APL()
         return Cooldowns()
     end
     -- run_action_list,name=bos_pooling,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains<5
-    if (S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemainsP() < 5 and RubimRH.config.Spells[2].isActive) then
+    if (S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemainsP() < 5 and RubimRH.config.Spells[2].isActive) and RubimRH.CDsON() then
         return BosPooling()
     end
     -- run_action_list,name=bos_ticking,if=dot.breath_of_sindragosa.ticking
