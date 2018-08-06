@@ -105,6 +105,7 @@ local function Aoe()
     if S.ArcaneTorrent:IsReady() then
         return S.ArcaneTorrent:Cast()
     end
+    return 0, 135328
 end
 
 local function BosPooling()
