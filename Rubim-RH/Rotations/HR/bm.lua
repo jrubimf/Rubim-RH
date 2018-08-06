@@ -38,7 +38,7 @@ local function APL ()
     HL.GetEnemies(40);
     -- Defensives
     -- Exhilaration
-    --if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= HPCONFIG then
+    --if S.Exhilaration:IsReady() and Player:HealthPercentage() <= HPCONFIG then
     --        return S.Exhilaration:Cast()
     --    end
     -- Out of Combat
@@ -50,20 +50,20 @@ local function APL ()
         -- Opener
         if RubimRH.TargetIsValid() and Target:IsInRange(40) then
             if RubimRH.CDsON() then
-                if S.AMurderofCrows:IsCastable() then
+                if S.AMurderofCrows:IsReady() then
                     return S.AMurderofCrows:Cast()
                 end
             end
-            if RubimRH.CDsON() and S.BestialWrath:IsCastable() and not Player:Buff(S.BestialWrath) then
+            if RubimRH.CDsON() and S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
                 return S.BestialWrath:Cast()
             end
-            -- if S.BarbedShot:IsCastable() then
+            -- if S.BarbedShot:IsReady() then
 
             -- end
-            if S.KillCommand:IsCastable() then
+            if S.KillCommand:IsReady() then
                 return S.KillCommand:Cast()
             end
-            if S.CobraShot:IsCastable() then
+            if S.CobraShot:IsReady() then
                 return S.CobraShot:Cast()
             end
         end
@@ -93,85 +93,85 @@ local function APL ()
         -- actions+=/counter_shot,if=target.debuff.casting.react // Sephuz Specific
         if RubimRH.CDsON() then
             -- actions+=/arcane_torrent,if=focus.deficit>=30
-            --if S.ArcaneTorrent:IsCastable() and Player:FocusDeficit() >= 30 then
+            --if S.ArcaneTorrent:IsReady() and Player:FocusDeficit() >= 30 then
 
             --end
             -- actions+=/berserking,if=cooldown.bestial_wrath.remains>30
-            if S.Berserking:IsCastable() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.Berserking:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.Berserking:Cast()
             end
             -- actions+=/blood_fury,if=buff.bestial_wrath.remains>7
-            if S.BloodFury:IsCastable() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.BloodFury:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.BloodFury:Cast()
             end
             -- actions+=/ancestral_call,if=cooldown.bestial_wrath.remains>30
-            if S.AncestralCall:IsCastable() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.AncestralCall:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.AncestralCall:Cast()
             end
             -- actions+=/fireblood,if=cooldown.bestial_wrath.remains>30
-            if S.Fireblood:IsCastable() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.Fireblood:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.Fireblood:Cast()
             end
             -- actions+=/lights_judgment
-            if S.LightsJudgment:IsCastable() and RubimRH.RacialON() then
+            if S.LightsJudgment:IsReady() and RubimRH.RacialON() then
                 return S.LightsJudgment:Cast()
             end
         end
         -- actions+=/potion,if=buff.bestial_wrath.up&buff.aspect_of_the_wild.up
         -- actions+=/barbed_shot,if=pet.cat.buff.frenzy.up&pet.cat.buff.frenzy.remains<=gcd.max
-        if S.BarbedShot:IsCastable() and Pet:BuffRemains(S.Frenzy) and (Pet:BuffRemains(S.Frenzy) < Player:GCD() * 1.5) then
+        if S.BarbedShot:IsReady() and Pet:BuffRemains(S.Frenzy) and (Pet:BuffRemains(S.Frenzy) < Player:GCD() * 1.5) then
             return S.BarbedShot:Cast()
         end
         -- actions+=/a_murder_of_crows
-        if RubimRH.CDsON() and Target:IsInRange(40) and S.AMurderofCrows:IsCastable() then
+        if RubimRH.CDsON() and Target:IsInRange(40) and S.AMurderofCrows:IsReady() then
             return S.AMurderofCrows:Cast()
         end
         -- actions+=/spitting_cobra
-        if RubimRH.CDsON() and Target:IsInRange(40) and S.SpittingCobra:IsCastable() then
+        if RubimRH.CDsON() and Target:IsInRange(40) and S.SpittingCobra:IsReady() then
             return S.SpittingCobra:Cast()
         end
         -- actions+=/stampede,if=buff.bestial_wrath.up|cooldown.bestial_wrath.remains<gcd|target.time_to_die<15
-        if RubimRH.CDsON() and S.Stampede:IsCastable() and (Player:Buff(S.BestialWrath) or ((S.BestialWrath:CooldownRemains() <= 2 or not AR.CDsON()) or (Target:TimeToDie() <= 15))) then
+        if RubimRH.CDsON() and S.Stampede:IsReady() and (Player:Buff(S.BestialWrath) or ((S.BestialWrath:CooldownRemains() <= 2 or not AR.CDsON()) or (Target:TimeToDie() <= 15))) then
             return S.Stampede:Cast()
         end
         -- actions+=/aspect_of_the_wild
-        if RubimRH.CDsON() and S.AspectoftheWild:IsCastable() then
+        if RubimRH.CDsON() and S.AspectoftheWild:IsReady() then
             return S.AspectoftheWild:Cast()
         end
         -- actions+=/bestial_wrath,if=!buff.bestial_wrath.up
-        if RubimRH.CDsON() and S.BestialWrath:IsCastable() and not Player:Buff(S.BestialWrath) then
+        if RubimRH.CDsON() and S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
             return S.BestialWrath:Cast()
         end
         -- actions+=/multishot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.MultiShot:IsCastable() and Cache.EnemiesCount[40] > 2 and (Pet:BuffRemains(S.BeastCleaveBuff) < Player:GCD() or not Pet:Buff(S.BeastCleaveBuff)) then
+        if RubimRH.AoEON() and S.MultiShot:IsReady() and Cache.EnemiesCount[40] > 2 and (Pet:BuffRemains(S.BeastCleaveBuff) < Player:GCD() or not Pet:Buff(S.BeastCleaveBuff)) then
             return S.MultiShot:Cast()
         end
         -- actions+=/chimaera_shot
-        if S.ChimaeraShot:IsCastable() then
+        if S.ChimaeraShot:IsReady() then
             return S.ChimaeraShot:Cast()
         end
         -- actions+=/kill_command
-        if S.KillCommand:IsCastable() then
+        if S.KillCommand:IsReady() then
             return S.KillCommand:Cast()
         end
         -- actions+=/dire_beast
-        if S.DireBeast:IsCastable() then
+        if S.DireBeast:IsReady() then
             return S.DireBeast:Cast()
         end
         -- actions+=/barbed_shot,if=pet.cat.buff.frenzy.down&charges_fractional>1.4|full_recharge_time<gcd.max|target.time_to_die<9
-        if S.BarbedShot:IsCastable() and (not Pet:Buff(S.Frenzy) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTime() < Player:GCD() or Target:TimeToDie() < 9) then
+        if S.BarbedShot:IsReady() and (not Pet:Buff(S.Frenzy) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTime() < Player:GCD() or Target:TimeToDie() < 9) then
             return S.BarbedShot:Cast()
         end
         -- actions+=/barrage
-        if RubimRH.AoEON() and S.Barrage:IsCastable() then
+        if RubimRH.AoEON() and S.Barrage:IsReady() then
             return S.Barrage:Cast()
         end
         -- actions+=/multishot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.MultiShot:IsCastable() and Cache.EnemiesCount[40] > 1 and (Pet:BuffRemains(S.BeastCleaveBuff) < Player:GCD() or not Pet:Buff(S.BeastCleaveBuff)) then
+        if RubimRH.AoEON() and S.MultiShot:IsReady() and Cache.EnemiesCount[40] > 1 and (Pet:BuffRemains(S.BeastCleaveBuff) < Player:GCD() or not Pet:Buff(S.BeastCleaveBuff)) then
             return S.MultiShot:Cast()
         end
         -- actions+=/cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(buff.bestial_wrath.up&active_enemies>1|cooldown.kill_command.remains>1+gcd&cooldown.bestial_wrath.remains>focus.time_to_max|focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost)
-        if S.CobraShot:IsCastable() and Target:IsInRange(40) and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemains() > Player:FocusTimeToMax()) and (Player:Buff(S.BestialWrath) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemains() > 1 + Player:GCD() and S.BestialWrath:CooldownRemains() > Player:FocusTimeToMax() or S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemains() - 1) > S.KillCommand:Cost())) then
+        if S.CobraShot:IsReady() and Target:IsInRange(40) and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemains() > Player:FocusTimeToMax()) and (Player:Buff(S.BestialWrath) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemains() > 1 + Player:GCD() and S.BestialWrath:CooldownRemains() > Player:FocusTimeToMax() or S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemains() - 1) > S.KillCommand:Cost())) then
             return S.CobraShot:Cast()
         end
     end
