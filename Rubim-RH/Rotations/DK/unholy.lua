@@ -52,7 +52,7 @@ function Unit:GargoyleActive()
     end
 end
 
-local EnemyRanges = { "Melee", 5, 8, 30 }
+local EnemyRanges = { "Melee", 5, 8, 10, 30 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
