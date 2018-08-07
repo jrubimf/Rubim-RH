@@ -41,7 +41,7 @@ RubimRH.Spell[255] = {
     MongooseBite = Spell(259387),
     MongooseBiteEagle = Spell(265888),
     MongooseFuryBuff = Spell(190931),
-    Muzzle = Spell(266779),
+    Muzzle = Spell(187707),
     RaptorStrike = Spell(186270),
     RaptorStrikeEagle = Spell(265189),
     SephuzsSecretBuff = Spell(208052),
@@ -135,6 +135,10 @@ local function APL ()
         if not Pet:IsActive() then
             return S.MendPet:Cast()
         end
+
+        if Pet:IsDeadOrGhost() then
+            return S.MendPet:Cast()
+        end
         -- snapshot_stats
         -- potion
         --if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
@@ -162,9 +166,13 @@ local function APL ()
         return S.MendPet:Cast()
     end
 
-    if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
-        return S.Muzzle:Cast()
+    if Pet:IsDeadOrGhost() then
+        return S.MendPet:Cast()
     end
+
+    --if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
+        --return S.Muzzle:Cast()
+    --end
     -- use_items
     -- berserking,if=cooldown.coordinated_assault.remains>30
     if S.Berserking:IsReady() and RubimRH.RacialON() and (S.CoordinatedAssault:CooldownRemainsP() > 30) then
@@ -261,7 +269,7 @@ local function APL ()
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
-    if S.MongooseBiteEagle:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
+    if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
         return S.MongooseBiteEagle:Cast()
     end
     -- mongoose_bite,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
@@ -269,7 +277,7 @@ local function APL ()
         return S.MongooseBite:Cast()
     end
     -- raptor_strike_eagle,target_if=min:dot.internal_bleeding.stack
-    if S.RaptorStrikeEagle:IsReady() and (true) then
+    if S.RaptorStrikeEagle:IsReadyMorph() and (true) then
         return S.RaptorStrikeEagle:Cast()
     end
     -- raptor_strike,target_if=min:dot.internal_bleeding.stack

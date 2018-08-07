@@ -134,7 +134,6 @@ local function UpdateCDs()
 end
 
 local function APL()
-    print(GetItemCooldown(163224    ))
     local Precombat, Aoe, ColdHeart, Cooldowns, Generic
     UpdateRanges()
     UpdateCDs()
