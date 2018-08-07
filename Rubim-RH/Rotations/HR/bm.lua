@@ -43,6 +43,13 @@ local function APL ()
     --    end
     -- Out of Combat
     if not Player:AffectingCombat() then
+        if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+            return S.MendPet:Cast()
+        end
+
+        if Pet:IsDeadOrGhost() then
+            return S.MendPet:Cast()
+        end
         -- Flask
         -- Food
         -- Rune
@@ -71,6 +78,10 @@ local function APL ()
     end
 
     if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+        return S.MendPet:Cast()
+    end
+
+    if Pet:IsDeadOrGhost() then
         return S.MendPet:Cast()
     end
 

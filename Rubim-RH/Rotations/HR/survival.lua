@@ -135,6 +135,10 @@ local function APL ()
         if not Pet:IsActive() then
             return S.MendPet:Cast()
         end
+
+        if Pet:IsDeadOrGhost() then
+            return S.MendPet:Cast()
+        end
         -- snapshot_stats
         -- potion
         --if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
@@ -162,9 +166,13 @@ local function APL ()
         return S.MendPet:Cast()
     end
 
-    if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
-        return S.Muzzle:Cast()
+    if Pet:IsDeadOrGhost() then
+        return S.MendPet:Cast()
     end
+
+    --if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
+        --return S.Muzzle:Cast()
+    --end
     -- use_items
     -- berserking,if=cooldown.coordinated_assault.remains>30
     if S.Berserking:IsReady() and RubimRH.RacialON() and (S.CoordinatedAssault:CooldownRemainsP() > 30) then
