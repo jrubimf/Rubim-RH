@@ -219,11 +219,8 @@ local defaults = {
         --PALADIN
         [70] = {
             cooldown = true,
-            justicarglory = 50,
-            flashoflight = 70,
             Spells = {
-                { spellID = JusticarVengeance, isActive = true },
-                { spellID = FlashofLight, isActive = true },
+             
             }
         },
         [65] = {

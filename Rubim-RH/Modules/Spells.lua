@@ -625,6 +625,7 @@ RubimRH.Spell[70] = {
     Zeal = Spell(217020),
     FinalVerdict = Spell(198038),
     ShieldOfVengance = Spell(184662),
+    Forbearance = Spell(25771),
     -- Offensive
     AvengingWrath = Spell(31884),
     Crusade = Spell(231895),
@@ -638,13 +639,19 @@ RubimRH.Spell[70] = {
     -- Azerite Power
     DivineStormBuffAzerite = Spell(278523),
     -- Defensive
+    FlashOfLight = Spell(19750),
+    SelfLessHealerBuff = Spell(114250),
+    DivineShield = Spell(642),
+    LayOnHands = Spell(633),
+
     -- Utility
     HammerofJustice = Spell(853),
     Rebuke = Spell(96231),
     DivineSteed = Spell(190784),
     WorldofGlory = Spell(210191),
-    FlashOfLight = Spell(19750),
-    SelfLessHealerBuff = Spell(114250),
+
+
+
     -- Legendaries
     LiadrinsFuryUnleashed = Spell(208408),
     ScarletInquisitorsExpurgation = Spell(248289),

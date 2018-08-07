@@ -871,7 +871,7 @@ local function RetributionMenu()
    
     local usePotion = StdUi:Checkbox(window, 'Use Potion');
     usePotion:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(usePotion, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(usePotion, gn_separator, -50, -5, 'LEFT');
     function usePotion:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
@@ -918,7 +918,7 @@ local function RetributionMenu()
 
     local healthStone = StdUi:Checkbox(window, 'Healthstone');
     healthStone:SetChecked(RubimRH.db.profile.mainOption.healthstoneEnabled  )
-    StdUi:GlueBelow(healthStone, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(healthStone, gn_separator, 50, -5, 'RIGHT');
     function healthStone:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneEnabled = value
         print("|cFF69CCF0Use Healthstone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.healthstoneEnabled))
@@ -948,14 +948,14 @@ local function RetributionMenu()
 
     --------------------------------------------------
     local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
-    StdUi:GlueTop(sk_title, window, 0, -200);
+    StdUi:GlueTop(sk_title, window, 0, -150);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
 
     local gn_3_0 = StdUi:Checkbox(window, 'Vengance');
     gn_3_0:SetChecked(RubimRH.db.profile[70].SoVEnabled  )
-    StdUi:GlueBelow(gn_3_0, sk_separator, 0, -10, 'CENTER');
+    StdUi:GlueBelow(gn_3_0, sk_separator, -50, -5, 'LEFT');
     function gn_3_0:OnValueChanged(value)
         RubimRH.db.profile[70].SoVEnabled = value
         print("|cFF69CCF0Vengance" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].SoVEnabled))
@@ -963,13 +963,77 @@ local function RetributionMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].SoVHP);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , gn_3_0, 0, -5, 'CENTER');
+    StdUi:GlueBelow(sk_1_0 , gn_3_0, 0, 0, 'LEFT');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[70].SoVHP = value
     end
 
+     local flashoflight = StdUi:Checkbox(window, 'Flash of Light');
+    flashoflight:SetChecked(RubimRH.db.profile[70].FoL  )
+    StdUi:GlueBelow(flashoflight, sk_separator, 50, -5, 'RIGHT');
+    function flashoflight:OnValueChanged(value)
+        RubimRH.db.profile[70].FoL = value
+        print("|cFF69CCF0Flash of Light" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].FoL))
+    end
+
+    local FoLHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].flashoflight);
+    FoLHP :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(FoLHP , flashoflight, -5, 0, 'RIGHT');
+    function FoLHP :OnValueChanged(value)
+        RubimRH.db.profile[70].flashoflight = value
+    end
+
+       local justicarEnabled = StdUi:Checkbox(window, 'Justicar');
+    justicarEnabled:SetChecked(RubimRH.db.profile[70].justicariSEnabled  )
+    StdUi:GlueBelow(justicarEnabled, sk_1_0, 0, -5, 'LEFT');
+    function justicarEnabled:OnValueChanged(value)
+        RubimRH.db.profile[70].justicariSEnabled = value
+        print("|cFF69CCF0Justicar" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].justicariSEnabled))
+    end
+
+    local justicarHealth = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].JusticarHP);
+    justicarHealth :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(justicarHealth , justicarEnabled, 0, 0, 'LEFT');
+    function justicarHealth :OnValueChanged(value)
+       RubimRH.db.profile[70].JusticarHP = value
+    end
+
+
+         local DivineEnabled = StdUi:Checkbox(window, 'Divine Shield');
+    DivineEnabled:SetChecked(RubimRH.db.profile[70].divineEnabled  )
+    StdUi:GlueBelow(DivineEnabled, FoLHP, 0, -5, 'RIGHT');
+    function DivineEnabled:OnValueChanged(value)
+        RubimRH.db.profile[70].divineEnabled = value
+        print("|cFF69CCF0Divine Shield" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].divineEnabled))
+    end
+
+    local DivineHealth = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].DivineHP);
+    DivineHealth :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(DivineHealth , DivineEnabled, 0, 0, 'RIGHT');
+    function DivineHealth :OnValueChanged(value)
+       RubimRH.db.profile[70].DivineHP = value
+    end
+
+
+    local LayOnHandEnabled = StdUi:Checkbox(window, 'Lay on Hands');
+    LayOnHandEnabled:SetChecked(RubimRH.db.profile[70].lohEnabled  )
+    StdUi:GlueBelow(LayOnHandEnabled, justicarHealth, 0, -5, 'LEFT');
+    function LayOnHandEnabled:OnValueChanged(value)
+        RubimRH.db.profile[70].lohEnabled = value
+        print("|cFF69CCF0Lay on Hands" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].lohEnabled))
+    end
+
+    local lohHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].lohHealth);
+    lohHP :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(lohHP , LayOnHandEnabled, 0, 0, 'LEFT');
+    function lohHP :OnValueChanged(value)
+       RubimRH.db.profile[70].lohHealth = value
+    end
+
+
+
     local op_title = StdUi:FontString(window, 'Offensive Options');
-    StdUi:GlueTop(op_title, window, 0, -300);
+    StdUi:GlueTop(op_title, window, 0, -350);
     local op_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(op_separator, op_title, 0, -12);
 

@@ -384,13 +384,13 @@ local function APL()
  
 
 
-	if RubimRH.config.Spells[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
+	if RubimRH.db.profile[70].justicariSEnabled and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
 		-- Divine Purpose
-		if Player:HealthPercentage() <= RubimRH.db.profile[70].justicarglory and Player:Buff(S.DivinePurposeBuff) then
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHP and Player:Buff(S.DivinePurposeBuff) then
 			return S.JusticarsVengeance:Cast()
 		end
 		-- Regular
-		if Player:HealthPercentage() <= RubimRH.db.profile[70].justicarglory - 5 and Player:HolyPower() >= 5 then
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHP - 5 and Player:HolyPower() >= 5 then
 			return S.JusticarsVengeance:Cast()
 		end
 	end
@@ -406,7 +406,7 @@ local function APL()
 	--        end
 	--    end
 
-	if RubimRH.config.Spells[2].isActive and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and RubimRH.db.profile[70].flashoflight then
+	if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and RubimRH.db.profile[70].flashoflight then
 		return S.FlashOfLight:Cast()
 	end
 
@@ -437,10 +437,20 @@ RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
 
-	if RubimRH.db.profile[70].SoVEnabled and Player:HealthPercentage() <= RubimRH.db.profile[70].SoVHP and RubimRH.db.profile[70].SoVEnabled then
+	if RubimRH.db.profile[70].SoVEnabled and S.ShieldOfVengance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].SoVHP then
 		return S.ShieldOfVengance:Cast()
 	end 
+
+	if RubimRH.db.profile[70].divineEnabled and S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].DivineHP and not Player:Debuff(S.Forbearance) then
+		return S.DivineShield:Cast()
+	end 
+
+	if RubimRH.db.profile[70].lohEnabled and S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].lohHealth and not Player:Debuff(S.Forbearance) then
+		return S.LayOnHands:Cast()
+	end
+
 	return RubimRH.Shared()
+
 
 end
 
