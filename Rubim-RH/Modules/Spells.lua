@@ -732,6 +732,7 @@ RubimRH.Spell[253] = {
     BeastCleave = Spell(115939),
     BeastCleaveBuff = Spell(118455),
     BestialWrath = Spell(19574),
+    BestialWrathBuff = Spell(19574),
     CobraShot = Spell(193455),
     KillCommand = Spell(34026),
     MultiShot = Spell(2643),
