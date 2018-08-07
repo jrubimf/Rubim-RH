@@ -49,6 +49,7 @@ RubimRH.Spell[259] = {
     ArcaneTorrent = Spell(50613),
     ArcanePulse = Spell(260364),
     LightsJudgment = Spell(255647),
+    InternalBleeding = Spell(154904),
     -- Poisons
     CripplingPoison = Spell(3408),
     DeadlyPoison = Spell(2823),
@@ -174,13 +175,13 @@ local function PoisonedBleeds()
     for _, Unit in pairs(Cache.Enemies[50]) do
         if Poisoned(Unit) then
             -- TODO: For loop for this ? Not sure it's worth considering we would have to make 2 times spell object (Assa is init after Commons)
-            if Unit:Debuff(Spell.Rogue.Assassination.Garrote) then
+            if Unit:Debuff(S.GarroteDebuff) then
                 PoisonedBleedsCount = PoisonedBleedsCount + 1;
             end
-            if Unit:Debuff(Spell.Rogue.Assassination.InternalBleeding) then
+            if Unit:Debuff(S.InternalBleeding) then
                 PoisonedBleedsCount = PoisonedBleedsCount + 1;
             end
-            if Unit:Debuff(Spell.Rogue.Assassination.Rupture) then
+            if Unit:Debuff(S.RuptureDebuff) then
                 PoisonedBleedsCount = PoisonedBleedsCount + 1;
             end
         end

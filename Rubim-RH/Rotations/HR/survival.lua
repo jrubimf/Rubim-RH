@@ -15,7 +15,7 @@ local Item = HL.Item;
 --Survival
 RubimRH.Spell[255] = {
     --Racials
-    AMurderofCrows = Spell(206505),
+    AMurderofCrows = Spell(131894),
     AncestralCall = Spell(274738),
     ArcaneTorrent = Spell(50613),
     AspectoftheTurtle = Spell(186265),
@@ -31,21 +31,22 @@ RubimRH.Spell[255] = {
     CoordinatedAssault = Spell(266779),
     CoordinatedAssaultBuff = Spell(266779),
     Fireblood = Spell(265221),
-    FlankingStrike = Spell(202800),
+    FlankingStrike = Spell(269751),
     Harpoon = Spell(190925),
     InternalBleedingDebuff = Spell(270343),
-    KillCommand = Spell(259277),
+    KillCommand = Spell(259489),
     LightsJudgment = Spell(255647),
-    MendPet = Spell(982),
-    MongooseBite = Spell(190928),
+    MendPetBuff = Spell(136),
+    MendPet = Spell(136),
+    MongooseBite = Spell(259387),
     MongooseBiteEagle = Spell(265888),
     MongooseFuryBuff = Spell(190931),
-    Muzzle = Spell(187707),
+    Muzzle = Spell(266779),
     RaptorStrike = Spell(186270),
     RaptorStrikeEagle = Spell(265189),
     SephuzsSecretBuff = Spell(208052),
-    SerpentSting = Spell(87935),
-    SerpentStingDebuff = Spell(118253),
+    SerpentSting = Spell(259491),
+    SerpentStingDebuff = Spell(259491),
     ShrapnelBombDebuff = Spell(270339),
     SteelTrap = Spell(162488),
     SteelTrapDebuff = Spell(162487),
@@ -57,6 +58,7 @@ RubimRH.Spell[255] = {
     WildfireBombDebuff = Spell(269747),
     WildfireInfusion = Spell(271014),
     SummonPet = Spell(9),
+    Exhilaration = Spell(109304),
     -- PvP
     WingClip = Spell(195645),
 };
@@ -93,12 +95,37 @@ local function bool(val)
     return val ~= 0
 end
 
+
 local I = Item.Hunter.Survival;
 
 --- APL Main
+
+local OffensiveCDs = {
+    S.CoordinatedAssault,
+}
+
+local function UpdateCDs()
+    if RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 local function APL ()
     local Precombat
     UpdateRanges()
+    UpdateCDs()
 
     Precombat = function()
         -- flask
@@ -111,7 +138,7 @@ local function APL ()
         -- snapshot_stats
         -- potion
         --if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
-            --return S.ProlongedPower:Cast()
+            --return I.ProlongedPower:Cast()
         --end
         -- steel_trap
         if RubimRH.TargetIsValid() then
@@ -119,7 +146,7 @@ local function APL ()
                 return S.SteelTrap:Cast()
             end
             -- harpoon
-            if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer() >= 8 then
+            if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
                 return S.Harpoon:Cast()
             end
         end
@@ -131,12 +158,8 @@ local function APL ()
         return Precombat()
     end
 
-    if Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
-    end
-
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].aspectoftheturtle then
-        S.AspectoftheTurtle:Cast()
     end
 
     if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
@@ -188,27 +211,29 @@ local function APL ()
         return S.CoordinatedAssault:Cast()
     end
     -- chakrams,if=active_enemies>1
-    if S.Chakrams:IsReady() and (Cache.EnemiesCount[40] > 1) then
+    if S.Chakrams:IsReady() and (Cache.EnemiesCount[8] > 1) then
         return S.Chakrams:Cast()
     end
     -- kill_command,target_if=min:bloodseeker.remains,if=focus+cast_regen<focus.max&buff.tip_of_the_spear.stack<3&active_enemies<2
-    if S.KillCommand:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3 and Cache.EnemiesCount[40] < 2) then
+    if S.KillCommand:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3 and Cache.EnemiesCount[8] < 2) then
         return S.KillCommand:Cast()
     end
+
     -- wildfire_bomb,if=(focus+cast_regen<focus.max|active_enemies>1)&(dot.wildfire_bomb.refreshable&buff.mongoose_fury.down|full_recharge_time<gcd)
-    if S.WildfireBomb:IsReady() and ((Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() or Cache.EnemiesCount[40] > 1) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff) or S.WildfireBomb:FullRechargeTimeP() < Player:GCD())) then
+    if S.WildfireBomb:IsReady() and ((Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() or Cache.EnemiesCount[8] > 1) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff) or S.WildfireBomb:FullRechargeTimeP() < Player:GCD())) then
         return S.WildfireBomb:Cast()
     end
     -- kill_command,target_if=min:bloodseeker.remains,if=focus+cast_regen<focus.max&buff.tip_of_the_spear.stack<3
     if S.KillCommand:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3) then
         return S.KillCommand:Cast()
     end
+
     -- butchery,if=(!talent.wildfire_infusion.enabled|full_recharge_time<gcd)&active_enemies>3|(dot.shrapnel_bomb.ticking&dot.internal_bleeding.stack<3)
-    if S.Butchery:IsReady() and ((not S.WildfireInfusion:IsAvailable() or S.Butchery:FullRechargeTimeP() < Player:GCD()) and Cache.EnemiesCount[40] > 3 or (Target:DebuffP(S.ShrapnelBombDebuff) and Target:DebuffStackP(S.InternalBleedingDebuff) < 3)) then
+    if S.Butchery:IsReady() and ((not S.WildfireInfusion:IsAvailable() or S.Butchery:FullRechargeTimeP() < Player:GCD()) and Cache.EnemiesCount[8] > 3 or (Target:DebuffP(S.ShrapnelBombDebuff) and Target:DebuffStackP(S.InternalBleedingDebuff) < 3)) then
         return S.Butchery:Cast()
     end
     -- serpent_sting,if=(active_enemies<2&refreshable&(buff.mongoose_fury.down|(variable.can_gcd&!talent.vipers_venom.enabled)))|buff.vipers_venom.up
-    if S.SerpentSting:IsReady() and ((Cache.EnemiesCount[40] < 2 and Target:DebuffRefreshableCP(S.SerpentStingDebuff) and (Player:BuffDownP(S.MongooseFuryBuff) or (bool(VarCanGcd) and not S.VipersVenom:IsAvailable()))) or Player:BuffP(S.VipersVenomBuff)) then
+    if S.SerpentSting:IsReady() and ((Cache.EnemiesCount[8] < 2 and Target:DebuffRefreshableCP(S.SerpentStingDebuff) and (Player:BuffDownP(S.MongooseFuryBuff) or (bool(VarCanGcd) and not S.VipersVenom:IsAvailable()))) or Player:BuffP(S.VipersVenomBuff)) then
         return S.SerpentSting:Cast()
     end
     -- carve,if=active_enemies>2&(active_enemies<6&active_enemies+gcd<cooldown.wildfire_bomb.remains|5+gcd<cooldown.wildfire_bomb.remains)
@@ -216,7 +241,7 @@ local function APL ()
         return S.Carve:Cast()
     end
     -- harpoon,if=talent.terms_of_engagement.enabled
-    if S.Harpoon:IsReady() and (S.TermsofEngagement:IsAvailable()) then
+    if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
         return S.Harpoon:Cast()
     end
     -- flanking_strike
@@ -232,7 +257,7 @@ local function APL ()
         return S.SerpentSting:Cast()
     end
     -- aspect_of_the_eagle,if=target.distance>=6
-    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer() >= 6) then
+    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer(true) >= 6) then
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
@@ -257,6 +282,15 @@ end
 RubimRH.Rotation.SetAPL(255, APL);
 
 local function PASSIVE()
+
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].aspectoftheturtle then
+        return S.AspectoftheTurtle:Cast()
+    end
+
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].exhilaration then
+        return S.Exhilaration:Cast()
+    end
+
     return RubimRH.Shared()
 end
 

@@ -47,7 +47,7 @@ function RubimRH.SpellBlocker()
     end
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Clear');
-    StdUi:GlueBelow(extra1, spellList, 0, -34, 'CENTER');
+    StdUi:GlueBelow(extra1, spellList, 0, -24, 'CENTER');
     extra1:SetScript('OnClick', function()
         print("RubimRH: Disabled spells cleared.")
         RubimRH.db.profile.mainOption.disabledSpells = {}
@@ -66,28 +66,28 @@ local function BloodMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -102,7 +102,7 @@ local function BloodMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].icebound);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
@@ -110,7 +110,7 @@ local function BloodMenu()
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Runetap', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[250].runetap = value
@@ -118,7 +118,7 @@ local function BloodMenu()
 
     local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
     sk_2_0:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -34, 'LEFT');
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
     StdUi:AddLabel(window, sk_2_0, 'Vampiric Blood', 'TOP');
     function sk_2_0:OnValueChanged(value)
         RubimRH.db.profile[250].vampiricblood = value
@@ -126,7 +126,7 @@ local function BloodMenu()
 
     local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
     sk_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
     function sk_2_1:OnValueChanged(value)
         RubimRH.db.profile[250].drw = value
@@ -134,7 +134,7 @@ local function BloodMenu()
 
     local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
     sk_3_0:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
     StdUi:AddLabel(window, sk_3_0, 'DS (InC DMG Percent)', 'TOP');
     function sk_3_0:OnValueChanged(value)
         RubimRH.db.profile[250].smartds = value
@@ -142,7 +142,7 @@ local function BloodMenu()
 
     local sk_3_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
     sk_3_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_3_1, 'DS (Rune Deficit)', 'TOP');
     function sk_3_1:OnValueChanged(value)
         RubimRH.db.profile[250].deficitds = value
@@ -153,7 +153,7 @@ local function BloodMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
         end);
@@ -170,28 +170,28 @@ local function FrostMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -206,7 +206,7 @@ local function FrostMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].icebound);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
@@ -218,7 +218,7 @@ local function FrostMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -50, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -235,28 +235,28 @@ local function UnholyMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -271,7 +271,7 @@ local function UnholyMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[252].icebound);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Icebound', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[250].icebound = value
@@ -283,7 +283,7 @@ local function UnholyMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -50, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -301,28 +301,28 @@ local function ArmsMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -337,7 +337,7 @@ local function ArmsMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].diebythesword);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Dy By The Sword', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[71].diebythesword = value
@@ -345,7 +345,7 @@ local function ArmsMenu()
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].victoryrush);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Victory Rush', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[71].victoryrush = value
@@ -353,7 +353,7 @@ local function ArmsMenu()
 
     local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].rallyingcry);
     sk_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
     function sk_2_1:OnValueChanged(value)
         RubimRH.db.profile[71].rallyingcry = value
@@ -365,7 +365,7 @@ local function ArmsMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -382,28 +382,28 @@ local function FuryMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -418,7 +418,7 @@ local function FuryMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].rallyingcry);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Rallying Cry', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[71].rallyingcry = value
@@ -426,7 +426,7 @@ local function FuryMenu()
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].victoryrush);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Victory Rush', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[71].victoryrush = value
@@ -438,7 +438,7 @@ local function FuryMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -456,28 +456,28 @@ local function MMMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -492,18 +492,18 @@ local function MMMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[254].exhilaration);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Exhilaration', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[254].exhilaration = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[254].aspectoftheturtle);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[254].aspectoftheturtle = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
@@ -512,7 +512,7 @@ local function MMMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -530,28 +530,28 @@ local function SurvivalMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -566,18 +566,26 @@ local function SurvivalMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].mendpet);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[255].mendpet = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].aspectoftheturtle);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[255].aspectoftheturtle = value
+    end
+
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].exhilaration);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Exhilaration', 'TOP');
+    function sk_2_0:OnValueChanged(value)
+        RubimRH.db.profile[255].exhilaration = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
@@ -586,7 +594,7 @@ local function SurvivalMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -604,28 +612,28 @@ local function BMMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -640,18 +648,18 @@ local function BMMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[253].mendpet);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[253].mendpet = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[253].aspectoftheturtle);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[253].aspectoftheturtle = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
@@ -660,7 +668,7 @@ local function BMMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -686,28 +694,28 @@ local function OutMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -722,7 +730,7 @@ local function OutMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[260].crimsonvial);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Crimson Vial', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[260].crimsonvial = value
@@ -730,7 +738,7 @@ local function OutMenu()
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[260].cloakofshadows);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[260].cloakofshadows = value
@@ -739,7 +747,7 @@ local function OutMenu()
 
     local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[260].riposte);
     sk_2_0:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -34, 'LEFT');
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
     StdUi:AddLabel(window, sk_2_0, 'Riposte', 'TOP');
     function sk_2_0:OnValueChanged(value)
         RubimRH.db.profile[260].riposte = value
@@ -757,7 +765,7 @@ local function OutMenu()
         {text = 'Ture Bearing', value = 9},
     };
     local sk_2_1 = StdUi:Dropdown(window, 100, 24, dice , 1);
-    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_2_1, 'Roll the Bones', 'TOP');
     function sk_2_1:OnValueChanged(value)
         RubimRH.db.profile[250].dice = self:GetText()
@@ -770,7 +778,7 @@ local function OutMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
@@ -788,28 +796,28 @@ local function HavocMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
         RubimRH.PotionToggle()
     end
 
     local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     gn_2_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
     function gn_2_1:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
@@ -824,7 +832,7 @@ local function HavocMenu()
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[577].blur);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Blur', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[577].blur = value
@@ -832,7 +840,7 @@ local function HavocMenu()
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[577].darkness);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Darkness', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[577].darkness = value
@@ -844,7 +852,7 @@ local function HavocMenu()
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);

@@ -54,11 +54,7 @@ local function APL()
     end
 
     if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].exhilaration then
-        S.Exhilaration:Cast()
-    end
-
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].aspectoftheturtle then
-        S.AspectoftheTurtle:Cast()
+        return S.Exhilaration:Cast()
     end
 
     -- auto_shot
@@ -164,6 +160,10 @@ end
 
 RubimRH.Rotation.SetAPL(254, APL)
 local function PASSIVE()
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].aspectoftheturtle then
+        return S.AspectoftheTurtle:Cast()
+    end
+
     return RubimRH.Shared()
 end
 

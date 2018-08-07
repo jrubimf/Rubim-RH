@@ -94,9 +94,6 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
-        if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
-            return S.ProlongedPower:Cast()
-        end
         -- chi_burst
         if S.ChiBurst:IsReady() and (true) then
             return S.ChiBurst:Cast()
@@ -204,9 +201,6 @@ local function APL()
             return S.InvokeXuentheWhiteTiger:Cast()
         end
         -- use_item,name=lustrous_golden_plumage
-        if I.LustrousGoldenPlumage:IsReady() and (true) then
-            return S.LustrousGoldenPlumage:Cast()
-        end
         -- blood_fury
         if S.BloodFury:IsReady() and RubimRH.CDsON() and (true) then
             return S.BloodFury:Cast()
@@ -417,6 +411,11 @@ local function APL()
         end
         return 0, 462338
     end
+
+    if Player:IsChanneling() or Player:IsCasting() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     -- auto_attack
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
@@ -431,9 +430,6 @@ local function APL()
         return S.TouchofKarma:Cast()
     end
     -- potion,if=buff.serenity.up|buff.storm_earth_and_fire.up|(!talent.serenity.enabled&trinket.proc.agility.react)|buff.bloodlust.react|target.time_to_die<=60
-    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable() and bool(trinket.proc.agility.react)) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
-        return S.ProlongedPower:Cast()
-    end
     -- touch_of_death,if=target.time_to_die<=9
     if S.TouchofDeath:IsReady() and RubimRH.CDsON() and (Target:TimeToDie() <= 9) then
         return S.TouchofDeath:Cast()

@@ -160,7 +160,8 @@ local defaults = {
             align = "CENTER",
             xCord = 0,
             yCord = -200,
-            disabledSpells = {}
+            disabledSpells = {},
+            disabledSpellsCD = {}
         },
         --DEMONHUTER
         [577] = {
@@ -297,6 +298,7 @@ local defaults = {
             cooldown = true,
             mendpet = 70,
             aspectoftheturtle = 30,
+            exhilaration = 65,
         },
         --MONK
         [268] = {

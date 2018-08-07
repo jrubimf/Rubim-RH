@@ -35,7 +35,7 @@ function RubimRH.PotionToggle()
 	PlaySound(891, "Master");
 	if RubimRH.db.profile.mainOption.usePotion == false then
 		RubimRH.db.profile.mainOption.usePotion = true
-		
+
 	else
 		RubimRH.db.profile.mainOption.usePotion = false
 	end
@@ -86,10 +86,6 @@ function RubimRH.AoEToggle()
 end
 
 function RubimRH.CDsON()
-	if Player:Level() < 109 then
-		return true
-	end
-
 	if RubimRH.config.cooldown == true then
 		if UnitExists("boss1") == true or UnitClassification("target") == "worldboss" then
 			return true
@@ -124,17 +120,17 @@ end
 -- will be replaced
 function RubimRH.azerite(slot, azeriteID)
 	local IsArmor = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItem(ItemLocation:CreateFromEquipmentSlot(slot));
-    if IsArmor == true then 
+    if IsArmor == true then
     		local azeriteLearned = C_AzeriteEmpoweredItem.IsPowerSelected(ItemLocation:CreateFromEquipmentSlot(slot), azeriteID);
     		if azeriteLearned == true then
         		return true
-    		else 
+    		else
        		 	return false
     		end
     else
     	return false
     end
-    		
+
  end
 
 function RubimRH.RacialON()

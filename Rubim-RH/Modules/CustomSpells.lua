@@ -24,9 +24,16 @@ local function GetTexture (Object)
     -- Items
     local ItemID = Object.ItemID;
     if ItemID then
-        local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
-        print('item')
-        return texture
+        if Object.TextureSpellID ~= nil then
+            if #Object.TextureSpellID == 1 then
+                return GetSpellTexture(Object.TextureSpellID[1]);
+            else
+                return Object.TextureSpellID[2];
+            end
+        else
+            local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
+            return texture
+        end
     end
 end
 
@@ -124,6 +131,14 @@ function Spell:CooldownRemains(BypassRecovery, Offset)
         end
     end
 
+    if self:IsEnabled() == false then
+        return 1000
+    end
+
+    if self:IsEnabledCD() == false then
+        return 1000
+    end
+
     local SpellInfo = Cache.SpellInfo[self.SpellID]
     if not SpellInfo then
         SpellInfo = {}
@@ -154,18 +169,6 @@ end
   *
   * @returns {number}
   *]]
-function Spell:CooldownRemainsP(BypassRecovery, Offset)
-    return self:CooldownRemains(BypassRecovery, Offset or "Auto")
-end
-
-function Spell:IsCastableP (Range, AoESpell, ThisUnit, BypassRecovery, Offset)
-    if Range then
-        local RangeUnit = ThisUnit or Target;
-        return self:IsLearned() and self:CooldownRemainsP(BypassRecovery, Offset or "Auto") == 0 and RangeUnit:IsInRange(Range, AoESpell);
-    else
-        return self:IsLearned() and self:CooldownRemainsP(BypassRecovery, Offset or "Auto") == 0;
-    end
-end
 
 function Spell:IsCastable(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:Queued() then
@@ -195,9 +198,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimPvP then
-        if RubimRH.db.profile.mainOption.ccbreak then
-            return false
-        elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(range) then
+        if RubimRH.breakableAreaCC(range) then
             return false
         end
     end
@@ -205,6 +206,11 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
+
+    if self:IsEnabledCD() == false then
+        return false
+    end
+
     range = self:MaximumRange() or 5
     HL.GetEnemies(range, true)
     if range <= 8 and RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[range] >= 1 then
@@ -238,6 +244,11 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
+
+    if self:IsEnabledCD() == false then
+        return false
+    end
+
     local range = range or 5
     HL.GetEnemies(range, true)
     if RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[range] >= 1 then
@@ -266,35 +277,51 @@ function RubimRH.updateEnabledSpells()
 
 end
 
-function RubimRH.isSpellEnabled(spellIDs)
-    local isEnabled = true
+function Spell:IsEnabledCD()
+    if #RubimRH.db.profile.mainOption.disabledSpellsCD == 0 and RubimRH.CDsON() then
+        return true
+    end
 
-    for _, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
-        if spellIDs == spellID then
-            isEnabled = false
+    for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCD do
+        if self.SpellID == RubimRH.db.profile.mainOption.disabledSpellsCD[i].value then
+            return false
         end
     end
-    return isEnabled
+    return true
 end
 
-function RubimRH.addSpellDisabled(spellIDs)
+function RubimRH.addSpellDisabledCD(spellid)
     local exists = false
-    for pos, spellID in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
-        if spellIDs == spellID then
-            table.remove(RubimRH.db.profile.mainOption.disabledSpells, pos)
-            exists = true
-            print("|cFF00FF00Unblocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
-            break
+
+    if #RubimRH.db.profile.mainOption.disabledSpellsCD > 0 then
+        for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCD do
+            if spellid == RubimRH.db.profile.mainOption.disabledSpellsCD[i].value then
+                exists = true
+            end
         end
     end
 
     if exists == false then
-        table.insert(RubimRH.db.profile.mainOption.disabledSpells, spellIDs)
-        print("|cFFFF0000Blocking|r - " .. GetSpellInfo(spellIDs) .. " (" .. spellIDs .. ")")
+        table.insert(RubimRH.db.profile.mainOption.disabledSpellsCD, { text = GetSpellInfo(spellid), value = spellid })
+    end
+end
+
+function RubimRH.delSpellDisabledCD(spellid)
+    if #RubimRH.db.profile.mainOption.disabledSpellsCD > 0 then
+        for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCD do
+            if spellid == RubimRH.db.profile.mainOption.disabledSpellsCD[i].value then
+                table.remove(RubimRH.db.profile.mainOption.disabledSpellsCD, i)
+            end
+            break
+        end
     end
 end
 
 function Spell:Cast()
+    return GetTexture(self)
+end
+
+function Item:Cast()
     return GetTexture(self)
 end
 
