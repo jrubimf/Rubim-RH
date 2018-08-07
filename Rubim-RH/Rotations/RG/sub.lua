@@ -348,7 +348,6 @@ local function APL()
 
     local varStealthed = (IsStealthed() or Player:Buff(S.Stealth) or Player:Buff(S.ShadowDanceBuff))
     -- call precombat
-    print(varStealthed)
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
