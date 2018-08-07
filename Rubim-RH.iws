@@ -65,8 +65,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="324" column="54" lean-forward="false" selection-start-line="324" selection-start-column="54" selection-end-line="324" selection-end-column="54" />
+            <state relative-caret-position="347">
+              <caret line="345" column="24" lean-forward="false" selection-start-line="345" selection-start-column="24" selection-end-line="345" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -123,9 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Stealth</find>
-      <find>stealthed.rogue</find>
-      <find>stealthed.all</find>
       <find>stealthed</find>
       <find>.all</find>
       <find>RubimRH.CDsON()</find>
@@ -153,6 +150,9 @@
       <find>Cast()</find>
       <find>shadow</find>
       <find>ShadowStrike</find>
+      <find>steal</find>
+      <find>isSteal</find>
+      <find>ShadowDanceBuff</find>
     </findStrings>
     <replaceStrings>
       <replace>DeadlyCalm</replace>
@@ -802,8 +802,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="324" column="54" lean-forward="false" selection-start-line="324" selection-start-column="54" selection-end-line="324" selection-end-column="54" />
+        <state relative-caret-position="347">
+          <caret line="345" column="24" lean-forward="false" selection-start-line="345" selection-start-column="24" selection-end-line="345" selection-end-column="24" />
           <folding />
         </state>
       </provider>

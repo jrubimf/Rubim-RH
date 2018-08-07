@@ -31,7 +31,7 @@ RubimRH.Spell[261] = {
     NightbladeDebuff = Spell(195452),
     ShurikenTornado = Spell(277925),
     SymbolsofDeathBuff = Spell(212283),
-    ShadowDanceBuff = Spell(185313),
+    ShadowDanceBuff = Spell(185422),
     ShadowDance = Spell(185313),
     Subterfuge = Spell(108208),
     Nightblade = Spell(195452),
@@ -213,7 +213,7 @@ local function APL()
             --return S.ShadowBlades:Cast()
         --end
 
-        if IsStealthed() then
+        if varStealthed then
             return Stealthed();
         end
     end
@@ -235,11 +235,11 @@ local function APL()
     Cds = function()
         -- potion,if=buff.bloodlust.react|target.time_to_die<=60|(buff.vanish.up&(buff.shadow_blades.up|cooldown.shadow_blades.remains<=30))
         -- blood_fury,if=stealthed.rogue
-        if S.BloodFury:IsReady() and RubimRH.CDsON() and (bool(IsStealthed())) then
+        if S.BloodFury:IsReady() and RubimRH.CDsON() and (bool(varStealthed)) then
             return S.BloodFury:Cast()
         end
         -- berserking,if=stealthed.rogue
-        if S.Berserking:IsReady() and RubimRH.CDsON() and (bool(IsStealthed())) then
+        if S.Berserking:IsReady() and RubimRH.CDsON() and (bool(varStealthed)) then
             return S.Berserking:Cast()
         end
         -- symbols_of_death,if=dot.nightblade.ticking
@@ -251,11 +251,11 @@ local function APL()
             return S.MarkedForDeath:Cast()
         end
         -- marked_for_death,if=raid_event.adds.in>30&!stealthed.all&combo_points.deficit>=cp_max_spend
-        if not RubimRH.AoEON() and S.MarkedForDeath:IsReady() and (not bool(IsStealthed()) and Player:ComboPointsDeficit() >= CPMaxSpend()) then
+        if not RubimRH.AoEON() and S.MarkedForDeath:IsReady() and (not bool(varStealthed) and Player:ComboPointsDeficit() >= CPMaxSpend()) then
             return S.MarkedForDeath:Cast()
         end
         -- shadow_blades,if=combo_points.deficit>=2+stealthed.all
-        if S.ShadowBlades:IsReady() and (Player:ComboPointsDeficit() >= 2 + num(IsStealthed())) then
+        if S.ShadowBlades:IsReady() and (Player:ComboPointsDeficit() >= 2 + num(varStealthed)) then
             return S.ShadowBlades:Cast()
         end
         -- shuriken_tornado,if=spell_targets>=3&dot.nightblade.ticking&buff.symbols_of_death.up&buff.shadow_dance.up
@@ -322,7 +322,7 @@ local function APL()
     end
     Stealthed = function()
         -- shadowstrike,if=buff.stealth.up
-        if S.Shadowstrike:IsReady() and (IsStealthed()) then
+        if S.Shadowstrike:IsReady() and (varStealthed) then
             return S.Shadowstrike:Cast()
         end
         -- call_action_list,name=finish,if=combo_points.deficit<=1-(talent.deeper_stratagem.enabled&buff.vanish.up)
@@ -343,8 +343,12 @@ local function APL()
         if S.Shadowstrike:IsReady() and (true) then
             return S.Shadowstrike:Cast()
         end
+        return 0, 135328
     end
+
+    local varStealthed = (IsStealthed() or Player:Buff(S.Stealth) or Player:Buff(S.ShadowDanceBuff))
     -- call precombat
+    print(varStealthed)
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
@@ -358,7 +362,7 @@ local function APL()
         end
     end
     -- run_action_list,name=stealthed,if=stealthed.all
-    if IsStealthed() then
+    if varStealthed then
         return Stealthed();
     end
     -- nightblade,if=target.time_to_die>6&remains<gcd.max&combo_points>=4-(time<10)*2
