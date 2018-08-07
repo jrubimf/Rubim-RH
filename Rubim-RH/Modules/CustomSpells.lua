@@ -24,9 +24,16 @@ local function GetTexture (Object)
     -- Items
     local ItemID = Object.ItemID;
     if ItemID then
-        local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
-        print('item')
-        return texture
+        if Object.TextureSpellID ~= nil then
+            if #Object.TextureSpellID == 1 then
+                return GetSpellTexture(Object.TextureSpellID[1]);
+            else
+                return Object.TextureSpellID[2];
+            end
+        else
+            local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(ItemID);
+            return texture
+        end
     end
 end
 
@@ -204,7 +211,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
-
     range = self:MaximumRange() or 5
     HL.GetEnemies(range, true)
     if range <= 8 and RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[range] >= 1 then
@@ -296,7 +302,7 @@ function RubimRH.addSpellDisabledCD(spellid)
     end
 
     if exists == false then
-        table.insert(RubimRH.db.profile.mainOption.disabledSpellsCD, { text = GetSpellInfo(spellid) , value = spellid})
+        table.insert(RubimRH.db.profile.mainOption.disabledSpellsCD, { text = GetSpellInfo(spellid), value = spellid })
     end
 end
 
