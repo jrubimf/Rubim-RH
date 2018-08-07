@@ -162,6 +162,8 @@ local defaults = {
 		--DEMONHUTER
 		[577] = {
 			cooldown = true,
+			blur = 75,
+			darkness = 50,
 			Spells = {
 				{ spellID = FelRush, isActive = true },
 				{ spellID = EyeBeam, isActive = true },

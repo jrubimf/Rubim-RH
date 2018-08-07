@@ -115,6 +115,49 @@ function Spell:IsAvailable (CheckPet)
     return CheckPet and IsSpellKnown(self.SpellID, true) or IsPlayerSpell(self.SpellID);
 end
 
+function Spell:CooldownRemains(BypassRecovery, Offset)
+    if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
+        for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
+            if v.spellID == self:ID() and v.isActive == false then
+                return 1000
+            end
+        end
+    end
+
+    local SpellInfo = Cache.SpellInfo[self.SpellID]
+    if not SpellInfo then
+        SpellInfo = {}
+        Cache.SpellInfo[self.SpellID] = SpellInfo
+    end
+    local Cooldown = Cache.SpellInfo[self.SpellID].Cooldown
+    local CooldownNoRecovery = Cache.SpellInfo[self.SpellID].CooldownNoRecovery
+    if (not BypassRecovery and not Cooldown) or (BypassRecovery and not CooldownNoRecovery) then
+        if BypassRecovery then
+            CooldownNoRecovery = self:ComputeCooldown(BypassRecovery)
+        else
+            Cooldown = self:ComputeCooldown()
+        end
+    end
+    if Offset then
+        return BypassRecovery and mathmax(HL.OffsetRemains(CooldownNoRecovery, Offset), 0) or mathmax(HL.OffsetRemains(Cooldown, Offset), 0)
+    else
+        return BypassRecovery and CooldownNoRecovery or Cooldown
+    end
+end
+
+--[[*
+  * @function Spell:CooldownRemainsP
+  * @override Spell:CooldownRemains
+  * @desc Offset defaulted to "Auto" which is ideal in most cases to improve the prediction.
+  *
+  * @param {string|number} [Offset="Auto"]
+  *
+  * @returns {number}
+  *]]
+function Spell:CooldownRemainsP(BypassRecovery, Offset)
+    return self:CooldownRemains(BypassRecovery, Offset or "Auto")
+end
+
 function Spell:IsCastableP (Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     if Range then
         local RangeUnit = ThisUnit or Target;
@@ -141,6 +184,14 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     local range = Range or 8
     if not self:IsAvailable() or self:Queued() then
         return false
+    end
+
+    if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
+        for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
+            if v.spellID == self:ID() and v.isActive == false then
+                return false
+            end
+        end
     end
 
     if RubimPvP then

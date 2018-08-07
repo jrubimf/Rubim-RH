@@ -1238,13 +1238,13 @@ RubimRH.Spell[577] = {
     MomentumBuff = Spell(208628),
     Nemesis = Spell(206491),
     -- Artifact
-    FuryOfTheIllidari = Spell(201467),
-
-
+    Blur = Spell(198589),
+    Darkness = Spell(196718),
     -- Talents
     ImmolationAura = Spell(258920),
     FelBarrage = Spell(258925),
     DarkSlash = Spell(258860),
+    DarkSlashDebuff = Spell(258860),
 
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),

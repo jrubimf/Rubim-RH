@@ -273,7 +273,7 @@ local function APL ()
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
-        if IsStealthed() == false then
+        if IsStealthed() == false and S.Stealth:TimeSinceLastCast() >= 2 then
             return S.Stealth:Cast()
         end
         -- Flask
@@ -309,7 +309,7 @@ local function APL ()
     -- In Combat
     if RubimRH.TargetIsValid() then
         -- actions+=/call_action_list,name=stealth,if=stealthed.all
-        if IsStealthed() == true and Stealth():TimeSinceLastCast() >= 1 then
+        if IsStealthed() == true then
             if Stealth() ~= nil then
                 return Stealth()
             end

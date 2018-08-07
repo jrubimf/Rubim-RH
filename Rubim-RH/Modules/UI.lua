@@ -776,46 +776,78 @@ local function OutMenu()
     end);
 end
 
-local function OutlawMenu()
-    local mainWindow = AceGUI:Create("Frame")
-    mainWindow:SetTitle("Rogue - Roll the Boness")
-    mainWindow:SetStatusText("Rubim")
-    mainWindow:SetCallback("OnClose", function(widget)
-        AceGUI:Release(widget)
-        end)
-    -- Fill Layout - the TabGroup widget will fill the whole frame
-    mainWindow:SetLayout("Flow")
-    --mainWindow:SetLayout("Fill")
-    mainWindow:SetWidth(260)
-    mainWindow:SetHeight(140)
+local function HavocMenu()
+    local window = StdUi:Window(UIParent, 'Demon Hunter - Havoc', 350, 500);
+    window:SetPoint('CENTER');
 
-    local label = AceGUI:Create("Label")
-    label:SetText("Choose a buff from the list.")
-    mainWindow:AddChild(label)
 
-    local rollBones = {
-    "Simcraft",
-    "SoloMode",
-    "1+ Buff",
-    "Broadsides",
-    "Buried Treasure",
-    "Grand Melee",
-    "Jolly Roger",
-    "Shark Infested Waters",
-    "Ture Bearing"
-}
-local dropdown = AceGUI:Create("Dropdown")
-dropdown:SetValue("Choose a Buff")
-dropdown:SetList(rollBones)
-dropdown:SetText(RubimRH.db.profile[250].dice)
-    --dropdown:SetLabel("Pick a Buff")
-    dropdown:SetCallback("OnValueChanged", function(self, event, pos)
-        print("Roll the Bones: " .. rollBones[pos])
-        RubimRH.db.profile[250].dice = rollBones[pos]
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-        end)
-    mainWindow:AddChild(dropdown)
-    mainWindow:Show()
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -34, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -34, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -34, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -34, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[577].blur);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Blur', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[577].blur = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[577].darkness);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Darkness', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[577].darkness = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -350);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -34, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
 end
 
 function RubimRH.ClassConfig(specID)
@@ -858,5 +890,9 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 260 then
         OutMenu()
+    end
+
+    if specID == 577 then
+        HavocMenu()
     end
 end
