@@ -255,21 +255,22 @@ local function APL()
             return S.DemonsBite:Cast()
         end
         -- throw_glaive,if=buff.out_of_range.up
-        if S.ThrowGlaive:IsReady() and (Target:MaxDistanceToPlayer() > 15) then
+        if S.ThrowGlaive:IsReady() and (Target:MaxDistanceToPlayer() > 10) then
             return S.ThrowGlaive:Cast()
         end
         -- fel_rush,if=movement.distance>15|buff.out_of_range.up
-        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer() > 15) then
+        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer() > 10) then
             return S.FelRush:Cast()
         end
         -- vengeful_retreat,if=movement.distance>15
-        if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer() > 15) then
-            return S.VengefulRetreat:Cast()
-        end
+        --if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer() > 10) then
+          --  return S.VengefulRetreat:Cast()
+        --end
         -- throw_glaive,if=talent.demon_blades.enabled
         if S.ThrowGlaive:IsReady() and (S.DemonBlades:IsAvailable()) then
             return S.ThrowGlaive:Cast()
         end
+        return 0, 135328
     end
 
     Normal = function()
@@ -345,6 +346,7 @@ local function APL()
         if S.ThrowGlaive:IsReady() and (S.DemonBlades:IsAvailable()) then
             return S.ThrowGlaive:Cast()
         end
+        return 0, 135328
     end
 
     if not Player:AffectingCombat() then

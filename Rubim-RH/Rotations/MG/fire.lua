@@ -127,7 +127,7 @@ local function APL()
             return S.Meteor:Cast()
         end
         -- dragons_breath,if=equipped.132863|(talent.alexstraszas_fury.enabled&!buff.hot_streak.react)
-        if S.DragonsBreath:IsReady() and (I.Item132863:IsEquipped() or (S.AlexstraszasFury:IsAvailable() and not bool(Player:BuffStack(S.HotStreakBuff)))) then
+        if S.DragonsBreath:IsReady() and (I.Item132863:IsEquipped() or (S.AlexstraszasFury:IsAvailable() and not bool(Player:Buff(S.HotStreakBuff)))) then
             return S.DragonsBreath:Cast()
         end
         -- living_bomb,if=active_enemies>1&buff.combustion.down
@@ -168,19 +168,19 @@ local function APL()
         end
         -- use_items
         -- flamestrike,if=((talent.flame_patch.enabled&active_enemies>2)|active_enemies>6)&buff.hot_streak.react
-        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 2) or Cache.EnemiesCount[40] > 6) and bool(Player:BuffStack(S.HotStreakBuff))) then
+        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 2) or Cache.EnemiesCount[40] > 6) and bool(Player:Buff(S.HotStreakBuff))) then
             return S.Flamestrike:Cast()
         end
         -- pyroblast,if=(buff.kaelthas_ultimate_ability.react|buff.pyroclasm.react)&buff.combustion.remains>execute_time
-        if S.Pyroblast:IsReady() and ((bool(Player:BuffStack(S.KaelthasUltimateAbilityBuff)) or bool(Player:BuffStack(S.PyroclasmBuff))) and Player:BuffRemains(S.CombustionBuff) > S.Pyroblast:ExecuteTime()) then
+        if S.Pyroblast:IsReady() and ((bool(Player:Buff(S.KaelthasUltimateAbilityBuff)) or bool(Player:Buff(S.PyroclasmBuff))) and Player:BuffRemains(S.CombustionBuff) > S.Pyroblast:ExecuteTime()) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff))) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff))) then
             return S.Pyroblast:Cast()
         end
         -- fire_blast,if=buff.heating_up.react
-        if S.FireBlast:IsReady() and (bool(Player:BuffStack(S.HeatingUpBuff))) then
+        if S.FireBlast:IsReady() and (bool(Player:Buff(S.HeatingUpBuff))) then
             return S.FireBlast:Cast()
         end
         -- phoenix_flames
@@ -192,7 +192,7 @@ local function APL()
             return S.Scorch:Cast()
         end
         -- dragons_breath,if=!buff.hot_streak.react&action.fire_blast.charges<1
-        if S.DragonsBreath:IsReady() and (not bool(Player:BuffStack(S.HotStreakBuff)) and S.FireBlast:Charges() < 1) then
+        if S.DragonsBreath:IsReady() and (not bool(Player:Buff(S.HotStreakBuff)) and S.FireBlast:Charges() < 1) then
             return S.DragonsBreath:Cast()
         end
         -- scorch,if=target.health.pct<=30&(equipped.132454|talent.searing_touch.enabled)
@@ -206,11 +206,11 @@ local function APL()
             return S.RuneofPower:Cast()
         end
         -- flamestrike,if=((talent.flame_patch.enabled&active_enemies>1)|active_enemies>4)&buff.hot_streak.react
-        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 1) or Cache.EnemiesCount[40] > 4) and bool(Player:BuffStack(S.HotStreakBuff))) then
+        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 1) or Cache.EnemiesCount[40] > 4) and bool(Player:Buff(S.HotStreakBuff))) then
             return S.Flamestrike:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff))) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff))) then
             return S.Pyroblast:Cast()
         end
         -- call_action_list,name=active_talents
@@ -220,15 +220,15 @@ local function APL()
             end
         end
         -- pyroblast,if=buff.kaelthas_ultimate_ability.react&execute_time<buff.kaelthas_ultimate_ability.remains&buff.rune_of_power.remains>cast_time
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.KaelthasUltimateAbilityBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.KaelthasUltimateAbilityBuff) and Player:BuffRemains(S.RuneofPowerBuff) > S.Pyroblast:CastTime()) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.KaelthasUltimateAbilityBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.KaelthasUltimateAbilityBuff) and Player:BuffRemains(S.RuneofPowerBuff) > S.Pyroblast:CastTime()) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.pyroclasm.react&execute_time<buff.pyroclasm.remains&buff.rune_of_power.remains>cast_time
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.PyroclasmBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.PyroclasmBuff) and Player:BuffRemains(S.RuneofPowerBuff) > S.Pyroblast:CastTime()) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.PyroclasmBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.PyroclasmBuff) and Player:BuffRemains(S.RuneofPowerBuff) > S.Pyroblast:CastTime()) then
             return S.Pyroblast:Cast()
         end
         -- fire_blast,if=!prev_off_gcd.fire_blast&buff.heating_up.react&firestarter.active&charges_fractional>1.7
-        if S.FireBlast:IsReady() and (not Player:PrevOffGCD(1, S.FireBlast) and bool(Player:BuffStack(S.HeatingUpBuff)) and bool(S.Firestarter:ActiveStatus()) and S.FireBlast:ChargesFractional() > 1.7) then
+        if S.FireBlast:IsReady() and (not Player:PrevOffGCD(1, S.FireBlast) and bool(Player:Buff(S.HeatingUpBuff)) and bool(S.Firestarter:ActiveStatus()) and S.FireBlast:ChargesFractional() > 1.7) then
             return S.FireBlast:Cast()
         end
         -- phoenix_flames,if=!prev_gcd.1.phoenix_flames&charges_fractional>2.7&firestarter.active
@@ -262,15 +262,15 @@ local function APL()
     end
     StandardRotation = function()
         -- flamestrike,if=((talent.flame_patch.enabled&active_enemies>1)|active_enemies>4)&buff.hot_streak.react
-        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 1) or Cache.EnemiesCount[40] > 4) and bool(Player:BuffStack(S.HotStreakBuff))) then
+        if S.Flamestrike:IsReady() and (((S.FlamePatch:IsAvailable() and Cache.EnemiesCount[40] > 1) or Cache.EnemiesCount[40] > 4) and bool(Player:Buff(S.HotStreakBuff))) then
             return S.Flamestrike:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react&buff.hot_streak.remains<action.fireball.execute_time
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff)) and Player:BuffRemains(S.HotStreakBuff) < S.Fireball:ExecuteTime()) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff)) and Player:BuffRemains(S.HotStreakBuff) < S.Fireball:ExecuteTime()) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react&firestarter.active&!talent.rune_of_power.enabled
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff)) and bool(S.Firestarter:ActiveStatus()) and not S.RuneofPower:IsAvailable()) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff)) and bool(S.Firestarter:ActiveStatus()) and not S.RuneofPower:IsAvailable()) then
             return S.Pyroblast:Cast()
         end
         -- phoenix_flames,if=charges_fractional>2.7&active_enemies>2
@@ -278,19 +278,19 @@ local function APL()
             return S.PhoenixFlames:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react&(!prev_gcd.1.pyroblast|action.pyroblast.in_flight)
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff)) and (not Player:PrevGCD(1, S.Pyroblast) or S.Pyroblast:InFlight())) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff)) and (not Player:PrevGCD(1, S.Pyroblast) or S.Pyroblast:InFlight())) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.hot_streak.react&target.health.pct<=30&equipped.132454
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.HotStreakBuff)) and Target:HealthPercentage() <= 30 and I.Item132454:IsEquipped()) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.HotStreakBuff)) and Target:HealthPercentage() <= 30 and I.Item132454:IsEquipped()) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.kaelthas_ultimate_ability.react&execute_time<buff.kaelthas_ultimate_ability.remains
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.KaelthasUltimateAbilityBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.KaelthasUltimateAbilityBuff)) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.KaelthasUltimateAbilityBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.KaelthasUltimateAbilityBuff)) then
             return S.Pyroblast:Cast()
         end
         -- pyroblast,if=buff.pyroclasm.react&execute_time<buff.pyroclasm.remains
-        if S.Pyroblast:IsReady() and (bool(Player:BuffStack(S.PyroclasmBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.PyroclasmBuff)) then
+        if S.Pyroblast:IsReady() and (bool(Player:Buff(S.PyroclasmBuff)) and S.Pyroblast:ExecuteTime() < Player:BuffRemains(S.PyroclasmBuff)) then
             return S.Pyroblast:Cast()
         end
         -- call_action_list,name=active_talents
@@ -300,11 +300,11 @@ local function APL()
             end
         end
         -- fire_blast,if=!talent.kindling.enabled&buff.heating_up.react&(!talent.rune_of_power.enabled|charges_fractional>1.4|cooldown.combustion.remains<40)&(3-charges_fractional)*(12*spell_haste)<cooldown.combustion.remains+3|target.time_to_die<4
-        if S.FireBlast:IsReady() and (not S.Kindling:IsAvailable() and bool(Player:BuffStack(S.HeatingUpBuff)) and (not S.RuneofPower:IsAvailable() or S.FireBlast:ChargesFractional() > 1.4 or S.Combustion:CooldownRemains() < 40) and (3 - S.FireBlast:ChargesFractional()) * (12 * Player:SpellHaste()) < S.Combustion:CooldownRemains() + 3 or Target:TimeToDie() < 4) then
+        if S.FireBlast:IsReady() and (not S.Kindling:IsAvailable() and bool(Player:Buff(S.HeatingUpBuff)) and (not S.RuneofPower:IsAvailable() or S.FireBlast:ChargesFractional() > 1.4 or S.Combustion:CooldownRemains() < 40) and (3 - S.FireBlast:ChargesFractional()) * (12 * Player:SpellHaste()) < S.Combustion:CooldownRemains() + 3 or Target:TimeToDie() < 4) then
             return S.FireBlast:Cast()
         end
         -- fire_blast,if=talent.kindling.enabled&buff.heating_up.react&(!talent.rune_of_power.enabled|charges_fractional>1.5|cooldown.combustion.remains<40)&(3-charges_fractional)*(18*spell_haste)<cooldown.combustion.remains+3|target.time_to_die<4
-        if S.FireBlast:IsReady() and (S.Kindling:IsAvailable() and bool(Player:BuffStack(S.HeatingUpBuff)) and (not S.RuneofPower:IsAvailable() or S.FireBlast:ChargesFractional() > 1.5 or S.Combustion:CooldownRemains() < 40) and (3 - S.FireBlast:ChargesFractional()) * (18 * Player:SpellHaste()) < S.Combustion:CooldownRemains() + 3 or Target:TimeToDie() < 4) then
+        if S.FireBlast:IsReady() and (S.Kindling:IsAvailable() and bool(Player:Buff(S.HeatingUpBuff)) and (not S.RuneofPower:IsAvailable() or S.FireBlast:ChargesFractional() > 1.5 or S.Combustion:CooldownRemains() < 40) and (3 - S.FireBlast:ChargesFractional()) * (18 * Player:SpellHaste()) < S.Combustion:CooldownRemains() + 3 or Target:TimeToDie() < 4) then
             return S.FireBlast:Cast()
         end
         -- phoenix_flames,if=(buff.combustion.up|buff.rune_of_power.up|buff.incanters_flow.stack>3|talent.mirror_image.enabled)&(4-charges_fractional)*13<cooldown.combustion.remains+5|target.time_to_die<10
@@ -336,35 +336,6 @@ local function APL()
     if not Player:AffectingCombat() and not Player:IsCasting() then
         if Precombat() ~= nil then
             return Precombat()
-        end
-    end
-    -- counterspell,if=target.debuff.casting.react
-    if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
-        return S.Counterspell:Cast()
-    end
-    -- time_warp,if=(time=0&buff.bloodlust.down)|(buff.bloodlust.down&equipped.132410&(cooldown.combustion.remains<1|target.time_to_die<50))
-    -- mirror_image,if=buff.combustion.down
-    if S.MirrorImage:IsReady() and (Player:BuffDown(S.CombustionBuff)) then
-        return S.MirrorImage:Cast()
-    end
-    -- rune_of_power,if=firestarter.active&action.rune_of_power.charges=2|cooldown.combustion.remains>40&buff.combustion.down&!talent.kindling.enabled|target.time_to_die<11|talent.kindling.enabled&(charges_fractional>1.8|time<40)&cooldown.combustion.remains>40
-    if S.RuneofPower:IsReady() and (bool(S.Firestarter:ActiveStatus()) and S.RuneofPower:Charges() == 2 or S.Combustion:CooldownRemains() > 40 and Player:BuffDown(S.CombustionBuff) and not S.Kindling:IsAvailable() or Target:TimeToDie() < 11 or S.Kindling:IsAvailable() and (S.RuneofPower:ChargesFractional() > 1.8 or HL.CombatTime() < 40) and S.Combustion:CooldownRemains() > 40) then
-        return S.RuneofPower:Cast()
-    end
-    -- rune_of_power,if=((buff.kaelthas_ultimate_ability.react|buff.pyroclasm.react)&(cooldown.combustion.remains>40|action.rune_of_power.charges>1))|(buff.erupting_infernal_core.up&(cooldown.combustion.remains>40|action.rune_of_power.charges>1))
-    if S.RuneofPower:IsReady() and (((bool(Player:BuffStack(S.KaelthasUltimateAbilityBuff)) or bool(Player:BuffStack(S.PyroclasmBuff))) and (S.Combustion:CooldownRemains() > 40 or S.RuneofPower:Charges() > 1)) or (Player:Buff(S.EruptingInfernalCoreBuff) and (S.Combustion:CooldownRemains() > 40 or S.RuneofPower:Charges() > 1))) then
-        return S.RuneofPower:Cast()
-    end
-    -- call_action_list,name=combustion_phase,if=cooldown.combustion.remains<=action.rune_of_power.cast_time+(!talent.kindling.enabled*gcd)&(!talent.firestarter.enabled|!firestarter.active|active_enemies>=4|active_enemies>=2&talent.flame_patch.enabled)|buff.combustion.up
-    if (S.Combustion:CooldownRemains() <= S.RuneofPower:CastTime() + (num(not S.Kindling:IsAvailable()) * Player:GCD()) and (not S.Firestarter:IsAvailable() or not bool(S.Firestarter:ActiveStatus()) or Cache.EnemiesCount[40] >= 4 or Cache.EnemiesCount[40] >= 2 and S.FlamePatch:IsAvailable()) or Player:Buff(S.CombustionBuff)) then
-        if CombustionPhase() ~= nil then
-            return CombustionPhase()
-        end
-    end
-    -- call_action_list,name=rop_phase,if=buff.rune_of_power.up&buff.combustion.down
-    if (Player:Buff(S.RuneofPowerBuff) and Player:BuffDown(S.CombustionBuff)) then
-        if RopPhase() ~= nil then
-            return RopPhase()
         end
     end
     -- call_action_list,name=standard_rotation
