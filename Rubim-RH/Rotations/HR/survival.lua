@@ -261,7 +261,7 @@ local function APL ()
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
-    if S.MongooseBiteEagle:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
+    if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
         return S.MongooseBiteEagle:Cast()
     end
     -- mongoose_bite,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
@@ -269,7 +269,7 @@ local function APL ()
         return S.MongooseBite:Cast()
     end
     -- raptor_strike_eagle,target_if=min:dot.internal_bleeding.stack
-    if S.RaptorStrikeEagle:IsReady() and (true) then
+    if S.RaptorStrikeEagle:IsReadyMorph() and (true) then
         return S.RaptorStrikeEagle:Cast()
     end
     -- raptor_strike,target_if=min:dot.internal_bleeding.stack
