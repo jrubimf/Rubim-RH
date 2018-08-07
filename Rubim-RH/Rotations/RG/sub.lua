@@ -188,6 +188,7 @@ end
 
 local function APL()
     local Precombat, Build, Cds, Finish, StealthCds, Stealthed
+    local varStealthed = (IsStealthed() or Player:Buff(S.Stealth) or Player:Buff(S.ShadowDanceBuff))
     UpdateRanges()
     UpdateCDs()
 
@@ -345,8 +346,6 @@ local function APL()
         end
         return 0, 135328
     end
-
-    local varStealthed = (IsStealthed() or Player:Buff(S.Stealth) or Player:Buff(S.ShadowDanceBuff))
     -- call precombat
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
