@@ -308,6 +308,7 @@ function RubimRH.delSpellDisabledCD(spellid)
             if spellid == RubimRH.db.profile.mainOption.disabledSpellsCD[i].value then
                 table.remove(RubimRH.db.profile.mainOption.disabledSpellsCD, i)
             end
+            break
         end
     end
 end

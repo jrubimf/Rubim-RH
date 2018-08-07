@@ -170,7 +170,6 @@ local OffensiveCDs = {
 
 local function UpdateCDs()
     if RubimRH.config.cooldown then
-
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
                 RubimRH.delSpellDisabledCD(spell:ID())
@@ -210,11 +209,13 @@ local function APL()
             return S.MarkedForDeath:Cast()
         end
         -- shadow_blades,precombat_seconds=1
-        if S.ShadowBlades:IsReady() and Player:BuffDownP(S.ShadowBladesBuff) and (true) then
-            return S.ShadowBlades:Cast()
+        --if S.ShadowBlades:IsReady() and Player:BuffDownP(S.ShadowBladesBuff) and (true) then
+            --return S.ShadowBlades:Cast()
+        --end
+
+        if IsStealthed() then
+            return Stealthed();
         end
-        -- potion
-        return 0, 462338
     end
 
     Build = function()
@@ -298,7 +299,7 @@ local function APL()
             VarShdThreshold = num(S.ShadowDance:ChargesFractional() >= 1.75)
         end
         -- vanish,if=!variable.shd_threshold&debuff.find_weakness.remains<1
-        if RubimRH.CDsON() and S.Vanish:IsReady() and (not bool(VarShdThreshold) and Target:DebuffRemains(S.FindWeaknessDebuff) < 1) then
+        if S.Vanish:IsReady() and (not bool(VarShdThreshold) and Target:DebuffRemains(S.FindWeaknessDebuff) < 1) then
             return S.Vanish:Cast()
         end
         -- pool_resource,for_next=1,extra_amount=40
