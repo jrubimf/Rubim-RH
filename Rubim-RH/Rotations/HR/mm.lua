@@ -54,11 +54,11 @@ local function APL()
     end
 
     if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].exhilaration then
-        S.Exhilaration:Cast()
+        return S.Exhilaration:Cast()
     end
 
     if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].aspectoftheturtle then
-        S.AspectoftheTurtle:Cast()
+        return S.AspectoftheTurtle:Cast()
     end
 
     -- auto_shot

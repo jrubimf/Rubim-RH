@@ -119,7 +119,7 @@ local function APL ()
                 return S.SteelTrap:Cast()
             end
             -- harpoon
-            if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer() >= 8 then
+            if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
                 return S.Harpoon:Cast()
             end
         end
@@ -136,7 +136,7 @@ local function APL ()
     end
 
     if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].aspectoftheturtle then
-        S.AspectoftheTurtle:Cast()
+        return S.AspectoftheTurtle:Cast()
     end
 
     if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
@@ -232,7 +232,7 @@ local function APL ()
         return S.SerpentSting:Cast()
     end
     -- aspect_of_the_eagle,if=target.distance>=6
-    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer() >= 6) then
+    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer(true) >= 6) then
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60

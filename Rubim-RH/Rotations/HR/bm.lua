@@ -75,7 +75,7 @@ local function APL ()
     end
 
     if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].aspectoftheturtle then
-        S.AspectoftheTurtle:Cast()
+    return S.AspectoftheTurtle:Cast()
     end
 
     -- In Combat

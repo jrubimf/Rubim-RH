@@ -495,7 +495,7 @@ local function MMMenu()
     StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Exhilaration', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[254].exhilaration = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[254].aspectoftheturtle);
@@ -503,7 +503,7 @@ local function MMMenu()
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[254].aspectoftheturtle = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
@@ -569,7 +569,7 @@ local function SurvivalMenu()
     StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[255].mendpet = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[255].aspectoftheturtle);
@@ -577,7 +577,7 @@ local function SurvivalMenu()
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[255].aspectoftheturtle = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
@@ -643,7 +643,7 @@ local function BMMenu()
     StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -34, 'LEFT');
     StdUi:AddLabel(window, sk_1_0 , 'Mend Pet', 'TOP');
     function sk_1_0 :OnValueChanged(value)
-        RubimRH.db.profile[71].rallyingcry = value
+        RubimRH.db.profile[253].mendpet = value
     end
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[253].aspectoftheturtle);
@@ -651,7 +651,7 @@ local function BMMenu()
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -34, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
-        RubimRH.db.profile[71].victoryrush = value
+        RubimRH.db.profile[253].aspectoftheturtle = value
     end
 
     local extra = StdUi:FontString(window, 'Extra');
