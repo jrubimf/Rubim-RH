@@ -164,7 +164,7 @@ local function APL()
     end
 
     --DnD AoE
-    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[10] >= 3 and Player:IsTankingAoE() then
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[10] >= 3 and Player:IsTankingAoE() then
         return S.DeathandDecay:Cast()
     end
 
@@ -184,7 +184,7 @@ local function APL()
     end
 
     --actions.standard+=/death_and_decay,if=talent.rapid_decomposition.enabled&!buff.dancing_rune_weapon.up
-    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
+    if S.DeathandDecay:IsReady(10) and S.RapidDecomposition:IsAvailable() and not Player:Buff(S.DancingRuneWeaponBuff) then
         return S.DeathandDecay:Cast()
     end
 
@@ -229,7 +229,7 @@ local function APL()
     end
 
     --actions.standard+=/death_and_decay,if=buff.crimson_scourge.up
-    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and Player:Buff(S.CrimsonScourge) and RubimRH.lastMoved() > 0.5 then
         return S.DeathandDecay:Cast()
     end
 
@@ -238,11 +238,11 @@ local function APL()
         return S.BloodBoil:Cast()
     end
     --actions.standard+=/death_and_decay
-    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and not RubimRH.config.Spells[2].isActive then
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and not RubimRH.config.Spells[2].isActive then
         return S.DeathandDecay:Cast()
     end
 
-    if RubimRH.config.Spells[3].isActive and S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and RubimRH.config.Spells[2].isActive and Player:Runes() >= 3 then
+    if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and RubimRH.config.Spells[2].isActive and Player:Runes() >= 3 then
         return S.DeathandDecay:Cast()
     end
 
