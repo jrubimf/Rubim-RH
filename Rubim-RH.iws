@@ -32,16 +32,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ass.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="423" column="18" lean-forward="false" selection-start-line="423" selection-start-column="18" selection-end-line="423" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="outlaw.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua">
           <provider selected="true" editor-type-id="text-editor">
@@ -102,11 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="false">
         <entry file="file://F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="228">
               <caret line="918" column="56" lean-forward="false" selection-start-line="918" selection-start-column="50" selection-end-line="918" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unholy.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="332" column="106" lean-forward="false" selection-start-line="332" selection-start-column="102" selection-end-line="332" selection-end-column="106" />
               <folding />
             </state>
           </provider>
@@ -145,7 +145,6 @@
       <find>Rune()</find>
       <find>SuddenDoomBuff</find>
       <find>envenom</find>
-      <find>RuneDeficit</find>
       <find>MaxDistanceToPlayer</find>
       <find>AspectoftheTurtle</find>
       <find>CoordinatedAssault</find>
@@ -153,6 +152,7 @@
       <find>MaxDistanceToPlayer()</find>
       <find>Muzzle</find>
       <find>Ready</find>
+      <find>RuneDeficit</find>
     </findStrings>
     <replaceStrings>
       <replace>Cast()</replace>
@@ -221,12 +221,12 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/Custom.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomSpells.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/survival.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
       </list>
     </option>
   </component>
@@ -735,14 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="63" column="2" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="63" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -819,6 +811,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="918" column="56" lean-forward="false" selection-start-line="918" selection-start-column="50" selection-end-line="918" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="332" column="106" lean-forward="false" selection-start-line="332" selection-start-column="102" selection-end-line="332" selection-end-column="106" />
           <folding />
         </state>
       </provider>
