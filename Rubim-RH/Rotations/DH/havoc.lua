@@ -221,7 +221,7 @@ local function APL()
             return S.Metamorphosis:Cast()
         end
         -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
-        if S.Nemesis:IsReady() and (Target:DebuffDownP(S.NemesisDebuff) and (Cache.EnemiesCount[40] > 1 or 10000000000 > 60)) then
+        if S.Nemesis:IsReady() and (Target:DebuffDownP(S.NemesisDebuff) and (Cache.EnemiesCount[40] > 1)) then
             return S.Nemesis:Cast()
         end
         -- nemesis,if=!raid_event.adds.exists
@@ -363,7 +363,7 @@ local function APL()
             return S.ChaosStrike:Cast()
         end
         -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and (S.BlindFury:IsAvailable() and 10000000000 > S.EyeBeam:Cooldown()) then
+        if S.EyeBeam:IsReady() and (S.BlindFury:IsAvailable()) then
             return S.EyeBeam:Cast()
         end
         -- demons_bite
@@ -371,7 +371,7 @@ local function APL()
             return S.DemonsBite:Cast()
         end
         -- fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
-        if S.FelRush:IsReady() and (not S.Momentum:IsAvailable() and 10000000000 > S.FelRush:ChargesP() * 10 and S.DemonBlades:IsAvailable()) then
+        if S.FelRush:IsReady() and (not S.Momentum:IsAvailable() and S.DemonBlades:IsAvailable()) then
             return S.FelRush:Cast()
         end
         -- felblade,if=movement.distance>15|buff.out_of_range.up

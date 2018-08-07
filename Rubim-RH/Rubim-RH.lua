@@ -157,7 +157,8 @@ local defaults = {
             align = "CENTER",
             xCord = 0,
             yCord = -200,
-            disabledSpells = {}
+            disabledSpells = {},
+            disabledSpellsCD = {}
         },
         --DEMONHUTER
         [577] = {
