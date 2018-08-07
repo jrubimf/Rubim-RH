@@ -208,7 +208,6 @@ combatLOG:SetScript("OnEvent", function(self, event)
     self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     self:SetScript("OnEvent", function()
         local timestamp, event, arg3, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, arg12, arg13, arg14, arg15, arg16 = CombatLogGetCurrentEventInfo()
-
         if destGUID ~= playerGUID then
             return
         end

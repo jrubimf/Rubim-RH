@@ -295,6 +295,7 @@ local defaults = {
             cooldown = true,
             mendpet = 70,
             aspectoftheturtle = 30,
+            exhilaration = 65,
         },
         --MONK
         [268] = {

@@ -57,10 +57,6 @@ local function APL()
         return S.Exhilaration:Cast()
     end
 
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].aspectoftheturtle then
-        return S.AspectoftheTurtle:Cast()
-    end
-
     -- auto_shot
     -- counter_shot,if=equipped.sephuzs_secret&target.debuff.casting.react&cooldown.buff_sephuzs_secret.up&!buff.sephuzs_secret.up
     -- use_items
@@ -164,6 +160,10 @@ end
 
 RubimRH.Rotation.SetAPL(254, APL)
 local function PASSIVE()
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].aspectoftheturtle then
+        return S.AspectoftheTurtle:Cast()
+    end
+
     return RubimRH.Shared()
 end
 

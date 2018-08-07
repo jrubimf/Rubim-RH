@@ -73,7 +73,7 @@ local function GargoyleDuration()
     local gargoyleDuration = 0
     for i = 1, 5 do
         local active, totemName, startTime, duration, textureId = GetTotemInfo(i)
-        if active == true and textureId == 458967 then
+        if active == true and textureId == 458967 and startTime ~= nil and duration ~= nil then
             gargoyleDuration = startTime + duration - GetTime()
         end
     end
@@ -134,6 +134,7 @@ local function UpdateCDs()
 end
 
 local function APL()
+    print(GetItemCooldown(163224    ))
     local Precombat, Aoe, ColdHeart, Cooldowns, Generic
     UpdateRanges()
     UpdateCDs()
