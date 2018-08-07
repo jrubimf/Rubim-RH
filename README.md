@@ -49,7 +49,7 @@ Mist Weaver    | :x:   | :x:   |   8.0.1  |   |
 ### Paladin
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Retribution    | :heavy_check_mark:    |  :x:   |  8.0.1 | Potion working, Old War for now | 
+Retribution    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Protection    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
 Holy    | :x:   | :x:   |   8.0.1  |   | 
 
