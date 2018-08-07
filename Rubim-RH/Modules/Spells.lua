@@ -18,8 +18,22 @@ RubimRH.Spell[1] = {
     Fireblood = Spell(265221),
     GiftoftheNaaru = Spell(59547),
     LightsJudgment = Spell(255647),
-    PotionSpell = Spell(176108),
+
+
+        -- Potions
+    PotionOfProlongedPowerBuff = Spell(229206),
+    PotionOfOldWarBuff = Spell(188028),
+    LayTorrentBuff = Spell(188030),
+    DeadlyGraceBuff = Spell(188027),
+    UnbendingPotionBuff = Spell(188029),
+    StrenghPotionBuff = Spell(279153),
+    StaminaPotionBuff = Spell(279154),
+    AgilityPotionBuff = Spell(279152),
+    IntPotionBuff = Spell(279151),
+
+
 }
+
 
 
 -- Potions
@@ -31,7 +45,11 @@ Item.Potion.Usage = {
     StaminaPotion = Item(163225),
     AgilityPotion = Item(163223),
     IntPotion = Item(163222),
-    OldWar = Item(127844)
+    OldWar = Item(127844),
+    ProlognedPower = Item(142117),
+    UnbedingPotion = Item(127845),
+    DeadlyGrace = Item(127843),
+    LeyTorrent = Item(127846)
 };
 It = Item.Potion.Usage;
 
@@ -606,6 +624,7 @@ RubimRH.Spell[70] = {
     TheFiresofJusticeBuff = Spell(209785),
     Zeal = Spell(217020),
     FinalVerdict = Spell(198038),
+    ShieldOfVengance = Spell(184662),
     -- Offensive
     AvengingWrath = Spell(31884),
     Crusade = Spell(231895),
