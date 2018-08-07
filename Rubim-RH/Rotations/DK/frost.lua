@@ -58,7 +58,7 @@ local function Aoe()
         return S.GlacialAdvance:Cast()
     end
     -- frost_strike,if=cooldown.remorseless_winter.remains<=2*gcd&talent.gathering_storm.enabled
-    if S.FrostStrike:IsReady() and (S.RemorselessWinter:CooldownRemainsP() <= 2 * Player:GCD() and S.GatheringStorm:IsAvailable()) then
+    if S.FrostStrike:IsReady() and (S.RemorselessWinter:CooldownRemains() <= 2 * Player:GCD() and S.GatheringStorm:IsAvailable()) then
         return S.FrostStrike:Cast()
     end
     -- howling_blast,if=buff.rime.up
@@ -118,11 +118,11 @@ local function BosPooling()
         return S.Obliterate:Cast()
     end
     -- glacial_advance,if=runic_power.deficit<20&cooldown.pillar_of_frost.remains>rune.time_to_4
-    if S.GlacialAdvance:IsReady() and (Player:RunicPowerDeficit() < 20 and S.PillarofFrost:CooldownRemainsP() > Player:RuneTimeToX(4)) then
+    if S.GlacialAdvance:IsReady() and (Player:RunicPowerDeficit() < 20 and S.PillarofFrost:CooldownRemains() > Player:RuneTimeToX(4)) then
         return S.GlacialAdvance:Cast()
     end
     -- frost_strike,if=runic_power.deficit<20&cooldown.pillar_of_frost.remains>rune.time_to_4
-    if S.FrostStrike:IsReady() and (Player:RunicPowerDeficit() < 20 and S.PillarofFrost:CooldownRemainsP() > Player:RuneTimeToX(4)) then
+    if S.FrostStrike:IsReady() and (Player:RunicPowerDeficit() < 20 and S.PillarofFrost:CooldownRemains() > Player:RuneTimeToX(4)) then
         return S.FrostStrike:Cast()
     end
     -- frostscythe,if=buff.killing_machine.up&runic_power.deficit>(15+talent.runic_attenuation.enabled*3)
@@ -134,11 +134,11 @@ local function BosPooling()
         return S.Obliterate:Cast()
     end
     -- glacial_advance,if=cooldown.pillar_of_frost.remains>rune.time_to_4&runic_power.deficit<40&spell_targets.glacial_advance>=2
-    if S.GlacialAdvance:IsReady() and (S.PillarofFrost:CooldownRemainsP() > Player:RuneTimeToX(4) and Player:RunicPowerDeficit() < 40 and Cache.EnemiesCount[30] >= 2) then
+    if S.GlacialAdvance:IsReady() and (S.PillarofFrost:CooldownRemains() > Player:RuneTimeToX(4) and Player:RunicPowerDeficit() < 40 and Cache.EnemiesCount[30] >= 2) then
         return S.GlacialAdvance:Cast()
     end
     -- frost_strike,if=cooldown.pillar_of_frost.remains>rune.time_to_4&runic_power.deficit<40
-    if S.FrostStrike:IsReady() and (S.PillarofFrost:CooldownRemainsP() > Player:RuneTimeToX(4) and Player:RunicPowerDeficit() < 40) then
+    if S.FrostStrike:IsReady() and (S.PillarofFrost:CooldownRemains() > Player:RuneTimeToX(4) and Player:RunicPowerDeficit() < 40) then
         return S.FrostStrike:Cast()
     end
     return 0, 135328
@@ -202,7 +202,7 @@ end
 local function Cooldowns()
     -- use_items
     -- use_item,name=horn_of_valor,if=buff.pillar_of_frost.up&(!talent.breath_of_sindragosa.enabled|!cooldown.breath_of_sindragosa.remains)
-    if RubimRH.CDsON() and I.HornofValor:IsReady() and (Player:BuffP(S.PillarofFrost) and (not S.BreathofSindragosa:IsAvailable() or not bool(S.BreathofSindragosa:CooldownRemainsP()) or not RubimRH.config.Spells[2].isActive)) then
+    if RubimRH.CDsON() and I.HornofValor:IsReady() and (Player:BuffP(S.PillarofFrost) and (not S.BreathofSindragosa:IsAvailable() or not bool(S.BreathofSindragosa:CooldownRemains()) or not RubimRH.config.Spells[2].isActive)) then
         return I.HornofValor:Cast()
     end
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
@@ -218,7 +218,7 @@ local function Cooldowns()
         return S.Berserking:Cast()
     end
     -- pillar_of_frost,if=cooldown.empower_rune_weapon.remains
-    if S.PillarofFrost:IsReady() and (bool(S.EmpowerRuneWeapon:CooldownRemainsP())) then
+    if S.PillarofFrost:IsReady() and (bool(S.EmpowerRuneWeapon:CooldownRemains())) then
         return S.PillarofFrost:Cast()
     end
     -- empower_rune_weapon,if=cooldown.pillar_of_frost.ready&!talent.breath_of_sindragosa.enabled&rune.time_to_5>gcd&runic_power.deficit>=10
@@ -287,7 +287,7 @@ local function Standard()
         return S.RemorselessWinter:Cast()
     end
     -- frost_strike,if=cooldown.remorseless_winter.remains<=2*gcd&talent.gathering_storm.enabled
-    if S.FrostStrike:IsReady() and (S.RemorselessWinter:CooldownRemainsP() <= 2 * Player:GCD() and S.GatheringStorm:IsAvailable()) then
+    if S.FrostStrike:IsReady() and (S.RemorselessWinter:CooldownRemains() <= 2 * Player:GCD() and S.GatheringStorm:IsAvailable()) then
         return S.FrostStrike:Cast()
     end
     -- howling_blast,if=buff.rime.up
@@ -347,19 +347,19 @@ local function APL()
         return S.MindFreeze:Cast()
     end
     -- howling_blast,if=!dot.frost_fever.ticking&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-    if S.HowlingBlast:IsReady() and (not Target:DebuffP(S.FrostFeverDebuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemainsP() > 15 or not RubimRH.config.Spells[2].isActive)) then
+    if S.HowlingBlast:IsReady() and (not Target:DebuffP(S.FrostFeverDebuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemains() > 15 or not RubimRH.config.Spells[2].isActive)) then
         return S.HowlingBlast:Cast()
     end
     -- glacial_advance,if=buff.icy_talons.remains<=gcd&buff.icy_talons.up&spell_targets.glacial_advance>=2&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-    if S.GlacialAdvance:IsReady() and (Player:BuffRemainsP(S.IcyTalonsBuff) <= Player:GCD() and Player:BuffP(S.IcyTalonsBuff) and Cache.EnemiesCount[30] >= 2 and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemainsP() > 15 or not RubimRH.config.Spells[2].isActive)) then
+    if S.GlacialAdvance:IsReady() and (Player:BuffRemainsP(S.IcyTalonsBuff) <= Player:GCD() and Player:BuffP(S.IcyTalonsBuff) and Cache.EnemiesCount[30] >= 2 and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemains() > 15 or not RubimRH.config.Spells[2].isActive)) then
         return S.GlacialAdvance:Cast()
     end
     -- frost_strike,if=buff.icy_talons.remains<=gcd&buff.icy_talons.up&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-    if S.FrostStrike:IsReady() and (Player:BuffRemainsP(S.IcyTalonsBuff) <= Player:GCD() and Player:BuffP(S.IcyTalonsBuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemainsP() > 15 or not RubimRH.config.Spells[2].isActive)) then
+    if S.FrostStrike:IsReady() and (Player:BuffRemainsP(S.IcyTalonsBuff) <= Player:GCD() and Player:BuffP(S.IcyTalonsBuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemains() > 15 or not RubimRH.config.Spells[2].isActive)) then
         return S.FrostStrike:Cast()
     end
     -- breath_of_sindragosa,if=cooldown.empower_rune_weapon.remains&cooldown.pillar_of_frost.remains
-    if RubimRH.CDsON() and S.BreathofSindragosa:IsReady() and RubimRH.config.Spells[2].isActive and (bool(S.EmpowerRuneWeapon:CooldownRemainsP()) and bool(S.PillarofFrost:CooldownRemainsP())) then
+    if RubimRH.CDsON() and S.BreathofSindragosa:IsReady() and RubimRH.config.Spells[2].isActive and (bool(S.EmpowerRuneWeapon:CooldownRemains()) and bool(S.PillarofFrost:CooldownRemains())) then
         return S.BreathofSindragosa:Cast()
     end
     -- call_action_list,name=cooldowns
@@ -367,7 +367,7 @@ local function APL()
         return Cooldowns()
     end
     -- run_action_list,name=bos_pooling,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains<5
-    if (S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemainsP() < 5 and RubimRH.config.Spells[2].isActive) and RubimRH.CDsON() then
+    if (S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemains() < 5 and RubimRH.config.Spells[2].isActive) and RubimRH.CDsON() then
         return BosPooling()
     end
     -- run_action_list,name=bos_ticking,if=dot.breath_of_sindragosa.ticking

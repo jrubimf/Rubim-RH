@@ -48,12 +48,25 @@ local I = Item.Hunter.Survival;
 
 --- APL Main
 local function APL ()
+    local Precombat
     UpdateRanges()
 
-    if not Player:AffectingCombat() then
+    Precombat = function()
+        -- flask
+        -- augmentation
+        -- food
+        -- summon_pet
+        if S.SummonPet:IsReady() then
+            return S.SummonPet:Cast()
+        end
+        -- snapshot_stats
+        -- potion
+        --if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
+            --return S.ProlongedPower:Cast()
+        --end
+        -- steel_trap
         if RubimRH.TargetIsValid() then
-            -- steel_trap
-            if S.SteelTrap:IsReady() and Player:DebuffDownP(S.SteelTrapDebuff) then
+            if S.SteelTrap:IsReady() and Player:DebuffDownP(S.SteelTrapDebuff) and (true) then
                 return S.SteelTrap:Cast()
             end
             -- harpoon
@@ -63,6 +76,12 @@ local function APL ()
         end
         return 0, 462338
     end
+
+    -- call precombat
+    if not Player:AffectingCombat() then
+        return Precombat()
+    end
+
     if Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end
@@ -104,81 +123,83 @@ local function APL ()
         --return I.ProlongedPower:Cast()
     --end
     -- variable,name=can_gcd,value=!talent.mongoose_bite.enabled|buff.mongoose_fury.down|(buff.mongoose_fury.remains-(((buff.mongoose_fury.remains*focus.regen+focus)%action.mongoose_bite.cost)*gcd.max)>gcd.max)
-    VarCanGcd = num(not S.MongooseBite:IsAvailable() or Player:BuffDownP(S.MongooseFury) or (Player:BuffRemainsP(S.MongooseFury) - (((Player:BuffRemainsP(S.MongooseFury) * Player:FocusRegen() + Player:Focus()) / S.MongooseBite:Cost()) * Player:GCD()) > Player:GCD()))
+    if (true) then
+        VarCanGcd = num(not S.MongooseBite:IsAvailable() or Player:BuffDownP(S.MongooseFuryBuff) or (Player:BuffRemainsP(S.MongooseFuryBuff) - (((Player:BuffRemainsP(S.MongooseFuryBuff) * Player:FocusRegen() + Player:Focus()) / S.MongooseBite:Cost()) * Player:GCD()) > Player:GCD()))
+    end
     -- steel_trap
-    if S.SteelTrap:IsReady() then
+    if S.SteelTrap:IsReady() and (true) then
         return S.SteelTrap:Cast()
     end
     -- a_murder_of_crows
-    if S.AMurderofCrows:IsReady() then
+    if S.AMurderofCrows:IsReady() and (true) then
         return S.AMurderofCrows:Cast()
     end
     -- coordinated_assault
-    if S.CoordinatedAssault:IsReady() and RubimRH.CDsON() then
+    if S.CoordinatedAssault:IsReady() and (true) then
         return S.CoordinatedAssault:Cast()
     end
     -- chakrams,if=active_enemies>1
-    if S.Chakrams:IsReady() and RubimRH.AoEON() and (Cache.EnemiesCount[40] > 1) then
+    if S.Chakrams:IsReady() and (Cache.EnemiesCount[40] > 1) then
         return S.Chakrams:Cast()
     end
     -- kill_command,target_if=min:bloodseeker.remains,if=focus+cast_regen<focus.max&buff.tip_of_the_spear.stack<3&active_enemies<2
-    if S.KillCommand:IsReady() and Pet:IsActive() and Pet:HealthPercentage() > 0 and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3 and Cache.EnemiesCount[40] < 2) then
+    if S.KillCommand:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3 and Cache.EnemiesCount[40] < 2) then
         return S.KillCommand:Cast()
     end
     -- wildfire_bomb,if=(focus+cast_regen<focus.max|active_enemies>1)&(dot.wildfire_bomb.refreshable&buff.mongoose_fury.down|full_recharge_time<gcd)
-    if S.WildfireBomb:IsReady() and ((Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() or Cache.EnemiesCount[40] > 1) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFury) or S.WildfireBomb:FullRechargeTimeP() < Player:GCD())) then
+    if S.WildfireBomb:IsReady() and ((Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() or Cache.EnemiesCount[40] > 1) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff) or S.WildfireBomb:FullRechargeTimeP() < Player:GCD())) then
         return S.WildfireBomb:Cast()
     end
     -- kill_command,target_if=min:bloodseeker.remains,if=focus+cast_regen<focus.max&buff.tip_of_the_spear.stack<3
-    if S.KillCommand:IsReady() and Pet:IsActive() and Pet:HealthPercentage() > 0 and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3) then
+    if S.KillCommand:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.KillCommand:ExecuteTime()) < Player:FocusMax() and Player:BuffStackP(S.TipoftheSpearBuff) < 3) then
         return S.KillCommand:Cast()
     end
     -- butchery,if=(!talent.wildfire_infusion.enabled|full_recharge_time<gcd)&active_enemies>3|(dot.shrapnel_bomb.ticking&dot.internal_bleeding.stack<3)
-    if S.Butchery:IsReady() and ((not S.WildfireInfusion:IsAvailable() or S.Butchery:FullRechargeTimeP() < Player:GCD()) and Cache.EnemiesCount[40] > 3 or (Target:DebuffP(S.ShrapnelBombDebuff) and Target:DebuffStackP(S.InternalBleeding) < 3)) then
+    if S.Butchery:IsReady() and ((not S.WildfireInfusion:IsAvailable() or S.Butchery:FullRechargeTimeP() < Player:GCD()) and Cache.EnemiesCount[40] > 3 or (Target:DebuffP(S.ShrapnelBombDebuff) and Target:DebuffStackP(S.InternalBleedingDebuff) < 3)) then
         return S.Butchery:Cast()
     end
     -- serpent_sting,if=(active_enemies<2&refreshable&(buff.mongoose_fury.down|(variable.can_gcd&!talent.vipers_venom.enabled)))|buff.vipers_venom.up
-    if S.SerpentSting:IsReady() and ((Cache.EnemiesCount[40] < 2 and Target:DebuffRefreshableCP(S.SerpentSting) and (Player:BuffDownP(S.MongooseFury) or (bool(VarCanGcd) and not S.VipersVenom:IsAvailable()))) or Player:BuffP(S.VipersVenomBuff)) then
+    if S.SerpentSting:IsReady() and ((Cache.EnemiesCount[40] < 2 and Target:DebuffRefreshableCP(S.SerpentStingDebuff) and (Player:BuffDownP(S.MongooseFuryBuff) or (bool(VarCanGcd) and not S.VipersVenom:IsAvailable()))) or Player:BuffP(S.VipersVenomBuff)) then
         return S.SerpentSting:Cast()
     end
     -- carve,if=active_enemies>2&(active_enemies<6&active_enemies+gcd<cooldown.wildfire_bomb.remains|5+gcd<cooldown.wildfire_bomb.remains)
-    if S.Carve:IsReady() and RubimRH.AoEON() and (Cache.EnemiesCount[8] > 2 and (Cache.EnemiesCount[8] < 6 and Cache.EnemiesCount[8] + Player:GCD() < S.WildfireBomb:CooldownRemainsP() or 5 + Player:GCD() < S.WildfireBomb:CooldownRemainsP())) then
+    if S.Carve:IsReady() and (Cache.EnemiesCount[8] > 2 and (Cache.EnemiesCount[8] < 6 and Cache.EnemiesCount[8] + Player:GCD() < S.WildfireBomb:CooldownRemainsP() or 5 + Player:GCD() < S.WildfireBomb:CooldownRemainsP())) then
         return S.Carve:Cast()
     end
     -- harpoon,if=talent.terms_of_engagement.enabled
-    if S.Harpoon:IsReady() and  Target:MaxDistanceToPlayer() >= 8 and (S.TermsofEngagement:IsAvailable()) then
+    if S.Harpoon:IsReady() and (S.TermsofEngagement:IsAvailable()) then
         return S.Harpoon:Cast()
     end
     -- flanking_strike
-    if S.FlankingStrike:IsReady() then
+    if S.FlankingStrike:IsReady() and (true) then
         return S.FlankingStrike:Cast()
     end
     -- chakrams
-    if S.Chakrams:IsReady() then
+    if S.Chakrams:IsReady() and (true) then
         return S.Chakrams:Cast()
     end
     -- serpent_sting,target_if=min:remains,if=refreshable&buff.mongoose_fury.down|buff.vipers_venom.up
-    if S.SerpentSting:IsReady() and (Target:DebuffRefreshableCP(S.SerpentSting) and Player:BuffDownP(S.MongooseFury) or Player:BuffP(S.VipersVenomBuff)) then
+    if S.SerpentSting:IsReady() and (Target:DebuffRefreshableCP(S.SerpentStingDebuff) and Player:BuffDownP(S.MongooseFuryBuff) or Player:BuffP(S.VipersVenomBuff)) then
         return S.SerpentSting:Cast()
     end
     -- aspect_of_the_eagle,if=target.distance>=6
-    if S.AspectoftheEagle:IsReady() and Target:MaxDistanceToPlayer() >= 6  then
+    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer() >= 6) then
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
-    if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFury) or Player:Focus() > 60) then
-        return S.MongooseBite:Cast()
+    if S.MongooseBiteEagle:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
+        return S.MongooseBiteEagle:Cast()
     end
     -- mongoose_bite,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
-    if S.MongooseBite:IsReady("Melee") and (Player:BuffP(S.MongooseFury) or Player:Focus() > 60) then
+    if S.MongooseBite:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
         return S.MongooseBite:Cast()
     end
     -- raptor_strike_eagle,target_if=min:dot.internal_bleeding.stack
-    if S.RaptorStrikeEagle:IsReadyMorph() then
-        return S.RaptorStrike:Cast()
+    if S.RaptorStrikeEagle:IsReady() and (true) then
+        return S.RaptorStrikeEagle:Cast()
     end
     -- raptor_strike,target_if=min:dot.internal_bleeding.stack
-    if S.RaptorStrike:IsReady("Melee") then
+    if S.RaptorStrike:IsReady() and (true) then
         return S.RaptorStrike:Cast()
     end
     return 0, 135328

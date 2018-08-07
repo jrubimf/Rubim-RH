@@ -139,7 +139,7 @@ function Spell:CooldownRemains(BypassRecovery, Offset)
         end
     end
     if Offset then
-        return BypassRecovery and mathmax(HL.OffsetRemains(CooldownNoRecovery, Offset), 0) or mathmax(HL.OffsetRemains(Cooldown, Offset), 0)
+        return BypassRecovery and math.max(HL.OffsetRemains(CooldownNoRecovery, Offset), 0) or math.max(HL.OffsetRemains(Cooldown, Offset), 0)
     else
         return BypassRecovery and CooldownNoRecovery or Cooldown
     end
