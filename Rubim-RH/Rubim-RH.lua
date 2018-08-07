@@ -66,7 +66,7 @@ local EnabledRotation = {
 	[577] = true, -- Havoc
 	[581] = true, -- Vengeance
 	-- Druid
-	[102] = false, -- Balance
+	[102] = true, -- Balance
 	[103] = true, -- Feral
 	[104] = true, -- Guardian
 	[105] = false, -- Restoration
@@ -91,7 +91,7 @@ local EnabledRotation = {
 	[257] = false, -- Holy
 	[258] = false, -- Shadow
 	-- Rogue
-	[259] = false, -- Assassination
+	[259] = true, -- Assassination
 	[260] = true, -- Outlaw
 	[261] = true, -- Subtlety
 	-- Shaman
@@ -314,6 +314,9 @@ local defaults = {
 			healingsurge = 80,
 		},
 		--DRUID
+		[102] = {
+			cooldowns = false,
+		},
 		[103] = {
 			cooldowns = false,
 			renewal = 50,

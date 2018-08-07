@@ -12,6 +12,55 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 -- Spells
 
+--Survival
+RubimRH.Spell[255] = {
+    --Racials
+    AMurderofCrows = Spell(206505),
+    AncestralCall = Spell(274738),
+    ArcaneTorrent = Spell(50613),
+    AspectoftheTurtle = Spell(186265),
+    AspectoftheEagle = Spell(186289),
+    Berserking = Spell(26297),
+    BerserkingBuff = Spell(26297),
+    BloodFury = Spell(20572),
+    BloodFuryBuff = Spell(20572),
+    SephuzsSecretBuff = Spell(208052),
+    Butchery = Spell(212436),
+    Carve = Spell(187708),
+    Chakrams = Spell(259391),
+    CoordinatedAssault = Spell(266779),
+    CoordinatedAssaultBuff = Spell(266779),
+    Fireblood = Spell(265221),
+    FlankingStrike = Spell(202800),
+    Harpoon = Spell(190925),
+    InternalBleedingDebuff = Spell(270343),
+    KillCommand = Spell(259277),
+    LightsJudgment = Spell(255647),
+    MendPet = Spell(982),
+    MongooseBite = Spell(190928),
+    MongooseBiteEagle = Spell(265888),
+    MongooseFuryBuff = Spell(190931),
+    Muzzle = Spell(187707),
+    RaptorStrike = Spell(186270),
+    RaptorStrikeEagle = Spell(265189),
+    SephuzsSecretBuff = Spell(208052),
+    SerpentSting = Spell(87935),
+    SerpentStingDebuff = Spell(118253),
+    ShrapnelBombDebuff = Spell(270339),
+    SteelTrap = Spell(162488),
+    SteelTrapDebuff = Spell(162487),
+    TermsofEngagement = Spell(265895),
+    TipoftheSpearBuff = Spell(260286),
+    VipersVenom = Spell(268501),
+    VipersVenomBuff = Spell(268552),
+    WildfireBomb = Spell(259495),
+    WildfireBombDebuff = Spell(269747),
+    WildfireInfusion = Spell(271014),
+    SummonPet = Spell(9),
+    -- PvP
+    WingClip = Spell(195645),
+};
+
 local S = RubimRH.Spell[255]
 
 S.MongooseBite.TextureSpellID = { 224795 } -- Raptor Strikes
@@ -56,8 +105,8 @@ local function APL ()
         -- augmentation
         -- food
         -- summon_pet
-        if S.SummonPet:IsReady() then
-            return S.SummonPet:Cast()
+        if not Pet:IsActive() then
+            return S.MendPet:Cast()
         end
         -- snapshot_stats
         -- potion
@@ -90,7 +139,7 @@ local function APL ()
         S.AspectoftheTurtle:Cast()
     end
 
-    if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.BuffSephuzsSecret:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
+    if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (I.SephuzsSecret:IsEquipped() and Target:IsCasting() and S.SephuzsSecretBuff:CooldownUpP() and not Player:BuffP(S.SephuzsSecretBuff)) then
         return S.Muzzle:Cast()
     end
     -- use_items

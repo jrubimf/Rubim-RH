@@ -447,80 +447,7 @@ RubimRH.Spell[263] = {
 
 ----ROGUE
 --ASS
-RubimRH.Spell[259] = {
-    -- Racials
-    ArcaneTorrent = Spell(25046),
-    Berserking = Spell(26297),
-    Blindside = Spell(22339),
-    BloodFury = Spell(20572),
-    GiftoftheNaaru = Spell(59547),
-    -- Abilities
-    Envenom = Spell(32645),
-    FanofKnives = Spell(51723),
-    Garrote = Spell(703),
-    KidneyShot = Spell(408),
-    Mutilate = Spell(1329),
-    PoisonedKnife = Spell(185565),
-    Rupture = Spell(1943),
-    Stealth = Spell(1784),
-    Stealth2 = Spell(115191), -- w/ Subterfuge Talent
-    Vanish = Spell(1856),
-    VanishBuff = Spell(11327),
-    Vendetta = Spell(79140),
-    -- Talents
-    Alacrity = Spell(193539),
-    AlacrityBuff = Spell(193538),
-    Anticipation = Spell(114015),
-    CrimsonTempest = Spell(23174),
-    DeathfromAbove = Spell(152150),
-    DeeperStratagem = Spell(193531),
-    ElaboratePlanning = Spell(193640),
-    ElaboratePlanningBuff = Spell(193641),
-    Exsanguinate = Spell(200806),
-    HiddenBlades = Spell(22133),
-    Hemorrhage = Spell(16511),
-    InternalBleeding = Spell(154953),
-    MarkedforDeath = Spell(137619),
-    MasterPoisoner = Spell(196864),
-    Nightstalker = Spell(14062),
-    ShadowFocus = Spell(108209),
-    Subterfuge = Spell(108208),
-    ToxicBlade = Spell(245388),
-    ToxicBladeDebuff = Spell(245389),
-    VenomRush = Spell(152152),
-    Vigor = Spell(14983),
-    -- Artifact
-    AssassinsBlades = Spell(214368),
-    Kingsbane = Spell(192759),
-    MasterAssassin = Spell(192349),
-    PoisonKnives = Spell(192376),
-    SilenceoftheUncrowned = Spell(241152),
-    SinisterCirculation = Spell(238138),
-    SlayersPrecision = Spell(214928),
-    SurgeofToxins = Spell(192425),
-    ToxicBlades = Spell(192310),
-    UrgetoKill = Spell(192384),
-    -- Defensive
-    CrimsonVial = Spell(185311),
-    Feint = Spell(1966),
-    -- Utility
-    Blind = Spell(2094),
-    Kick = Spell(1766),
-    PickPocket = Spell(921),
-    Sprint = Spell(2983),
-    -- Poisons
-    CripplingPoison = Spell(3408),
-    DeadlyPoison = Spell(2823),
-    DeadlyPoisonDebuff = Spell(2818),
-    LeechingPoison = Spell(108211),
-    WoundPoison = Spell(8679),
-    WoundPoisonDebuff = Spell(8680),
-    -- Legendaries
-    DreadlordsDeceit = Spell(228224),
-    -- Tier
-    MutilatedFlesh = Spell(211672),
-    VirulentPoisons = Spell(252277),
-}
+
 --SUB
 RubimRH.Spell[261] = {
     -- Racials
@@ -770,78 +697,6 @@ RubimRH.Spell[253] = {
     -- Macros
 }
 
---Survival
-RubimRH.Spell[255] = {
-    --Racials
-    ArcaneTorrent = Spell(80483),
-    AncestralCall = Spell(274738),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    Fireblood = Spell(265221),
-    GiftoftheNaaru = Spell(59547),
-    LightsJudgment = Spell(255647),
-    -- Pet
-    CallPet = Spell(883),
-    Intimidation = Spell(19577),
-    MendPet = Spell(136),
-    RevivePet = Spell(982),
-    -- Abilities
-    AspectoftheEagle = Spell(186289),
-    Carve = Spell(187708),
-    CoordinatedAssault = Spell(266779),
-    Harpoon = Spell(190925),
-    KillCommand = Spell(259489),
-    RaptorStrike = Spell(186270),
-    RaptorStrikeEagle = Spell(265189),
-    SerpentSting = Spell(259491),
-    WildfireBomb = Spell(259495),
-    WildfireBombDebuff = Spell(269747),
-    -- Talents
-    AlphaPredator = Spell(269737),
-    AMurderofCrows = Spell(131894),
-    BirdsofPrey = Spell(260331),
-    Bloodseeker = Spell(260248),
-    KillCommandDot = Spell(259277),
-    Butchery = Spell(212436),
-    Chakrams = Spell(259391),
-    FlankingStrike = Spell(269751),
-    GuerrillaTactics = Spell(264332),
-    InternalBleeding = Spell(270343),
-    HydrasBite = Spell(260241),
-    Muzzle = Spell(187707),
-    MongooseBite = Spell(259387),
-    MongooseFury = Spell(259388),
-    MongooseBiteEagle = Spell(265888),
-    SteelTrap = Spell(162488),
-    SteelTrapDebuff = Spell(162487),
-    TermsofEngagement = Spell(265895),
-    TipoftheSpear = Spell(260285),
-    TipoftheSpearBuff = Spell(260286),
-    VipersVenom = Spell(268501),
-    VipersVenomBuff = Spell(268552),
-    WildfireInfusion = Spell(271014),
-    ShrapnelBomb = Spell(270335),
-    ShrapnelBombDot = Spell(270339),
-    VolatileBomb = Spell(271045),
-    VolatileBombDot = Spell(271049),
-    PheromoneBomb = Spell(270323),
-    PheromoneBombDot = Spell(270332),
-    -- Defensive
-    AspectoftheTurtle = Spell(186265),
-    Exhilaration = Spell(109304),
-    -- Utility
-    -- Legendaries
-    -- Misc
-    ExposedFlank = Spell(252094),
-    PotionOfProlongedPowerBuff = Spell(229206),
-    SephuzBuff = Spell(208052),
-
-    -- PvP
-    WingClip = Spell(195645),
-
-};
-
---Marksman
 RubimRH.Spell[254] = {
     ArcaneTorrent = Spell(80483),
     AncestralCall = Spell(274738),
@@ -1375,7 +1230,7 @@ RubimRH.Spell[266] = {
     StolenPower = Spell(211530),
     ThalkielsAscendance = Spell(238145),
 
-    -- Defensive	
+    -- Defensive
     UnendingResolve = Spell(104773),
 
     -- Utility
