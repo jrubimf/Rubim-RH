@@ -49,6 +49,7 @@ RubimRH.Rotation = {}
 RubimRH.Rotation.APLs = {}
 RubimRH.Rotation.PASSIVEs = {}
 
+
 function RubimRH.Rotation.SetAPL (Spec, APL)
     RubimRH.Rotation.APLs[Spec] = APL;
 end
@@ -56,6 +57,8 @@ end
 function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
     RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
 end
+
+
 
 local EnabledRotation = {
     -- Death Knight
@@ -464,6 +467,7 @@ function RubimRH.mainRotation(option)
     if Rotation == "Passive" then
         return RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
     end
+	
 
     if Rotation == "SingleTarget" then
         if RubimPVP and RubimRH.PvP() ~= nil then

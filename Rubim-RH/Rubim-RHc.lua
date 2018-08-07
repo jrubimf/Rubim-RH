@@ -63,6 +63,7 @@ function RubimRH.CDToggle()
 	print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[RubimRH.playerSpec].cooldown))
 end
 
+
 function RubimRH.AttackToggle()
 	PlaySound(891, "Master");
 	if RubimRH.db.profile.mainOption.startattack == false then

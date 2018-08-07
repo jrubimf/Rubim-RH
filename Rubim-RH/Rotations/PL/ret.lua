@@ -58,17 +58,29 @@ local function Cooldowns()
 	end
 
 	--actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
-	if RubimRH.CDsON() and G.LightsJudgment:IsReady() and Cache.EnemiesCount[8] >= 2 then
+	if RubimRH.RacialON() and G.LightsJudgment:IsReady() and Cache.EnemiesCount[8] >= 2 then
 		return G.LightsJudgment:Cast()
 	end
 
-	--actions.cooldowns+=/potion,if=(buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25|target.time_to_die<=40)
-	if RubimRH.PotionON() and It.OldWar:IsReady() and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then
-	return G.PotionSpell:Cast()
+
+	if RubimRH.db.profile[RubimRH.playerSpec].potionID == 1 then
+		if RubimRH.PotionON() and It.StrenghPotion:IsReady() and not potionUsed and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then	
+			return G.PotionOfProlongedPowerBuff:Cast() -- Placeholder til anyi add more :(
+		end
+	elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 8 then
+		if RubimRH.PotionON() and It.OldWar:IsReady() and not potionUsed and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then	
+			return G.PotionOfProlongedPowerBuff:Cast() -- Placeholder til anyi add more :(
+		end
+	elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 9 then
+		if RubimRH.PotionON() and It.ProlognedPower:IsReady() and not potionUsed and (Player:HasHeroism() or Player:Buff(S.AvengingWrath) or (Player:Buff(S.Crusade) and Player:BuffRemains(S.Crusade) < 25) or Target:TimeToDie() <= 40) then	
+			--return G.PotionSpell:Cast() -- Placeholder til anyi add more :(
+			return G.PotionOfProlongedPowerBuff:Cast()
+		end
 	end
+
 	
 end
-
+ 
 
 local varDSCastable
 local function Finishers()
@@ -115,6 +127,16 @@ end
 
 local HoW
 local function Generators()
+
+	if Player:Buff(G.PotionOfProlongedPowerBuff) then
+			potionUsed = true		
+	elseif Player:Buff(G.PotionOfOldWarBuff) then
+			potionUsed = true
+	elseif Player:Buff(G.StrenghPotionBuff) then
+		 	potionUsed = true
+		 	
+	end
+	--message(tostring(potionUsed))
 
 --actions.generators = variable, name=HoW, value = (!talent.hammer_of_wrath.enabled|target.health.pct>=20&(buff.avenging_wrath.down|buff.crusade.down))
 	HoW = (not S.HammerofWrath:IsAvailable() or (Target:Exists() and Target:HealthPercentage() >= 20) and (not Player:Buff(S.AvengingWrath) or not Player:Buff(S.Crusade)))
@@ -180,6 +202,88 @@ local function Generators()
 end
 
 local function Opener()
+if RubimRH.db.profile[70].SoVOpener then
+
+	--- name=wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
+	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
+		RubimRH.castSpellSequence = {
+			--PASSIVECAST("Shield"),
+			S.BladeofJustice,
+			S.Judgment,
+			S.Crusade,
+			S.TemplarsVerdict,
+			S.WakeofAshes,
+			S.TemplarsVerdict,
+			S.CrusaderStrike,
+			S.ExecutionSentence,
+		}
+	end
+
+	-- name=wake_opener_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:templars_verdict
+	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
+		RubimRH.castSpellSequence = {
+			--PASSIVECAST("Shield"),
+			S.BladeofJustice,
+			S.Judgment,
+			S.Crusade,
+			S.TemplarsVerdict,
+			S.WakeofAshes,
+			S.TemplarsVerdict,
+			S.CrusaderStrike,
+			S.TemplarsVerdict,
+		}
+	end
+
+	-- name=wake_opener_ES_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:execution_sentence
+	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
+		RubimRH.castSpellSequence = {
+			--PASSIVECAST("Shield"),
+			S.BladeofJustice,
+			S.Judgment,
+			S.Crusade,
+			S.TemplarsVerdict,
+			S.WakeofAshes,
+			S.TemplarsVerdict,
+			S.HammerofWrath,
+			S.ExecutionSentence,
+		}
+	end
+	--actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&!talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled
+	--name=wake_opener_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:templars_verdict
+	if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
+		RubimRH.castSpellSequence = {
+			--PASSIVECAST("Shield"),
+			S.BladeofJustice,
+			S.Judgment,
+			S.Crusade,
+			S.TemplarsVerdict,
+			S.WakeofAshes,
+			S.TemplarsVerdict,
+			S.HammerofWrath,
+			S.TemplarsVerdict,
+		}
+	end
+	-- actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.inquisition.enabled,
+	--  name=wake_opener_Inq:shield_of_vengeance:blade_of_justice:judgment:inquisition:avenging_wrath:wake_of_ashes
+	if S.WakeofAshes:IsAvailable() and S.Inquisition:IsAvailable() then
+		RubimRH.castSpellSequence = {
+			--PASSIVECAST("Shield"),
+			S.BladeofJustice,
+			S.Judgment,
+			S.Inquisition,
+			S.AvengingWrath,
+			S.WakeofAshes,
+		}
+	end
+	
+
+	if RubimRH.CastSequence() ~= nil and RubimRH.CastSequence():IsReady() then
+		return RubimRH.CastSequence():Cast()
+	end
+
+	
+
+else
 
 	--actions.opener =  /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
 	--name = wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
@@ -255,6 +359,12 @@ local function Opener()
 	if RubimRH.CastSequence() ~= nil and RubimRH.CastSequence():IsReady() then
 		return RubimRH.CastSequence():Cast()
 	end
+
+
+end
+
+
+	
 end
 
 local function APL()
@@ -265,8 +375,14 @@ local function APL()
 	HL.GetEnemies(20, true);
 
 	if not Player:AffectingCombat() then
+	--[[	if HL.OutOfCombatTime() >= 61 then
+			potionUsed = false
+			--message(tostring(potionUsed)) 
+		end]]
 		return 0, 462338
 	end
+ 
+
 
 	if RubimRH.config.Spells[1].isActive and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
 		-- Divine Purpose
@@ -316,11 +432,21 @@ local function APL()
 end
 RubimRH.Rotation.SetAPL(70, APL);
 
+			
+
+
 local function PASSIVE()
+
+	if RubimRH.db.profile[70].SoVEnabled and Player:HealthPercentage() <= RubimRH.db.profile[70].SoVHP and RubimRH.db.profile[70].SoVEnabled then
+		return S.ShieldOfVengance:Cast()
+	end 
+	return RubimRH.Shared()
 
 end
 
 RubimRH.Rotation.SetPASSIVE(70, PASSIVE);
+
+
 
 --actions.finishers=variable,name=ds_castable,value=spell_targets.divine_storm>=3|talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&target.health.pct<=20&buff.divine_right.down
 --actions.finishers+=/inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
