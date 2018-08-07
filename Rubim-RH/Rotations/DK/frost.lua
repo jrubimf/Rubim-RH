@@ -332,12 +332,12 @@ local function APL()
     end
 
     --CUSTOM
-    if RubimRH.config.Spells[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
         S.DeathStrike:Queue()
         return S.DeathStrike:Cast()
     end
 
-    if RubimRH.config.Spells[1].isActive and Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
         S.DeathStrike:Queue()
         return S.DeathStrike:Cast()
     end

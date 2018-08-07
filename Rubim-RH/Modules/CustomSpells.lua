@@ -191,9 +191,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimPvP then
-        if RubimRH.db.profile.mainOption.ccbreak then
-            return false
-        elseif not RubimRH.db.profile.mainOption.ccbreak == false and RubimRH.breakableAreaCC(range) then
+        if RubimRH.breakableAreaCC(range) then
             return false
         end
     end
@@ -314,6 +312,10 @@ function RubimRH.delSpellDisabledCD(spellid)
 end
 
 function Spell:Cast()
+    return GetTexture(self)
+end
+
+function Item:Cast()
     return GetTexture(self)
 end
 

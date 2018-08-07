@@ -322,7 +322,7 @@ local function APL()
     end
     Stealthed = function()
         -- shadowstrike,if=buff.stealth.up
-        if S.Shadowstrike:IsReady() and (Player:Buff(S.StealthBuff)) then
+        if S.Shadowstrike:IsReady() and (IsStealthed()) then
             return S.Shadowstrike:Cast()
         end
         -- call_action_list,name=finish,if=combo_points.deficit<=1-(talent.deeper_stratagem.enabled&buff.vanish.up)

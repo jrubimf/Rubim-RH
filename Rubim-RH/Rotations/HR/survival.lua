@@ -111,7 +111,7 @@ local function APL ()
         -- snapshot_stats
         -- potion
         --if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
-            --return S.ProlongedPower:Cast()
+            --return I.ProlongedPower:Cast()
         --end
         -- steel_trap
         if RubimRH.TargetIsValid() then
