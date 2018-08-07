@@ -142,9 +142,9 @@ local function APL ()
         if RubimRH.CDsON() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
             return S.BestialWrath:Cast()
         end
-        -- multishot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.Multishot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
-            return S.Multishot:Cast()
+        -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
+        if RubimRH.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
+            return S.MultiShot:Cast()
         end
         -- chimaera_shot
         if S.ChimaeraShot:IsReady() and (true) then
@@ -162,12 +162,12 @@ local function APL ()
         if S.BarbedShot:IsReady() and (Pet:BuffDownP(S.FrenzyBuff) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTimeP() < Player:GCD() or Target:TimeToDie() < 9) then
             return S.BarbedShot:Cast()
         end
-        -- multishot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.Multishot:IsReady() and (Cache.EnemiesCount[40] > 1 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
-            return S.Multishot:Cast()
+        -- MultiShot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
+        if RubimRH.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 1 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
+            return S.MultiShot:Cast()
         end
         -- cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(buff.bestial_wrath.up&active_enemies>1|cooldown.kill_command.remains>1+gcd&cooldown.bestial_wrath.remains>focus.time_to_max|focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost)
-        if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemainsP() > Player:FocusTimeToMaxPredicted()) and (Player:BuffP(S.BestialWrathBuff) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemainsP() > 1 + Player:GCD() and S.BestialWrath:CooldownRemainsP() > Player:FocusTimeToMaxPredicted() or Player:Focus() - S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemainsP() - 1) > S.KillCommand:Cost())) then
+        if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemainsP() > Player:FocusTimeToMax()) and (Player:BuffP(S.BestialWrathBuff) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemainsP() > 1 + Player:GCD() and S.BestialWrath:CooldownRemainsP() > Player:FocusTimeToMaxPredicted() or Player:Focus() - S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemainsP() - 1) > S.KillCommand:Cost())) then
             return S.CobraShot:Cast()
         end
 
@@ -210,11 +210,11 @@ RubimRH.Rotation.SetPASSIVE(253, PASSIVE);
 -- actions+=/stampede,if=buff.bestial_wrath.up|cooldown.bestial_wrath.remains<gcd|target.time_to_die<15
 -- actions+=/aspect_of_the_wild
 -- actions+=/bestial_wrath,if=!buff.bestial_wrath.up
--- actions+=/multishot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
+-- actions+=/MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
 -- actions+=/chimaera_shot
 -- actions+=/kill_command
 -- actions+=/dire_beast
 -- actions+=/barbed_shot,if=pet.cat.buff.frenzy.down&charges_fractional>1.4|full_recharge_time<gcd.max|target.time_to_die<9
 -- actions+=/barrage
--- actions+=/multishot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
+-- actions+=/MultiShot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
 -- actions+=/cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(buff.bestial_wrath.up&active_enemies>1|cooldown.kill_command.remains>1+gcd&cooldown.bestial_wrath.remains>focus.time_to_max|focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost)

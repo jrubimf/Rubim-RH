@@ -729,6 +729,7 @@ RubimRH.Spell[253] = {
     AspectoftheWild = Spell(193530),
     BarbedShot = Spell(217200),
     Frenzy = Spell(272790),
+    FrenzyBuff = Spell(272790),
     BeastCleave = Spell(115939),
     BeastCleaveBuff = Spell(118455),
     BestialWrath = Spell(19574),
