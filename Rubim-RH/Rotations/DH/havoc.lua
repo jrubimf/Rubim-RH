@@ -99,6 +99,7 @@ RubimRH.Spell[577] = {
     DarkSlash = Spell(258860),
     DarkSlashDebuff = Spell(258860),
     PreparedBuff = Spell(203650),
+    TrailofRuin = Spell(258881),
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),
 }
