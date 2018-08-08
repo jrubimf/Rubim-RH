@@ -99,7 +99,6 @@ RubimRH.Spell[577] = {
     DarkSlash = Spell(258860),
     DarkSlashDebuff = Spell(258860),
     PreparedBuff = Spell(203650),
-    TrailofRuin = Spell(258881),
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),
 }
@@ -302,15 +301,15 @@ local function APL()
             return S.DemonsBite:Cast()
         end
         -- throw_glaive,if=buff.out_of_range.up
-        if S.ThrowGlaive:IsReady() and (Target:MaxDistanceToPlayer(True) > 10) then
+        if S.ThrowGlaive:IsReady() and (Target:MaxDistanceToPlayer(true) > 10) then
             return S.ThrowGlaive:Cast()
         end
         -- fel_rush,if=movement.distance>15|buff.out_of_range.up
-        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer(True) > 10) then
+        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer(true) > 10) then
             return S.FelRush:Cast()
         end
         -- vengeful_retreat,if=movement.distance>15
-        --if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer(True) > 10) then
+        --if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer(true) > 10) then
           --  return S.VengefulRetreat:Cast()
         --end
         -- throw_glaive,if=talent.demon_blades.enabled
@@ -378,15 +377,15 @@ local function APL()
             return S.FelRush:Cast()
         end
         -- felblade,if=movement.distance>15|buff.out_of_range.up
-        if S.Felblade:IsReady() and (Target:MaxDistanceToPlayer(True) > 15) then
+        if S.Felblade:IsReady() and (Target:MaxDistanceToPlayer(true) > 15) then
             return S.Felblade:Cast()
         end
         -- fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
-        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer(True) > 15 or (Target:MaxDistanceToPlayer(True) > 15 and not S.Momentum:IsAvailable())) then
+        if S.FelRush:IsReady() and (Target:MaxDistanceToPlayer(true) > 15 or (Target:MaxDistanceToPlayer(true) > 15 and not S.Momentum:IsAvailable())) then
             return S.FelRush:Cast()
         end
         -- vengeful_retreat,if=movement.distance>15
-        if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer(True) > 15) then
+        if S.VengefulRetreat:IsReady() and (Target:MaxDistanceToPlayer(true) > 15) then
             return S.VengefulRetreat:Cast()
         end
         -- throw_glaive,if=talent.demon_blades.enabled

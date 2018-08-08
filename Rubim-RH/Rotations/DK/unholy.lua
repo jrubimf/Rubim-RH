@@ -147,7 +147,7 @@ local function APL()
             return I.ProlongedPower:Cast()
         end
         -- raise_dead
-        if S.RaiseDead:IsReady() and (true) then
+        if S.RaiseDead:IsReady() and not Pet:IsActive() then
             return S.RaiseDead:Cast()
         end
         -- army_of_the_dead

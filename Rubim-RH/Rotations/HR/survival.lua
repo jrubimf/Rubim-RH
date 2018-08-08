@@ -57,7 +57,6 @@ RubimRH.Spell[255] = {
     WildfireBomb = Spell(259495),
     WildfireBombDebuff = Spell(269747),
     WildfireInfusion = Spell(271014),
-    SummonPet = Spell(9),
     Exhilaration = Spell(109304),
     -- PvP
     WingClip = Spell(195645),
