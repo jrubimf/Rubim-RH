@@ -24,10 +24,12 @@ local function APL()
     -- if not Player:Buff(ProtSpells.BattleShout) and ProtSpells.BattleShout:IsReady() then return ProtSpells.BattleShout:Cast() end
 
     -- Player not in combat
-    if not Player:AffectingCombat() then return 0, 462338 end
+    if not Player:AffectingCombat() then
+        return 0, 462338
+    end
 
     if Target:Exists()
-        and Player:CanAttack(Unit("target")) then
+            and Player:CanAttack(Unit("target")) then
 
         -- Update Surrounding Enemies
         HL.GetEnemies("Melee")
@@ -49,8 +51,8 @@ local function APL()
 
         -- Pummel -> 0.5 sec of cast has elapsed, or 1 second of channeling has elapsed
         if ISpell.Pummel:IsReady("Melee")
-        and Target:IsInterruptible()
-        and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
+                and Target:IsInterruptible()
+                and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
             return ISpell.Pummel:Cast()
         end
 
@@ -58,28 +60,28 @@ local function APL()
 
         -- Shield Wall -> Panic Heal
         if ISpell.ShieldWall:IsReady("Melee")
-        and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
-        and (ISpell.Bolster:IsAvailable() and (not Player:Buff(ISpell.LastStand)))then
+                and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
+                and (ISpell.Bolster:IsAvailable() and (not Player:Buff(ISpell.LastStand))) then
             return ISpell.ShieldWall:Cast()
         end
 
         -- Last Stand -> Panic Heal
         if ISpell.LastStand:IsReady("Melee")
-        and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
-        and (not Player:Buff(ISpell.ShieldWall)) then
+                and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
+                and (not Player:Buff(ISpell.ShieldWall)) then
             return ISpell.LastStand:Cast()
         end
 
         -- Shield Block -> Primary rage dump
         if ISpell.ShieldBlock:IsReady("Melee")
-        and Player:Rage() >= 30
-        and not Player:Buff(ISpell.ShieldBlockBuff)
-        and ((not ISpell.Bolster:IsAvailable())
-            or (ISpell.Bolster:IsAvailable() and not Player:Buff(ISpell.LastStand)))
-        and ISpell.ShieldBlock:ChargesFractional() >= 1
-        and (Player:NeedMinorHealing()
-            or Player:NeedMajorHealing()
-            or Player:NeedPanicHealing()) then
+                and Player:Rage() >= 30
+                and not Player:Buff(ISpell.ShieldBlockBuff)
+                and ((not ISpell.Bolster:IsAvailable())
+                or (ISpell.Bolster:IsAvailable() and not Player:Buff(ISpell.LastStand)))
+                and ISpell.ShieldBlock:ChargesFractional() >= 1
+                and (Player:NeedMinorHealing()
+                or Player:NeedMajorHealing()
+                or Player:NeedPanicHealing()) then
             return ISpell.ShieldBlock:Cast()
         end
 
@@ -124,8 +126,7 @@ local function APL()
         end
 
         -- ThunderClap
-        if ISpell.ThunderClap:IsReady(ThunderClapRadius)
-                and Player:RageDeficit() >= 5 then
+        if ISpell.ThunderClap:IsReady() and Player:RageDeficit() >= 5 and Cache.EnemiesCount[8] >= 1 then
             return ISpell.ThunderClap:Cast()
         end
 
@@ -133,8 +134,8 @@ local function APL()
         local RevengeDumpRage = ISpell.BoomingVoice:IsAvailable() and 60 or 80
         if ISpell.Revenge:IsReady("Melee")
                 and (((Player:Rage() >= RevengeDumpRage)
-                    or Player:Buff(ISpell.RevengeBuff))
-                    or (ISpell.Revenge:IsReady("Melee") and Player:Buff(ISpell.VegeanceRV) and Player:Rage() >= 20)) then
+                or Player:Buff(ISpell.RevengeBuff))
+                or (ISpell.Revenge:IsReady("Melee") and Player:Buff(ISpell.VegeanceRV) and Player:Rage() >= 20)) then
             return ISpell.Revenge:Cast()
         end
 
@@ -175,7 +176,8 @@ local function APL()
         if ISpell.IgnorePain:IsReady("Melee")
                 and Player:Rage() >= 40
                 and not Player:Buff(ISpell.IgnorePain)
-                and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then -- TODO: See IsTanking note
+                and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then
+            -- TODO: See IsTanking note
             return ISpell.IgnorePain:Cast()
         end
 
