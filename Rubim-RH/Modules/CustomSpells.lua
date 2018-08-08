@@ -197,7 +197,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         end
     end
 
-    if RubimRHPvP.active then
+    if RubimRHPvP ~= nil and RubimRHPvP.active then
         if RubimRH.breakableAreaCC(range) then
             return false
         end
@@ -233,7 +233,7 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
-    if RubimRHPvP.active then
+    if RubimRHPvP ~= nil and RubimRHPvP.active then
         if RubimRH.breakableAreaCC(range) then
             return false
         end
