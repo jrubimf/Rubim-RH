@@ -188,10 +188,35 @@ local VarWaitingForDarkSlash = 0;
 --{ spellID = EyeBeam, isActive = true },
 --{ spellID = FelBarrage, isActive = true }
 
+local OffensiveCDs = {
+    S.Nemesis,
+    S.Metamorphosis,
+}
+
+local function UpdateCDs()
+    RubimRH.db.profile.mainOption.disabledSpellsCD = {}
+    if RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 -- Main APL
 local function APL()
     local Precombat, Cooldown, DarkSlash, Demonic, Normal
     UpdateRanges()
+    UpdateCDs()
 
     if Player:IsChanneling(S.EyeBeam) or Player:IsChanneling(S.FelBarrage) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
@@ -404,11 +429,11 @@ local function APL()
     end
     -- variable,name=waiting_for_nemesis,value=!(!talent.nemesis.enabled|cooldown.nemesis.ready|cooldown.nemesis.remains>target.time_to_die|cooldown.nemesis.remains>60)
     if (true) then
-        VarWaitingForNemesis = num(RubimRH.CDsON() == false or (not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > Target:TimeToDie() or S.Nemesis:CooldownRemainsP() > 60)))
+        VarWaitingForNemesis = num((not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > Target:TimeToDie() or S.Nemesis:CooldownRemainsP() > 60)))
     end
     -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)
     if (true) then
-        VarPoolingForMeta = num(RubimRH.CDsON() == false or (not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10)))
+        VarPoolingForMeta = num((not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10)))
     end
     -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
     if (true) then
@@ -436,7 +461,7 @@ local function APL()
         --return S.Disrupt:Cast()
     --end
     -- call_action_list,name=cooldown,if=gcd.remains=0
-    if Cooldown() ~= nil and (Player:GCDRemains() == 0) and RubimRH.CDsON() then
+    if Cooldown() ~= nil and (Player:GCDRemains() == 0) then
         return Cooldown()
     end
     -- pick_up_fragment,if=fury.deficit>=35

@@ -121,7 +121,7 @@ local function APL()
         -- snapshot_stats
         -- potion
         if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
-            return S.ProlongedPower:Cast()
+            return I.ProlongedPower:Cast()
         end
         -- chi_burst
 --        if S.ChiBurst:IsReady() and (true) then
@@ -458,8 +458,8 @@ local function APL()
     end
 
     -- potion,if=buff.serenity.up|buff.storm_earth_and_fire.up|(!talent.serenity.enabled&trinket.proc.agility.react)|buff.bloodlust.react|target.time_to_die<=60
-    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable() and bool(trinket.proc.agility.react)) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
-        return S.ProlongedPower:Cast()
+    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable() and bool(false)) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
+        return I.ProlongedPower:Cast()
     end
     -- touch_of_death,if=target.time_to_die<=9
     if S.TouchofDeath:IsReady() and RubimRH.CDsON() and (Target:TimeToDie() <= 9) then
