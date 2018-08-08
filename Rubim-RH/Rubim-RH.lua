@@ -469,7 +469,7 @@ function RubimRH.mainRotation(option)
 	
 
     if Rotation == "SingleTarget" then
-        if RubimPVP and RubimRH.PvP() ~= nil then
+        if RubimRHPvP.active and RubimRH.PvP() ~= nil then
             return RubimRH.PvP()
         else
             return RubimRH.Rotation.APLs[RubimRH.playerSpec]()

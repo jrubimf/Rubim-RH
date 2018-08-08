@@ -65,6 +65,10 @@ end
 
 -- Unit Slowed
 function Unit:IsSnared()
+	if self:Buff(Spell(1044)) then
+		return true
+	end
+
 	if self:Class() == 6 and self:MaxSpeed() < 99 then
 		return true
 	end

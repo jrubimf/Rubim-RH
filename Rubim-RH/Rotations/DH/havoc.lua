@@ -88,6 +88,7 @@ RubimRH.Spell[577] = {
     Momentum = Spell(206476),
     MomentumBuff = Spell(208628),
     Nemesis = Spell(206491),
+    NemesisDebuff = Spell(206491),
     -- Artifact
     Blur = Spell(198589),
     Darkness = Spell(196718),
