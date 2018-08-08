@@ -375,10 +375,10 @@ local function APL()
 	HL.GetEnemies(20, true);
 
 	if not Player:AffectingCombat() then
-	--[[	if HL.OutOfCombatTime() >= 61 then
+		if HL.OutOfCombatTime() >= 61 then
 			potionUsed = false
 			--message(tostring(potionUsed)) 
-		end]]
+		end
 		return 0, 462338
 	end
  
