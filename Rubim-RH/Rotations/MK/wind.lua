@@ -124,13 +124,13 @@ local function APL()
             return S.ProlongedPower:Cast()
         end
         -- chi_burst
-        if S.ChiBurst:IsReady() and (true) then
-            return S.ChiBurst:Cast()
-        end
+--        if S.ChiBurst:IsReady() and (true) then
+--            return S.ChiBurst:Cast()
+  --      end
         -- chi_wave
-        if S.ChiWave:IsReady() and (true) then
-            return S.ChiWave:Cast()
-        end
+--        if S.ChiWave:IsReady() and (true) then
+--            return S.ChiWave:Cast()
+        --end
     end
     Aoe = function()
         -- call_action_list,name=cd
@@ -216,11 +216,11 @@ local function APL()
             return S.TigerPalm:Cast()
         end
         -- chi_wave,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
-        if S.ChiWave:IsReady() and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemains() >= 5 or S.WhirlingDragonPunch:CooldownRemains() >= 5) and Player:EnergyTimeToMax() > 1) then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemains() >= 5 or S.WhirlingDragonPunch:CooldownRemains() >= 5) and Player:EnergyTimeToMax() > 1) then
             return S.ChiWave:Cast()
         end
         -- chi_wave
-        if S.ChiWave:IsReady() and (true) then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 and (true) then
             return S.ChiWave:Cast()
         end
     end
@@ -420,7 +420,7 @@ local function APL()
             return S.BlackoutKick:Cast()
         end
         -- chi_wave
-        if S.ChiWave:IsReady() and (true) then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 and (true) then
             return S.ChiWave:Cast()
         end
         -- chi_burst,if=energy.time_to_max>1&talent.serenity.enabled
