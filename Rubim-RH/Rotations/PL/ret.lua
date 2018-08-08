@@ -406,7 +406,7 @@ local function APL()
 	--        end
 	--    end
 
-	if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and RubimRH.db.profile[70].flashoflight then
+	if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].flashoflight then
 		return S.FlashOfLight:Cast()
 	end
 
