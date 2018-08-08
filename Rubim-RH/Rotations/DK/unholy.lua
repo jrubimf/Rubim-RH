@@ -224,7 +224,7 @@ local function APL()
     end
     ColdHeart = function()
         -- chains_of_ice,if=buff.unholy_strength.remains<gcd&buff.unholy_strength.react&buff.cold_heart_item.stack>16
-        if S.ChainsofIce:IsReady() and (Player:BuffRemains(S.UnholyStrengthBuff) < Player:GCD() and bool(Player:BuffStack(S.UnholyStrengthBuff)) and Player:BuffStack(S.ColdHeartItemBuff) > 16) then
+        if S.ChainsofIce:IsReady() and (Player:BuffRemains(S.UnholyStrengthBuff) < Player:GCD() and bool(Player:Buff(S.UnholyStrengthBuff)) and Player:BuffStack(S.ColdHeartItemBuff) > 16) then
             return S.ChainsofIce:Cast()
         end
         -- chains_of_ice,if=buff.master_of_ghouls.remains<gcd&buff.master_of_ghouls.up&buff.cold_heart_item.stack>17
@@ -232,7 +232,7 @@ local function APL()
             return S.ChainsofIce:Cast()
         end
         -- chains_of_ice,if=buff.cold_heart_item.stack=20&buff.unholy_strength.react
-        if S.ChainsofIce:IsReady() and (Player:BuffStack(S.ColdHeartItemBuff) == 20 and bool(Player:BuffStack(S.UnholyStrengthBuff))) then
+        if S.ChainsofIce:IsReady() and (Player:BuffStack(S.ColdHeartItemBuff) == 20 and bool(Player:Buff(S.UnholyStrengthBuff))) then
             return S.ChainsofIce:Cast()
         end
     end
