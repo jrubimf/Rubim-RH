@@ -444,6 +444,10 @@ local function APL()
         return 0, 462338
     end
     -- auto_attack
+    if Player:IsChanneling() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
         return S.SpearHandStrike:Cast()
