@@ -45,7 +45,8 @@ RubimRH.Spell[269] = {
     RushingJadeWindBuff = Spell(116847),
     SpearHandStrike = Spell(116705),
     TouchofKarma = Spell(122470),
-    GoodKarma = Spell(280195)
+    GoodKarma = Spell(280195),
+    DampemHarm = Spell(122278)
 };
 local S = RubimRH.Spell[269];
 
@@ -84,9 +85,34 @@ local function bool(val)
     return val ~= 0
 end
 
+local OffensiveCDs = {
+    S.StormEarthandFire,
+    S.InvokeXuentheWhiteTiger,
+    S.Serenity
+}
+
+local function UpdateCDs()
+    if RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 --- ======= ACTION LISTS =======
 local function APL()
     local Precombat, Aoe, Cd, Sef, Serenity, St
+    UpdateCDs()
     UpdateRanges()
     Precombat = function()
         -- flask
@@ -94,6 +120,9 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
+        if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
+            return S.ProlongedPower:Cast()
+        end
         -- chi_burst
         if S.ChiBurst:IsReady() and (true) then
             return S.ChiBurst:Cast()
@@ -201,6 +230,9 @@ local function APL()
             return S.InvokeXuentheWhiteTiger:Cast()
         end
         -- use_item,name=lustrous_golden_plumage
+        if I.LustrousGoldenPlumage:IsReady() and (true) then
+            return S.LustrousGoldenPlumage:Cast()
+        end
         -- blood_fury
         if S.BloodFury:IsReady() and RubimRH.CDsON() and (true) then
             return S.BloodFury:Cast()
@@ -383,8 +415,8 @@ local function APL()
         if S.CracklingJadeLightning:IsReady() and (I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStack(S.TheEmperorsCapacitorBuff) >= 14 and S.Serenity:CooldownRemains() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMax() > 3) then
             return S.CracklingJadeLightning:Cast()
         end
-        -- blackout_kick
-        if S.BlackoutKick:IsReady() and (true) then
+        -- blackout_kick,if=!prev_gcd.1.blackout_kick
+        if S.BlackoutKick:IsReady() and (not Player:PrevGCD(1, S.BlackoutKick)) then
             return S.BlackoutKick:Cast()
         end
         -- chi_wave
@@ -411,25 +443,20 @@ local function APL()
         end
         return 0, 462338
     end
-
-    if Player:IsChanneling() or Player:IsCasting() then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end
-
     -- auto_attack
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
         return S.SpearHandStrike:Cast()
     end
     -- touch_of_karma,interval=90,pct_health=0.5,if=!talent.Good_Karma.enabled,interval=90,pct_health=0.5
-    if S.TouchofKarma:IsReady() and (not S.GoodKarma:IsAvailable()) then
+    if S.TouchofKarma:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].touchofkarma then
         return S.TouchofKarma:Cast()
     end
-    -- touch_of_karma,interval=90,pct_health=1.0
-    if S.TouchofKarma:IsReady() and (true) then
-        return S.TouchofKarma:Cast()
-    end
+
     -- potion,if=buff.serenity.up|buff.storm_earth_and_fire.up|(!talent.serenity.enabled&trinket.proc.agility.react)|buff.bloodlust.react|target.time_to_die<=60
+    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable() and bool(trinket.proc.agility.react)) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
+        return S.ProlongedPower:Cast()
+    end
     -- touch_of_death,if=target.time_to_die<=9
     if S.TouchofDeath:IsReady() and RubimRH.CDsON() and (Target:TimeToDie() <= 9) then
         return S.TouchofDeath:Cast()
@@ -479,9 +506,16 @@ local function APL()
     return 0, 135328
 end
 
+
 RubimRH.Rotation.SetAPL(269, APL)
 
 local function PASSIVE()
+
+    if S.DampemHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].dampemharm then
+        return S.DampemHarm:Cast()
+    end
+
+
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(269, PASSIVE)

@@ -303,6 +303,8 @@ local defaults = {
         },
         [269] = {
             cooldown = true,
+            touchofkarma = 50,
+            dampemharm = 35,
         },
         --SHAMAN
         [263] = {
