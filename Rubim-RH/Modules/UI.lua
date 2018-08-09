@@ -1150,7 +1150,7 @@ local function RetributionMenu()
     end
 
     local woghealth = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].wogHP);
-    woghealth :SetMinMaxValue(0, 100);
+    woghealth :SetMinMaxValue(10, 100);
     StdUi:GlueBelow(woghealth , wogactive, 0, 0, 'RIGHT');
     function woghealth :OnValueChanged(value)
        RubimRH.db.profile[70].wogHP = value
