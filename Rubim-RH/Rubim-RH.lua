@@ -157,6 +157,7 @@ local defaults = {
             useRacial = true,
             startattack = false,
             healthstoneper = 20,
+            healthstoneEnabled = true,
             align = "CENTER",
             xCord = 0,
             yCord = -200,
@@ -219,6 +220,21 @@ local defaults = {
         --PALADIN
         [70] = {
             cooldown = true,
+            SoVEnabled = false,
+            SoVHP = 70,
+            FoL = false,
+            flashoflight = 80,
+            justicariSEnabled = false,
+            JusticarHP = 50,
+            divineEnabled = false,
+            DivineHP = 20,
+            lohEnabled = false,
+            lohHealth = 30,
+            wogenabled = false,
+            wogHP = 65,
+            SoVOpener = 0 false,    
+
+
             Spells = {
              
             }
