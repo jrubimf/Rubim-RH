@@ -269,15 +269,21 @@ local defaults = {
             crimsonvial = 65,
             cloakofshadows = 15,
             riposte = 50,
-            dice = "Simcraft"
+            dice = "Simcraft",
+            vanishattack = true
         },
         [261] = {
             cooldown = true,
             stealthOOC = true,
+            vanishattack = true,
+            crimsonvial = 65,
+            cloakofshadows = 15,
+            evasion = 50,
         },
         [259] = {
             cooldown = true,
             stealthOOC = true,
+            vanishattack = true,
         },
         --HUNTER
         [254] = {

@@ -270,6 +270,10 @@ local function APL ()
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].crimsonvial then
         return S.CrimsonVial:Cast()
     end
+
+    if IsStealthed() and RubimRH.db.profile[260].vanishattack and Player:PrevGCD(1, S.Vanish) then
+        return Stealthed();
+    end
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
@@ -307,45 +311,43 @@ local function APL ()
 
 
     -- In Combat
-    if RubimRH.TargetIsValid() then
-        -- actions+=/call_action_list,name=stealth,if=stealthed.all
-        if IsStealthed() == true then
-            if Stealth() ~= nil then
-                return Stealth()
-            end
+    -- actions+=/call_action_list,name=stealth,if=stealthed.all
+    if IsStealthed() == true then
+        if Stealth() ~= nil then
+            return Stealth()
         end
+    end
 
-        -- actions+=/call_action_list,name=cds
-        if CDs() ~= nil then
-            return CDs()
+    -- actions+=/call_action_list,name=cds
+    if CDs() ~= nil then
+        return CDs()
+    end
+    -- actions+=/call_action_list,name=finish,if=combo_points>=cp_max_spend-(buff.broadside.up+buff.opportunity.up)*(talent.quick_draw.enabled&(!talent.marked_for_death.enabled|cooldown.marked_for_death.remains>1))
+    if Player:ComboPoints() >= CPMaxSpend() - (num(Player:BuffP(S.Broadside)) + num(Player:BuffP(S.Opportunity))) * num(S.QuickDraw:IsAvailable() and (not S.MarkedforDeath:IsAvailable() or S.MarkedforDeath:CooldownRemainsP() > 1)) then
+        if Finish() ~= nil then
+            return Finish()
         end
-        -- actions+=/call_action_list,name=finish,if=combo_points>=cp_max_spend-(buff.broadside.up+buff.opportunity.up)*(talent.quick_draw.enabled&(!talent.marked_for_death.enabled|cooldown.marked_for_death.remains>1))
-        if Player:ComboPoints() >= CPMaxSpend() - (num(Player:BuffP(S.Broadside)) + num(Player:BuffP(S.Opportunity))) * num(S.QuickDraw:IsAvailable() and (not S.MarkedforDeath:IsAvailable() or S.MarkedforDeath:CooldownRemainsP() > 1)) then
-            if Finish() ~= nil then
-                return Finish()
-            end
-        end
-        -- actions+=/call_action_list,name=build
-        if Build() ~= nil then
-            return Build()
-        end
-        -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-        if S.ArcaneTorrent:IsReady(S.SinisterStrike) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
-            return S.ArcaneTorrent:Cast()
-        end
-        -- actions+=/arcane_pulse
-        if S.ArcanePulse:IsReady(S.SinisterStrike) then
-            return S.ArcanePulse:Cast()
-        end
-        -- actions+=/lights_judgment
-        if S.LightsJudgment:IsReady(S.SinisterStrike) then
-            return S.LightsJudgment:Cast()
-        end
-        -- OutofRange Pistol Shot
-        if not Target:IsInRange(10) and S.PistolShot:IsReady(20) and not Player:IsStealthed(true, true)
-                and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
-            return S.PistolShot:Cast()
-        end
+    end
+    -- actions+=/call_action_list,name=build
+    if Build() ~= nil then
+        return Build()
+    end
+    -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
+    if S.ArcaneTorrent:IsReady(S.SinisterStrike) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+        return S.ArcaneTorrent:Cast()
+    end
+    -- actions+=/arcane_pulse
+    if S.ArcanePulse:IsReady(S.SinisterStrike) then
+        return S.ArcanePulse:Cast()
+    end
+    -- actions+=/lights_judgment
+    if S.LightsJudgment:IsReady(S.SinisterStrike) then
+        return S.LightsJudgment:Cast()
+    end
+    -- OutofRange Pistol Shot
+    if not Target:IsInRange(10) and S.PistolShot:IsReady(20) and not Player:IsStealthed(true, true)
+            and Player:EnergyDeficitPredicted() < 25 and (Player:ComboPointsDeficit() >= 1 or EnergyTimeToMaxRounded() <= 1.2) then
+        return S.PistolShot:Cast()
     end
     return 0, 135328
 end

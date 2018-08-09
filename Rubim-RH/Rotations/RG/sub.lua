@@ -53,6 +53,7 @@ RubimRH.Spell[261] = {
     CloakofShadows = Spell(31224),
     CrimsonVial = Spell(185311),
     Feint = Spell(1966),
+    Evasion = Spell(5277)
 };
 local S = RubimRH.Spell[261]
 
@@ -206,17 +207,15 @@ local function APL()
             return S.Stealth:Cast()
         end
         -- marked_for_death,precombat_seconds=15
-        if S.MarkedForDeath:IsReady() and (true) then
-            return S.MarkedForDeath:Cast()
+        if RubimRH.TargetIsValid() then
+            if S.MarkedForDeath:IsReady() and (true) then
+                return S.MarkedForDeath:Cast()
+            end
         end
         -- shadow_blades,precombat_seconds=1
         --if S.ShadowBlades:IsReady() and Player:BuffDownP(S.ShadowBladesBuff) and (true) then
             --return S.ShadowBlades:Cast()
         --end
-
-        if varStealthed then
-            return Stealthed();
-        end
     end
 
     Build = function()
@@ -347,12 +346,31 @@ local function APL()
         return 0, 135328
     end
     -- call precombat
+
+    if varStealthed and RubimRH.db.profile[261].vanishattack and Player:PrevGCD(1, S.Vanish) then
+        return Stealthed();
+    end
+
+
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].crimsonvial then
+        return S.CrimsonVial:Cast()
+    end
+
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
         end
         return 0, 462338
     end
+
+    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].cloakofshadows then
+        return S.CloakofShadows:Cast()
+    end
+
+    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].evasion and Player:LastSwinged() <= 3 then
+        return S.Evasion:Cast()
+    end
+
     -- call_action_list,name=cds
     if (true) then
         if Cds() ~= nil then

@@ -95,7 +95,7 @@ local function BloodMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -199,7 +199,7 @@ local function FrostMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -264,7 +264,7 @@ local function UnholyMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -330,7 +330,7 @@ local function ArmsMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -411,7 +411,7 @@ local function FuryMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -485,7 +485,7 @@ local function MMMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -559,7 +559,7 @@ local function SurvivalMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -641,7 +641,7 @@ local function BMMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -723,7 +723,7 @@ local function OutMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -744,7 +744,6 @@ local function OutMenu()
         RubimRH.db.profile[260].cloakofshadows = value
     end
 
-
     local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[260].riposte);
     sk_2_0:SetMinMaxValue(0, 100);
     StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
@@ -764,6 +763,7 @@ local function OutMenu()
         {text = 'Shark Infested Waters', value = 8},
         {text = 'Ture Bearing', value = 9},
     };
+
     local sk_2_1 = StdUi:Dropdown(window, 100, 24, dice , 1);
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_2_1, 'Roll the Bones', 'TOP');
@@ -772,8 +772,116 @@ local function OutMenu()
         print("Roll the Bones: " .. RubimRH.db.profile[250].dice)
     end
 
+    local sk_3_0 = StdUi:Checkbox(window, "Vanish Attack");
+    sk_3_0:SetChecked(RubimRH.db.profile[260].vanishattack)
+    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
+    function sk_3_0:OnValueChanged(value)
+        if RubimRH.db.profile[260].vanishattack then
+            RubimRH.db.profile[260].vanishattack = false
+        else
+            RubimRH.db.profile[260].vanishattack = true
+        end
+    end
+
     local extra = StdUi:FontString(window, 'Extra');
-    StdUi:GlueTop(extra, window, 0, -350);
+    StdUi:GlueTop(extra, window, 0, -380);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
+local function SubMenu()
+    local window = StdUi:Window(UIParent, 'Rogue - Sub', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    --window.texture = window:CreateTexture(nil, "BACKGROUND")
+    --window.texture:SetTexture(1, 1, 1, 1)
+    --window.texture:SetColorTexture(1, 1, 1, 1)
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Class Specific');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[261].crimsonvial);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Crimson Vial', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[261].crimsonvial = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[261].cloakofshadows);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[261].cloakofshadows = value
+    end
+
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[261].evasion);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Evasion', 'TOP');
+    function sk_2_0:OnValueChanged(value)
+        RubimRH.db.profile[261].evasion = value
+    end
+
+    local sk_2_1 = StdUi:Checkbox(window, "Vanish Attack");
+    sk_2_1:SetChecked(RubimRH.db.profile[261].vanishattack)
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 15, -24, 'RIGHT');
+    function sk_2_1:OnValueChanged(value)
+        if RubimRH.db.profile[261].vanishattack then
+            RubimRH.db.profile[261].vanishattack = false
+        else
+            RubimRH.db.profile[261].vanishattack = true
+        end
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -380);
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
@@ -825,7 +933,7 @@ local function HavocMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -857,6 +965,8 @@ local function HavocMenu()
         RubimRH.SpellBlocker()
     end);
 end
+
+
 
 local function RetributionMenu()
      local window = StdUi:Window(UIParent, 'Paladin - Retribution', 350, 500);
@@ -947,7 +1057,7 @@ local function RetributionMenu()
     end
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -150);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -1101,7 +1211,7 @@ local function WWMenu()
 
 
     --------------------------------------------------
-    local sk_title = StdUi:FontString(window, 'Defensive Cooldowns');
+    local sk_title = StdUi:FontString(window, 'Class Specific');
     StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
@@ -1173,6 +1283,10 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 260 then
         OutMenu()
+    end
+
+    if specID == 261 then
+        SubMenu()
     end
 
     if specID == 577 then

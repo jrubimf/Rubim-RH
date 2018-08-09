@@ -119,6 +119,7 @@ RubimRH.Spell[72] = {
     RallyingCry = Spell(97462),
     -- Utility
     Pummel = Spell(6552),
+    PiercingHowl = Spell(12323),
     -- Legendaries
     FujiedasFury = Spell(207776),
     StoneHeart = Spell(225947),
@@ -721,65 +722,6 @@ RubimRH.Spell[253] = {
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
     -- Macros
-}
-
-RubimRH.Spell[254] = {
-    ArcaneTorrent = Spell(80483),
-    AncestralCall = Spell(274738),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    Fireblood = Spell(265221),
-    GiftoftheNaaru = Spell(59547),
-    LightsJudgment = Spell(255647),
-    -- Abilities
-    AimedShot = Spell(19434),
-    ArcaneShot = Spell(185358),
-    BurstingShot = Spell(186387),
-    HuntersMark = Spell(185365),
-    MultiShot = Spell(257620),
-    PreciseShots = Spell(260242),
-    PreciseShotsBuff = Spell(260242),
-    RapidFire = Spell(257044),
-    SteadyShot = Spell(56641),
-    SteadyShotBuff = Spell(56641),
-    TrickShots = Spell(257622),
-    TrickShotsBuff = Spell(257622),
-    TrueShot = Spell(193526),
-    -- Talents
-    AMurderofCrows = Spell(131894),
-    Barrage = Spell(120360),
-    BindingShot = Spell(109248),
-    CallingtheShots = Spell(260404),
-    DoubleTap = Spell(260402),
-    DoubleTapBuff = Spell(260402),
-    ExplosiveShot = Spell(212431),
-    HuntersMark = Spell(257284),
-    LethalShots = Spell(260393),
-    LockandLoad = Spell(194594),
-    MasterMarksman = Spell(260309),
-    PiercingShot = Spell(198670),
-    SerpentSting = Spell(271788),
-    SerpentStingDebuff = Spell(271788),
-    SteadyFocus = Spell(193533),
-    SteadyBuff = Spell(193533),
-    Volley = Spell(260243),
-    -- Defensive
-    AspectoftheTurtle = Spell(186265),
-    Exhilaration = Spell(109304),
-    -- Utility
-    AspectoftheCheetah = Spell(186257),
-    CounterShot = Spell(147362),
-    Disengage = Spell(781),
-    FreezingTrap = Spell(187650),
-    FeignDeath = Spell(5384),
-    TarTrap = Spell(187698),
-    -- Legendaries
-    SentinelsSight = Spell(208913),
-    -- Misc
-    CriticalAimed = Spell(242243),
-    PotionOfProlongedPowerBuff = Spell(229206),
-    SephuzBuff = Spell(208052),
-    MKIIGyroscopicStabilizer = Spell(235691),
 }
 
 ----DRUID

@@ -322,8 +322,10 @@ local function APL()
         end
         -- potion
         -- marked_for_death,precombat_seconds=5,if=raid_event.adds.in>40
-        if S.MarkedForDeath:IsReady() and (10000000000 > 40) then
-            return S.MarkedForDeath:Cast()
+        if RubimRH.TargetIsValid() then
+            if S.MarkedForDeath:IsReady() then
+                return S.MarkedForDeath:Cast()
+            end
         end
     end
     Cds = function()
@@ -354,7 +356,7 @@ local function APL()
             return S.Vanish:Cast()
         end
         -- vanish,if=talent.subterfuge.enabled&(!talent.exsanguinate.enabled|spell_targets.fan_of_knives>=2)&!stealthed.rogue&cooldown.garrote.up&dot.garrote.refreshable&(spell_targets.fan_of_knives<=3&combo_points.deficit>=1+spell_targets.fan_of_knives|spell_targets.fan_of_knives>=4&combo_points.deficit>=4)
-        if S.Vanish:IsReady() and (S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not bool(stealthed.rogue) and S.Garrote:CooldownUp() and Target:DebuffRefreshableC(S.GarroteDebuff) and (Cache.EnemiesCount[10] <= 3 and Player:ComboPointsDeficit() >= 1 + Cache.EnemiesCount[10] or Cache.EnemiesCount[10] >= 4 and Player:ComboPointsDeficit() >= 4)) then
+        if S.Vanish:IsReady() and (S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not bool(IsStealthed()) and S.Garrote:CooldownUp() and Target:DebuffRefreshableC(S.GarroteDebuff) and (Cache.EnemiesCount[10] <= 3 and Player:ComboPointsDeficit() >= 1 + Cache.EnemiesCount[10] or Cache.EnemiesCount[10] >= 4 and Player:ComboPointsDeficit() >= 4)) then
             return S.Vanish:Cast()
         end
 
@@ -444,6 +446,10 @@ local function APL()
         end
     end
     -- call precombat
+    if IsStealthed() and RubimRH.db.profile[259].vanishattack and Player:PrevGCD(1, S.Vanish) then
+        return Stealthed();
+    end
+
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
