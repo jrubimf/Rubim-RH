@@ -65,8 +65,8 @@
       <file leaf-file-name="mm.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="153" column="22" lean-forward="false" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
+            <state relative-caret-position="401">
+              <caret line="202" column="7" lean-forward="true" selection-start-line="202" selection-start-column="7" selection-end-line="202" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -123,9 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Multishot</find>
-      <find>GCD</find>
-      <find>profile</find>
       <find>Pre</find>
       <find>varSteal</find>
       <find>259</find>
@@ -153,6 +150,9 @@
       <find>Garrote</find>
       <find>Rupture</find>
       <find>TrueShot</find>
+      <find>Multishot</find>
+      <find>MultishotMu</find>
+      <find>MultiShot</find>
     </findStrings>
     <replaceStrings>
       <replace>SephuzsSecretBuff</replace>
@@ -831,8 +831,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="153" column="22" lean-forward="false" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
+        <state relative-caret-position="401">
+          <caret line="202" column="7" lean-forward="true" selection-start-line="202" selection-start-column="7" selection-end-line="202" selection-end-column="7" />
           <folding />
         </state>
       </provider>
