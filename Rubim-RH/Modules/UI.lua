@@ -798,7 +798,7 @@ end
 local function SubMenu()
     local window = StdUi:Window(UIParent, 'Rogue - Sub', 350, 500);
     window:SetPoint('CENTER');
-
+        
 
     --window.texture = window:CreateTexture(nil, "BACKGROUND")
     --window.texture:SetTexture(1, 1, 1, 1)
@@ -861,7 +861,7 @@ local function SubMenu()
         RubimRH.db.profile[261].cloakofshadows = value
     end
 
-    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[261].evasion);
+   local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[261].evasion);
     sk_2_0:SetMinMaxValue(0, 100);
     StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
     StdUi:AddLabel(window, sk_2_0, 'Evasion', 'TOP');
@@ -964,7 +964,7 @@ local function HavocMenu()
     extra1:SetScript('OnClick', function()
         RubimRH.SpellBlocker()
     end);
-end
+end  
 
 
 
@@ -1102,7 +1102,7 @@ local function RetributionMenu()
     end
 
     local justicarHealth = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].JusticarHP);
-    justicarHealth :SetMinMaxValue(0, 100);
+    justicarHealth :SetMinMaxValue(10, 100);
     StdUi:GlueBelow(justicarHealth , justicarEnabled, 0, 0, 'LEFT');
     function justicarHealth :OnValueChanged(value)
        RubimRH.db.profile[70].JusticarHP = value
@@ -1134,11 +1134,28 @@ local function RetributionMenu()
     end
 
     local lohHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].lohHealth);
-    lohHP :SetMinMaxValue(0, 100);
+    lohHP :SetMinMaxValue(10, 100);
     StdUi:GlueBelow(lohHP , LayOnHandEnabled, 0, 0, 'LEFT');
     function lohHP :OnValueChanged(value)
        RubimRH.db.profile[70].lohHealth = value
     end
+
+
+    local wogactive = StdUi:Checkbox(window, 'Word of Glory');
+    wogactive:SetChecked(RubimRH.db.profile[70].wogenabled  )
+    StdUi:GlueBelow(wogactive, DivineHealth, 0, -5, 'RIGHT');
+    function wogactive:OnValueChanged(value)
+        RubimRH.db.profile[70].wogenabled = value
+        print("|cFF69CCF0Word of Glory" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[70].wogenabled))
+    end
+
+    local woghealth = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[70].wogHP);
+    woghealth :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(woghealth , wogactive, 0, 0, 'RIGHT');
+    function woghealth :OnValueChanged(value)
+       RubimRH.db.profile[70].wogHP = value
+    end
+
 
 
 

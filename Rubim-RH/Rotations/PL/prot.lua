@@ -1,7 +1,5 @@
 --- Last Update: Bishop 7/21/18
 
-local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
-
 local addonName, addonTable = ...;
 local HL = HeroLib;
 local Cache = HeroCache;
@@ -11,6 +9,43 @@ local Target = Unit.Target;
 local Party = Unit.Party;
 local Spell = HL.Spell;
 local Item = HL.Item;
+
+----PALADIN
+--Protection
+RubimRH.Spell[66] = {
+    -- Racials
+    ArcaneTorrent = Spell(155145),
+    -- Primary rotation abilities
+    AvengersShield = Spell(31935),
+    AvengersValor = Spell(197561),
+    AvengingWrath = Spell(31884),
+    Consecration = Spell(26573),
+    HammerOfTheRighteous = Spell(53595),
+    Judgment = Spell(275779),
+    ShieldOfTheRighteous = Spell(53600),
+    ShieldOfTheRighteousBuff = Spell(132403),
+    GrandCrusader = Spell(85043),
+    -- Talents
+    BlessedHammer = Spell(204019),
+    ConsecratedHammer = Spell(203785),
+    CrusadersJudgment = Spell(204023),
+    Seraphim = Spell(152262),
+    -- Defensive / Utility
+    LightOfTheProtector = Spell(184092),
+    HandOfTheProtector = Spell(213652),
+    LayOnHands = Spell(633),
+    GuardianOfAncientKings = Spell(86659),
+    ArdentDefender = Spell(31850),
+    BlessingOfFreedom = Spell(1044),
+    HammerOfJustice = Spell(853),
+    BlessingOfProtection = Spell(1022),
+    BlessingOfSacrifice = Spell(6940),
+    DivineShield = Spell(642),
+    -- Utility
+    Rebuke = Spell(96231)
+}
+
+
 
 local S = RubimRH.Spell[66]
 
@@ -157,9 +192,9 @@ local function APL()
 	end
 
 	-- Consecration -> Cast as filler
-	if S.Consecration:IsReady() and Cache.EnemiesCount[8] >= 1 then
-		return S.Consecration:Cast()
-	end
+--	if S.Consecration:IsReady() and Cache.EnemiesCount[8] >= 1 and S.Consecration:TimeSinceLastCast() >= 13 then
+	--	return S.Consecration:Cast()
+	--end
 
 	return 0, 135328
 end

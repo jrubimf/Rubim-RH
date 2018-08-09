@@ -8,11 +8,72 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
--- Lua
-local pairs = pairs;
-local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
 
---- APL Local Vars
+--Retribution
+RubimRH.Spell[70] = {
+    -- Racials
+    ArcaneTorrent = Spell(25046),
+    GiftoftheNaaru = Spell(59547),
+    -- Abilities
+    BladeofJustice = Spell(184575),
+    Consecration = Spell(205228),
+    CrusaderStrike = Spell(35395),
+    DivineHammer = Spell(198034),
+    DivinePurpose = Spell(223817),
+    DivinePurposeBuff = Spell(223819),
+    DivineStorm = Spell(53385),
+    ExecutionSentence = Spell(267798),
+    GreaterJudgment = Spell(218718),
+    HolyWrath = Spell(210220),
+    Judgment = Spell(20271),
+    JudgmentDebuff = Spell(197277),
+    JusticarsVengeance = Spell(215661),
+    TemplarsVerdict = Spell(85256),
+    TheFiresofJustice = Spell(203316),
+    TheFiresofJusticeBuff = Spell(209785),
+    Zeal = Spell(217020),
+    FinalVerdict = Spell(198038),
+    ShieldOfVengance = Spell(184662),
+    Forbearance = Spell(25771),
+    -- Offensive
+    AvengingWrath = Spell(31884),
+    Crusade = Spell(231895),
+    --Talent
+    Inquisition = Spell(84963),
+    DivineJudgement = Spell(271580),
+    HammerofWrath = Spell(24275),
+    WakeofAshes = Spell(255937),
+    RighteousVerdict = Spell(267610),
+
+
+    -- Azerite Power
+    DivineStormBuffAzerite = Spell(278523),
+    -- Defensive
+    FlashOfLight = Spell(19750),
+    SelfLessHealerBuff = Spell(114250),
+    DivineShield = Spell(642),
+    LayOnHands = Spell(633),
+    WordofGlory = Spell(210191),
+
+    -- Utility
+    HammerofJustice = Spell(853),
+    Rebuke = Spell(96231),
+    DivineSteed = Spell(190784),
+    
+
+
+
+    -- Legendaries
+    LiadrinsFuryUnleashed = Spell(208408),
+    ScarletInquisitorsExpurgation = Spell(248289),
+    WhisperoftheNathrezim = Spell(207635),
+
+    -- PvP Talent
+    HammerOfReckoning = Spell(247675),
+    HammerOfReckoningBuff = Spell(247677),
+    HandOfHidrance = Spell(183218),
+}
+
 local S = RubimRH.Spell[70]
 local G = RubimRH.Spell[1] -- General Skills
 
@@ -385,26 +446,29 @@ local function APL()
 
 
 	if RubimRH.db.profile[70].justicariSEnabled and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
-		-- Divine Purpose
-		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHP and Player:Buff(S.DivinePurposeBuff) then
-			return S.JusticarsVengeance:Cast()
-		end
 		-- Regular
-		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHP - 5 and Player:HolyPower() >= 5 then
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHPand not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 5 then
 			return S.JusticarsVengeance:Cast()
 		end
+		-- Divine Purpose
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHP - 5 and Player:Buff(S.DivinePurposeBuff) then 
+			return S.JusticarsVengeance:Cast()
+		end
+		
 	end
 
-	--    if RubimRH.config.Spells[1].isActive and S.WorldofGlory:IsReady() then
-	-- Divine Purpose
-	--        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory * 100 and Player:Buff(S.DivinePurposeBuff) then
-	--            return S.JusticarsVengeance:Cast()
-	--        end
-	--        -- Regular
-	--        if Player:HealthPercentage() <= RubimRH.db.profile.Paladin.Retribution.justicarglory * 100 - 5 and Player:HolyPower() >= 3 then
-	--            return S.JusticarsVengeance:Cast()
-	--        end
-	--    end
+	if RubimRH.db.profile[70].wogenabled and S.WordofGlory:IsReady() then
+		-- Regular
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].wogHP and not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 3 then
+			return S.WordofGlory:Cast()
+		end	
+		-- Divine Purpose
+	       if Player:HealthPercentage() <= RubimRH.db.profile[70].wogHP - 5 and Player:Buff(S.DivinePurposeBuff) then
+			return S.WordofGlory:Cast()
+		end
+		
+	end
+
 
 	if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].flashoflight then
 		return S.FlashOfLight:Cast()
