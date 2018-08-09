@@ -447,7 +447,7 @@ local function APL()
 
 	if RubimRH.db.profile[70].justicariSEnabled and S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
 		-- Regular
-		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHPand not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 5 then
+		if Player:HealthPercentage() <= RubimRH.db.profile[70].JusticarHPand and not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 5 then
 			return S.JusticarsVengeance:Cast()
 		end
 		-- Divine Purpose
