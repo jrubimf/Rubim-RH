@@ -45,8 +45,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-671">
-              <caret line="349" column="60" lean-forward="false" selection-start-line="349" selection-start-column="24" selection-end-line="349" selection-end-column="60" />
+            <state relative-caret-position="214">
+              <caret line="92" column="37" lean-forward="false" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -65,8 +65,8 @@
       <file leaf-file-name="mm.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="46" column="36" lean-forward="false" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+            <state relative-caret-position="201">
+              <caret line="153" column="22" lean-forward="false" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -75,8 +75,8 @@
       <file leaf-file-name="ass.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="373" column="11" lean-forward="true" selection-start-line="373" selection-start-column="11" selection-end-line="373" selection-end-column="11" />
+            <state relative-caret-position="184">
+              <caret line="415" column="18" lean-forward="false" selection-start-line="415" selection-start-column="11" selection-end-line="415" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -123,9 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>FuryPvP</find>
-      <find>BuffStack</find>
-      <find>Multis</find>
       <find>Multishot</find>
       <find>GCD</find>
       <find>profile</find>
@@ -153,6 +150,9 @@
       <find>SerpentStingDebuff</find>
       <find>SteadyFocusBuff</find>
       <find>SteadyFo</find>
+      <find>Garrote</find>
+      <find>Rupture</find>
+      <find>TrueShot</find>
     </findStrings>
     <replaceStrings>
       <replace>SephuzsSecretBuff</replace>
@@ -183,8 +183,8 @@
       <replace>Arena.arena3:</replace>
       <replace>BuffPvP</replace>
       <replace>(true)</replace>
-      <replace>Class Specific</replace>
       <replace>DebuffPvP(</replace>
+      <replace>Class Specific</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -789,30 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="277" column="40" lean-forward="false" selection-start-line="277" selection-start-column="40" selection-end-line="277" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="373" column="11" lean-forward="true" selection-start-line="373" selection-start-column="11" selection-end-line="373" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-671">
-          <caret line="349" column="60" lean-forward="false" selection-start-line="349" selection-start-column="24" selection-end-line="349" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/UI.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -829,10 +805,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="92" column="37" lean-forward="false" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="277" column="40" lean-forward="false" selection-start-line="277" selection-start-column="40" selection-end-line="277" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="415" column="18" lean-forward="false" selection-start-line="415" selection-start-column="11" selection-end-line="415" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="46" column="36" lean-forward="false" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+        <state relative-caret-position="201">
+          <caret line="153" column="22" lean-forward="false" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
           <folding />
         </state>
       </provider>

@@ -150,8 +150,8 @@ local function APL()
     -- potion,if=(buff.trueshot.react&buff.bloodlust.react)|((consumable.prolonged_power&target.time_to_die<62)|target.time_to_die<31)
 
     -- trueshot,if=cooldown.aimed_shot.charges<1
-    if S.Trueshot:IsReady() and (S.AimedShot:ChargesP() < 1) then
-        return S.Trueshot:Cast()
+    if S.TrueShot:IsReady() and (S.AimedShot:ChargesP() < 1) then
+        return S.TrueShot:Cast()
     end
     -- barrage,if=active_enemies>1
     if S.Barrage:IsReady() and (Cache.EnemiesCount[40] > 1) then
