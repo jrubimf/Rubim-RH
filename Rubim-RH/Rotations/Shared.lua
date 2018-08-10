@@ -18,7 +18,7 @@ local Healthstone = 5512
 local trinket1 = 1030910
 local trinket2 = 1030902
 function RubimRH.Shared()
-    if RubimRH.db.profile.mainOption.healthstoneEnabled and Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+    if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
         return 0, 538745
     end
 end
