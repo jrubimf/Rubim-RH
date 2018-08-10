@@ -327,6 +327,10 @@ local function APL()
         end
     end
     -- call precombat
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+    
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
