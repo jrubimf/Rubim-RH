@@ -27,7 +27,7 @@
       <file leaf-file-name="eleme.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/SM/eleme.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3910">
+            <state relative-caret-position="255">
               <caret line="230" column="4" lean-forward="false" selection-start-line="230" selection-start-column="4" selection-end-line="232" selection-end-column="7" />
               <folding />
             </state>
@@ -67,8 +67,8 @@
       <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="223" column="213" lean-forward="true" selection-start-line="223" selection-start-column="213" selection-end-line="223" selection-end-column="213" />
+            <state relative-caret-position="232">
+              <caret line="379" column="7" lean-forward="false" selection-start-line="379" selection-start-column="7" selection-end-line="379" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -125,9 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>healthstoneEnabled</find>
-      <find>Healthstone</find>
-      <find>Health</find>
       <find>ena</find>
       <find>Knive</find>
       <find>Knives</find>
@@ -155,6 +152,9 @@
       <find>pool</find>
       <find>Fero</find>
       <find>RipDebuff</find>
+      <find>BloodtalonsBuff</find>
+      <find>Regrowth</find>
+      <find>Precombat</find>
     </findStrings>
     <replaceStrings>
       <replace>DebuffRefreshableC</replace>
@@ -235,7 +235,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -422,7 +422,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -764,14 +764,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/SM/eleme.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3910">
-          <caret line="230" column="4" lean-forward="false" selection-start-line="230" selection-start-column="4" selection-end-line="232" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5644">
@@ -820,10 +812,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/SM/eleme.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="230" column="4" lean-forward="false" selection-start-line="230" selection-start-column="4" selection-end-line="232" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="223" column="213" lean-forward="true" selection-start-line="223" selection-start-column="213" selection-end-line="223" selection-end-column="213" />
+        <state relative-caret-position="232">
+          <caret line="379" column="7" lean-forward="false" selection-start-line="379" selection-start-column="7" selection-end-line="379" selection-end-column="7" />
           <folding />
         </state>
       </provider>

@@ -149,7 +149,7 @@ local function APL()
         -- food
         -- augmentation
         -- regrowth,if=talent.bloodtalons.enabled
-        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable()) then
+        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable()) and Player:BuffDown(S.BloodtalonsBuff) then
             return S.Regrowth:Cast()
         end
         -- variable,name=use_thrash,value=0
@@ -374,6 +374,11 @@ local function APL()
         end
         return 0, 135328
     end
+    -- stuff
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     -- call precombat
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
