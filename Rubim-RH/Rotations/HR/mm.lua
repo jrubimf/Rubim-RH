@@ -87,6 +87,10 @@ S.AimedShot:RegisterInFlight()
 local function APL()
     HL.GetEnemies(40)
 
+    if Player:IsChanneling() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     if not Player:AffectingCombat() then
         if RubimRH.TargetIsValid() then
             if S.HuntersMark:IsReady() and Player:DebuffDownP(S.HuntersMark) then
@@ -106,10 +110,6 @@ local function APL()
             end
         end
         return 0, 462338
-    end
-
-    if Player:IsChanneling(S.RapidFire) then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
     if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].exhilaration then

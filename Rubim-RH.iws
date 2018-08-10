@@ -72,11 +72,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="balance.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="balance.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="366">
-              <caret line="332" column="4" lean-forward="false" selection-start-line="332" selection-start-column="4" selection-end-line="332" selection-end-column="4" />
+              <caret line="332" column="0" lean-forward="false" selection-start-line="332" selection-start-column="0" selection-end-line="332" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mm.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="99" column="41" lean-forward="true" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -87,16 +97,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="211">
               <caret line="342" column="27" lean-forward="false" selection-start-line="342" selection-start-column="13" selection-end-line="342" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="215" column="11" lean-forward="true" selection-start-line="215" selection-start-column="11" selection-end-line="215" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -123,7 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>VarbladeDance</find>
       <find>justicariSEnabled</find>
       <find>currentSpells</find>
       <find>sweepoing</find>
@@ -153,6 +152,7 @@
       <find>CDsO</find>
       <find>Marked</find>
       <find>MarkedForDeath</find>
+      <find>RapidFire</find>
     </findStrings>
     <replaceStrings>
       <replace>SephuzsSecretBuff</replace>
@@ -215,7 +215,6 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/PL/ret.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" />
@@ -230,6 +229,7 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/WR/fury.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" />
       </list>
     </option>
   </component>
@@ -657,14 +657,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3434">
-          <caret line="202" column="7" lean-forward="false" selection-start-line="202" selection-start-column="7" selection-end-line="202" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1479">
@@ -828,7 +820,15 @@
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="366">
-          <caret line="332" column="4" lean-forward="false" selection-start-line="332" selection-start-column="4" selection-end-line="332" selection-end-column="4" />
+          <caret line="332" column="0" lean-forward="false" selection-start-line="332" selection-start-column="0" selection-end-line="332" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="99" column="41" lean-forward="true" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
           <folding />
         </state>
       </provider>
