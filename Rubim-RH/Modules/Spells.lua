@@ -166,6 +166,7 @@ RubimRH.Spell[71] = {
     Rend = Spell(772),
     RendDebuff = Spell(772),
     Overpower = Spell(7384),
+    OverpowerBuff = Spell(7384),
     Ravager = Spell(152277),
     StormBolt = Spell(107570),
     DeadlyCalm = Spell(227266),
