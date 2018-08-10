@@ -1261,6 +1261,159 @@ local function WWMenu()
     end);
 end
 
+local function PaladinProtectionMenu()
+     local window = StdUi:Window(UIParent, 'Paladin - Protection', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+   
+    local usePotion = StdUi:Checkbox(window, 'Use Potion');
+    usePotion:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(usePotion, gn_separator, -50, -5, 'LEFT');
+    function usePotion:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local Potions = {
+        {text = 'Strengh Potion', value = 1}, -- 163224
+        {text = 'Stamina Potion', value = 2}, -- 163225
+        {text = 'Agility Potion', value = 3}, -- 163223
+        {text = 'Intelligence Potion', value = 4}, -- 163222
+        {text = 'Unbending Potion', value = 5}, -- 127845
+        {text = 'Deadly Potion', value = 6}, -- 127843
+        {text = 'Leytorrent Potion', value = 7}, -- 127846
+        {text = 'Old War', value = 8},
+        {text = 'Prolonged Power', value = 9}, 
+         };
+
+    local selectPotion = StdUi:Dropdown(window, 130, 20, Potions, RubimRH.db.profile[RubimRH.playerSpec].potionID);
+    selectPotion:SetPlaceholder('-- Please Select --');
+    StdUi:GlueBelow(selectPotion, usePotion, 0, -5);
+    function selectPotion:OnValueChanged(value)
+        RubimRH.db.profile[RubimRH.playerSpec].potionID = value
+        if RubimRH.db.profile[RubimRH.playerSpec].potionID == 1 then
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Strengh")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 2 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Stamina")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 3 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Agility")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 4 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Intelligence")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 5 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Unbending Potion")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 6 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Deadly Grace")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 7 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Leytorrent Potion")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 8 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Old War")
+        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 9 then            
+            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Prolonged Power") 
+        end
+
+    end
+
+
+    local healthStone = StdUi:Checkbox(window, 'Healthstone');
+    healthStone:SetChecked(RubimRH.db.profile.mainOption.healthstoneEnabled  )
+    StdUi:GlueBelow(healthStone, gn_separator, 50, -5, 'RIGHT');
+    function healthStone:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneEnabled = value
+        print("|cFF69CCF0Use Healthstone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.healthstoneEnabled))
+    end
+
+    local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    healthStoneValue:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(healthStoneValue, healthStone, 0, -5, 'CENTER');
+    function healthStoneValue:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+    
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, selectPotion, 15, -10, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+     local racialUsage = StdUi:Checkbox(window, 'Use Racial');
+   racialUsage:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(racialUsage, healthStoneValue, -10, -7, 'RIGHT');
+    function racialUsage:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Class Specific');
+    StdUi:GlueTop(sk_title, window, 0, -150);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+   
+    local LayOnHandEnabled = StdUi:Checkbox(window, 'Lay on Hands');
+    LayOnHandEnabled:SetChecked(RubimRH.db.profile[70].lohEnabled  )
+    StdUi:GlueBelow(LayOnHandEnabled, sk_separator, -50, -5, 'LEFT');
+    function LayOnHandEnabled:OnValueChanged(value)
+        RubimRH.db.profile[66].lohEnabled = value
+        print("|cFF69CCF0Lay on Hands" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].lohEnabled))
+    end
+
+    local lohHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[66].lohHealth);
+    lohHP :SetMinMaxValue(10, 100);
+    StdUi:GlueBelow(lohHP , LayOnHandEnabled, 0, 0, 'LEFT');
+    function lohHP :OnValueChanged(value)
+       RubimRH.db.profile[66].lohHealth = value
+    end
+
+        local ancientKingEnabled = StdUi:Checkbox(window, 'Ancient Kings');
+    ancientKingEnabled:SetChecked(RubimRH.db.profile[70].akEnabled  )
+    StdUi:GlueBelow(ancientKingEnabled, sk_separator, 55, -5, 'RIGHT');
+    function ancientKingEnabled:OnValueChanged(value)
+        RubimRH.db.profile[66].akEnabled = value
+        print("|cFF69CCF0Guardian of the Ancient Kings" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].akEnabled))
+    end
+
+    local ancientKingHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[66].akHP);
+    ancientKingHP :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(ancientKingHP , ancientKingEnabled, -5, 0, 'RIGHT');
+    function ancientKingHP :OnValueChanged(value)
+       RubimRH.db.profile[66].akHP = value
+    end
+
+
+    local ArdentDefenderEnabled = StdUi:Checkbox(window, 'Ardent Defender');
+    ArdentDefenderEnabled:SetChecked(RubimRH.db.profile[66].adEnabled  )
+    StdUi:GlueBelow(ArdentDefenderEnabled, lohHP, 0, -5, 'LEFT');
+    function ArdentDefenderEnabled:OnValueChanged(value)
+        RubimRH.db.profile[66].adEnabled = value
+        print("|cFF69CCF0Ardent Defender" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].adEnabled))
+    end
+
+    local ArdentHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[66].adHP);
+    ArdentHP :SetMinMaxValue(10, 100);
+    StdUi:GlueBelow(ArdentHP , ArdentDefenderEnabled, 0, 0, 'LEFT');
+    function ArdentHP :OnValueChanged(value)
+       RubimRH.db.profile[66].adHP = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -420);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, 0, -14, 'CENTER');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
 function RubimRH.ClassConfig(specID)
     if specID == 250 then
         BloodMenu()
@@ -1296,6 +1449,10 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 70 then
         RetributionMenu()
+    end
+
+    if specID == 66 then
+        PaladinProtectionMenu() 
     end
 
     if specID == 260 then

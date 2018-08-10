@@ -228,12 +228,10 @@ local defaults = {
             JusticarHP = 50,
             divineEnabled = false,
             DivineHP = 20,
-            lohEnabled = false,
-            lohHealth = 30,
             wogenabled = false,
             wogHP = 65,
-            SoVOpener = 0 false,    
-
+            SoVOpener = false,    
+          
 
             Spells = {
              
@@ -244,14 +242,14 @@ local defaults = {
         },
         [66] = {
             cooldown = true,
-            lightoftheprotectorpct = 90,
-            layonahandspct = 20,
-            ardentdefenderpct = 5,
-            guardianofancientkingspct = 50,
+             akEnabled = false,
+            akHP   = 30,
+            adEnabled = false,
+            adHP = 70,
+             lohEnabled = false,
+            lohHealth = 30,
+          
             Spells = {
-                { spellID = LayonHands, isActive = false },
-                { spellID = ArdentDefender, isActive = false },
-                { spellID = GuardianofAncientKings, isActive = false },
             }
         },
         --WARRIOR
