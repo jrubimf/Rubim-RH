@@ -36,23 +36,6 @@ RubimRH.Spell[1] = {
 
 
 
--- Potions
-if not Item.Potion then
-    Item.Potion = {}
-end
-Item.Potion.Usage = {
-    StrenghPotion = Item(163224),
-    StaminaPotion = Item(163225),
-    AgilityPotion = Item(163223),
-    IntPotion = Item(163222),
-    OldWar = Item(127844),
-    ProlognedPower = Item(142117),
-    UnbedingPotion = Item(127845),
-    DeadlyGrace = Item(127843),
-    LeyTorrent = Item(127846)
-};
-It = Item.Potion.Usage;
-
 
 
 --20594 DWARF

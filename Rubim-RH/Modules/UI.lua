@@ -979,56 +979,10 @@ local function RetributionMenu()
     StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
    
-    local usePotion = StdUi:Checkbox(window, 'Use Potion');
-    usePotion:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(usePotion, gn_separator, -50, -5, 'LEFT');
-    function usePotion:OnValueChanged(value)
-        RubimRH.PotionToggle()
-    end
-
-    local Potions = {
-        {text = 'Strengh Potion', value = 1}, -- 163224
-        {text = 'Stamina Potion', value = 2}, -- 163225
-        {text = 'Agility Potion', value = 3}, -- 163223
-        {text = 'Intelligence Potion', value = 4}, -- 163222
-        {text = 'Unbending Potion', value = 5}, -- 127845
-        {text = 'Deadly Potion', value = 6}, -- 127843
-        {text = 'Leytorrent Potion', value = 7}, -- 127846
-        {text = 'Old War', value = 8},
-        {text = 'Prolonged Power', value = 9}, 
-         };
-
-    local selectPotion = StdUi:Dropdown(window, 130, 20, Potions, RubimRH.db.profile[RubimRH.playerSpec].potionID);
-    selectPotion:SetPlaceholder('-- Please Select --');
-    StdUi:GlueBelow(selectPotion, usePotion, 0, -5);
-    function selectPotion:OnValueChanged(value)
-        RubimRH.db.profile[RubimRH.playerSpec].potionID = value
-        if RubimRH.db.profile[RubimRH.playerSpec].potionID == 1 then
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Strengh")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 2 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Stamina")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 3 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Agility")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 4 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Intelligence")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 5 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Unbending Potion")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 6 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Deadly Grace")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 7 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Leytorrent Potion")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 8 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Old War")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 9 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Prolonged Power") 
-        end
-
-    end
-
     local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     healthStoneValue:SetMinMaxValue(0, 100);
     StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
-    StdUi:GlueBelow(healthStoneValue, gn_separator, 75, -25, 'CENTER');
+    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -25, 'RIGHT');
     function healthStoneValue:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
@@ -1036,14 +990,14 @@ local function RetributionMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, selectPotion, 15, -10, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -15, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
      local racialUsage = StdUi:Checkbox(window, 'Use Racial');
    racialUsage:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(racialUsage, healthStoneValue, -10, -7, 'RIGHT');
+    StdUi:GlueBelow(racialUsage, gn_1_0, 0, -25, 'LEFT');
     function racialUsage:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
@@ -1258,70 +1212,11 @@ local function PaladinProtectionMenu()
     window:SetPoint('CENTER');
 
 
-    local gn_title = StdUi:FontString(window, 'General');
-    StdUi:GlueTop(gn_title, window, 0, -30);
-    local gn_separator = StdUi:FontString(window, '===================');
-    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
-
-   
-    local usePotion = StdUi:Checkbox(window, 'Use Potion');
-    usePotion:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
-    StdUi:GlueBelow(usePotion, gn_separator, -50, -5, 'LEFT');
-    function usePotion:OnValueChanged(value)
-        RubimRH.PotionToggle()
-    end
-
-    local Potions = {
-        {text = 'Strengh Potion', value = 1}, -- 163224
-        {text = 'Stamina Potion', value = 2}, -- 163225
-        {text = 'Agility Potion', value = 3}, -- 163223
-        {text = 'Intelligence Potion', value = 4}, -- 163222
-        {text = 'Unbending Potion', value = 5}, -- 127845
-        {text = 'Deadly Potion', value = 6}, -- 127843
-        {text = 'Leytorrent Potion', value = 7}, -- 127846
-        {text = 'Old War', value = 8},
-        {text = 'Prolonged Power', value = 9}, 
-         };
-
-    local selectPotion = StdUi:Dropdown(window, 130, 20, Potions, RubimRH.db.profile[RubimRH.playerSpec].potionID);
-    selectPotion:SetPlaceholder('-- Please Select --');
-    StdUi:GlueBelow(selectPotion, usePotion, 0, -5);
-    function selectPotion:OnValueChanged(value)
-        RubimRH.db.profile[RubimRH.playerSpec].potionID = value
-        if RubimRH.db.profile[RubimRH.playerSpec].potionID == 1 then
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Strengh")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 2 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Stamina")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 3 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Agility")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 4 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Battle Potion of Intelligence")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 5 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Unbending Potion")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 6 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Deadly Grace")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 7 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Leytorrent Potion")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 8 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Old War")
-        elseif RubimRH.db.profile[RubimRH.playerSpec].potionID == 9 then            
-            print("|cFF69CCF0Potion" .. "|r: |cFF00FF00Potion of Prolonged Power") 
-        end
-
-    end
-
-
-    local healthStone = StdUi:Checkbox(window, 'Healthstone');
-    healthStone:SetChecked(RubimRH.db.profile.mainOption.healthstoneEnabled  )
-    StdUi:GlueBelow(healthStone, gn_separator, 50, -5, 'RIGHT');
-    function healthStone:OnValueChanged(value)
-        RubimRH.db.profile.mainOption.healthstoneEnabled = value
-        print("|cFF69CCF0Use Healthstone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.healthstoneEnabled))
-    end
-
+    
     local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     healthStoneValue:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(healthStoneValue, healthStone, 0, -5, 'CENTER');
+    StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
+    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -15, 'RIGHT');
     function healthStoneValue:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
@@ -1329,14 +1224,14 @@ local function PaladinProtectionMenu()
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
-    StdUi:GlueBelow(gn_1_0, selectPotion, 15, -10, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -25, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
      local racialUsage = StdUi:Checkbox(window, 'Use Racial');
    racialUsage:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
-    StdUi:GlueBelow(racialUsage, healthStoneValue, -10, -7, 'RIGHT');
+    StdUi:GlueBelow(racialUsage, gn_1_0, 0, -25, 'LEFT');
     function racialUsage:OnValueChanged(value)
         RubimRH.RacialToggle()
     end

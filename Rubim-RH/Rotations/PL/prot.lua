@@ -92,10 +92,7 @@ local function APL()
     -- augmentation
     -- snapshot_stats
     -- potion
-   -- if I.ProlongedPower:IsReady() and RubimRH.PotionON() and HL.BossModTime < 3 then
-	--return S.ProlongedPower:Cast()
-    --end
-  end
+ 	end
   -- call precombat
   if not Player:AffectingCombat() then
     if Precombat() ~= nil then
@@ -103,6 +100,8 @@ local function APL()
    end
     return 0, 462338
   end
+
+
   -- auto_attack
   -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
   if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then
@@ -115,19 +114,19 @@ local function APL()
 
   -- Mouseover Functionality
 	local MouseoverUnit = (UnitExists("mouseover") and UnitIsFriend("player", "mouseover") and (UnitGUID("mouseover") ~= UnitGUID("player"))) and Unit("mouseover") or nil
-	if MouseoverUnit then
+		if MouseoverUnit then
 		-- Hand of the Protector -> Mouseover
-		if S.HandOfTheProtector:IsReady()
-			and MouseoverUnit:NeedMajorHealing() then
-			return S.HandOfTheProtector:Cast()
-		end
+			if S.HandOfTheProtector:IsReady()
+				and MouseoverUnit:NeedMajorHealing() then
+				return S.HandOfTheProtector:Cast()
+			end
 
 		-- Blessing of Protection -> Mousover
-		if S.BlessingOfProtection:IsReady()
-			and MouseoverUnitNeedsBoP then
-			return S.BlessingOfProtection:Cast()
+			if S.BlessingOfProtection:IsReady()
+				and MouseoverUnitNeedsBoP then
+				return S.BlessingOfProtection:Cast()
+			end
 		end
-	end
 
 	--    Blessing Of Sacrifice
 	local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
@@ -173,10 +172,7 @@ local function APL()
 		end
 	end
 
-  -- potion,if=buff.avenging_wrath.up
-  if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.AvengingWrathBuff)) then
-    return G.PotionOfProlongedPowerBuff:Cast()
-  end
+
   -- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
   if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengersValorBuff) and S.ShieldoftheRighteous:ChargesFractional() >= 2.5) and (S.Seraphim:CooldownRemains() > Player:GCD() or not S.Seraphim:IsAvailable())) then
     return S.ShieldoftheRighteous:Cast()
@@ -210,8 +206,8 @@ local function APL()
 
   -- consecration,if=(cooldown.judgment.remains<=gcd&!talent.crusaders_judgment.enabled)|cooldown.avenger_shield.remains<=gcd&consecration.remains<gcd
   if S.Consecration:IsReady() and ((S.Judgment:CooldownRemains() <= Player:GCD() and not S.CrusadersJudgment:IsAvailable()) or S.AvengerShield:CooldownRemains() <= Player:GCD() and ConcerationTime() < Player:GCD()) then
-    return S.Consecration:Cast(
-)  end
+    return S.Consecration:Cast()
+  end
   -- consecration,if=!talent.crusaders_judgment.enabled&consecration.remains<(cooldown.judgment.remains+cooldown.avengers_shield.remains)&consecration.remains<3*gcd
   if S.Consecration:IsReady() and (not S.CrusadersJudgment:IsAvailable() and ConcerationTime() < (S.Judgment:CooldownRemains() + S.AvengersShield:CooldownRemains()) and ConcerationTime() < 3 * Player:GCD()) then
     return S.Consecration:Cast()

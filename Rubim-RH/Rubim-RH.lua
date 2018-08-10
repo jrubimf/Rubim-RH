@@ -234,7 +234,6 @@ local defaults = {
           
 
             Spells = {
-             
             }
         },
         [65] = {
