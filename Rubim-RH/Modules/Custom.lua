@@ -291,9 +291,8 @@ function RubimRH.TargetIsValid()
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-    HL.GetEnemies(8, true)
 
-    if Cache.EnemiesCount[8] >= 1 then
+    if RubimRH.db.profile.mainOption.startattack then
         isValid = true
     end
 

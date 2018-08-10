@@ -354,7 +354,7 @@ local function APL()
             return S.FelRush:Cast()
         end
         -- fel_barrage,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>30)
-        if S.FelBarrage:IsReady() and (not bool(VarWaitingForMomentum) and (Cache.EnemiesCount[30] > 1 or 10000000000 > 30)) then
+        if S.FelBarrage:IsReady() and (not bool(VarWaitingForMomentum) and (Cache.EnemiesCount[30] > 1)) then
             return S.FelBarrage:Cast()
         end
         -- immolation_aura
@@ -378,7 +378,7 @@ local function APL()
             return S.Felblade:Cast()
         end
         -- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_dark_slash&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash) and 10000000000 > S.EyeBeam:Cooldown()) then
+        if S.EyeBeam:IsReady() and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash)) then
             return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_dark_slash

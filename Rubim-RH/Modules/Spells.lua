@@ -155,6 +155,7 @@ RubimRH.Spell[71] = {
     Slam = Spell(1464),
     Massacre = Spell(206315),
     ExecuteMassacre = Spell(281000),
+    Dreadnaught = Spell(262150),
 
     -- Talents
     SuddenDeathBuff = Spell(52437),
@@ -166,11 +167,12 @@ RubimRH.Spell[71] = {
     Rend = Spell(772),
     RendDebuff = Spell(772),
     Overpower = Spell(7384),
+    OverpowerBuff = Spell(7384),
     Ravager = Spell(152277),
     StormBolt = Spell(107570),
     DeadlyCalm = Spell(227266),
     FervorofBattle = Spell(202316),
-    SweepingStrikes = Spell(202161),
+    SweepingStrikes = Spell(260708),
     AngerManagement = Spell(152278),
     InForTheKill = Spell(248621),
     InForTheKillBuff = Spell(248622),

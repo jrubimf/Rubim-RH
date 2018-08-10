@@ -43,7 +43,7 @@ function RubimRH.SpellBlocker()
             --table.insert(disabledSpells, value)
             table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(value[i]) , value = value[i]})
         end
-        print('Dropdown Text: ', self:GetText());
+        print('Blocked Spells: ', self:GetText());
     end
 
     local extra1 = StdUi:Button(window, 100, 20 , 'Clear');
@@ -1025,18 +1025,10 @@ local function RetributionMenu()
 
     end
 
-
-    local healthStone = StdUi:Checkbox(window, 'Healthstone');
-    healthStone:SetChecked(RubimRH.db.profile.mainOption.healthstoneEnabled  )
-    StdUi:GlueBelow(healthStone, gn_separator, 50, -5, 'RIGHT');
-    function healthStone:OnValueChanged(value)
-        RubimRH.db.profile.mainOption.healthstoneEnabled = value
-        print("|cFF69CCF0Use Healthstone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.healthstoneEnabled))
-    end
-
     local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     healthStoneValue:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(healthStoneValue, healthStone, 0, -5, 'CENTER');
+    StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
+    StdUi:GlueBelow(healthStoneValue, gn_separator, 75, -25, 'CENTER');
     function healthStoneValue:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end

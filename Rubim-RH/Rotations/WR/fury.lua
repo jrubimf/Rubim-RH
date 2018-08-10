@@ -89,7 +89,7 @@ local function APL()
     HL.GetEnemies(10);
 
     if not Player:AffectingCombat() then
-        if not Player:Buff(S.BattleShout) then
+        if S.BattleShout:IsReady() and not Player:Buff(S.BattleShout) then
             return S.BattleShout:Cast()
         end
 

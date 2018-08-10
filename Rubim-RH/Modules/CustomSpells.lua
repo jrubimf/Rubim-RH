@@ -185,7 +185,7 @@ end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
     local range = Range or 8
-    if not self:IsAvailable() or self:Queued() then
+    if not self:IsAvailable() or self:Queued() or not RubimRH.TargetIsValid() then
         return false
     end
 
@@ -213,7 +213,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 
     range = self:MaximumRange() or 5
     HL.GetEnemies(range, true)
-    if range <= 8 and RubimRH.db.profile.mainOption.startattack == true and Cache.EnemiesCount[range] >= 1 then
+    if range <= 8 and RubimRH.db.profile.mainOption.startattack  and Cache.EnemiesCount[range] >= 1 then
         return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
     end
 

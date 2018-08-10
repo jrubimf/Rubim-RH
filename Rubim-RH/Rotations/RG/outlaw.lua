@@ -271,9 +271,6 @@ local function APL ()
         return S.CrimsonVial:Cast()
     end
 
-    if IsStealthed() and RubimRH.db.profile[260].vanishattack and Player:PrevGCD(1, S.Vanish) then
-        return Stealthed();
-    end
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
