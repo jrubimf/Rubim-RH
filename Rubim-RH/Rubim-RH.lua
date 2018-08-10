@@ -157,6 +157,7 @@ local defaults = {
             useRacial = true,
             startattack = false,
             healthstoneper = 20,
+            healthstoneEnabled = true,
             align = "CENTER",
             xCord = 0,
             yCord = -200,
@@ -219,6 +220,19 @@ local defaults = {
         --PALADIN
         [70] = {
             cooldown = true,
+            SoVEnabled = false,
+            SoVHP = 70,
+            FoL = false,
+            flashoflight = 80,
+            justicariSEnabled = false,
+            JusticarHP = 50,
+            divineEnabled = false,
+            DivineHP = 20,
+            wogenabled = false,
+            wogHP = 65,
+            SoVOpener = false,    
+          
+
             Spells = {
              
             }
@@ -228,14 +242,14 @@ local defaults = {
         },
         [66] = {
             cooldown = true,
-            lightoftheprotectorpct = 90,
-            layonahandspct = 20,
-            ardentdefenderpct = 5,
-            guardianofancientkingspct = 50,
+             akEnabled = false,
+            akHP   = 30,
+            adEnabled = false,
+            adHP = 70,
+             lohEnabled = false,
+            lohHealth = 30,
+          
             Spells = {
-                { spellID = LayonHands, isActive = false },
-                { spellID = ArdentDefender, isActive = false },
-                { spellID = GuardianofAncientKings, isActive = false },
             }
         },
         --WARRIOR

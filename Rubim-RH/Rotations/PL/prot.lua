@@ -1,116 +1,119 @@
---- Last Update: Bishop 7/21/18
+--- ============================ HEADER ============================
+--- ======= LOCALIZE =======
+-- Addon
+local addonName, addonTable = ...
+-- HeroLib
+local HL     = HeroLib
+local Cache  = HeroCache
+local Unit   = HL.Unit
+local Player = Unit.Player
+local Target = Unit.Target
+local Pet    = Unit.Pet
+local Spell  = HL.Spell
+local Item   = HL.Item
 
-local addonName, addonTable = ...;
-local HL = HeroLib;
-local Cache = HeroCache;
-local Unit = HL.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-local Party = Unit.Party;
-local Spell = HL.Spell;
-local Item = HL.Item;
+--- ============================ CONTENT ===========================
+--- ======= APL LOCALS =======
+-- luacheck: max_line_length 9999
 
-----PALADIN
---Protection
+-- Spells
 RubimRH.Spell[66] = {
-    -- Racials
-    ArcaneTorrent = Spell(155145),
-    -- Primary rotation abilities
-    AvengersShield = Spell(31935),
-    AvengersValor = Spell(197561),
-    AvengingWrath = Spell(31884),
-    Consecration = Spell(26573),
-    HammerOfTheRighteous = Spell(53595),
-    Judgment = Spell(275779),
-    ShieldOfTheRighteous = Spell(53600),
-    ShieldOfTheRighteousBuff = Spell(132403),
-    GrandCrusader = Spell(85043),
-    -- Talents
-    BlessedHammer = Spell(204019),
-    ConsecratedHammer = Spell(203785),
-    CrusadersJudgment = Spell(204023),
-    Seraphim = Spell(152262),
-    -- Defensive / Utility
-    LightOfTheProtector = Spell(184092),
-    HandOfTheProtector = Spell(213652),
-    LayOnHands = Spell(633),
-    GuardianOfAncientKings = Spell(86659),
-    ArdentDefender = Spell(31850),
-    BlessingOfFreedom = Spell(1044),
-    HammerOfJustice = Spell(853),
-    BlessingOfProtection = Spell(1022),
-    BlessingOfSacrifice = Spell(6940),
-    DivineShield = Spell(642),
-    -- Utility
-    Rebuke = Spell(96231)
-}
+  Seraphim                              = Spell(152262),
+  ShieldoftheRighteous                  = Spell(53600),
+  AvengingWrath                         = Spell(31884),
+  SeraphimBuff                          = Spell(152262),
+  AvengingWrathBuff                     = Spell(31884),
+  AvengersValorBuff                     = Spell(197561),
+  AvengerShield                         = Spell(31935),
+  LightsJudgment                        = Spell(255647),
+  AvengersShield                        = Spell(31935),
+  Judgment                              = Spell(275779),
+  CrusadersJudgment                     = Spell(204023),
+  Consecration                          = Spell(26573),
+  BlessedHammer                         = Spell(204019),
+  HammeroftheRighteous                  = Spell(53595),
+  ArdentDefender 						= Spell(31850),
+  GuardianOfAncientKings				= Spell(86659),
+  HandOfTheProtector					= Spell(213652),
+  BlessingOfProtection					= Spell(1022),
+  BlessingOfSacrifice 					= Spell(6940),
+  BlessingOfFreedom						= Spell(1044),
+  Forbearance 							= Spell(25771),
+  LayOnHands 							= Spell(633),
+  ConsecrationBuff						= Spell(188370)
+
+};
+local S = RubimRH.Spell[66];
+local G = RubimRH.Spell[1]; -- General Skills
+
+-- Items
+if not Item.Paladin then Item.Paladin = {} end
+Item.Paladin.Protection = {
+  ProlongedPower                   = Item(142117)
+};
+local I = Item.Paladin.Protection;
 
 
+-- Variables
 
-local S = RubimRH.Spell[66]
+local EnemyRanges = {8}
+local function UpdateRanges()
+  for _, i in ipairs(EnemyRanges) do
+    HL.GetEnemies(i);
+  end
+end
 
-local T202PC, T204PC = HL.HasTier("T20");
-local T212PC, T214PC = HL.HasTier("T21");
+local function num(val)
+  if val then return 1 else return 0 end
+end
 
-local IsTanking = false
+local function bool(val)
+  return val ~= 0
+end
 
-local function UpdateVars()
-	-- Check if we're tanking
-	IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
-	
-	-- Update enemies within ability ranges
-	HL.GetEnemies("Melee") -- 5 Yards
-	HL.GetEnemies(8) -- 40-43 Yards
-	HL.GetEnemies(8, true) -- 10-13 Yards
-	HL.GetEnemies(10) -- 5-8 Yards
-	HL.GetEnemies(30) -- 8-11 Yards
-end    
 
+function ConcerationTime()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
+end
+
+--- ======= ACTION LISTS =======
 local function APL()
-	UpdateVars()
+  local Precombat
+  UpdateRanges()
+  Precombat = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+   -- if I.ProlongedPower:IsReady() and RubimRH.PotionON() and HL.BossModTime < 3 then
+	--return S.ProlongedPower:Cast()
+    --end
+  end
+  -- call precombat
+  if not Player:AffectingCombat() then
+    if Precombat() ~= nil then
+  return Precombat()
+   end
+    return 0, 462338
+  end
+  -- auto_attack
+  -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
+  if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then
+    return S.Seraphim:Cast()
+  end
+  -- avenging_wrath,if=buff.seraphim.up|cooldown.seraphim.remains<2|!talent.seraphim.enabled
+  if S.AvengingWrath:IsReady() and (Player:Buff(S.SeraphimBuff) or S.Seraphim:CooldownRemains() < 2 or not S.Seraphim:IsAvailable()) then
+    return S.AvengingWrath:Cast()
+  end
 
-	if not Player:AffectingCombat() then return 0, 462338 end
-
-
-	-- TODO: Restore these when GGLoader texture updates are complete
-	-- Lay on Hands
-	-- if S.LayOnHands:IsReady()
-	-- 	and Player:HealthPercentage() <= 20 then
-	-- 	return S.LayOnHands:Cast()
-	-- end
-
-	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
-	-- if S.GuardianOfAncientKings:IsReady()
-	-- 	and Player:NeedPanicHealing() then
-	-- 	return S.GuardianOfAncientKings:Cast()
-	-- end
-
-	-- Shield of the Righteous
-	if S.ShieldOfTheRighteous:IsReady()
-		and Player:BuffRemains(S.ShieldOfTheRighteousBuff) <= Player:GCD()
-		and (S.ShieldOfTheRighteous:ChargesFractional() >= 2 or Player:ActiveMitigationNeeded() or Player:NeedMinorHealing())
-		and (Player:Buff(S.AvengersValor) or (not Player:Buff(S.AvengersValor) and S.AvengersShield:CooldownRemains() >= Player:GCD() * 2)) then
-		return S.ShieldOfTheRighteous:Cast()
-	end
-
-	-- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the user
-	-- if S.ArdentDefender:IsReady()
-	-- 	and Player:NeedPanicHealing() 
-	-- 	and Player:HealthPercentage() <= 90 then
-	-- 	return S.ArdentDefender:Cast()
-	-- end
-
-	-- Light of the Protector / Hand of the Protector -> Player
-	if (S.LightOfTheProtector:IsReady() or S.HandOfTheProtector:IsReady())
-		and Player:NeedMinorHealing() then
-		if S.HandOfTheProtector:IsAvailable() then
-			return S.HandOfTheProtector:Cast()
-		else
-			return S.LightOfTheProtector:Cast()
-		end
-	end
-
-	-- Mouseover Functionality
+  -- Mouseover Functionality
 	local MouseoverUnit = (UnitExists("mouseover") and UnitIsFriend("player", "mouseover") and (UnitGUID("mouseover") ~= UnitGUID("player"))) and Unit("mouseover") or nil
 	if MouseoverUnit then
 		-- Hand of the Protector -> Mouseover
@@ -126,13 +129,11 @@ local function APL()
 		end
 	end
 
-	-- TODO: Waiting for GGLoader to add spell texture for Blessing of Sacrifice
 	--    Blessing Of Sacrifice
-	--        local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
-	--        if MouseoverUnitNeedsBlessingOfSacrifice
-	--                and S.BlessingOfSacrifice:IsReady(40, false, MouseoverUnit) then
-	--            return S.BlessingOfSacrifice:Cast()
-	--        end
+	local MouseoverUnitNeedsBlessingOfSacrifice = (MouseoverUnitValid and Player:HealthPercentage() <= 80) and true or false
+	        if MouseoverUnitNeedsBlessingOfSacrifice and S.BlessingOfSacrifice:IsReady(40, false, MouseoverUnit) then
+	            return S.BlessingOfSacrifice:Cast()
+	        end
 
 	-- Blessing of Freedom -> if snared
 	if Player:IsSnared()
@@ -140,69 +141,112 @@ local function APL()
 		return S.BlessingOfFreedom:Cast()
 	end
 
-	--- Offensive CDs
+		-- TODO: Restore these when GGLoader texture updates are complete
+	-- Lay on Hands
+	 if RubimRH.db.profile[70].lohEnabled and S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].lohHealth and not Player:Debuff(S.Forbearance) then
+	 	return S.LayOnHands:Cast()
+	 end
 
-	-- Avenging Wrath
-	if RubimRH.CDsON()
-		and (Target:TimeToDie() >= 20 or (Player:Health() <= 50 and S.LightOfTheProtector:CooldownRemains() <= Player:GCD() * 2)) -- Use as offensive or big defensive reactive CD
-		and S.AvengingWrath:IsReady() then
-		return S.AvengingWrath:Cast()
+	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
+	if RubimRH.db.profile[70].akEnabled then
+		if RubimRH.db.profile[70].akHP == 0 then
+			if S.GuardianOfAncientKings:IsReady() and Player:NeedPanicHealing() then
+	 			return S.GuardianOfAncientKings:Cast()
+	 		end
+		else 
+			if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[70].akHP then
+	 			return S.GuardianOfAncientKings:Cast()
+	 		end
+		end
+	end	
+
+	  -- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the 
+	  if RubimRH.db.profile[70].adEnabled then
+		if RubimRH.db.profile[70].adHP == 0 then
+	  		if S.ArdentDefender:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 90 then
+	 			return S.ArdentDefender:Cast()
+			 end
+	 	else
+	 		if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].adHP then
+	 			return S.ArdentDefender:Cast()
+			end	
+		end
 	end
 
-	-- Seraphim
-	if RubimRH.CDsON()
-		and ((Target:TimeToDie() >= 8 and S.ShieldOfTheRighteous:ChargesFractional() == 1) or (Target:TimeToDie() >= 16 and S.ShieldOfTheRighteous:ChargesFractional() >= 2))
-		and S.Seraphim:IsReady() then
-		return S.Seraphim:Cast()
-	end
+  -- potion,if=buff.avenging_wrath.up
+  if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.AvengingWrathBuff)) then
+    return G.PotionOfProlongedPowerBuff:Cast()
+  end
+  -- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
+  if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengersValorBuff) and S.ShieldoftheRighteous:ChargesFractional() >= 2.5) and (S.Seraphim:CooldownRemains() > Player:GCD() or not S.Seraphim:IsAvailable())) then
+    return S.ShieldoftheRighteous:Cast()
+  end
+  -- shield_of_the_righteous,if=(cooldown.shield_of_the_righteous.charges_fractional=3&cooldown.avenger_shield.remains>(2*gcd))
+  if S.ShieldoftheRighteous:IsReady() and ((S.ShieldoftheRighteous:ChargesFractional() == 3 and S.AvengerShield:CooldownRemains() > (2 * Player:GCD()))) then
+    return S.ShieldoftheRighteous:Cast()
+  end
+  -- shield_of_the_righteous,if=(buff.avenging_wrath.up&!talent.seraphim.enabled)|buff.seraphim.up&buff.avengers_valor.up
+  if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengingWrathBuff) and not S.Seraphim:IsAvailable()) or Player:Buff(S.SeraphimBuff) and Player:Buff(S.AvengersValorBuff)) then
+    return S.ShieldoftheRighteous:Cast()
+  end
+  -- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
+  if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengingWrathBuff) and Player:BuffRemains(S.AvengingWrathBuff) < 4 and not S.Seraphim:IsAvailable()) or (Player:BuffRemains(S.SeraphimBuff) < 4 and Player:Buff(S.SeraphimBuff))) then
+    return S.ShieldoftheRighteous:Cast()
+  end
+  -- use_items,if=buff.seraphim.up|!talent.seraphim.enabled
 
-	--- Primary Damage Rotation
+  -- avengers_shield,if=(cooldown.shield_of_the_righteous.charges_fractional>2.5&!buff.avengers_valor.up)|active_enemies>=2
+  if S.AvengersShield:IsReady() and ((S.ShieldoftheRighteous:ChargesFractional() > 2.5 and not Player:Buff(S.AvengersValorBuff)) or Cache.EnemiesCount[8] >= 2) then
+    return S.AvengersShield:Cast()
+  end
+  -- judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1)|!talent.crusaders_judgment.enabled
+  if S.Judgment:IsReady() and ((S.Judgment:CooldownRemains() < Player:GCD() and S.Judgment:ChargesFractional() > 1) or not S.CrusadersJudgment:IsAvailable()) then
+    return S.Judgment:Cast()
+  end
 
-	-- Avenger's Shield -> High priority with Crusader's Judgment and < 1 Judgment Charge
-	if S.AvengersShield:IsReady() 
-		and S.CrusadersJudgment:IsAvailable()
-		and S.Judgment:ChargesFractional() < 1 then
-		return S.AvengersShield:Cast()
-	end
+  if S.AvengersShield:IsReady() then
+  	return S.AvengersShield:Cast()
+  end
 
-	-- Judgment
-	if S.Judgment:IsReady() then
-		return S.Judgment:Cast()
-	end
+  -- consecration,if=(cooldown.judgment.remains<=gcd&!talent.crusaders_judgment.enabled)|cooldown.avenger_shield.remains<=gcd&consecration.remains<gcd
+  if S.Consecration:IsReady() and ((S.Judgment:CooldownRemains() <= Player:GCD() and not S.CrusadersJudgment:IsAvailable()) or S.AvengerShield:CooldownRemains() <= Player:GCD() and ConcerationTime() < Player:GCD()) then
+    return S.Consecration:Cast(
+)  end
+  -- consecration,if=!talent.crusaders_judgment.enabled&consecration.remains<(cooldown.judgment.remains+cooldown.avengers_shield.remains)&consecration.remains<3*gcd
+  if S.Consecration:IsReady() and (not S.CrusadersJudgment:IsAvailable() and ConcerationTime() < (S.Judgment:CooldownRemains() + S.AvengersShield:CooldownRemains()) and ConcerationTime() < 3 * Player:GCD()) then
+    return S.Consecration:Cast()
+  end
+  
+  -- judgment
+  if S.Judgment:IsReady() then
+    return S.Judgment:Cast()
+  end
 
-	-- Consecration
-	if S.Consecration:IsReady()
-		and not Player:Buff(S.Consecration) then
-		return S.Consecration:Cast()
-	end
 
-	-- Avenger's Shield -> Lower priority
-	if S.AvengersShield:IsReady() then
-		return S.AvengersShield:Cast()
-	end
-
-	-- Blessed Hammer
-	if S.BlessedHammer:IsReady() then
-		return S.BlessedHammer:Cast()
-	end
-
-	-- Hammer of the Righteous
-	if S.HammerOfTheRighteous:IsReady() then
-		return S.HammerOfTheRighteous:Cast()
-	end
-
-	-- Consecration -> Cast as filler
---	if S.Consecration:IsReady() and Cache.EnemiesCount[8] >= 1 and S.Consecration:TimeSinceLastCast() >= 13 then
-	--	return S.Consecration:Cast()
-	--end
-
-	return 0, 135328
+  -- lights_judgment,if=!talent.seraphim.enabled|buff.seraphim.up
+  if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (not S.Seraphim:IsAvailable() or Player:Buff(S.SeraphimBuff)) then
+    return S.LightsJudgment:Cast()
+  end
+ 
+  
+  -- blessed_hammer
+  if S.BlessedHammer:IsReady() then
+    return S.BlessedHammer:Cast()
+  end
+  -- hammer_of_the_righteous
+  if S.HammeroftheRighteous:IsReady() then
+    return S.HammeroftheRighteous:Cast()
+  end
+  -- consecration
+  if S.Consecration:IsReady() and not Player:Buff(S.ConsecrationBuff) then
+    return S.Consecration:Cast()
+  end
+  return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(66, APL);
+RubimRH.Rotation.SetAPL(66, APL)
 
 local function PASSIVE()
-	return RubimRH.Shared()
+    return RubimRH.Shared()
 end
-
-RubimRH.Rotation.SetPASSIVE(66, PASSIVE);
+RubimRH.Rotation.SetPASSIVE(66, PASSIVE)
