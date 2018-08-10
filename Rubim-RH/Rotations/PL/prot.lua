@@ -40,7 +40,9 @@ RubimRH.Spell[66] = {
   BlessingOfFreedom						= Spell(1044),
   Forbearance 							= Spell(25771),
   LayOnHands 							= Spell(633),
-  ConsecrationBuff						= Spell(188370)
+  ConsecrationBuff						= Spell(188370),
+  LightofTheProtector          = Spell(184092),
+  ShieldoftheRighteousBuff = Spell(132403)
 
 };
 local S = RubimRH.Spell[66];
@@ -102,6 +104,20 @@ local function APL()
   end
 
 
+
+
+  if RubimRH.db.profile[66].lotpEnabled then
+    if RubimRH.db.profile[66].lotpHP == 0 then
+      if S.LightofTheProtector:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 70 then
+        return S.LightofTheProtector:Cast()
+      end
+    else
+      if S.LightofTheProtector:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].lotpHP then
+        return S.LightofTheProtector:Cast()
+      end        
+    end
+  end
+
   -- auto_attack
   -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
   if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then
@@ -140,37 +156,6 @@ local function APL()
 		return S.BlessingOfFreedom:Cast()
 	end
 
-		-- TODO: Restore these when GGLoader texture updates are complete
-	-- Lay on Hands
-	 if RubimRH.db.profile[70].lohEnabled and S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].lohHealth and not Player:Debuff(S.Forbearance) then
-	 	return S.LayOnHands:Cast()
-	 end
-
-	-- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
-	if RubimRH.db.profile[70].akEnabled then
-		if RubimRH.db.profile[70].akHP == 0 then
-			if S.GuardianOfAncientKings:IsReady() and Player:NeedPanicHealing() then
-	 			return S.GuardianOfAncientKings:Cast()
-	 		end
-		else 
-			if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[70].akHP then
-	 			return S.GuardianOfAncientKings:Cast()
-	 		end
-		end
-	end	
-
-	  -- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the 
-	  if RubimRH.db.profile[70].adEnabled then
-		if RubimRH.db.profile[70].adHP == 0 then
-	  		if S.ArdentDefender:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 90 then
-	 			return S.ArdentDefender:Cast()
-			 end
-	 	else
-	 		if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].adHP then
-	 			return S.ArdentDefender:Cast()
-			end	
-		end
-	end
 
 
   -- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
@@ -243,6 +228,40 @@ end
 RubimRH.Rotation.SetAPL(66, APL)
 
 local function PASSIVE()
+
+    -- TODO: Restore these when GGLoader texture updates are complete
+  -- Lay on Hands
+   if RubimRH.db.profile[66].lohEnabled and S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].lohHealth and not Player:Debuff(S.Forbearance) then
+    return S.LayOnHands:Cast()
+   end
+
+  -- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
+  if RubimRH.db.profile[66].akEnabled then
+    if RubimRH.db.profile[66].akHP == 0 then
+      if S.GuardianOfAncientKings:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 60 then
+        return S.GuardianOfAncientKings:Cast()
+      end
+    else 
+      if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[66].akHP then
+        return S.GuardianOfAncientKings:Cast()
+      end
+    end
+  end 
+
+    -- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the 
+    if RubimRH.db.profile[66].adEnabled then
+    if RubimRH.db.profile[66].adHP == 0 then
+        if S.ArdentDefender:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 30 then
+        return S.ArdentDefender:Cast()
+       end
+    else
+      if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].adHP then
+        return S.ArdentDefender:Cast()
+      end 
+    end
+  end
+
+
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(66, PASSIVE)

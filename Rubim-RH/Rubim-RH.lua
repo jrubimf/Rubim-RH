@@ -241,12 +241,14 @@ local defaults = {
         },
         [66] = {
             cooldown = true,
-             akEnabled = false,
+            akEnabled = false,
             akHP   = 30,
             adEnabled = false,
             adHP = 70,
-             lohEnabled = false,
+            lohEnabled = false,
             lohHealth = 30,
+            lotpEnabled = true,
+            lotpHP = 50,
           
             Spells = {
             }

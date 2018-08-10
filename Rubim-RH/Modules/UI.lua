@@ -1211,12 +1211,15 @@ local function PaladinProtectionMenu()
      local window = StdUi:Window(UIParent, 'Paladin - Protection', 350, 500);
     window:SetPoint('CENTER');
 
-
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
     
     local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     healthStoneValue:SetMinMaxValue(0, 100);
     StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
-    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -15, 'RIGHT');
+    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -25, 'RIGHT');
     function healthStoneValue:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
@@ -1244,7 +1247,7 @@ local function PaladinProtectionMenu()
 
    
     local LayOnHandEnabled = StdUi:Checkbox(window, 'Lay on Hands');
-    LayOnHandEnabled:SetChecked(RubimRH.db.profile[70].lohEnabled  )
+    LayOnHandEnabled:SetChecked(RubimRH.db.profile[66].lohEnabled  )
     StdUi:GlueBelow(LayOnHandEnabled, sk_separator, -50, -5, 'LEFT');
     function LayOnHandEnabled:OnValueChanged(value)
         RubimRH.db.profile[66].lohEnabled = value
@@ -1259,7 +1262,7 @@ local function PaladinProtectionMenu()
     end
 
         local ancientKingEnabled = StdUi:Checkbox(window, 'Ancient Kings');
-    ancientKingEnabled:SetChecked(RubimRH.db.profile[70].akEnabled  )
+    ancientKingEnabled:SetChecked(RubimRH.db.profile[66].akEnabled  )
     StdUi:GlueBelow(ancientKingEnabled, sk_separator, 55, -5, 'RIGHT');
     function ancientKingEnabled:OnValueChanged(value)
         RubimRH.db.profile[66].akEnabled = value
@@ -1289,8 +1292,24 @@ local function PaladinProtectionMenu()
        RubimRH.db.profile[66].adHP = value
     end
 
+        local protectorEnabled = StdUi:Checkbox(window, 'LotP');
+    protectorEnabled:SetChecked(RubimRH.db.profile[66].lotpEnabled  )
+    StdUi:GlueBelow(protectorEnabled, ancientKingHP, 0, -5, 'CENTER');
+    function protectorEnabled:OnValueChanged(value)
+        RubimRH.db.profile[66].lotpEnabled = value
+        print("|cFF69CCF0Light of the Protector" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].lotpEnabled))
+    end
+
+    local protectorHP = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[66].lotpHP);
+    protectorHP :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(protectorHP , protectorEnabled, -5, 0, 'CENTER');
+    function protectorHP :OnValueChanged(value)
+       RubimRH.db.profile[66].lotpHP = value
+    end
+
+
     local extra = StdUi:FontString(window, 'Extra');
-    StdUi:GlueTop(extra, window, 0, -420);
+    StdUi:GlueTop(extra, window, 0, -300);
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
