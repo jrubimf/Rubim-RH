@@ -340,7 +340,7 @@ local function APL()
             return S.Berserking:Cast()
         end
         -- marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=CPMaxSpend())
-        if S.MarkedForDeath:IsReady() and (Target:TimeToDie() < Player:ComboPointsDeficit() * 1.5 or (10000000000 > 40 and Player:ComboPointsDeficit() >= CPMaxSpend())) then
+        if S.MarkedForDeath:IsReady() and (Target:TimeToDie() < Player:ComboPointsDeficit() * 1.5) then
             return S.MarkedForDeath:Cast()
         end
         -- vendetta,if=dot.rupture.ticking
