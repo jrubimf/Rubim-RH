@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH.iws" afterPath="$PROJECT_DIR$/Rubim-RH.iws" />
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -15,16 +14,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Rubim-RHc.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rubim-RHc.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1513">
-              <caret line="89" column="90" lean-forward="false" selection-start-line="89" selection-start-column="8" selection-end-line="89" selection-end-column="90" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="outlaw.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua">
           <provider selected="true" editor-type-id="text-editor">
@@ -58,8 +47,8 @@
       <file leaf-file-name="havoc.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="355" column="0" lean-forward="false" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
+            <state relative-caret-position="306">
+              <caret line="218" column="4" lean-forward="false" selection-start-line="218" selection-start-column="4" selection-end-line="218" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -78,8 +67,18 @@
       <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="308" column="7" lean-forward="true" selection-start-line="308" selection-start-column="7" selection-end-line="308" selection-end-column="7" />
+            <state relative-caret-position="214">
+              <caret line="223" column="213" lean-forward="true" selection-start-line="223" selection-start-column="213" selection-end-line="223" selection-end-column="213" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Spells.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="636" column="13" lean-forward="false" selection-start-line="636" selection-start-column="4" selection-end-line="636" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -126,16 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Sweeping</find>
-      <find>FelBarrage</find>
-      <find>VarWaitingForMomentum</find>
-      <find>WaitingForDarkSlash</find>
-      <find>isReady</find>
-      <find>IsReady</find>
-      <find>vanish</find>
-      <find>Dropdown</find>
-      <find>t</find>
-      <find>dropdown</find>
       <find>healthstoneEnabled</find>
       <find>Healthstone</find>
       <find>Health</find>
@@ -143,7 +132,6 @@
       <find>Knive</find>
       <find>Knives</find>
       <find>Buff</find>
-      <find>BuffStack</find>
       <find>Arms</find>
       <find>OverpowerBuff</find>
       <find>cooldown</find>
@@ -156,9 +144,19 @@
       <find>VarWaitingForDarkSlash</find>
       <find>HL.</find>
       <find>HR.</find>
+      <find>HR</find>
+      <find>Feral</find>
+      <find>BloodTalon</find>
+      <find>CatFormBuff</find>
+      <find>ProwlBuff</find>
+      <find>HRG</find>
+      <find>BuffStack</find>
+      <find>IsUsablePPool</find>
+      <find>pool</find>
+      <find>Fero</find>
+      <find>RipDebuff</find>
     </findStrings>
     <replaceStrings>
-      <replace>SephuzsSecretBuff</replace>
       <replace>DebuffRefreshableC</replace>
       <replace>Spell:DebuffRemains</replace>
       <replace>DebuffRemains</replace>
@@ -188,6 +186,7 @@
       <replace>(true)</replace>
       <replace>DebuffPvP(</replace>
       <replace>Class Specific</replace>
+      <replace>IsUsable</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -236,7 +235,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -423,7 +422,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -496,6 +495,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1666">
           <caret line="98" column="31" lean-forward="false" selection-start-line="98" selection-start-column="31" selection-end-line="98" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -685,6 +685,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="187" column="78" lean-forward="false" selection-start-line="187" selection-start-column="78" selection-end-line="187" selection-end-column="78" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -706,13 +707,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
           <caret line="300" column="62" lean-forward="false" selection-start-line="300" selection-start-column="62" selection-end-line="300" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="157" column="32" lean-forward="false" selection-start-line="157" selection-start-column="32" selection-end-line="157" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -802,14 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="355" column="0" lean-forward="false" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/guardian.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -818,10 +804,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="636" column="13" lean-forward="false" selection-start-line="636" selection-start-column="4" selection-end-line="636" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="218" column="4" lean-forward="false" selection-start-line="218" selection-start-column="4" selection-end-line="218" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="308" column="7" lean-forward="true" selection-start-line="308" selection-start-column="7" selection-end-line="308" selection-end-column="7" />
+        <state relative-caret-position="214">
+          <caret line="223" column="213" lean-forward="true" selection-start-line="223" selection-start-column="213" selection-end-line="223" selection-end-column="213" />
           <folding />
         </state>
       </provider>
