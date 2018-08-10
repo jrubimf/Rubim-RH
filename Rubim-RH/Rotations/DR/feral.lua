@@ -161,7 +161,7 @@ local function APL()
             VarUseThrash = 1
         end
         -- cat_form
-        if S.CatForm:IsReady() and Player:BuffDownP(S.CatFormBuff) and (true) then
+        if S.CatForm:IsReady() and (not Player:Buff(S.CatFormBuff)) and (true) then
             return S.CatForm:Cast()
         end
         -- prowl

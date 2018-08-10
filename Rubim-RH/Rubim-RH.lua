@@ -230,11 +230,7 @@ local defaults = {
             DivineHP = 20,
             wogenabled = false,
             wogHP = 65,
-            SoVOpener = false,    
-          
-
-            Spells = {
-            }
+            SoVOpener = false,
         },
         [65] = {
             cooldown = true,
@@ -249,9 +245,6 @@ local defaults = {
             lohHealth = 30,
             lotpEnabled = true,
             lotpHP = 50,
-          
-            Spells = {
-            }
         },
         --WARRIOR
         [71] = {
