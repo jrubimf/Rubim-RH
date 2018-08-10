@@ -80,7 +80,7 @@ local function cooldowns()
     end
 
     --actions.cooldowns+=/incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-    if S.Incarnation:IsReady() and HR.CDsON() and (Player:Energy() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:BuffP(S.TigersFuryBuff))) then
+    if S.Incarnation:IsReady() and RubimRH.CDsON() and (Player:Energy() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:BuffP(S.TigersFuryBuff))) then
     	return S.Incarnation:Cast()
     end
 
