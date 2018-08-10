@@ -155,6 +155,7 @@ RubimRH.Spell[71] = {
     Slam = Spell(1464),
     Massacre = Spell(206315),
     ExecuteMassacre = Spell(281000),
+    Dreadnaught = Spell(262150),
 
     -- Talents
     SuddenDeathBuff = Spell(52437),
