@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -70,8 +67,8 @@
       <file leaf-file-name="UI.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/UI.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="282" column="53" lean-forward="false" selection-start-line="282" selection-start-column="53" selection-end-line="282" selection-end-column="53" />
+            <state relative-caret-position="452">
+              <caret line="219" column="30" lean-forward="false" selection-start-line="219" selection-start-column="30" selection-end-line="219" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -128,8 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>RapidFire</find>
-      <find>VarWaitingForDarkSlash</find>
       <find>HL.</find>
       <find>HR.</find>
       <find>HR</find>
@@ -158,6 +153,8 @@
       <find>sk_1_</find>
       <find>sk_2_0</find>
       <find>Death Strike</find>
+      <find>Frost</find>
+      <find>Death</find>
     </findStrings>
     <replaceStrings>
       <replace>DebuffRefreshableC</replace>
@@ -833,8 +830,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/UI.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="282" column="53" lean-forward="false" selection-start-line="282" selection-start-column="53" selection-end-line="282" selection-end-column="53" />
+        <state relative-caret-position="452">
+          <caret line="219" column="30" lean-forward="false" selection-start-line="219" selection-start-column="30" selection-end-line="219" selection-end-column="30" />
           <folding />
         </state>
       </provider>

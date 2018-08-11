@@ -212,6 +212,14 @@ local function FrostMenu()
         RubimRH.db.profile[250].icebound = value
     end
 
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].deathstrike);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Death Strike (Proc)', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[251].deathstrike = value
+    end
+
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -310);
     local extraSep = StdUi:FontString(window, '===================');
