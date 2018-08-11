@@ -47,6 +47,7 @@ RubimRH.Spell[252] = {
     Outbreak = Spell(77575),
     VirulentPlagueDebuff = Spell(191587),
     DarkSuccor = Spell(101568),
+    DeathStrike = Spell(49998),
 
 };
 local S = RubimRH.Spell[252]
@@ -321,6 +322,24 @@ local function APL()
         end
         return 0, 462338
     end
+    -- custom
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
+        return S.DeathStrike:Cast()
+    end
+
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
+        return S.DeathStrike:Cast()
+    end
+
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].deathstrike then
+        if S.DeathStrike:IsUsable() then
+            return S.DeathStrike:Cast()
+        else
+            S.DeathStrike:Queue()
+            return 0, 135328
+        end
+    end
+
     -- auto_attack
     -- mind_freeze
     if S.MindFreeze:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (true) then

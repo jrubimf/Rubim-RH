@@ -277,6 +277,22 @@ local function UnholyMenu()
         RubimRH.db.profile[250].icebound = value
     end
 
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[252].deathstrike);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Death Strike (Proc)', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[252].deathstrike = value
+    end
+
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[252].deathstrikeper);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Death Strike', 'TOP');
+    function sk_2_0:OnValueChanged(value)
+        RubimRH.db.profile[252].deathstrikeper = value
+    end
+
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -310);
     local extraSep = StdUi:FontString(window, '===================');
