@@ -189,10 +189,10 @@ local defaults = {
             runetap = 35,
             vampiricblood = 50,
             smartds = 30,
-            deficitds = 10,
+            deficitds = 30,
             drw = 75,
             Spells = {
-                { spellID = DeathStrike, isActive = false, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
+                { spellID = DeathStrike, isActive = true, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
                 { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },
                 { spellID = DeathandDecay, isActive = true, description = "Disable Death and Decay." }
             }
@@ -211,6 +211,7 @@ local defaults = {
         [252] = {
             cooldown = true,
             deathstrike = 85,
+            deathstrikeper = 25,
             icebound = 60,
             Spells = {
                 { spellID = DeathStrike, isActive = true },
