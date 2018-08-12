@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
+      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="feral.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="271" column="6" lean-forward="true" selection-start-line="271" selection-start-column="6" selection-end-line="276" selection-end-column="15" />
+            <state relative-caret-position="176">
+              <caret line="362" column="36" lean-forward="false" selection-start-line="362" selection-start-column="36" selection-end-line="362" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -64,7 +64,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/UI.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="452">
@@ -125,10 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>HL.</find>
-      <find>HR.</find>
-      <find>HR</find>
-      <find>Feral</find>
       <find>BloodTalon</find>
       <find>CatFormBuff</find>
       <find>ProwlBuff</find>
@@ -155,9 +151,12 @@
       <find>Death Strike</find>
       <find>Frost</find>
       <find>Death</find>
+      <find>Rake</find>
+      <find>RakeDebuff</find>
+      <find>MoonfireCat</find>
+      <find>Cat</find>
     </findStrings>
     <replaceStrings>
-      <replace>DebuffRefreshableC</replace>
       <replace>Spell:DebuffRemains</replace>
       <replace>DebuffRemains</replace>
       <replace>HL.Exsanguinated(Target, &quot;Garrote&quot;)</replace>
@@ -187,6 +186,7 @@
       <replace>DebuffPvP(</replace>
       <replace>Class Specific</replace>
       <replace>IsUsable</replace>
+      <replace>SwipeCatMorph:IsReady()</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -227,11 +227,11 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua" />
       </list>
     </option>
   </component>
@@ -796,14 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="271" column="6" lean-forward="true" selection-start-line="271" selection-start-column="6" selection-end-line="276" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -832,6 +824,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="452">
           <caret line="219" column="30" lean-forward="false" selection-start-line="219" selection-start-column="30" selection-end-line="219" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DR/feral.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="362" column="36" lean-forward="false" selection-start-line="362" selection-start-column="36" selection-end-line="362" selection-end-column="36" />
           <folding />
         </state>
       </provider>

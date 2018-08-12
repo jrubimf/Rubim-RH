@@ -298,7 +298,7 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
-        if S.ThrashCat:IsReady() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
             if S.ThrashCat:IsUsable() then
                 return S.ThrashCat:Cast()
             else
@@ -308,7 +308,7 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- thrash_cat,if=spell_targets.thrash_cat>3&equipped.luffa_wrappings&talent.brutal_slash.enabled
-        if S.ThrashCat:IsReady() and (Cache.EnemiesCount[8] > 3 and I.LuffaWrappings:IsEquipped() and S.BrutalSlash:IsAvailable()) then
+        if S.ThrashCat:IsReadyMorph() and (Cache.EnemiesCount[8] > 3 and I.LuffaWrappings:IsEquipped() and S.BrutalSlash:IsAvailable()) then
             if S.ThrashCat:IsUsable() then
                 return S.ThrashCat:Cast()
             else
@@ -318,7 +318,7 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
-        if S.Rake:IsReady() and (true) then
+        if S.Rake:IsReady() and (not Target:DebuffP(S.RakeDebuff) or (not S.Bloodtalons:IsAvailable() and Target:DebuffRemainsP(S.RakeDebuff) < S.RakeDebuff:BaseDuration() * 0.3) and Target:TimeToDie() > 4) then
             if S.Rake:IsUsable() then
                 return S.Rake:Cast()
             else
@@ -328,7 +328,7 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
-        if S.Rake:IsReady() and (true) then
+        if S.Rake:IsReady() and  (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4) then
             if S.Rake:IsUsable() then
                 return S.Rake:Cast()
             else
@@ -341,12 +341,12 @@ local function APL()
             return S.BrutalSlash:Cast()
         end
         -- moonfire_cat,target_if=refreshable
-        if S.MoonfireCat:IsReady() and (true) then
+        if S.MoonfireCat:IsReadyMorph() and (Target:DebuffRefreshableCP(S.MoonfireCatDebuff)) then
             return S.MoonfireCat:Cast()
         end
         -- pool_resource,for_next=1
         -- thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
-        if S.ThrashCat:IsReady() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
             if S.ThrashCat:IsUsable() then
                 return S.ThrashCat:Cast()
             else
@@ -355,12 +355,12 @@ local function APL()
             end
         end
         -- thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
-        if S.ThrashCat:IsReady() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and VarUseThrash == 1 and bool(Player:Buff(S.ClearcastingBuff))) then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and VarUseThrash == 1 and bool(Player:Buff(S.ClearcastingBuff))) then
             return S.ThrashCat:Cast()
         end
         -- pool_resource,for_next=1
         -- swipe_cat,if=spell_targets.swipe_cat>1
-        if S.SwipeCat:IsReady() and (Cache.EnemiesCount[8] > 1) then
+        if S.SwipeCat:IsReadyMorph() and (Cache.EnemiesCount[8] > 1) then
             if S.SwipeCat:IsUsable() then
                 return S.SwipeCat:Cast()
             else
@@ -397,7 +397,7 @@ local function APL()
     -- dash,if=!buff.cat_form.up
     -- auto_attack
     -- moonfire_cat,if=talent.lunar_inspiration.enabled&!ticking
-    if S.MoonfireCat:IsReady() and (S.LunarInspiration:IsAvailable() and not Target:Debuff(S.MoonfireCatDebuff)) then
+    if S.MoonfireCat:IsReadyMorph() and (S.LunarInspiration:IsAvailable() and not Target:Debuff(S.MoonfireCatDebuff)) then
         return S.MoonfireCat:Cast()
     end
     -- savage_roar,if=!buff.savage_roar.up
@@ -425,7 +425,7 @@ local function APL()
         return S.Rip:Cast()
     end
     -- thrash_cat,if=!ticking&variable.use_thrash>0
-    if S.ThrashCat:IsReady() and (not Target:Debuff(S.ThrashCatDebuff) and VarUseThrash > 0) then
+    if S.ThrashCat:IsReadyMorph() and (not Target:Debuff(S.ThrashCatDebuff) and VarUseThrash > 0) then
         return S.ThrashCat:Cast()
     end
     -- shred
