@@ -91,6 +91,11 @@ local function APL()
 
     --NO COMBAT
     if not Player:AffectingCombat() then
+        if S.DancingRuneWeapon:IsReady() and HL.BMPullTime() <= 1 then
+            return S.DancingRuneWeapon()
+        end
+
+
         return 0, 462338
     end
 

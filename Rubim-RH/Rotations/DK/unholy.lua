@@ -152,7 +152,7 @@ local function APL()
             return S.RaiseDead:Cast()
         end
         -- army_of_the_dead
-        if S.ArmyoftheDead:IsReady() and (true) then
+        if S.ArmyoftheDead:IsReady() and HL.BMPullTime() <= select(2, GetRuneCooldown(1)) - 1 then
             return S.ArmyoftheDead:Cast()
         end
     end
