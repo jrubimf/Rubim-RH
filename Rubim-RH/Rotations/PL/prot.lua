@@ -32,19 +32,21 @@ RubimRH.Spell[66] = {
   Consecration                          = Spell(26573),
   BlessedHammer                         = Spell(204019),
   HammeroftheRighteous                  = Spell(53595),
-  ArdentDefender 						= Spell(31850),
-  GuardianOfAncientKings				= Spell(86659),
-  HandOfTheProtector					= Spell(213652),
-  BlessingOfProtection					= Spell(1022),
-  BlessingOfSacrifice 					= Spell(6940),
-  BlessingOfFreedom						= Spell(1044),
-  Forbearance 							= Spell(25771),
-  LayOnHands 							= Spell(633),
-  ConsecrationBuff						= Spell(188370),
-  LightofTheProtector          = Spell(184092),
-  ShieldoftheRighteousBuff = Spell(132403)
+  ArdentDefender 					            	= Spell(31850),
+  GuardianOfAncientKings				        = Spell(86659),
+  HandOfTheProtector				          	= Spell(213652),
+  BlessingOfProtection					        = Spell(1022),
+  BlessingOfSacrifice 					        = Spell(6940),
+  BlessingOfFreedom						          = Spell(1044),
+  Forbearance 							            = Spell(25771),
+  LayOnHands 							              = Spell(633),
+  ConsecrationBuff						          = Spell(188370),
+  LightofTheProtector                   = Spell(184092),
+  ShieldoftheRighteousBuff              = Spell(132403)
+                                                      
+                                                      };
 
-};
+
 local S = RubimRH.Spell[66];
 local G = RubimRH.Spell[1]; -- General Skills
 
