@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
+      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,6 +29,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="194">
               <caret line="48" column="60" lean-forward="false" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="60" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="havoc.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="372" column="18" lean-forward="false" selection-start-line="372" selection-start-column="11" selection-end-line="372" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -75,7 +84,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="unholy.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="unholy.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="226">
@@ -105,16 +114,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prot.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/prot.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="573">
-              <caret line="128" column="100" lean-forward="false" selection-start-line="128" selection-start-column="100" selection-end-line="128" selection-end-column="100" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -126,9 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>BuffStack</find>
-      <find>IsUsablePPool</find>
-      <find>pool</find>
       <find>Fero</find>
       <find>RipDebuff</find>
       <find>BloodtalonsBuff</find>
@@ -154,8 +150,11 @@
       <find>Cat</find>
       <find>SwipeCatMorph:IsReady()</find>
       <find>TimeTo</find>
-      <find>Timeto</find>
       <find>DancingRuneWeapon</find>
+      <find>Timeto</find>
+      <find>BladeDance</find>
+      <find>BladeDance</find>
+      <find>S.Blade</find>
     </findStrings>
     <replaceStrings>
       <replace>DebuffRemains</replace>
@@ -214,7 +213,6 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/HR/survival.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/PL/ret.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomSpells.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/Custom.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua" />
@@ -233,6 +231,7 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" />
       </list>
     </option>
   </component>
@@ -749,22 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="396" column="46" lean-forward="false" selection-start-line="396" selection-start-column="42" selection-end-line="396" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="48" column="60" lean-forward="false" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/prot.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="573">
@@ -833,6 +816,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
           <caret line="154" column="93" lean-forward="false" selection-start-line="154" selection-start-column="93" selection-end-line="154" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="48" column="60" lean-forward="false" selection-start-line="48" selection-start-column="56" selection-end-line="48" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="372" column="18" lean-forward="false" selection-start-line="372" selection-start-column="11" selection-end-line="372" selection-end-column="18" />
           <folding />
         </state>
       </provider>

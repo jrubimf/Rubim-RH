@@ -294,7 +294,7 @@ local function APL()
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
-        if S.BladeDance:IsReady() and (bool(VarBladeDance) and S.EyeBeam:CooldownRemainsP() > 5 and not S.Metamorphosis:CooldownUpP()) then
+        if S.BladeDance:IsReady() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance) and S.EyeBeam:CooldownRemainsP() > 5 and not S.Metamorphosis:CooldownUpP()) then
             return S.BladeDance:Cast()
         end
         -- immolation_aura
@@ -370,7 +370,7 @@ local function APL()
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance
-        if S.BladeDance:IsReady() and (bool(VarBladeDance)) then
+        if S.BladeDance:IsReady() and  Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.BladeDance:Cast()
         end
         -- felblade,if=fury.deficit>=40
