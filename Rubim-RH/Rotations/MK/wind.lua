@@ -168,7 +168,7 @@ local function APL()
             return S.WhirlingDragonPunch:Cast()
         end
         -- rising_sun_kick,target_if=cooldown.whirling_dragon_punch.remains>=gcd&!prev_gcd.1.rising_sun_kick&cooldown.fists_of_fury.remains>gcd
-        if S.RisingSunKick:IsReady() and (true) then
+        if S.RisingSunKick:IsReady() and S.WhirlingDragonPunch:CooldownRemains() >= Player:GCD() and not Player:PrevGCD(1, S.RisingSunKick) and S.FistsofFury:CooldownRemains() > Player:GCD() then
             return S.RisingSunKick:Cast()
         end
         -- chi_burst,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1

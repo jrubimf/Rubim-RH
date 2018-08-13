@@ -162,7 +162,7 @@ local function APL()
         return S.ExplosiveShot:Cast()
     end
     -- multishot,if=active_enemies>2&buff.precise_shots.up&cooldown.aimed_shot.full_recharge_time<gcd*buff.precise_shots.stack+action.aimed_shot.cast_time
-    if S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and Player:BuffP(S.PreciseShotsBuff) and S.AimedShot:FullRechargeTime() < Player:GCD() * Player:BuffStackP(S.PreciseShotsBuff) + S.AimedShot:CastTime()) then
+    if S.MultiShot:IsReady() and  RubimRH.AoEON() and (Cache.EnemiesCount[40] > 2 and Player:BuffP(S.PreciseShotsBuff) and S.AimedShot:FullRechargeTime() < Player:GCD() * Player:BuffStackP(S.PreciseShotsBuff) + S.AimedShot:CastTime()) then
         return S.MultiShot:Cast()
     end
     -- arcane_shot,if=active_enemies<3&buff.precise_shots.up&cooldown.aimed_shot.full_recharge_time<gcd*buff.precise_shots.stack+action.aimed_shot.cast_time
@@ -190,7 +190,7 @@ local function APL()
         return S.AMurderofCrows:Cast()
     end
     -- multishot,if=active_enemies>2&buff.trick_shots.down
-    if S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and Player:BuffDownP(S.TrickShotsBuff)) then
+    if S.MultiShot:IsReady() and RubimRH.AoEON() and (Cache.EnemiesCount[40] > 2 and Player:BuffDownP(S.TrickShotsBuff)) then
         return S.MultiShot:Cast()
     end
     -- aimed_shot,if=buff.precise_shots.down&(focus>70|buff.steady_focus.down)
@@ -198,7 +198,7 @@ local function APL()
         return S.AimedShot:Cast()
     end
     -- multishot,if=active_enemies>2&(focus>90|buff.precise_shots.up&(focus>70|buff.steady_focus.down&focus>45))
-    if S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Player:Focus() > 90 or Player:BuffP(S.PreciseShotsBuff) and (Player:Focus() > 70 or Player:BuffDownP(S.SteadyFocusBuff) and Player:Focus() > 45))) then
+    if S.MultiShot:IsReady() and RubimRH.AoEON() and (Cache.EnemiesCount[40] > 2 and (Player:Focus() > 90 or Player:BuffP(S.PreciseShotsBuff) and (Player:Focus() > 70 or Player:BuffDownP(S.SteadyFocusBuff) and Player:Focus() > 45))) then
         return S.MultiShot:Cast()
     end
     -- arcane_shot,if=active_enemies<3&(focus>70|buff.steady_focus.down&(focus>60|buff.precise_shots.up))

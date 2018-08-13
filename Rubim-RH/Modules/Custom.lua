@@ -77,12 +77,12 @@ end
 
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
     local unitID = ...
-    AddNameplate(unitID)
+    --AddNameplate(unitID)
 end)
 
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
     local unitID = ...
-    RemoveNameplate(unitID)
+    --RemoveNameplate(unitID)
 end)
 
 function DiyingIn()
