@@ -160,7 +160,7 @@ local defaults = {
             healthstoneEnabled = true,
             align = "CENTER",
             xCord = 0,
-            yCord = -200,
+            yCord = 0,
             disabledSpells = {},
             disabledSpellsCD = {}
         },
