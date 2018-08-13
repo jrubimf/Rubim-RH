@@ -406,51 +406,61 @@ function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.050) then
 
-        if RubimRH.mainRotation() == "ERROR" then
-            MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
-            return
-        end
-        if CDText ~= nil then
-            CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
-            AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
-        end
-
-        local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
-        local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
-
-        if singleRotation == 0 or singleRotation == 1 then
-            MainIconFrame.texture:SetTexture(singleRotation2)
+        if RubimRH.db.profile.mainOption.mainIcon then
+            Icons.MainIcon:Show()
+            if CDText ~= nil then
+                CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
+                AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")
+            end
         else
-            MainIconFrame.texture:SetTexture(singleRotation)
+            Icons.MainIcon:Hide()
+            if CDText ~= nil then
+                CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "")
+                AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "")
+            end
         end
 
-        if RubimExtra then
-            RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
-            if passiveRotation == 0 then
-                RubimRH.passiveIcon.texture:SetTexture(nil)
-            elseif passiveRotation == 1 then
+            if RubimRH.mainRotation() == "ERROR" then
+                MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
+                return
+            end
+
+            local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
+            local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
+
+            if singleRotation == 0 or singleRotation == 1 then
+                MainIconFrame.texture:SetTexture(singleRotation2)
+            else
+                MainIconFrame.texture:SetTexture(singleRotation)
+            end
+
+            if RubimExtra then
                 RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
-            else
-                RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
-            end
+                if passiveRotation == 0 then
+                    RubimRH.passiveIcon.texture:SetTexture(nil)
+                elseif passiveRotation == 1 then
+                    RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
+                else
+                    RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
+                end
 
-            if singleRotation == 0 then
-                RubimRH.stIcon.texture:SetTexture(nil)
-            elseif singleRotation == 1 then
-                RubimRH.stIcon.texture:SetTexture(singleRotation2)
-            else
-                RubimRH.stIcon.texture:SetTexture(singleRotation)
-            end
+                if singleRotation == 0 then
+                    RubimRH.stIcon.texture:SetTexture(nil)
+                elseif singleRotation == 1 then
+                    RubimRH.stIcon.texture:SetTexture(singleRotation2)
+                else
+                    RubimRH.stIcon.texture:SetTexture(singleRotation)
+                end
 
-            if not UnitIsPlayer(Target.UnitID) and Target:IsInterruptable() then
-                RubimRH.kickIcon.texture:SetTexture(1)
-            else
-                RubimRH.kickIcon.texture:SetTexture(nil)
-            end
+                if not UnitIsPlayer(Target.UnitID) and Target:IsInterruptable() then
+                    RubimRH.kickIcon.texture:SetTexture(1)
+                else
+                    RubimRH.kickIcon.texture:SetTexture(nil)
+                end
 
+            end
+            self.sinceLastUpdate = 0;
         end
-        self.sinceLastUpdate = 0;
-    end
 end
 
 CinematicFrame:HookScript("OnShow", function(self, ...)
