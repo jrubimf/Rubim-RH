@@ -75,6 +75,10 @@ local function bool(val)
   return val ~= 0
 end
 
+local OffensiveCDs = {
+    S.AvengingWrath
+}
+
 
 function ConcerationTime()
     for i = 1, 5 do
@@ -86,10 +90,33 @@ function ConcerationTime()
     return 0
 end
 
+
+local function UpdateCDs()
+    if RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
+
+
+
 --- ======= ACTION LISTS =======
 local function APL()
   local Precombat
   UpdateRanges()
+   UpdateCDs()
   Precombat = function()
     -- flask
     -- food
