@@ -170,7 +170,7 @@ local function APL()
         return S.ArcaneShot:Cast()
     end
     -- aimed_shot,if=buff.precise_shots.down&buff.double_tap.down&(active_enemies>2&buff.trick_shots.up|active_enemies<3&full_recharge_time<cast_time+gcd)
-    if S.AimedShot:IsReady() and (Player:BuffDownP(S.PreciseShotsBuff) and Player:BuffDownP(S.DoubleTapBuff) and (Cache.EnemiesCount[40] > 2 and Player:BuffP(S.TrickShotsBuff) or Cache.EnemiesCount[40] < 3 and S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime() + Player:GCD())) then
+    if S.AimedShot:IsReady() and RubimRH.AoEON() and (Player:BuffDownP(S.PreciseShotsBuff) and Player:BuffDownP(S.DoubleTapBuff) and (Cache.EnemiesCount[40] > 2 and Player:BuffP(S.TrickShotsBuff) or Cache.EnemiesCount[40] < 3 and S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime() + Player:GCD())) then
         return S.AimedShot:Cast()
     end
     -- rapid_fire,if=active_enemies<3|buff.trick_shots.up
