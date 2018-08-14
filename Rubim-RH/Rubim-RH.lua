@@ -158,6 +158,7 @@ local defaults = {
             startattack = false,
             healthstoneper = 20,
             healthstoneEnabled = true,
+            mainIcon = true,
             align = "CENTER",
             xCord = 0,
             yCord = 0,

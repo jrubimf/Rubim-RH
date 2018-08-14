@@ -223,7 +223,10 @@ RubimRH.Spell[73] = {
     Pummel = Spell(6552),
     ShieldBlock = Spell(2565),
     ShieldBlockBuff = Spell(132404),
-    ShieldWall = Spell(871)
+    ShieldWall = Spell(871),
+    Taunt = Spell(355),
+    Opressor = Spell(205800),
+    Intimidated = Spell(206891),
 }
 
 
