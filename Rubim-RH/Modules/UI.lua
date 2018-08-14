@@ -132,6 +132,23 @@ local function BloodMenu()
         RubimRH.db.profile[250].drw = value
     end
 
+--    local sk_3_0 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].smartds, false, 0, 100)
+    --local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
+    --sk_3_0:SetMinMaxValue(0, 100);
+--    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
+--    StdUi:AddLabel(window, sk_3_0, 'DS - ' .. RubimRH.db.profile[250].smartds, 'TOP');
+--    StdUi:FrameTooltip(sk_3_0, 'How much inc dmg, in percent so we can start using DS.', 'TOPLEFT', 'TOPRIGHT', true);
+--    function sk_3_0:OnValueChanged(value)
+--        local value = math.floor(value)
+  --      sk_3_0:SetValue(value);
+
+--        if RubimRH.db.profile[250].smartds ~= value then
+--            print('DS Percent: '  .. value)
+  --      end
+
+--        RubimRH.db.profile[250].smartds = value
+    --end
+
     local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
     sk_3_0:SetMinMaxValue(0, 100);
     StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
@@ -220,6 +237,22 @@ local function FrostMenu()
         RubimRH.db.profile[251].deathstrike = value
     end
 
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].deathstrikeper);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Death Strike (Emergency)', 'TOP');
+    function sk_2_0:OnValueChanged(value)
+        RubimRH.db.profile[251].deathstrikeper = value
+    end
+
+    local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[251].deathpact);
+    sk_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_2_1, 'Death Pact', 'TOP');
+    function sk_2_1:OnValueChanged(value)
+        RubimRH.db.profile[251].deathpact = value
+    end
+
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -310);
     local extraSep = StdUi:FontString(window, '===================');
@@ -231,6 +264,7 @@ local function FrostMenu()
         RubimRH.SpellBlocker()
     end);
 end
+
 local function UnholyMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Unholy', 350, 500);
     window:SetPoint('CENTER');
@@ -792,8 +826,8 @@ local function OutMenu()
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_2_1, 'Roll the Bones', 'TOP');
     function sk_2_1:OnValueChanged(value)
-        RubimRH.db.profile[250].dice = self:GetText()
-        print("Roll the Bones: " .. RubimRH.db.profile[250].dice)
+        RubimRH.db.profile[260].dice = self:GetText()
+        print("Roll the Bones: " .. RubimRH.db.profile[260].dice)
     end
 
     local sk_3_0 = StdUi:Checkbox(window, "Vanish Attack");

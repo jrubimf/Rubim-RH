@@ -62,7 +62,7 @@ local function Aoe()
         return S.FrostStrike:Cast()
     end
     -- howling_blast,if=buff.rime.up
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff)) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff)) then
         return S.HowlingBlast:Cast()
     end
     -- frostscythe,if=buff.killing_machine.up
@@ -110,7 +110,7 @@ end
 
 local function BosPooling()
     -- howling_blast,if=buff.rime.up
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff)) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff)) then
         return S.HowlingBlast:Cast()
     end
     -- obliterate,if=rune.time_to_4<gcd&runic_power.deficit>=25
@@ -154,7 +154,7 @@ local function BosTicking()
         return S.RemorselessWinter:Cast()
     end
     -- howling_blast,if=buff.rime.up
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff)) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff)) then
         return S.HowlingBlast:Cast()
     end
     -- obliterate,if=rune.time_to_5<gcd|runic_power<=45
@@ -263,7 +263,7 @@ local function Obliteration()
         return S.GlacialAdvance:Cast()
     end
     -- howling_blast,if=buff.rime.up&spell_targets.howling_blast>=2
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff) and Cache.EnemiesCount[30] >= 2) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff) and Cache.EnemiesCount[30] >= 2) then
         return S.HowlingBlast:Cast()
     end
     -- frost_strike,if=!buff.rime.up|runic_power.deficit<10|rune.time_to_2>gcd
@@ -271,7 +271,7 @@ local function Obliteration()
         return S.FrostStrike:Cast()
     end
     -- howling_blast,if=buff.rime.up
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff)) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff)) then
         return S.HowlingBlast:Cast()
     end
     -- obliterate
@@ -291,7 +291,7 @@ local function Standard()
         return S.FrostStrike:Cast()
     end
     -- howling_blast,if=buff.rime.up
-    if S.HowlingBlast:IsReady() and (Player:BuffP(S.RimeBuff)) then
+    if S.HowlingBlast:IsReady(30) and (Player:BuffP(S.RimeBuff)) then
         return S.HowlingBlast:Cast()
     end
     -- obliterate,if=!buff.frozen_pulse.up&talent.frozen_pulse.enabled
@@ -327,8 +327,17 @@ end
 local function APL()
     UpdateRanges()
 
-    if not Player:AffectingCombat() then
+    --Mov Speed
+    if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
+        return S.DeathsAdvance:Cast()
+    end
+
+    if not Player:AffectingCombat() and not Target:IsQuestMob() then
         return 0, 462338
+    end
+
+    if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() then
+        return S.DeathGrip:Cast()
     end
 
     --CUSTOM
@@ -337,15 +346,21 @@ local function APL()
     end
 
     if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
+
         return S.DeathStrike:Cast()
     end
+
+    if S.DeathPact:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].deathpact then
+        return S.DeathPact:Cast()
+    end
+
     --END OF CUSTOM
 
     if S.MindFreeze:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.MindFreeze:Cast()
     end
     -- howling_blast,if=!dot.frost_fever.ticking&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-    if S.HowlingBlast:IsReady() and (not Target:DebuffP(S.FrostFeverDebuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemains() > 15 or not RubimRH.config.Spells[2].isActive)) then
+    if S.HowlingBlast:IsReady(30) and (not Target:DebuffP(S.FrostFeverDebuff) and (not S.BreathofSindragosa:IsAvailable() or S.BreathofSindragosa:CooldownRemains() > 15 or not RubimRH.config.Spells[2].isActive)) then
         return S.HowlingBlast:Cast()
     end
     -- glacial_advance,if=buff.icy_talons.remains<=gcd&buff.icy_talons.up&spell_targets.glacial_advance>=2&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)

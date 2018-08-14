@@ -754,6 +754,7 @@ RubimRH.Spell[250] = {
     DeathandDecay = Spell(43265),
     DeathsCaress = Spell(195292),
     DeathStrike = Spell(49998),
+    DeathsAdvance = Spell(48265),
     HeartBreaker = Spell(221536),
     HeartStrike = Spell(206930),
     Marrowrend = Spell(195182),
@@ -775,6 +776,7 @@ RubimRH.Spell[250] = {
     MurderousIntent = Spell(207018),
     Intimidated = Spell(206891),
     DeathChain = Spell(203173),
+    DeathGrip = Spell(49576),
 }
 --FROST
 RubimRH.Spell[251] = {
@@ -827,7 +829,10 @@ RubimRH.Spell[251] = {
     FrostFeverDebuff = Spell(55095),
     IcyTalonsBuff = Spell(194879),
     BreathofSindragosaDebuff = Spell(155166),
-    Obliteration = Spell(281238)
+    Obliteration = Spell(281238),
+    DeathGrip = Spell(49576),
+    DeathsAdvance = Spell(48265),
+    DeathPact = Spell(48743),
 }
 ----DEMONHUNTER
 -- Vengeance

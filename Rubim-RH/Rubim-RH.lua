@@ -202,6 +202,8 @@ local defaults = {
             cooldown = true,
             deathstrike = 85,
             icebound = 60,
+            deathstrikeper = 25,
+            deathpact = 40,
             Spells = {
                 { spellID = DeathStrike, isActive = true },
                 { spellID = BreathOfSindragosa, isActive = true },

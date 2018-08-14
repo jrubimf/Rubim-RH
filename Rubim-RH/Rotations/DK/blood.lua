@@ -89,25 +89,21 @@ local function APL()
         return 0, 236353
     end
 
+    --Mov Speed
+    if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
+        return S.DeathsAdvance:Cast()
+    end
+
     --NO COMBAT
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and not Target:IsQuestMob() then
         if S.DancingRuneWeapon:IsReady() and HL.BMPullTime() <= 1 then
             return S.DancingRuneWeapon()
         end
-
-
         return 0, 462338
     end
 
-    if I.SephuzSecret:IsEquipped() then
-        if Player:Buff(S.SephuzBuff) then
-            lastSephuz = GetTime()
-        end
-
-        --We Should Iterrupt
-        if S.MindFreeze:IsReady() and Cache.EnemiesCount[8] >= 1 and Target:IsCasting() and Target:IsInterruptible() and (((GetTime() - lastSephuz) + 9) >= 30 or ((GetTime() - lastSephuz) + 9) <= 15) then
-            return S.MindFreeze:Cast()
-        end
+   if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() then
+        return S.DeathGrip:Cast()
     end
 
     --if S.DeathStrike:TimeSinceLastCast() <= Player:GCD() then
@@ -144,13 +140,31 @@ local function APL()
     end
 
     --Needs Marrowrend
-    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 5) then
+    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 1) then
         return S.Marrowrend:Cast()
     end
 
     --Aggro
-    if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >=1 then
+    if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.BloodBoil:Cast()
+    end
+
+    if Player:NeedThreat() and S.HeartStrike:IsReady() and Cache.EnemiesCount[8] >= 1 then
+        return S.HeartStrike:Cast()
+    end
+
+    --Needs Marrowrend
+    if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 5) then
+        return S.Marrowrend:Cast()
+    end
+
+    if S.Bonestorm:IsReady() and Cache.EnemiesCount[8] >= 2 then
+        if S.Bonestorm:IsUsable() and Player:RunicPower() >= 90 then
+            return S.Bonestorm:Cast()
+        else
+            S.Bonestorm:Queue()
+            return 0, 135328
+        end
     end
 
     --DSEmergency

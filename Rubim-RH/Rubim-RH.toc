@@ -23,6 +23,7 @@ Modules\UI.lua
 Modules\CombatTracker.lua
 Modules\HealingEngine.lua
 Modules\PVP.lua
+Modules\Quest.lua
 Modules\MiniMap.lua
 Rotations\Shared.lua
 Rotations\DK\blood.lua

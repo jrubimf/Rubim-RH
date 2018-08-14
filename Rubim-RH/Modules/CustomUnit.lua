@@ -22,19 +22,19 @@ end
 
 -- Incoming damage as percentage of Unit's max health
 function Unit:IncDmgPercentage()
-	unit = self.UnitID
+	local unit = self.UnitID
 	local IncomingDPS = (RubimRH.getDMG(unit) / UnitHealthMax(unit)) * 100
 	return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
 function Unit:IncDmgSwing()
-	unit = self.UnitID
+	local unit = self.UnitID
 	local IncomingDPS = (RubimRH.incdmgswing(unit) / UnitHealthMax(unit)) * 100
 	return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
 function Unit:LastSwinged()
-	unit = self.UnitID
+	local unit = self.UnitID
 	return RubimRH.lastSwing(unit)
 end
 
@@ -69,7 +69,8 @@ function Unit:IsSnared()
 		return true
 	end
 
-	if self:Class() == 6 and self:MaxSpeed() < 99 then
+	local engName, standardName, classNumber = self:Class()
+	if classNumber == 6 then
 		return true
 	end
 	return (self:MaxSpeed() < 70)	
@@ -147,4 +148,12 @@ function Unit:IsInWarMode()
 		return true
 	end
 	return false
+end
+
+local movedTimer = 0
+function Unit:MovingFor()
+	if not self:IsMoving() then
+		movedTimer = GetTime()
+	end
+	return GetTime() - movedTimer
 end

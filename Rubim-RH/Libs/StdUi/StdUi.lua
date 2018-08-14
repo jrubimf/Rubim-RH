@@ -6,6 +6,8 @@ if not StdUi then
 	return ;
 end
 
+StdUi.moduleVersions = {};
+
 StdUiInstances = {StdUi};
 
 local function clone(t) -- deep-copy a table
@@ -29,6 +31,18 @@ function StdUi:NewInstance()
 	instance:ResetConfig();
 	tinsert(StdUiInstances, instance);
 	return instance;
+end
+
+function StdUi:RegisterModule(module, version)
+	self.moduleVersions[module] = version;
+end
+
+function StdUi:UpgradeNeeded(module, version)
+	if not self.moduleVersions[module] then
+		return true;
+	end
+
+	return self.moduleVersions[module] < version;
 end
 
 function StdUi:RegisterWidget(name, func)

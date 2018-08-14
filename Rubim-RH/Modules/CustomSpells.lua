@@ -184,8 +184,7 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
-    local range = Range or 8
-    if not self:IsAvailable() or self:Queued() or not RubimRH.TargetIsValid() then
+    if not self:IsAvailable() or self:Queued() then
         return false
     end
 
@@ -198,7 +197,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimRHPvP ~= nil and RubimRHPvP.active then
-        if RubimRH.breakableAreaCC(range) then
+        if RubimRH.breakableAreaCC(8) then
             return false
         end
     end
@@ -211,10 +210,19 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
-    range = self:MaximumRange() or 5
-    HL.GetEnemies(range, true)
-    if range <= 8 and RubimRH.db.profile.mainOption.startattack  and Cache.EnemiesCount[range] >= 1 then
+    local range = self:MaximumRange()
+    if range == 0 or range > 8 then
+        range = 10
+    else
+        range = 8
+    end
+    HL.GetEnemies(8, true)
+    if self:IsMelee() and RubimRH.db.profile.mainOption.startattack and Cache.EnemiesCount[8] >= 1 then
         return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
+    end
+
+    if not RubimRH.TargetIsValid() then
+        return false
     end
 
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();

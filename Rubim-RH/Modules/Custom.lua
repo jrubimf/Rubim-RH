@@ -286,15 +286,11 @@ end
 
 -- Target Valid
 function RubimRH.TargetIsValid()
+    HL.GetEnemies(8);
     local isValid = false
 
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
-
-    if RubimRH.db.profile.mainOption.startattack then
-        isValid = true
-    end
-
     return isValid
 end
