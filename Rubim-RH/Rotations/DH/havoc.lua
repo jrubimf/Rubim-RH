@@ -420,7 +420,7 @@ local function APL()
         return 0, 135328
     end
 
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and not Target:IsQuestMob() then
         return Precombat()
     end
 
