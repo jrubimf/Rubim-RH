@@ -167,7 +167,7 @@ local function APL()
 
 		 --- Azerite should work
 		 -- actions.finishers=variable,name=ds_castable,      value=spell_targets.divine_storm>=3|!talent.righteous_verdict.enabled&talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&target.health.pct<=20&buff.divine_right.down
-   	 varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (not S.RighteousVerdict:IsAvailable() and S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2) or (RubimRH.azerite(5, 453) or RubimRH.azerite(1, 453) or RubimRH.azerite(3, 453) and Target:HealthPercentage() <= 20 and not Player:Buff(S.DivineStormBuffAzerite)))
+   	 varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (not S.RighteousVerdict:IsAvailable() and S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2) or ((RubimRH.azerite(5, 453) or RubimRH.azerite(1, 453) or RubimRH.azerite(3, 453)) and Target:HealthPercentage() <= 20 and not Player:Buff(S.DivineStormBuffAzerite)))
 
 	--actions.finishers+=/inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|
 	--cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
