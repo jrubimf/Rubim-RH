@@ -295,7 +295,7 @@ local function Stealth_CDs ()
         end
         -- actions.stealth_cds+=/shadowmeld,if=energy>=40&energy.deficit>=10&!variable.shd_threshold&debuff.find_weakness.remains<1
         -- actions.stealth_cds+=/shadow_dance,if=(!talent.dark_shadow.enabled|dot.nightblade.remains>=5+talent.subterfuge.enabled)&(variable.shd_threshold|buff.symbols_of_death.remains>=1.2|spell_targets>=4&cooldown.symbols_of_death.remains>10)
-        if (RubimRH.CDsON() or (S.ShadowDance:ChargesFractional() >= Settings.Subtlety.ShDEcoCharge - (S.DarkShadow:IsAvailable() and 0.75 or 0)))
+        if (RubimRH.CDsON() or (S.ShadowDance:ChargesFractional() >= 2.55 - (S.DarkShadow:IsAvailable() and 0.75 or 0)))
                 and S.ShadowDance:IsReady() and S.Vanish:TimeSinceLastDisplay() > 0.3
                 and S.ShadowDance:TimeSinceLastDisplay() ~= 0 and S.Shadowmeld:TimeSinceLastDisplay() > 0.3 and S.ShadowDance:Charges() >= 1
                 and (not S.DarkShadow:IsAvailable() or Target:DebuffRemainsP(S.Nightblade) >= 5 + num(S.Subterfuge:IsAvailable()))
@@ -303,7 +303,7 @@ local function Stealth_CDs ()
             return S.ShadowDance:Cast()
         end
         -- actions.stealth_cds+=/shadow_dance,if=target.time_to_die<cooldown.symbols_of_death.remains
-        if (RubimRH.CDsON() or (S.ShadowDance:ChargesFractional() >= Settings.Subtlety.ShDEcoCharge - (S.DarkShadow:IsAvailable() and 0.75 or 0)))
+        if (RubimRH.CDsON() or (S.ShadowDance:ChargesFractional() >= 2.55 - (S.DarkShadow:IsAvailable() and 0.75 or 0)))
                 and S.ShadowDance:IsReady() and S.Vanish:TimeSinceLastDisplay() > 0.3
                 and S.ShadowDance:TimeSinceLastDisplay() ~= 0 and S.Shadowmeld:TimeSinceLastDisplay() > 0.3 and S.ShadowDance:Charges() >= 1
                 and Target:TimeToDie() < S.SymbolsofDeath:CooldownRemainsP() then
