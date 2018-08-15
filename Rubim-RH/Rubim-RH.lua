@@ -16,7 +16,7 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
 
-    if RubimExtra == true and RubimExtraVer ~= "25072018" then
+    if RubimExtra == true and RubimExtraVer ~= "15082018" then
         message("Update the RubimRH Extra")
     end
 
