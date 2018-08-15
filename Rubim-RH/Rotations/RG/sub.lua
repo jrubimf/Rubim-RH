@@ -279,7 +279,7 @@ local function CDs ()
             end
             -- actions.cds+=/shadow_dance,if=!buff.shadow_dance.up&target.time_to_die<=5+talent.subterfuge.enabled
             if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
-                return S.ShadowDace:Cast()
+                return S.ShadowDance:Cast()
             end
         end
     end
