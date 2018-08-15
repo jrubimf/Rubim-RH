@@ -452,7 +452,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
                     RubimRH.stIcon.texture:SetTexture(singleRotation)
                 end
 
-                if not UnitIsPlayer(Target.UnitID) and Target:IsInterruptable() then
+                if not UnitIsPlayer(Target.UnitID) and Target:IsInterruptible() then
                     RubimRH.kickIcon.texture:SetTexture(1)
                 else
                     RubimRH.kickIcon.texture:SetTexture(nil)

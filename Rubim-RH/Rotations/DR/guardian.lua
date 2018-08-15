@@ -44,7 +44,7 @@ local function Bear()
 			and not Player:Buff(S.Barkskin)
 			and not Player:Buff(S.SurvivalInstincts)
 			and Player:NeedPanicHealing() then
-		return S.Berserking:Cast()
+		return S.SurvivalInstincts:Cast()
 	end
 
 	-- TODO: Fix texture after GGLoader properly updates the Barkskin pixels

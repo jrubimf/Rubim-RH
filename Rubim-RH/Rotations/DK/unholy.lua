@@ -48,6 +48,9 @@ RubimRH.Spell[252] = {
     VirulentPlagueDebuff = Spell(191587),
     DarkSuccor = Spell(101568),
     DeathStrike = Spell(49998),
+    DeathsAdvance = Spell(48265),
+    DeathGrip = Spell(49576),
+    DeathPact = Spell(48743),
 
 };
 local S = RubimRH.Spell[252]
@@ -144,9 +147,6 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
-        if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
-            return I.ProlongedPower:Cast()
-        end
         -- raise_dead
         if S.RaiseDead:IsReady() and not Pet:IsActive() then
             return S.RaiseDead:Cast()
@@ -316,12 +316,23 @@ local function APL()
         end
     end
     -- call precombat
+
+    --Mov Speed
+    if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
+        return S.DeathsAdvance:Cast()
+    end
+
+    if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
+        return S.DeathGrip:Cast()
+    end
+
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
         end
         return 0, 462338
     end
+
     -- custom
     if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
         return S.DeathStrike:Cast()
@@ -375,7 +386,7 @@ local function APL()
         return I.ProlongedPower:Cast()
     end
     -- outbreak,target_if=(dot.virulent_plague.tick_time_remains+tick_time<=dot.virulent_plague.remains)&dot.virulent_plague.remains<=gcd
-    if S.Outbreak:IsReady() and (not Target:Debuff(S.VirulentPlagueDebuff) or Target:DebuffRemainsP(S.VirulentPlagueDebuff) < Player:GCD()) then
+    if S.Outbreak:IsReady(30) and (not Target:Debuff(S.VirulentPlagueDebuff) or Target:DebuffRemainsP(S.VirulentPlagueDebuff) < Player:GCD()) then
         return S.Outbreak:Cast()
     end
     -- call_action_list,name=cooldowns

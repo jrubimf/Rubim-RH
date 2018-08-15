@@ -62,6 +62,7 @@ RubimRH.Spell[577] = {
     ConsumeMagic = Spell(183752),
     ChaosStrike = Spell(162794),
     ChaosNova = Spell(179057),
+    Disrupt = Spell(183752),
     DeathSweep = Spell(210152),
     DemonsBite = Spell(162243),
     EyeBeam = Spell(198013),
@@ -159,6 +160,11 @@ local function IsInMeleeRange()
     elseif S.VengefulRetreat:TimeSinceLastCast() < 1.0 then
         return false
     end
+
+    if RubimRH.db.profile.mainOption.startattack and Cache.EnemiesCount[8] >= 1 then
+        return true
+    end
+
     return Target:IsInRange("Melee")
 end
 
@@ -290,7 +296,7 @@ local function APL()
             return S.FelBarrage:Cast()
         end
         -- death_sweep,if=variable.blade_dance
-        if S.DeathSweep:IsReadyMorph() and (bool(VarBladeDance)) then
+        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] > 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
@@ -366,7 +372,7 @@ local function APL()
             return S.EyeBeam:Cast()
         end
         -- death_sweep,if=variable.blade_dance
-        if S.DeathSweep:IsReadyMorph() and (bool(VarBladeDance)) then
+        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] > 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance
@@ -422,6 +428,10 @@ local function APL()
 
     if not Player:AffectingCombat() and not Target:IsQuestMob() then
         return Precombat()
+    end
+
+    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Disrupt:Cast()
     end
 
     if (true) then
