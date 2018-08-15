@@ -210,15 +210,21 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
-    local range = self:MaximumRange()
-    if range == 0 or range > 8 then
-        range = 10
-    else
-        range = 8
+    if RubimRH.db.profile.mainOption.startattack then
+        local range = self:MaximumRange()
+        if range == 0 or range > 8 then
+            range = 10
+        else
+            range = 8
+        end
+        HL.GetEnemies(8, true)
+        if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
+            return self:IsCastable(nil, nil, nil) and self:IsUsable();
+        end
     end
-    HL.GetEnemies(8, true)
-    if self:IsMelee() and RubimRH.db.profile.mainOption.startattack and     Cache.EnemiesCount[8] >= 1 then
-        return self:IsCastable(nil, nil, ThisUnit) and self:IsUsable();
+
+    if not RubimRH.TargetIsValid() then
+        return false
     end
 
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
@@ -251,20 +257,23 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
         return false
     end
 
-    local range = self:MaximumRange()
-    if range == 0 or range > 8 then
-        range = 10
-    else
-        range = 8
-    end
-    HL.GetEnemies(8, true)
-    if self:IsMelee() and RubimRH.db.profile.mainOption.startattack and Cache.EnemiesCount[8] >= 1 then
-        return self:IsCastableMorph(nil, nil, ThisUnit) and self:IsUsable();
+    if RubimRH.db.profile.mainOption.startattack then
+        local range = self:MaximumRange()
+        if range == 0 or range > 8 then
+            range = 10
+        else
+            range = 8
+        end
+        HL.GetEnemies(8, true)
+        if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
+            return self:IsCastable(nil, nil, nil) and self:IsUsable();
+        end
     end
 
     if not RubimRH.TargetIsValid() then
         return false
     end
+
     return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
