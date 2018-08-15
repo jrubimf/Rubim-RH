@@ -183,7 +183,7 @@ local function Finish (ReturnSpellOnly, StealthSpell)
             return S.Nightblade:Cast()
         end
         -- actions.finish+=/nightblade,cycle_targets=1,if=spell_targets.shuriken_storm>=2&(spell_targets.shuriken_storm<=5|talent.secret_technique.enabled)&!buff.shadow_dance.up&target.time_to_die>=(5+(2*combo_points))&refreshable
-        if RubimRH.AoEON() and S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (Cache.EnemiesCount[10] <= 5 or S.SecretTechnique:IsAvailable()) and not Player:Buff(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.NightbladeDebuff, NightbladeThreshold)) then
+        if RubimRH.AoEON() and S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (Cache.EnemiesCount[10] <= 5 or S.SecretTechnique:IsAvailable()) and not Player:Buff(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.Nightblade, NightbladeThreshold)) then
             return S.Nightblade:Cast()
         end
 

@@ -383,7 +383,7 @@ local function APL()
             VarUseFiller = num(Player:ComboPointsDeficit() > 1 or Player:EnergyDeficit() <= 25 + VarEnergyRegenCombined or Cache.EnemiesCount[10] >= 2)
         end
         -- fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-        if S.FanofKnives:IsReady() and (bool(VarUseFiller) and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(IsStealthed()) or Player:BuffStack(S.TheDreadlordsDeceitBuff) >= 29)) then
+        if S.FanofKnives:IsReady() and RubimRH.AoEON() and (bool(VarUseFiller) and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(IsStealthed()) or Player:BuffStack(S.TheDreadlordsDeceitBuff) >= 29)) then
             return S.FanofKnives:Cast()
         end
         -- blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
