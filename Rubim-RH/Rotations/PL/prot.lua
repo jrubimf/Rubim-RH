@@ -42,8 +42,13 @@ RubimRH.Spell[66] = {
   LayOnHands 							              = Spell(633),
   ConsecrationBuff						          = Spell(188370),
   LightofTheProtector                   = Spell(184092),
-  ShieldoftheRighteousBuff              = Spell(132403)
+  ShieldoftheRighteousBuff              = Spell(132403),
                                                       
+	InqusitionDebuff					= Spell(206891),
+	Inqusition					= Spell(207028),
+	HammerofJustice 				= Spell(853),
+    Rebuke 							= Spell(96231)											  
+													  
                                                       };
 
 
