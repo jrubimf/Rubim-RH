@@ -950,6 +950,103 @@ local function SubMenu()
     end);
 end
 
+local function AssMenu()
+    local window = StdUi:Window(UIParent, 'Rogue - Ass', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    --window.texture = window:CreateTexture(nil, "BACKGROUND")
+    --window.texture:SetTexture(1, 1, 1, 1)
+    --window.texture:SetColorTexture(1, 1, 1, 1)
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Class Specific');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[259].crimsonvial);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Crimson Vial', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[259].crimsonvial = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[259].cloakofshadows);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[259].cloakofshadows = value
+    end
+
+    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[259].evasion);
+    sk_2_0:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_2_0, sk_1_0 , 0, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_2_0, 'Evasion', 'TOP');
+    function sk_2_0:OnValueChanged(value)
+        RubimRH.db.profile[259].evasion = value
+    end
+
+    local sk_2_1 = StdUi:Checkbox(window, "Vanish Attack");
+    sk_2_1:SetChecked(RubimRH.db.profile[259].vanishattack)
+    StdUi:GlueBelow(sk_2_1, sk_1_1, 15, -24, 'RIGHT');
+    function sk_2_1:OnValueChanged(value)
+        if RubimRH.db.profile[259].vanishattack then
+            RubimRH.db.profile[259].vanishattack = false
+        else
+            RubimRH.db.profile[259].vanishattack = true
+        end
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -380);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
 local function HavocMenu()
     local window = StdUi:Window(UIParent, 'Demon Hunter - Havoc', 350, 500);
     window:SetPoint('CENTER');
@@ -1437,6 +1534,80 @@ local function FeralMenu()
     end);
 end
 
+local function VengMenu()
+    local window = StdUi:Window(UIParent, 'Demon Hunter - Vengeance', 350, 500);
+    window:SetPoint('CENTER');
+
+
+    local gn_title = StdUi:FontString(window, 'General');
+    StdUi:GlueTop(gn_title, window, 0, -30);
+    local gn_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(gn_separator, gn_title, 0, -12);
+
+    local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack  )
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    function gn_1_0:OnValueChanged(value)
+        RubimRH.AttackToggle()
+    end
+
+    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
+    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial  )
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    function gn_1_1:OnValueChanged(value)
+        RubimRH.RacialToggle()
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion  )
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
+    gn_2_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
+    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    function gn_2_1:OnValueChanged(value)
+        RubimRH.db.profile.mainOption.healthstoneper = value
+    end
+
+
+    --------------------------------------------------
+    local sk_title = StdUi:FontString(window, 'Class Specific');
+    StdUi:GlueTop(sk_title, window, 0, -200);
+    local sk_separator = StdUi:FontString(window, '===================');
+    StdUi:GlueTop(sk_separator, sk_title, 0, -12);
+
+    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[581].metamorphosis);
+    sk_1_0 :SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_0 , sk_separator, -50, -24, 'LEFT');
+    StdUi:AddLabel(window, sk_1_0 , 'Metamorphosis', 'TOP');
+    function sk_1_0 :OnValueChanged(value)
+        RubimRH.db.profile[581].metamorphosis = value
+    end
+
+    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[581].soulbarrier);
+    sk_1_1:SetMinMaxValue(0, 100);
+    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:AddLabel(window, sk_1_1, 'Soul Barrier', 'TOP');
+    function sk_1_1:OnValueChanged(value)
+        RubimRH.db.profile[581].soulbarrier = value
+    end
+
+    local extra = StdUi:FontString(window, 'Extra');
+    StdUi:GlueTop(extra, window, 0, -310);
+    local extraSep = StdUi:FontString(window, '=====');
+    StdUi:GlueTop(extraSep, extra, 0, -12);
+
+    local extra1 = StdUi:Button(window, 100, 20 , 'Spells Blocker');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
+    extra1:SetScript('OnClick', function()
+        RubimRH.SpellBlocker()
+    end);
+end
+
 function RubimRH.ClassConfig(specID)
     if specID == 250 then
         BloodMenu()
@@ -1478,6 +1649,10 @@ function RubimRH.ClassConfig(specID)
         PaladinProtectionMenu() 
     end
 
+    if specID == 259 then
+        AssMenu()
+    end
+
     if specID == 260 then
         OutMenu()
     end
@@ -1488,6 +1663,10 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 577 then
         HavocMenu()
+    end
+
+    if specID == 581 then
+        VengMenu()
     end
 
     if specID == 269 then

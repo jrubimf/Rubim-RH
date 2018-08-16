@@ -57,6 +57,11 @@ RubimRH.Spell[259] = {
     LeechingPoison = Spell(108211),
     WoundPoison = Spell(8679),
     WoundPoisonDebuff = Spell(8680),
+    -- DEefnsives
+    CrimsonVial = Spell(185311),
+    Evasion = Spell(5277),
+    CloakofShadows = Spell(31224),
+
 };
 local S = RubimRH.Spell[259];
 
@@ -344,7 +349,7 @@ local function APL()
             return S.MarkedForDeath:Cast()
         end
         -- vendetta,if=dot.rupture.ticking
-        if S.Vendetta:IsReady() and (Target:Debuff(S.RuptureDebuff)) then
+        if S.Vendetta:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.RuptureDebuff)) then
             return S.Vendetta:Cast()
         end
         -- vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=CPMaxSpend()&cooldown.exsanguinate.remains<1
@@ -450,12 +455,27 @@ local function APL()
         return Stealthed();
     end
 
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].crimsonvial then
+        return S.CrimsonVial:Cast()
+    end
+
     if not Player:AffectingCombat() then
         if Precombat() ~= nil then
             return Precombat()
         end
         return 0, 462338
     end
+
+    --CUSTOM
+    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].cloakofshadows then
+        return S.CloakofShadows:Cast()
+    end
+
+    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].evasion and Player:LastSwinged() <= 3 then
+        return S.Evasion:Cast()
+    end
+    --END OF CUSTOM
+
     -- variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)
     if (true) then
         VarEnergyRegenCombined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste())

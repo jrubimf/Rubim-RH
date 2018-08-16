@@ -102,8 +102,12 @@ local function APL()
         return 0, 462338
     end
 
-   if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
+    if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
         return S.DeathGrip:Cast()
+    end
+
+    if S.DancingRuneWeapon:IsReady() and Target:IsQuestMob() then
+        return S.DancingRuneWeapon:Cast()
     end
 
     --if S.DeathStrike:TimeSinceLastCast() <= Player:GCD() then

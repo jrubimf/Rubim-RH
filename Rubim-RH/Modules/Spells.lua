@@ -857,6 +857,8 @@ RubimRH.Spell[581] = {
     FieryBrand = Spell(204021),
     DemonSpikes = Spell(203720),
     DemonSpikesBuff = Spell(203819),
+    Metamorphosis = Spell(187827),
+    SoulBarrier = Spell(263648),
     -- Utility
     ConsumeMagic = Spell(183752),
     InfernalStrike = Spell(189110)

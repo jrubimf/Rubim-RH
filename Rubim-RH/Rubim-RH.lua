@@ -118,7 +118,7 @@ local DeathandDecay = 43265
 --DH
 local FelRush = 195072
 local EyeBeam = 198013
-local FelBarrage = 211053
+local FelBarrage = 258925
 local FieryBrand = 204021
 local InfernalStrike = 189110
 
@@ -174,6 +174,8 @@ local defaults = {
         },
         [581] = {
             cooldown = true,
+            metamorphosis = 50,
+            soulbarrier = 75,
             Spells = {
                 { spellID = InfernalStrike, isActive = true },
                 { spellID = FieryBrand, isActive = true },
@@ -292,6 +294,9 @@ local defaults = {
             cooldown = true,
             stealthOOC = true,
             vanishattack = true,
+            crimsonvial = 65,
+            cloakofshadows = 15,
+            evasion = 50,
         },
         --HUNTER
         [254] = {
