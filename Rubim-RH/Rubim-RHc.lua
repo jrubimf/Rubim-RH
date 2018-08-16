@@ -96,11 +96,15 @@ end
 
 function RubimRH.CDsON()
     if RubimRH.config.cooldown == true then
-        if UnitExists("boss1") == true or UnitClassification("target") == "worldboss" then
+        if UnitLevel("Player") <= 119 then
             return true
         end
 
-        if UnitExists("target") and UnitHealthMax("target") >= UnitHealthMax("player") then
+        if UnitExists("boss1") == true then
+            return true
+        end
+
+        if UnitExists("target") and (UnitHealthMax("target") >= UnitHealthMax("player") or UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare" or UnitLevel("Target") >= UnitLevel("Player") + 2) then
             return true
         end
 
