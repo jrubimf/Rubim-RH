@@ -89,12 +89,6 @@ function ShouldDispell()
 	end
 	return false
 end
-
-function lowDmg()
-
-
-end
-
 local function APL()
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
 	HL.GetEnemies("Melee"); -- Melee
@@ -103,76 +97,25 @@ local function APL()
 	LeftShift = IsLeftShiftKeyDown();
 	LeftAlt = IsLeftAltKeyDown();
 
-	if LeftShift and LeftAlt and S.LightofDawn:IsReady() then
-		return S.LightofDawn:ID()
-	end
-
 	if Player:IsChanneling() or Player:IsCasting() then
 		return 0, 236353
 	end
 
-	if LeftCtrl and MouseOver:Exists() and ShouldDispell() and S.Cleanse:IsReady() then
-		return S.Cleanse:ID()
-	end
-
-	if LeftShift and MouseOver:Exists() and S.BeaconofVirtue:IsReady() then
-		return 77394
-	end
-
-	if MouseOver:Exists() and not MouseOver:Buff(S.BeaconofLight) and UnitGUID("mouseover") == UnitGUID("focus") then
-		return S.BeaconofLight:ID()
-	end
-
-	if Target:Exists() then
-
-		if S.BeaconofVirtue:IsReady() and AoEHealing(90) >= 3 then
-			return 144473
-		end
-
-		if S.HolyShock:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 95 and (not Player:Buff(S.InfusionofLight) or Player:BuffRemains(S.InfusionofLight) <= 2) then
-			return S.HolyShock:ID()
-		end
-
-		if S.HolyShock:IsReady() and not Target:IsAPlayer() and Player:CanAttack(Target) then
-			return S.HolyShock:ID()
-		end
-
-		if not Player:CanAttack(Target) and S.HolyShock:IsReady() and Target:HealthPercentage() <= 80 then
-			return S.HolyShock:ID()
-		end
-
-		if UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 80 and Player:BuffStack(S.LightoftheMartyrStack) >= 4 then
-			return S.LightoftheMartyr:ID()
-		end
-
-		if UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 70 and Player:BuffStack(S.LightoftheMartyrStack) >= 3 then
-			return S.LightoftheMartyr:ID()
-		end
-
-		if not Player:IsMoving() and S.FlashofLight:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 75 then
-			return S.FlashofLight:ID()
-		end
-
-		if not Player:IsMoving() and S.HolyLight:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 90 then
-			return S.HolyLight:ID()
-		end
-
-		if Player:IsMoving() and UnitGUID("player") ~= UnitGUID("target") and S.LightoftheMartyr:IsReady() and not Player:CanAttack(Target) and Target:HealthPercentage() <= 60 and Player:HealthPercentage() >= 80 then
-			return S.LightoftheMartyr:ID()
-		end
-	end
-
 	if Player:AffectingCombat() and RubimRH.TargetIsValid() then
-		if S.Judgement:IsUsable() and S.Judgement:IsReady() then
-			return S.Judgement:ID()
+		if S.Judgement:IsReady() then
+			return S.Judgement:Cast()
 		end
 
-		if S.CrusaderStrike:IsUsable() and S.CrusaderStrike:IsReady() and not S.HolyShock:CooldownUp() then
-			return S.CrusaderStrike:ID()
+		if S.CrusaderStrike:IsReady()  then
+			return S.CrusaderStrike:Cast()
 		end
 
-		if S.Consecration:IsReady() and S.Consecration:IsReady() and Cache.EnemiesCount[6] >= 1 then
-			return S.Consecration:ID()
+		if S.Consecration:IsReady() and Cache.EnemiesCount[6] >= 1 then
+			return S.Consecration:Cast()
+		end
+
+		if S.HolyShock:IsReady() then
+			return S.HolyShock:Cast()
 		end
 	end
 
