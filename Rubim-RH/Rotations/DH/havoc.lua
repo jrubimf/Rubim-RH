@@ -135,7 +135,7 @@ S.Metamorphosis.TextureSpellID = { 187827 }
 -- Rotation Var
 local CleaveRangeID = tostring(S.ConsumeMagic:ID()); -- 20y range
 
-local EnemyRanges = { "Melee", 8, 20, 30, 40 }
+local EnemyRanges = { "Melee", 8, 10, 20, 30, 40 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -368,7 +368,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-        if S.EyeBeam:IsReady() and (Cache.EnemiesCount[20] > 1 and (not false or false) and not bool(VarWaitingForMomentum)) then
+        if S.EyeBeam:IsReady() and (Cache.EnemiesCount[10] > 1 and (not false or false) and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
         -- death_sweep,if=variable.blade_dance
@@ -384,7 +384,7 @@ local function APL()
             return S.Felblade:Cast()
         end
         -- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_dark_slash&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash)) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] > 1 and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash)) then
             return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_dark_slash
@@ -396,7 +396,7 @@ local function APL()
             return S.ChaosStrike:Cast()
         end
         -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and (S.BlindFury:IsAvailable()) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] > 1 and (S.BlindFury:IsAvailable()) then
             return S.EyeBeam:Cast()
         end
         -- demons_bite

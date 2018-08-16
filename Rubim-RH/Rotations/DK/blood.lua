@@ -102,7 +102,7 @@ local function APL()
         return 0, 462338
     end
 
-   if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() then
+   if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
         return S.DeathGrip:Cast()
     end
 
