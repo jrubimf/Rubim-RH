@@ -412,7 +412,7 @@ local function ArmsMenu()
     local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[71].rallyingcry);
     sk_2_1:SetMinMaxValue(0, 100);
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
+    StdUi:AddLabel(window, sk_2_1, 'Rallying Cry', 'TOP');
     function sk_2_1:OnValueChanged(value)
         RubimRH.db.profile[71].rallyingcry = value
     end

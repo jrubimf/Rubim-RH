@@ -53,7 +53,7 @@ local function five_target()
     end
 
     --	actions.cleave+=/warbreaker,if=raid_event.adds.in>90&buff.shattered_defenses.down
-    if Cache.EnemiesCount[8] >= 1 and RubimRH.config.Spells[1].isActive and S.Warbreaker:IsAvailable() and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
+    if Cache.EnemiesCount["Melee"] >= 1 and RubimRH.config.Spells[1].isActive and S.Warbreaker:IsAvailable() and S.Warbreaker:IsReady() and (not Player:Buff(S.ShatteredDefensesBuff)) then
         return S.Warbreaker:Cast()
     end
 
@@ -208,6 +208,7 @@ end
 
 local function APL()
     -- Unit Update
+    HL.GetEnemies("Melee"); -- Whirlwind
     HL.GetEnemies(8); -- Whirlwind
     -- Out of Combat
 
@@ -231,10 +232,6 @@ local function APL()
 
     if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
         return S.VictoryRush:Cast()
-    end
-
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebythesword then
-        return S.DiebytheSword:Cast()
     end
 
     if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].rallyingcry then
@@ -281,6 +278,10 @@ end
 RubimRH.Rotation.SetAPL(71, APL);
 
 local function PASSIVE()
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebythesword then
+        return S.DiebytheSword:Cast()
+    end
+
     return RubimRH.Shared()
 end
 
