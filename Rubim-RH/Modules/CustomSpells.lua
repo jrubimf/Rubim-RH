@@ -266,7 +266,7 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
         end
         HL.GetEnemies(8, true)
         if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
-            return self:IsCastable(nil, nil, nil) and self:IsUsable();
+            return self:IsCastableMorph(nil, nil, nil) and self:IsUsable();
         end
     end
 
