@@ -18,10 +18,6 @@ local Item = HL.Item
 
 -- Spells
 RubimRH.Spell[102] = {
-    BlessingofTheAncients = Spell(202360),
-    BlessingofElune = Spell(202737),
-    BlessingofAnshe = Spell(202739),
-    IncarnationChosenOfElune = Spell(102560),
     MoonkinForm = Spell(24858),
     SolarWrath = Spell(190984),
     FuryofElune = Spell(202770),
@@ -41,20 +37,19 @@ RubimRH.Spell[102] = {
     Starsurge = Spell(78674),
     OnethsIntuitionBuff = Spell(209406),
     Starfall = Spell(191034),
-    StarlordBuff = Spell(202416),
-    NewMoon = Spell(202767),
-    HalfMoon = Spell(202768),
-    FullMoon = Spell(202771),
+    StarlordBuff = Spell(279709),
+    NewMoon = Spell(274281),
+    HalfMoon = Spell(274282),
+    FullMoon = Spell(274283),
     WarriorofEluneBuff = Spell(202425),
-    TheEmeraldDreamcatcherBuff = Spell(208190),
-    OnethsOverconfidenceBuff = Spell(209407),
     BloodFury = Spell(20572),
     Berserking = Spell(26297),
     ArcaneTorrent = Spell(50613),
     LightsJudgment = Spell(255647),
     WarriorofElune = Spell(202425),
-    Innervate = Spell(29166),
-    LivelySpiritBuff = Spell(279642)
+    SunblazeBuff = Spell(274399),
+    OwlkinFrenzyBuff = Spell(157228),
+    SolarBeam = Spell(78675),
 };
 local S = RubimRH.Spell[102];
 
@@ -95,24 +90,215 @@ local function FutureAstralPower()
     if not Player:IsCasting() then
         return AstralPower
     else
-        if Player:IsCasting(S.NewMoon) then
+        if Player:IsCasting(S.NewnMoon) then
             return AstralPower + 10
         elseif Player:IsCasting(S.HalfMoon) then
             return AstralPower + 20
         elseif Player:IsCasting(S.FullMoon) then
             return AstralPower + 40
+        elseif Player:IsCasting(S.StellarFlare) then
+            return AstralPower + 8
         elseif Player:IsCasting(S.SolarWrath) then
-            return AstralPower
-                    + (Player:Buff(S.BlessingofElune) and 10 or 8)
-                    * ((Player:BuffRemainsP(S.CelestialAlignment) > 0
-                    or Player:BuffRemainsP(S.IncarnationChosenOfElune) > 0) and 2 or 1)
+            return AstralPower + 8
         elseif Player:IsCasting(S.LunarStrike) then
-            return AstralPower
-                    + (Player:Buff(S.BlessingofElune) and 15 or 10)
-                    * ((Player:BuffRemainsP(S.CelestialAlignment) > 0
-                    or Player:BuffRemainsP(S.IncarnationChosenOfElune) > 0) and 2 or 1)
+            return AstralPower + 12
         else
             return AstralPower
+        end
+    end
+end
+
+local function Precombat ()
+    -- moonkin_form
+    if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) then
+        return S.MoonkinForm:Cast()
+    end
+    -- solar_wrath
+    if S.SolarWrath:IsCastableP() and not Player:IsCasting(S.SolarWrath) then
+        return S.SolarWrath:Cast()
+    end
+    -- sunfire
+    if S.Sunfire:IsCastableP() and (true) then
+        return S.Sunfire:Cast()
+    end
+end
+
+local function CDs ()
+    -- potion,if=buff.celestial_alignment.up|buff.incarnation.up
+    -- blood_fury,if=buff.celestial_alignment.up|buff.incarnation.up
+    if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+        return S.BloodFury:Cast()
+    end
+    -- berserking,if=buff.celestial_alignment.up|buff.incarnation.up
+    if S.Berserking:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+        return S.Berserking:Cast()
+    end
+    -- arcane_torrent,if=buff.celestial_alignment.up|buff.incarnation.up
+    if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+        return S.ArcaneTorrent:Cast()
+    end
+    -- lights_judgment,if=buff.celestial_alignment.up|buff.incarnation.up
+    if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+        return S.LightsJudgment:Cast()
+    end
+    -- warrior_of_elune
+    if S.WarriorofElune:IsCastableP() and not Player:Buff(S.WarriorofElune) then
+        return S.WarriorofElune:Cast()
+    end
+    -- TODO(mrdmnd / synecdoche): INNERVATE here if azerite.lively_spirit and incarn is up or C.A cooldown is < 12 s
+    -- incarnation,if=astral_power>=40
+    if S.Incarnation:IsCastableP() and (FutureAstralPower() >= 40) then
+        return S.Incarnation:Cast()
+    end
+    -- celestial_alignment,if=astral_power>=40
+    if S.CelestialAlignment:IsCastableP() and (FutureAstralPower() >= 40) then
+        return S.CelestialAlignment:Cast()
+    end
+    -- fury_of_elune,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
+    if S.FuryofElune:IsCastableP() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
+        return S.FuryofElune:Cast()
+    end
+    -- force_of_nature,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
+    if S.ForceofNature:IsCastableP() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
+        return S.ForceofNature:Cast()
+    end
+end
+
+local function Dot ()
+
+    -- main target refreshes
+    if Evaluate_Sunfire_Target(Target) then
+        if HR.Cast(S.Sunfire) then
+            return "";
+        end
+    end
+    if Evaluate_Moonfire_Target(Target) then
+        if HR.Cast(S.Moonfire) then
+            return "";
+        end
+    end
+    if S.StellarFlare:IsCastableP() and Evaluate_StellarFlare_Target(Target) then
+        if HR.Cast(S.StellarFlare) then
+            return "";
+        end
+    end
+
+    local ttdval = 12
+    SuggestCycleDot(S.Sunfire, Evaluate_Sunfire_Target, ttdval)
+    SuggestCycleDot(S.Moonfire, Evaluate_Moonfire_Target, ttdval)
+    if S.StellarFlare:IsCastableP() then
+        SuggestCycleDot(S.StellarFlare, Evaluate_StellarFlare_Target, ttdval)
+    end
+end
+
+local function EmpowermentCapCheck ()
+    -- TODO(mrdmnd) - add conditions on azerite traits
+    --actions+=/lunar_strike,
+    --          if=astral_power.deficit>=16&
+    --          (buff.lunar_empowerment.stack=3|(spell_targets<3 & astral_power>=40 & (buff.lunar_empowerment.stack=2&buff.solar_empowerment.stack=2)))&
+    --          !(variable.az_hn=3&active_enemies=1)&
+    --          !(spell_targets.moonfire>=2&variable.az_potm=3&active_enemies=2)
+    --actions+=/solar_wrath,
+    --          if=astral_power.deficit>=12&
+    --          (buff.solar_empowerment.stack=3|(variable.az_sb>1&spell_targets.starfall<3&astral_power>=32&!buff.sunblaze.up))&
+    --          !(variable.az_hn=3&active_enemies=1)&
+    --          !(spell_targets.moonfire>=2&active_enemies<=4&variable.az_potm=3)
+    if S.LunarStrike:IsCastableP() and Player:AstralPowerDeficit() >= 16 and (Player:BuffStackP(S.LunarEmpowermentBuff) == 3 or (Cache.EnemiesCount[40] < 3 and Player:AstralPower() >= 40 and Player:BuffStackP(S.LunarEmpowermentBuff) == 2 and Player:BuffStack(S.SolarEmpowermentBuff) == 2)) then
+        if HR.Cast(S.LunarStrike) then
+            return "Lunar Strike at Cap";
+        end
+    end
+
+    if S.SolarWrath:IsCastableP() and Player:AstralPowerDeficit() >= 12 and (Player:BuffStackP(S.SolarEmpowermentBuff) == 3) then
+        if HR.Cast(S.SolarWrath) then
+            return "Solar Wrath at Cap";
+        end
+    end
+end
+
+local function CoreRotation ()
+    -- TODO(mrdmnd): Implement conditionals on azerite traits. For now, assume all vairable.az_WHATEVER evaluates to zero.
+    -- actions+=/starsurge,if=(spell_targets.starfall<3&(!buff.starlord.up|buff.starlord.remains>=4)|execute_time*(astral_power%40)>target.time_to_die)&(!buff.celestial_alignment.up&!buff.incarnation.up|variable.az_streak<2|!prev_gcd.1.starsurge)
+    -- actions+=/starfall,if=spell_targets.starfall>=3&(!buff.starlord.up|buff.starlord.remains>=4)
+    -- actions+=/new_moon,if=astral_power.deficit>10+execute_time%1.5
+    -- actions+=/half_moon,if=astral_power.deficit>20+execute_time%1.5
+    -- actions+=/full_moon,if=astral_power.deficit>40+execute_time%1.5
+    -- actions+=/lunar_strike,if=((buff.warrior_of_elune.up|buff.lunar_empowerment.up|spell_targets>=3&!buff.solar_empowerment.up)&(!buff.celestial_alignment.up&!buff.incarnation.up|variable.az_streak<2|!prev_gcd.1.lunar_strike)|(variable.az_ds&!buff.dawning_sun.up))&!(spell_targets.moonfire>=2&active_enemies<=4&(variable.az_potm=3|variable.az_potm=2&active_enemies=2))
+    -- actions+=/solar_wrath,if=(!buff.celestial_alignment.up&!buff.incarnation.up|variable.az_streak<2|!prev_gcd.1.solar_wrath)&!(spell_targets.moonfire>=2&active_enemies<=4&(variable.az_potm=3|variable.az_potm=2&active_enemies=2))
+    -- actions+=/sunfire,if=(!buff.celestial_alignment.up&!buff.incarnation.up|!variable.az_streak|!prev_gcd.1.sunfire)&!(variable.az_potm>=2&spell_targets.moonfire>=2)
+    -- actions+=/moonfire
+    if S.Starsurge:IsCastableP() and Cache.EnemiesCount[40] < 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) and FutureAstralPower() >= 40 then
+        if HR.Cast(S.Starsurge) then
+            return "";
+        end
+    end
+    if S.Starfall:IsCastableP() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 then
+        if HR.Cast(S.Starfall) then
+            return "";
+        end
+    end
+    if S.NewMoon:IsCastableP() and (Player:AstralPowerDeficit() > 10 + (Player:GCD() / 1.5)) then
+        if HR.Cast(S.NewMoon) then
+            return "";
+        end
+    end
+    if S.HalfMoon:IsCastableP() and (Player:AstralPowerDeficit() > 20 + (Player:GCD() / 1.5)) then
+        if HR.Cast(S.HalfMoon) then
+            return "";
+        end
+    end
+    if S.FullMoon:IsCastableP() and (Player:AstralPowerDeficit() > 40 + (Player:GCD() / 1.5)) then
+        if HR.Cast(S.FullMoon) then
+            return "";
+        end
+    end
+    -- Lunar strike when warrior of elune or OwlkinFrenzy is up
+    if S.LunarStrike:IsCastableP() and (Player:BuffP(S.WarriorofEluneBuff) or Player:BuffP(S.OwlkinFrenzyBuff)) then
+        if HR.Cast(S.LunarStrike) then
+            return "";
+        end
+    end
+    -- don't suggest an empowered cast if we're casting the last empowered stack
+    -- bad assumption: detects cleave targets based on 20yds from caster, centered. cannot do clump detection, i am not clever enough yet
+    if (Cache.EnemiesCount[40] >= 2) then
+        -- Cleave situation: prioritize lunar strike empower > solar wrath empower > lunar strike
+        if S.LunarStrike:IsCastableP() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
+            if HR.Cast(S.LunarStrike) then
+                return "";
+            end
+        end
+        if S.SolarWrath:IsCastableP() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
+            if HR.Cast(S.SolarWrath) then
+                return "";
+            end
+        end
+        if S.LunarStrike:IsCastableP() and (true) then
+            if HR.Cast(S.LunarStrike) then
+                return "";
+            end
+        end
+    else
+        -- ST situation: prioritize solar wrath empower > lunar strike empower > solar wrath
+        if S.SolarWrath:IsCastableP() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
+            if HR.Cast(S.SolarWrath) then
+                return "";
+            end
+        end
+        if S.LunarStrike:IsCastableP() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
+            if HR.Cast(S.LunarStrike) then
+                return "";
+            end
+        end
+        if S.SolarWrath:IsCastableP() and (true) then
+            if HR.Cast(S.SolarWrath) then
+                return "";
+            end
+        end
+    end
+
+    if S.Moonfire:IsCastableP() and (true) then
+        if HR.Cast(S.Moonfire) then
+            return "";
         end
     end
 end

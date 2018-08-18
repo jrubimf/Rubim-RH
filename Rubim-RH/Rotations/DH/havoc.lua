@@ -296,7 +296,7 @@ local function APL()
             return S.FelBarrage:Cast()
         end
         -- death_sweep,if=variable.blade_dance
-        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] > 1 and (bool(VarBladeDance)) then
+        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
@@ -372,7 +372,7 @@ local function APL()
             return S.EyeBeam:Cast()
         end
         -- death_sweep,if=variable.blade_dance
-        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] > 1 and (bool(VarBladeDance)) then
+        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
         -- blade_dance,if=variable.blade_dance

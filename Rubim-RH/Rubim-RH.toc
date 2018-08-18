@@ -17,6 +17,7 @@ Modules\Spells.lua
 Modules\Custom.lua
 Modules\CustomSpells.lua
 Modules\CustomUnit.lua
+Modules\Enemies.lua
 Modules\Debug.lua
 Modules\Icons.lua
 Modules\UI.lua

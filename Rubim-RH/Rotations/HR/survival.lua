@@ -149,7 +149,7 @@ local function APL ()
                 return S.SteelTrap:Cast()
             end
             -- harpoon
-            if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
+            if S.Harpoon:IsReady() and Target:MinDistanceToPlayer(true) >= 8 then
                 return S.Harpoon:Cast()
             end
         end
@@ -248,7 +248,7 @@ local function APL ()
         return S.Carve:Cast()
     end
     -- harpoon,if=talent.terms_of_engagement.enabled
-    if S.Harpoon:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
+    if S.Harpoon:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
         return S.Harpoon:Cast()
     end
     -- flanking_strike
@@ -264,7 +264,7 @@ local function APL ()
         return S.SerpentSting:Cast()
     end
     -- aspect_of_the_eagle,if=target.distance>=6
-    if S.AspectoftheEagle:IsReady() and (Target:MaxDistanceToPlayer(true) >= 6) then
+    if S.AspectoftheEagle:IsReady() and (Target:MinDistanceToPlayer(true) >= 6) then
         return S.AspectoftheEagle:Cast()
     end
     -- mongoose_bite_eagle,target_if=min:dot.internal_bleeding.stack,if=buff.mongoose_fury.up|focus>60
