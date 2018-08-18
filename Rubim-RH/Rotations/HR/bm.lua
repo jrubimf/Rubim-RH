@@ -142,7 +142,7 @@ local function APL ()
             return S.Stampede:Cast()
         end
         -- aspect_of_the_wild
-        if S.AspectoftheWild:IsReady() and (true) then
+        if RubimRH.CDsON() and S.AspectoftheWild:IsReady() and (true) then
             return S.AspectoftheWild:Cast()
         end
         -- bestial_wrath,if=!buff.bestial_wrath.up

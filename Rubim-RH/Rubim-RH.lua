@@ -151,6 +151,7 @@ local defaults = {
             usePotion = true,
             useInterrupts = true,
             useRacial = true,
+            useTrinkets = 3,
             startattack = false,
             healthstoneper = 20,
             healthstoneEnabled = true,

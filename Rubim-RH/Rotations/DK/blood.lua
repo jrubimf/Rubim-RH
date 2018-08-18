@@ -97,77 +97,82 @@ local function APL()
     end
 
     StandardSimc = function()
+        -- death_strie,custom==bossmechanics
+        if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+            return S.DeathStrike:Cast()
+        end
+
         -- death_strike,if=runic_power.deficit<=10
-        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= 10) then
-            return S. DeathStrike:Cast()
+        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= RubimRH.db.profile[250].deficitds) then
+            return S.DeathStrike:Cast()
         end
         -- BloodDrinker,if=!buff.dancing_rune_weapon.up
         if S.BloodDrinker:IsReady() and (not Player:BuffP(S.DancingRuneWeaponBuff)) then
-            return S. BloodDrinker:Cast()
+            return S.BloodDrinker:Cast()
         end
         -- marrowrend,if=(buff.bone_shield.remains<=rune.time_to_3|buff.bone_shield.remains<=(gcd+cooldown.BloodDrinker.ready*talent.BloodDrinker.enabled*2)|buff.bone_shield.stack<3)&runic_power.deficit>=20
         if S.Marrowrend:IsReady() and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:RuneTimeToX(3) or Player:BuffRemainsP(S.BoneShieldBuff) <= (Player:GCD() + num(S.BloodDrinker:CooldownUpP()) * num(S.BloodDrinker:IsAvailable()) * 2) or Player:BuffStackP(S.BoneShieldBuff) < 3) and Player:RunicPowerDeficit() >= 20) then
-            return S. Marrowrend:Cast()
+            return S.Marrowrend:Cast()
         end
 
         if S.Marrowrend:IsReady() and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:GCD() * 2)) then
-            return S. Marrowrend:Cast()
+            return S.Marrowrend:Cast()
         end
         -- blood_boil,if=charges_fractional>=1.8&(buff.hemostasis.stack<=(5-spell_targets.blood_boil)|spell_targets.blood_boil>2)
         if S.BloodBoil:IsReady() and (S.BloodBoil:ChargesFractional() >= 1.8 and (Player:BuffStackP(S.HemostasisBuff) <= (5 - Cache.EnemiesCount[5]) or Cache.EnemiesCount[5] > 2)) then
-            return S. BloodBoil:Cast()
+            return S.BloodBoil:Cast()
         end
         -- marrowrend,if=buff.bone_shield.stack<5&talent.ossuary.enabled&runic_power.deficit>=15
         if S.Marrowrend:IsReady() and (Player:BuffStackP(S.BoneShieldBuff) < 5 and S.Ossuary:IsAvailable() and Player:RunicPowerDeficit() >= 15) then
-            return S. Marrowrend:Cast()
+            return S.Marrowrend:Cast()
         end
         -- bonestorm,if=runic_power>=100&!buff.dancing_rune_weapon.up
         if S.Bonestorm:IsReady() and (Player:RunicPower() >= 100 and not Player:BuffP(S.DancingRuneWeaponBuff)) then
-            return S. Bonestorm:Cast()
+            return S.Bonestorm:Cast()
         end
         -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.heartbreaker.enabled*2)|target.time_to_die<10
         if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= (15 + num(Player:BuffP(S.DancingRuneWeaponBuff)) * 5 + Cache.EnemiesCount[5] * num(S.Heartbreaker:IsAvailable()) * 2) or Target:TimeToDie() < 10) then
-            return S. DeathStrike:Cast()
+            return S.DeathStrike:Cast()
         end
         -- death_and_decay,if=spell_targets.death_and_decay>=3
         if S.DeathandDecay:IsReady() and (Cache.EnemiesCount[5] >= 3) then
-            return S. DeathandDecay:Cast()
+            return S.DeathandDecay:Cast()
         end
         -- rune_strike,if=(charges_fractional>=1.8|buff.dancing_rune_weapon.up)&rune.time_to_3>=gcd
         if S.RuneStrike:IsReady() and ((S.RuneStrike:ChargesFractional() >= 1.8 or Player:BuffP(S.DancingRuneWeaponBuff)) and Player:RuneTimeToX(3) >= Player:GCD()) then
-            return S. RuneStrike:Cast()
+            return S.RuneStrike:Cast()
         end
         -- heart_strike,if=buff.dancing_rune_weapon.up|rune.time_to_4<gcd
         if S.HeartStrike:IsReady() and (Player:BuffP(S.DancingRuneWeaponBuff) or Player:RuneTimeToX(4) < Player:GCD()) then
-            return S. HeartStrike:Cast()
+            return S.HeartStrike:Cast()
         end
         -- blood_boil,if=buff.dancing_rune_weapon.up
         if S.BloodBoil:IsReady() and (Player:BuffP(S.DancingRuneWeaponBuff)) then
-            return S. BloodBoil:Cast()
+            return S.BloodBoil:Cast()
         end
         -- death_and_decay,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.death_and_decay>=2
         if S.DeathandDecay:IsReady() and (Player:BuffP(S.CrimsonScourgeBuff) or S.RapidDecomposition:IsAvailable() or Cache.EnemiesCount[5] >= 2) then
-            return S. DeathandDecay:Cast()
+            return S.DeathandDecay:Cast()
         end
         -- consumption
         if S.Consumption:IsReady() and (true) then
-            return S. Consumption:Cast()
+            return S.Consumption:Cast()
         end
         -- blood_boil
         if S.BloodBoil:IsReady() and (true) then
-            return S. BloodBoil:Cast()
+            return S.BloodBoil:Cast()
         end
         -- heart_strike,if=rune.time_to_3<gcd|buff.bone_shield.stack>6
         if S.HeartStrike:IsReady() and (Player:RuneTimeToX(3) < Player:GCD() or Player:BuffStackP(S.BoneShieldBuff) > 6) then
-            return S. HeartStrike:Cast()
+            return S.HeartStrike:Cast()
         end
         -- rune_strike
         if S.RuneStrike:IsReady() and (true) then
-            return S. RuneStrike:Cast()
+            return S.RuneStrike:Cast()
         end
         -- arcane_torrent,if=runic_power.deficit>20
         if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 20) then
-            return S. ArcaneTorrent:Cast()
+            return S.ArcaneTorrent:Cast()
         end
     end
 
@@ -317,21 +322,21 @@ local function APL()
         return S.DeathGrip:Cast()
     end
 
-    if not Player:AffectingCombat() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-        return 0, 462338
-    end
-
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.BloodDrinker) then
         return 0, 236353
     end
 
     --Mov Speed
-    if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
+    if Player:MovingFor() >= 2 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()
+    end
+
+    if not Player:AffectingCombat() then
+        if Precombat() ~= nil then
+            return Precombat()
+        end
+        return 0, 462338
     end
 
     if S.DancingRuneWeapon:IsReady() and Target:IsQuestMob() then
@@ -349,25 +354,25 @@ local function APL()
 
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
-        return S. MindFreeze:Cast()
+        return S.MindFreeze:Cast()
     end
     -- blood_fury,if=cooldown.dancing_rune_weapon.ready&(!cooldown.BloodDrinker.ready|!talent.BloodDrinker.enabled)
     if S.BloodFury:IsReady() and (S.DancingRuneWeapon:CooldownUpP() and (not S.BloodDrinker:CooldownUpP() or not S.BloodDrinker:IsAvailable())) then
-        return S. BloodFury:Cast()
+        return S.BloodFury:Cast()
     end
     -- berserking
     if S.Berserking:IsReady() and (true) then
-        return S. Berserking:Cast()
+        return S.Berserking:Cast()
     end
     -- use_items
     -- potion,if=buff.dancing_rune_weapon.up
     -- dancing_rune_weapon,if=!talent.BloodDrinker.enabled|!cooldown.BloodDrinker.ready
     if S.DancingRuneWeapon:IsReady() and RubimRH.CDsON() and (not S.BloodDrinker:IsAvailable() or not S.BloodDrinker:CooldownUpP()) then
-        return S. DancingRuneWeapon:Cast()
+        return S.DancingRuneWeapon:Cast()
     end
     -- tombstone,if=buff.bone_shield.stack>=7
     if S.Tombstone:IsReady() and (Player:BuffStackP(S.BoneShieldBuff) >= 7) then
-        return S. Tombstone:Cast()
+        return S.Tombstone:Cast()
     end
     -- call_action_list,name=standard
     if (true) then

@@ -137,8 +137,13 @@ function Unit:IsInterruptible()
 end
 
 function Unit:NeedThreat()
-	if UnitThreatSituation(self.UnitID) == 2 then
-		return true
+	local threat = UnitThreatSituation("player") or 3
+	HL.GetEnemies(10, true);
+	for _, CycleUnit in pairs(Cache.Enemies[10]) do
+		local threat = UnitThreatSituation("player", CycleUnit.UnitID) or 3
+		if threat <= 2 then
+			return true
+		end
 	end
 	return false
 end

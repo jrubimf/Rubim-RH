@@ -18,7 +18,6 @@ RubimRH.Spell[254] = {
     AimedShot = Spell(19434),
     ArcaneShot = Spell(185358),
     BurstingShot = Spell(186387),
-    HuntersMark = Spell(185365),
     MultiShot = Spell(257620),
     PreciseShots = Spell(260242),
     PreciseShotsBuff = Spell(260242),
@@ -37,6 +36,7 @@ RubimRH.Spell[254] = {
     DoubleTapBuff = Spell(260402),
     ExplosiveShot = Spell(212431),
     HuntersMark = Spell(257284),
+    HuntersMarkDebuff = Spell(257284),
     LethalShots = Spell(260393),
     LockandLoad = Spell(194594),
     MasterMarksman = Spell(260309),
@@ -93,7 +93,7 @@ local function APL()
 
     if not Player:AffectingCombat() then
         if RubimRH.TargetIsValid() then
-            if S.HuntersMark:IsReady() and Player:DebuffDownP(S.HuntersMark) then
+            if S.HuntersMark:IsReady() and not Target:Debuff(S.HuntersMarkDebuff) then
                 return S.HuntersMark:Cast()
             end
             -- double_tap,precast_time=5
@@ -120,7 +120,7 @@ local function APL()
     -- counter_shot,if=equipped.sephuzs_secret&target.debuff.casting.react&cooldown.buff_sephuzs_secret.up&!buff.sephuzs_secret.up
     -- use_items
     -- hunters_mark,if=debuff.hunters_mark.down
-    if S.HuntersMark:IsReady() and (Target:DebuffDownP(S.HuntersMarkDebuff)) then
+    if S.HuntersMark:IsReady() and not Target:Debuff(S.HuntersMarkDebuff) then
         return S.HuntersMark:Cast()
     end
     -- double_tap,if=cooldown.rapid_fire.remains<gcd
