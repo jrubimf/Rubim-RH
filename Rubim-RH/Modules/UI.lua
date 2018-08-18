@@ -4,7 +4,33 @@ local StdUi = LibStub('StdUi')
 local AceGUI = LibStub("AceGUI-3.0")
 
 testTable = {}
-function RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
+function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, yOfs)
+    if spellID ~= nil then
+        if RubimRH.db.profile.mainOption.disabledSpells[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
+            print("Added: " .. GetSpellInfo(spellID))
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
+                if RubimRH.db.profile.mainOption.disabledSpells[i].value == spellID then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.disabledSpells, duplicatedNumber)
+                print("Removed: " .. GetSpellInfo(spellID))
+            else
+                table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
+                print("Added: " .. GetSpellInfo(spellID))
+            end
+        end
+        return
+    end
+
     local currentSpellsNum = {}
     local numCount = 1
     local currentSpells = {}
@@ -72,7 +98,7 @@ function RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
         end
         self:GetParent():Hide();
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-        RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
+        RubimRH.SpellBlocker(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local extra1 = StdUi:Button(window, 100, 20, 'Clear');
@@ -158,7 +184,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         --self:GetParent():Hide();
         self:GetParent():Hide();
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-        BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
+        BloodMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
