@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH.iws" afterPath="$PROJECT_DIR$/Rubim-RH.iws" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/Custom.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/Custom.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/HR/mm.lua" />
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +27,8 @@
       <file leaf-file-name="arms.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="126" column="24" lean-forward="false" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="24" />
+            <state relative-caret-position="593">
+              <caret line="371" column="0" lean-forward="true" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -135,9 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Hunters</find>
-      <find>huntersMark</find>
-      <find>HuntersMarkDebuff</find>
       <find>S.HunterSMark</find>
       <find>Warbreak</find>
       <find>[71]</find>
@@ -165,6 +152,9 @@
       <find>DeathStri</find>
       <find>S.DeathStrike:Cast</find>
       <find>battle</find>
+      <find>warbreaker</find>
+      <find>Cache.EnemiesCount[5]</find>
+      <find>Warbreaker:Cast</find>
     </findStrings>
     <replaceStrings>
       <replace>\\1</replace>
@@ -854,8 +844,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="126" column="24" lean-forward="false" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="24" />
+        <state relative-caret-position="593">
+          <caret line="371" column="0" lean-forward="true" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
           <folding />
         </state>
       </provider>
