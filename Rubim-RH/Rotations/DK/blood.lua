@@ -5,6 +5,7 @@ local Cache = HeroCache;
 local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local MouseOver = Unit.MouseOver;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
@@ -60,6 +61,7 @@ RubimRH.Spell[250] = {
     Intimidated = Spell(206891),
     DeathChain = Spell(203173),
     DeathGrip = Spell(49576),
+    DarkCommand = Spell(56222),
 }
 
 
@@ -337,6 +339,11 @@ local function APL()
             return Precombat()
         end
         return 0, 462338
+    end
+
+    local threat = UnitThreatSituation("Player", MouseOver:ID()) or 3
+    if S.DarkCommand:IsReady() and MouseOver:Exists() and threat <= 2 then
+        return S.DarkCommand:Cast()
     end
 
     if S.DancingRuneWeapon:IsReady() and Target:IsQuestMob() then
