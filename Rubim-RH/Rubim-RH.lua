@@ -151,7 +151,6 @@ local defaults = {
             usePotion = true,
             useInterrupts = true,
             useRacial = true,
-            useTrinkets = 3,
             startattack = false,
             healthstoneper = 20,
             healthstoneEnabled = true,
@@ -160,7 +159,8 @@ local defaults = {
             xCord = 0,
             yCord = 0,
             disabledSpells = {},
-            disabledSpellsCD = {}
+            disabledSpellsCD = {},
+            useTrinkets = {},
         },
         --DEMONHUTER
         [577] = {

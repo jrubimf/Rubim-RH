@@ -19,7 +19,8 @@ end
 Item.DeathKnight.Frost = {
     ProlongedPower = Item(142117),
     HornofValor = Item(133642),
-    ColdHeart = Item(151796) }
+    ColdHeart = Item(151796)
+}
 
 local I = Item.DeathKnight.Frost;
 local T202PC, T204PC = HL.HasTier("T20");
@@ -207,7 +208,7 @@ local function Cooldowns()
     end
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     -- if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:BuffP(S.PillarofFrost) and Player:BuffP(S.EmpowerRuneWeapon)) then
-        --return I.ProlongedPower:Cast()
+    --return I.ProlongedPower:Cast()
     --end
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     if RubimRH.CDsON() and RubimRH.RacialON() and S.BloodFury:IsReady() and (Player:BuffP(S.PillarofFrost) and Player:BuffP(S.EmpowerRuneWeapon)) then

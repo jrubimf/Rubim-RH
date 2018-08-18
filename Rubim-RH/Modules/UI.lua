@@ -70,15 +70,6 @@ function RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
                 print("Added: " .. GetSpellInfo(val))
             end
         end
-
-        for i, v in pairs(currentSpells) do
-            for i, p in pairs(RubimRH.db.profile.mainOption.disabledSpells) do
-                if v.value == p.value then
-                    v.text = "|cFFFF0000" .. GetSpellInfo(v.value) .. "|r"
-                    --spellList:SetValue(v.value, "|cFFFF0000" .. v.text .. "|r")
-                end
-            end
-        end
         self:GetParent():Hide();
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
         RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
@@ -92,9 +83,12 @@ function RubimRH.SpellBlocker(point, relativeTo, relativePoint, xOfs, yOfs)
     end);
 end
 
-local function BloodMenu()
+local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Death Knight - Blood', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -108,11 +102,63 @@ local function BloodMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
