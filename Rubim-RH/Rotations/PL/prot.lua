@@ -142,11 +142,11 @@ local function APL()
 
   if RubimRH.db.profile[66].lotpEnabled then
     if RubimRH.db.profile[66].lotpHP == 0 then
-      if S.LightofTheProtector:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 70 then
+      if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:NeedPanicHealing() and Player:HealthPercentage() <= 70 then
         return S.LightofTheProtector:Cast()
       end
     else
-      if S.LightofTheProtector:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].lotpHP then
+      if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].lotpHP then
         return S.LightofTheProtector:Cast()
       end        
     end
