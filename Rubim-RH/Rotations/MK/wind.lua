@@ -163,6 +163,12 @@ local function APL()
         if S.FistsofFury:IsReady() and (S.RisingSunKick:CooldownRemains() >= 3.5 and Player:Chi() <= 5) then
             return S.FistsofFury:Cast()
         end
+
+        -- experimental
+        if S.RushingJadeWind:IsReady() and (S.RushingJadeWind:IsAvailable() and not Player:PrevGCD(1, S.RushingJadeWind) and Player:BuffDown(S.RushingJadeWindBuff) and Cache.EnemiesCount[8] >= 2 and S.FistsofFury:CooldownRemains() >= 3) then
+            return S.RushingJadeWind:Cast()
+        end
+
         -- whirling_dragon_punch
         if S.WhirlingDragonPunch:IsReady() and (true) then
             return S.WhirlingDragonPunch:Cast()
