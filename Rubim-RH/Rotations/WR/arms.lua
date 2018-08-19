@@ -14,47 +14,79 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 
 RubimRH.Spell[71] = {
+    -- Racials
+    ArcaneTorrent = Spell(80483),
+    AncestralCall = Spell(274738),
+    Berserking = Spell(26297),
+    BloodFury = Spell(20572),
+    Fireblood = Spell(265221),
+    GiftoftheNaaru = Spell(59547),
+    LightsJudgment = Spell(255647),
+
+    -- Abilities
     BattleShout = Spell(6673),
+    BattleCry = Spell(1719),
+    BattleCryBuff = Spell(1719),
+    ColossusSmash = Spell(167105),
+    ColossusSmashDebuff = Spell(208086),
+    Execute = Spell(163201),
+    ExecutionersPrecisionDebuff = Spell(242188),
+    Cleave = Spell(845),
+    CleaveBuff = Spell(231833),
+    Charge = Spell(100),
+    Bladestorm = Spell(227847),
+    MortalStrike = Spell(12294),
+    Whirlwind = Spell(1680),
+    HeroicThrow = Spell(57755),
+    Slam = Spell(1464),
+    Massacre = Spell(206315),
+    ExecuteMassacre = Spell(281000),
+    Dreadnaught = Spell(262150),
+
+    -- Talents
+    SuddenDeathBuff = Spell(52437),
+    Dauntless = Spell(202297),
+    Avatar = Spell(107574),
+    AvatarBuff = Spell(107574),
+    FocusedRage = Spell(207982),
+    FocusedRageBuff = Spell(207982),
     Rend = Spell(772),
     RendDebuff = Spell(772),
-    ColossusSmashDebuff = Spell(198804),
-    Skullsplitter = Spell(260643),
-    DeadlyCalm = Spell(227266),
-    DeadlyCalmBuff = Spell(227266),
-    Bladestorm = Spell(227847),
-    ColossusSmash = Spell(167105),
-    Warbreaker = Spell(209577),
-    HeroicLeap = Spell(6544),
-    Ravager = Spell(152277),
-    Cleave = Spell(845),
-    MortalStrike = Spell(12294),
     Overpower = Spell(7384),
     OverpowerBuff = Spell(7384),
-    Dreadnaught = Spell(262150),
-    Execute = Spell(163201),
-    SuddenDeathBuff = Spell(52437),
-    StoneHeartBuff = Spell(225947),
-    SweepingStrikesBuff = Spell(260708),
-    DeepWoundsDebuff = Spell(262115),
-    SweepingStrikes = Spell(260708),
-    Whirlwind = Spell(1680),
+    Ravager = Spell(152277),
+    StormBolt = Spell(107570),
+    DeadlyCalm = Spell(227266),
+    DeadlyCalmBuff = Spell(227266),
     FervorofBattle = Spell(202316),
-    Slam = Spell(1464),
-    Charge = Spell(100),
-    BloodFury = Spell(20572),
-    Berserking = Spell(26297),
-    ArcaneTorrent = Spell(50613),
-    LightsJudgment = Spell(255647),
-    Fireblood = Spell(265221),
-    AncestralCall = Spell(274738),
-    Avatar = Spell(107574),
-    Massacre = Spell(281000),
+    SweepingStrikes = Spell(260708),
+    SweepingStrikesBuff = Spell(260708),
+    AngerManagement = Spell(152278),
+    InForTheKill = Spell(248621),
+    InForTheKillBuff = Spell(248622),
+    -- Talents
+    Skullsplitter = Spell(260643),
+    Warbreaker = Spell(262161),
+
     -- Defensive
     RallyingCry = Spell(97462),
     DefensiveStance = Spell(197690),
     DiebytheSword = Spell(118038),
     Victorious = Spell(32216),
     VictoryRush = Spell(34428),
+
+    -- Utility
+    HeroicLeap = Spell(6544), -- Unused
+    Pummel = Spell(6552),
+    Shockwave = Spell(46968),
+    ShatteredDefensesBuff = Spell(248625),
+    PreciseStrikesBuff = Spell(209492),
+
+    -- Legendaries
+    StoneHeartBuff = Spell(225947),
+
+    -- Misc
+    WeightedBlade = Spell(253383)
 };
 
 local S = RubimRH.Spell[71]
@@ -146,7 +178,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReady() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
+        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
@@ -158,7 +190,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave,if=spell_targets.whirlwind>2
@@ -193,7 +225,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReady() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
+        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
@@ -205,7 +237,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave
@@ -252,7 +284,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReady() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
+        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) and Cache.EnemiesCount["Melee"] >= 1 then
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
@@ -268,7 +300,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemainsP() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave,if=spell_targets.whirlwind>2
