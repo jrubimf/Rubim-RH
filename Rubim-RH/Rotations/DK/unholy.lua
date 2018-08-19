@@ -95,7 +95,7 @@ end
 -- Variables
 local VarPoolingForGargoyle = 0;
 
-local EnemyRanges = {"Melee", 5, 8, 30}
+local EnemyRanges = {"Melee", 5, 8, 10, 30}
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -228,7 +228,7 @@ local function APL()
             return S.ArmyoftheDead:Cast()
         end
         -- dark_transformation,if=(equipped.137075&cooldown.summon_gargoyle.remains>40)|(!equipped.137075|!talent.summon_gargoyle.enabled)
-        if S.DarkTransformation:IsReady() and ((I.Taktheritrixs:IsEquipped() and S.SummonGargoyle:CooldownRemainsP() > 40) or (not I.Taktheritrixs:IsEquipped() or not S.SummonGargoyle:IsAvailable())) then
+        if S.DarkTransformation:IsReady() and Cache.EnemiesCount[8] >= 1 and ((I.Taktheritrixs:IsEquipped() and S.SummonGargoyle:CooldownRemainsP() > 40) or (not I.Taktheritrixs:IsEquipped() or not S.SummonGargoyle:IsAvailable())) then
             return S.DarkTransformation:Cast()
         end
         -- summon_gargoyle,if=runic_power.deficit<14
