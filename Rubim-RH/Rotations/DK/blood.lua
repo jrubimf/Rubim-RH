@@ -341,11 +341,6 @@ local function APL()
         return 0, 462338
     end
 
-    local threat = UnitThreatSituation("Player", MouseOver:ID()) or 3
-    if S.DarkCommand:IsReady() and MouseOver:Exists() and threat <= 2 then
-        return S.DarkCommand:Cast()
-    end
-
     if S.DancingRuneWeapon:IsReady() and Target:IsQuestMob() then
         return S.DancingRuneWeapon:Cast()
     end
