@@ -41,8 +41,8 @@ RubimRH.Spell[269] = {
     StormEarthandFire = Spell(137639),
     StormEarthandFireBuff = Spell(137639),
     SerenityBuff = Spell(152173),
-    RushingJadeWind = Spell(116847),
-    RushingJadeWindBuff = Spell(116847),
+    RushingJadeWind = Spell(261715),
+    RushingJadeWindBuff = Spell(261715),
     SpearHandStrike = Spell(116705),
     TouchofKarma = Spell(122470),
     GoodKarma = Spell(280195),
@@ -405,6 +405,12 @@ local function APL()
         if S.FistsofFury:IsReady() and (not S.Serenity:IsAvailable()) then
             return S.FistsofFury:Cast()
         end
+
+        -- experimental
+        if S.RushingJadeWind:IsReady() and (S.RushingJadeWind:IsAvailable() and not Player:PrevGCD(1, S.RushingJadeWind) and Player:BuffDown(S.RushingJadeWindBuff) and Cache.EnemiesCount[8] >= 2 and S.FistsofFury:CooldownRemains() >= 3) then
+            return S.RushingJadeWind:Cast()
+        end
+
         -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=cooldown.serenity.remains>=5|(!talent.serenity.enabled)
         if S.RisingSunKick:IsReady() and (S.Serenity:CooldownRemains() >= 5 or (not S.Serenity:IsAvailable())) then
             return S.RisingSunKick:Cast()
@@ -453,6 +459,8 @@ local function APL()
     if Player:IsChanneling() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
+
+    print(Cache.EnemiesCount[8])
 
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then

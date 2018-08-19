@@ -99,8 +99,21 @@ local function APL()
     end
 
     StandardSimc = function()
-        -- death_strie,custom==bossmechanics
+        -- death_strike,custom==bossmechanics
         if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+            return S.DeathStrike:Cast()
+        end
+
+        --Needs Marrowrend
+        if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 1) then
+            return S.Marrowrend:Cast()
+        end
+
+        if Player:IncDmgPercentage() > RubimRH.db.profile[250].smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+            return S.DeathStrike:Cast()
+        end
+
+        if S.DeathStrike:IsReady() and Player:HealthPercentage() <= 90 and  S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2  then
             return S.DeathStrike:Cast()
         end
 
@@ -108,6 +121,21 @@ local function APL()
         if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= RubimRH.db.profile[250].deficitds) then
             return S.DeathStrike:Cast()
         end
+
+        --BloodBoil
+        if S.BloodBoil:IsReady() and S.BloodBoil:ChargesFractional() >= 1.8 then
+            return S.BloodBoil:Cast()
+        end
+
+        --Aggro
+        if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
+            return S.BloodBoil:Cast()
+        end
+
+        if Player:NeedThreat() and S.HeartStrike:IsReady() and Cache.EnemiesCount[8] >= 1 then
+            return S.HeartStrike:Cast()
+        end
+
         -- BloodDrinker,if=!buff.dancing_rune_weapon.up
         if S.BloodDrinker:IsReady() and (not Player:BuffP(S.DancingRuneWeaponBuff)) then
             return S.BloodDrinker:Cast()
@@ -132,8 +160,8 @@ local function APL()
         if S.Bonestorm:IsReady() and (Player:RunicPower() >= 100 and not Player:BuffP(S.DancingRuneWeaponBuff)) then
             return S.Bonestorm:Cast()
         end
-        -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.heartbreaker.enabled*2)|target.time_to_die<10
-        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= (15 + num(Player:BuffP(S.DancingRuneWeaponBuff)) * 5 + Cache.EnemiesCount[5] * num(S.Heartbreaker:IsAvailable()) * 2) or Target:TimeToDie() < 10) then
+        -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.HeartBreaker.enabled*2)|target.time_to_die<10
+        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= (15 + num(Player:BuffP(S.DancingRuneWeaponBuff)) * 5 + Cache.EnemiesCount[5] * num(S.HeartBreaker:IsAvailable()) * 2) or Target:TimeToDie() < 10) then
             return S.DeathStrike:Cast()
         end
         -- death_and_decay,if=spell_targets.death_and_decay>=3
@@ -153,7 +181,7 @@ local function APL()
             return S.BloodBoil:Cast()
         end
         -- death_and_decay,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.death_and_decay>=2
-        if S.DeathandDecay:IsReady() and (Player:BuffP(S.CrimsonScourgeBuff) or S.RapidDecomposition:IsAvailable() or Cache.EnemiesCount[5] >= 2) then
+        if S.DeathandDecay:IsReady() and (Player:BuffP(S.CrimsonScourge) or S.RapidDecomposition:IsAvailable() or Cache.EnemiesCount[5] >= 2) then
             return S.DeathandDecay:Cast()
         end
         -- consumption
@@ -189,13 +217,8 @@ local function APL()
             return S.Marrowrend:Cast()
         end
 
-        --Aggro
-        if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.BloodBoil:Cast()
-        end
-
-        if Player:NeedThreat() and S.HeartStrike:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.HeartStrike:Cast()
+        if S.DeathStrike:IsReady() and Player:RunicPowerDeficit() < RubimRH.db.profile[250].deficitds then
+            return S.DeathStrike:Cast()
         end
 
         --Needs Marrowrend
@@ -345,15 +368,6 @@ local function APL()
         return S.DancingRuneWeapon:Cast()
     end
 
-    --Aggro
-    if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.BloodBoil:Cast()
-    end
-
-    if Player:NeedThreat() and S.HeartStrike:IsReady() and Cache.EnemiesCount[8] >= 1 then
-        return S.HeartStrike:Cast()
-    end
-
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.MindFreeze:Cast()
@@ -378,8 +392,8 @@ local function APL()
     end
     -- call_action_list,name=standard
     if (true) then
-        if Standard() ~= nil then
-            return Standard()
+        if StandardSimc() ~= nil then
+            return StandardSimc()
         end
     end
     return 0, 135328
