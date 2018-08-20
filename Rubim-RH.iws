@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="veng.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="veng.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="31" column="52" lean-forward="true" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+            <state relative-caret-position="214">
+              <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -35,7 +34,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="459">
@@ -85,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wind.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua">
+      <file leaf-file-name="Spells.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="461" column="0" lean-forward="false" selection-start-line="461" selection-start-column="0" selection-end-line="461" selection-end-column="0" />
+            <state relative-caret-position="31">
+              <caret line="719" column="17" lean-forward="false" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -126,8 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TimeTodie</find>
-      <find>TimeToDie</find>
       <find>S.Execute:IsReady</find>
       <find>Pummel</find>
       <find>RemainsP</find>
@@ -152,10 +149,12 @@
       <find>print</find>
       <find>bool</find>
       <find>Interrupt</find>
-      <find>itnerrupt</find>
       <find>OverpowerBuff</find>
       <find>DeepWounds</find>
       <find>DeepWoundsDebuff</find>
+      <find>itnerrupt</find>
+      <find>581</find>
+      <find>interrupt</find>
     </findStrings>
     <replaceStrings>
       <replace>SwipeCat:IsReadyMorph()</replace>
@@ -237,8 +236,8 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
       </list>
     </option>
   </component>
@@ -692,14 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="272" column="10" lean-forward="false" selection-start-line="272" selection-start-column="4" selection-end-line="272" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/UI.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
@@ -852,18 +843,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="31" column="52" lean-forward="true" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="66" column="37" lean-forward="false" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/Spells.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31">
+          <caret line="719" column="17" lean-forward="false" selection-start-line="719" selection-start-column="14" selection-end-line="719" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
           <folding />
         </state>
       </provider>

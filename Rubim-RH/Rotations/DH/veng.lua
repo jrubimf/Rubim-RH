@@ -32,10 +32,6 @@ local function APL()
     local SoulFragments = Player:BuffStack(S.SoulFragments);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
-    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-        return S.Disrupt:Cast()
-    end
-
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].metamorphosis then
         return S.Metamorphosis:Cast()
