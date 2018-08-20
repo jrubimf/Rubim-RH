@@ -210,7 +210,7 @@ local function APL()
             return S.Overpower:Cast()
         end
         -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
         return 0, 135328
@@ -249,7 +249,7 @@ local function APL()
             return S.Cleave:Cast()
         end
         -- execute,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|(buff.sudden_death.react|buff.stone_heart.react)&(buff.sweeping_strikes.up|cooldown.sweeping_strikes.remains>8)
-        if S.Ravager:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
+        if S.Ravager:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
             return S.Execute:Cast()
         end
         -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|equipped.archavons_heavy_hand)
@@ -296,7 +296,7 @@ local function APL()
             return S.HeroicLeap:Cast()
         end
         -- execute,if=buff.sudden_death.react|buff.stone_heart.react
-        if S.Ravager:IsReadyMorph() and (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+        if S.Ravager:IsReadyMorph() and (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)

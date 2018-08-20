@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="" />
+    <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,17 +44,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="82" column="19" lean-forward="false" selection-start-line="82" selection-start-column="4" selection-end-line="82" selection-end-column="19" />
+            <state relative-caret-position="214">
+              <caret line="204" column="57" lean-forward="false" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="false">
         <entry file="file://F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="418">
@@ -123,8 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rushin</find>
-      <find>Aoe()</find>
       <find>SweepingStrikesBuff</find>
       <find>Sweeping</find>
       <find>ColossusSmashDebuff</find>
@@ -153,6 +153,8 @@
       <find>InterruptHex</find>
       <find>CastingHeal</find>
       <find>ArmsPvP</find>
+      <find>Sudden</find>
+      <find>BuffStack</find>
     </findStrings>
     <replaceStrings>
       <replace>SwipeCat:IsReadyMorph()</replace>
@@ -233,9 +235,9 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RH.toc" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua" />
       </list>
     </option>
   </component>
@@ -855,18 +857,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="82" column="19" lean-forward="false" selection-start-line="82" selection-start-column="4" selection-end-line="82" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
           <caret line="929" column="39" lean-forward="false" selection-start-line="929" selection-start-column="39" selection-end-line="929" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/WR/arms.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="204" column="57" lean-forward="false" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="57" />
           <folding />
         </state>
       </provider>
