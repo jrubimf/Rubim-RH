@@ -162,3 +162,13 @@ function Unit:MovingFor()
 	end
 	return GetTime() - movedTimer
 end
+
+function Unit:IsTargeting(otherUnit)
+	local oGUID = UnitGUID(otherUnit.UnitID)
+	local tGUID = UnitGUID(self.UnitID .. "target")
+
+	if tGUID == oGUID then
+		return true
+	end
+	return false
+end
