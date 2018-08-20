@@ -64,6 +64,7 @@ RubimRH.Spell[71] = {
     AngerManagement = Spell(152278),
     InForTheKill = Spell(248621),
     InForTheKillBuff = Spell(248622),
+    DeepWoundsDebuff = Spell(262111),
     -- Talents
     Skullsplitter = Spell(260643),
     Warbreaker = Spell(262161),

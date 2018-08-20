@@ -32,6 +32,10 @@ local function APL()
     local SoulFragments = Player:BuffStack(S.SoulFragments);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
+    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Disrupt:Cast()
+    end
+
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].metamorphosis then
         return S.Metamorphosis:Cast()
@@ -40,7 +44,6 @@ local function APL()
     if S.SoulBarrier:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].soulbarrier then
         return S.SoulBarrier:Cast()
     end
-
 
     -- Demon Spikes
     if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 85) and (IsTanking or not Player:HealingAbsorbed()) then
