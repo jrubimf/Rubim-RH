@@ -176,9 +176,7 @@ local function Finish (ReturnSpellOnly, StealthSpell)
     if S.Nightblade:IsReady() then
         local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3;
         -- actions.finish=nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
-        if IsInMeleeRange() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff)
-                and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid())
-                and Target:DebuffRemainsP(S.Nightblade) < 4
+        if IsInMeleeRange() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff) and Target:TimeToDie() > 6 and Target:DebuffRemainsP(S.Nightblade) < S.Nightblade:TickTime()* 2
                 and (Cache.EnemiesCount[10] < 4 or not Player:BuffP(S.SymbolsofDeath)) then
             return S.Nightblade:Cast()
         end
@@ -190,7 +188,7 @@ local function Finish (ReturnSpellOnly, StealthSpell)
         -- actions.finish+=/nightblade,if=remains<cooldown.symbols_of_death.remains+10&cooldown.symbols_of_death.remains<=5&target.time_to_die-remains>cooldown.symbols_of_death.remains+5
         if IsInMeleeRange() and Target:DebuffRemainsP(S.Nightblade) < S.SymbolsofDeath:CooldownRemainsP() + 10
                 and S.SymbolsofDeath:CooldownRemainsP() <= 5
-                and (Target:FilteredTimeToDie(">", 5 + S.SymbolsofDeath:CooldownRemainsP(), -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid()) then
+                and (Target:TimeToDie() > 5 + S.SymbolsofDeath:CooldownRemains()) then
             return S.Nightblade:Cast()
         end
     end
@@ -278,7 +276,7 @@ local function CDs ()
                 return S.ShurikenTornado:Cast()
             end
             -- actions.cds+=/shadow_dance,if=!buff.shadow_dance.up&target.time_to_die<=5+talent.subterfuge.enabled
-            if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
+            if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:TimeToDie() <= 5 + num(S.Subterfuge:IsAvailable()) then
                 return S.ShadowDance:Cast()
             end
         end
@@ -416,7 +414,7 @@ local function APL ()
         -- # Finish at 4+ without DS, 5+ with DS (outside stealth)
         -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
         if Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable())
-                or (Target:FilteredTimeToDie("<=", 1) and Player:ComboPoints() >= 3) then
+                or (Target:TimeToDie() <= 1 and Player:ComboPoints() >= 3) then
             if Finish() ~= nil then
                 return Finish()
             end

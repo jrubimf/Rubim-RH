@@ -460,8 +460,6 @@ local function APL()
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
-    print(Cache.EnemiesCount[8])
-
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
         return S.SpearHandStrike:Cast()
