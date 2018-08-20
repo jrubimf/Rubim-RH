@@ -78,6 +78,9 @@ RubimRH.Spell[71] = {
     -- Utility
     HeroicLeap = Spell(6544), -- Unused
     Pummel = Spell(6552),
+    Hamstring = Spell(1715),
+    SharpenBlade = Spell(198817),
+    SpellReflection = Spell(216890),
     Shockwave = Spell(46968),
     ShatteredDefensesBuff = Spell(248625),
     PreciseStrikesBuff = Spell(209492),
@@ -86,7 +89,8 @@ RubimRH.Spell[71] = {
     StoneHeartBuff = Spell(225947),
 
     -- Misc
-    WeightedBlade = Spell(253383)
+    WeightedBlade = Spell(253383),
+
 };
 
 local S = RubimRH.Spell[71]
@@ -206,7 +210,7 @@ local function APL()
             return S.Overpower:Cast()
         end
         -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReady() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
         return 0, 135328
@@ -245,7 +249,7 @@ local function APL()
             return S.Cleave:Cast()
         end
         -- execute,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|(buff.sudden_death.react|buff.stone_heart.react)&(buff.sweeping_strikes.up|cooldown.sweeping_strikes.remains>8)
-        if S.Execute:IsReady() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
+        if S.Ravager:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
             return S.Execute:Cast()
         end
         -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|equipped.archavons_heavy_hand)
@@ -292,7 +296,7 @@ local function APL()
             return S.HeroicLeap:Cast()
         end
         -- execute,if=buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReady() and (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
+        if S.Ravager:IsReadyMorph() and (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
