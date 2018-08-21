@@ -170,30 +170,20 @@ end
 
 -- # Finishers
 -- ReturnSpellOnly and StealthSpell parameters are to Predict Finisher in case of Stealth Macros
-local function Finish (ReturnSpellOnly, StealthSpell)
-    local ShadowDanceBuff = Player:BuffP(S.ShadowDanceBuff) or (StealthSpell and StealthSpell:ID() == S.ShadowDance:ID())
-
-    if S.Nightblade:IsReady() then
-        local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3;
-        -- actions.finish=nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
-        if IsInMeleeRange() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff)
-                and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid())
-                and Target:DebuffRemainsP(S.Nightblade) < 4
-                and (Cache.EnemiesCount[10] < 4 or not Player:BuffP(S.SymbolsofDeath)) then
-            return S.Nightblade:Cast()
-        end
-        -- actions.finish+=/nightblade,cycle_targets=1,if=spell_targets.shuriken_storm>=2&(spell_targets.shuriken_storm<=5|talent.secret_technique.enabled)&!buff.shadow_dance.up&target.time_to_die>=(5+(2*combo_points))&refreshable
-        if RubimRH.AoEON() and S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (Cache.EnemiesCount[10] <= 5 or S.SecretTechnique:IsAvailable()) and not Player:Buff(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.Nightblade, NightbladeThreshold)) then
-            return S.Nightblade:Cast()
-        end
-
-        -- actions.finish+=/nightblade,if=remains<cooldown.symbols_of_death.remains+10&cooldown.symbols_of_death.remains<=5&target.time_to_die-remains>cooldown.symbols_of_death.remains+5
-        if IsInMeleeRange() and Target:DebuffRemainsP(S.Nightblade) < S.SymbolsofDeath:CooldownRemainsP() + 10
-                and S.SymbolsofDeath:CooldownRemainsP() <= 5
-                and (Target:FilteredTimeToDie(">", 5 + S.SymbolsofDeath:CooldownRemainsP(), -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid()) then
-            return S.Nightblade:Cast()
-        end
+local function Finish()
+    -- nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
+    if S.Nightblade:IsReady() and ((not S.DarkShadow:IsAvailable() or not Player:BuffP(S.ShadowDanceBuff)) and Target:TimeToDie() - Target:DebuffRemainsP(S.NightbladeDebuff) > 6 and Target:DebuffRemainsP(S.NightbladeDebuff) < S.NightbladeDebuff:TickTime() * 2 and (Cache.EnemiesCount[10] < 4 or not Player:BuffP(S.SymbolsofDeathBuff))) then
+        return S.Nightblade:Cast()
     end
+    -- nightblade,cycle_targets=1,if=spell_targets.shuriken_storm>=2&(spell_targets.shuriken_storm<=5|talent.secret_technique.enabled)&!buff.shadow_dance.up&target.time_to_die>=(5+(2*combo_points))&refreshable
+    if S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (Cache.EnemiesCount[10] <= 5 or S.SecretTechnique:IsAvailable()) and not Player:BuffP(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableCP(S.NightbladeDebuff)) then
+        return S.Nightblade:Cast()
+    end
+    -- nightblade,if=remains<cooldown.symbols_of_death.remains+10&cooldown.symbols_of_death.remains<=5&target.time_to_die-remains>cooldown.symbols_of_death.remains+5
+    if S.Nightblade:IsReady() and (Target:DebuffRemainsP(S.NightbladeDebuff) < S.SymbolsofDeath:CooldownRemainsP() + 10 and S.SymbolsofDeath:CooldownRemainsP() <= 5 and Target:TimeToDie() - Target:DebuffRemainsP(S.NightbladeDebuff) > S.SymbolsofDeath:CooldownRemainsP() + 5) then
+        return S.Nightblade:Cast()
+    end
+
     -- actions.finish+=/secret_technique,if=buff.symbols_of_death.up&(!talent.dark_shadow.enabled|spell_targets.shuriken_storm<2|buff.shadow_dance.up)
     if S.SecretTechnique:IsReady() and Player:BuffP(S.SymbolsofDeath) and (not S.DarkShadow:IsAvailable() or Cache.EnemiesCount[10] < 2 or Player:BuffP(S.ShadowDanceBuff)) then
         return S.SecretTechnique:Cast()
@@ -203,18 +193,17 @@ local function Finish (ReturnSpellOnly, StealthSpell)
         return S.SecretTechnique:Cast()
     end
     -- actions.finish+=/eviscerate
-    if S.Eviscerate:IsReady() and IsInMeleeRange() then
+    if S.Eviscerate:IsReady() then
         return S.Eviscerate:Cast()
     end
 end
 
 -- # Stealthed Rotation
 -- ReturnSpellOnly and StealthSpell parameters are to Predict Finisher in case of Stealth Macros
-local function Stealthed (ReturnSpellOnly, StealthSpell)
-    local StealthBuff = Player:Buff(Stealth) or (StealthSpell and StealthSpell:ID() == Stealth:ID())
+local function Stealthed ()
     -- # If stealth is up, we really want to use Shadowstrike to benefits from the passive bonus, even if we are at max cp (from the precombat MfD).
     -- actions.stealthed=Shadowstrike,if=buff.stealth.up
-    if StealthBuff and S.Shadowstrike:IsReady() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
+    if Player:Buff(Stealth) and S.Shadowstrike:IsReady() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
         return S.Shadowstrike:Cast()
     end
     -- actions.stealthed+=/call_action_list,name=finish,if=combo_points.deficit<=1-(talent.deeper_stratagem.enabled&buff.vanish.up)
@@ -314,21 +303,21 @@ end
 
 -- # Builders
 local function Build ()
-    -- actions.build=shuriken_storm,if=spell_targets.shuriken_storm>=2|buff.the_dreadlords_deceit.stack>=29
-    if RubimRH.AoEON() and S.ShurikenStorm:IsReady() and (Cache.EnemiesCount[10] >= 2 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
-        return S.ShurikenStorm:Cast()
-    end
-    -- actions.build=shuriken_toss,if=buff.sharpened_blades.stack>=19
-    if S.ShurikenToss:IsReady() and (Player:BuffStackP(S.SharpenedBladesBuff) >= 19) then
+    -- shuriken_toss,if=buff.sharpened_blades.stack>=29&spell_targets.shuriken_storm<=1+3*azerite.sharpened_blades.rank=2+4*azerite.sharpened_blades.rank=3
+    if S.ShurikenToss:IsReady() and (Player:BuffStackP(S.SharpenedBladesBuff) >= 29) then
         return S.ShurikenToss:Cast()
     end
-    if IsInMeleeRange() then
-        -- actions.build+=/gloomblade
-        if S.Gloomblade:IsReady() then
-            return S.Gloomblade:Cast()
-        elseif S.Backstab:IsReady() then
-            return S.Backstab:Cast()
-        end
+    -- shuriken_storm,if=spell_targets.shuriken_storm>=2|buff.the_dreadlords_deceit.stack>=29
+    if S.ShurikenStorm:IsReady() and (Cache.EnemiesCount[10] >= 2 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
+        return S.ShurikenStorm:Cast()
+    end
+    -- gloomblade
+    if S.Gloomblade:IsReady() then
+        return S.Gloomblade:Cast()
+    end
+    -- backstab
+    if S.Backstab:IsReady() then
+        return S.Backstab:Cast()
     end
 end
 
@@ -418,8 +407,7 @@ local function APL ()
 
         -- # Finish at 4+ without DS, 5+ with DS (outside stealth)
         -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
-        if Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable())
-                or (Target:FilteredTimeToDie("<=", 1) and Player:ComboPoints() >= 3) then
+        if (Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable()) or Target:TimeToDie() <= 1 and Player:ComboPoints() >= 3) then
             if Finish() ~= nil then
                 return Finish()
             end
