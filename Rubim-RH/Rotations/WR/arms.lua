@@ -122,7 +122,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val
+    return val ~= 1
 end
 
 local OffensiveCDs = {
@@ -209,11 +209,11 @@ local function APL()
             return S.Overpower:Cast()
         end
         -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
             return S.Execute:Cast()
         end
 
-        if S.ExecuteMassacre:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.ExecuteMassacre:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
             return S.Execute:Cast()
         end
         return 0, 135328
@@ -252,10 +252,10 @@ local function APL()
             return S.Cleave:Cast()
         end
         -- execute,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|(buff.sudden_death.react|buff.stone_heart.react)&(buff.sweeping_strikes.up|cooldown.sweeping_strikes.remains>8)
-        if S.Execute:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
+        if S.Execute:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
             return S.Execute:Cast()
         end
-        if S.ExecuteMassacre:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
+        if S.ExecuteMassacre:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemains(S.DeepWoundsDebuff) < 2) or (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemains() > 8)) then
             return S.Execute:Cast()
         end
         -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|equipped.archavons_heavy_hand)
@@ -303,10 +303,10 @@ local function APL()
         end
 
         -- execute,if=buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReadyMorph() and (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.Execute:IsReadyMorph() and (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
             return S.Execute:Cast()
         end
-        if S.ExecuteMassacre:IsReadyMorph() and (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.ExecuteMassacre:IsReadyMorph() and (Player:Buff(S.SuddenDeathBuff) or Player:Buff(S.StoneHeartBuff)) then
             return S.Execute:Cast()
         end
 
