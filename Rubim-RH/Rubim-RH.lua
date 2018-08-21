@@ -161,6 +161,7 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             useTrinkets = {},
+            cooldownsUsage = "Everything"
         },
         --DEMONHUTER
         [577] = {

@@ -267,7 +267,6 @@ local function CDs ()
             if S.MarkedforDeath:IsReady() and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() then
                 return S.MarkedforDeath:Cast()
             end
-
             -- actions.cds+=/shadow_blades,if=combo_points.deficit>=2+stealthed.all
             if S.ShadowBlades:IsReady() and not Player:Buff(S.ShadowBlades)
                     and Player:ComboPointsDeficit() >= 2 + num(Player:IsStealthed(true, true)) then

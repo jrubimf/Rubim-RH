@@ -202,7 +202,42 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     function gn_2_1:OnValueChanged(value)
         local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
-        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper )
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        BloodMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -290,9 +325,12 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end);
 end
 
-local function FrostMenu()
+local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Death Knight - Frost', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -306,11 +344,63 @@ local function FrostMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FrostMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -320,12 +410,50 @@ local function FrostMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FrostMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -379,9 +507,12 @@ local function FrostMenu()
     end);
 end
 
-local function UnholyMenu()
+local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Death Knight - Unholy', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -395,11 +526,63 @@ local function UnholyMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        UnholyMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -409,12 +592,50 @@ local function UnholyMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        UnholyMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -460,9 +681,12 @@ local function UnholyMenu()
     end);
 end
 
-local function ArmsMenu()
+local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Warrior - Arms', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -476,11 +700,63 @@ local function ArmsMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        ArmsMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -490,12 +766,50 @@ local function ArmsMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        ArmsMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -540,9 +854,12 @@ local function ArmsMenu()
         RubimRH.SpellBlocker()
     end);
 end
-local function FuryMenu()
+local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Warrior - Fury', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -556,11 +873,63 @@ local function FuryMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FuryMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -570,12 +939,50 @@ local function FuryMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FuryMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -613,9 +1020,12 @@ local function FuryMenu()
     end);
 end
 
-local function MMMenu()
+local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Hunter - Marksman', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -629,11 +1039,63 @@ local function MMMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        MMMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -643,12 +1105,50 @@ local function MMMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        MMMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -686,9 +1186,12 @@ local function MMMenu()
     end);
 end
 
-local function SurvivalMenu()
+local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Hunter - Survival', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -702,11 +1205,63 @@ local function SurvivalMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        SurvivalMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -716,12 +1271,50 @@ local function SurvivalMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        SurvivalMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -767,9 +1360,12 @@ local function SurvivalMenu()
     end);
 end
 
-local function BMMenu()
+local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Hunter - Beast Mastery', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -783,11 +1379,63 @@ local function BMMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        BMMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -797,12 +1445,50 @@ local function BMMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        BMMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -844,7 +1530,7 @@ end
 --local tex = StdUi:Texture(window, 350, 500, [[Interface\AddOns\AltzUI\media\statusbar]]);
 --tex:SetColorTexture(1, 1, 1, 1)
 --StdUi:GlueTop(tex, window, 0, 0);
-local function OutMenu()
+local function OutMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Rogue - Outlaw', 350, 500);
     window:SetPoint('CENTER');
 
@@ -961,7 +1647,7 @@ local function OutMenu()
     end);
 end
 
-local function SubMenu()
+local function SubMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Rogue - Sub', 350, 500);
     window:SetPoint('CENTER');
 
@@ -1058,7 +1744,7 @@ local function SubMenu()
     end);
 end
 
-local function AssMenu()
+local function AssMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Rogue - Ass', 350, 500);
     window:SetPoint('CENTER');
 
@@ -1155,9 +1841,12 @@ local function AssMenu()
     end);
 end
 
-local function HavocMenu()
+local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Demon Hunter - Havoc', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -1171,11 +1860,63 @@ local function HavocMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        HavocMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -1185,12 +1926,50 @@ local function HavocMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        HavocMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -1228,7 +2007,7 @@ local function HavocMenu()
     end);
 end
 
-local function RetributionMenu()
+local function RetributionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Paladin - Retribution', 350, 500);
     window:SetPoint('CENTER');
 
@@ -1381,9 +2160,12 @@ local function RetributionMenu()
     end);
 end
 
-local function WWMenu()
+local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Monk - Windwalker', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -1397,11 +2179,63 @@ local function WWMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        WWMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -1411,12 +2245,50 @@ local function WWMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        WWMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -1454,7 +2326,7 @@ local function WWMenu()
     end);
 end
 
-local function PaladinProtectionMenu()
+local function PaladinProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Paladin - Protection', 350, 500);
     window:SetPoint('CENTER');
 
@@ -1564,9 +2436,12 @@ local function PaladinProtectionMenu()
     end);
 end
 
-local function FeralMenu()
+local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Warrior - Arms', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -1580,11 +2455,63 @@ local function FeralMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FeralMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -1594,12 +2521,50 @@ local function FeralMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        FeralMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -1621,9 +2586,12 @@ local function FeralMenu()
     end);
 end
 
-local function VengMenu()
+local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Demon Hunter - Vengeance', 350, 500);
     window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
 
     local gn_title = StdUi:FontString(window, 'General');
     StdUi:GlueTop(gn_title, window, 0, -30);
@@ -1637,11 +2605,63 @@ local function VengMenu()
         RubimRH.AttackToggle()
     end
 
-    local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
-    gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-    function gn_1_1:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        VengMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -1651,12 +2671,50 @@ local function VengMenu()
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        VengMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------

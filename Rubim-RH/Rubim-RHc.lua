@@ -96,7 +96,8 @@ end
 
 function RubimRH.CDsON()
     if RubimRH.config.cooldown == true then
-        if UnitLevel("Player") <= 119 then
+
+        if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
             return true
         end
 
