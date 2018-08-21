@@ -105,6 +105,10 @@ local function randomGenerator(option)
 end
 
 function Unit:IsInterruptible()
+	if not self:IsCasting() or not self:IsChanneling() then
+		return false
+	end
+
 	local channeling = false
 	local name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId
 	if UnitCastingInfo(self.UnitID) ~= nil then
