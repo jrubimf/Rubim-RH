@@ -122,7 +122,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val ~= 0
+    return val
 end
 
 local OffensiveCDs = {
@@ -185,7 +185,7 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
-        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.Warbreaker)))) then
+        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCD(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCD(1, S.Warbreaker)))) then
             return S.HeroicLeap:Cast()
         end
         -- bladestorm,if=debuff.colossus_smash.remains>4.5&rage<70&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
@@ -193,7 +193,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:Debuff(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave,if=spell_targets.whirlwind>2
@@ -209,11 +209,11 @@ local function APL()
             return S.Overpower:Cast()
         end
         -- execute,if=rage>=40|debuff.colossus_smash.up|buff.sudden_death.react|buff.stone_heart.react
-        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.Execute:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
 
-        if S.ExecuteMassacre:IsReadyMorph() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
+        if S.ExecuteMassacre:IsReadyMorph() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff) or bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) then
             return S.Execute:Cast()
         end
         return 0, 135328
@@ -236,15 +236,15 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
-        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.Warbreaker)))) then
+        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCD(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCD(1, S.Warbreaker)))) then
             return S.HeroicLeap:Cast()
         end
         -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
-        if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikesBuff) and Target:DebuffRemains(S.ColossusSmashDebuff) > 4.5 and (Player:PrevGCDP(1, S.MortalStrike) or Cache.EnemiesCount[8] > 1) and (not Player:BuffP(S.DeadlyCalmBuff) or not S.DeadlyCalm:IsAvailable())) then
+        if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikesBuff) and Target:DebuffRemains(S.ColossusSmashDebuff) > 4.5 and (Player:PrevGCD(1, S.MortalStrike) or Cache.EnemiesCount[8] > 1) and (not Player:BuffP(S.DeadlyCalmBuff) or not S.DeadlyCalm:IsAvailable())) then
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:Debuff(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave
@@ -263,7 +263,7 @@ local function APL()
             return S.MortalStrike:Cast()
         end
         -- whirlwind,if=debuff.colossus_smash.up
-        if S.Whirlwind:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+        if S.Whirlwind:IsReady() and (Target:Debuff(S.ColossusSmashDebuff)) then
             return S.Whirlwind:Cast()
         end
         -- overpower
@@ -298,7 +298,7 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- heroic_leap,if=equipped.weight_of_the_earth&debuff.colossus_smash.down&((cooldown.colossus_smash.remains>8&!prev_gcd.1.colossus_smash)|(talent.warbreaker.enabled&cooldown.warbreaker.remains>8&!prev_gcd.1.warbreaker))
-        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCDP(1, S.Warbreaker)))) then
+        if S.HeroicLeap:IsReady() and (I.WeightoftheEarth:IsEquipped() and Target:DebuffDownP(S.ColossusSmashDebuff) and ((S.ColossusSmash:CooldownRemains() > 8 and not Player:PrevGCD(1, S.ColossusSmash)) or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemains() > 8 and not Player:PrevGCD(1, S.Warbreaker)))) then
             return S.HeroicLeap:Cast()
         end
 
@@ -311,11 +311,11 @@ local function APL()
         end
 
         -- bladestorm,if=buff.sweeping_strikes.down&debuff.colossus_smash.remains>4.5&(prev_gcd.1.mortal_strike|spell_targets.whirlwind>1)&(!buff.deadly_calm.up|!talent.deadly_calm.enabled)
-        if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikesBuff) and Target:DebuffRemains(S.ColossusSmashDebuff) > 4.5 and (Player:PrevGCDP(1, S.MortalStrike) or Cache.EnemiesCount[8] > 1) and (not Player:BuffP(S.DeadlyCalmBuff) or not S.DeadlyCalm:IsAvailable())) then
+        if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikesBuff) and Target:DebuffRemains(S.ColossusSmashDebuff) > 4.5 and (Player:PrevGCD(1, S.MortalStrike) or Cache.EnemiesCount[8] > 1) and (not Player:BuffP(S.DeadlyCalmBuff) or not S.DeadlyCalm:IsAvailable())) then
             return S.Bladestorm:Cast()
         end
         -- ravager,if=debuff.colossus_smash.up&(cooldown.deadly_calm.remains>6|!talent.deadly_calm.enabled)
-        if S.Ravager:IsReadyMorph() and (Target:DebuffP(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
+        if S.Ravager:IsReadyMorph() and (Target:Debuff(S.ColossusSmashDebuff) and (S.DeadlyCalm:CooldownRemains() > 6 or not S.DeadlyCalm:IsAvailable())) then
             return S.Ravager:Cast()
         end
         -- cleave,if=spell_targets.whirlwind>2
@@ -331,11 +331,11 @@ local function APL()
             return S.Overpower:Cast()
         end
         -- whirlwind,if=talent.fervor_of_battle.enabled&(rage>=50|debuff.colossus_smash.up)
-        if S.Whirlwind:IsReady() and (S.FervorofBattle:IsAvailable() and (Player:Rage() >= 50 or Target:DebuffP(S.ColossusSmashDebuff))) then
+        if S.Whirlwind:IsReady() and (S.FervorofBattle:IsAvailable() and (Player:Rage() >= 50 or Target:Debuff(S.ColossusSmashDebuff))) then
             return S.Whirlwind:Cast()
         end
         -- slam,if=!talent.fervor_of_battle.enabled&(rage>=40|debuff.colossus_smash.up)
-        if S.Slam:IsReady() and (not S.FervorofBattle:IsAvailable() and (Player:Rage() >= 40 or Target:DebuffP(S.ColossusSmashDebuff))) then
+        if S.Slam:IsReady() and (not S.FervorofBattle:IsAvailable() and (Player:Rage() >= 40 or Target:Debuff(S.ColossusSmashDebuff))) then
             return S.Slam:Cast()
         end
         return 0, 135328
@@ -359,6 +359,7 @@ local function APL()
     -- potion
     -- blood_fury,if=debuff.colossus_smash.up
     -- In Combat
+
     if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].victoryrush then
         return S.VictoryRush:Cast()
     end
@@ -371,11 +372,11 @@ local function APL()
         return S.RallyingCry:Cast()
     end
 
-    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=debuff.colossus_smash.up
-    if S.Berserking:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.Berserking:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.Berserking:Cast()
     end
     -- arcane_torrent,if=debuff.colossus_smash.down&cooldown.mortal_strike.remains>1.5&rage<50
@@ -387,11 +388,11 @@ local function APL()
         return S.LightsJudgment:Cast()
     end
     -- fireblood,if=debuff.colossus_smash.up
-    if S.Fireblood:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.Fireblood:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.Fireblood:Cast()
     end
     -- ancestral_call,if=debuff.colossus_smash.up
-    if S.AncestralCall:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.AncestralCall:IsReady() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.AncestralCall:Cast()
     end
     -- avatar,if=cooldown.colossus_smash.remains<8|(talent.warbreaker.enabled&cooldown.warbreaker.remains<8)

@@ -104,7 +104,7 @@ function RubimRH.CDsON()
             return true
         end
 
-        if UnitExists("target") and (UnitHealthMax("target") >= UnitHealthMax("player") or UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare" or UnitLevel("Target") >= UnitLevel("Player") + 2) then
+        if UnitExists("target") and (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare" or UnitLevel("Target") >= UnitLevel("Player") + 2) then
             return true
         end
 

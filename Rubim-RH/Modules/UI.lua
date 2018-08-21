@@ -194,12 +194,15 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    gn_2_1:SetMinMaxValue(0, 100);
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, gn_2_1, 'Healthstone', 'TOP');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
     function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper )
     end
 
     --------------------------------------------------
@@ -208,70 +211,72 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].icebound);
-    sk_1_0 :SetMinMaxValue(0, 100);
+    local sk_1_0 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].icebound / 5, false, 0, 19)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
-    StdUi:AddLabel(window, sk_1_0, 'Icebound', 'TOP');
-    function sk_1_0 :OnValueChanged(value)
+    local sk_1_0Label = StdUi:FontString(window, 'Icebound: ' .. RubimRH.db.profile[250].icebound);
+    StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
+    StdUi:FrameTooltip(sk_1_0, 'Percent HP to use Runetap.', 'TOPLEFT', 'TOPRIGHT', true);
+    function sk_1_0:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].icebound = value
+        sk_1_0Label:SetText('Icebound: ' .. RubimRH.db.profile[250].icebound)
     end
 
-    local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].runetap);
-    sk_1_1:SetMinMaxValue(0, 100);
+    local sk_1_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].runetap / 5, false, 0, 19)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
-    StdUi:AddLabel(window, sk_1_1, 'Runetap', 'TOP');
+    local sk_1_1Label = StdUi:FontString(window, 'Runetap: ' .. RubimRH.db.profile[250].runetap);
+    StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
+    StdUi:FrameTooltip(sk_1_1, 'Percent HP to use Runetap.', 'TOPLEFT', 'TOPRIGHT', true);
     function sk_1_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].runetap = value
+        sk_1_1Label:SetText('Runetap: ' .. RubimRH.db.profile[250].runetap)
     end
 
-    local sk_2_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].vampiricblood);
-    sk_2_0:SetMinMaxValue(0, 100);
+    local sk_2_0 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].vampiricblood / 5, false, 0, 19)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
-    StdUi:AddLabel(window, sk_2_0, 'Vampiric Blood', 'TOP');
+    local sk_2_0Label = StdUi:FontString(window, 'VP: ' .. RubimRH.db.profile[250].vampiricblood);
+    StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
+    StdUi:FrameTooltip(sk_2_0, 'Percent HP to use Vampiric Blood.', 'TOPLEFT', 'TOPRIGHT', true);
     function sk_2_0:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].vampiricblood = value
+        sk_2_0Label:SetText('VP: ' .. RubimRH.db.profile[250].vampiricblood)
     end
 
-    local sk_2_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].drw);
-    sk_2_1:SetMinMaxValue(0, 100);
+    local sk_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].drw / 5, false, 0, 19)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, sk_2_1, 'DRW', 'TOP');
+    local sk_2_1Label = StdUi:FontString(window, 'DRW: ' .. RubimRH.db.profile[250].drw);
+    StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
+    StdUi:FrameTooltip(sk_2_1, 'Percent HP to use Dancing Rune Weapon.', 'TOPLEFT', 'TOPRIGHT', true);
     function sk_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].drw = value
+        sk_2_1Label:SetText('DRW: ' .. RubimRH.db.profile[250].drw)
     end
 
-    --    local sk_3_0 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].smartds, false, 0, 100)
-    --local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
-    --sk_3_0:SetMinMaxValue(0, 100);
-    --    StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
-    --    StdUi:AddLabel(window, sk_3_0, 'DS - ' .. RubimRH.db.profile[250].smartds, 'TOP');
-    --    StdUi:FrameTooltip(sk_3_0, 'How much inc dmg, in percent so we can start using DS.', 'TOPLEFT', 'TOPRIGHT', true);
-    --    function sk_3_0:OnValueChanged(value)
-    --        local value = math.floor(value)
-    --      sk_3_0:SetValue(value);
-
-    --        if RubimRH.db.profile[250].smartds ~= value then
-    --            print('DS Percent: '  .. value)
-    --      end
-
-    --        RubimRH.db.profile[250].smartds = value
-    --end
-
-    local sk_3_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].smartds);
-    sk_3_0:SetMinMaxValue(0, 100);
+    local sk_3_0 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].smartds / 5, false, 0, 19)
     StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
-    StdUi:AddLabel(window, sk_3_0, 'DS (InC DMG Percent)', 'TOP');
+    local sk_3_0Label = StdUi:FontString(window, 'Inc DMG DS: ' .. RubimRH.db.profile[250].smartds);
+    StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
+    StdUi:FrameTooltip(sk_3_0, 'How much inc dmg to use a Death Strike(INCDMG Percent) .', 'TOPLEFT', 'TOPRIGHT', true);
     function sk_3_0:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].smartds = value
+        sk_3_0Label:SetText('Inc DMG DS: ' .. RubimRH.db.profile[250].smartds)
     end
 
-    local sk_3_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[250].deficitds);
-    sk_3_1:SetMinMaxValue(0, 100);
+    local sk_3_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile[250].deficitds / 5, false, 0, 19)
     StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
-    StdUi:AddLabel(window, sk_3_1, 'DS (Rune Deficit)', 'TOP');
+    local sk_3_1Label = StdUi:FontString(window, 'Deficit DS: ' .. RubimRH.db.profile[250].deficitds);
+    StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
+    StdUi:FrameTooltip(sk_3_1, 'Maximum remaining RP to use a DS. (MaximumRP - Deficit)', 'TOPLEFT', 'TOPRIGHT', true);
     function sk_3_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
         RubimRH.db.profile[250].deficitds = value
+        sk_3_1Label:SetText('Deficit DS: ' .. RubimRH.db.profile[250].deficitds)
     end
+
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -410);
     local extraSep = StdUi:FontString(window, '=====');
@@ -281,10 +286,10 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
-        window:Hide()
         RubimRH.SpellBlocker()
     end);
 end
+
 local function FrostMenu()
     local window = StdUi:Window(UIParent, 'Death Knight - Frost', 350, 500);
     window:SetPoint('CENTER');

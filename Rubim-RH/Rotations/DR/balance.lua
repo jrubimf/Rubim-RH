@@ -82,7 +82,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val ~= 0
+    return val
 end
 
 local function FutureAstralPower()

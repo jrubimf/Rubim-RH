@@ -12,6 +12,35 @@ local Item = HL.Item;
 -- Lua
 local pairs = pairs;
 
+RubimRH.Spell[581] = {
+    -- Abilities
+    Felblade = Spell(232893),
+    FelDevastation = Spell(212084),
+    Fracture = Spell(263642),
+    FractureTalent = Spell(227700),
+    Frailty = Spell(247456),
+    ImmolationAura = Spell(178740),
+    Sever = Spell(235964),
+    Shear = Spell(203782),
+    SigilofFlame = Spell(204596),
+    SpiritBomb = Spell(247454),
+    SoulCleave = Spell(228477),
+    SoulFragments = Spell(203981),
+    ThrowGlaive = Spell(204157),
+    -- Offensive
+    SoulCarver = Spell(207407),
+    -- Defensive
+    FieryBrand = Spell(204021),
+    DemonSpikes = Spell(203720),
+    DemonSpikesBuff = Spell(203819),
+    Metamorphosis = Spell(187827),
+    SoulBarrier = Spell(263648),
+    -- Utility
+    ConsumeMagic = Spell(183752),
+    InfernalStrike = Spell(189110),
+    Disrupt = Spell(183752),
+}
+
 local S = RubimRH.Spell[581]
 
 S.Fracture.TextureSpellID = { 279450 }
@@ -32,6 +61,10 @@ local function APL()
     local SoulFragments = Player:BuffStack(S.SoulFragments);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
+    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Disrupt:Cast()
+    end
+
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].metamorphosis then
         return S.Metamorphosis:Cast()
@@ -48,6 +81,7 @@ local function APL()
 
     if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
         return S.DemonSpikes:Cast()
+
     end
     if RubimRH.config.Spells[1].isActive and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
         return S.InfernalStrike:Cast()
@@ -82,16 +116,16 @@ local function APL()
         return S.FelDevastation:Cast()
     end
     -- actions+=/sigil_of_flame
-    if S.SigilofFlame:IsReady() and Cache.EnemiesCount[8] >= 1 then
+    if S.SigilofFlame:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 then
         return S.SigilofFlame:Cast()
     end
     if Target:IsInRange("Melee") then
         -- actions+=/soul_cleave,if=pain>=80
-        if not S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
+        if not S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
             return S.SoulCleave:Cast()
         end
 
-        if S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
+        if S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
             return S.SoulCleave:Cast()
         end
         -- actions+=/sever

@@ -717,33 +717,6 @@ RubimRH.Spell[251] = {
 }
 ----DEMONHUNTER
 -- Vengeance
-RubimRH.Spell[581] = {
-    -- Abilities
-    Felblade = Spell(232893),
-    FelDevastation = Spell(212084),
-    Fracture = Spell(263642),
-    FractureTalent = Spell(227700),
-    Frailty = Spell(247456),
-    ImmolationAura = Spell(178740),
-    Sever = Spell(235964),
-    Shear = Spell(203782),
-    SigilofFlame = Spell(204596),
-    SpiritBomb = Spell(247454),
-    SoulCleave = Spell(228477),
-    SoulFragments = Spell(203981),
-    ThrowGlaive = Spell(204157),
-    -- Offensive
-    SoulCarver = Spell(207407),
-    -- Defensive
-    FieryBrand = Spell(204021),
-    DemonSpikes = Spell(203720),
-    DemonSpikesBuff = Spell(203819),
-    Metamorphosis = Spell(187827),
-    SoulBarrier = Spell(263648),
-    -- Utility
-    ConsumeMagic = Spell(183752),
-    InfernalStrike = Spell(189110)
-}
 
 --- Warlock
 

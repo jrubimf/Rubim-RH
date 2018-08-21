@@ -388,6 +388,9 @@ local function APL ()
         return S.Evasion:Cast()
     end
     if RubimRH.TargetIsValid() then
+        if S.Kick:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+            return S.Kick:Cast()
+        end
         -- # Check CDs at first
         -- actions=call_action_list,name=cds
         if CDs() ~= nil then

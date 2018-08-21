@@ -151,7 +151,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val ~= 0
+    return val
 end
 
 local function IsInMeleeRange()
@@ -304,7 +304,7 @@ local function APL()
             return S.BladeDance:Cast()
         end
         -- immolation_aura
-        if S.ImmolationAura:IsReady() and (true) then
+        if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.ImmolationAura:Cast()
         end
         -- felblade,if=fury<40|(buff.metamorphosis.down&fury.deficit>=40)
@@ -364,7 +364,7 @@ local function APL()
             return S.FelBarrage:Cast()
         end
         -- immolation_aura
-        if S.ImmolationAura:IsReady() and (true) then
+        if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum

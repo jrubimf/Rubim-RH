@@ -176,33 +176,31 @@ local function CDs ()
                 return S.MarkedforDeath:Cast()
             end
         end
-        if RubimRH.CDsON() then
-            -- actions.cds+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
-            if S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
-                return S.BladeFlurry:Cast()
+        -- actions.cds+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
+        if S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
+            return S.BladeFlurry:Cast()
+        end
+        -- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
+        if S.GhostlyStrike:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
+            return S.GhostlyStrike:Cast()
+        end
+        -- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
+        if S.KillingSpree:IsReady(10) and Blade_Flurry_Sync() and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
+            return S.KillingSpree:Cast()
+        end
+        -- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
+        if S.BladeRush:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
+            return S.BladeRush:Cast()
+        end
+        if not Player:IsStealthed(true, true) then
+            -- # Using Vanish/Ambush is only a very tiny increase, so in reality, you're absolutely fine to use it as a utility spell.
+            -- actions.cds+=/vanish,if=!stealthed.all&variable.ambush_condition
+            if S.Vanish:IsReady() and Ambush_Condition() then
+                return S.Vanish:Cast()
             end
-            -- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
-            if S.GhostlyStrike:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
-                return S.GhostlyStrike:Cast()
-            end
-            -- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
-            if S.KillingSpree:IsReady(10) and Blade_Flurry_Sync() and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
-                return S.KillingSpree:Cast()
-            end
-            -- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
-            if S.BladeRush:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
-                return S.BladeRush:Cast()
-            end
-            if not Player:IsStealthed(true, true) then
-                -- # Using Vanish/Ambush is only a very tiny increase, so in reality, you're absolutely fine to use it as a utility spell.
-                -- actions.cds+=/vanish,if=!stealthed.all&variable.ambush_condition
-                if S.Vanish:IsReady() and Ambush_Condition() then
-                    return S.Vanish:Cast()
-                end
-                -- actions.cds+=/shadowmeld,if=!stealthed.all&variable.ambush_condition
-                if S.Shadowmeld:IsReady() and Ambush_Condition() then
-                    return S.Shadowmeld:Cast()
-                end
+            -- actions.cds+=/shadowmeld,if=!stealthed.all&variable.ambush_condition
+            if S.Shadowmeld:IsReady() and Ambush_Condition() then
+                return S.Shadowmeld:Cast()
             end
         end
     end
@@ -260,8 +258,33 @@ local function Build ()
     end
 end
 
+
+local OffensiveCDs = {
+    S.AdrenalineRush,
+}
+
+local function UpdateCDs()
+    if RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.config.cooldown then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
+
 -- APL Main
 local function APL ()
+    UpdateCDs()
     -- Unit Update
     HL.GetEnemies(8); -- Cannonball Barrage
     HL.GetEnemies(S.Dispatch); -- Blade Flurry

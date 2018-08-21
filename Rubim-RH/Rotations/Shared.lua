@@ -45,7 +45,7 @@ function RubimRH.Shared()
         return 0, 538745
     end
 
-    if Target:Exists() and Target:MaxDistanceToPlayer(true) <= 8 then
+    if Target:Exists() and Target:MaxDistanceToPlayer(true) <= 8 and RubimRH.CDsON() then
         for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
             if RubimRH.db.profile.mainOption.useTrinkets[i] == 1 then
                 if trinketReady(1) then
