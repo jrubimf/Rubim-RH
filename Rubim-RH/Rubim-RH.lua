@@ -41,7 +41,7 @@ local Item = HL.Item;
 
 --ClassGlobals
 Blood = 250
-Frost =  251
+Frost = 251
 Unholy = 252
 
 Havoc = 577
@@ -93,7 +93,6 @@ RubimRH.Rotation = {}
 RubimRH.Rotation.APLs = {}
 RubimRH.Rotation.PASSIVEs = {}
 
-
 function RubimRH.Rotation.SetAPL (Spec, APL)
     RubimRH.Rotation.APLs[Spec] = APL;
 end
@@ -101,8 +100,6 @@ end
 function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
     RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
 end
-
-
 
 local EnabledRotation = {
     -- Death Knight
@@ -290,7 +287,7 @@ local defaults = {
         [66] = {
             cooldown = true,
             akEnabled = false,
-            akHP   = 30,
+            akHP = 30,
             adEnabled = false,
             adHP = 70,
             lohEnabled = false,
@@ -379,7 +376,7 @@ local defaults = {
         --SHAMAN
         [Enhancement] = {
             sk1 = 80, -- Healing Surge
-            sk1id = 188070, -- Healing Surge ID
+            sk1id = HealingSurge, -- Healing Surge ID
             cooldown = true,
         },
         [262] = {
@@ -389,10 +386,34 @@ local defaults = {
         [102] = {
             cooldowns = true,
         },
-        [103] = {
+        [Feral] = {
             cooldowns = true,
-            renewal = 50,
-            regrowth = 85,
+
+            sk1 = 50, -- Renewal
+            sk1id = Renewal, -- Renewall
+            sk1tooltip = "Percent HP to use Renewal",
+
+            sk2 = 85, -- Renewal
+            sk2id = Regrowth, -- Renewall
+            sk2tooltip = "Percent HP to use Regrowth",
+
+            sk3 = 85, -- Renewal
+            sk3id = Regrowth, -- Renewall
+            sk3tooltip = "Percent HP to use Regrowth",
+
+            sk4 = 85, -- Renewal
+            sk4id = Regrowth, -- Renewall
+            sk4tooltip = "Percent HP to use Regrowth",
+
+            sk5 = 85, -- Renewal
+            sk5id = Regrowth, -- Renewall
+            sk5tooltip = "Percent HP to use Regrowth",
+
+            sk6 = 85, -- Renewal
+            sk6id = Regrowth, -- Renewall
+            sk6tooltip = "Percent HP to use Regrowth",
+
+
             Spells = {
                 { spellID = Renewal, isActive = true },
                 { spellID = Regrowth, isActive = true },
@@ -404,7 +425,6 @@ local defaults = {
         --Warlock
         [265] = {
             cooldowns = true,
-
         },
         [266] = {
             cooldowns = true,
@@ -536,7 +556,6 @@ function RubimRH.mainRotation(option)
     if Rotation == "Passive" then
         return RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
     end
-	
 
     if Rotation == "SingleTarget" then
         if RubimRHPvP ~= nil and RubimRHPvP.active and RubimRH.PvP() ~= nil then

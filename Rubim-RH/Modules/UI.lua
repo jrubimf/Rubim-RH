@@ -110,31 +110,46 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
 end
 
 local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
-    local sk1var = RubimRH.db.profile[RubimRH.playerSpec].sk1 or -1
-    local sk1text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk1id) .. " :"
-    local sk1tooltip = ""
+    local sk1 = RubimRH.db.profile[RubimRH.playerSpec].sk1 or -1
+    local sk1id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk1id) or "") .. ": "
+    local sk1tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk1tooltip or ""
 
-    local sk2var = RubimRH.db.profile[RubimRH.playerSpec].sk2 or -1
-    local sk2text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk2id) .. " :"
-    local sk2tooltip = ""
+    local sk2 = RubimRH.db.profile[RubimRH.playerSpec].sk2 or -1
+    local sk2id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk2id) or "") .. ": "
+    local sk2tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk2tooltip or ""
 
-    local sk3var = RubimRH.db.profile[RubimRH.playerSpec].sk3 or -1
-    local sk3text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk3id) .. " :"
-    local sk3tooltip = ""
+    local sk3 = RubimRH.db.profile[RubimRH.playerSpec].sk3 or -1
+    local sk3id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk3id) or "") .. ": "
+    local sk3tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk3tooltip or ""
 
-    local sk4var = RubimRH.db.profile[RubimRH.playerSpec].sk4 or -1
-    local sk4text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk4id) .. " :"
-    local sk4tooltip = ""
+    local sk4 = RubimRH.db.profile[RubimRH.playerSpec].sk4 or -1
+    local sk4id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk4id) or "") .. ": "
+    local sk4tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk4tooltip or ""
 
-    local sk5var = RubimRH.db.profile[RubimRH.playerSpec].sk5 or -1
-    local sk5text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk5id) .. " :"
-    local sk5tooltip = ""
+    local sk5 = RubimRH.db.profile[RubimRH.playerSpec].sk5 or -1
+    local sk5id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk5id) or "") .. ": "
+    local sk5tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk5tooltip or ""
 
-    local sk6var = RubimRH.db.profile[RubimRH.playerSpec].sk6 or -1
-    local sk6text = GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk6id) .. " :"
-    local sk6tooltip = ""
+    local sk6 = RubimRH.db.profile[RubimRH.playerSpec].sk6 or -1
+    local sk6id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk6id) or "") .. ": "
+    local sk6tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk6tooltip or ""
 
-    local window = StdUi:Window(UIParent, select(2, UnitClass("player")) .. select(2, GetSpecializationInfo(GetSpecialization())), 350, 500);
+
+    local windowHeight = 380
+    local extraPosition = -280
+    if sk3 >= 0 then
+        windowHeight = 428
+        extraPosition = -328
+    end
+    if sk6 >= 0 then
+        windowHeight = 456
+        extraPosition = -368
+    end
+
+
+
+
+    local window = StdUi:Window(UIParent, select(2, UnitClass("player")) .. " - " .. select(2, GetSpecializationInfo(GetSpecialization())), 350, windowHeight);
     window:SetPoint('CENTER');
     if point ~= nil then
         window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
@@ -208,7 +223,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         --self:GetParent():Hide();
         self:GetParent():Hide();
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-        BloodMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+        AllMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
@@ -261,7 +276,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         --self:GetParent():Hide();
         self:GetParent():Hide();
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-        BloodMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+        AllMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
@@ -270,93 +285,97 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    if sk1var >= 0 then
-        local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 0, 19)
+    local sk_1_0
+    if sk1 >= 0 then
+        sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
-        local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
+        local sk_1_0Label = StdUi:FontString(window, sk1id .. sk1);
         StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
         StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_1_0:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk1 = value
-            sk1var = value
-            sk_1_0Label:SetText(sk1text .. sk1var)
+            sk1 = value
+            sk_1_0Label:SetText(sk1id .. sk1)
         end
     end
 
-    if sk2var >= 0 then
-        local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 0, 19)
+    local sk_1_1
+    if sk2 >= 0 then
+        sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
-        local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
+        local sk_1_1Label = StdUi:FontString(window, sk2id .. sk2);
         StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
         StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_1_1:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk2 = value
-            sk2var = value
-            sk_1_1Label:SetText(sk2text .. sk2var)
+            sk2 = value
+            sk_1_1Label:SetText(sk2id .. sk2)
         end
     end
 
-    if sk3var >= 0 then
-        local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 0, 19)
+    local sk_2_0
+    if sk3 >= 0 then
+        sk_2_0 = StdUi:Slider(window, 100, 16, sk3 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
-        local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
+        local sk_2_0Label = StdUi:FontString(window, sk3id .. sk3);
         StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
         StdUi:FrameTooltip(sk_2_0, sk3tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_2_0:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk3 = value
-            sk3var = value
-            sk_2_0Label:SetText(sk3text .. sk3var)
+            sk3 = value
+            sk_2_0Label:SetText(sk3id .. sk3)
         end
     end
 
-    if sk4var >= 0 then
-        local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 5, false, 0, 19)
+    local sk_2_1
+    if sk4 >= 0 then
+        sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
-        local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
+        local sk_2_1Label = StdUi:FontString(window, sk4id .. sk4);
         StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
         StdUi:FrameTooltip(sk_2_1, sk4tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_2_1:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk4 = value
-            sk4var = value
-            sk_2_1Label:SetText(sk4text .. sk4var)
+            sk4 = value
+            sk_2_1Label:SetText(sk4id .. sk4)
         end
 
     end
 
-    if sk5var >= 0 then
-        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5var / 5, false, 0, 19)
+    if sk5 >= 0 then
+        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
-        local sk_3_0Label = StdUi:FontString(window, sk5text .. sk5var);
+        local sk_3_0Label = StdUi:FontString(window, sk5id .. sk5);
         StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
         StdUi:FrameTooltip(sk_3_0, sk5tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_3_0:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk5 = value
-            sk5var = value
-            sk_3_0Label:SetText(sk5text .. sk5var)
+            sk5 = value
+            sk_3_0Label:SetText(sk5id .. sk5)
         end
     end
 
-    if sk6var >= 0 then
-        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6var / 5, false, 0, 19)
+    if sk6 >= 0 then
+        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6 / 5, false, 0, 19)
         StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
-        local sk_3_1Label = StdUi:FontString(window, sk6text .. sk6var);
+        local sk_3_1Label = StdUi:FontString(window, sk6id .. sk6);
         StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
         StdUi:FrameTooltip(sk_3_1, sk6tooltip, 'TOPLEFT', 'TOPRIGHT', true);
         function sk_3_1:OnValueChanged(value)
             local value = math.floor(value) * 5
             RubimRH.db.profile[RubimRH.playerSpec].sk6 = value
-            sk6var = value
-            sk_3_1Label:SetText(sk6text .. sk6var)
+            sk6 = value
+            sk_3_1Label:SetText(sk6id .. sk6)
         end
     end
 
     local extra = StdUi:FontString(window, 'Extra');
-    StdUi:GlueTop(extra, window, 0, -410);
+    StdUi:GlueTop(extra, window, 0, extraPosition);
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
@@ -1056,8 +1075,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk3var = RubimRH.db.profile[RubimRH.playerSpec].rallyingcry
     local sk3text = "Rallying Cry: "
     local sk3tooltip = "HP Percent to use Rallying Cry."
-    
-        
+
     local window = StdUi:Window(UIParent, 'Warrior - Arms', 350, 500);
     window:SetPoint('CENTER');
     if point ~= nil then
@@ -1229,7 +1247,6 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk3var = value
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
-
 
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -350);
@@ -3194,6 +3211,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 end
 
 function RubimRH.ClassConfig(specID)
+    AllMenu()
     if specID == 250 then
         BloodMenu()
     end
