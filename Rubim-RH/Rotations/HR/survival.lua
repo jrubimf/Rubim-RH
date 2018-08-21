@@ -106,7 +106,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val
+    return val ~= 0
 end
 
 local I = Item.Hunter.Survival;

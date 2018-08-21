@@ -91,7 +91,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val
+    return val ~= 0
 end
 
 S.FerociousBiteMaxEnergy.CustomCost = {
@@ -355,7 +355,7 @@ local function APL()
             end
         end
         -- thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
-        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and VarUseThrash == 1 and bool(Player:Buff(S.ClearcastingBuff))) then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and VarUseThrash == 1 and Player:Buff(S.ClearcastingBuff)) then
             return S.ThrashCat:Cast()
         end
         -- pool_resource,for_next=1
@@ -369,7 +369,7 @@ local function APL()
             end
         end
         -- shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
-        if S.Shred:IsReady() and (Target:DebuffRemains(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:Energy()) / Player:EnergyRegen() or bool(Player:Buff(S.ClearcastingBuff))) then
+        if S.Shred:IsReady() and (Target:DebuffRemains(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:Energy()) / Player:EnergyRegen() or Player:Buff(S.ClearcastingBuff)) then
             return S.Shred:Cast()
         end
         return 0, 135328

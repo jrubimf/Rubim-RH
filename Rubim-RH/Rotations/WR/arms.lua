@@ -122,7 +122,7 @@ local function num(val)
 end
 
 local function bool(val)
-    return val ~= 1
+    return val ~= 0
 end
 
 local OffensiveCDs = {

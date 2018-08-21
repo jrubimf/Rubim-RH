@@ -470,7 +470,7 @@ local function APL()
     end
 
     -- potion,if=buff.serenity.up|buff.storm_earth_and_fire.up|(!talent.serenity.enabled&trinket.proc.agility.react)|buff.bloodlust.react|target.time_to_die<=60
-    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable() and bool(false)) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
+    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable()) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
         return I.ProlongedPower:Cast()
     end
     -- touch_of_death,if=target.time_to_die<=9

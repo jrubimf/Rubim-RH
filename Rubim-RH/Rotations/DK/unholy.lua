@@ -254,7 +254,7 @@ local function APL()
     end
     Generic = function()
         -- death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
-        if S.DeathCoil:IsReady() and (bool(Player:BuffStack(S.SuddenDoomBuff)) and not bool(VarPoolingForGargoyle) or bool(Player:GargoyleActive())) then
+        if S.DeathCoil:IsReady() and (Player:BuffStack(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or Player:GargoyleActive()) then
             return S.DeathCoil:Cast()
         end
         -- death_coil,if=runic_power.deficit<14&(cooldown.Apocalypse.remains>5|debuff.festering_wound.stack>4)&!variable.pooling_for_gargoyle
@@ -340,20 +340,20 @@ local function APL()
         VarPoolingForGargoyle = num((S.SummonGargoyle:CooldownRemains() < 5 and (S.DarkTransformation:CooldownRemains() < 5 or not I.Taktheritrixs:IsEquipped())) and S.SummonGargoyle:IsAvailable())
     end
     -- arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
-    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (bool(Player:GargoyleActive()) or not S.SummonGargoyle:IsAvailable()) and Player:Runes() <= 1) then
+    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:Runes() <= 1) then
         return S.ArcaneTorrent:Cast()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.BloodFury:IsReady() and (bool(Player:GargoyleActive()) or not S.SummonGargoyle:IsAvailable()) then
+    if S.BloodFury:IsReady() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.Berserking:IsReady() and (bool(Player:GargoyleActive()) or not S.SummonGargoyle:IsAvailable()) then
+    if S.Berserking:IsReady() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return S.Berserking:Cast()
     end
     -- use_items
     -- use_item,name=feloiled_infernal_machine,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if I.FeloiledInfernalMachine:IsReady() and (bool(Player:GargoyleActive()) or not S.SummonGargoyle:IsAvailable()) then
+    if I.FeloiledInfernalMachine:IsReady() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return I.FeloiledInfernalMachine:Cast()
     end
     -- use_item,name=ring_of_collapsing_futures,if=(buff.temptation.stack=0&target.time_to_die>60)|target.time_to_die<60
@@ -361,7 +361,7 @@ local function APL()
         return I.RingofCollapsingFutures:Cast()
     end
     -- potion,if=cooldown.army_of_the_dead.ready|pet.gargoyle.active|buff.unholy_frenzy.up
-    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (S.ArmyoftheDead:CooldownUp() or bool(Player:GargoyleActive()) or Player:Buff(S.UnholyFrenzyBuff)) then
+    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (S.ArmyoftheDead:CooldownUp() or Player:GargoyleActive() or Player:Buff(S.UnholyFrenzyBuff)) then
         return I.ProlongedPower:Cast()
     end
     -- outbreak,target_if=(dot.virulent_plague.tick_time_remains+tick_time<=dot.virulent_plague.remains)&dot.virulent_plague.remains<=gcd
