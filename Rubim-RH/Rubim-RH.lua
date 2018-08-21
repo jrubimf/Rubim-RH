@@ -39,6 +39,54 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
+--ClassGlobals
+Blood = 250
+Frost =  251
+Unholy = 252
+
+Havoc = 577
+Vengeance = 581
+
+Balance = 102
+Feral = 103
+Guardian = 104
+Restoration = 105
+
+BeastMastery = 253
+Marmanship = 254
+Survival = 255
+
+Arcane = 62
+Fire = 63
+MFrost = 64
+
+Brewmaster = 268
+Mistweaver = 270
+Windwalker = 269
+
+Holy = 65
+PProtection = 66
+Retribution = 70
+
+Discipline = 256
+PHoly = 257
+Shadow = 258
+
+Assassination = 259
+Outlaw = 260
+Subtlety = 261
+
+Elemental = 262
+Enhancement = 263
+Restoration = 264
+
+Affliction = 265
+Demonology = 266
+Destruction = 267
+
+Arms = 71
+Fury = 72
+Protection = 73
 
 -- Defines the APL
 RubimRH.Rotation = {}
@@ -251,6 +299,7 @@ local defaults = {
             lotpHP = 50,
         },
         --WARRIOR
+        --ARMS
         [71] = {
             cooldown = true,
             victoryrush = 80,
@@ -328,12 +377,10 @@ local defaults = {
             dampemharm = 35,
         },
         --SHAMAN
-        [263] = {
-            healingsurge = 80,
+        [Enhancement] = {
+            sk1 = 80, -- Healing Surge
+            sk1id = 188070, -- Healing Surge ID
             cooldown = true,
-            Spells = {
-                { spellID = HealingSurge, isActive = true }
-            }
         },
         [262] = {
             healingsurge = 80,
