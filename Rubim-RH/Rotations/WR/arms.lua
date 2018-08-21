@@ -350,7 +350,9 @@ local function APL()
         if Precombat() ~= nil then
             return Precombat()
         end
+        return 0, 462338
     end
+
     -- charge
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
         return S.Charge:Cast()
