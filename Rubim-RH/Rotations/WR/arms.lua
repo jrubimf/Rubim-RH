@@ -127,10 +127,7 @@ end
 
 local OffensiveCDs = {
     S.Avatar,
-    S.UnholyFrenzy,
-    S.Apocalypse,
-    S.DarkTransformation,
-    S.ArmyoftheDead,
+    S.Bladestorm,
 
 }
 
@@ -155,6 +152,7 @@ end
 local function APL()
     local Precombat, Execute, FiveTarget, SingleTarget
     UpdateRanges()
+    UpdateCDs()
     Precombat = function()
         -- flask
         -- food
