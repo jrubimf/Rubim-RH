@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/Icons.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/Icons.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/MiniMap.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/MiniMap.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rubim-RHc.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rubim-RHc.lua" />
+      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,21 +44,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomBFA.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CustomBFA.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="54" column="3" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+            <state relative-caret-position="448">
+              <caret line="92" column="2" lean-forward="true" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua">
+      <file leaf-file-name="unholy.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="143" column="53" lean-forward="true" selection-start-line="143" selection-start-column="53" selection-end-line="143" selection-end-column="53" />
+            <state relative-caret-position="85">
+              <caret line="350" column="60" lean-forward="true" selection-start-line="350" selection-start-column="60" selection-end-line="350" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -129,16 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>print</find>
-      <find>Raptor</find>
-      <find>Eagle:IsReady()</find>
-      <find>BloodBoil</find>
-      <find>Hemos</find>
-      <find>Haemo</find>
-      <find>HemostasisBuff</find>
-      <find>IsReady</find>
-      <find>Coo</find>
-      <find>MainIcon</find>
       <find>Icons.MainIcon</find>
       <find>Icons.MainIcon.texture</find>
       <find>slider</find>
@@ -159,11 +145,18 @@
       <find>roll</find>
       <find>Outlaw</find>
       <find>self</find>
+      <find>ColdHeart</find>
+      <find>S.</find>
+      <find>IsCastableP</find>
+      <find>UnholyBlight</find>
+      <find>pet.gargoyle.active</find>
+      <find>(pet.gargoyle.active)</find>
+      <find>BuffStack</find>
+      <find>IsCastable</find>
+      <find>Deathand</find>
+      <find>DeathAndDecay</find>
     </findStrings>
     <replaceStrings>
-      <replace>S.Ravager:IsReadyMorph</replace>
-      <replace>Remains</replace>
-      <replace>arena2</replace>
       <replace>HeartBreaker</replace>
       <replace>sk_3_1</replace>
       <replace>arena3</replace>
@@ -188,9 +181,12 @@
       <replace>sk4</replace>
       <replace>id</replace>
       <replace>DrainSoul:IsReadyMorph</replace>
-      <replace>IsReady</replace>
       <replace>Eagle:IsReadyMorph</replace>
       <replace>Eagle:IsReadyMorph()</replace>
+      <replace>S.</replace>
+      <replace>(Player:GargoyleActive())</replace>
+      <replace>BuffP(S.SuddenDoomBuff)</replace>
+      <replace>IsReady</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -228,7 +224,6 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DR/balance.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/havoc.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
@@ -247,6 +242,7 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RHc.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/MiniMap.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
       </list>
     </option>
   </component>
@@ -521,14 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
           <caret line="342" column="16" lean-forward="false" selection-start-line="342" selection-start-column="12" selection-end-line="342" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="108" column="19" lean-forward="false" selection-start-line="108" selection-start-column="15" selection-end-line="108" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -879,8 +867,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="54" column="3" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+        <state relative-caret-position="448">
+          <caret line="92" column="2" lean-forward="true" selection-start-line="92" selection-start-column="2" selection-end-line="92" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="350" column="60" lean-forward="true" selection-start-line="350" selection-start-column="60" selection-end-line="350" selection-end-column="60" />
           <folding />
         </state>
       </provider>
