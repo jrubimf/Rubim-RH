@@ -405,9 +405,11 @@ end)
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.050) then
-
         if RubimRH.db.profile.mainOption.mainIcon then
             Icons.MainIcon:Show()
+            Icons.MainIcon:SetAlpha(RubimRH.db.profile.mainOption.mainIconOpacity / 100)
+            Icons.MainIcon:SetScale(RubimRH.db.profile.mainOption.mainIconScale / 100)
+
             if CDText ~= nil then
                 CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
                 AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "AoE")

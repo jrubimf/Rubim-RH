@@ -96,7 +96,6 @@ end
 
 function RubimRH.CDsON()
     if RubimRH.config.cooldown == true then
-
         if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
             return true
         end
@@ -232,6 +231,35 @@ local function getOptions()
                                         RubimRH.MainIconToggle()
                                     end,
                                     name = "Show Interface"
+                                },
+                                mainIconOpacity = {
+                                    order = 2,
+                                    type = "range",
+                                    min = 5,
+                                    max = 100,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Icon Opacity",
+                                },
+                                mainIconScale = {
+                                    order = 3,
+                                    type = "range",
+                                    min = 5,
+                                    max = 1000,
+                                    step = 5,
+                                    --fontSize = "medium",
+                                    name = "Icon Size",
+                                },
+                                mainIconRecenter = {
+                                    order = 4,
+                                    type = "execute",
+                                    name = "Recenter",
+                                    func = function()
+                                        RubimRH.db.profile.mainOption.align = "CENTER"
+                                        RubimRH.db.profile.mainOption.xCord = 0
+                                        RubimRH.db.profile.mainOption.yCord = 0
+                                        ReloadUI()
+                                    end
                                 }
                             }
                         },

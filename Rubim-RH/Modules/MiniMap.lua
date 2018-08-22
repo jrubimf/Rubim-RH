@@ -20,11 +20,9 @@ local ldbObject = {
     --Windows and "/Applications/World of Warcraft" for Mac)
     label = "RubimRH",
     OnClick = function(self, button)
-        RubimRH.ClassConfig(RubimRH.playerSpec)   
-
-     --   InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.Profiles)
-      --  InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.RubimRH)
-       -- InterfaceOptionsFrame:Raise()
+        InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.Profiles)
+        InterfaceOptionsFrame_OpenToCategory(RubimRH.optionsFrames.RubimRH)
+        InterfaceOptionsFrame:Raise()
     end,
     OnTooltipShow = function(tooltip)
         tooltip:AddLine("Open Config Panel");

@@ -22,18 +22,48 @@ function Spell:New(SpellID, SpellType)
     self.isActive = true
 end
 
-local Spells = {
-    ArcaneBarrage = Spell(44425),
+Spells = {
+    ArcaneBarrage = 44425,
+    FrostNova = 122,
 }
-
 local S = Spells
 
-function Spell:CDRemains()
-    return TMW.CNDT.Env.CooldownDuration(self.SpellID)
+
+--Send Argument "gcd" to get gcd
+local function CDDuration(spell)
+    return TMW.CNDT.Env.CooldownDuration(spell)
+end
+
+local function BuffRemains(spell, unitID)
+    local unitID = unitID or "Player"
+    return select(1, TMW.CNDT.Env.AuraDur(unitID, spell, GetSpellInfo(spell)))
+end
+
+local function BuffDuration(spell, unitID)
+    local unitID = unitID or "Player"
+    return select(2, TMW.CNDT.Env.AuraDur(unitID, spell, GetSpellInfo(spell)))
+end
+
+local function BuffStack(spell, unitID)
+    local unitID = unitID or "Player"
+    return TMW.CNDT.Env.AuraStacks(unitID, spell, GetSpellInfo(spell))
+end
+
+local function SpellUsable(spell, offset)
+    local offset = offset or 0.2
+    return IsUsableSpell(spell) and CDDuration(spell) <= offset
 end
 
 function mainRotation()
-    return 44425
+    if CDDuration(S.ArcaneBarrage) > 0 then
+        return S.FrostNova
+    end
+
+    if true then
+        return S.ArcaneBarrage
+    end
+
+    return 0
 end
 
 function RotationHelper(icon)
