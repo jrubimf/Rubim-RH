@@ -224,7 +224,7 @@ local function APL ()
             return S.Carve:Cast()
         end
         -- wildfire_bomb,if=!talent.guerrilla_tactics.enabled|full_recharge_time<gcd
-        if S.WildfireBomb:IsReadyMorph() and (not S.GuerrillaTactics:IsAvailable() or S.WildfireBomb:FullRechargeTimeP() < Player:GCD()) then
+        if S.WildfireBomb:IsReady() and (not S.GuerrillaTactics:IsAvailable() or S.WildfireBomb:FullRechargeTimeP() < Player:GCD()) then
             return S.WildfireBomb:Cast()
         end
         -- chakrams
@@ -248,7 +248,7 @@ local function APL ()
             return S.FlankingStrike:Cast()
         end
         -- wildfire_bomb,if=dot.wildfire_bomb.refreshable|talent.wildfire_infusion.enabled
-        if (S.WildfireBomb:IsReadyMorph() or S.VolatileBomb:IsReady() or S.ShrapnelBomb:IsReady() or S.PheromoneBomb:IsReady()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
+        if (S.WildfireBomb:IsReady() or S.VolatileBomb:IsReady() or S.ShrapnelBomb:IsReady() or S.PheromoneBomb:IsReady()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
             return S.WildfireBomb:Cast()
         end
         -- serpent_sting,target_if=min:remains,if=buff.vipers_venom.up
@@ -298,7 +298,7 @@ local function APL ()
             return S.CoordinatedAssault:Cast()
         end
         -- raptor_strike_eagle,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
-        if S.RaptorStrikeEagle:IsReady() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
+        if S.RaptorStrikeEagle:IsReadyMorph() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
             return S.RaptorStrikeEagle:Cast()
         end
         -- raptor_strike,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
@@ -306,7 +306,7 @@ local function APL ()
             return S.RaptorStrike:Cast()
         end
         -- mongoose_bite_eagle,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
-        if S.MongooseBiteEagle:IsReady() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
+        if S.MongooseBiteEagle:IsReadyMorph() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
             return S.MongooseBiteEagle:Cast()
         end
         -- mongoose_bite,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
@@ -326,7 +326,7 @@ local function APL ()
             return S.SteelTrap:Cast()
         end
         -- wildfire_bomb,if=focus+cast_regen<focus.max&(full_recharge_time<gcd|dot.wildfire_bomb.refreshable&buff.mongoose_fury.down)
-        if S.WildfireBomb:IsReadyMorph() and (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() and (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff))) then
+        if S.WildfireBomb:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() and (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff))) then
             return S.WildfireBomb:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
@@ -342,7 +342,7 @@ local function APL ()
             return S.SerpentSting:Cast()
         end
         -- mongoose_bite_eagle,if=buff.mongoose_fury.up|focus>60
-        if S.MongooseBiteEagle:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
+        if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
             return S.MongooseBiteEagle:Cast()
         end
         -- mongoose_bite,if=buff.mongoose_fury.up|focus>60
@@ -350,7 +350,7 @@ local function APL ()
             return S.MongooseBite:Cast()
         end
         -- raptor_strike_eagle
-        if S.RaptorStrikeEagle:IsReady() and (true) then
+        if S.RaptorStrikeEagle:IsReadyMorph() and (true) then
             return S.RaptorStrikeEagle:Cast()
         end
         -- raptor_strike
@@ -358,7 +358,7 @@ local function APL ()
             return S.RaptorStrike:Cast()
         end
         -- wildfire_bomb,if=dot.wildfire_bomb.refreshable
-        if S.WildfireBomb:IsReadyMorph() and (Target:DebuffRefreshableCP(S.WildfireBombDebuff)) then
+        if S.WildfireBomb:IsReady() and (Target:DebuffRefreshableCP(S.WildfireBombDebuff)) then
             return S.WildfireBomb:Cast()
         end
         -- serpent_sting,if=refreshable
@@ -408,7 +408,7 @@ local function APL ()
             return S.Harpoon:Cast()
         end
         -- mongoose_bite_eagle,if=buff.mongoose_fury.up|focus>60|dot.shrapnel_bomb.ticking
-        if S.MongooseBiteEagle:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60 or Target:DebuffP(S.ShrapnelBombDebuff)) then
+        if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60 or Target:DebuffP(S.ShrapnelBombDebuff)) then
             return S.MongooseBiteEagle:Cast()
         end
         -- mongoose_bite,if=buff.mongoose_fury.up|focus>60|dot.shrapnel_bomb.ticking
@@ -416,7 +416,7 @@ local function APL ()
             return S.MongooseBite:Cast()
         end
         -- raptor_strike_eagle
-        if S.RaptorStrikeEagle:IsReady() and (true) then
+        if S.RaptorStrikeEagle:IsReadyMorph() and (true) then
             return S.RaptorStrikeEagle:Cast()
         end
         -- raptor_strike
@@ -467,7 +467,7 @@ local function APL ()
     -- call_action_list,name=cleave,if=active_enemies>1
     if (Cache.EnemiesCount[8] > 1) then
         if Cleave() ~= nil then
-            return Cleave()
+
         end
     end
     -- heal pet

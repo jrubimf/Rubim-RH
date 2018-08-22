@@ -3211,7 +3211,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 end
 
 function RubimRH.ClassConfig(specID)
-    AllMenu()
+    --AllMenu()
     if specID == 250 then
         BloodMenu()
     end

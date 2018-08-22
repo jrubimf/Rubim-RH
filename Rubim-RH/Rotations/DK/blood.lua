@@ -39,6 +39,7 @@ RubimRH.Spell[250] = {
     DeathsCaress = Spell(195292),
     DeathStrike = Spell(49998),
     DeathsAdvance = Spell(48265),
+    HemostasisBuff = Spell(273947),
     HeartBreaker = Spell(221536),
     HeartStrike = Spell(206930),
     Marrowrend = Spell(195182),
@@ -54,6 +55,7 @@ RubimRH.Spell[250] = {
     RuneTap = Spell(194679),
     Tombstone = Spell(219809),
     -- Legendaries
+
     HaemostasisBuff = Spell(235558),
     SephuzBuff = Spell(208052),
     -- PVP
@@ -123,7 +125,7 @@ local function APL()
         end
 
         --BloodBoil
-        if S.BloodBoil:IsReady() and S.BloodBoil:ChargesFractional() >= 1.8 then
+        if S.BloodBoil:IsReady() and S.BloodBoil:ChargesFractional() >= 1.8 and Cache.EnemiesCount[8] >= 1 then
             return S.BloodBoil:Cast()
         end
 
@@ -177,7 +179,7 @@ local function APL()
             return S.HeartStrike:Cast()
         end
         -- blood_boil,if=buff.dancing_rune_weapon.up
-        if S.BloodBoil:IsReady() and (Player:BuffP(S.DancingRuneWeaponBuff)) then
+        if S.BloodBoil:IsReady() and (Player:BuffP(S.DancingRuneWeaponBuff)) and Cache.EnemiesCount[8] >= 1 then
             return S.BloodBoil:Cast()
         end
         -- death_and_decay,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.death_and_decay>=2
@@ -189,7 +191,7 @@ local function APL()
             return S.Consumption:Cast()
         end
         -- blood_boil
-        if S.BloodBoil:IsReady() and (true) then
+        if S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.BloodBoil:Cast()
         end
         -- heart_strike,if=rune.time_to_3<gcd|buff.bone_shield.stack>6
@@ -286,7 +288,7 @@ local function APL()
         end
 
         --actions.standard+=/blood_boil,if=charges_fractional>=1.8&buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
-        if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
+        if S.BloodBoil:IsReady(10) and Cache.EnemiesCount[8] >= 1 and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
             return S.BloodBoil:Cast()
         end
 
@@ -321,7 +323,7 @@ local function APL()
         end
 
         --actions.standard+=/blood_boil,if=buff.haemostasis.stack<5&(buff.haemostasis.stack<3|!buff.dancing_rune_weapon.up)
-        if S.BloodBoil:IsReady(10) and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
+        if S.BloodBoil:IsReady(10) and Cache.EnemiesCount[8] >= 1 and (S.BloodBoil:ChargesFractional() >= 1.8 and Player:BuffStack(S.HaemostasisBuff) < 5 and (Player:BuffStack(S.HaemostasisBuff) < 3 or not Player:Buff(S.DancingRuneWeaponBuff))) then
             return S.BloodBoil:Cast()
         end
         --actions.standard+=/death_and_decay
