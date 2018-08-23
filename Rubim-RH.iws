@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH.zip" afterPath="$PROJECT_DIR$/Rubim-RH.zip" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
-      <change beforePath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
-              <caret line="359" column="32" lean-forward="false" selection-start-line="359" selection-start-column="17" selection-end-line="359" selection-end-column="32" />
+            <state relative-caret-position="284">
+              <caret line="357" column="19" lean-forward="false" selection-start-line="357" selection-start-column="19" selection-end-line="357" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -48,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sub.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="318">
-              <caret line="382" column="40" lean-forward="false" selection-start-line="382" selection-start-column="40" selection-end-line="382" selection-end-column="40" />
+              <caret line="452" column="23" lean-forward="false" selection-start-line="452" selection-start-column="20" selection-end-line="452" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -69,8 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Harpoon</find>
-      <find>Distance</find>
       <find>S.Harpoon</find>
       <find>Wild</find>
       <find>AspectoftheWild</find>
@@ -99,6 +93,8 @@
       <find>Queue</find>
       <find>Interruptible</find>
       <find>backstab</find>
+      <find>pri</find>
+      <find>prin</find>
     </findStrings>
     <replaceStrings>
       <replace>gn_3_0</replace>
@@ -185,9 +181,9 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/PL/holy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/UI.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua" />
       </list>
     </option>
   </component>
@@ -796,14 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="359" column="32" lean-forward="false" selection-start-line="359" selection-start-column="17" selection-end-line="359" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Modules/CustomUnit.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -815,7 +803,15 @@
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="318">
-          <caret line="382" column="40" lean-forward="false" selection-start-line="382" selection-start-column="40" selection-end-line="382" selection-end-column="40" />
+          <caret line="452" column="23" lean-forward="false" selection-start-line="452" selection-start-column="20" selection-end-line="452" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="357" column="19" lean-forward="false" selection-start-line="357" selection-start-column="19" selection-end-line="357" selection-end-column="19" />
           <folding />
         </state>
       </provider>
