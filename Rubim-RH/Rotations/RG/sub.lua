@@ -202,8 +202,8 @@ local function Finish ()
         return S.SecretTechnique:Cast()
     end
     -- actions.finish+=/eviscerate
-    if S.Eviscerate:IsReady() and IsInMeleeRange() then
-        if Player:EnergyPredicted() < S.Eviscerate:Cost() then
+    if IsInMeleeRange() then
+        if S.Eviscerate:IsReady() then
             return S.Eviscerate:Cast()
         else
             S.Eviscerate:Queue()
