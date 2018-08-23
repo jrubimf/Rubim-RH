@@ -422,7 +422,7 @@ local defaults = {
                 { spellID = Regrowth, isActive = true },
             }
         },
-        [104] = {
+        [Guardian] = {
             cooldowns = true,
         },
         --Warlock

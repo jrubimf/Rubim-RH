@@ -3379,4 +3379,8 @@ function RubimRH.ClassConfig(specID)
     if specID == Enhancement then
         AllMenu()
     end
+
+    if specID == Guardian then
+        AllMenu()
+    end
 end

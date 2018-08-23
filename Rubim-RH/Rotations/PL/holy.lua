@@ -24,7 +24,7 @@ RubimRH.Spell[65] = {
 
 	--Spells
 	Cleanse = Spell(4987),
-	Judgement = Spell(20271),
+	Judgement = Spell(275773),
 	CrusaderStrike = Spell(35395),
 	Consecration = Spell(26573),
 	LightoftheMartyr = Spell(183998),
@@ -102,7 +102,11 @@ local function APL()
 	end
 
 	if Player:AffectingCombat() and RubimRH.TargetIsValid() then
-		if S.Judgement:IsReady() then
+		if S.HolyShock:IsReady(40) then
+			return S.HolyShock:Cast()
+		end
+
+		if S.Judgement:IsReady(30) then
 			return S.Judgement:Cast()
 		end
 
@@ -112,10 +116,6 @@ local function APL()
 
 		if S.Consecration:IsReady() and Cache.EnemiesCount[6] >= 1 then
 			return S.Consecration:Cast()
-		end
-
-		if S.HolyShock:IsReady() then
-			return S.HolyShock:Cast()
 		end
 	end
 

@@ -507,7 +507,7 @@ local function APL()
         return 0, 462338
     end
 
-    if Rubim.CDsON() then
+    if RubimRH.CDsON() then
         if CDs() ~= nil then
             return CDs()
         end
