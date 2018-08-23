@@ -443,7 +443,7 @@ local function APL ()
         return Precombat()
     end
 
-    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].sk1 and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end
 
@@ -476,7 +476,7 @@ local function APL ()
     -- call_action_list,name=cleave,if=active_enemies>1
     if (Cache.EnemiesCount[8] > 1) then
         if Cleave() ~= nil then
-
+            return Cleave()
         end
     end
     -- heal pet
@@ -490,11 +490,11 @@ RubimRH.Rotation.SetAPL(255, APL);
 
 local function PASSIVE()
 
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].aspectoftheturtle then
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].sk2 then
         return S.AspectoftheTurtle:Cast()
     end
 
-    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].exhilaration then
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].sk3 then
         return S.Exhilaration:Cast()
     end
 

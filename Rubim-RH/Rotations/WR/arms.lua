@@ -362,15 +362,15 @@ local function APL()
     -- blood_fury,if=debuff.colossus_smash.up
     -- In Combat
 
-    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].victoryrush then
+    if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk1 then
         return S.VictoryRush:Cast()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
+    if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk2 then
         return S.VictoryRush:Cast()
     end
 
-    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].rallyingcry then
+    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk4 then
         return S.RallyingCry:Cast()
     end
 
@@ -423,7 +423,7 @@ end
 RubimRH.Rotation.SetAPL(71, APL);
 
 local function PASSIVE()
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].diebythesword then
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk3 then
         return S.DiebytheSword:Cast()
     end
 

@@ -172,6 +172,17 @@ local Warbreaker = 209577
 local Ravager = 152277
 local OdynsFury = 205545
 local Charge = 100
+local RallyingCry = 97462
+local DefensiveStance = 197690
+local DiebytheSword = 118038
+local VictoryRush = 34428
+local ImpendingVictory = 202168
+
+--Survival
+local MendPet = 136
+local AspectoftheTurtle = 186265
+local Exhilaration = 109304
+
 --Paladin
 local JusticarVengeance = 215661
 local WordofGlory = 210191
@@ -300,11 +311,24 @@ local defaults = {
         },
         --WARRIOR
         --ARMS
-        [71] = {
+        [Arms] = {
             cooldown = true,
-            victoryrush = 80,
-            diebythesword = 50,
-            rallyingcry = 30,
+
+            sk1 = 80, -- VictoryRush
+            sk1id = VictoryRush,
+            sk1tooltip = "Percent HP to use Victory Rush",
+
+            sk2 = 70, -- ImpendingVictory
+            sk2id = ImpendingVictory,
+            sk2tooltip = "Percent HP to use Impending Victory",
+
+            sk3 = 50, -- Die by the Sword
+            sk3id = DiebytheSword,
+            sk3tooltip = "Percent HP to use Die by the Sword",
+
+            sk4 = 30, -- RallyingCry
+            sk4id = RallyingCry,
+            sk4tooltip = "Percent HP to use RallyingCry",
             Spells = {
                 { spellID = Warbreaker, isActive = true },
                 { spellID = Ravager, isActive = true },
@@ -361,11 +385,19 @@ local defaults = {
             aspectoftheturtle = 30,
         },
 
-        [255] = {
+        [Survival] = {
             cooldown = true,
-            mendpet = 70,
-            aspectoftheturtle = 30,
-            exhilaration = 65,
+            sk1 = 70,
+            sk1id = MendPet,
+            sk1tooltip = "Percent HP to use Victory Rush",
+
+            sk2 = 30,
+            sk2id = AspectoftheTurtle,
+            sk2tooltip = "Percent HP to use Aspect of the Turtle",
+
+            sk3 = 65,
+            sk3id = Exhilaration,
+            sk3tooltip = "Percent HP to use Exhilaration",
         },
         --MONK
         [268] = {

@@ -3320,8 +3320,8 @@ function RubimRH.ClassConfig(specID)
         UnholyMenu()
     end
 
-    if specID == 71 then
-        ArmsMenu()
+    if specID == Arms then
+        AllMenu()
     end
 
     if specID == 72 then
@@ -3336,8 +3336,8 @@ function RubimRH.ClassConfig(specID)
         MMMenu()
     end
 
-    if specID == 255 then
-        SurvivalMenu()
+    if specID == Survival then
+        AllMenu()
     end
 
     if specID == 70 then
