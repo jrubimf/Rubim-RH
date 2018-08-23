@@ -105,36 +105,12 @@ local function randomGenerator(option)
 end
 
 function Unit:IsInterruptible()
-	if not self:IsCasting() or not self:IsChanneling() then
+	if self:CastingInfo(8) == true or self:ChannelingInfo(7) == true then
 		return false
 	end
 
-	local channeling = false
-	local name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId
-	if UnitCastingInfo(self.UnitID) ~= nil then
-		name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId = UnitCastingInfo(self.UnitID)
-	end	
 
-	if UnitChannelInfo(self.UnitID) ~= nil then
-		name, text, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, spellId = UnitChannelInfo(self.UnitID)
-		channeling = true
-	end
-
-	
-	if name == nil or notInterruptable == true then
-		return false
-	end
-
-	local timeSinceStart = (GetTime() * 1000 - startTimeMS) / 1000
-	local timeLeft = ((GetTime() * 1000 - endTimeMS) * -1) / 1000
-	local castTime = endTimeMS - startTimeMS
-	local currentPercent = timeSinceStart / castTime * 100000
-	local interruptPercent = randomGenerator("Interrupt")
-	if channeling == true then 
-		interruptPercent = randomGenerator("Channel")
-	end
-	
-	if currentPercent >= interruptPercent then
+	if Target:CastPercentage() >= randomGenerator("Interrupt") then
 		return true
 	end
 	return false

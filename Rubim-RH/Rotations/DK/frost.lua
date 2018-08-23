@@ -357,6 +357,7 @@ local function APL()
 
     --END OF CUSTOM
 
+    print(Target:IsInterruptible())
     if S.MindFreeze:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.MindFreeze:Cast()
     end

@@ -380,7 +380,7 @@ local function APL ()
                 if Finish() ~= nil then
                     return Finish()
                 end
-            elseif S.Backstab:IsReady() and not Player:Buff(Stealth) then
+            elseif S.Backstab:IsReady() then
                 return S.Backstab:Cast()
             end
         end
