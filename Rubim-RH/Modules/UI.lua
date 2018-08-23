@@ -2784,7 +2784,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end);
 end
 
-local function PaladinProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
+local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Paladin - Protection', 350, 500);
     window:SetPoint('CENTER');
 
@@ -2793,31 +2793,128 @@ local function PaladinProtectionMenu(point, relativeTo, relativePoint, xOfs, yOf
     local gn_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-    local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
-    healthStoneValue:SetMinMaxValue(0, 100);
-    StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
-    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -25, 'RIGHT');
-    function healthStoneValue:OnValueChanged(value)
-        RubimRH.db.profile.mainOption.healthstoneper = value
-    end
-
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -25, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
-    local racialUsage = StdUi:Checkbox(window, 'Use Racial');
-    racialUsage:SetChecked(RubimRH.db.profile.mainOption.useRacial)
-    StdUi:GlueBelow(racialUsage, gn_1_0, 0, -25, 'LEFT');
-    function racialUsage:OnValueChanged(value)
-        RubimRH.RacialToggle()
+    local trinketOptions = {
+        { text = 'Trinket 1', value = 1 },
+        { text = 'Trinket 2', value = 2 },
+    }
+
+    for i = 1, #trinketOptions do
+        local duplicated = false
+        for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+            if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
+                trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
+                duplicated = true
+            end
+            if duplicated == false then
+                trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+            end
+        end
+    end
+
+    if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
+        for i = 1, #trinketOptions do
+            trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
+        end
+    end
+
+    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+
+    gn_1_1:SetPlaceholder('-- Trinkets --');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    gn_1_1.OnValueChanged = function(self, val)
+
+        if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
+            table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+            print("Trinket " .. val .. ": Enabled")
+        else
+            local duplicated = false
+            local duplicatedNumber = 0
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
+                    duplicated = true
+                    duplicatedNumber = i
+                    break
+                end
+            end
+
+            if duplicated then
+                table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
+                print("Trinket " .. val .. ": Disabled")
+            else
+                table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
+                print("Trinket " .. val .. ": Enabled")
+            end
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        PProtectionMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+    end
+
+    local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion)
+    StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
+    function gn_2_0:OnValueChanged(value)
+        RubimRH.PotionToggle()
+    end
+
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 0, 19)
+    StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
+    local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
+    StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
+    StdUi:FrameTooltip(gn_2_1, 'Percent HP to use Healthstone.', 'TOPLEFT', 'TOPRIGHT', true);
+    function gn_2_1:OnValueChanged(value)
+        local value = math.floor(value) * 5
+        RubimRH.db.profile.mainOption.healthstoneper = value
+        gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
+    end
+
+    local cdOptions = {
+        { text = 'Everything', value = "Everything" },
+        { text = 'Boss Only', value = "Boss Only" },
+    }
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
+        cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
+    else
+        cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
+    end
+
+    if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+        cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
+    else
+        cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
+    end
+
+    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+
+    gn_3_0:SetPlaceholder('-- CDs  --');
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+    gn_3_0.OnValueChanged = function(self, val)
+        RubimRH.db.profile.mainOption.cooldownsUsage = val
+
+        if val == "Everything" then
+            print("CDs will be used on every mob")
+        else
+            print("CDs will only be used on Bosses/Rares")
+        end
+
+        --self:GetParent():Hide();
+        self:GetParent():Hide();
+        local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
+        WWMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --------------------------------------------------
     local sk_title = StdUi:FontString(window, 'Class Specific');
-    StdUi:GlueTop(sk_title, window, 0, -150);
+    StdUi:GlueTop(sk_title, window, 0, -200);
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
@@ -3248,7 +3345,7 @@ function RubimRH.ClassConfig(specID)
     end
 
     if specID == 66 then
-        PaladinProtectionMenu()
+        PProtectionMenu()
     end
 
     if specID == 259 then
@@ -3277,5 +3374,9 @@ function RubimRH.ClassConfig(specID)
 
     if specID == 103 then
         FeralMenu()
+    end
+
+    if specID == Enhancement then
+        AllMenu()
     end
 end

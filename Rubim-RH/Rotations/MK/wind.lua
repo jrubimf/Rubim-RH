@@ -92,7 +92,7 @@ local OffensiveCDs = {
 }
 
 local function UpdateCDs()
-    if RubimRH.config.cooldown then
+    if RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
                 RubimRH.delSpellDisabledCD(spell:ID())
@@ -100,7 +100,7 @@ local function UpdateCDs()
         end
 
     end
-    if not RubimRH.config.cooldown then
+    if not RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
                 RubimRH.addSpellDisabledCD(spell:ID())

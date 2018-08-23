@@ -201,7 +201,7 @@ local OffensiveCDs = {
 
 local function UpdateCDs()
     RubimRH.db.profile.mainOption.disabledSpellsCD = {}
-    if RubimRH.config.cooldown then
+    if RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
                 RubimRH.delSpellDisabledCD(spell:ID())
@@ -209,7 +209,7 @@ local function UpdateCDs()
         end
 
     end
-    if not RubimRH.config.cooldown then
+    if not RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
                 RubimRH.addSpellDisabledCD(spell:ID())
@@ -324,7 +324,7 @@ local function APL()
             return S.ChaosStrike:Cast()
         end
         -- fel_rush,if=talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-        if S.FelRush:IsReady() and (S.DemonBlades:IsAvailable() and not S.EyeBeam:CooldownUpP() and (S.FelRush:ChargesP() == 2 or (10000000000 > 10 and 10000000000 > 10))) then
+        if S.FelRush:IsReady() and (S.DemonBlades:IsAvailable() and not S.EyeBeam:CooldownUpP() and (S.FelRush:ChargesP() == 2)) then
             return S.FelRush:Cast()
         end
         -- demons_bite
@@ -368,7 +368,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-        if S.EyeBeam:IsReady() and (Cache.EnemiesCount[10] > 1 and (not false or false) and not bool(VarWaitingForMomentum)) then
+        if S.EyeBeam:IsReady() and (Cache.EnemiesCount[10] >= 1 and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
         -- death_sweep,if=variable.blade_dance
@@ -384,7 +384,7 @@ local function APL()
             return S.Felblade:Cast()
         end
         -- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_dark_slash&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] > 1 and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash)) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (not S.BlindFury:IsAvailable() and not bool(VarWaitingForDarkSlash)) then
             return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_dark_slash
@@ -396,7 +396,7 @@ local function APL()
             return S.ChaosStrike:Cast()
         end
         -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] > 1 and (S.BlindFury:IsAvailable()) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (S.BlindFury:IsAvailable()) then
             return S.EyeBeam:Cast()
         end
         -- demons_bite

@@ -370,6 +370,11 @@ local function APL()
         return S.DancingRuneWeapon:Cast()
     end
 
+    -- custom
+    if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].vampiricblood then
+        return S.VampiricBlood:Cast()
+    end
+
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.MindFreeze:Cast()
@@ -411,10 +416,6 @@ local function PASSIVE()
 
         if S.RuneTap:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].runetap then
             return S.RuneTap:Cast()
-        end
-
-        if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].vampiricblood then
-            return S.VampiricBlood:Cast()
         end
 
         if RubimRH.Shared() ~= nil then

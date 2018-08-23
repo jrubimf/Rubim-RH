@@ -68,6 +68,7 @@ RubimRH.Spell[255] = {
     Exhilaration = Spell(109304),
     -- Utility
     AspectoftheEagle = Spell(186289),
+    Muzzle = Spell(187707),
     -- PvP
     WingClip = Spell(195645)
 };
@@ -77,6 +78,10 @@ local VarCarveCdr = 0;
 
 S.MongooseBite.TextureSpellID = { 224795 } -- Raptor Strikes
 S.Butchery.TextureSpellID = { 203673 } -- Carve
+S.ShrapnelBomb.TextureSpellID = { 269747 }
+S.PheromoneBomb.TextureSpellID = { 269747 }
+S.VolatileBomb.TextureSpellID = { 269747 }
+S.WildfireBomb.TextureSpellID = { 269747 }
 
 -- Items
 if not Item.Hunter then
@@ -125,7 +130,7 @@ local OffensiveCDs = {
 }
 
 local function UpdateCDs()
-    if RubimRH.config.cooldown then
+    if RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
                 RubimRH.delSpellDisabledCD(spell:ID())
@@ -133,7 +138,7 @@ local function UpdateCDs()
         end
 
     end
-    if not RubimRH.config.cooldown then
+    if not RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
                 RubimRH.addSpellDisabledCD(spell:ID())
@@ -199,7 +204,7 @@ local function APL ()
         end
         -- potion,if=buff.coordinated_assault.up&(buff.berserking.up|buff.blood_fury.up|!race.troll&!race.orc)
         -- aspect_of_the_eagle,if=target.distance>=6
-        if S.AspectoftheEagle:IsReady() and (not Target:IsInRange(6) and Target:IsInRange(40)) then
+        if S.AspectoftheEagle:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 6 and Target:MinDistanceToPlayer(true) <= 40 then
             return S.AspectoftheEagle:Cast()
         end
     end
@@ -264,7 +269,7 @@ local function APL ()
             return S.SteelTrap:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
-        if S.Harpoon:IsReady() and (S.TermsofEngagement:IsAvailable()) then
+        if S.Harpoon:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
             return S.Harpoon:Cast()
         end
         -- serpent_sting,target_if=min:remains,if=refreshable&buff.tip_of_the_spear.stack<3
@@ -272,7 +277,7 @@ local function APL ()
             return S.SerpentSting:Cast()
         end
         -- mongoose_bite_eagle
-        if S.MongooseBiteEagle:IsReady() and Player:Buff(S.AspectoftheEagle) then
+        if S.MongooseBiteEagle:IsReadyMorph() and Player:Buff(S.AspectoftheEagle) then
             return S.MongooseBiteEagle:Cast()
         end
         -- mongoose_bite
@@ -280,8 +285,8 @@ local function APL ()
             return S.MongooseBite:Cast()
         end
         -- raptor_strike_eagle
-        if S.RaptorStrikeEagle:IsReady() and Player:Buff(S.AspectoftheEagle) then
-            return S.RaptorStrikeEagle:Cast()
+        if S.RaptorStrikeEagle:IsReadyMorph() and Player:Buff(S.AspectoftheEagle) then
+            return S.RaptorStrike:Cast()
         end
         -- raptor_strike
         if S.RaptorStrike:IsReady() and (true) then
@@ -299,7 +304,7 @@ local function APL ()
         end
         -- raptor_strike_eagle,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
         if S.RaptorStrikeEagle:IsReadyMorph() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
-            return S.RaptorStrikeEagle:Cast()
+            return S.RaptorStrike:Cast()
         end
         -- raptor_strike,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
         if S.RaptorStrike:IsReady() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
@@ -307,7 +312,7 @@ local function APL ()
         end
         -- mongoose_bite_eagle,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
         if S.MongooseBiteEagle:IsReadyMorph() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
-            return S.MongooseBiteEagle:Cast()
+            return S.MongooseBite:Cast()
         end
         -- mongoose_bite,if=talent.birds_of_prey.enabled&buff.coordinated_assault.up&buff.coordinated_assault.remains<gcd
         if S.MongooseBite:IsReady() and (S.BirdsofPrey:IsAvailable() and Player:BuffP(S.CoordinatedAssaultBuff) and Player:BuffRemainsP(S.CoordinatedAssaultBuff) < Player:GCD()) then
@@ -330,7 +335,7 @@ local function APL ()
             return S.WildfireBomb:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
-        if S.Harpoon:IsReady() and (S.TermsofEngagement:IsAvailable()) then
+        if S.Harpoon:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
             return S.Harpoon:Cast()
         end
         -- flanking_strike,if=focus+cast_regen<focus.max
@@ -343,7 +348,7 @@ local function APL ()
         end
         -- mongoose_bite_eagle,if=buff.mongoose_fury.up|focus>60
         if S.MongooseBiteEagle:IsReadyMorph() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
-            return S.MongooseBiteEagle:Cast()
+            return S.MongooseBite:Cast()
         end
         -- mongoose_bite,if=buff.mongoose_fury.up|focus>60
         if S.MongooseBite:IsReady() and (Player:BuffP(S.MongooseFuryBuff) or Player:Focus() > 60) then
@@ -372,7 +377,7 @@ local function APL ()
             return S.AMurderofCrows:Cast()
         end
         -- coordinated_assault
-        if S.CoordinatedAssault:IsReady() and  (true) then
+        if S.CoordinatedAssault:IsReady() and (true) then
             return S.CoordinatedAssault:Cast()
         end
         -- kill_command,if=focus+cast_regen<focus.max&buff.tip_of_the_spear.stack<3
@@ -404,7 +409,7 @@ local function APL ()
             return S.SerpentSting:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
-        if S.Harpoon:IsReady() and (S.TermsofEngagement:IsAvailable()) then
+        if S.Harpoon:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and (S.TermsofEngagement:IsAvailable()) then
             return S.Harpoon:Cast()
         end
         -- mongoose_bite_eagle,if=buff.mongoose_fury.up|focus>60|dot.shrapnel_bomb.ticking
@@ -446,11 +451,15 @@ local function APL ()
         return S.MendPet:Cast()
     end
 
+    if S.Muzzle:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Muzzle:Cast()
+    end
+
     -- auto_attack
     -- use_items
     -- call_action_list,name=cds
-    if (true) then
-        local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
+    if Cds() ~= nil then
+        return Cds()
     end
     -- call_action_list,name=wfi_st,if=active_enemies<2&talent.wildfire_infusion.enabled
     if (Cache.EnemiesCount[8] < 2 and S.WildfireInfusion:IsAvailable()) then

@@ -89,12 +89,9 @@ local function APL ()
     if RubimRH.TargetIsValid() then
 
         -- Counter Shot -> User request
-        if S.CounterShot:IsReady(40)
-                and ((Target:IsCasting()
-                and Target:IsInterruptible()
-                and Target:CastRemains() <= 0.7)
-                or Target:IsChanneling()) then
+        if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
             return S.CounterShot:Cast()
+
         end
 
         -- actions+=/counter_shot,if=target.debuff.casting.react // Sephuz Specific

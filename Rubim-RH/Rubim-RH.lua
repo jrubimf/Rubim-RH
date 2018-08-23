@@ -263,6 +263,7 @@ local defaults = {
             deathstrike = 85,
             deathstrikeper = 25,
             icebound = 60,
+            deathpact = 40,
             Spells = {
                 { spellID = DeathStrike, isActive = true },
                 { spellID = RuneTap, isActive = true }

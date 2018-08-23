@@ -10,6 +10,57 @@ local pairs = pairs;
 local tableconcat = table.concat;
 local tostring = tostring;
 
+--Outlaw
+RubimRH.Spell[260] = {
+    -- Racials
+    ArcanePulse = Spell(260364),
+    ArcaneTorrent = Spell(25046),
+    Berserking = Spell(26297),
+    BloodFury = Spell(20572),
+    LightsJudgment = Spell(255647),
+    Shadowmeld = Spell(58984),
+    -- Abilities
+    AdrenalineRush = Spell(13750),
+    Ambush = Spell(8676),
+    BetweentheEyes = Spell(199804),
+    BladeFlurry = Spell(13877),
+    Opportunity = Spell(195627),
+    PistolShot = Spell(185763),
+    RolltheBones = Spell(193316),
+    Dispatch = Spell(2098),
+    SinisterStrike = Spell(193315),
+    Stealth = Spell(1784),
+    Vanish = Spell(1856),
+    VanishBuff = Spell(11327),
+    -- Talents
+    AcrobaticStrikes = Spell(196924),
+    BladeRush = Spell(271877),
+    DeeperStratagem = Spell(193531),
+    GhostlyStrike = Spell(196937),
+    KillingSpree = Spell(51690),
+    LoadedDiceBuff = Spell(256171),
+    MarkedforDeath = Spell(137619),
+    QuickDraw = Spell(196938),
+    SliceandDice = Spell(5171),
+    -- Azerite Traits
+    AceUpYourSleeve = Spell(278676),
+    Deadshot = Spell(272935),
+    -- Defensive
+    Riposte = Spell(199754),
+    CloakofShadows = Spell(31224),
+    CrimsonVial = Spell(185311),
+    Feint = Spell(1966),
+    -- Utility
+    Kick = Spell(1766),
+    -- Roll the Bones
+    Broadside = Spell(193356),
+    BuriedTreasure = Spell(199600),
+    GrandMelee = Spell(193358),
+    RuthlessPrecision = Spell(193357),
+    SkullandCrossbones = Spell(199603),
+    TrueBearing = Spell(193359)
+};
+
 local S = RubimRH.Spell[260]
 
 local function num(val)
@@ -177,7 +228,7 @@ local function CDs ()
             end
         end
         -- actions.cds+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
-        if S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
+        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
             return S.BladeFlurry:Cast()
         end
         -- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
@@ -231,8 +282,8 @@ local function Finish ()
         return S.RolltheBones:Cast()
     end
     -- # BTE worth being used with the boosted crit chance from Ruthless Precision
-    -- actions.finish+=/between_the_eyes,if=buff.ruthless_precision.up
-    if S.BetweentheEyes:IsReady(20) and Player:BuffP(S.RuthlessPrecision) then
+    -- actions.finish+=/between_the_eyes,if=buff.ruthless_precision.up|azerite.ace_up_your_sleeve.enabled|azerite.deadshot.enabled
+    if S.BetweentheEyes:IsReady(20) and (Player:BuffP(S.RuthlessPrecision) or S.AceUpYourSleeve:AzeriteEnabled() or S.Deadshot:AzeriteEnabled()) then
         return S.BetweentheEyes:Cast()
     end
     -- actions.finish+=/dispatch
@@ -258,13 +309,12 @@ local function Build ()
     end
 end
 
-
 local OffensiveCDs = {
     S.AdrenalineRush,
 }
 
 local function UpdateCDs()
-    if RubimRH.config.cooldown then
+    if RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
                 RubimRH.delSpellDisabledCD(spell:ID())
@@ -272,7 +322,7 @@ local function UpdateCDs()
         end
 
     end
-    if not RubimRH.config.cooldown then
+    if not RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
                 RubimRH.addSpellDisabledCD(spell:ID())
@@ -319,6 +369,11 @@ local function APL ()
             end
         end
         return 0, 462338
+    end
+
+    --Custom
+    if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Kick:Cast()
     end
 
     if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].cloakofshadows then
