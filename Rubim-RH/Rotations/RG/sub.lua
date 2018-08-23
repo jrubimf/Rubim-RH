@@ -383,7 +383,7 @@ local function APL ()
                 if Finish() ~= nil then
                     return Finish()
                 end
-            elseif S.Backstab:IsReady() then
+            elseif S.Backstab:IsReady() and not Player:Buff(Stealth) then
                 return S.Backstab:Cast()
             end
         end
@@ -437,6 +437,7 @@ local function APL ()
                 return Finish()
             end
         end
+
         -- actions+=/call_action_list,name=finish,if=spell_targets.shuriken_storm=4&combo_points>=4
         if Cache.EnemiesCount[10] == 4 and Player:ComboPoints() >= 4 then
             if Finish() ~= nil then
