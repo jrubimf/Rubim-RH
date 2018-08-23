@@ -97,8 +97,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="385" column="69" lean-forward="false" selection-start-line="385" selection-start-column="69" selection-end-line="385" selection-end-column="69" />
+            <state relative-caret-position="492">
+              <caret line="206" column="38" lean-forward="false" selection-start-line="206" selection-start-column="38" selection-end-line="206" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -125,7 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>AspectoftheEagle</find>
       <find>RaptorStrike</find>
       <find>Eagle:IsReady()</find>
       <find>265</find>
@@ -148,13 +147,14 @@
       <find>Eviscera</find>
       <find>Queue</find>
       <find>Rip</find>
-      <find>Finish</find>
       <find>Eviscerate</find>
       <find>AoE</find>
       <find>ShurikenStorm</find>
       <find>Finish()</find>
       <find>StealthBu</find>
       <find>Backstab</find>
+      <find>5</find>
+      <find>Finish</find>
     </findStrings>
     <replaceStrings>
       <replace>gn_3_0</replace>
@@ -247,7 +247,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -434,7 +434,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -869,8 +869,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="385" column="69" lean-forward="false" selection-start-line="385" selection-start-column="69" selection-end-line="385" selection-end-column="69" />
+        <state relative-caret-position="492">
+          <caret line="206" column="38" lean-forward="false" selection-start-line="206" selection-start-column="38" selection-end-line="206" selection-end-column="38" />
           <folding />
         </state>
       </provider>

@@ -205,9 +205,6 @@ local function Finish ()
     if IsInMeleeRange() then
         if S.Eviscerate:IsReady() then
             return S.Eviscerate:Cast()
-        else
-            S.Eviscerate:Queue()
-            return 0, 135328
         end
     end
 end
