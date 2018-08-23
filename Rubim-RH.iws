@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9728fc6-de69-495b-9658-6851f0abbeac" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Rubim-RH.iws" afterPath="$PROJECT_DIR$/Rubim-RH.iws" />
       <change beforePath="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" afterPath="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -98,8 +97,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="206" column="31" lean-forward="false" selection-start-line="206" selection-start-column="31" selection-end-line="206" selection-end-column="31" />
+            <state relative-caret-position="356">
+              <caret line="438" column="11" lean-forward="true" selection-start-line="438" selection-start-column="11" selection-end-line="438" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -126,11 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Wildfire</find>
-      <find>Muzzle</find>
-      <find>MindFre</find>
-      <find>CounterShot</find>
-      <find>Eagle</find>
       <find>Aspec</find>
       <find>186289</find>
       <find>AspectoftheEagle</find>
@@ -156,6 +150,11 @@
       <find>Eviscera</find>
       <find>Queue</find>
       <find>Rip</find>
+      <find>Finish</find>
+      <find>Eviscerate</find>
+      <find>AoE</find>
+      <find>ShurikenStorm</find>
+      <find>Finish()</find>
     </findStrings>
     <replaceStrings>
       <replace>gn_3_0</replace>
@@ -870,8 +869,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="206" column="31" lean-forward="false" selection-start-line="206" selection-start-column="31" selection-end-line="206" selection-end-column="31" />
+        <state relative-caret-position="356">
+          <caret line="438" column="11" lean-forward="true" selection-start-line="438" selection-start-column="11" selection-end-line="438" selection-end-column="11" />
           <folding />
         </state>
       </provider>

@@ -430,6 +430,13 @@ local function APL ()
         end
 
         -- # Finish at 4+ without DS, 5+ with DS (outside stealth)
+        -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
+        if Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable())
+                or (Target:FilteredTimeToDie("<=", 1) and Player:ComboPoints() >= 3) then
+            if Finish() ~= nil then
+                return Finish()
+            end
+        end
         -- actions+=/call_action_list,name=finish,if=spell_targets.shuriken_storm=4&combo_points>=4
         if Cache.EnemiesCount[10] == 4 and Player:ComboPoints() >= 4 then
             if Finish() ~= nil then
