@@ -21,6 +21,16 @@ function RubimRH.MainIconToggle()
     print("|cFF69CCF0Show Interface" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.mainIcon))
 end
 
+function RubimRH.MainIconLockToggle()
+    PlaySound(891, "Master");
+    if RubimRH.db.profile.mainOption.mainIconLock == false then
+        RubimRH.db.profile.mainOption.mainIconLock = true
+    else
+        RubimRH.db.profile.mainOption.mainIconLock = false
+    end
+    print("|cFF69CCF0Icon Lock" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.mainIconLock))
+end
+
 function RubimRH.InterruptsToggle()
     PlaySound(891, "Master");
     if RubimRH.db.profile.mainOption.useInterrupts == false then
@@ -232,6 +242,17 @@ local function getOptions()
                                     end,
                                     name = "Show Interface"
                                 },
+                                mainIconLock = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.mainIconLock
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.MainIconLockToggle()
+                                    end,
+                                    name = "Lock Icon"
+                                },
                                 mainIconOpacity = {
                                     order = 2,
                                     type = "range",
@@ -352,11 +373,9 @@ end
 
 function RubimRH:SetupOptions()
     self.optionsFrames = {}
-
     LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("RubimRH", getOptions)
     self.optionsFrames.RubimRH = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", nil, nil, "mainOptions")
     configOptions["Profiles"] = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     self.optionsFrames["Profiles"] = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RubimRH", "Profiles", "RubimRH", "Profiles")
-
     LibStub("AceConsole-3.0"):RegisterChatCommand("RubimRH", openConfig)
 end
