@@ -110,15 +110,15 @@ end
 
 local function Precombat ()
     -- moonkin_form
-    if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) then
+    if S.MoonkinForm:IsReady() and not Player:Buff(S.MoonkinForm) then
         return S.MoonkinForm:Cast()
     end
     -- solar_wrath
-    if S.SolarWrath:IsCastableP() and not Player:IsCasting(S.SolarWrath) then
+    if S.SolarWrath:IsReady() and not Player:IsCasting(S.SolarWrath) then
         return S.SolarWrath:Cast()
     end
     -- sunfire
-    if S.Sunfire:IsCastableP() and (true) then
+    if S.Sunfire:IsReady() and (true) then
         return S.Sunfire:Cast()
     end
 end
@@ -127,40 +127,40 @@ local function CDs ()
     -- Suggest moonkin form if you're not in it.
     -- potion,if=buff.celestial_alignment.up|buff.incarnation.up
     -- blood_fury,if=buff.celestial_alignment.up|buff.incarnation.up
-    if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=buff.celestial_alignment.up|buff.incarnation.up
-    if S.Berserking:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+    if S.Berserking:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
         return S.Berserking:Cast()
     end
     -- arcane_torrent,if=buff.celestial_alignment.up|buff.incarnation.up
-    if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
         return S.ArcaneTorrent:Cast()
     end
     -- lights_judgment,if=buff.celestial_alignment.up|buff.incarnation.up
-    if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
+    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) then
         return S.LightsJudgment:Cast()
     end
     -- warrior_of_elune
-    if S.WarriorofElune:IsCastableP() and not Player:Buff(S.WarriorofElune) then
+    if S.WarriorofElune:IsReady() and not Player:Buff(S.WarriorofElune) then
         return S.WarriorofElune:Cast()
     end
     -- TODO(mrdmnd / synecdoche): INNERVATE here if azerite.lively_spirit and incarn is up or C.A cooldown is < 12 s
     -- incarnation,if=astral_power>=40
-    if S.Incarnation:IsCastableP() and (FutureAstralPower() >= 40) then
+    if S.Incarnation:IsReady() and (FutureAstralPower() >= 40) then
         return S.Incarnation:Cast()
     end
     -- celestial_alignment,if=astral_power>=40
-    if S.CelestialAlignment:IsCastableP() and (FutureAstralPower() >= 40) then
+    if S.CelestialAlignment:IsReady() and (FutureAstralPower() >= 40) then
         return S.CelestialAlignment:Cast()
     end
     -- fury_of_elune,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
-    if S.FuryofElune:IsCastableP() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
+    if S.FuryofElune:IsReady() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
         return S.FuryofElune:Cast()
     end
     -- force_of_nature,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
-    if S.ForceofNature:IsCastableP() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
+    if S.ForceofNature:IsReady() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
         return S.ForceofNature:Cast()
     end
 end
@@ -194,7 +194,7 @@ local function Dot ()
     if Evaluate_Moonfire_Target(Target) then
         return S.Moonfire:Cast()
     end
-    if S.StellarFlare:IsCastableP() and Evaluate_StellarFlare_Target(Target) then
+    if S.StellarFlare:IsReady() and Evaluate_StellarFlare_Target(Target) then
         return S.StellarFlare:Cast()
     end
 end
@@ -211,11 +211,11 @@ local function EmpowermentCapCheck ()
     --          (buff.solar_empowerment.stack=3|(variable.az_sb>1&spell_targets.starfall<3&astral_power>=32&!buff.sunblaze.up))&
     --          !(variable.az_hn=3&active_enemies=1)&
     --          !(spell_targets.moonfire>=2&active_enemies<=4&variable.az_potm=3)
-    if S.LunarStrike:IsCastableP() and Player:AstralPowerDeficit() >= 16 and (Player:BuffStackP(S.LunarEmpowermentBuff) == 3 or (Cache.EnemiesCount[40] < 3 and Player:AstralPower() >= 40 and Player:BuffStackP(S.LunarEmpowermentBuff) == 2 and Player:BuffStack(S.SolarEmpowermentBuff) == 2)) then
+    if S.LunarStrike:IsReady() and Player:AstralPowerDeficit() >= 16 and (Player:BuffStackP(S.LunarEmpowermentBuff) == 3 or (Cache.EnemiesCount[40] < 3 and Player:AstralPower() >= 40 and Player:BuffStackP(S.LunarEmpowermentBuff) == 2 and Player:BuffStack(S.SolarEmpowermentBuff) == 2)) then
         return S.LunarStrike:Cast()
     end
 
-    if S.SolarWrath:IsCastableP() and Player:AstralPowerDeficit() >= 12 and (Player:BuffStackP(S.SolarEmpowermentBuff) == 3) then
+    if S.SolarWrath:IsReady() and Player:AstralPowerDeficit() >= 12 and (Player:BuffStackP(S.SolarEmpowermentBuff) == 3) then
         return S.SolarWrath:Cast()
     end
 end
@@ -231,52 +231,52 @@ local function CoreRotation ()
     -- actions+=/solar_wrath,if=(!buff.celestial_alignment.up&!buff.incarnation.up|variable.az_streak<2|!prev_gcd.1.solar_wrath)&!(spell_targets.moonfire>=2&active_enemies<=4&(variable.az_potm=3|variable.az_potm=2&active_enemies=2))
     -- actions+=/sunfire,if=(!buff.celestial_alignment.up&!buff.incarnation.up|!variable.az_streak|!prev_gcd.1.sunfire)&!(variable.az_potm>=2&spell_targets.moonfire>=2)
     -- actions+=/moonfire
-    if S.Starsurge:IsCastableP() and Cache.EnemiesCount[40] < 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) and FutureAstralPower() >= 40 then
+    if S.Starsurge:IsReady() and Cache.EnemiesCount[40] < 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) and FutureAstralPower() >= 40 then
         return S.Starsurge:Cast()
     end
-    if S.Starfall:IsCastableP() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 then
+    if S.Starfall:IsReady() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 then
         return S.Starfall:Cast()
     end
-    if S.NewMoon:IsCastableP() and (Player:AstralPowerDeficit() > 10 + (Player:GCD() / 1.5)) then
+    if S.NewMoon:IsReady() and (Player:AstralPowerDeficit() > 10 + (Player:GCD() / 1.5)) then
         return S.NewMoon:Cast()
     end
-    if S.HalfMoon:IsCastableP() and (Player:AstralPowerDeficit() > 20 + (Player:GCD() / 1.5)) then
+    if S.HalfMoon:IsReady() and (Player:AstralPowerDeficit() > 20 + (Player:GCD() / 1.5)) then
         return S.HalfMoon:Cast()
     end
-    if S.FullMoon:IsCastableP() and (Player:AstralPowerDeficit() > 40 + (Player:GCD() / 1.5)) then
+    if S.FullMoon:IsReady() and (Player:AstralPowerDeficit() > 40 + (Player:GCD() / 1.5)) then
         return S.FullMoon:Cast()
     end
     -- Lunar strike when warrior of elune or OwlkinFrenzy is up
-    if S.LunarStrike:IsCastableP() and (Player:BuffP(S.WarriorofEluneBuff) or Player:BuffP(S.OwlkinFrenzyBuff)) then
+    if S.LunarStrike:IsReady() and (Player:BuffP(S.WarriorofEluneBuff) or Player:BuffP(S.OwlkinFrenzyBuff)) then
         return S.LunarStrike:Cast()
     end
     -- don't suggest an empowered cast if we're casting the last empowered stack
     -- bad assumption: detects cleave targets based on 20yds from caster, centered. cannot do clump detection, i am not clever enough yet
     if (Cache.EnemiesCount[40] >= 2) then
         -- Cleave situation: prioritize lunar strike empower > solar wrath empower > lunar strike
-        if S.LunarStrike:IsCastableP() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
+        if S.LunarStrike:IsReady() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
             return S.LunarStrike:Cast()
         end
-        if S.SolarWrath:IsCastableP() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
+        if S.SolarWrath:IsReady() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
             return S.SolarWrath:Cast()
         end
-        if S.LunarStrike:IsCastableP() and (true) then
+        if S.LunarStrike:IsReady() and (true) then
             return S.LunarStrike:Cast()
         end
     else
         -- ST situation: prioritize solar wrath empower > lunar strike empower > solar wrath
-        if S.SolarWrath:IsCastableP() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
+        if S.SolarWrath:IsReady() and Player:BuffP(S.SolarEmpowermentBuff) and not (Player:BuffStackP(S.SolarEmpowermentBuff) == 1 and Player:IsCasting(S.SolarWrath)) then
             return S.SolarWrath:Cast()
         end
-        if S.LunarStrike:IsCastableP() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
+        if S.LunarStrike:IsReady() and Player:BuffP(S.LunarEmpowermentBuff) and not (Player:BuffStackP(S.LunarEmpowermentBuff) == 1 and Player:IsCasting(S.LunarStrike)) then
             return S.LunarStrike:Cast()
         end
-        if S.SolarWrath:IsCastableP() and (true) then
+        if S.SolarWrath:IsReady() and (true) then
             return S.SolarWrath:Cast()
         end
     end
 
-    if S.Moonfire:IsCastableP() and (true) then
+    if S.Moonfire:IsReady() and (true) then
         return S.Moonfire:Cast()
     end
 end
@@ -297,11 +297,11 @@ local function APL()
         -- potion
         -- solar_wrath
         -- solar_wrath
-        if S.SolarWrath:IsCastableP() and not Player:IsCasting(S.SolarWrath) then
+        if S.SolarWrath:IsReady() and not Player:IsCasting(S.SolarWrath) then
             return S.SolarWrath:Cast()
         end
         -- sunfire
-        if S.Sunfire:IsCastableP() and (true) then
+        if S.Sunfire:IsReady() and (true) then
             return S.Sunfire:Cast()
         end
     end

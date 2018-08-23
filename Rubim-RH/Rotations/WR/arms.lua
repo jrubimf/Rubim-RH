@@ -75,6 +75,7 @@ RubimRH.Spell[71] = {
     DiebytheSword = Spell(118038),
     Victorious = Spell(32216),
     VictoryRush = Spell(34428),
+    ImpendingVictory = Spell(202168),
 
     -- Utility
     HeroicLeap = Spell(6544), -- Unused

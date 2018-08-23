@@ -43,7 +43,7 @@ local function APL ()
     --    end
     -- Out of Combat
     if not Player:AffectingCombat() then
-        if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+        if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].mendpet and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
         end
 
@@ -77,7 +77,7 @@ local function APL ()
         return 0, 462338
     end
 
-    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].mendpet and not Pet:Buff(S.MendPet) then
+    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].mendpet and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end
 
@@ -91,7 +91,6 @@ local function APL ()
         -- Counter Shot -> User request
         if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
             return S.CounterShot:Cast()
-
         end
 
         -- actions+=/counter_shot,if=target.debuff.casting.react // Sephuz Specific

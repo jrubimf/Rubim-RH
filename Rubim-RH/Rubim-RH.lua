@@ -379,9 +379,10 @@ local defaults = {
             exhilaration = 65,
             aspectoftheturtle = 30,
         },
-        [253] = {
+        [BeastMastery] = {
             cooldown = true,
             mendpet = 70,
+            exhilaration = 65,
             aspectoftheturtle = 30,
         },
 
