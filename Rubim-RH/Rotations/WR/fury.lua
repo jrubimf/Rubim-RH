@@ -110,7 +110,7 @@ local function APL()
         return S.VictoryRush:Cast()
     end
 
-    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].rallyingcry then
+    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].rallyingcry then
         return S.RallyingCry:Cast()
     end
 
