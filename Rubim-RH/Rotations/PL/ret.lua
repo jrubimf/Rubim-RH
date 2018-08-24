@@ -94,7 +94,7 @@ Item.Paladin.Retribution = {
 }
 local I = Item.Paladin.Retribution;
 
-local EnemyRanges = {"Melee", 8}
+local EnemyRanges = {"Melee", 8, 12, 30}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
@@ -222,7 +222,7 @@ local function APL()
 			end
 
 			--actions.generators+ =/blade_of_justice, if = holy_power<=2|(holy_power = 3&(cooldown.hammer_of_wrath.remains>gcd*2|variable.HoW))
-			if S.BladeofJustice:IsReady("Melee") and (Player:HolyPower() <= 2 or (Player:HolyPower() == 3 and (S.HammerofWrath:CooldownRemains() > Player:GCD() * 2 or HoW))) then
+			if S.BladeofJustice:IsReady(12) and (Player:HolyPower() <= 2 or (Player:HolyPower() == 3 and (S.HammerofWrath:CooldownRemains() > Player:GCD() * 2 or HoW))) then
 				return S.BladeofJustice:Cast()
 			end
 
@@ -232,7 +232,7 @@ local function APL()
 			end
 
 			--actions.generators+ =/hammer_of_wrath, if = holy_power<=4
-			if S.HammerofWrath:IsReady("Melee") and Player:HolyPower() <= 4 then
+			if S.HammerofWrath:IsReady(30) and Player:HolyPower() <= 4 then
 				return S.HammerofWrath:Cast()
 			end
 
