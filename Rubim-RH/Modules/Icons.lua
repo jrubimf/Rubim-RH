@@ -207,7 +207,7 @@ local updateConfigFunc = function()
                 RubimRH.editMacro()
             end
 
-            if button == "LeftButton" and not Icons.MainIcon.isMoving then
+            if button == "LeftButton" and not Icons.MainIcon.isMoving and not RubimRH.db.profile.mainOption.mainIconLock then
                 Icons.MainIcon:StartMoving();
                 Icons.MainIcon.isMoving = true;
             end
@@ -409,6 +409,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
             Icons.MainIcon:Show()
             Icons.MainIcon:SetAlpha(RubimRH.db.profile.mainOption.mainIconOpacity / 100)
             Icons.MainIcon:SetScale(RubimRH.db.profile.mainOption.mainIconScale / 100)
+
 
             if CDText ~= nil then
                 CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
