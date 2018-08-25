@@ -16,6 +16,8 @@ local Item = HL.Item;
 
 local ISpell = RubimRH.Spell[73]
 
+
+
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
 local function APL()
@@ -51,6 +53,7 @@ local function APL()
 
         -- Pummel -> 0.5 sec of cast has elapsed, or 1 second of channeling has elapsed
         if ISpell.Pummel:IsReady("Melee")
+                and RubimRH.InterruptsON()
                 and Target:IsInterruptible()
                 and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
             return ISpell.Pummel:Cast()
@@ -60,6 +63,7 @@ local function APL()
 
         -- Shield Wall -> Panic Heal
         if ISpell.ShieldWall:IsReady("Melee")
+                and RubimRH.CDsON()
                 and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
                 and (ISpell.Bolster:IsAvailable() and (not Player:Buff(ISpell.LastStand))) then
             return ISpell.ShieldWall:Cast()
@@ -67,6 +71,7 @@ local function APL()
 
         -- Last Stand -> Panic Heal
         if ISpell.LastStand:IsReady("Melee")
+                and RubimRH.CDsON()
                 and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
                 and (not Player:Buff(ISpell.ShieldWall)) then
             return ISpell.LastStand:Cast()
@@ -87,6 +92,7 @@ local function APL()
 
         -- Avatar -> Cast when not in a group (solo conent), Target TTD >= 10, and we're at >= 20 rage deficit
         if ISpell.Avatar:IsReady("Melee")
+                and RubimRH.CDsON()
                 and ((Target:TimeToDie() >= 10) or (GetNumGroupMembers() == 0)) -- Use all the time in solo content
                 and Player:RageDeficit() >= 20 then
             return ISpell.Avatar:Cast()

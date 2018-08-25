@@ -350,6 +350,7 @@ local defaults = {
                 { spellID = Charge, isActive = true }
             }
         },
+        -- PROT
         [73] = {
             cooldown = true,
             victoryrush = 80,
