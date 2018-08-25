@@ -16,6 +16,30 @@ local Item = HL.Item;
 
 local ISpell = RubimRH.Spell[73]
 
+local OffensiveCDs = {
+    ISpell.Avatar,
+    ISpell.ShieldWall,
+    ISpell.LastStand,
+}
+
+local function UpdateCDs()
+    if RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
 local function APL()
@@ -24,6 +48,7 @@ local function APL()
     -- if not Player:Buff(ProtSpells.BattleShout) and ProtSpells.BattleShout:IsReady() then return ProtSpells.BattleShout:Cast() end
 
     -- Player not in combat
+    UpdateCDs()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
@@ -51,6 +76,7 @@ local function APL()
 
         -- Pummel -> 0.5 sec of cast has elapsed, or 1 second of channeling has elapsed
         if ISpell.Pummel:IsReady("Melee")
+                and RubimRH.InterruptsON()
                 and Target:IsInterruptible()
                 and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
             return ISpell.Pummel:Cast()

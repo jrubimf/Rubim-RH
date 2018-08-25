@@ -265,8 +265,11 @@ local function APL()
         if S.DeathCoil:IsReady() and (Player:RunicPowerDeficit() < 14 and (S.Apocalypse:CooldownRemainsP() > 5 or Target:DebuffStackP(S.FesteringWoundDebuff) > 4) and not bool(VarPoolingForGargoyle)) then
             return S.DeathCoil:Cast()
         end
+        -- bandaid fix for DnD casting when aoe is turned off. The reason why i don't check for (Cache.EnemiesCount[8] >= 2) is because
+        -- it's part of the single target apl (presumably for the dot it puts), but sometimes we don't want to use death and decay,
+        -- especially for particular M+ affixes like bursting
         -- death_and_decay,if=talent.pestilence.enabled&cooldown.apocalypse.remains
-        if S.DeathAndDecay:IsReady() and (S.Pestilence:IsAvailable() and S.Apocalypse:CooldownDown()) then
+        if RubimRH.AoEON() and S.DeathAndDecay:IsReady() and (S.Pestilence:IsAvailable() and S.Apocalypse:CooldownDown()) then
             return S.DeathAndDecay:Cast()
         end
         -- defile,if=cooldown.apocalypse.remains
@@ -344,15 +347,15 @@ local function APL()
         VarPoolingForGargoyle = num((S.SummonGargoyle:CooldownRemains() < 5 and (S.DarkTransformation:CooldownRemains() < 5 or not I.Taktheritrixs:IsEquipped())) and S.SummonGargoyle:IsAvailable())
     end
     -- arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
-    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:Runes() <= 1) then
+    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or Player:Buff(S.UnholyFrenzyBuff)) and Player:Runes() <= 1) then
         return S.ArcaneTorrent:Cast()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.BloodFury:IsReady() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
+    if S.BloodFury:IsReady() and (Player:GargoyleActive() or Player:Buff(S.UnholyFrenzyBuff)) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.Berserking:IsReady() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
+    if S.Berserking:IsReady() and (Player:GargoyleActive() or Player:Buff(S.UnholyFrenzyBuff)) then
         return S.Berserking:Cast()
     end
     -- use_items
