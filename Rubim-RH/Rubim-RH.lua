@@ -177,9 +177,6 @@ local DefensiveStance = 197690
 local DiebytheSword = 118038
 local VictoryRush = 34428
 local ImpendingVictory = 202168
-local ShieldWall = 871
-local LastStand = 12975
-local Avatar = 107574
 
 --Survival
 local MendPet = 136
@@ -351,11 +348,6 @@ local defaults = {
         [73] = {
             cooldown = true,
             victoryrush = 80,
-            Spells = {
-                { spellID = ShieldWall, isActive = true },
-                { spellID = Avatar, isActive = true },
-                { spellID = LastStand, isActive = true }
-            }
         },
         --ROGUE
         [260] = {
