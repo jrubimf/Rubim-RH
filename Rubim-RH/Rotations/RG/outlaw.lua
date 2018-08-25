@@ -304,7 +304,7 @@ local function Build ()
         return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
-    if S.SinisterStrike:IsReady() then
+    if S.SinisterStrike:IsReady("Melee") then
         return S.SinisterStrike:Cast()
     end
 end

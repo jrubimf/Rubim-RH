@@ -95,7 +95,7 @@ end
 -- Variables
 local VarPoolingForGargoyle = 0;
 
-local EnemyRanges = {"Melee", 5, 8, 10, 30}
+local EnemyRanges = { "Melee", 5, 8, 10, 30 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -103,7 +103,11 @@ local function UpdateRanges()
 end
 
 local function num(val)
-    if val then return 1 else return 0 end
+    if val then
+        return 1
+    else
+        return 0
+    end
 end
 
 local function bool(val)
@@ -128,7 +132,7 @@ local function UpdateCDs()
         end
 
     end
-    if RubimRH.CDsON() then
+    if not RubimRH.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
                 RubimRH.addSpellDisabledCD(spell:ID())
@@ -201,7 +205,7 @@ local function APL()
             return S.DeathCoil:Cast()
         end
         -- scourge_strike,if=((debuff.festering_wound.up&cooldown.Apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5
-        if S.ScourgeStrike:IsReady() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsReady())  then
+        if S.ScourgeStrike:IsReady() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsReady()) then
             return S.ScourgeStrike:Cast()
         end
         -- clawing_shadows,if=((debuff.festering_wound.up&cooldown.Apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5
