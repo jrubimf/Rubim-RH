@@ -16,29 +16,7 @@ local Item = HL.Item;
 
 local ISpell = RubimRH.Spell[73]
 
-local OffensiveCDs = {
-    ISpell.Avatar,
-    ISpell.ShieldWall,
-    ISpell.LastStand,
-}
 
-local function UpdateCDs()
-    if RubimRH.CDsON() then
-        for i, spell in pairs(OffensiveCDs) do
-            if not spell:IsEnabledCD() then
-                RubimRH.delSpellDisabledCD(spell:ID())
-            end
-        end
-
-    end
-    if not RubimRH.CDsON() then
-        for i, spell in pairs(OffensiveCDs) do
-            if spell:IsEnabledCD() then
-                RubimRH.addSpellDisabledCD(spell:ID())
-            end
-        end
-    end
-end
 
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
@@ -48,7 +26,6 @@ local function APL()
     -- if not Player:Buff(ProtSpells.BattleShout) and ProtSpells.BattleShout:IsReady() then return ProtSpells.BattleShout:Cast() end
 
     -- Player not in combat
-    UpdateCDs()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
@@ -86,6 +63,7 @@ local function APL()
 
         -- Shield Wall -> Panic Heal
         if ISpell.ShieldWall:IsReady("Melee")
+                and RubimRH.CDsON()
                 and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
                 and (ISpell.Bolster:IsAvailable() and (not Player:Buff(ISpell.LastStand))) then
             return ISpell.ShieldWall:Cast()
@@ -93,6 +71,7 @@ local function APL()
 
         -- Last Stand -> Panic Heal
         if ISpell.LastStand:IsReady("Melee")
+                and RubimRH.CDsON()
                 and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
                 and (not Player:Buff(ISpell.ShieldWall)) then
             return ISpell.LastStand:Cast()
@@ -113,6 +92,7 @@ local function APL()
 
         -- Avatar -> Cast when not in a group (solo conent), Target TTD >= 10, and we're at >= 20 rage deficit
         if ISpell.Avatar:IsReady("Melee")
+                and RubimRH.CDsON()
                 and ((Target:TimeToDie() >= 10) or (GetNumGroupMembers() == 0)) -- Use all the time in solo content
                 and Player:RageDeficit() >= 20 then
             return ISpell.Avatar:Cast()
