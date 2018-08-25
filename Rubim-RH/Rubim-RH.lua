@@ -295,6 +295,9 @@ local defaults = {
             wogenabled = false,
             wogHP = 65,
             SoVOpener = false,
+             Spells = {
+			 { spellID = FlashofLight, isActive = true }
+			 },
         },
         [65] = {
             cooldown = true,
@@ -309,6 +312,9 @@ local defaults = {
             lohHealth = 30,
             lotpEnabled = true,
             lotpHP = 50,
+             Spells = {
+             { spellID = FlashofLight, isActive = true }
+             },
         },
         --WARRIOR
         --ARMS
