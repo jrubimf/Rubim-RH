@@ -192,6 +192,8 @@ local ArdentDefender = 31850
 local FlashofLight = 19750
 --Shaman
 local HealingSurge = 188070
+local FeralSpirit = 51533
+local EarthElemental = 198103
 --Druid
 local Regrowth = 8936
 local Renewal = 108238
@@ -417,10 +419,16 @@ local defaults = {
             dampemharm = 35,
         },
         --SHAMAN
-        [Enhancement] = {
-            sk1 = 80, -- Healing Surge
-            sk1id = HealingSurge, -- Healing Surge ID
+        [263] = {
+            sk1 = 70,
+            sk1id = HealingSurge,
+            sk1tooltip = "Percent HP to use Healing Surge",
             cooldown = true,
+
+            Spells = {
+                { spellID = FeralSpirit, isActive = true },
+                { spellID = EarthElemental, isActive = true }
+             }
         },
         [262] = {
             healingsurge = 80,
