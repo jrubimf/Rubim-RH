@@ -76,6 +76,7 @@ RubimRH.Spell[263] = {
 
   -- Azerite
   LightningConduit 		= Spell(275388),
+  LightNingConduitDebuff = Spell(275391),
 
 
   
@@ -151,7 +152,7 @@ end
 
 local function APL()
 
-        local Precombat, cooldowns, finishers, generators, opener
+        local Precombat
             UpdateRanges()
             Precombat = function()
             end
@@ -162,15 +163,13 @@ local function APL()
              return Precombat()
         end
 
-
-
          return 0, 462338
     end
 
     -- In Combat
-    if S.WindShear:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Player:Maelstrom() >= S.WindStrike:Cost() and Target:IsInterruptible() then
+  	      if S.WindShear:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Player:Maelstrom() >= S.WindStrike:Cost() and Target:IsInterruptible() then
       return S.WindShear:Cast() 
-    end
+	    end
 
 
     -- Healing surge when we have less than the set health threshold!
@@ -304,7 +303,7 @@ local function APL()
 
  
     -- actions.core+=/stormstrike,cycle_targets=1,if=azerite.lightning_conduit.enabled&!debuff.lightning_conduit.up&active_enemies>1&(buff.stormbringer.up|(variable.OCPool70&variable.furyCheck35))
-     if S.StormStrike:IsReady("Melee") and S.LightningConduit:AzeriteEnabled() and not Target:Debuff(S.LightningConduit) and Cache.EnemiesCount[8] >= 1 and (Player:Buff(S.StormbringerBuff) or OCPool70() and furyCheck35()) then
+     if S.StormStrike:IsReady("Melee") and S.LightningConduit:AzeriteEnabled() and not Target:Debuff(S.LightNingConduitDebuff) and Cache.EnemiesCount[8] >= 1 and (Player:Buff(S.StormbringerBuff) or OCPool70() and furyCheck35()) then
     	return S.StormStrike:Cast()
     end
 
@@ -390,6 +389,9 @@ local function PASSIVE()
       return S.LightningShield:Cast()
     end
 
+        if S.WindShear:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Player:Maelstrom() >= S.WindStrike:Cost() and Target:IsInterruptible() then
+      return S.WindShear:Cast() 
+	    end
 
     return RubimRH.Shared()
 	

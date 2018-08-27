@@ -140,15 +140,17 @@ local function APL()
 
  	cooldowns = function()
 
+
+ 		if RubimRH.CDsON() and S.AvengingWrath:IsReady() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+			return S.AvengingWrath:Cast()
+		end
 	
 		if RubimRH.CDsON() and S.HolyWrath:IsReady() then
 			return S.HolyWrath:Cast()
 		end
 		--actions.cooldowns+=/shield_of_vengeance
 		--actions.cooldowns+=/avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
-		if RubimRH.CDsON() and S.AvengingWrath:IsReady() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
-			return S.AvengingWrath:Cast()
-		end
+		
 		--actions.cooldowns+=/crusade,if=holy_power>=4
 		if RubimRH.CDsON() and S.Crusade:IsReady() and Player:HolyPower() >= 4 then
 			return S.Crusade:Cast()
@@ -264,86 +266,6 @@ local function APL()
 		end
 
 	opener = function()
-		if RubimRH.db.profile[70].SoVOpener then
-
-	--- name=wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
-			if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
-			RubimRH.castSpellSequence = {
-			--PASSIVECAST("Shield"),
-			S.BladeofJustice,
-			S.Judgment,
-			S.Crusade,
-			S.TemplarsVerdict,
-			S.WakeofAshes,
-			S.TemplarsVerdict,
-			S.CrusaderStrike,
-			S.ExecutionSentence,
-			}
-			end
-
-	-- name=wake_opener_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:templars_verdict
-			if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
-				RubimRH.castSpellSequence = {
-				--PASSIVECAST("Shield"),
-				S.BladeofJustice,
-				S.Judgment,
-				S.Crusade,
-				S.TemplarsVerdict,
-				S.WakeofAshes,
-				S.TemplarsVerdict,
-				S.CrusaderStrike,
-				S.TemplarsVerdict,
-				}
-			end
-
-	-- name=wake_opener_ES_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:execution_sentence
-			if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
-				RubimRH.castSpellSequence = {
-				--PASSIVECAST("Shield"),
-				S.BladeofJustice,
-				S.Judgment,
-				S.Crusade,
-				S.TemplarsVerdict,
-				S.WakeofAshes,
-				S.TemplarsVerdict,
-				S.HammerofWrath,
-				S.ExecutionSentence,
-				}
-			end
-	--actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&!talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled
-	--name=wake_opener_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:templars_verdict
-			if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
-				RubimRH.castSpellSequence = {
-				--PASSIVECAST("Shield"),
-				S.BladeofJustice,
-				S.Judgment,
-				S.Crusade,
-				S.TemplarsVerdict,
-				S.WakeofAshes,
-				S.TemplarsVerdict,
-				S.HammerofWrath,
-				S.TemplarsVerdict,
-				}
-			end
-	-- actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.inquisition.enabled,
-	--  name=wake_opener_Inq:shield_of_vengeance:blade_of_justice:judgment:inquisition:avenging_wrath:wake_of_ashes
-			if S.WakeofAshes:IsAvailable() and S.Inquisition:IsAvailable() then
-				RubimRH.castSpellSequence = {
-				--PASSIVECAST("Shield"),
-				S.BladeofJustice,
-				S.Judgment,
-				S.Inquisition,
-				S.AvengingWrath,
-				S.WakeofAshes,
-				}
-			end
-	
-
-			if RubimRH.CastSequence() ~= nil and RubimRH.CastSequence():IsReady() then
-				return RubimRH.CastSequence():Cast()
-			end
-		else
-
 	--actions.opener =  /sequence, if = talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
 	--name = wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
 			if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
@@ -419,7 +341,7 @@ local function APL()
 				return RubimRH.CastSequence():Cast()
 			end
 		end	
-	end
+	
 
 	  	if HL.CombatTime() < 2 and opener~= nil and RubimRH.CDsON() and Target:IsInRange("Melee") then
 			return opener()
