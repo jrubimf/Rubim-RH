@@ -39,112 +39,182 @@ RubimRH.Spell[581] = {
     ConsumeMagic = Spell(183752),
     InfernalStrike = Spell(189110),
     Disrupt = Spell(183752),
+    CharredFlesh = Spell(264002)
 }
 
 local S = RubimRH.Spell[581]
 
 S.Fracture.TextureSpellID = { 279450 }
 S.Sever.TextureSpellID = { 279450 }
+S.ImmolationAura.TextureSpellID = { 202137 }
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 -- APL Main
-local function APL()
-    if not Player:AffectingCombat() then
-        return 0, 462338
-    end
-    -- Unit Update
-    HL.GetEnemies(20, true); -- Fel Devastation (I think it's 20 thp)
-    HL.GetEnemies(8, true); -- Sigil of Flame & Spirit Bomb
 
-    -- Misc
+local EnemyRanges = { "Melee", 8, 10, 20, 30, 40 }
+local function UpdateRanges()
+    for _, i in ipairs(EnemyRanges) do
+        HL.GetEnemies(i);
+    end
+end
+
+local function APL()
+    local Precombat, Brand, Defensives, Normal
+    UpdateRanges()
+
     local SoulFragments = Player:BuffStack(S.SoulFragments);
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
+
+    Precombat = function()
+        -- flask
+        -- augmentation
+        -- food
+        -- snapshot_stats
+        -- potion
+        --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions and (true) then
+        --return S.ProlongedPower:Cast()
+        --end
+        -- metamorphosis
+        --if S.Metamorphosis:IsReady() and Player:BuffDownP(S.MetamorphosisBuff) then
+        --return S.Metamorphosis:Cast()
+        --end
+        return 0, 462338
+    end
+
+    Brand = function()
+        --actions.brand=sigil_of_flame,if=cooldown.fiery_brand.remains<2
+        if S.SigilofFlame:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and S.FieryBrand:CooldownRemains() < 2 then
+            return S.SigilofFlame:Cast()
+        end
+
+        --actions.brand+=/infernal_strike,if=cooldown.fiery_brand.remains=0
+        if S.InfernalStrike:IsReady() and S.FieryBrand:CooldownRemains() == 0 and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+            return S.InfernalStrike:Cast()
+        end
+
+        --actions.brand+=/fiery_brand
+        if S.FieryBrand:IsReady("Melee") then
+            return S.FieryBrand:Cast()
+        end
+
+        --actions.brand+=/immolation_aura,if=dot.fiery_brand.ticking
+        if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 and Target:Debuff(S.FieryBrand) then
+            return S.ImmolationAura:Cast()
+        end
+
+        --actions.brand+=/fel_devastation,if=dot.fiery_brand.ticking
+        if S.FelDevastation:IsReady() and Target:Debuff(S.FieryBrand) then
+            return S.FelDevastation:Cast()
+        end
+
+        --actions.brand+=/infernal_strike,if=dot.fiery_brand.ticking
+        if S.InfernalStrike:IsReady() and Cache.EnemiesCount[8] >= 1 and Target:Debuff(S.FieryBrand) then
+            return S.InfernalStrike:Cast()
+        end
+
+        --actions.brand+=/sigil_of_flame,if=dot.fiery_brand.ticking
+        if S.SigilofFlame:IsReady() and Target:Debuff(S.FieryBrand) then
+            return S.SigilofFlame:Cast()
+        end
+    end
+
+    Defensives = function()
+        --# Defensives
+        --actions.defensives=demon_spikes
+        if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
+            return S.DemonSpikes:Cast()
+        end
+
+        --actions.defensives+=/metamorphosis
+        --actions.defensives+=/fiery_brand
+        if S.FieryBrand:IsReady("Melee") then
+            return S.FieryBrand:Cast()
+        end
+    end
+
+    Normal = function()
+        --# Normal Rotation
+        --actions.normal=infernal_strike
+        if S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+            return S.InfernalStrike:Cast()
+        end
+
+        --actions.normal+=/spirit_bomb,if=soul_fragments>=4
+        if S.SpiritBomb:IsReady() and SoulFragments >= 4 then
+            return S.SpiritBomb:Cast()
+        end
+
+        --actions.normal+=/soul_cleave,if=!talent.spirit_bomb.enabled
+        if S.SoulCleave:IsReady("Melee") and not S.SpiritBomb:IsAvailable() then
+            return S.SoulCleave:Cast()
+        end
+
+        --actions.normal+=/soul_cleave,if=talent.spirit_bomb.enabled&soul_fragments=0
+        if S.SoulCleave:IsReady("Melee") and S.SpiritBomb:IsAvailable() and SoulFragments == 0 then
+            return S.SoulCleave:Cast()
+        end
+
+        --actions.normal+=/immolation_aura,if=pain<=90
+        if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 and Player:Pain() <= 90 then
+            return S.ImmolationAura:Cast()
+        end
+
+        --actions.normal+=/felblade,if=pain<=70
+        if S.Felblade:IsReady() and Player:Pain() <= 70 then
+            return S.Felblade:Cast()
+        end
+
+        --actions.normal+=/fracture,if=soul_fragments<=3
+        if S.Fracture:IsReadyMorph() and SoulFragments <= 3 then
+            return S.Fracture:Cast()
+        end
+
+        --actions.normal+=/fel_devastation
+        if S.FelDevastation:IsReady() then
+            return S.FelDevastation:Cast()
+        end
+
+        --actions.normal+=/sigil_of_flame
+        if S.SigilofFlame:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 then
+            return S.SigilofFlame:Cast()
+        end
+
+        --actions.normal+=/shear
+        if S.Shear:IsReadyMorph("Melee") then
+            return S.Shear:Cast()
+        end
+
+        --actions.normal+=/throw_glaive
+        if S.ThrowGlaive:IsReady() then
+            return S.ThrowGlaive:Cast()
+        end
+    end
 
     if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Disrupt:Cast()
     end
 
-    --- Defensives
-    if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].metamorphosis then
-        return S.Metamorphosis:Cast()
+    --# Executed every time the actor is available.
+    --actions=auto_attack
+    --actions+=/consume_magic
+    --# ,if=!raid_event.adds.exists|active_enemies>1
+    --actions+=/use_item,slot=trinket1
+    --# ,if=!raid_event.adds.exists|active_enemies>1
+    --actions+=/use_item,slot=trinket2
+    --actions+=/call_action_list,name=brand,if=talent.charred_flesh.enabled
+    if Brand() ~= nil and S.CharredFlesh:IsAvailable() then
+        return Brand()
     end
 
-    if S.SoulBarrier:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].soulbarrier then
-        return S.SoulBarrier:Cast()
+    --actions+=/call_action_list,name=defensives
+    if Defensives() ~= nil then
+        return Defensives()
     end
 
-    -- Demon Spikes
-    if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 85) and (IsTanking or not Player:HealingAbsorbed()) then
-        return S.DemonSpikes:Cast()
-    end
-
-    if S.DemonSpikes:IsReady("Melee") and Player:Pain() >= 20 and not Player:Buff(S.DemonSpikesBuff) and IsTanking and not Player:HealingAbsorbed() and S.DemonSpikes:ChargesFractional() >= 1.8 then
-        return S.DemonSpikes:Cast()
-
-    end
-    if RubimRH.config.Spells[1].isActive and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
-        return S.InfernalStrike:Cast()
-    end
-    -- actions+=/spirit_bomb,if=soul_fragments=5|debuff.frailty.down
-    -- Note: Looks like the debuff takes time to refresh so we add TimeSinceLastCast to offset that.
-    if S.Fracture:IsAvailable() and S.Fracture:IsReady("Melee") and SoulFragments <= 3 and Player:PainDeficit() <= 25 then
-        return S.Fracture:Cast()
-    end
-
-    if S.SpiritBomb:IsReady() and S.SpiritBomb:TimeSinceLastCast() > Player:GCD() * 2 and Cache.EnemiesCount[8] >= 1 and (SoulFragments >= 4 or (Target:DebuffDownP(S.Frailty) and SoulFragments >= 1)) then
-        return S.SpiritBomb:Cast()
-    end
-
-    if RubimRH.config.Spells[2].isActive and S.FieryBrand:IsReady("Melee") then
-        return S.FieryBrand:Cast()
-    end
-    -- actions+=/soul_carver
-    if S.SoulCarver:IsReady("Melee") then
-        return S.SoulCarver:Cast()
-    end
-    -- actions+=/immolation_aura,if=pain<=80
-    if S.ImmolationAura:IsReady() and Cache.EnemiesCount[8] >= 1 and not Player:Buff(S.ImmolationAura) and Player:Pain() <= 80 then
-        return S.ImmolationAura:Cast()
-    end
-    -- actions+=/felblade,if=pain<=70
-    if S.Felblade:IsReady(15) and Player:Pain() <= 75 then
-        return S.Felblade:Cast()
-    end
-    -- actions+=/fel_devastation
-    if RubimRH.CDsON() and S.FelDevastation:IsReady(20, true) and RubimRH.lastMoved() > 1 and Player:Pain() >= 30 then
-        return S.FelDevastation:Cast()
-    end
-    -- actions+=/sigil_of_flame
-    if S.SigilofFlame:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 then
-        return S.SigilofFlame:Cast()
-    end
-    if Target:IsInRange("Melee") then
-        -- actions+=/soul_cleave,if=pain>=80
-        if not S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 80 or SoulFragments >= 5) then
-            return S.SoulCleave:Cast()
-        end
-
-        if S.Fracture:IsAvailable() and S.SoulCleave:IsReady() and not S.SpiritBomb:IsAvailable() and (Player:Pain() >= 75 or SoulFragments >= 5) then
-            return S.SoulCleave:Cast()
-        end
-        -- actions+=/sever
-        if S.Sever:IsReady("Melee") then
-            --Hacky Stuff
-            return S.Sever:Cast()
-        end
-
-        if S.Fracture:IsAvailable() and S.Fracture:IsReady("Melee") then
-            return S.Fracture:Cast()
-        end
-
-        -- actions+=/shear
-        if S.Shear:IsReady("Melee") then
-            return S.Shear:Cast()
-        end
-    end
-    if Target:IsInRange(30) and S.ThrowGlaive:IsReady() then
-        return S.ThrowGlaive:Cast()
+    --actions+=/call_action_list,name=normal
+    if Normal() ~= nil then
+        return Normal()
     end
     return 0, 135328
 end

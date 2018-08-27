@@ -347,7 +347,6 @@ local function APL()
     end
 
     if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 95 and Player:BuffRemains(S.DarkSuccor) <= 2 then
-
         return S.DeathStrike:Cast()
     end
 

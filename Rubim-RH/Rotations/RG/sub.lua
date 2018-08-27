@@ -400,76 +400,77 @@ local function APL ()
     if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].evasion and Player:LastSwinged() <= 3 then
         return S.Evasion:Cast()
     end
-    if RubimRH.TargetIsValid() then
-        -- # Check CDs at first
-        -- actions=call_action_list,name=cds
-        if CDs() ~= nil then
-            return CDs()
-        end
 
-        -- # Run fully switches to the Stealthed Rotation (by doing so, it forces pooling if nothing is available).
-        -- actions+=/run_action_list,name=stealthed,if=stealthed.all
-        if Player:IsStealthed(true, true) then
-            return Stealthed()
-        end
-        -- # Apply Nightblade at 2+ CP during the first 10 seconds, after that 4+ CP if it expires within the next GCD or is not up
-        -- actions+=/nightblade,if=target.time_to_die>6&remains<gcd.max&combo_points>=4-(time<10)*2
-        if S.Nightblade:IsReady() and (Target:TimeToDie() > 6 and Target:DebuffRemains(S.Nightblade) < Player:GCD() and Player:ComboPoints() >= 4 - (HL.CombatTime() < 10 and 2 or 0)) then
-            return S.Nightblade:Cast()
-        end
+    if CDs() ~= nil then
+        return CDs()
+    end
 
-        -- # Consider using a Stealth CD when reaching the energy threshold and having space for at least 4 CP
-        -- actions+=/call_action_list,name=stealth_cds,if=energy.deficit<=variable.stealth_threshold&combo_points.deficit>=4
-        if (Player:EnergyDeficit() <= Stealth_Threshold() and Player:ComboPointsDeficit() >= 4) then
-            if Stealth_CDs() ~= nil then
-                return Stealth_CDs()
-            end
-        end
+    -- # Run fully switches to the Stealthed Rotation (by doing so, it forces pooling if nothing is available).
+    -- actions+=/run_action_list,name=stealthed,if=stealthed.all
+    if Player:IsStealthed(true, true) then
+        return Stealthed()
+    end
 
-        -- # Finish at 4+ without DS, 5+ with DS (outside stealth)
-        -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
-        if Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable())
-                or (Target:FilteredTimeToDie("<=", 1) and Player:ComboPoints() >= 3) then
-            if Finish() ~= nil then
-                return Finish()
-            end
-        end
+    -- # Apply Nightblade at 2+ CP during the first 10 seconds, after that 4+ CP if it expires within the next GCD or is not up
+    -- actions+=/nightblade,if=target.time_to_die>6&remains<gcd.max&combo_points>=4-(time<10)*2
+    if S.Nightblade:IsCastableP() and IsInMeleeRange()
+            and (Target:FilteredTimeToDie(">", 6) or Target:TimeToDieIsNotValid())
+            and Target:DebuffRemainsP(S.Nightblade) < Player:GCD() and Player:ComboPoints() >= 4 - (HL.CombatTime() < 10 and 2 or 0) then
+        return S.Nightblade:Cast()
+    end
 
-        -- actions+=/call_action_list,name=finish,if=spell_targets.shuriken_storm=4&combo_points>=4
-        if Cache.EnemiesCount[10] == 4 and Player:ComboPoints() >= 4 then
-            if Finish() ~= nil then
-                return Finish()
-            end
+    -- # Consider using a Stealth CD when reaching the energy threshold and having space for at least 4 CP
+    -- actions+=/call_action_list,name=stealth_cds,if=energy.deficit<=variable.stealth_threshold&combo_points.deficit>=4
+    if (Player:EnergyDeficit() <= Stealth_Threshold() and Player:ComboPointsDeficit() >= 4) then
+        if Stealth_CDs() ~= nil then
+            return Stealth_CDs()
         end
+    end
 
-        -- # Use a builder when reaching the energy threshold
-        -- actions+=/call_action_list,name=build,if=energy.deficit<=variable.stealth_threshold-40*!(talent.alacrity.enabled|talent.shadow_focus.enabled|talent.master_of_shadows.enabled)
-        if Player:EnergyDeficitPredicted() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
-            if Build() ~= nil then
-                return Build()
-            end
+    -- # Finish at 4+ without DS, 5+ with DS (outside stealth)
+    -- actions+=/call_action_list,name=finish,if=combo_points>=4+talent.deeper_stratagem.enabled|target.time_to_die<=1&combo_points>=3
+    if Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable())
+            or (Target:FilteredTimeToDie("<=", 1) and Player:ComboPoints() >= 3) then
+        if Finish() ~= nil
+        then
+            return Finish()
         end
+    end
 
-        -- # Lowest priority in all of the APL because it causes a GCD
-        -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-        -- arcane_torrent,if=energy.deficit>=15+energy.regen
-        if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:EnergyDeficit() >= 15 + Player:EnergyRegen()) then
-            return S.ArcaneTorrent:Cast()
+    -- actions+=/call_action_list,name=finish,if=spell_targets.shuriken_storm=4&combo_points>=4
+    if Cache.EnemiesCount[10] == 4 and Player:ComboPoints() >= 4 then
+        if Finish() ~= nil
+        then
+            return Finish()
         end
-        -- arcane_pulse
-        if S.ArcanePulse:IsReady() and (true) then
-            return S.ArcanePulse:Cast()
-        end
-        -- lights_judgment
-        if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (true) then
-            return S.LightsJudgment:Cast()
-        end
+    end
 
-        -- Shuriken Toss Out of Range
-        if S.ShurikenToss:IsReady(30) and not Target:IsInRange(10) and not Player:IsStealthed(true, true) and not Player:BuffP(S.Sprint)
-                and Player:EnergyDeficitPredicted() < 20 and (Player:ComboPointsDeficit() >= 1 or Player:EnergyTimeToMax() <= 1.2) then
-            return S.ShurikenToss:Cast()
+    -- # Use a builder when reaching the energy threshold
+    -- actions+=/call_action_list,name=build,if=energy.deficit<=variable.stealth_threshold-40*!(talent.alacrity.enabled|talent.shadow_focus.enabled|talent.master_of_shadows.enabled)
+    if Player:EnergyDeficitPredicted() <= Stealth_Threshold() - 40 * num(not (S.Alacrity:IsAvailable() or S.ShadowFocus:IsAvailable() or S.MasterofShadows:IsAvailable())) then
+        if Build() ~= nil then
+            return Build()
         end
+    end
+
+    -- # Lowest priority in all of the APL because it causes a GCD
+    -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
+    if S.ArcaneTorrent:IsCastableP("Melee") and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+        return S.ArcaneTorrent:Cast()
+    end
+    -- actions+=/arcane_pulse
+    if S.ArcanePulse:IsCastableP("Melee") then
+        return S.ArcanePulse:Cast()
+    end
+    -- actions+=/lights_judgment
+    if S.LightsJudgment:IsCastableP("Melee") then
+        return S.LightsJudgment:Cast()
+    end
+
+    -- Shuriken Toss Out of Range
+    if S.ShurikenToss:IsCastable(30) and not Target:IsInRange(10) and not Player:IsStealthed(true, true) and not Player:BuffP(S.Sprint)
+            and Player:EnergyDeficitPredicted() < 20 and (Player:ComboPointsDeficit() >= 1 or Player:EnergyTimeToMax() <= 1.2) then
+        return S.ShurikenToss:Cast()
     end
     return 0, 135328
 end

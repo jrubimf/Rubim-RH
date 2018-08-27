@@ -14,7 +14,7 @@ UseBlackOxStatue = false
 UseLegSweep = false
 UseKick = false
 
-local ISpell = RubimRH.Spell[268]
+local S = RubimRH.Spell[268]
 
 --- Energy Cap -> Returns true if energy will cap in the next GCD
 local function EnergyWillCap()
@@ -23,40 +23,40 @@ end
 
 
 local function AoE()
-    if ISpell.BreathOfFire:IsReady("Melee") then
-        return ISpell.BreathOfFire:Cast()
+    if S.BreathOfFire:IsReady("Melee") then
+        return S.BreathOfFire:Cast()
     end
 
-    if ISpell.RushingJadeWind:IsReady(8)
-        and not Player:Buff(ISpell.RushingJadeWind) then
-        return ISpell.RushingJadeWind:Cast()
+    if S.RushingJadeWind:IsReady(8)
+        and not Player:Buff(S.RushingJadeWind) then
+        return S.RushingJadeWind:Cast()
     end
 
-    if ISpell.ChiBurst:IsReady(40)
+    if S.ChiBurst:IsReady(40)
         and RubimRH.lastMoved() >= 1 then
-        return ISpell.ChiBurst:Cast()
+        return S.ChiBurst:Cast()
     end
 
-    if (Player:Buff(ISpell.BlackoutComboBuff) or EnergyWillCap())
-        and ISpell.TigerPalm:IsReady("Melee") then
-        return ISpell.TigerPalm:Cast()
+    if (Player:Buff(S.BlackoutComboBuff) or EnergyWillCap())
+        and S.TigerPalm:IsReady("Melee") then
+        return S.TigerPalm:Cast()
     end
 
-    if ISpell.BlackoutStrike:IsReady("Melee") then
-        return ISpell.BlackoutStrike:Cast()
+    if S.BlackoutStrike:IsReady("Melee") then
+        return S.BlackoutStrike:Cast()
     end
 
-    if ISpell.ChiWave:IsReady(40) then
-        return ISpell.ChiWave:Cast()
+    if S.ChiWave:IsReady(40) then
+        return S.ChiWave:Cast()
     end
 
-    if ISpell.TigerPalm:IsReady("Melee")
+    if S.TigerPalm:IsReady("Melee")
         and Player:Energy() >= 55 then
-        return ISpell.TigerPalm:Cast()
+        return S.TigerPalm:Cast()
     end
 
-    if ISpell.RushingJadeWind:IsReady(8) then
-        return ISpell.RushingJadeWind:Cast()
+    if S.RushingJadeWind:IsReady(8) then
+        return S.RushingJadeWind:Cast()
     end
 
     return nil
@@ -82,88 +82,89 @@ local function APL()
     --- Player Macro Options
 
     -- Leg Sweep
-    if ISpell.LegSweep:IsReady()
+    if S.LegSweep:IsReady()
         and UseLegSweep then
-        return ISpell.LegSweep:Cast()
+        return S.LegSweep:Cast()
     elseif UseLegSweep and 
-        (not ISpell.LegSweep:IsReady()) then
+        (not S.LegSweep:IsReady()) then
         UseLegSweep = false
     end
 
     -- Black Ox Statue
-    if ISpell.BlackOxStatue:IsReady()
+    if S.BlackOxStatue:IsReady()
         and UseBlackOxStatue then
-        return ISpell.BlackOxStatue:Cast()
+        return S.BlackOxStatue:Cast()
     elseif UseBlackOxStatue
-        and not ISpell.BlackOxStatue:IsReady() then
+        and not S.BlackOxStatue:IsReady() then
         UseBlackOxStatue = false
     end
 
     -- Kick
-    if ISpell.SpearHandStrike:IsReady("Melee")
+    if S.SpearHandStrike:IsReady("Melee")
         and ((Target:IsInterruptible()
         and Target:CastRemains() <= 0.5) or UseKick) then
-        return ISpell.SpearHandStrike:Cast()
+        return S.SpearHandStrike:Cast()
     elseif UseKick 
-        and not ISpell.SpearHandStrike:IsReady() then
+        and not S.SpearHandStrike:IsReady() then
         UseKick = false
     end
 
     --- Defensive Rotation
 
     -- Fortifying Brew
-    if ISpell.FortifyingBrew:IsReady()
+    if S.FortifyingBrew:IsReady()
         and Player:NeedPanicHealing() then
-        return ISpell.FortifyingBrew:Cast()
+        return S.FortifyingBrew:Cast()
     end
 
     -- Black Ox Brew
-    if ISpell.Brews:ChargesFractional() < 1
+    if S.Brews:ChargesFractional() < 1
         and Player:NeedMajorHealing()
-        and ISpell.BlackOxBrew:IsAvailable()
-        and ISpell.BlackOxBrew:IsReady() then
-        return ISpell.BlackOxBrew:Cast()
+        and S.BlackOxBrew:IsAvailable()
+        and S.BlackOxBrew:IsReady() then
+        return S.BlackOxBrew:Cast()
     end
 
     -- Ironskin Brew
-    if ISpell.Brews:ChargesFractional() >= 1
-        and (not Player:Buff(ISpell.IronskinBrewBuff) or (Player:Buff(ISpell.IronskinBrewBuff) and Player:BuffRemains(ISpell.IronskinBrewBuff) <= Player:GCD()))
+    if S.Brews:ChargesFractional() >= 1
+        and (not Player:Buff(S.IronskinBrewBuff) or (Player:Buff(S.IronskinBrewBuff) and Player:BuffRemains(S.IronskinBrewBuff) <= Player:GCD()))
         and IsTanking then
-        return ISpell.IronskinBrew:Cast()
+        return S.IronskinBrew:Cast()
     end
 
     -- Purifying Brew
-    if (Player:Debuff(ISpell.HeavyStagger) or (Player:Debuff(ISpell.ModerateStagger) and Player:HealthPercentage() < 70))
-        and ISpell.Brews:ChargesFractional() >= 1
-        and Player:NeedMajorHealing() then
-        return ISpell.PurifyingBrew:Cast()
+    if (Player:Debuff(S.HeavyStagger) or (Player:Debuff(S.ModerateStagger) and Player:HealthPercentage() < 70))
+        and S.Brews:ChargesFractional() >= 1
+        and Player:NeedMajorHealing()
+        and S.PurifyingBrew:IsReady() then
+        return S.PurifyingBrew:Cast()
     end
 
     -- Healing Elixir
     if Player:HealthPercentage() <= 85
-        and ISpell.HealingElixir:IsReady() then
-        return ISpell.HealingElixir:Cast()
+        and S.HealingElixir:IsReady() then
+        return S.HealingElixir:Cast()
     end
 
     -- Guard
-    if Player:Debuff(ISpell.HeavyStagger)
+    if Player:Debuff(S.HeavyStagger)
         and Player:HealthPercentage() <= 80
-        and ISpell.Guard:IsReady() then
-        return ISpell.Guard:Cast()
+        and S.Guard:IsReady() then
+        return S.Guard:Cast()
     end
 
     --- Cooldowns
 
     -- Blood Fury
     if RubimRH.CDsON()
-        and ISpell.BloodFury:IsReady("Melee") then
-        return ISpell.BloodFury:ID()
+        and S.BloodFury:IsReady("Melee") then
+        return S.BloodFury:ID()
     end
 
     -- Berserking
     if RubimRH.CDsON()
-        and ISpell.Berserking:IsReady("Melee") then
-        return ISpell.Berserking:ID()
+        and S.Berserking:IsReady("Melee") then
+        return S.Berserking:ID()
     end
 
     -- TODO: Handle proper logic for locating distance to statue
@@ -176,14 +177,14 @@ local function APL()
     --- Universal Rotation - Does not change based on targets
 
     -- Invoke Niuzao: The Black Ox
-    if ISpell.InvokeNiuzaotheBlackOx:IsAvailable()
-        and ISpell.InvokeNiuzaotheBlackOx:IsReady(40) then
-        return ISpell.InvokeNiuzaotheBlackOx:Cast()
+    if S.InvokeNiuzaotheBlackOx:IsAvailable()
+        and S.InvokeNiuzaotheBlackOx:IsReady(40) then
+        return S.InvokeNiuzaotheBlackOx:Cast()
     end
 
     -- Keg Smash
-    if ISpell.KegSmash:IsReady(15) then
-        return ISpell.KegSmash:Cast()
+    if S.KegSmash:IsReady(15) then
+        return S.KegSmash:Cast()
     end
 
     --- AoE Priority
@@ -195,48 +196,48 @@ local function APL()
     --- Single-Target Priority
 
     -- Blackout Strike
-    if ISpell.BlackoutStrike:IsReady("Melee")
-        and (not Player:Buff(ISpell.BlackoutComboBuff) or not ISpell.BlackoutCombo:IsAvailable()) then
-        return ISpell.BlackoutStrike:Cast()
+    if S.BlackoutStrike:IsReady("Melee")
+        and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
+        return S.BlackoutStrike:Cast()
     end
 
     -- Tiger Palm
-    if (Player:Buff(ISpell.BlackoutComboBuff) or EnergyWillCap())
-        and ISpell.TigerPalm:IsReady("Melee") then
-        return ISpell.TigerPalm:Cast()
+    if (Player:Buff(S.BlackoutComboBuff) or EnergyWillCap())
+        and S.TigerPalm:IsReady("Melee") then
+        return S.TigerPalm:Cast()
     end
 
     -- Breath of Fire
-    if ISpell.BreathOfFire:IsReady("Melee") then
-        return ISpell.BreathOfFire:Cast()
+    if S.BreathOfFire:IsReady("Melee") then
+        return S.BreathOfFire:Cast()
     end
 
     -- Rushing Jade Wind
-    if ISpell.RushingJadeWind:IsReady(8)
-        and not Player:Buff(ISpell.RushingJadeWind) then
-        return ISpell.RushingJadeWind:Cast()
+    if S.RushingJadeWind:IsReady(8)
+        and not Player:Buff(S.RushingJadeWind) then
+        return S.RushingJadeWind:Cast()
     end
 
     -- Chi Burst
-    if ISpell.ChiBurst:IsReady(40)
+    if S.ChiBurst:IsReady(40)
         and RubimRH.lastMoved() >= 1 then
-        return ISpell.ChiBurst:Cast()
+        return S.ChiBurst:Cast()
     end
 
     -- Chi Wave
-    if ISpell.ChiWave:IsReady(40) then
-        return ISpell.ChiWave:Cast()
+    if S.ChiWave:IsReady(40) then
+        return S.ChiWave:Cast()
     end
 
     -- Tiger Palm
-    if ISpell.TigerPalm:IsReady()
+    if S.TigerPalm:IsReady()
         and Player:Energy() >= 55 then
-        return ISpell.TigerPalm:Cast()
+        return S.TigerPalm:Cast()
     end
 
     -- Rushing Jade Wind -> Refresh on empty GCD
-    if ISpell.RushingJadeWind:IsReady() then
-        return ISpell.RushingJadeWind:Cast()
+    if S.RushingJadeWind:IsReady() then
+        return S.RushingJadeWind:Cast()
     end
 
     return 0, 135328

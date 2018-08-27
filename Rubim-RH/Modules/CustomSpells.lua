@@ -103,6 +103,11 @@ function Spell:Queued(powerEx)
             break
         end
     end
+
+    if costType == 3 and RubimRH.queuedSpell[1]:CooldownRemains() >= Player:EnergyTimeToX(powerCostQ) then
+        return true
+    end
+
     if Player:PrevGCD(1, RubimRH.queuedSpell[1]) and UnitPower("player", costTypeQ) >= costsQ + RubimRH.queuedSpell[2] then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         return false
