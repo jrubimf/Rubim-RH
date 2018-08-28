@@ -1,14 +1,13 @@
-
 function table.removeKey(t, k)
     local i = 0
-    local keys, values = {},{}
-    for k,v in pairs(t) do
+    local keys, values = {}, {}
+    for k, v in pairs(t) do
         i = i + 1
         keys[i] = k
         values[i] = v
     end
 
-    while i>0 do
+    while i > 0 do
         if keys[i] == k then
             table.remove(keys, i)
             table.remove(values, i)
@@ -18,7 +17,7 @@ function table.removeKey(t, k)
     end
 
     local a = {}
-    for i = 1,#keys do
+    for i = 1, #keys do
         a[keys[i]] = values[i]
     end
 
@@ -320,4 +319,18 @@ function RubimRH.TargetIsValid()
         isValid = true
     end
     return isValid
+end
+
+-- will be replaced
+function RubimRH.azerite(slot, azeriteID)
+    local IsArmor = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItem(ItemLocation:CreateFromEquipmentSlot(slot));
+    if IsArmor == true then
+        local azeriteLearned = C_AzeriteEmpoweredItem.IsPowerSelected(ItemLocation:CreateFromEquipmentSlot(slot), azeriteID);
+        if azeriteLearned == true then
+            return true
+        else
+            return false
+        end
+    end
+    return false
 end
