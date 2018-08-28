@@ -12,26 +12,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/frost.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="348" column="150" lean-forward="false" selection-start-line="348" selection-start-column="150" selection-end-line="348" selection-end-column="150" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="outlaw.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="285" column="116" lean-forward="false" selection-start-line="285" selection-start-column="116" selection-end-line="285" selection-end-column="144" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ass.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/ass.lua">
           <provider selected="true" editor-type-id="text-editor">
@@ -72,11 +52,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="brew.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="brew.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/MK/brew.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="230">
               <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="blood.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="260" column="48" lean-forward="false" selection-start-line="260" selection-start-column="39" selection-end-line="260" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bm.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1201">
+              <caret line="224" column="20" lean-forward="false" selection-start-line="224" selection-start-column="13" selection-end-line="224" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="veng.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="48" column="2" lean-forward="false" selection-start-line="48" selection-start-column="2" selection-end-line="48" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -102,16 +112,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tweaks.lua" pinned="false" current-in-tab="false">
-        <entry file="file://F:/World of Warcraft/Interface/Addons/AltzUI/mods/tweaks/tweaks.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="315" column="56" lean-forward="true" selection-start-line="315" selection-start-column="56" selection-end-line="315" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -123,8 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>SoulCleave</find>
-      <find>thi</find>
       <find>Debug</find>
       <find>444</find>
       <find>ArcaneBlast</find>
@@ -153,6 +151,8 @@
       <find>Brew</find>
       <find>PurifyingBrew</find>
       <find>ISpell</find>
+      <find>BloodBoil</find>
+      <find>barrage</find>
     </findStrings>
     <replaceStrings>
       <replace>sk3text .. sk3var</replace>
@@ -230,11 +230,9 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/WR/fury.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RHc.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/Icons.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraWADope/rubim-rh_extraWADope.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/outlaw.lua" />
         <option value="F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraIcon/rubim-rh_extraicon.lua" />
-        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomBFA.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rubim-RH.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/unholy.lua" />
@@ -244,10 +242,12 @@
         <option value="$PROJECT_DIR$/Rubim-RH/Modules/CustomSpells.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH/Rotations/MK/brew.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua" />
+        <option value="$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="523" />
     <option name="y" value="39" />
     <option name="width" value="974" />
@@ -435,7 +435,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -622,13 +622,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://F:/World of Warcraft/Interface/Addons/Rubim-RH_ExtraWADope/rubim-rh_extraWADope.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="434">
@@ -675,20 +668,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
           <caret line="285" column="14" lean-forward="true" selection-start-line="285" selection-start-column="14" selection-end-line="285" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="91" column="221" lean-forward="false" selection-start-line="91" selection-start-column="219" selection-end-line="91" selection-end-column="221" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="144" column="26" lean-forward="false" selection-start-line="144" selection-start-column="19" selection-end-line="144" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -839,6 +818,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DK/blood.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="260" column="48" lean-forward="false" selection-start-line="260" selection-start-column="39" selection-end-line="260" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/HR/bm.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1201">
+          <caret line="224" column="20" lean-forward="false" selection-start-line="224" selection-start-column="13" selection-end-line="224" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/DH/veng.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="48" column="2" lean-forward="false" selection-start-line="48" selection-start-column="2" selection-end-line="48" selection-end-column="2" />
           <folding />
         </state>
       </provider>

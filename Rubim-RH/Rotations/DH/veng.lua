@@ -46,7 +46,7 @@ local S = RubimRH.Spell[581]
 
 S.Fracture.TextureSpellID = { 279450 }
 S.Sever.TextureSpellID = { 279450 }
-S.ImmolationAura.TextureSpellID = { 202137 }
+--S.ImmolationAura.TextureSpellID = { 202137 }
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");

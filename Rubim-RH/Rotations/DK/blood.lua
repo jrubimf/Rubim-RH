@@ -151,7 +151,7 @@ local function APL()
             return S.Marrowrend:Cast()
         end
         -- blood_boil,if=charges_fractional>=1.8&(buff.hemostasis.stack<=(5-spell_targets.blood_boil)|spell_targets.blood_boil>2)
-        if S.BloodBoil:IsReady() and Cache.EnemiesCount[8] and (S.BloodBoil:ChargesFractional() >= 1.8 and (Player:BuffStackP(S.HemostasisBuff) <= (5 - Cache.EnemiesCount[5]) or Cache.EnemiesCount[5] > 2)) then
+        if S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 and (S.BloodBoil:ChargesFractional() >= 1.8 and (Player:BuffStackP(S.HemostasisBuff) <= (5 - Cache.EnemiesCount[5]) or Cache.EnemiesCount[5] > 2)) then
             return S.BloodBoil:Cast()
         end
         -- marrowrend,if=buff.bone_shield.stack<5&talent.ossuary.enabled&runic_power.deficit>=15
