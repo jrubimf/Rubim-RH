@@ -140,21 +140,6 @@ function RubimRH.AoEON()
     end
 end
 
--- will be replaced
-function RubimRH.azerite(slot, azeriteID)
-    local IsArmor = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItem(ItemLocation:CreateFromEquipmentSlot(slot));
-    if IsArmor == true then
-        local azeriteLearned = C_AzeriteEmpoweredItem.IsPowerSelected(ItemLocation:CreateFromEquipmentSlot(slot), azeriteID);
-        if azeriteLearned == true then
-            return true
-        else
-            return false
-        end
-    else
-        return false
-    end
-
-end
 
 function RubimRH.RacialON()
     if RubimRH.db == nil then
