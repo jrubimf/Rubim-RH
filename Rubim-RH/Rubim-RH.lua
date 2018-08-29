@@ -298,7 +298,7 @@ local defaults = {
             wogHP = 65,
             SoVOpener = false,
              Spells = {
-			 { spellID = FlashofLight, isActive = true }
+			 
 			 },
         },
         [65] = {
