@@ -140,6 +140,12 @@ local function APL()
    		 return 0, 462338
  	end
 
+
+ 		
+		if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].flashoflight then
+			return S.FlashOfLight:Cast()
+		end
+
  	  if S.Rebuke:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
       return S.Rebuke:Cast() 
 	    end
@@ -391,9 +397,6 @@ local function APL()
 		end
 
 
-		if RubimRH.db.profile[70].FoL and S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].flashoflight then
-			return S.FlashOfLight:Cast()
-		end
 		
 	return 0, 135328	
 end
