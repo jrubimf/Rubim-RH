@@ -172,7 +172,7 @@ local function Finish ()
     local ShadowDanceBuff = Player:BuffP(S.ShadowDanceBuff)
 
     if S.Nightblade:IsReady() then
-        local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3;
+        local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3
         -- actions.finish=nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
         if IsInMeleeRange() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff)
                 and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid())
@@ -320,8 +320,7 @@ end
 -- # Builders
 local function Build ()
     -- actions.build=shuriken_toss,if=buff.sharpened_blades.stack>=29&spell_targets.shuriken_storm<=1+3*azerite.sharpened_blades.rank=2+4*azerite.sharpened_blades.rank=3
-    if S.ShurikenToss:IsReady() and Player:BuffStackP(S.SharpenedBladesBuff) >= 29
-            and Cache.EnemiesCount[10] <= 1 + 3 * num(S.SharpenedBladesPower:AzeriteRank() == 2) + 4 * num(S.SharpenedBladesPower:AzeriteRank() == 3) then
+    if S.ShurikenToss:IsReady() and (Player:BuffStackP(S.SharpenedBladesBuff) >= 29 and Cache.EnemiesCount[10] <= (3 * S.SharpenedBlades:AzeriteRank())) then
         return S.ShurikenToss:Cast()
     end
     -- actions.build=shuriken_storm,if=spell_targets>=2|buff.the_dreadlords_deceit.stack>=29
