@@ -410,15 +410,15 @@ RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
 
-	if RubimRH.db.profile[70].SoVEnabled and S.ShieldOfVengance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].SoVHP then
+	if S.ShieldOfVengance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].SoVHP then
 		return S.ShieldOfVengance:Cast()
 	end 
 
-	if RubimRH.db.profile[70].divineEnabled and S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].DivineHP and not Player:Debuff(S.Forbearance) then
+	if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].DivineHP and not Player:Debuff(S.Forbearance) then
 		return S.DivineShield:Cast()
 	end 
 
-	if RubimRH.db.profile[70].lohEnabled and S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].lohHealth and not Player:Debuff(S.Forbearance) then
+	if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].lohHealth and not Player:Debuff(S.Forbearance) then
 		return S.LayOnHands:Cast()
 	end
 
