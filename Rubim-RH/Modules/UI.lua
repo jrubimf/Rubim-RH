@@ -3599,4 +3599,8 @@ function RubimRH.ClassConfig(specID)
     if specID == Guardian then
         AllMenu()
     end
+
+    if specID == Brewmaster then
+        AllMenu()
+    end
 end

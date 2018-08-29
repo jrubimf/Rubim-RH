@@ -229,7 +229,7 @@ local function APL ()
             return S.Carve:Cast()
         end
         -- wildfire_bomb,if=!talent.guerrilla_tactics.enabled|full_recharge_time<gcd
-        if S.WildfireBomb:IsReady() and (not S.GuerrillaTactics:IsAvailable() or S.WildfireBomb:FullRechargeTimeP() < Player:GCD()) then
+        if S.WildfireBomb:IsReadyMorph() and (not S.GuerrillaTactics:IsAvailable() or S.WildfireBomb:FullRechargeTimeP() < Player:GCD()) then
             return S.WildfireBomb:Cast()
         end
         -- chakrams
@@ -253,7 +253,7 @@ local function APL ()
             return S.FlankingStrike:Cast()
         end
         -- wildfire_bomb,if=dot.wildfire_bomb.refreshable|talent.wildfire_infusion.enabled
-        if (S.WildfireBomb:IsReady() or S.VolatileBomb:IsReady() or S.ShrapnelBomb:IsReady() or S.PheromoneBomb:IsReady()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
+        if (S.WildfireBomb:IsReadyMorph() or S.VolatileBomb:IsReady() or S.ShrapnelBomb:IsReady() or S.PheromoneBomb:IsReady()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
             return S.WildfireBomb:Cast()
         end
         -- serpent_sting,target_if=min:remains,if=buff.vipers_venom.up
@@ -331,7 +331,7 @@ local function APL ()
             return S.SteelTrap:Cast()
         end
         -- wildfire_bomb,if=focus+cast_regen<focus.max&(full_recharge_time<gcd|dot.wildfire_bomb.refreshable&buff.mongoose_fury.down)
-        if S.WildfireBomb:IsReady() and (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() and (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff))) then
+        if S.WildfireBomb:IsReadyMorph() and (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() and (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or Target:DebuffRefreshableCP(S.WildfireBombDebuff) and Player:BuffDownP(S.MongooseFuryBuff))) then
             return S.WildfireBomb:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
@@ -363,7 +363,7 @@ local function APL ()
             return S.RaptorStrike:Cast()
         end
         -- wildfire_bomb,if=dot.wildfire_bomb.refreshable
-        if S.WildfireBomb:IsReady() and (Target:DebuffRefreshableCP(S.WildfireBombDebuff)) then
+        if S.WildfireBomb:IsReadyMorph() and (Target:DebuffRefreshableCP(S.WildfireBombDebuff)) then
             return S.WildfireBomb:Cast()
         end
         -- serpent_sting,if=refreshable
@@ -479,10 +479,12 @@ local function APL ()
             return Cleave()
         end
     end
+
     -- heal pet
     if Pet:IsActive() and Pet:HealthPercentage() <= 75 and not Pet:Buff(S.MendPet) then
         return S.MendPet:cast()
     end
+
     return 0, 135328
 end
 
