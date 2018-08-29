@@ -592,6 +592,10 @@ function RubimRH.mainRotation(option)
         return 0, 975744
     end
 
+    if Player:IsChanneling(Spell(267402)) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
     if ACTIVE_CHAT_EDIT_BOX ~= nil then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\chatting.tga"
     end
