@@ -465,7 +465,7 @@ local function APL()
         return S.SpearHandStrike:Cast()
     end
     -- touch_of_karma,interval=90,pct_health=0.5,if=!talent.Good_Karma.enabled,interval=90,pct_health=0.5
-    if S.TouchofKarma:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].touchofkarma then
+    if S.TouchofKarma:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk1 then
         return S.TouchofKarma:Cast()
     end
 
@@ -527,7 +527,7 @@ RubimRH.Rotation.SetAPL(269, APL)
 
 local function PASSIVE()
 
-    if S.DampemHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].dampemharm then
+    if S.DampemHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk2 then
         return S.DampemHarm:Cast()
     end
 

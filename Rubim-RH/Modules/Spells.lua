@@ -109,6 +109,7 @@ RubimRH.Spell[268] = {
     ChiWave = Spell(115098),
     DampenHarm = Spell(122278),
     DampenHarmBuff = Spell(122278),
+    ExpelHarm = Spell(115072),
     ExplodingKeg = Spell(214326),
     FortifyingBrew = Spell(115203),
     FortifyingBrewBuff = Spell(115203),

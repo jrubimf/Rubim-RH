@@ -14,7 +14,7 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-local ISpell = RubimRH.Spell[73]
+local S = RubimRH.Spell[73]
 
 --- Preliminary APL based on WoWHead Rotation Priority for 8.0.1
 -- WoWHead Guide Referenced: http://www.wowhead.com/protection-warrior-rotation-guide
@@ -39,150 +39,148 @@ local function APL()
 
         -- Localize Vars
         local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target) -- TODO: Implement logic for PvP scenarios : IsTanking returns false, yet Shield Block is still needed
-        local ThunderClapRadius = ISpell.CracklingThunder:IsAvailable() and 12 or 8
+        local ThunderClapRadius = S.CracklingThunder:IsAvailable() and 12 or 8
 
         local LeftCtrl = IsLeftControlKeyDown()
         local LeftShift = IsLeftShiftKeyDown()
 
         -- Shovkwave -> Cast when left CTRL+Shift keys are pressed
-        if LeftCtrl and LeftShift and ISpell.Shockwave:IsReady(8) then
-            return ISpell.Shockwave:Cast()
+        if LeftCtrl and LeftShift and S.Shockwave:IsReady(8) then
+            return S.Shockwave:Cast()
         end
 
         -- Pummel -> 0.5 sec of cast has elapsed, or 1 second of channeling has elapsed
-        if ISpell.Pummel:IsReady("Melee")
-                and Target:IsInterruptible()
-                and (((Target:IsCasting() and Target:CastRemains() <= 0.7) or Target:IsChanneling())) then
-            return ISpell.Pummel:Cast()
+        if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+            return S.Pummel:Cast()
         end
 
         -- TODO: Berserker Rage: Implement cast while feared.
 
         -- Shield Wall -> Panic Heal
-        if ISpell.ShieldWall:IsReady("Melee")
+        if S.ShieldWall:IsReady("Melee")
                 and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
-                and (ISpell.Bolster:IsAvailable() and (not Player:Buff(ISpell.LastStand))) then
-            return ISpell.ShieldWall:Cast()
+                and (S.Bolster:IsAvailable() and (not Player:Buff(S.LastStand))) then
+            return S.ShieldWall:Cast()
         end
 
         -- Last Stand -> Panic Heal
-        if ISpell.LastStand:IsReady("Melee")
+        if S.LastStand:IsReady("Melee")
                 and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
-                and (not Player:Buff(ISpell.ShieldWall)) then
-            return ISpell.LastStand:Cast()
+                and (not Player:Buff(S.ShieldWall)) then
+            return S.LastStand:Cast()
         end
 
         -- Shield Block -> Primary rage dump
-        if ISpell.ShieldBlock:IsReady("Melee")
+        if S.ShieldBlock:IsReady("Melee")
                 and Player:Rage() >= 30
-                and not Player:Buff(ISpell.ShieldBlockBuff)
-                and ((not ISpell.Bolster:IsAvailable())
-                or (ISpell.Bolster:IsAvailable() and not Player:Buff(ISpell.LastStand)))
-                and ISpell.ShieldBlock:ChargesFractional() >= 1
+                and not Player:Buff(S.ShieldBlockBuff)
+                and ((not S.Bolster:IsAvailable())
+                or (S.Bolster:IsAvailable() and not Player:Buff(S.LastStand)))
+                and S.ShieldBlock:ChargesFractional() >= 1
                 and (Player:NeedMinorHealing()
                 or Player:NeedMajorHealing()
                 or Player:NeedPanicHealing()) then
-            return ISpell.ShieldBlock:Cast()
+            return S.ShieldBlock:Cast()
         end
 
         -- Avatar -> Cast when not in a group (solo conent), Target TTD >= 10, and we're at >= 20 rage deficit
-        if ISpell.Avatar:IsReady("Melee")
+        if S.Avatar:IsReady("Melee")
                 and ((Target:TimeToDie() >= 10) or (GetNumGroupMembers() == 0)) -- Use all the time in solo content
                 and Player:RageDeficit() >= 20 then
-            return ISpell.Avatar:Cast()
+            return S.Avatar:Cast()
         end
 
         -- Shield Bash -> PvP usage
-        if ISpell.ShieldBash:IsReady("Melee")
+        if S.ShieldBash:IsReady("Melee")
                 and Target:IsCasting() then
-            return ISpell.ShieldBash:Cast()
+            return S.ShieldBash:Cast()
         end
 
         -- Demoralizing Shout -> Use on CD with Boomking Shout
-        if ((ISpell.BoomingVoice:IsAvailable() and Player:Rage() <= 60)
+        if ((S.BoomingVoice:IsAvailable() and Player:Rage() <= 60)
                 or (Cache.EnemiesCount[ThunderClapRadius] >= 3)
                 or (GetNumGroupMembers() == 0))
-                and ISpell.DemoralizingShout:IsReady("Melee") then
-            return ISpell.DemoralizingShout:Cast()
+                and S.DemoralizingShout:IsReady("Melee") then
+            return S.DemoralizingShout:Cast()
         end
 
         -- Impending Victory -> Cast when < 85% HP
-        if ISpell.ImpendingVictory:IsReady("Melee")
+        if S.ImpendingVictory:IsReady("Melee")
                 and Player:HealthPercentage() <= 85 then
-            return ISpell.VictoryRush:Cast()
+            return S.VictoryRush:Cast()
         end
 
         -- Victory Rush -> Cast when < 85% HP
-        if Player:Buff(ISpell.Victorious)
-                and ISpell.VictoryRush:IsReady("Melee")
+        if Player:Buff(S.Victorious)
+                and S.VictoryRush:IsReady("Melee")
                 and Player:HealthPercentage() <= 85 then
-            return ISpell.VictoryRush:Cast()
+            return S.VictoryRush:Cast()
         end
 
         -- Shield Slam
-        if ISpell.ShieldSlam:IsReady("Melee")
+        if S.ShieldSlam:IsReady("Melee")
                 and Player:RageDeficit() >= 15 then
-            return ISpell.ShieldSlam:Cast()
+            return S.ShieldSlam:Cast()
         end
 
         -- ThunderClap
-        if ISpell.ThunderClap:IsReady() and Player:RageDeficit() >= 5 and Cache.EnemiesCount[8] >= 1 then
-            return ISpell.ThunderClap:Cast()
+        if S.ThunderClap:IsReady() and Player:RageDeficit() >= 5 and Cache.EnemiesCount[8] >= 1 then
+            return S.ThunderClap:Cast()
         end
 
         -- Revenge Rage Dump
-        local RevengeDumpRage = ISpell.BoomingVoice:IsAvailable() and 60 or 80
-        if ISpell.Revenge:IsReady("Melee")
+        local RevengeDumpRage = S.BoomingVoice:IsAvailable() and 60 or 80
+        if S.Revenge:IsReady("Melee")
                 and (((Player:Rage() >= RevengeDumpRage)
-                or Player:Buff(ISpell.RevengeBuff))
-                or (ISpell.Revenge:IsReady("Melee") and Player:Buff(ISpell.VegeanceRV) and Player:Rage() >= 20)) then
-            return ISpell.Revenge:Cast()
+                or Player:Buff(S.RevengeBuff))
+                or (S.Revenge:IsReady("Melee") and Player:Buff(S.VegeanceRV) and Player:Rage() >= 20)) then
+            return S.Revenge:Cast()
         end
 
         -- Ravager -> AoE scenarios
-        if ISpell.Ravager:IsReady("Melee")
+        if S.Ravager:IsReady("Melee")
                 and Cache.EnemiesCount[8] >= 3 then
-            return ISpell.Ravager:Cast()
+            return S.Ravager:Cast()
         end
 
         -- Shield Bash -> Target not casting / lower priority
-        if ISpell.ShieldBash:IsReady("Melee") then
-            return ISpell.ShieldBash:Cast()
+        if S.ShieldBash:IsReady("Melee") then
+            return S.ShieldBash:Cast()
         end
 
         -- Ignore Pain -> Vengeance Ignore Pain
-        if ISpell.IgnorePain:IsReady("Melee")
-                and Player:Buff(ISpell.VegeanceIP)
+        if S.IgnorePain:IsReady("Melee")
+                and Player:Buff(S.VegeanceIP)
                 and Player:Rage() >= ((40 / 3) * 2)
-                and not Player:Buff(ISpell.IgnorePain) then
-            return ISpell.IgnorePain:Cast()
+                and not Player:Buff(S.IgnorePain) then
+            return S.IgnorePain:Cast()
         end
 
         -- Revenge -> Rage dump
-        if ISpell.Revenge:IsReady("Melee")
-                and ISpell.ShieldBlock:ChargesFractional() < 0.6
+        if S.Revenge:IsReady("Melee")
+                and S.ShieldBlock:ChargesFractional() < 0.6
                 and Player:Rage() >= 30 then
-            return ISpell.Revenge:Cast()
+            return S.Revenge:Cast()
         end
 
         -- Victory Rush -> Buff about to expire
-        if Player:Buff(ISpell.Victorious)
-                and Player:BuffRemains(ISpell.Victorious) <= 2
-                and ISpell.VictoryRush:IsReady("Melee") then
-            return ISpell.VictoryRush:Cast()
+        if Player:Buff(S.Victorious)
+                and Player:BuffRemains(S.Victorious) <= 2
+                and S.VictoryRush:IsReady("Melee") then
+            return S.VictoryRush:Cast()
         end
 
         -- Ignore Pain -> Only cast in place of Devastate
-        if ISpell.IgnorePain:IsReady("Melee")
+        if S.IgnorePain:IsReady("Melee")
                 and Player:Rage() >= 40
-                and not Player:Buff(ISpell.IgnorePain)
+                and not Player:Buff(S.IgnorePain)
                 and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then
             -- TODO: See IsTanking note
-            return ISpell.IgnorePain:Cast()
+            return S.IgnorePain:Cast()
         end
 
-        if ISpell.Devastate:IsReady("Melee") then
-            return ISpell.Devastate:Cast()
+        if S.Devastate:IsReady("Melee") then
+            return S.Devastate:Cast()
         end
     end
 

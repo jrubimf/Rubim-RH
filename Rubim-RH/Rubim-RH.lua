@@ -184,9 +184,11 @@ local AspectoftheTurtle = 186265
 local Exhilaration = 109304
 
 --Paladin
+local DivineShield = 642
 local JusticarVengeance = 215661
 local WordofGlory = 210191
 local LayonHands = 633
+local ShieldofVengeance = 184662
 local GuardianofAncientKings = 86659
 local ArdentDefender = 31850
 local FlashofLight = 19750
@@ -235,8 +237,19 @@ local defaults = {
                 { spellID = FelBarrage, isActive = true }
             }
         },
-        [581] = {
+        [Vengeance] = {
             cooldown = true,
+
+
+            sk1 = 50,
+            sk1id = 187827, --Metamorphosis
+            sk1tooltip = "Percent HP to use Metamorphosis",
+
+            sk2 = 75,
+            sk2id = 263648, --Soul Barrier
+            sk2tooltip = "Percent HP to use Soul Barrier",
+
+
             metamorphosis = 50,
             soulbarrier = 75,
             Spells = {
@@ -284,22 +297,34 @@ local defaults = {
             }
         },
         --PALADIN
-        [70] = {
+        [Retribution] = {
             cooldown = true,
-            SoVEnabled = false,
-            SoVHP = 70,
-            FoL = false,
-            flashoflight = 80,
-            justicariSEnabled = false,
-            JusticarHP = 50,
-            divineEnabled = false,
-            DivineHP = 20,
-            wogenabled = false,
-            wogHP = 65,
+
+            sk1 = 85,
+            sk1id = ShieldofVengeance,
+            sk1tooltip = "Percent HP to use Shield of Vengeance",
+
+            sk2 = 45,
+            sk2id = FlashofLight,
+            sk2tooltip = "Percent HP to use Flash of the Light",
+
+            sk3 = 75, -- Die by the Sword
+            sk3id = JusticarVengeance,
+            sk3tooltip = "Percent HP to use Justicar's Vengeance",
+
+            sk4 = 45,
+            sk4id = DivineShield,
+            sk4tooltip = "Percent HP to use Divine Shield",
+
+            sk5 = 10,
+            sk5id = LayonHands,
+            sk5tooltip = "Percent HP to use Lay on Hands",
+
+            sk6 = 75,
+            sk6id = WordofGlory,
+            sk6tooltip = "Percent HP to use Word of Glory",
+
             SoVOpener = false,
-             Spells = {
-			 
-			 },
         },
         [65] = {
             cooldown = true,
@@ -314,9 +339,9 @@ local defaults = {
             lohHealth = 30,
             lotpEnabled = true,
             lotpHP = 50,
-             Spells = {
-             { spellID = FlashofLight, isActive = true }
-             },
+            Spells = {
+                { spellID = FlashofLight, isActive = true }
+            },
         },
         --WARRIOR
         --ARMS
@@ -410,13 +435,23 @@ local defaults = {
             sk3tooltip = "Percent HP to use Exhilaration",
         },
         --MONK
-        [268] = {
+        [Brewmaster] = {
             cooldown = true,
+
+            sk1 = 50,
+            sk1id = 115072, -- ExpelHarm
+            sk1tooltip = "Percent HP to use Expel Harm",
         },
         [269] = {
             cooldown = true,
-            touchofkarma = 50,
-            dampemharm = 35,
+
+            sk1 = 50,
+            sk1id = 122470, -- TouchofKarma
+            sk1tooltip = "Percent HP to use Touch of Karma",
+
+            sk2 = 35,
+            sk2id = 122278, -- DampemHarm
+            sk2tooltip = "Percent HP to use Dampem Harm",
         },
         --SHAMAN
         [263] = {
@@ -428,7 +463,7 @@ local defaults = {
             Spells = {
                 { spellID = FeralSpirit, isActive = true },
                 { spellID = EarthElemental, isActive = true }
-             }
+            }
         },
         [262] = {
             healingsurge = 80,

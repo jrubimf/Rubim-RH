@@ -3556,10 +3556,6 @@ function RubimRH.ClassConfig(specID)
         AllMenu()
     end
 
-    if specID == 70 then
-        RetributionMenu()
-    end
-
     if specID == 66 then
         ProtectionMenu()
     end
@@ -3601,6 +3597,10 @@ function RubimRH.ClassConfig(specID)
     end
 
     if specID == Brewmaster then
+        AllMenu()
+    end
+
+    if specID == Retribution then
         AllMenu()
     end
 end

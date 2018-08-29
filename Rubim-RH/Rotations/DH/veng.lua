@@ -195,6 +195,15 @@ local function APL()
         return S.Disrupt:Cast()
     end
 
+    --- Defensives
+    if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then
+        return S.Metamorphosis:Cast()
+    end
+
+    if S.SoulBarrier:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk2 then
+        return S.SoulBarrier:Cast()
+    end
+
     --# Executed every time the actor is available.
     --actions=auto_attack
     --actions+=/consume_magic

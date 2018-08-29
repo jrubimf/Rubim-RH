@@ -61,7 +61,7 @@ local function APL ()
                     return S.AMurderofCrows:Cast()
                 end
             end
-            if RubimRH.CDsON() and S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
+            if S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
                 return S.BestialWrath:Cast()
             end
             -- if S.BarbedShot:IsReady() then
@@ -142,7 +142,7 @@ local function APL ()
             return S.AspectoftheWild:Cast()
         end
         -- bestial_wrath,if=!buff.bestial_wrath.up
-        if RubimRH.CDsON() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
+        if S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
             return S.BestialWrath:Cast()
         end
         -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
@@ -162,7 +162,7 @@ local function APL ()
             return S.DireBeast:Cast()
         end
         -- barbed_shot,if=pet.cat.buff.frenzy.down&charges_fractional>1.4|full_recharge_time<gcd.max|target.time_to_die<9
-        if S.BarbedShot:IsReady() and (Pet:BuffDownP(S.FrenzyBuff) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTimeP() < Player:GCD() or Target:TimeToDie() < 9) then
+        if S.BarbedShot:IsReady() and (Pet:BuffDownP(S.FrenzyBuff) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTimeP() < Player:GCD() * 2 or Target:TimeToDie() < 9) then
             return S.BarbedShot:Cast()
         end
         -- MultiShot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)

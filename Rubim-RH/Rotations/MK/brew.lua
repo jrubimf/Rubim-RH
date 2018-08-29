@@ -21,24 +21,23 @@ local function EnergyWillCap()
     return (Player:Energy() + (Player:EnergyRegen() * Player:GCD())) >= 100
 end
 
-
 local function AoE()
     if S.BreathOfFire:IsReady("Melee") then
         return S.BreathOfFire:Cast()
     end
 
     if S.RushingJadeWind:IsReady(8)
-        and not Player:Buff(S.RushingJadeWind) then
+            and not Player:Buff(S.RushingJadeWind) then
         return S.RushingJadeWind:Cast()
     end
 
     if S.ChiBurst:IsReady(40)
-        and RubimRH.lastMoved() >= 1 then
+            and RubimRH.lastMoved() >= 1 then
         return S.ChiBurst:Cast()
     end
 
     if (Player:Buff(S.BlackoutComboBuff) or EnergyWillCap())
-        and S.TigerPalm:IsReady("Melee") then
+            and S.TigerPalm:IsReady("Melee") then
         return S.TigerPalm:Cast()
     end
 
@@ -51,7 +50,7 @@ local function AoE()
     end
 
     if S.TigerPalm:IsReady("Melee")
-        and Player:Energy() >= 55 then
+            and Player:Energy() >= 55 then
         return S.TigerPalm:Cast()
     end
 
@@ -83,73 +82,74 @@ local function APL()
 
     -- Leg Sweep
     if S.LegSweep:IsReady()
-        and UseLegSweep then
+            and UseLegSweep then
         return S.LegSweep:Cast()
-    elseif UseLegSweep and 
-        (not S.LegSweep:IsReady()) then
+    elseif UseLegSweep and
+            (not S.LegSweep:IsReady()) then
         UseLegSweep = false
     end
 
     -- Black Ox Statue
     if S.BlackOxStatue:IsReady()
-        and UseBlackOxStatue then
+            and UseBlackOxStatue then
         return S.BlackOxStatue:Cast()
     elseif UseBlackOxStatue
-        and not S.BlackOxStatue:IsReady() then
+            and not S.BlackOxStatue:IsReady() then
         UseBlackOxStatue = false
     end
 
     -- Kick
-    if S.SpearHandStrike:IsReady("Melee")
-        and ((Target:IsInterruptible()
-        and Target:CastRemains() <= 0.5) or UseKick) then
+    if S.SpearHandStrike:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.SpearHandStrike:Cast()
-    elseif UseKick 
-        and not S.SpearHandStrike:IsReady() then
+    elseif UseKick
+            and not S.SpearHandStrike:IsReady() then
         UseKick = false
     end
 
     --- Defensive Rotation
+    if S.ExpelHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk1 then
+        return S.ExpelHarm:Cast()
+    end
 
     -- Fortifying Brew
     if S.FortifyingBrew:IsReady()
-        and Player:NeedPanicHealing() then
+            and Player:NeedPanicHealing() then
         return S.FortifyingBrew:Cast()
     end
 
     -- Black Ox Brew
     if S.Brews:ChargesFractional() < 1
-        and Player:NeedMajorHealing()
-        and S.BlackOxBrew:IsAvailable()
-        and S.BlackOxBrew:IsReady() then
+            and Player:NeedMajorHealing()
+            and S.BlackOxBrew:IsAvailable()
+            and S.BlackOxBrew:IsReady() then
         return S.BlackOxBrew:Cast()
     end
 
     -- Ironskin Brew
     if S.Brews:ChargesFractional() >= 1
-        and (not Player:Buff(S.IronskinBrewBuff) or (Player:Buff(S.IronskinBrewBuff) and Player:BuffRemains(S.IronskinBrewBuff) <= Player:GCD()))
-        and IsTanking then
+            and (not Player:Buff(S.IronskinBrewBuff) or (Player:Buff(S.IronskinBrewBuff) and Player:BuffRemains(S.IronskinBrewBuff) <= Player:GCD()))
+            and IsTanking then
         return S.IronskinBrew:Cast()
     end
 
     -- Purifying Brew
     if (Player:Debuff(S.HeavyStagger) or (Player:Debuff(S.ModerateStagger) and Player:HealthPercentage() < 70))
-        and S.Brews:ChargesFractional() >= 1
-        and Player:NeedMajorHealing()
-        and S.PurifyingBrew:IsReady() then
+            and S.Brews:ChargesFractional() >= 1
+            and Player:NeedMajorHealing()
+            and S.PurifyingBrew:IsReady() then
         return S.PurifyingBrew:Cast()
     end
 
     -- Healing Elixir
     if Player:HealthPercentage() <= 85
-        and S.HealingElixir:IsReady() then
+            and S.HealingElixir:IsReady() then
         return S.HealingElixir:Cast()
     end
 
     -- Guard
     if Player:Debuff(S.HeavyStagger)
-        and Player:HealthPercentage() <= 80
-        and S.Guard:IsReady() then
+            and Player:HealthPercentage() <= 80
+            and S.Guard:IsReady() then
         return S.Guard:Cast()
     end
 
@@ -157,13 +157,13 @@ local function APL()
 
     -- Blood Fury
     if RubimRH.CDsON()
-        and S.BloodFury:IsReady("Melee") then
+            and S.BloodFury:IsReady("Melee") then
         return S.BloodFury:ID()
     end
 
     -- Berserking
     if RubimRH.CDsON()
-        and S.Berserking:IsReady("Melee") then
+            and S.Berserking:IsReady("Melee") then
         return S.Berserking:ID()
     end
 
@@ -178,7 +178,7 @@ local function APL()
 
     -- Invoke Niuzao: The Black Ox
     if S.InvokeNiuzaotheBlackOx:IsAvailable()
-        and S.InvokeNiuzaotheBlackOx:IsReady(40) then
+            and S.InvokeNiuzaotheBlackOx:IsReady(40) then
         return S.InvokeNiuzaotheBlackOx:Cast()
     end
 
@@ -189,7 +189,7 @@ local function APL()
 
     --- AoE Priority
     if Cache.EnemiesCount[8] >= 3
-        and AoE() ~= nil then
+            and AoE() ~= nil then
         return AoE()
     end
 
@@ -197,13 +197,13 @@ local function APL()
 
     -- Blackout Strike
     if S.BlackoutStrike:IsReady("Melee")
-        and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
+            and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
         return S.BlackoutStrike:Cast()
     end
 
     -- Tiger Palm
     if (Player:Buff(S.BlackoutComboBuff) or EnergyWillCap())
-        and S.TigerPalm:IsReady("Melee") then
+            and S.TigerPalm:IsReady("Melee") then
         return S.TigerPalm:Cast()
     end
 
@@ -214,13 +214,13 @@ local function APL()
 
     -- Rushing Jade Wind
     if S.RushingJadeWind:IsReady(8)
-        and not Player:Buff(S.RushingJadeWind) then
+            and not Player:Buff(S.RushingJadeWind) then
         return S.RushingJadeWind:Cast()
     end
 
     -- Chi Burst
     if S.ChiBurst:IsReady(40)
-        and RubimRH.lastMoved() >= 1 then
+            and RubimRH.lastMoved() >= 1 then
         return S.ChiBurst:Cast()
     end
 
@@ -231,7 +231,7 @@ local function APL()
 
     -- Tiger Palm
     if S.TigerPalm:IsReady()
-        and Player:Energy() >= 55 then
+            and Player:Energy() >= 55 then
         return S.TigerPalm:Cast()
     end
 

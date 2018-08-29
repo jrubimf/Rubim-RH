@@ -62,7 +62,6 @@ RubimRH.Spell[261] = {
     SharpenedBladesBuff = Spell(272916),
     -- Defensive
     CrimsonVial = Spell(185311),
-    Feint = Spell(1966),
     -- Utility
     Blind = Spell(2094),
     CheapShot = Spell(1833),
