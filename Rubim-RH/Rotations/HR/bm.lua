@@ -142,7 +142,7 @@ local function APL ()
             return S.AspectoftheWild:Cast()
         end
         -- bestial_wrath,if=!buff.bestial_wrath.up
-        if S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
+        if RubimRH.CDsON() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
             return S.BestialWrath:Cast()
         end
         -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)

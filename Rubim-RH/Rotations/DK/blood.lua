@@ -66,7 +66,6 @@ RubimRH.Spell[250] = {
     DarkCommand = Spell(56222),
 }
 
-
 local S = RubimRH.Spell[250]
 S.RuneStrike.TextureSpellID = { S.BloodDrinker:ID() }
 local I = Item.DeathKnight.Blood;
@@ -95,7 +94,6 @@ local function APL()
     UpdateRanges()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
-
     Precombat = function()
 
     end
@@ -115,7 +113,7 @@ local function APL()
             return S.DeathStrike:Cast()
         end
 
-        if S.DeathStrike:IsReady() and Player:HealthPercentage() <= 90 and  S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2  then
+        if S.DeathStrike:IsReady() and Player:HealthPercentage() <= 90 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
@@ -228,13 +226,8 @@ local function APL()
             return S.Marrowrend:Cast()
         end
 
-        if S.Bonestorm:IsReady() and Cache.EnemiesCount[8] >= 2 then
-            if S.Bonestorm:IsUsable() and Player:RunicPower() >= 90 then
-                return S.Bonestorm:Cast()
-            else
-                S.Bonestorm:Queue()
-                return 0, 135328
-            end
+        if S.Bonestorm:IsReady() and Cache.EnemiesCount[8] >= 2 and Player:RunicPower() <= 99 and not Bonestorm:Queued() then
+            S.Bonestorm:Queue()
         end
 
         --DSEmergency

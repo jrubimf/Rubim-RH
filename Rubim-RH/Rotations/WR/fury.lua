@@ -232,7 +232,7 @@ local function APL()
     end
     -- bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
     --if S.Bloodthirst:IsReady() and (I.KazzalaxFujiedasFury:IsEquipped() and (Player:BuffDownP(S.FujiedasFuryBuff) or remains < 2)) then
-     --   return S. Bloodthirst:Cast()
+    --   return S. Bloodthirst:Cast()
     --end
     -- rampage,if=cooldown.recklessness.remains<3
     if S.Rampage:IsReady() and (S.Recklessness:CooldownRemainsP() < 3) then
@@ -243,9 +243,9 @@ local function APL()
         return S. Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
-        return S. Whirlwind:Cast()
-    end
+    --if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
+      --  return S. Whirlwind:Cast()
+    --end
     -- blood_fury,if=buff.recklessness.up
     if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
         return S. BloodFury:Cast()
@@ -270,6 +270,11 @@ local function APL()
     if S.AncestralCall:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
         return S. AncestralCall:Cast()
     end
+
+    -- run_action_list,name=custom aoe
+    if Cache.EnemiesCount[8] > 1 and AoE() ~= nil then
+        return AoE();
+    end
     -- run_action_list,name=single_target
     if (true) then
         return SingleTarget();
@@ -277,7 +282,7 @@ local function APL()
     return 0, 135328
 end
 
-    
+
 RubimRH.Rotation.SetAPL(72, APL);
 
 local function PASSIVE()

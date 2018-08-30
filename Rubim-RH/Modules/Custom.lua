@@ -316,7 +316,7 @@ function RubimRH.TargetIsValid()
     if unitReaction >= 4 and not Player:AffectingCombat() then
         return false
     end
-    
+
     HL.GetEnemies(8);
     local isValid = false
 
