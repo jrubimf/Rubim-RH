@@ -11,6 +11,26 @@ local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 
+local function playSoundR(soundID)
+    local soundID = soundID or 891
+
+    if RubimRH.db.profile.mainOption.mute then
+
+    else
+        PlaySound(soundID, "Master");
+    end
+end
+
+function RubimRH.MuteToggle()
+    PlaySound(891, "Master");
+    if RubimRH.db.profile.mainOption.mute == false then
+        RubimRH.db.profile.mainOption.mute = true
+    else
+        RubimRH.db.profile.mainOption.mute = false
+    end
+    print("|cFF69CCF0Mutting Sounds" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.mute))
+end
+
 function RubimRH.MainIconToggle()
     PlaySound(891, "Master");
     if RubimRH.db.profile.mainOption.mainIcon == false then
@@ -140,7 +160,6 @@ function RubimRH.AoEON()
     end
 end
 
-
 function RubimRH.RacialON()
     if RubimRH.db == nil then
         return false
@@ -266,7 +285,18 @@ local function getOptions()
                                         RubimRH.db.profile.mainOption.yCord = 0
                                         ReloadUI()
                                     end
-                                }
+                                },
+                                mute = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.mute
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.MuteToggle()
+                                    end,
+                                    name = "Mute Sounds"
+                                },
                             }
                         },
                         keybind = {

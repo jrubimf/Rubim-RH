@@ -218,6 +218,7 @@ local defaults = {
             mainIconOpacity = 100,
             mainIconScale = 150,
             mainIconLock = false,
+            mute = false,
             align = "CENTER",
             xCord = 0,
             yCord = 0,
