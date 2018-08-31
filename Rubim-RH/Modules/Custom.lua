@@ -311,9 +311,11 @@ function RubimRH.ColorOnOff(boolean)
 end
 
 -- Target Valid
-function RubimRH.TargetIsValid()
+function RubimRH.TargetIsValid(override)
+    local override = override or false
+
     local unitReaction = UnitReaction("Player", "Target") or 0
-    if unitReaction >= 4 and not Player:AffectingCombat() then
+    if not override and unitReaction >= 4 and not Player:AffectingCombat() then
         return false
     end
 

@@ -355,7 +355,7 @@ local function APL ()
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-        if RubimRH.TargetIsValid() and Target:IsInRange(S.SinisterStrike) then
+        if RubimRH.TargetIsValid(true) and Target:IsInRange(S.SinisterStrike) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
             if Player:ComboPoints() >= 5 then
                 if S.Dispatch:IsReady() then
                     return S.Dispatch:Cast()

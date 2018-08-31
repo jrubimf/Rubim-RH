@@ -216,6 +216,13 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimRH.db.profile.mainOption.startattack then
+
+        if Target:Exists() then
+            if self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable() then
+                return true
+            end
+        end
+
         local range = self:MaximumRange()
         if range == 0 or range > 8 then
             range = 10
@@ -263,6 +270,11 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     end
 
     if RubimRH.db.profile.mainOption.startattack then
+        if Target:Exists() then
+            if self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable() then
+                return true
+            end
+        end
         local range = self:MaximumRange()
         if range == 0 or range > 8 then
             range = 10

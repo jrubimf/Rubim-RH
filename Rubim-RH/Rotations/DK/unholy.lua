@@ -364,11 +364,6 @@ local function APL()
     if S.Outbreak:IsReady(30) and (not Target:Debuff(S.VirulentPlagueDebuff) or Target:DebuffRemainsP(S.VirulentPlagueDebuff) < Player:GCD()) then
         return S.Outbreak:Cast()
     end
-
-    -- Apocalypse,if=debuff.festering_wound.stack>=4
-    if S.Apocalypse:IsReady() and Target:DebuffStack(S.FesteringWoundDebuff) >= 4 then
-        return S.Apocalypse:Cast()
-    end
     -- call_action_list,name=cooldowns
     if (true) then
         if Cooldowns() ~= nil then

@@ -366,7 +366,7 @@ local function APL ()
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-        if RubimRH.TargetIsValid() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
+        if RubimRH.TargetIsValid(true) and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange() and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack)) then
             if Player:IsStealthed(true, true) then
                 if Stealthed() ~= nil then
                     return Stealthed()
