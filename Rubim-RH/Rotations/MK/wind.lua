@@ -52,6 +52,8 @@ RubimRH.Spell[269] = {
     DampemHarm = Spell(122278),
     SwiftRoundhouse = Spell(277669),
     SwiftRoundhouseBuff = Spell(277669),
+    Disable = Spell(116095),
+    GrappleWeapon = Spell(233759)
 
 };
 local S = RubimRH.Spell[269];
