@@ -72,7 +72,7 @@ local I = Item.Monk.Windwalker;
 
 -- Variables
 
-local EnemyRanges = { 8 }
+local EnemyRanges = { 5, 8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
