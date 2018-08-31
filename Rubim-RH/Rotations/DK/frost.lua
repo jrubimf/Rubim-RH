@@ -203,9 +203,6 @@ end
 local function Cooldowns()
     -- use_items
     -- use_item,name=horn_of_valor,if=buff.pillar_of_frost.up&(!talent.breath_of_sindragosa.enabled|!cooldown.breath_of_sindragosa.remains)
-    if RubimRH.CDsON() and I.HornofValor:IsReady() and (Player:BuffP(S.PillarofFrost) and (not S.BreathofSindragosa:IsAvailable() or not bool(S.BreathofSindragosa:CooldownRemains()) or not RubimRH.config.Spells[2].isActive)) then
-        return I.HornofValor:Cast()
-    end
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     -- if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:BuffP(S.PillarofFrost) and Player:BuffP(S.EmpowerRuneWeapon)) then
     --return I.ProlongedPower:Cast()
