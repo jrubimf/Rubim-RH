@@ -31,7 +31,7 @@ RubimRH.Spell[269] = {
     FistsofFury = Spell(113656),
     Serenity = Spell(152173),
     WhirlingDragonPunch = Spell(152175),
-    SpinningCraneKick = Spell(107270),
+    SpinningCraneKick = Spell(101546),
     BokProcBuff = Spell(116768),
     BlackoutKick = Spell(100784),
     CracklingJadeLightning = Spell(117952),
@@ -129,6 +129,10 @@ local function APL()
         -- potion
         if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (true) then
             return I.ProlongedPower:Cast()
+        end
+
+        if Player:Buff(S.RushingJadeWindBuff) then
+            return S.RushingJadeWind:Cast()
         end
         -- chi_burst
         --        if S.ChiBurst:IsReady() and (true) then

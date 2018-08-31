@@ -65,8 +65,8 @@
       <file leaf-file-name="wind.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="97" column="23" lean-forward="false" selection-start-line="97" selection-start-column="23" selection-end-line="97" selection-end-column="23" />
+            <state relative-caret-position="405">
+              <caret line="77" column="25" lean-forward="true" selection-start-line="77" selection-start-column="25" selection-end-line="77" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -123,14 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Tipof</find>
-      <find>Phero</find>
-      <find>WfiSt</find>
-      <find>print(Player:FocusCastRegen(S.KillCommand:ExecuteTime()))</find>
-      <find>FocusCastRegen</find>
-      <find>BeastMas</find>
-      <find>Beastmas</find>
-      <find>spellBlocker</find>
       <find>BloodFury</find>
       <find>and RubimRH.RacialON()</find>
       <find>SpellBlocker</find>
@@ -153,6 +145,14 @@
       <find>A</find>
       <find>Azerite</find>
       <find>Storm</find>
+      <find>RushingJadeWindBuff</find>
+      <find>Precombat</find>
+      <find>return</find>
+      <find>rushin</find>
+      <find>Spinning</find>
+      <find>SpinningCraneKick</find>
+      <find>101546</find>
+      <find>Item</find>
     </findStrings>
     <replaceStrings>
       <replace>(Player:GargoyleActive())</replace>
@@ -864,8 +864,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/MK/wind.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="97" column="23" lean-forward="false" selection-start-line="97" selection-start-column="23" selection-end-line="97" selection-end-column="23" />
+        <state relative-caret-position="405">
+          <caret line="77" column="25" lean-forward="true" selection-start-line="77" selection-start-column="25" selection-end-line="77" selection-end-column="25" />
           <folding />
         </state>
       </provider>
