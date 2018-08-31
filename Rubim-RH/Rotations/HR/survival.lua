@@ -147,10 +147,29 @@ local function UpdateCDs()
     end
 end
 
+local function UpdateWFB()
+
+    if S.ShrapnelBomb:IsReadyMorph() then
+        S.WildfireBomb = Spell(259495)
+    elseif S.VolatileBomb:IsReadyMorph() then
+        S.WildfireBomb = Spell(271045)
+    elseif S.PheromoneBomb:IsReadyMorph() then
+        S.WildfireBomb = Spell(270323)
+    else
+        S.WildfireBomb = Spell(259495)
+    end
+    S.ShrapnelBomb.TextureSpellID = { 269747 }
+    S.PheromoneBomb.TextureSpellID = { 269747 }
+    S.VolatileBomb.TextureSpellID = { 269747 }
+    S.WildfireBomb.TextureSpellID = { 269747 }
+
+end
+
 local function APL ()
     local Precombat, Cds, Cleave, St, WfiSt
     UpdateRanges()
     UpdateCDs()
+    UpdateWFB()
 
     Precombat = function()
         -- flask
@@ -253,7 +272,7 @@ local function APL ()
             return S.FlankingStrike:Cast()
         end
         -- wildfire_bomb,if=dot.wildfire_bomb.refreshable|talent.wildfire_infusion.enabled
-        if (S.WildfireBomb:IsReadyMorph() or S.VolatileBomb:IsReady() or S.ShrapnelBomb:IsReady() or S.PheromoneBomb:IsReady()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
+        if (S.WildfireBomb:IsReadyMorph() or S.VolatileBomb:IsReadyMorph() or S.ShrapnelBomb:IsReadyMorph() or S.PheromoneBomb:IsReadyMorph()) and (Target:DebuffRefreshableCP(S.WildfireBombDebuff) or S.WildfireInfusion:IsAvailable()) then
             return S.WildfireBomb:Cast()
         end
         -- serpent_sting,target_if=min:remains,if=buff.vipers_venom.up
@@ -389,11 +408,11 @@ local function APL ()
             return S.RaptorStrike:Cast()
         end
         -- wildfire_bomb,if=full_recharge_time<gcd|(focus+cast_regen<focus.max)&(next_wi_bomb.volatile&dot.serpent_sting.ticking&dot.serpent_sting.refreshable|next_wi_bomb.pheromone&focus+cast_regen<focus.max-action.kill_command.cast_regen*3)
-        if (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax()) and ((S.VolatileBomb:IsReady() and Target:DebuffP(S.SerpentStingDebuff) and Target:DebuffRefreshableCP(S.SerpentStingDebuff)) or (S.PheromoneBomb:IsReady() and Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() - Player:FocusCastRegen(S.KillCommand:ExecuteTime()) * 3))) then
+        if (S.WildfireBomb:FullRechargeTimeP() < Player:GCD() or (Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax()) and ((S.VolatileBomb:IsReadyMorph() and Target:DebuffP(S.SerpentStingDebuff) and Target:DebuffRefreshableCP(S.SerpentStingDebuff)) or (S.PheromoneBomb:IsReadyMorph() and Player:Focus() + Player:FocusCastRegen(S.WildfireBomb:ExecuteTime()) < Player:FocusMax() - Player:FocusCastRegen(S.KillCommand:ExecuteTime()) * 3))) then
             return S.WildfireBomb:Cast()
         end
-            -- wildfire_bomb,if=next_wi_bomb.shrapnel&buff.mongoose_fury.down&(cooldown.kill_command.remains>gcd|focus>60)
-        if (S.ShrapnelBomb:IsReady() and Player:BuffDownP(S.MongooseFuryBuff) and (S.KillCommand:CooldownRemainsP() > Player:GCD() or Player:Focus() > 60)) then
+        -- wildfire_bomb,if=next_wi_bomb.shrapnel&buff.mongoose_fury.down&(cooldown.kill_command.remains>gcd|focus>60)
+        if (S.ShrapnelBomb:IsReadyMorph() and Player:BuffDownP(S.MongooseFuryBuff) and (S.KillCommand:CooldownRemainsP() > Player:GCD() or Player:Focus() > 60)) then
             return S.WildfireBomb:Cast()
         end
         -- steel_trap
@@ -405,7 +424,7 @@ local function APL ()
             return S.FlankingStrike:Cast()
         end
         -- serpent_sting,if=buff.vipers_venom.up|refreshable&(!talent.mongoose_bite.enabled|next_wi_bomb.volatile&!dot.shrapnel_bomb.ticking)
-        if S.SerpentSting:IsReady() and (Player:BuffP(S.VipersVenomBuff) or Target:DebuffRefreshableCP(S.SerpentStingDebuff) and (not S.MongooseBite:IsAvailable() or S.VolatileBomb:IsReady() and not Target:DebuffP(S.ShrapnelBombDebuff))) then
+        if S.SerpentSting:IsReady() and (Player:BuffP(S.VipersVenomBuff) or Target:DebuffRefreshableCP(S.SerpentStingDebuff) and (not S.MongooseBite:IsAvailable() or S.VolatileBomb:IsReadyMorph() and not Target:DebuffP(S.ShrapnelBombDebuff))) then
             return S.SerpentSting:Cast()
         end
         -- harpoon,if=talent.terms_of_engagement.enabled
@@ -433,7 +452,7 @@ local function APL ()
             return S.SerpentSting:Cast()
         end
         -- wildfire_bomb,if=next_wi_bomb.volatile&dot.serpent_sting.ticking|next_wi_bomb.pheromone|next_wi_bomb.shrapnel&focus>50
-        if (S.VolatileBomb:IsReady() and Target:DebuffP(S.SerpentStingDebuff) or S.PheromoneBomb:IsReady() or S.ShrapnelBomb:IsReady() and Player:Focus() > 50) then
+        if (S.VolatileBomb:IsReadyMorph() and Target:DebuffP(S.SerpentStingDebuff) or S.PheromoneBomb:IsReadyMorph() or S.ShrapnelBomb:IsReadyMorph() and Player:Focus() > 50) then
             return S.WildfireBomb:Cast()
         end
     end
@@ -484,7 +503,6 @@ local function APL ()
     if Pet:IsActive() and Pet:HealthPercentage() <= 75 and not Pet:Buff(S.MendPet) then
         return S.MendPet:cast()
     end
-
     return 0, 135328
 end
 
