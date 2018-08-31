@@ -59,7 +59,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow, info.menuList = "Interrupts", nil
         info.checked = RubimRH.InterruptsON()
         info.func = function(self)
-            PlaySound(891, "Master");
+            playSoundR(891);
             RubimRH.InterruptsToggle()
         end
         UIDropDownMenu_AddButton(info)
@@ -67,7 +67,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.text, info.hasArrow = "CC Break", nil
         info.checked = RubimRH.ccbreak()
         info.func = function(self)
-            PlaySound(891, "Master");
+            playSoundR(891);
             RubimRH.CCToggle()
         end
         UIDropDownMenu_AddButton(info)
@@ -95,7 +95,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             info.text = GetSpellInfo(RubimRH.config.Spells[i].spellID)
             info.checked = RubimRH.config.Spells[i].isActive
             info.func = function(self)
-                PlaySound(891, "Master");
+                playSoundR(891);
                 if RubimRH.config.Spells[i].isActive then
                     RubimRH.config.Spells[i].isActive = false
                 else
@@ -314,7 +314,7 @@ local function createIcon(loopVar, xOffset, description)
                 Icons.MainIcon.isMoving = false;
             end
             if button == "RightButton" and not Icons.MainIcon.isMoving then
-                PlaySound(891, "Master");
+                playSoundR(891);
                 if RubimRH.config.Spells[loopVar].isActive then
                     RubimRH.config.Spells[loopVar].isActive = false
                     newIcon:SetAlpha(0.2)
@@ -398,6 +398,7 @@ Sephul:Hide()
 local singletargetSpell = nil
 local passiveSpell = nil
 local updateIcon = CreateFrame("Frame");
+
 updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
     updateIcon:onUpdate(sinceLastUpdate);
 end)
@@ -421,6 +422,13 @@ function updateIcon:onUpdate(sinceLastUpdate)
                 CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "")
                 AoEText:SetText(RubimRH.ColorOnOff(RubimRH.useAoE) .. "")
             end
+        end
+
+        if RubimRH.db.profile.mainOption.burstCD and RubimRH.db.profile[RubimRH.playerSpec].cooldown then
+            if GetTime() - RubimRH.burstCDtimer >= 20 then
+                RubimRH.CDToggle()
+            end
+
         end
 
             if RubimRH.mainRotation() == "ERROR" then

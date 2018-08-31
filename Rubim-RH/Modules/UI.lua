@@ -111,29 +111,28 @@ end
 
 local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk1 = RubimRH.db.profile[RubimRH.playerSpec].sk1 or -1
-    local sk1id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk1id) or "") .. ": "
+    local sk1id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk1id) or RubimRH.db.profile[RubimRH.playerSpec].sk1id or "") .. ": "
     local sk1tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk1tooltip or ""
 
     local sk2 = RubimRH.db.profile[RubimRH.playerSpec].sk2 or -1
-    local sk2id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk2id) or "") .. ": "
+    local sk2id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk2id) or RubimRH.db.profile[RubimRH.playerSpec].sk2id or "") .. ": "
     local sk2tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk2tooltip or ""
 
     local sk3 = RubimRH.db.profile[RubimRH.playerSpec].sk3 or -1
-    local sk3id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk3id) or "") .. ": "
+    local sk3id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk3id) or RubimRH.db.profile[RubimRH.playerSpec].sk3id or "") .. ": "
     local sk3tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk3tooltip or ""
 
     local sk4 = RubimRH.db.profile[RubimRH.playerSpec].sk4 or -1
-    local sk4id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk4id) or "") .. ": "
+    local sk4id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk4id) or RubimRH.db.profile[RubimRH.playerSpec].sk4id or "") .. ": "
     local sk4tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk4tooltip or ""
 
     local sk5 = RubimRH.db.profile[RubimRH.playerSpec].sk5 or -1
-    local sk5id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk5id) or "") .. ": "
+    local sk5id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk5id) or RubimRH.db.profile[RubimRH.playerSpec].sk5id or "") .. ": "
     local sk5tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk5tooltip or ""
 
     local sk6 = RubimRH.db.profile[RubimRH.playerSpec].sk6 or -1
-    local sk6id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk6id) or "") .. ": "
+    local sk6id = (GetSpellInfo(RubimRH.db.profile[RubimRH.playerSpec].sk6id) or RubimRH.db.profile[RubimRH.playerSpec].sk6id or "") .. ": "
     local sk6tooltip = RubimRH.db.profile[RubimRH.playerSpec].sk6tooltip or ""
-
 
     local windowHeight = 380
     local extraPosition = -280
@@ -145,9 +144,6 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         windowHeight = 456
         extraPosition = -368
     end
-
-
-
 
     local window = StdUi:Window(UIParent, select(2, UnitClass("player")) .. " - " .. select(2, GetSpecializationInfo(GetSpecialization())), 350, windowHeight);
     window:SetPoint('CENTER');
@@ -244,6 +240,14 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         gn_2_1Label:SetText('Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper)
     end
 
+    local gn_3_0 = StdUi:Checkbox(window, 'Burst CD');
+    gn_3_0:SetChecked(RubimRH.db.profile.mainOption.burstCD)
+    StdUi:FrameTooltip(gn_3_0, "This will make the CD to be turned off after 20 seconds.\n\nUseful if you want a Burst button.", 'TOPLEFT', 'TOPRIGHT', true);
+    function gn_3_0:OnValueChanged(value)
+        RubimRH.burstCDToggle()
+    end
+    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
+
     local cdOptions = {
         { text = 'Everything', value = "Everything" },
         { text = 'Boss Only', value = "Boss Only" },
@@ -260,11 +264,9 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
-
-    gn_3_0:SetPlaceholder('-- CDs  --');
-    StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
-    gn_3_0.OnValueChanged = function(self, val)
+    local gn_3_1 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    gn_3_1:SetPlaceholder('-- CDs  --');
+    gn_3_1.OnValueChanged = function(self, val)
         RubimRH.db.profile.mainOption.cooldownsUsage = val
 
         if val == "Everything" then
@@ -278,6 +280,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
         AllMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
+    StdUi:GlueBelow(gn_3_1, gn_2_1, 0, -24, 'RIGHT');
 
     --------------------------------------------------
     local sk_title = StdUi:FontString(window, 'Class Specific');
@@ -425,6 +428,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    StdUi:FrameTooltip(gn_1_0, "This is will enable auto switching target and auto attacking outside of combat.", 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
     StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
@@ -2991,7 +2995,6 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end);
 end
 
-
 local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk1var = RubimRH.db.profile[RubimRH.playerSpec].HealingSurge
     local sk1text = "Healing Surge: "
@@ -3005,7 +3008,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk3text = "Earth Elemental: "
     local sk3tooltip = "Check if you want to use earth Elemental."
 
-     local sk4var = RubimRH.db.profile[RubimRH.playerSpec].interupt
+    local sk4var = RubimRH.db.profile[RubimRH.playerSpec].interupt
     local sk4text = "Interupt: "
     local sk4tooltip = "Check if you want to use earth Elemental."
 
@@ -3157,7 +3160,6 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-
     local sk_2_0 = StdUi:Checkbox(window, 'Feral Spirits');
     sk_2_0:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].EnableFS)
     StdUi:GlueBelow(sk_2_0, sk_1_0Label, 0, -30, 'LEFT');
@@ -3167,7 +3169,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk2text .. tostring(sk2var))
     end
 
-       local sk_3_0 = StdUi:Checkbox(window, 'Earth Elemental');
+    local sk_3_0 = StdUi:Checkbox(window, 'Earth Elemental');
     sk_3_0:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].EnableEE)
     StdUi:GlueBelow(sk_3_0, sk_separator, 70, -20, 'LEFT');
     function sk_3_0:OnValueChanged(value)
@@ -3176,15 +3178,14 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_3_0Label:SetText(sk3text .. tostring(sk3var))
     end
 
-       local sk_4_0 = StdUi:Checkbox(window, 'Use Interupt');
+    local sk_4_0 = StdUi:Checkbox(window, 'Use Interupt');
     sk_4_0:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].interupt)
-    StdUi:GlueBelow(sk_4_0, sk_3_0, 0, -13 , 'LEFT');
+    StdUi:GlueBelow(sk_4_0, sk_3_0, 0, -13, 'LEFT');
     function sk_4_0:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].interupt = value
         sk4var = value
         sk_4_0Label:SetText(sk4text .. tostring(sk4var))
     end
-
 
     local extra = StdUi:FontString(window, 'Extra');
     StdUi:GlueTop(extra, window, 0, -410);
@@ -3199,13 +3200,6 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end);
 
 end
-
-
-
-
-
-
-
 
 local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Druid - Feral', 350, 500);
@@ -3524,83 +3518,13 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 end
 
 function RubimRH.ClassConfig(specID)
-    --AllMenu()
-    if specID == 250 then
-        BloodMenu()
-    end
-    if specID == 251 then
-        FrostMenu()
-    end
-
-    if specID == 252 then
-        UnholyMenu()
-    end
-
-    if specID == Arms then
-        AllMenu()
-    end
-
-    if specID == 72 then
-        FuryMenu()
-    end
-
-    if specID == 253 then
-        BMMenu()
-    end
-
-    if specID == 254 then
-        MMMenu()
-    end
-
-    if specID == Survival then
-        AllMenu()
-    end
-
-    if specID == 66 then
-        ProtectionMenu()
-    end
-
     if specID == 259 then
         AssMenu()
-    end
-
-    if specID == 260 then
+    elseif specID == 260 then
         OutMenu()
-    end
-
-    if specID == 261 then
+    elseif specID == 261 then
         SubMenu()
-    end
-
-    if specID == 577 then
-        HavocMenu()
-    end
-
-    if specID == 581 then
-        VengMenu()
-    end
-
-    if specID == 269 then
-        WWMenu()
-    end
-
-    if specID == 103 then
-        FeralMenu()
-    end
-
-    if specID == Enhancement then
-        AllMenu()
-    end
-
-    if specID == Guardian then
-        AllMenu()
-    end
-
-    if specID == Brewmaster then
-        AllMenu()
-    end
-
-    if specID == Retribution then
+    else
         AllMenu()
     end
 end

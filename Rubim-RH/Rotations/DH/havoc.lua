@@ -458,11 +458,11 @@ local function APL()
         VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
     end
 
-    if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].darkness then
+    if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
         return S.Darkness:Cast()
     end
 
-    if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].blur then
+    if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk1 then
         return S.Blur:Cast()
     end
 

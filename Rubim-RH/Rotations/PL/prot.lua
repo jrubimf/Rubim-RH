@@ -137,16 +137,8 @@ local function APL()
         return 0, 462338
     end
 
-    if RubimRH.db.profile[66].lotpEnabled then
-        if RubimRH.db.profile[66].lotpHP == 0 then
-            if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:NeedPanicHealing() and Player:HealthPercentage() <= 70 then
-                return S.LightofTheProtector:Cast()
-            end
-        else
-            if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].lotpHP then
-                return S.LightofTheProtector:Cast()
-            end
-        end
+    if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].sk1 then
+        return S.LightofTheProtector:Cast()
     end
 
     -- auto_attack
@@ -262,30 +254,18 @@ local function PASSIVE()
 
     -- TODO: Restore these when GGLoader texture updates are complete
     -- Lay on Hands
-    if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].lohHealth and not Player:Debuff(S.Forbearance) and not Player:Buff(S.ArdentDefender) and not Player:Buff(S.GuardianOfAncientKings) then
+    if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk4 and not Player:Debuff(S.Forbearance) and not Player:Buff(S.ArdentDefender) and not Player:Buff(S.GuardianOfAncientKings) then
         return S.LayOnHands:Cast()
     end
 
     -- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
-    if RubimRH.db.profile[66].akHP == 0 then
-        if S.GuardianOfAncientKings:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 60 and not Player:Buff(S.ArdentDefender) then
-            return S.GuardianOfAncientKings:Cast()
-        end
-    else
-        if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[66].akHP and not Player:Buff(S.ArdentDefender) then
-            return S.GuardianOfAncientKings:Cast()
-        end
+    if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[66].sk3 and not Player:Buff(S.ArdentDefender) then
+        return S.GuardianOfAncientKings:Cast()
     end
 
     -- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the
-    if RubimRH.db.profile[66].adHP == 0 then
-        if S.ArdentDefender:IsReady() and Player:NeedPanicHealing() and Player:HealthPercentage() <= 30 and not Player:Buff(S.GuardianOfAncientKings) then
-            return S.ArdentDefender:Cast()
-        end
-    else
-        if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].adHP and not Player:Buff(S.GuardianOfAncientKings) then
-            return S.ArdentDefender:Cast()
-        end
+    if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk2 and not Player:Buff(S.GuardianOfAncientKings) then
+        return S.ArdentDefender:Cast()
     end
 
     return RubimRH.Shared()

@@ -109,7 +109,7 @@ local function APL()
             return S.Marrowrend:Cast()
         end
 
-        if Player:IncDmgPercentage() > RubimRH.db.profile[250].smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+        if Player:IncDmgPercentage() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
@@ -118,7 +118,7 @@ local function APL()
         end
 
         -- death_strike,if=runic_power.deficit<=10
-        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= RubimRH.db.profile[250].deficitds) then
+        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= RubimRH.db.profile[250].sk6) then
             return S.DeathStrike:Cast()
         end
 
@@ -217,7 +217,7 @@ local function APL()
             return S.Marrowrend:Cast()
         end
 
-        if S.DeathStrike:IsReady() and Player:RunicPowerDeficit() < RubimRH.db.profile[250].deficitds then
+        if S.DeathStrike:IsReady() and Player:RunicPowerDeficit() < RubimRH.db.profile[250].sk6 then
             return S.DeathStrike:Cast()
         end
 
@@ -231,7 +231,7 @@ local function APL()
         end
 
         --DSEmergency
-        if Player:IncDmgPercentage() > RubimRH.db.profile[250].smartds and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+        if Player:IncDmgPercentage() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
@@ -241,7 +241,7 @@ local function APL()
         end
 
         --Overcap
-        if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile[250].deficitds then
+        if S.DeathStrike:IsReady("Melee") and Player:RunicPowerDeficit() < RubimRH.db.profile[250].sk6 then
             return S.DeathStrike:Cast()
         end
 
@@ -364,7 +364,7 @@ local function APL()
     end
 
     -- custom
-    if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].vampiricblood then
+    if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].sk3 then
         return S.VampiricBlood:Cast()
     end
 
@@ -403,11 +403,11 @@ RubimRH.Rotation.SetAPL(250, APL);
 
 local function PASSIVE()
     if Player:AffectingCombat() then
-        if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].icebound then
+        if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].sk1 then
             return S.IceboundFortitude:Cast()
         end
 
-        if S.RuneTap:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].runetap then
+        if S.RuneTap:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].sk2 then
             return S.RuneTap:Cast()
         end
 

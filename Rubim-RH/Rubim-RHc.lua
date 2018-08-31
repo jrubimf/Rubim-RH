@@ -21,8 +21,18 @@ local function playSoundR(soundID)
     end
 end
 
+function RubimRH.burstCDToggle()
+    playSoundR(891);
+    if RubimRH.db.profile.mainOption.burstCD == false then
+        RubimRH.db.profile.mainOption.burstCD = true
+    else
+        RubimRH.db.profile.mainOption.burstCD = false
+    end
+    print("|cFF69CCF0Burst CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.burstCD))
+end
+
 function RubimRH.MuteToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.mute == false then
         RubimRH.db.profile.mainOption.mute = true
     else
@@ -32,7 +42,7 @@ function RubimRH.MuteToggle()
 end
 
 function RubimRH.MainIconToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.mainIcon == false then
         RubimRH.db.profile.mainOption.mainIcon = true
     else
@@ -42,7 +52,7 @@ function RubimRH.MainIconToggle()
 end
 
 function RubimRH.MainIconLockToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.mainIconLock == false then
         RubimRH.db.profile.mainOption.mainIconLock = true
     else
@@ -52,7 +62,7 @@ function RubimRH.MainIconLockToggle()
 end
 
 function RubimRH.InterruptsToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.useInterrupts == false then
         RubimRH.db.profile.mainOption.useInterrupts = true
     else
@@ -62,7 +72,7 @@ function RubimRH.InterruptsToggle()
 end
 
 function RubimRH.CCToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.ccbreak == false then
         RubimRH.db.profile.mainOption.ccbreak = true
     else
@@ -72,7 +82,7 @@ function RubimRH.CCToggle()
 end
 
 function RubimRH.PotionToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.usePotion == false then
         RubimRH.db.profile.mainOption.usePotion = true
 
@@ -83,7 +93,7 @@ function RubimRH.PotionToggle()
 end
 
 function RubimRH.RacialToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.useRacial == false then
         RubimRH.db.profile.mainOption.useRacial = true
 
@@ -94,9 +104,10 @@ function RubimRH.RacialToggle()
 end
 
 function RubimRH.CDToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile[RubimRH.playerSpec].cooldown == false then
         RubimRH.db.profile[RubimRH.playerSpec].cooldown = true
+        RubimRH.burstCDtimer = GetTime()
     else
         RubimRH.db.profile[RubimRH.playerSpec].cooldown = false
     end
@@ -104,7 +115,7 @@ function RubimRH.CDToggle()
 end
 
 function RubimRH.AttackToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.db.profile.mainOption.startattack == false then
         RubimRH.db.profile.mainOption.startattack = true
     else
@@ -115,7 +126,7 @@ end
 
 RubimRH.useAoE = true
 function RubimRH.AoEToggle()
-    PlaySound(891, "Master");
+    playSoundR(891);
     if RubimRH.useAoE == false then
         RubimRH.useAoE = true
     else

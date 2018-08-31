@@ -214,15 +214,15 @@ local function APL()
         return S.Charge:Cast()
     end
 
-    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].victoryrush then
+    if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk1 then
         return S.VictoryRush:Cast()
     end
 
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
+    if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk2 then
         return S.VictoryRush:Cast()
     end
 
-    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].rallyingcry then
+    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk3 then
         return S.RallyingCry:Cast()
     end
 

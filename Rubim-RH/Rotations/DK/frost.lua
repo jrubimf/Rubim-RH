@@ -342,7 +342,7 @@ local function APL()
     end
 
     --CUSTOM
-    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].deathstrike then
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].sk1 then
         return S.DeathStrike:Cast()
     end
 
@@ -350,7 +350,16 @@ local function APL()
         return S.DeathStrike:Cast()
     end
 
-    if S.DeathPact:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].deathpact then
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].sk2 then
+        if S.DeathStrike:IsUsable() then
+            return S.DeathStrike:Cast()
+        else
+            S.DeathStrike:Queue()
+            return 0, 135328
+        end
+    end
+
+    if S.DeathPact:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].sk4 then
         return S.DeathPact:Cast()
     end
 
@@ -403,7 +412,7 @@ end
 
 RubimRH.Rotation.SetAPL(251, APL)
 local function PASSIVE()
-    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].icebound then
+    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].sk2 then
         return S.IceboundFortitude:Cast()
     end
     return RubimRH.Shared()

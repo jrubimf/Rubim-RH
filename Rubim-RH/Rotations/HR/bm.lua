@@ -43,7 +43,7 @@ local function APL ()
     --    end
     -- Out of Combat
     if not Player:AffectingCombat() then
-        if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].mendpet and not Pet:Buff(S.MendPet) then
+        if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
         end
 
@@ -77,7 +77,7 @@ local function APL ()
         return 0, 462338
     end
 
-    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].mendpet and not Pet:Buff(S.MendPet) then
+    if S.MendPet:CooldownUp() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end
 
@@ -181,8 +181,12 @@ end
 RubimRH.Rotation.SetAPL(253, APL);
 
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].aspectoftheturtle then
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
         return S.AspectoftheTurtle:Cast()
+    end
+
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].sk3 then
+        return S.Exhilaration:Cast()
     end
 
     return RubimRH.Shared()

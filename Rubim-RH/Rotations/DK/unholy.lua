@@ -51,6 +51,7 @@ RubimRH.Spell[252] = {
     DeathsAdvance = Spell(48265),
     DeathGrip = Spell(49576),
     DeathPact = Spell(48743),
+    IceboundFortitude = Spell(48792),
 
 };
 local S = RubimRH.Spell[252]
@@ -317,7 +318,7 @@ local function APL()
     end
 
     -- custom
-    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].deathstrike then
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].sk1 then
         return S.DeathStrike:Cast()
     end
 
@@ -325,13 +326,17 @@ local function APL()
         return S.DeathStrike:Cast()
     end
 
-    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].deathstrikeper then
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].sk2 then
         if S.DeathStrike:IsUsable() then
             return S.DeathStrike:Cast()
         else
             S.DeathStrike:Queue()
             return 0, 135328
         end
+    end
+
+    if S.DeathPact:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[252].sk4 then
+        return S.DeathPact:Cast()
     end
 
     -- auto_attack
@@ -386,6 +391,10 @@ end
 RubimRH.Rotation.SetAPL(252, APL)
 
 local function PASSIVE()
+    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[252].sk2 then
+        return S.IceboundFortitude:Cast()
+    end
+
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(252, PASSIVE)

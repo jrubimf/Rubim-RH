@@ -1,3 +1,6 @@
+local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
+_G["RubimRH"] = RubimRH
+
 local foundError = false
 local errorEvent = CreateFrame("Frame")
 errorEvent:RegisterEvent("PLAYER_LOGIN")
@@ -7,23 +10,27 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
     if HeroCache == nil then
-        message("Missing dependency: Aetyhs Cache")
+        message("Missing dependency: HeroCache")
         foundError = true
     end
-
     if RubimExtra == false then
         message("Missing dependency: RubimExtra")
         foundError = true
     end
 
+    if RubimRH.db.profile.mainOption.useRacial ~= "bfa_2.0" then
+        message("New version detected.\nIf you have any problems, reset your profile at /rubimrh.")
+        RubimRH.db.profile.mainOption.useRacial = "bfa_2.0"
+    end
+
     if GetCVar("nameplateShowEnemies") ~= "1" then
-        message("Is nameplates off? You need it in order to get the most optimal results..");
+        message("Nameplates enabled to maximum AoE detection.");
+        SetCVar("nameplateShowEnemies", 1)
     end
 end)
 
-local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "AceConsole-3.0")
-_G["RubimRH"] = RubimRH
-RubimRH.version = "bfa_1.0_c"
+
+RubimRH.burstCDtimer = GetTime()
 RubimRH.debug = false
 
 local AceGUI = LibStub("AceGUI-3.0")
@@ -203,7 +210,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            updateConf = "yes",
+            version = "bfa_2.0",
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -225,13 +232,20 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             useTrinkets = {},
-            cooldownsUsage = "Everything"
+            cooldownsUsage = "Everything",
+            burstCD = false
         },
         --DEMONHUTER
-        [577] = {
+        [Havoc] = {
             cooldown = true,
-            blur = 75,
-            darkness = 50,
+
+            sk1 = 75,
+            sk1id = 198589, --Blur
+            sk1tooltip = "Percent HP to use Blur",
+
+            sk2 = 50,
+            sk2id = 196718, --Darkness
+            sk2tooltip = "Percent HP to use Darkness",
             Spells = {
                 { spellID = FelRush, isActive = true },
                 { spellID = EyeBeam, isActive = true },
@@ -250,31 +264,64 @@ local defaults = {
             sk2id = 263648, --Soul Barrier
             sk2tooltip = "Percent HP to use Soul Barrier",
 
-
-            metamorphosis = 50,
-            soulbarrier = 75,
             Spells = {
                 { spellID = InfernalStrike, isActive = true },
                 { spellID = FieryBrand, isActive = true },
             }
         },
         --DK
-        [250] = {
+        [Blood] = {
             cooldown = true,
-            icebound = 60,
-            runetap = 35,
-            vampiricblood = 50,
-            smartds = 30,
-            deficitds = 30,
-            drw = 75,
+
+            sk1 = 60,
+            sk1id = 48792,
+            sk1tooltip = "Percent HP to use Icebound",
+
+            sk2 = 35,
+            sk2id = 194679,
+            sk2tooltip = "Percent HP to use Runetap",
+
+            sk3 = 50,
+            sk3id = 55233,
+            sk3tooltip = "Percent HP to use Vampiric Blood",
+
+            sk4 = 75,
+            sk4id = 49028,
+            sk4tooltip = "Percent HP to use Dancing Rune Weapon",
+
+            sk5 = 15,
+            sk5id = "Smart DS",
+            sk5tooltip = "Percent DMG Take to use DS",
+
+            sk6 = 30,
+            sk6id = "Defict DS",
+            sk6tooltip = "How much RP should we pool. MaximumRP - ThisAmount",
+
             Spells = {
                 { spellID = DeathStrike, isActive = true, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
                 { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },
                 { spellID = DeathandDecay, isActive = true, description = "Disable Death and Decay." }
             }
         },
-        [251] = {
+        [Frost] = {
             cooldown = true,
+
+            sk1 = 85,
+            sk1id = 101568,
+            sk1tooltip = "Percent HP to use Death Strike (Dark Succur Proc)",
+
+            sk2 = 60,
+            sk2id = 48792,
+            sk2tooltip = "Percent HP to use Ice Bound",
+
+            sk3 = 25,
+            sk3id = 49998,
+            sk3tooltip = "Percent HP to use Death Strike",
+
+            sk4 = 75,
+            sk4id = 48743,
+            sk4tooltip = "Percent HP to use Death Pact",
+
             deathstrike = 85,
             icebound = 60,
             deathstrikeper = 25,
@@ -286,12 +333,24 @@ local defaults = {
                 { spellID = PillarOfFrost, isActive = true }
             }
         },
-        [252] = {
+        [Unholy] = {
             cooldown = true,
-            deathstrike = 85,
-            deathstrikeper = 25,
-            icebound = 60,
-            deathpact = 40,
+            sk1 = 85,
+            sk1id = 101568,
+            sk1tooltip = "Percent HP to use Death Strike (Dark Succur Proc)",
+
+            sk2 = 60,
+            sk2id = 48792,
+            sk2tooltip = "Percent HP to use Ice Bound",
+
+            sk3 = 25,
+            sk3id = 49998,
+            sk3tooltip = "Percent HP to use Death Strike",
+
+            sk4 = 75,
+            sk4id = 48743,
+            sk4tooltip = "Percent HP to use Death Pact",
+
             Spells = {
                 { spellID = DeathStrike, isActive = true },
                 { spellID = RuneTap, isActive = true }
@@ -332,14 +391,23 @@ local defaults = {
         },
         [66] = {
             cooldown = true,
-            akEnabled = false,
-            akHP = 30,
-            adEnabled = false,
-            adHP = 70,
-            lohEnabled = false,
-            lohHealth = 30,
-            lotpEnabled = true,
-            lotpHP = 50,
+
+            sk1 = 85,
+            sk1id = 184092,
+            sk1tooltip = "Percent HP to use Light of the Protector",
+
+            sk2 = 15,
+            sk2id = 31850,
+            sk2tooltip = "Percent HP to use Ardent Defender",
+
+            sk3 = 75, -- Die by the Sword
+            sk3id = 86659,
+            sk3tooltip = "Percent HP to use Guardian of the Ancient Kings",
+
+            sk4 = 30,
+            sk4id = 633,
+            sk4id = "Percent HP to use Lay on Hands",
+
             Spells = {
                 { spellID = FlashofLight, isActive = true }
             },
@@ -370,10 +438,21 @@ local defaults = {
                 { spellID = Charge, isActive = true }
             }
         },
-        [72] = {
+        [Fury] = {
             cooldown = true,
-            rallyingcry = 30,
-            victoryrush = 80,
+
+            sk1 = 80, -- VictoryRush
+            sk1id = VictoryRush,
+            sk1tooltip = "Percent HP to use Victory Rush",
+
+            sk2 = 70, -- ImpendingVictory
+            sk2id = ImpendingVictory,
+            sk2tooltip = "Percent HP to use Impending Victory",
+
+            sk3 = 30, -- RallyingCry
+            sk4id = RallyingCry,
+            sk4tooltip = "Percent HP to use RallyingCry",
+
             Spells = {
                 { spellID = Charge, isActive = true }
             }
@@ -409,30 +488,48 @@ local defaults = {
             evasion = 50,
         },
         --HUNTER
-        [254] = {
+        [Marmanship] = {
             cooldown = true,
             exhilaration = 65,
             aspectoftheturtle = 30,
+
+            sk1 = 65,
+            sk1id = 109304,
+            sk1tooltip = "Percent HP to use Exhilaration",
+
+            sk2 = 30,
+            sk2id = 186265,
+            sk2tooltip = "Percent HP to use Aspect of the Turtle",
+
         },
         [BeastMastery] = {
             cooldown = true,
-            mendpet = 70,
-            exhilaration = 65,
-            aspectoftheturtle = 30,
+
+            sk1 = 70,
+            sk1id = 136,
+            sk1tooltip = "Percent HP to use Mend Pet",
+
+            sk2 = 65,
+            sk2id = 186265,
+            sk2tooltip = "Percent HP to use Aspect of the Turtle",
+
+            sk3 = 30,
+            sk3id = 109304,
+            sk3tooltip = "Percent HP to use Exhilaration",
         },
 
         [Survival] = {
             cooldown = true,
             sk1 = 70,
-            sk1id = MendPet,
+            sk1id = 136,
             sk1tooltip = "Percent HP to use Victory Rush",
 
             sk2 = 30,
-            sk2id = AspectoftheTurtle,
+            sk2id = 186265,
             sk2tooltip = "Percent HP to use Aspect of the Turtle",
 
             sk3 = 65,
-            sk3id = Exhilaration,
+            sk3id = 109304,
             sk3tooltip = "Percent HP to use Exhilaration",
         },
         --MONK
@@ -443,7 +540,7 @@ local defaults = {
             sk1id = 115072, -- ExpelHarm
             sk1tooltip = "Percent HP to use Expel Harm",
         },
-        [269] = {
+        [Windwalker] = {
             cooldown = true,
 
             sk1 = 50,
@@ -483,23 +580,6 @@ local defaults = {
             sk2 = 85, -- Renewal
             sk2id = Regrowth, -- Renewall
             sk2tooltip = "Percent HP to use Regrowth",
-
-            sk3 = 85, -- Renewal
-            sk3id = Regrowth, -- Renewall
-            sk3tooltip = "Percent HP to use Regrowth",
-
-            sk4 = 85, -- Renewal
-            sk4id = Regrowth, -- Renewall
-            sk4tooltip = "Percent HP to use Regrowth",
-
-            sk5 = 85, -- Renewal
-            sk5id = Regrowth, -- Renewall
-            sk5tooltip = "Percent HP to use Regrowth",
-
-            sk6 = 85, -- Renewal
-            sk6id = Regrowth, -- Renewall
-            sk6tooltip = "Percent HP to use Regrowth",
-
 
             Spells = {
                 { spellID = Renewal, isActive = true },
