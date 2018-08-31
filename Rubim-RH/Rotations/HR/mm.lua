@@ -118,6 +118,10 @@ local function APL()
 
     -- auto_shot
     -- counter_shot,if=equipped.sephuzs_secret&target.debuff.casting.react&cooldown.buff_sephuzs_secret.up&!buff.sephuzs_secret.up
+    -- Counter Shot -> User request
+    if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.CounterShot:Cast()
+    end
     -- use_items
     -- hunters_mark,if=debuff.hunters_mark.down
     if S.HuntersMark:IsReady() and not Target:Debuff(S.HuntersMarkDebuff) then

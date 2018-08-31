@@ -134,7 +134,7 @@ local function UpdateCDs()
 end
 
 local function APL()
-    local Precombat, Movement, SingleTarget
+    local Precombat, Movement, SingleTarget, AoE
     UpdateRanges()
     UpdateCDs()
     UpdateExecuteID()
@@ -149,50 +149,86 @@ local function APL()
         end
     end
 
+    AoE = function()
+        --Cast Whirlwind Icon Whirlwind for two stacks of its buff.
+        if S.Whirlwind:IsReady() and Player:BuffStackP(S.WhirlwindBuff) < 2 then
+            return S.Whirlwind:Cast()
+        end
+        
+        --Cast Recklessness Icon Recklessness if able.
+        if S.Recklessness:IsReady() then
+            return S.Recklessness:Cast()
+        end
+        
+        --Cast Siegebreaker Icon Siegebreaker to debuff multiple targets.
+        if S.Siegebreaker:IsReady() and (Player:BuffP(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 20) then
+            return S.Siegebreaker:Cast()
+        end
+        
+        --Cast Rampage Icon Rampage for Enrage Icon Enrage.
+        if S.Rampage:IsReady() then
+            return S.Rampage:Cast()
+        end
+        
+        --Cast Bladestorm Icon Bladestorm or Dragon Roar Icon Dragon Roar as appropriate.
+        if S.Bladestorm:IsReady() then
+            return S.Bladestorm:Cast()
+        end
+        -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
+        if S.DragonRoar:IsReady() then
+            return S.DragonRoar:Cast()
+        end
+        
+        --Cast Whirlwind Icon Whirlwind to refresh its buff.
+        if S.Whirlwind:IsReady() and Player:BuffRemainsP(S.WhirlwindBuff) < Player:GCD() * 2 then
+            return S.Whirlwind:Cast()
+        end
+    end
+
     SingleTarget = function()
         -- siegebreaker,if=buff.recklessness.up|cooldown.recklessness.remains>20
         if S.Siegebreaker:IsReady() and (Player:BuffP(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 20) then
-            return S. Siegebreaker:Cast()
+            return S.Siegebreaker:Cast()
         end
         -- rampage,if=buff.recklessness.up|(talent.frothing_berserker.enabled|talent.carnage.enabled&(buff.enrage.remains<gcd|rage>90)|talent.massacre.enabled&(buff.enrage.remains<gcd|rage>90))
         if S.Rampage:IsReady() and (Player:BuffP(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
-            return S. Rampage:Cast()
+            return S.Rampage:Cast()
         end
         -- execute,if=buff.enrage.up
         if S.Execute:IsReady() and (Player:BuffP(S.Enrage)) then
-            return S. Execute:Cast()
+            return S.Execute:Cast()
         end
         -- bloodthirst,if=buff.enrage.down
         if S.Bloodthirst:IsReady() and (Player:BuffDownP(S.Enrage)) then
-            return S. Bloodthirst:Cast()
+            return S.Bloodthirst:Cast()
         end
         -- raging_blow,if=charges=2
         if S.RagingBlow:IsReady() and (S.RagingBlow:ChargesP() == 2) then
-            return S. RagingBlow:Cast()
+            return S.RagingBlow:Cast()
         end
         -- bloodthirst
         if S.Bloodthirst:IsReady() then
-            return S. Bloodthirst:Cast()
+            return S.Bloodthirst:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
         if S.Bladestorm:IsReady() and (Player:PrevGCDP(1, S.Rampage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
-            return S. Bladestorm:Cast()
+            return S.Bladestorm:Cast()
         end
         -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
         if S.DragonRoar:IsReady() and (Player:BuffP(S.Enrage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
-            return S. DragonRoar:Cast()
+            return S.DragonRoar:Cast()
         end
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
         if S.RagingBlow:IsReady() and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
-            return S. RagingBlow:Cast()
+            return S.RagingBlow:Cast()
         end
         -- furious_slash,if=talent.furious_slash.enabled
         if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable()) then
-            return S. FuriousSlash:Cast()
+            return S.FuriousSlash:Cast()
         end
         -- whirlwind
         if S.Whirlwind:IsReady() then
-            return S. Whirlwind:Cast()
+            return S.Whirlwind:Cast()
         end
         return 0, 135328
     end
@@ -228,50 +264,50 @@ local function APL()
 
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
     if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
-        return S. FuriousSlash:Cast()
+        return S.FuriousSlash:Cast()
     end
     -- bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
     --if S.Bloodthirst:IsReady() and (I.KazzalaxFujiedasFury:IsEquipped() and (Player:BuffDownP(S.FujiedasFuryBuff) or remains < 2)) then
-    --   return S. Bloodthirst:Cast()
+    --   return S.Bloodthirst:Cast()
     --end
     -- rampage,if=cooldown.recklessness.remains<3
     if S.Rampage:IsReady() and (S.Recklessness:CooldownRemainsP() < 3) then
-        return S. Rampage:Cast()
+        return S.Rampage:Cast()
     end
     -- recklessness
     if S.Recklessness:IsReady() then
-        return S. Recklessness:Cast()
+        return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
     --if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
-      --  return S. Whirlwind:Cast()
+      --  return S.Whirlwind:Cast()
     --end
     -- blood_fury,if=buff.recklessness.up
     if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S. BloodFury:Cast()
+        return S.BloodFury:Cast()
     end
     -- berserking,if=buff.recklessness.up
     if S.Berserking:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S. Berserking:Cast()
+        return S.Berserking:Cast()
     end
     -- arcane_torrent,if=rage<40&!buff.recklessness.up
     if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:Rage() < 40 and not Player:BuffP(S.Recklessness)) then
-        return S. ArcaneTorrent:Cast()
+        return S.ArcaneTorrent:Cast()
     end
     -- lights_judgment,if=buff.recklessness.down
     if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Player:BuffDownP(S.Recklessness)) then
-        return S. LightsJudgment:Cast()
+        return S.LightsJudgment:Cast()
     end
     -- fireblood,if=buff.recklessness.up
     if S.Fireblood:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S. Fireblood:Cast()
+        return S.Fireblood:Cast()
     end
     -- ancestral_call,if=buff.recklessness.up
     if S.AncestralCall:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S. AncestralCall:Cast()
+        return S.AncestralCall:Cast()
     end
 
-    -- run_action_list,name=custom aoe
+    -- call_action_list,name=custom aoe
     if Cache.EnemiesCount[8] > 1 and AoE() ~= nil then
         return AoE();
     end
