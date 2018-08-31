@@ -236,6 +236,30 @@ local function Stealthed()
     return 0, 135328
 end
 
+local OffensiveCDs = {
+    S.Vanish,
+    S.ShadowBlades
+}
+
+local function UpdateCDs()
+    if RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
+
 -- # Cooldowns
 local function CDs ()
     if IsInMeleeRange() then
@@ -260,7 +284,6 @@ local function CDs ()
         if S.SymbolsofDeath:IsReady() then
             return S.SymbolsofDeath:Cast()
         end
-        if RubimRH.CDsON() then
             -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit
             -- Note: Done at the start of the Rotation (Rogue Commmon)
             -- actions.cds+=/marked_for_death,if=raid_event.adds.in>30&!stealthed.all&combo_points.deficit>=cp_max_spend
@@ -285,7 +308,6 @@ local function CDs ()
             if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
                 return S.ShadowDance:Cast()
             end
-        end
     end
 end
 
@@ -293,7 +315,7 @@ end
 local function Stealth_CDs ()
     if IsInMeleeRange() then
         -- actions.stealth_cds+=/vanish,if=!variable.shd_threshold&debuff.find_weakness.remains<1
-        if RubimRH.CDsON() and S.Vanish:IsReady() and S.ShadowDance:TimeSinceLastDisplay() > 0.3 and S.Shadowmeld:TimeSinceLastDisplay() > 0.3 and not Player:IsTanking(Target)
+        if S.Vanish:IsReady() and S.ShadowDance:TimeSinceLastDisplay() > 0.3 and S.Shadowmeld:TimeSinceLastDisplay() > 0.3 and not Player:IsTanking(Target)
                 and not ShD_Threshold() and Target:DebuffRemainsP(S.FindWeaknessDebuff) < 1 then
             return S.Vanish:Cast()
         end
@@ -340,6 +362,7 @@ end
 
 -- APL Main
 local function APL ()
+    UpdateCDs()
     -- Spell ID Changes check
     if S.Subterfuge:IsAvailable() then
         Stealth = S.Stealth2;

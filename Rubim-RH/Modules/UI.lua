@@ -242,7 +242,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_3_0 = StdUi:Checkbox(window, 'Burst CD');
     gn_3_0:SetChecked(RubimRH.db.profile.mainOption.burstCD)
-    StdUi:FrameTooltip(gn_3_0, "This will make the CD to be turned off after 20 seconds.\n\nUseful if you want a Burst button.", 'TOPLEFT', 'TOPRIGHT', true);
+    StdUi:FrameTooltip(gn_3_0, "This will make the CD to be turned off after 10 seconds.\n\nUseful if you want a Burst button.", 'TOPLEFT', 'TOPRIGHT', true);
     function gn_3_0:OnValueChanged(value)
         RubimRH.burstCDToggle()
     end

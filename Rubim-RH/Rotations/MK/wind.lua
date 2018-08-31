@@ -96,6 +96,7 @@ local OffensiveCDs = {
     S.InvokeXuentheWhiteTiger,
     S.Serenity,
     S.EnergizingElixir,
+    S.TouchofDeath
 }
 
 local function UpdateCDs()

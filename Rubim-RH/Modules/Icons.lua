@@ -425,7 +425,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
         end
 
         if RubimRH.db.profile.mainOption.burstCD and RubimRH.db.profile[RubimRH.playerSpec].cooldown then
-            if GetTime() - RubimRH.burstCDtimer >= 20 then
+            if GetTime() - RubimRH.burstCDtimer >= 10 then
                 RubimRH.CDToggle()
             end
 
