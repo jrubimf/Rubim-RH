@@ -11,7 +11,7 @@ local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 
-local function playSoundR(soundID)
+function RubimRH.playSoundR(soundID)
     local soundID = soundID or 891
 
     if RubimRH.db.profile.mainOption.mute then
@@ -22,7 +22,7 @@ local function playSoundR(soundID)
 end
 
 function RubimRH.burstCDToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.burstCD == false then
         RubimRH.db.profile.mainOption.burstCD = true
     else
@@ -32,7 +32,7 @@ function RubimRH.burstCDToggle()
 end
 
 function RubimRH.MuteToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.mute == false then
         RubimRH.db.profile.mainOption.mute = true
     else
@@ -42,7 +42,7 @@ function RubimRH.MuteToggle()
 end
 
 function RubimRH.MainIconToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.mainIcon == false then
         RubimRH.db.profile.mainOption.mainIcon = true
     else
@@ -52,7 +52,7 @@ function RubimRH.MainIconToggle()
 end
 
 function RubimRH.MainIconLockToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.mainIconLock == false then
         RubimRH.db.profile.mainOption.mainIconLock = true
     else
@@ -62,7 +62,7 @@ function RubimRH.MainIconLockToggle()
 end
 
 function RubimRH.InterruptsToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.useInterrupts == false then
         RubimRH.db.profile.mainOption.useInterrupts = true
     else
@@ -72,7 +72,7 @@ function RubimRH.InterruptsToggle()
 end
 
 function RubimRH.CCToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.ccbreak == false then
         RubimRH.db.profile.mainOption.ccbreak = true
     else
@@ -82,7 +82,7 @@ function RubimRH.CCToggle()
 end
 
 function RubimRH.PotionToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.usePotion == false then
         RubimRH.db.profile.mainOption.usePotion = true
 
@@ -93,7 +93,7 @@ function RubimRH.PotionToggle()
 end
 
 function RubimRH.RacialToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.useRacial == false then
         RubimRH.db.profile.mainOption.useRacial = true
 
@@ -104,7 +104,7 @@ function RubimRH.RacialToggle()
 end
 
 function RubimRH.CDToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile[RubimRH.playerSpec].cooldown == false then
         RubimRH.db.profile[RubimRH.playerSpec].cooldown = true
         RubimRH.burstCDtimer = GetTime()
@@ -115,7 +115,7 @@ function RubimRH.CDToggle()
 end
 
 function RubimRH.AttackToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.startattack == false then
         RubimRH.db.profile.mainOption.startattack = true
     else
@@ -126,7 +126,7 @@ end
 
 RubimRH.useAoE = true
 function RubimRH.AoEToggle()
-    playSoundR(891);
+    RubimRH.playSoundR(891);
     if RubimRH.useAoE == false then
         RubimRH.useAoE = true
     else
