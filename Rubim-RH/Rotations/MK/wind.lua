@@ -172,7 +172,7 @@ local function APL()
             return S.FistsofFury:Cast()
         end
         -- whirling_dragon_punch
-        if S.WhirlingDragonPunch:IsReady() then
+        if S.WhirlingDragonPunch:IsReady() and Cache.EnemiesCount[5] >= 1 then
             return S.WhirlingDragonPunch:Cast()
         end
         -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&!prev_gcd.1.rising_sun_kick&cooldown.fists_of_fury.remains>gcd
@@ -224,11 +224,11 @@ local function APL()
             return S.TigerPalm:Cast()
         end
         -- chi_wave,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
-        if S.ChiWave:IsReady() and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) and Player:EnergyTimeToMaxPredicted() > 1) then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) and Player:EnergyTimeToMaxPredicted() > 1) then
             return S.ChiWave:Cast()
         end
         -- chi_wave
-        if S.ChiWave:IsReady() then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.ChiWave:Cast()
         end
     end
@@ -310,7 +310,7 @@ local function APL()
             end
         end
         -- rushing_jade_wind,if=talent.rushing_jade_wind.enabled&!prev_gcd.1.rushing_jade_wind&buff.rushing_jade_wind.down
-        if S.RushingJadeWind:IsReady() and (S.RushingJadeWind:IsAvailable() and not Player:PrevGCDP(1, S.RushingJadeWind) and Player:BuffDownP(S.RushingJadeWindBuff)) then
+        if S.RushingJadeWind:IsReady() and Cache.EnemiesCount[8] >= 1 and (S.RushingJadeWind:IsAvailable() and not Player:PrevGCDP(1, S.RushingJadeWind) and Player:BuffDownP(S.RushingJadeWindBuff)) then
             return S.RushingJadeWind:Cast()
         end
         -- serenity,if=cooldown.rising_sun_kick.remains<=2&cooldown.fists_of_fury.remains<=4
@@ -492,7 +492,7 @@ local function APL()
             return S.RisingSunKick:Cast()
         end
         -- rushing_jade_wind,if=buff.rushing_jade_wind.down&!prev_gcd.1.rushing_jade_wind
-        if S.RushingJadeWind:IsReady() and (Player:BuffDownP(S.RushingJadeWindBuff) and not Player:PrevGCDP(1, S.RushingJadeWind)) then
+        if S.RushingJadeWind:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:BuffDownP(S.RushingJadeWindBuff) and not Player:PrevGCDP(1, S.RushingJadeWind)) then
             return S.RushingJadeWind:Cast()
         end
         -- energizing_elixir,if=!prev_gcd.1.tiger_palm
@@ -516,7 +516,7 @@ local function APL()
             return S.TigerPalm:Cast()
         end
         -- whirling_dragon_punch
-        if S.WhirlingDragonPunch:IsReady() then
+        if S.WhirlingDragonPunch:IsReady() and Cache.EnemiesCount[5] >= 1 then
             return S.WhirlingDragonPunch:Cast()
         end
         -- fists_of_fury,if=chi>=3&energy.time_to_max>2.5&azerite.swift_roundhouse.rank<3
@@ -560,7 +560,7 @@ local function APL()
             return S.BlackoutKick:Cast()
         end
         -- chi_wave
-        if S.ChiWave:IsReady() then
+        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.ChiWave:Cast()
         end
         -- chi_burst,if=energy.time_to_max>1&talent.serenity.enabled
