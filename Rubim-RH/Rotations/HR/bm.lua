@@ -100,23 +100,23 @@ local function APL ()
 
             --end
             -- actions+=/berserking,if=cooldown.bestial_wrath.remains>30
-            if S.Berserking:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.Berserking:IsReady() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.Berserking:Cast()
             end
             -- actions+=/blood_fury,if=buff.bestial_wrath.remains>7
-            if S.BloodFury:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.BloodFury:IsReady() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.BloodFury:Cast()
             end
             -- actions+=/ancestral_call,if=cooldown.bestial_wrath.remains>30
-            if S.AncestralCall:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.AncestralCall:IsReady() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.AncestralCall:Cast()
             end
             -- actions+=/fireblood,if=cooldown.bestial_wrath.remains>30
-            if S.Fireblood:IsReady() and RubimRH.RacialON() and S.BestialWrath:CooldownRemains() > 30 then
+            if S.Fireblood:IsReady() and S.BestialWrath:CooldownRemains() > 30 then
                 return S.Fireblood:Cast()
             end
             -- actions+=/lights_judgment
-            if S.LightsJudgment:IsReady() and RubimRH.RacialON() then
+            if S.LightsJudgment:IsReady() then
                 return S.LightsJudgment:Cast()
             end
         end
