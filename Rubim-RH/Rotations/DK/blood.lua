@@ -128,6 +128,10 @@ local function APL()
         end
 
         --Aggro
+        if Player:StackUp() and S.DeathandDecay:IsReady() then
+            return S.DeathandDecay:Cast()
+        end
+
         if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.BloodBoil:Cast()
         end

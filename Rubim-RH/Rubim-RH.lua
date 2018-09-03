@@ -450,8 +450,8 @@ local defaults = {
             sk2tooltip = "Percent HP to use Impending Victory",
 
             sk3 = 30, -- RallyingCry
-            sk4id = RallyingCry,
-            sk4tooltip = "Percent HP to use RallyingCry",
+            sk3id = 97462,
+            sk3tooltip = "Percent HP to use RallyingCry",
 
             Spells = {
                 { spellID = Charge, isActive = true }

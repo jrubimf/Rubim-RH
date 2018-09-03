@@ -84,7 +84,7 @@ Item.Warrior.Fury = {
 
 local I = Item.Warrior.Fury;
 
-local EnemyRanges = { 8 }
+local EnemyRanges = { 5, z8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -151,7 +151,7 @@ local function APL()
 
     AoE = function()
         --Cast Whirlwind Icon Whirlwind for two stacks of its buff.
-        if S.Whirlwind:IsReady() and Player:BuffStackP(S.WhirlwindBuff) < 2 then
+        if S.Whirlwind:IsReady() and Player:BuffStackP(S.WhirlwindBuff) < 2 and Cache.EnemiesCount[5] >= 2 then
             return S.Whirlwind:Cast()
         end
         
@@ -180,7 +180,7 @@ local function APL()
         end
         
         --Cast Whirlwind Icon Whirlwind to refresh its buff.
-        if S.Whirlwind:IsReady() and Player:BuffRemainsP(S.WhirlwindBuff) < Player:GCD() * 2 then
+        if S.Whirlwind:IsReady() and Player:BuffRemainsP(S.WhirlwindBuff) < Player:GCD() * 2 and Cache.EnemiesCount[5] >= 2 then
             return S.Whirlwind:Cast()
         end
     end
@@ -227,7 +227,7 @@ local function APL()
             return S.FuriousSlash:Cast()
         end
         -- whirlwind
-        if S.Whirlwind:IsReady() then
+        if S.Whirlwind:IsReady() and Cache.EnemiesCount[5] >= 1 then
             return S.Whirlwind:Cast()
         end
         return 0, 135328
@@ -244,6 +244,10 @@ local function APL()
             return Precombat()
         end
         return 0, 462338
+    end
+
+    if S.Pummel:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Pummel:Cast()
     end
 
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then

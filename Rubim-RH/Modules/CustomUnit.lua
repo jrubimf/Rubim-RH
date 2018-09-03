@@ -152,3 +152,20 @@ function Unit:IsTargeting(otherUnit)
 	end
 	return false
 end
+
+function Unit:StackUp(min, max)
+	local min = min or 8
+	local max = max or 25
+
+	HL.GetEnemies(min, true);
+	HL.GetEnemies(max, true);
+
+	if Cache.EnemiesCount[min] == 0 then
+		return false
+	end
+
+	if Cache.EnemiesCount[min] == Cache.EnemiesCount[max] then
+		return true
+	end
+	return false
+end

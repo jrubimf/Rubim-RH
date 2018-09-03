@@ -426,6 +426,10 @@ local function APL()
         return S.RallyingCry:Cast()
     end
 
+    if S.Pummel:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Pummel:Cast()
+    end
+
     if S.BloodFury:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.BloodFury:Cast()
     end

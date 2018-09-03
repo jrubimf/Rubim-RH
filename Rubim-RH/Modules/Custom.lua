@@ -268,7 +268,10 @@ combatLOG:SetScript("OnEvent", function(self, event)
 end)
 
 function RubimRH.lastSwing()
-    return GetTime() - lastMeleeHit
+    if lastMeleeHit > 0 then
+        return GetTime() - lastMeleeHit
+    end
+    return 0
 end
 
 function RubimRH.lastDamage(option)

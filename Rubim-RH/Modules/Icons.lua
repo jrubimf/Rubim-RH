@@ -203,8 +203,7 @@ local updateConfigFunc = function()
 
         IconRotation:SetScript("OnMouseDown", function(self, button)
             if RubimPVP ~= nil and button == "MiddleButton" then
-                RubimRH.createMacro()
-                RubimRH.editMacro()
+                RubimRH.PvPConfig()
             end
 
             if button == "LeftButton" and not Icons.MainIcon.isMoving and not RubimRH.db.profile.mainOption.mainIconLock then
