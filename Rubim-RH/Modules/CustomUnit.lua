@@ -6,6 +6,71 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
+do
+	--  1      2     3      4            5           6             7           8           9                      10          11          12            13                14            15       16     17      18
+	-- name, icon, count, dispelType, duration, expirationTime, caster, canStealOrPurge, nameplateShowPersonal, spellID, canApplyAura, isBossAura, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3
+	local UnitBuff = UnitBuff
+	local UnitID
+	local function _UnitBuff()
+		local Buffs = {}
+		for i = 1, HL.MAXIMUM do
+			local Infos = { UnitBuff(UnitID, i) }
+			if not Infos[10] then
+				break
+			end
+			Buffs[i] = Infos
+		end
+		return Buffs
+	end
+
+	function Unit:BuffPvP(Spell, Index, AnyCaster)
+		local GUID = self:GUID()
+		if GUID then
+			UnitID = self.UnitID
+			local Buffs = Cache.Get("UnitInfo", GUID, "Buffs", _UnitBuff)
+			for i = 1, #Buffs do
+				local Buff = Buffs[i]
+				if Spell:ID() == Buff[10] then
+					return true
+				end
+			end
+		end
+		return false
+	end
+end
+
+do
+	--  1     2      3         4          5           6           7           8                   9              10         11            12           13               14            15       16      17      18
+	-- name, icon, count, dispelType, duration, expirationTime, caster, canStealOrPurge, nameplateShowPersonal, spellID, canApplyAura, isBossAura, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3
+	local UnitDebuff = UnitDebuff
+	local UnitID
+	local function _UnitDebuff()
+		local Debuffs = {}
+		for i = 1, HL.MAXIMUM do
+			local Infos = { UnitDebuff(UnitID, i) }
+			if not Infos[10] then
+				break
+			end
+			Debuffs[i] = Infos
+		end
+		return Debuffs
+	end
+
+	function Unit:DebuffPvP(Spell, Index, AnyCaster)
+		local GUID = self:GUID()
+		if GUID then
+			UnitID = self.UnitID
+			local Debuffs = Cache.Get("UnitInfo", GUID, "Debuffs", _UnitDebuff)
+			for i = 1, #Debuffs do
+				local Debuff = Debuffs[i]
+				if Spell:ID() == Debuff[10] then
+					return true
+				end
+			end
+		end
+		return false
+	end
+end
 
 local PvPDummyUnits = {
 	-- City (SW, Orgri, ...)
@@ -65,12 +130,12 @@ end
 
 -- Unit Slowed
 function Unit:IsSnared()
-	if self:Buff(Spell(1044)) then
+	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) then
 		return true
 	end
 
 	local engName, standardName, classNumber = self:Class()
-	if classNumber == 6 then
+	if classNumber == 6 and self:MaxSpeed() <= 99 then
 		return true
 	end
 	return (self:MaxSpeed() < 70)	

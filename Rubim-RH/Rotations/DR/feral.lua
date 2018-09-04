@@ -174,43 +174,40 @@ local function APL()
     Cooldowns = function()
         -- dash,if=!buff.cat_form.up
         -- prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
-        if S.Prowl:IsReady() and (Player:BuffRemains(S.IncarnationBuff) < 0.5 and Player:Buff(S.JungleStalkerBuff)) then
-            return S.Prowl:Cast()
+        if S.Prowl:IsReady() and (Player:BuffRemainsP(S.IncarnationBuff) < 0.5 and Player:BuffP(S.JungleStalkerBuff)) then
+            return S.Prow:Cast()
         end
         -- berserk,if=energy>=30&(cooldown.tigers_fury.remains>5|buff.tigers_fury.up)
-        if S.Berserk:IsReady() and RubimRH.CDsON() and (Player:Energy() >= 30 and (S.TigersFury:CooldownRemains() > 5 or Player:Buff(S.TigersFuryBuff))) then
+        if S.Berserk:IsReady() and (Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 5 or Player:BuffP(S.TigersFuryBuff))) then
             return S.Berserk:Cast()
         end
         -- tigers_fury,if=energy.deficit>=60
-        if S.TigersFury:IsReady() and (Player:EnergyDeficit() >= 60) then
+        if S.TigersFury:IsReady() and (Player:EnergyDeficitPredicted() >= 60) then
             return S.TigersFury:Cast()
         end
         -- berserking
-        if S.Berserking:IsReady() and RubimRH.CDsON() and (true) then
-            return S.Berserking:Cast()
+        if S.Berserking:IsReady() then
+            return S.Berserking:Cast()  
         end
         -- feral_frenzy,if=combo_points=0
         if S.FeralFrenzy:IsReady() and (Player:ComboPoints() == 0) then
             return S.FeralFrenzy:Cast()
         end
         -- incarnation,if=energy>=30&(cooldown.tigers_fury.remains>15|buff.tigers_fury.up)
-        if S.Incarnation:IsReady() and RubimRH.CDsON() and (Player:Energy() >= 30 and (S.TigersFury:CooldownRemains() > 15 or Player:Buff(S.TigersFuryBuff))) then
+        if S.Incarnation:IsReady() and (Player:EnergyPredicted() >= 30 and (S.TigersFury:CooldownRemainsP() > 15 or Player:BuffP(S.TigersFuryBuff))) then
             return S.Incarnation:Cast()
         end
-        -- potion,name=prolonged_power,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
+        -- potion,name=battle_potion_of_agility,if=target.time_to_die<65|(time_to_die<180&(buff.berserk.up|buff.incarnation.up))
         -- shadowmeld,if=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<2.1&buff.tigers_fury.up&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
-        if S.Shadowmeld:IsReady() and (Player:ComboPoints() < 5 and Player:Energy() >= S.Rake:Cost() and Target:PMultiplier(S.Rake) < 2.1 and Player:Buff(S.TigersFuryBuff) and (Player:Buff(S.BloodtalonsBuff) or not S.Bloodtalons:IsAvailable()) and (not S.Incarnation:IsAvailable() or S.Incarnation:CooldownRemains() > 18) and not Player:Buff(S.IncarnationBuff)) then
-            return S.Shadowmeld:Cast()
-        end
         -- use_items
     end
     SingleTarget = function()
         -- cat_form,if=!buff.cat_form.up
-        if S.CatForm:IsReady() and (not Player:Buff(S.CatFormBuff)) then
+        if S.CatForm:IsReady() and (not Player:BuffP(S.CatFormBuff)) then
             return S.CatForm:Cast()
         end
         -- rake,if=buff.prowl.up|buff.shadowmeld.up
-        if S.Rake:IsReady() and (Player:Buff(S.ProwlBuff) or Player:Buff(S.ShadowmeldBuff)) then
+        if S.Rake:IsReady() and (Player:BuffP(S.ProwlBuff) or Player:BuffP(S.ShadowmeldBuff)) then
             return S.Rake:Cast()
         end
         -- auto_attack
@@ -225,15 +222,15 @@ local function APL()
             return S.FerociousBite:Cast()
         end
         -- regrowth,if=combo_points=5&buff.predatory_swiftness.up&talent.bloodtalons.enabled&buff.bloodtalons.down&(!buff.incarnation.up|dot.rip.remains<8)
-        if S.Regrowth:IsReady() and (Player:ComboPoints() == 5 and Player:Buff(S.PredatorySwiftnessBuff) and S.Bloodtalons:IsAvailable() and Player:BuffDown(S.BloodtalonsBuff) and (not Player:Buff(S.IncarnationBuff) or Target:DebuffRemains(S.RipDebuff) < 8)) then
+        if S.Regrowth:IsReady() and (Player:ComboPoints() == 5 and Player:BuffP(S.PredatorySwiftnessBuff) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and (not Player:BuffP(S.IncarnationBuff) or Target:DebuffRemainsP(S.RipDebuff) < 8)) then
             return S.Regrowth:Cast()
         end
         -- regrowth,if=combo_points>3&talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.apex_predator.up&buff.incarnation.down
-        if S.Regrowth:IsReady() and (Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftnessBuff) and Player:Buff(S.ApexPredatorBuff) and Player:BuffDown(S.IncarnationBuff)) then
+        if S.Regrowth:IsReady() and (Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffP(S.ApexPredatorBuff) and Player:BuffDownP(S.IncarnationBuff)) then
             return S.Regrowth:Cast()
         end
         -- ferocious_bite,if=buff.apex_predator.up&((combo_points>4&(buff.incarnation.up|talent.moment_of_clarity.enabled))|(talent.bloodtalons.enabled&buff.bloodtalons.up&combo_points>3))
-        if S.FerociousBite:IsReady() and (Player:Buff(S.ApexPredatorBuff) and ((Player:ComboPoints() > 4 and (Player:Buff(S.IncarnationBuff) or S.MomentofClarity:IsAvailable())) or (S.Bloodtalons:IsAvailable() and Player:Buff(S.BloodtalonsBuff) and Player:ComboPoints() > 3))) then
+        if S.FerociousBite:IsReady() and (Player:BuffP(S.ApexPredatorBuff) and ((Player:ComboPoints() > 4 and (Player:BuffP(S.IncarnationBuff) or S.MomentofClarity:IsAvailable())) or (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and Player:ComboPoints() > 3))) then
             return S.FerociousBite:Cast()
         end
         -- run_action_list,name=st_finishers,if=combo_points>4
@@ -248,18 +245,18 @@ local function APL()
     StFinishers = function()
         -- pool_resource,for_next=1
         -- savage_roar,if=buff.savage_roar.down
-        if S.SavageRoar:IsReady() and (Player:BuffDown(S.SavageRoarBuff)) then
-            if S.SavageRoar:IsUsable() then
+        if S.SavageRoar:IsReady() and (Player:BuffDownP(S.SavageRoarBuff)) then
+            if S.SavageRoar:IsUsablePPool() then
                 return S.SavageRoar:Cast()
             else
-                S.SavageRoar:Cast()
+                S.SavageRoar:Queue()
                 return 0, 135328
             end
         end
         -- pool_resource,for_next=1
         -- rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
-        if S.Rip:IsCastableP() and (not Target:DebuffP(S.RipDebuff) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.3) and (Target:HealthPercentage() > 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.8 and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip)) and Target:TimeToDie() > 8) then
-            if S.Rip:IsReady() then
+        if S.Rip:IsReady() and (not Target:DebuffP(S.RipDebuff) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.3) and (Target:HealthPercentage() > 25 and not S.Sabertooth:IsAvailable()) or (Target:DebuffRemainsP(S.RipDebuff) <= S.RipDebuff:BaseDuration() * 0.8 and Player:PMultiplier(S.Rip) > Target:PMultiplier(S.Rip)) and Target:TimeToDie() > 8) then
+            if S.Rip:IsUsablePPool() then
                 return S.Rip:Cast()
             else
                 S.Rip:Queue()
@@ -268,8 +265,8 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- savage_roar,if=buff.savage_roar.remains<12
-        if S.SavageRoar:IsReady() and (Player:BuffRemains(S.SavageRoarBuff) < 12) then
-            if S.SavageRoar:IsUsable() then
+        if S.SavageRoar:IsReady() and (Player:BuffRemainsP(S.SavageRoarBuff) < 12) then
+            if S.SavageRoar:IsUsablePPool() then
                 return S.SavageRoar:Cast()
             else
                 S.SavageRoar:Queue()
@@ -277,29 +274,28 @@ local function APL()
             end
         end
         -- ferocious_bite,max_energy=1
-        if S.FerociousBiteMaxEnergy:IsReady() and S.FerociousBiteMaxEnergy:IsUsableP() and (true) then
-            return S.FerociousBite:Cast()
+        if S.FerociousBiteMaxEnergy:IsReady() and S.FerociousBiteMaxEnergy:IsUsableP() then
+            return S.FerociousBiteMaxEnergy:Cast()
         end
-
         return 0, 135328
     end
     StGenerators = function()
         -- regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
-        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:Buff(S.PredatorySwiftnessBuff) and Player:BuffDown(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemains(S.RakeDebuff) < 4) then
+        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffDownP(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4) then
             return S.Regrowth:Cast()
         end
         -- regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))&buff.bloodtalons.down
-        if S.Regrowth:IsReady() and (I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStack(S.PredatorySwiftnessBuff) > 2 or (Player:BuffStack(S.PredatorySwiftnessBuff) > 1 and Target:DebuffRemains(S.RakeDebuff) < 3)) and Player:BuffDown(S.BloodtalonsBuff)) then
+        if S.Regrowth:IsReady() and (I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStackP(S.PredatorySwiftnessBuff) > 2 or (Player:BuffStackP(S.PredatorySwiftnessBuff) > 1 and Target:DebuffRemainsP(S.RakeDebuff) < 3)) and Player:BuffDownP(S.BloodtalonsBuff)) then
             return S.Regrowth:Cast()
         end
         -- brutal_slash,if=spell_targets.brutal_slash>desired_targets
-        if S.BrutalSlash:IsReady() and (Cache.EnemiesCount[8] > 1) then
+        if S.BrutalSlash:IsReadyMorph() and (Cache.EnemiesCount[8] > 1) then
             return S.BrutalSlash:Cast()
         end
         -- pool_resource,for_next=1
         -- thrash_cat,if=refreshable&(spell_targets.thrash_cat>2)
-        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
-            if S.ThrashCat:IsUsable() then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (Cache.EnemiesCount[8] > 2)) then
+            if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:Queue()
@@ -309,7 +305,7 @@ local function APL()
         -- pool_resource,for_next=1
         -- thrash_cat,if=spell_targets.thrash_cat>3&equipped.luffa_wrappings&talent.brutal_slash.enabled
         if S.ThrashCat:IsReadyMorph() and (Cache.EnemiesCount[8] > 3 and I.LuffaWrappings:IsEquipped() and S.BrutalSlash:IsAvailable()) then
-            if S.ThrashCat:IsUsable() then
+            if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:Queue()
@@ -319,7 +315,7 @@ local function APL()
         -- pool_resource,for_next=1
         -- rake,target_if=!ticking|(!talent.bloodtalons.enabled&remains<duration*0.3)&target.time_to_die>4
         if S.Rake:IsReady() and (not Target:DebuffP(S.RakeDebuff) or (not S.Bloodtalons:IsAvailable() and Target:DebuffRemainsP(S.RakeDebuff) < S.RakeDebuff:BaseDuration() * 0.3) and Target:TimeToDie() > 4) then
-            if S.Rake:IsUsable() then
+            if S.Rake:IsUsablePPool() then
                 return S.Rake:Cast()
             else
                 S.Rake:Queue()
@@ -328,8 +324,8 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- rake,target_if=talent.bloodtalons.enabled&buff.bloodtalons.up&((remains<=7)&persistent_multiplier>dot.rake.pmultiplier*0.85)&target.time_to_die>4
-        if S.Rake:IsReady() and  (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4) then
-            if S.Rake:IsUsable() then
+        if S.Rake:IsReady() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.BloodtalonsBuff) and ((Target:DebuffRemainsP(S.RakeDebuff) <= 7) and Player:PMultiplier(S.Rake) > Target:PMultiplier(S.Rake) * 0.85) and Target:TimeToDie() > 4) then
+            if S.Rake:IsUsablePPool() then
                 return S.Rake:Cast()
             else
                 S.Rake:Queue()
@@ -337,7 +333,7 @@ local function APL()
             end
         end
         -- brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
-        if S.BrutalSlash:IsReady() and ((Player:Buff(S.TigersFuryBuff) and (10000000000 > (1 + S.BrutalSlash:MaxCharges() - S.BrutalSlash:ChargesFractional()) * S.BrutalSlash:Recharge()))) then
+        if S.BrutalSlash:IsReadyMorph() and ((Player:BuffP(S.TigersFuryBuff) and (10000000000 > (1 + S.BrutalSlash:MaxCharges() - S.BrutalSlash:ChargesFractional()) * S.BrutalSlash:RechargeP()))) then
             return S.BrutalSlash:Cast()
         end
         -- moonfire_cat,target_if=refreshable
@@ -346,8 +342,8 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- thrash_cat,if=refreshable&(variable.use_thrash=2|spell_targets.thrash_cat>1)
-        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
-            if S.ThrashCat:IsUsable() then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and (VarUseThrash == 2 or Cache.EnemiesCount[8] > 1)) then
+            if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:Queue()
@@ -355,21 +351,21 @@ local function APL()
             end
         end
         -- thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
-        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableC(S.ThrashCatDebuff) and VarUseThrash == 1 and Player:Buff(S.ClearcastingBuff)) then
+        if S.ThrashCat:IsReadyMorph() and (Target:DebuffRefreshableCP(S.ThrashCatDebuff) and VarUseThrash == 1 and bool(Player:BuffStackP(S.ClearcastingBuff))) then
             return S.ThrashCat:Cast()
         end
         -- pool_resource,for_next=1
         -- swipe_cat,if=spell_targets.swipe_cat>1
         if S.SwipeCat:IsReadyMorph() and (Cache.EnemiesCount[8] > 1) then
-            if S.SwipeCat:IsUsable() then
+            if S.SwipeCat:IsUsablePPool() then
                 return S.SwipeCat:Cast()
             else
-                S.SwipeCat:Cast()
+                S.Swipe:Queue()
                 return 0, 135328
             end
         end
         -- shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
-        if S.Shred:IsReady() and (Target:DebuffRemains(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:Energy()) / Player:EnergyRegen() or Player:Buff(S.ClearcastingBuff)) then
+        if S.Shred:IsReady() and (Target:DebuffRemainsP(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:EnergyPredicted()) / Player:EnergyRegen() or bool(Player:BuffStackP(S.ClearcastingBuff))) then
             return S.Shred:Cast()
         end
         return 0, 135328
@@ -386,38 +382,38 @@ local function APL()
         end
         return 0, 462338
     end
-    -- run_action_list,name=single_target,if=dot.rip.ticking|time>15
-    if (Target:Debuff(S.RipDebuff) or HL.CombatTime() > 15) then
+
+    if (Target:DebuffP(S.RipDebuff) or HL.CombatTime() > 15) then
         return SingleTarget();
     end
     -- rake,if=!ticking|buff.prowl.up
-    if S.Rake:IsReady() and (not Target:Debuff(S.RakeDebuff) or Player:Buff(S.ProwlBuff)) then
+    if S.Rake:IsReady() and (not Target:DebuffP(S.RakeDebuff) or Player:BuffP(S.ProwlBuff)) then
         return S.Rake:Cast()
     end
     -- dash,if=!buff.cat_form.up
     -- auto_attack
     -- moonfire_cat,if=talent.lunar_inspiration.enabled&!ticking
-    if S.MoonfireCat:IsReadyMorph() and (S.LunarInspiration:IsAvailable() and not Target:Debuff(S.MoonfireCatDebuff)) then
+    if S.MoonfireCat:IsReadyMorph() and (S.LunarInspiration:IsAvailable() and not Target:DebuffP(S.MoonfireCatDebuff)) then
         return S.MoonfireCat:Cast()
     end
     -- savage_roar,if=!buff.savage_roar.up
-    if S.SavageRoar:IsReady() and (not Player:Buff(S.SavageRoarBuff)) then
+    if S.SavageRoar:IsReady() and (not Player:BuffP(S.SavageRoarBuff)) then
         return S.SavageRoar:Cast()
     end
     -- berserk
-    if S.Berserk:IsReady() and RubimRH.CDsON() and (true) then
+    if S.Berserk:IsReady() then
         return S.Berserk:Cast()
     end
     -- incarnation
-    if S.Incarnation:IsReady() and RubimRH.CDsON() and (true) then
+    if S.Incarnation:IsReady() then
         return S.Incarnation:Cast()
     end
     -- tigers_fury
-    if S.TigersFury:IsReady() and (true) then
+    if S.TigersFury:IsReady() then
         return S.TigersFury:Cast()
     end
     -- regrowth,if=(talent.sabertooth.enabled|buff.predatory_swiftness.up)&talent.bloodtalons.enabled&buff.bloodtalons.down&combo_points=5
-    if S.Regrowth:IsReady() and ((S.Sabertooth:IsAvailable() or Player:Buff(S.PredatorySwiftnessBuff)) and S.Bloodtalons:IsAvailable() and Player:BuffDown(S.BloodtalonsBuff) and Player:ComboPoints() == 5) then
+    if S.Regrowth:IsReady() and ((S.Sabertooth:IsAvailable() or Player:BuffP(S.PredatorySwiftnessBuff)) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and Player:ComboPoints() == 5) then
         return S.Regrowth:Cast()
     end
     -- rip,if=combo_points=5
@@ -425,11 +421,11 @@ local function APL()
         return S.Rip:Cast()
     end
     -- thrash_cat,if=!ticking&variable.use_thrash>0
-    if S.ThrashCat:IsReadyMorph() and (not Target:Debuff(S.ThrashCatDebuff) and VarUseThrash > 0) then
+    if S.ThrashCat:IsReadyMorph() and (not Target:DebuffP(S.ThrashCatDebuff) and VarUseThrash > 0) then
         return S.ThrashCat:Cast()
     end
     -- shred
-    if S.Shred:IsReady() and (true) then
+    if S.Shred:IsReady() then
         return S.Shred:Cast()
     end
     return 0, 135328

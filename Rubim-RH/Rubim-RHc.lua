@@ -109,6 +109,7 @@ function RubimRH.CDToggle()
         RubimRH.db.profile[RubimRH.playerSpec].cooldown = true
         RubimRH.burstCDtimer = GetTime()
     else
+        RubimRH.db.profile.mainOption.disabledSpellsCD = {}
         RubimRH.db.profile[RubimRH.playerSpec].cooldown = false
     end
     print("|cFF69CCF0CD" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[RubimRH.playerSpec].cooldown))

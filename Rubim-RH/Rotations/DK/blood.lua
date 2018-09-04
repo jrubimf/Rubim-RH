@@ -64,6 +64,7 @@ RubimRH.Spell[250] = {
     DeathChain = Spell(203173),
     DeathGrip = Spell(49576),
     DarkCommand = Spell(56222),
+    Asphyxyate = Spell(221562),
 }
 
 local S = RubimRH.Spell[250]

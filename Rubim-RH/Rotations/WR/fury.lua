@@ -70,6 +70,7 @@ RubimRH.Spell[72] = {
     StoneHeart = Spell(225947),
     -- Misc
     UmbralMoonglaives = Spell(242553),
+    SpellReflection = Spell(216890),
 }
 
 local S = RubimRH.Spell[72]
@@ -175,7 +176,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-        if S.DragonRoar:IsReady() then
+        if S.DragonRoar:IsReady() and Cache.EnemiesCount[5] >= 1 then
             return S.DragonRoar:Cast()
         end
         
@@ -195,7 +196,7 @@ local function APL()
             return S.Rampage:Cast()
         end
         -- execute,if=buff.enrage.up
-        if S.Execute:IsReady() and (Player:BuffP(S.Enrage)) then
+        if S.Execute:IsReadyMorph() and (Player:BuffP(S.Enrage)) then
             return S.Execute:Cast()
         end
         -- bloodthirst,if=buff.enrage.down
@@ -215,7 +216,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-        if S.DragonRoar:IsReady() and (Player:BuffP(S.Enrage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
+        if S.DragonRoar:IsReady() and Cache.EnemiesCount[5] >= 1  and (Player:BuffP(S.Enrage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
             return S.DragonRoar:Cast()
         end
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
@@ -283,9 +284,9 @@ local function APL()
         return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    --if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
-      --  return S.Whirlwind:Cast()
-    --end
+    if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.WhirlwindBuff)) then
+        return S.Whirlwind:Cast()
+    end
     -- blood_fury,if=buff.recklessness.up
     if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
         return S.BloodFury:Cast()
@@ -311,10 +312,6 @@ local function APL()
         return S.AncestralCall:Cast()
     end
 
-    -- call_action_list,name=custom aoe
-    if Cache.EnemiesCount[8] > 1 and AoE() ~= nil then
-        return AoE();
-    end
     -- run_action_list,name=single_target
     if (true) then
         return SingleTarget();

@@ -23,7 +23,7 @@ RubimRH.Spell[269] = {
     EnergizingElixir = Spell(115288),
     TigerPalm = Spell(100780),
     RisingSunKick = Spell(107428),
-    FistoftheWhiteTiger = Spell(261947),
+    FistOfTheWhiteTiger = Spell(261947),
     ArcaneTorrent = Spell(50613),
     AncestralCall = Spell(274738),
     Fireblood = Spell(265221),
@@ -121,7 +121,7 @@ end
 
 --- ======= ACTION LISTS =======
 local function APL()
-    local Precombat, Aoe, Cd, Sef, Serenity, Serenitysr, SerenityOpener, SerenityOpenersr, St
+    local Precombat, Cooldowns, SingleTarget, Serenity, Aoe
     UpdateCDs()
     UpdateRanges()
     Precombat = function()
@@ -146,440 +146,191 @@ local function APL()
         --            return S.ChiWave:Cast()
         --end
     end
-    Aoe = function()
-        -- call_action_list,name=cd
-        if (true) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&(cooldown.rising_sun_kick.remains=0|(talent.fist_of_the_white_tiger.enabled&cooldown.fist_of_the_white_tiger.remains=0)|energy<50)
-        if S.EnergizingElixir:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:Chi() <= 1 and (S.RisingSunKick:CooldownRemainsP() == 0 or (S.FistoftheWhiteTiger:IsAvailable() and S.FistoftheWhiteTiger:CooldownRemainsP() == 0) or Player:EnergyPredicted() < 50)) then
-            return S.EnergizingElixir:Cast()
-        end
-        -- arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
-            return S.ArcaneTorrent:Cast()
-        end
-        -- fists_of_fury,if=talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.serenity.remains>=5&energy.time_to_max>2
-        if S.FistsofFury:IsReady() and (S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and S.Serenity:CooldownRemainsP() >= 5 and Player:EnergyTimeToMaxPredicted() > 2) then
-            return S.FistsofFury:Cast()
-        end
-        -- fists_of_fury,if=talent.serenity.enabled&equipped.drinking_horn_cover&(cooldown.serenity.remains>=15|cooldown.serenity.remains<=4)&energy.time_to_max>2
-        if S.FistsofFury:IsReady() and (S.Serenity:IsAvailable() and I.DrinkingHornCover:IsEquipped() and (S.Serenity:CooldownRemainsP() >= 15 or S.Serenity:CooldownRemainsP() <= 4) and Player:EnergyTimeToMaxPredicted() > 2) then
-            return S.FistsofFury:Cast()
-        end
-        -- fists_of_fury,if=!talent.serenity.enabled&energy.time_to_max>2
-        if S.FistsofFury:IsReady() and (not S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 2) then
-            return S.FistsofFury:Cast()
-        end
-        -- fists_of_fury,if=cooldown.rising_sun_kick.remains>=3.5&chi<=5
-        if S.FistsofFury:IsReady() and (S.RisingSunKick:CooldownRemainsP() >= 3.5 and Player:Chi() <= 5) then
-            return S.FistsofFury:Cast()
-        end
-        -- whirling_dragon_punch
-        if S.WhirlingDragonPunch:IsReady() and Cache.EnemiesCount[5] >= 1 then
-            return S.WhirlingDragonPunch:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&!prev_gcd.1.rising_sun_kick&cooldown.fists_of_fury.remains>gcd
-        if S.RisingSunKick:IsReady() and ((S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() < Player:GCD()) and not Player:PrevGCDP(1, S.RisingSunKick) and S.FistsofFury:CooldownRemainsP() > Player:GCD()) then
-            return S.RisingSunKick:Cast()
-        end
-        -- chi_burst,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
-        if S.ChiBurst:IsReady() and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) and Player:EnergyTimeToMaxPredicted() > 1) then
-            return S.ChiBurst:Cast()
-        end
-        -- chi_burst
-        if S.ChiBurst:IsReady() then
-            return S.ChiBurst:Cast()
-        end
-        -- spinning_crane_kick,if=(active_enemies>=3|(buff.bok_proc.up&chi.max-chi>=0))&!prev_gcd.1.spinning_crane_kick&set_bonus.tier21_4pc
-        if S.SpinningCraneKick:IsReady() and ((Cache.EnemiesCount[8] >= 3 or (Player:BuffP(S.BokProcBuff) and Player:ChiMax() - Player:Chi() >= 0)) and not Player:PrevGCDP(1, S.SpinningCraneKick) and HL.Tier21_4Pc) then
-            return S.SpinningCraneKick:Cast()
-        end
-        -- spinning_crane_kick,if=active_enemies>=3&!prev_gcd.1.spinning_crane_kick&cooldown.fists_of_fury.remains>gcd
-        if S.SpinningCraneKick:IsReady() and (Cache.EnemiesCount[8] >= 3 and not Player:PrevGCDP(1, S.SpinningCraneKick) and S.FistsofFury:CooldownRemainsP() > Player:GCD()) then
-            return S.SpinningCraneKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&(!set_bonus.tier19_2pc|talent.serenity.enabled)
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and Player:ChiMax() - Player:Chi() >= 1 and HL.Tier21_4Pc and (not HL.Tier19_2Pc or S.Serenity:IsAvailable())) then
-            return S.BlackoutKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(chi>1|buff.bok_proc.up|(talent.energizing_elixir.enabled&cooldown.energizing_elixir.remains<cooldown.fists_of_fury.remains))&((cooldown.rising_sun_kick.remains>1&(!talent.fist_of_the_white_tiger.enabled|cooldown.fist_of_the_white_tiger.remains>1)|chi>4)&(cooldown.fists_of_fury.remains>1|chi>2)|prev_gcd.1.tiger_palm)&!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and ((Player:Chi() > 1 or Player:BuffP(S.BokProcBuff) or (S.EnergizingElixir:IsAvailable() and S.EnergizingElixir:CooldownRemainsP() < S.FistsofFury:CooldownRemainsP())) and ((S.RisingSunKick:CooldownRemainsP() > 1 and (not S.FistoftheWhiteTiger:IsAvailable() or S.FistoftheWhiteTiger:CooldownRemainsP() > 1) or Player:Chi() > 4) and (S.FistsofFury:CooldownRemainsP() > 1 or Player:Chi() > 2) or Player:PrevGCDP(1, S.TigerPalm)) and not Player:PrevGCDP(1, S.BlackoutKick)) then
-            return S.BlackoutKick:Cast()
-        end
-        -- crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
-        if S.CracklingJadeLightning:IsReady() and (I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStackP(S.TheEmperorsCapacitorBuff) >= 19 and Player:EnergyTimeToMaxPredicted() > 3) then
-            return S.CracklingJadeLightning:Cast()
-        end
-        -- crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=14&cooldown.serenity.remains<13&talent.serenity.enabled&energy.time_to_max>3
-        if S.CracklingJadeLightning:IsReady() and (I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStackP(S.TheEmperorsCapacitorBuff) >= 14 and S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 3) then
-            return S.CracklingJadeLightning:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and Player:ChiMax() - Player:Chi() >= 1 and HL.Tier21_4Pc and Player:BuffP(S.BokProcBuff)) then
-            return S.BlackoutKick:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and (Player:ChiMax() - Player:Chi() >= 2 or Player:EnergyTimeToMaxPredicted() < 3)) then
-            return S.TigerPalm:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy.time_to_max<=1&chi.max-chi>=2
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and Player:EnergyTimeToMaxPredicted() <= 1 and Player:ChiMax() - Player:Chi() >= 2) then
-            return S.TigerPalm:Cast()
-        end
-        -- chi_wave,if=chi<=3&(cooldown.rising_sun_kick.remains>=5|cooldown.whirling_dragon_punch.remains>=5)&energy.time_to_max>1
-        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:Chi() <= 3 and (S.RisingSunKick:CooldownRemainsP() >= 5 or S.WhirlingDragonPunch:CooldownRemainsP() >= 5) and Player:EnergyTimeToMaxPredicted() > 1) then
-            return S.ChiWave:Cast()
-        end
-        -- chi_wave
-        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.ChiWave:Cast()
-        end
-    end
-    Cd = function()
-        -- invoke_xuen_the_white_tiger
+    Cooldowns = function()
+        -- actions.cd=invoke_xuen_the_white_tiger
         if S.InvokeXuentheWhiteTiger:IsReady() then
             return S.InvokeXuentheWhiteTiger:Cast()
         end
-        -- use_item,name=lustrous_golden_plumage
-        --if I.LustrousGoldenPlumage:IsReady() then
-            --return S.LustrousGoldenPlumage:Cast()
-        --end
-        -- blood_fury
-        if S.BloodFury:IsReady() and RubimRH.CDsON() then
+        -- actions.cd+=/blood_fury
+        if S.BloodFury:IsReady() then
             return S.BloodFury:Cast()
         end
-        -- berserking
-        if S.Berserking:IsReady() and RubimRH.CDsON() then
+        -- actions.cd+=/berserking
+        if S.Berserking:IsReady() then
             return S.Berserking:Cast()
         end
-        -- arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
+        -- actions.cd+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
+        if S.ArcaneTorrent:IsReady() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
             return S.ArcaneTorrent:Cast()
         end
-        -- lights_judgment
-        if S.LightsJudgment:IsReady() and RubimRH.CDsON() then
-            return S.LightsJudgment:Cast()
-        end
-        -- fireblood
-        if S.Fireblood:IsReady() and RubimRH.CDsON() then
+        -- actions.cd+=/fireblood
+        if S.Fireblood:IsReady() then
             return S.Fireblood:Cast()
         end
-        -- ancestral_call
-        if S.AncestralCall:IsReady() and RubimRH.CDsON() then
+        -- actions.cd+=/ancestral_call
+        if S.AncestralCall:IsReady() then
             return S.AncestralCall:Cast()
         end
-        -- touch_of_death
-        if S.TouchofDeath:IsReady() and RubimRH.CDsON() then
+        -- actions.cd+=/touch_of_death,if=target.time_to_die>9
+        if S.TouchofDeath:IsReady() and Target:TimeToDie() > 9 then
             return S.TouchofDeath:Cast()
         end
-    end
-    Sef = function()
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy=energy.max&chi<1
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and Player:EnergyPredicted() == Player:EnergyMax() and Player:Chi() < 1) then
-            return S.TigerPalm:Cast()
-        end
-        -- call_action_list,name=cd
-        if (true) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- storm_earth_and_fire,if=!buff.storm_earth_and_fire.up
-        if S.StormEarthandFire:IsReady() and (not Player:BuffP(S.StormEarthandFireBuff)) then
+        -- actions.cd+=/storm_earth_and_fire,if=cooldown.storm_earth_and_fire.charges=2|(cooldown.fists_of_fury.remains<=6&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=15
+        if S.StormEarthandFire:IsReady() and not Player:BuffP(S.StormEarthandFire) and
+                (S.StormEarthandFire:ChargesP() == 2 or S.FistsofFury:CooldownRemainsP() <= 6) and
+                Player:Chi() >= 3 and (S.RisingSunKick:CooldownRemainsP() <= 1 or Target:TimeToDie() <= 15) then
             return S.StormEarthandFire:Cast()
         end
-        -- call_action_list,name=aoe,if=active_enemies>3
-        if (Cache.EnemiesCount[8] > 3) then
-            if Aoe() ~= nil then
-                return Aoe()
-            end
-        end
-        -- call_action_list,name=st,if=active_enemies<=3
-        if (Cache.EnemiesCount[8] <= 3) then
-            if St() ~= nil then
-                return St()
-            end
-        end
-    end
-    Serenity = function()
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy=energy.max&chi<1&!buff.serenity.up
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and Player:EnergyPredicted() == Player:EnergyMax() and Player:Chi() < 1 and not Player:BuffP(S.SerenityBuff)) then
-            return S.TigerPalm:Cast()
-        end
-        -- call_action_list,name=cd
-        if (true) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- rushing_jade_wind,if=talent.rushing_jade_wind.enabled&!prev_gcd.1.rushing_jade_wind&buff.rushing_jade_wind.down
-        if S.RushingJadeWind:IsReady() and Cache.EnemiesCount[8] >= 1 and (S.RushingJadeWind:IsAvailable() and not Player:PrevGCDP(1, S.RushingJadeWind) and Player:BuffDownP(S.RushingJadeWindBuff)) then
-            return S.RushingJadeWind:Cast()
-        end
-        -- serenity,if=cooldown.rising_sun_kick.remains<=2&cooldown.fists_of_fury.remains<=4
-        if S.Serenity:IsReady() and (S.RisingSunKick:CooldownRemainsP() <= 2 and S.FistsofFury:CooldownRemainsP() <= 4) then
+        -- actions.cd+=/serenity,if=cooldown.rising_sun_kick.remains<=2|target.time_to_die<=12
+        if S.Serenity:IsReady() and not Player:BuffP(S.Serenity) and
+                (S.RisingSunKick:CooldownRemainsP() <= 2 or Target:TimeToDie() <= 12) then
             return S.Serenity:Cast()
         end
-        -- fists_of_fury,if=prev_gcd.1.rising_sun_kick&prev_gcd.2.serenity
-        if S.FistsofFury:IsReady() and (Player:PrevGCDP(1, S.RisingSunKick) and Player:PrevGCDP(2, S.Serenity)) then
-            return S.FistsofFury:Cast()
-        end
-        -- fists_of_fury,if=buff.serenity.remains<=1.05
-        if S.FistsofFury:IsReady() and (Player:BuffRemainsP(S.SerenityBuff) <= 1.05) then
-            return S.FistsofFury:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
+    end
+
+    -- Serenity --
+    Serenity = function()
+        -- actions.serenity=rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
         if S.RisingSunKick:IsReady() then
             return S.RisingSunKick:Cast()
         end
-        -- fist_of_the_white_tiger,if=prev_gcd.1.blackout_kick&prev_gcd.2.rising_sun_kick&chi.max-chi>2
-        if S.FistoftheWhiteTiger:IsReady() and (Player:PrevGCDP(1, S.BlackoutKick) and Player:PrevGCDP(2, S.RisingSunKick) and Player:ChiMax() - Player:Chi() > 2) then
-            return S.FistoftheWhiteTiger:Cast()
+        -- actions.serenity+=/fists_of_fury,if=(buff.bloodlust.up&prev_gcd.1.rising_sun_kick&!azerite.swift_roundhouse.enabled)|buff.serenity.remains<1|active_enemies>1
+        if S.FistsofFury:IsReady() and ((Player:HasHeroismP() and Player:PrevGCD(1, S.RisingSunKick) and not S.SwiftRoundhouse:AzeriteEnabled()) or
+                Player:BuffRemainsP(S.Serenity) < 1 or Cache.EnemiesCount[8] > 1) then
+            return S.FistsofFury:Cast()
         end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=prev_gcd.1.blackout_kick&prev_gcd.2.rising_sun_kick&chi.max-chi>1
-        if S.TigerPalm:IsReady() and (Player:PrevGCDP(1, S.BlackoutKick) and Player:PrevGCDP(2, S.RisingSunKick) and Player:ChiMax() - Player:Chi() > 1) then
-            return S.TigerPalm:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&cooldown.rising_sun_kick.remains>=2&cooldown.fists_of_fury.remains>=2
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and S.RisingSunKick:CooldownRemainsP() >= 2 and S.FistsofFury:CooldownRemainsP() >= 2) then
-            return S.BlackoutKick:Cast()
-        end
-        -- spinning_crane_kick,if=active_enemies>=3&!prev_gcd.1.spinning_crane_kick
-        if S.SpinningCraneKick:IsReady() and (Cache.EnemiesCount[8] >= 3 and not Player:PrevGCDP(1, S.SpinningCraneKick)) then
+        -- actions.serenity+=/spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick&(active_enemies>=3|(active_enemies=2&prev_gcd.1.blackout_kick))
+        if S.SpinningCraneKick:IsReady() and not Player:PrevGCD(1, S.SpinningCraneKick) and
+                (Cache.EnemiesCount[8] >= 3 or (Cache.EnemiesCount[8] == 2 and Player:PrevGCD(1, S.BlackoutKick))) then
             return S.SpinningCraneKick:Cast()
         end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.RisingSunKick:IsReady() then
-            return S.RisingSunKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
-            return S.BlackoutKick:Cast()
-        end
-    end
-    Serenitysr = function()
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&energy=energy.max&chi<1&!buff.serenity.up
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and Player:EnergyPredicted() == Player:EnergyMax() and Player:Chi() < 1 and not Player:BuffP(S.SerenityBuff)) then
-            return S.TigerPalm:Cast()
-        end
-        -- call_action_list,name=cd
-        if (true) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- serenity,if=cooldown.rising_sun_kick.remains<=2
-        if S.Serenity:IsReady() and (S.RisingSunKick:CooldownRemainsP() <= 2) then
-            return S.Serenity:Cast()
-        end
-        -- fists_of_fury,if=buff.serenity.remains<=1.05
-        if S.FistsofFury:IsReady() and (Player:BuffRemainsP(S.SerenityBuff) <= 1.05) then
-            return S.FistsofFury:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.RisingSunKick:IsReady() then
-            return S.RisingSunKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&cooldown.rising_sun_kick.remains>=2&cooldown.fists_of_fury.remains>=2
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and S.RisingSunKick:CooldownRemainsP() >= 2 and S.FistsofFury:CooldownRemainsP() >= 2) then
-            return S.BlackoutKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains
+        -- actions.serenity+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains
         if S.BlackoutKick:IsReady() then
             return S.BlackoutKick:Cast()
         end
     end
-    SerenityOpener = function()
-        -- fist_of_the_white_tiger,if=buff.serenity.down
-        if S.FistoftheWhiteTiger:IsReady() and (Player:BuffDownP(S.SerenityBuff)) then
-            return S.FistoftheWhiteTiger:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&buff.serenity.down&chi<4
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:BuffDownP(S.SerenityBuff) and Player:Chi() < 4) then
-            return S.TigerPalm:Cast()
-        end
-        -- call_action_list,name=cd,if=buff.serenity.down
-        if (Player:BuffDownP(S.SerenityBuff)) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- call_action_list,name=serenity,if=buff.bloodlust.down
-        if (Player:HasNotHeroism()) then
-            if Serenity() ~= nil then
-                return Serenity()
-            end
-        end
-        -- serenity
-        if S.Serenity:IsReady() then
-            return S.Serenity:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.RisingSunKick:IsReady() then
-            return S.RisingSunKick:Cast()
-        end
-        -- fists_of_fury,if=prev_gcd.1.rising_sun_kick&prev_gcd.2.serenity
-        if S.FistsofFury:IsReady() and (Player:PrevGCDP(1, S.RisingSunKick) and Player:PrevGCDP(2, S.Serenity)) then
-            return S.FistsofFury:Cast()
-        end
-        -- fists_of_fury,if=prev_gcd.1.rising_sun_kick&prev_gcd.2.blackout_kick
-        if S.FistsofFury:IsReady() and (Player:PrevGCDP(1, S.RisingSunKick) and Player:PrevGCDP(2, S.BlackoutKick)) then
-            return S.FistsofFury:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&cooldown.rising_sun_kick.remains>=2&cooldown.fists_of_fury.remains>=2
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and S.RisingSunKick:CooldownRemainsP() >= 2 and S.FistsofFury:CooldownRemainsP() >= 2) then
-            return S.BlackoutKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
-            return S.BlackoutKick:Cast()
-        end
-    end
-    SerenityOpenersr = function()
-        -- fist_of_the_white_tiger,if=buff.serenity.down
-        if S.FistoftheWhiteTiger:IsReady() and (Player:BuffDownP(S.SerenityBuff)) then
-            return S.FistoftheWhiteTiger:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=buff.serenity.down&chi<4
-        if S.TigerPalm:IsReady() and (Player:BuffDownP(S.SerenityBuff) and Player:Chi() < 4) then
-            return S.TigerPalm:Cast()
-        end
-        -- call_action_list,name=cd,if=buff.serenity.down
-        if (Player:BuffDownP(S.SerenityBuff)) then
-            if Cd() ~= nil then
-                return Cd()
-            end
-        end
-        -- call_action_list,name=serenity,if=buff.bloodlust.down
-        if (Player:HasNotHeroism()) then
-            if Serenity() ~= nil then
-                return Serenity()
-            end
-        end
-        -- serenity
-        if S.Serenity:IsReady() then
-            return S.Serenity:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.RisingSunKick:IsReady() then
-            return S.RisingSunKick:Cast()
-        end
-        -- fists_of_fury,if=buff.serenity.remains<1
-        if S.FistsofFury:IsReady() and (Player:BuffRemainsP(S.SerenityBuff) < 1) then
-            return S.FistsofFury:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&cooldown.rising_sun_kick.remains>=2&cooldown.fists_of_fury.remains>=2
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and S.RisingSunKick:CooldownRemainsP() >= 2 and S.FistsofFury:CooldownRemainsP() >= 2) then
-            return S.BlackoutKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.BlackoutKick:IsReady() then
-            return S.BlackoutKick:Cast()
-        end
-    end
-    St = function()
-        -- invoke_xuen_the_white_tiger
-        if S.InvokeXuentheWhiteTiger:IsReady() then
-            return S.InvokeXuentheWhiteTiger:Cast()
-        end
-        -- touch_of_death
-        if S.TouchofDeath:IsReady() then
-            return S.TouchofDeath:Cast()
-        end
-        -- storm_earth_and_fire,if=!buff.storm_earth_and_fire.up
-        if S.StormEarthandFire:IsReady() and (not Player:BuffP(S.StormEarthandFireBuff)) then
-            return S.StormEarthandFire:Cast()
-        end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=azerite.swift_roundhouse.enabled&buff.swift_roundhouse.stack=2
-        if S.RisingSunKick:IsReady() and (S.SwiftRoundhouse:AzeriteEnabled() and Player:BuffStackP(S.SwiftRoundhouseBuff) == 2) then
-            return S.RisingSunKick:Cast()
-        end
-        -- rushing_jade_wind,if=buff.rushing_jade_wind.down&!prev_gcd.1.rushing_jade_wind
-        if S.RushingJadeWind:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:BuffDownP(S.RushingJadeWindBuff) and not Player:PrevGCDP(1, S.RushingJadeWind)) then
-            return S.RushingJadeWind:Cast()
-        end
-        -- energizing_elixir,if=!prev_gcd.1.tiger_palm
-        if S.EnergizingElixir:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm)) then
-            return S.EnergizingElixir:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&chi.max-chi>=1&set_bonus.tier21_4pc&buff.bok_proc.up
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick) and Player:ChiMax() - Player:Chi() >= 1 and HL.Tier21_4Pc and Player:BuffP(S.BokProcBuff)) then
-            return S.BlackoutKick:Cast()
-        end
-        -- fist_of_the_white_tiger,if=(chi<=2)
-        if S.FistoftheWhiteTiger:IsReady() and ((Player:Chi() <= 2)) then
-            return S.FistoftheWhiteTiger:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi<=3&energy.time_to_max<2
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:Chi() <= 3 and Player:EnergyTimeToMaxPredicted() < 2) then
-            return S.TigerPalm:Cast()
-        end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&buff.serenity.down&cooldown.fist_of_the_white_tiger.remains>energy.time_to_max
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:ChiMax() - Player:Chi() >= 2 and Player:BuffDownP(S.SerenityBuff) and S.FistoftheWhiteTiger:CooldownRemainsP() > Player:EnergyTimeToMaxPredicted()) then
-            return S.TigerPalm:Cast()
-        end
-        -- whirling_dragon_punch
-        if S.WhirlingDragonPunch:IsReady() and Cache.EnemiesCount[5] >= 1 then
+
+    -- Area of Effect --
+    Aoe = function()
+        -- actions.aoe=whirling_dragon_punch
+        if S.WhirlingDragonPunch:IsReady() then
             return S.WhirlingDragonPunch:Cast()
         end
-        -- fists_of_fury,if=chi>=3&energy.time_to_max>2.5&azerite.swift_roundhouse.rank<3
-        if S.FistsofFury:IsReady() and (Player:Chi() >= 3 and Player:EnergyTimeToMaxPredicted() > 2.5 and S.SwiftRoundhouse:AzeriteRank() < 3) then
+        -- actions.aoe+=/energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&energy<50
+        if S.EnergizingElixir:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyPredicted() < 50 then
+            return S.EnergizingElixir:Cast()
+        end
+        -- actions.aoe+=/fists_of_fury,if=energy.time_to_max>2.5
+        if S.FistsofFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 then
             return S.FistsofFury:Cast()
         end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=((chi>=3&energy>=40)|chi>=5)&(talent.serenity.enabled|cooldown.serenity.remains>=6)&!azerite.swift_roundhouse.enabled
-        if S.RisingSunKick:IsReady() and (((Player:Chi() >= 3 and Player:EnergyPredicted() >= 40) or Player:Chi() >= 5) and (S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() >= 6) and not S.SwiftRoundhouse:AzeriteEnabled()) then
+        -- actions.aoe+=/rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1
+        if S.RushingJadeWind:IsReady() and Player:BufBuffDownPfP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 then
+            return S.RushingJadeWind:Cast()
+        end
+        -- actions.aoe+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&cooldown.fists_of_fury.remains>3
+        if S.RisingSunKick:IsReady() and (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() > Player:GCD()) and
+                S.FistsofFury:CooldownRemainsP() > 3 then
             return S.RisingSunKick:Cast()
         end
-        -- fists_of_fury,if=!talent.serenity.enabled&(azerite.swift_roundhouse.rank<3|cooldown.whirling_dragon_punch.remains<13)
-        if S.FistsofFury:IsReady() and (not S.Serenity:IsAvailable() and (S.SwiftRoundhouse:AzeriteRank() < 3 or S.WhirlingDragonPunch:CooldownRemainsP() < 13)) then
-            return S.FistsofFury:Cast()
+        -- actions.aoe+=/spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick
+        if S.SpinningCraneKick:IsReady() and not Player:PrevGCD(1, S.SpinningCraneKick) then
+            return S.SpinningCraneKick:Cast()
         end
-        -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=cooldown.serenity.remains>=5|(!talent.serenity.enabled)&!azerite.swift_roundhouse.enabled
-        if S.RisingSunKick:IsReady() and (S.Serenity:CooldownRemainsP() >= 5 or (not S.Serenity:IsAvailable()) and not S.SwiftRoundhouse:AzeriteEnabled()) then
-            return S.RisingSunKick:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=cooldown.fists_of_fury.remains>2&!prev_gcd.1.blackout_kick&energy.time_to_max>1&azerite.swift_roundhouse.rank>2
-        if S.BlackoutKick:IsReady() and (S.FistsofFury:CooldownRemainsP() > 2 and not Player:PrevGCDP(1, S.BlackoutKick) and Player:EnergyTimeToMaxPredicted() > 1 and S.SwiftRoundhouse:AzeriteRank() > 2) then
-            return S.BlackoutKick:Cast()
-        end
-        -- flying_serpent_kick,if=prev_gcd.1.blackout_kick&energy.time_to_max>2&chi>1,interrupt=1
-        --if S.FlyingSerpentKick:IsReady() and (Player:PrevGCDP(1, S.BlackoutKick) and Player:EnergyTimeToMaxPredicted() > 2 and Player:Chi() > 1) then
-          --  return S.FlyingSerpentKick:Cast()
-        --end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=buff.swift_roundhouse.stack<2&!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and (Player:BuffStackP(S.SwiftRoundhouseBuff) < 2 and not Player:PrevGCDP(1, S.BlackoutKick)) then
-            return S.BlackoutKick:Cast()
-        end
-        -- crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=19&energy.time_to_max>3
-        if S.CracklingJadeLightning:IsReady() and (I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStackP(S.TheEmperorsCapacitorBuff) >= 19 and Player:EnergyTimeToMaxPredicted() > 3) then
-            return S.CracklingJadeLightning:Cast()
-        end
-        -- crackling_jade_lightning,if=equipped.the_emperors_capacitor&buff.the_emperors_capacitor.stack>=14&cooldown.serenity.remains<13&talent.serenity.enabled&energy.time_to_max>3
-        if S.CracklingJadeLightning:IsReady() and (I.TheEmperorsCapacitor:IsEquipped() and Player:BuffStackP(S.TheEmperorsCapacitorBuff) >= 14 and S.Serenity:CooldownRemainsP() < 13 and S.Serenity:IsAvailable() and Player:EnergyTimeToMaxPredicted() > 3) then
-            return S.CracklingJadeLightning:Cast()
-        end
-        -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
-            return S.BlackoutKick:Cast()
-        end
-        -- chi_wave
-        if S.ChiWave:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.ChiWave:Cast()
-        end
-        -- chi_burst,if=energy.time_to_max>1&talent.serenity.enabled
-        if S.ChiBurst:IsReady() and (Player:EnergyTimeToMaxPredicted() > 1 and S.Serenity:IsAvailable()) then
+        -- actions.aoe+=/chi_burst,if=chi<=3
+        if S.ChiBurst:IsReady() and Player:ChiDeficit() <= 3 then
             return S.ChiBurst:Cast()
         end
-        -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&!prev_gcd.1.energizing_elixir&(chi.max-chi>=2|energy.time_to_max<3)&!buff.serenity.up
-        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and not Player:PrevGCDP(1, S.EnergizingElixir) and (Player:ChiMax() - Player:Chi() >= 2 or Player:EnergyTimeToMaxPredicted() < 3) and not Player:BuffP(S.SerenityBuff)) then
+        -- actions.cd+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
+        if S.ArcaneTorrent:IsReady() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
+            return S.ArcaneTorrent:Cast()
+        end
+        -- actions.aoe+=/fist_of_the_white_tiger,if=chi.max-chi>=3&(energy>46|buff.rushing_jade_wind.down)
+        if S.FistOfTheWhiteTiger:IsReady() and Player:ChiDeficit() >= 3 and
+                (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 46) then
+            return S.FistOfTheWhiteTiger:Cast()
+        end
+        -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&(energy>56|buff.rushing_jade_wind.down)
+        if S.TigerPalm:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
+                (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 56) then
             return S.TigerPalm:Cast()
         end
-        -- chi_burst,if=chi.max-chi>=3&energy.time_to_max>1&!talent.serenity.enabled
-        if S.ChiBurst:IsReady() and (Player:ChiMax() - Player:Chi() >= 3 and Player:EnergyTimeToMaxPredicted() > 1 and not S.Serenity:IsAvailable()) then
+        -- actions.st+=/chi_wave
+        if S.ChiWave:IsReady() then
+            return S.ChiWave:Cast()
+        end
+        -- actions.aoe+=/flying_serpent_kick,if=buff.bok_proc.down,interrupt=1
+        -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
+        if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) then
+            return S.BlackoutKick:Cast()
+        end
+    end
+
+    -- Single Target --
+    SingleTarget = function()
+        -- actions.st=cancel_buff,name=rushing_jade_wind,if=active_enemies=1&(!talent.serenity.enabled|cooldown.serenity.remains>3)
+        if S.RushingJadeWind:IsReady() and Player:BuffP(S.RushingJadeWind) and Cache.EnemiesCount[8] == 1 and
+                (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() > 3) then
+            return S.RushingJadeWind:Cast()
+        end
+        -- actions.st+=/whirling_dragon_punch
+        if S.WhirlingDragonPunch:IsReady() then
+            return S.WhirlingDragonPunch:Cast()
+        end
+        -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(cooldown.fists_of_fury.remains>2|chi>=5|azerite.swift_roundhouse.rank>2)
+        if S.RisingSunKick:IsReady() and (S.FistsofFury:CooldownRemainsP() > 2 or Player:Chi() >= 5 or S.SwiftRoundhouse:AzeriteRank() > 2) then
+            return S.RisingSunKick:Cast()
+        end
+        -- actions.st+=/rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1&active_enemies>1
+        if S.RushingJadeWind:IsReady() and Player:BufBuffDownPfP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 and Cache.EnemiesCount[8] > 1 then
+            return S.RushingJadeWind:Cast()
+        end
+        -- actions.st+=/fists_of_fury,if=energy.time_to_max>2.5&(azerite.swift_roundhouse.rank<3|(cooldown.whirling_dragon_punch.remains<10&talent.whirling_dragon_punch.enabled)|active_enemies>1)
+        if S.FistsofFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 and
+                (
+                        S.SwiftRoundhouse:AzeriteRank() < 3 or
+                                (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() < 10) or
+                                Cache.EnemiesCount[8] > 1
+                ) then
+            return S.FistsofFury:Cast()
+        end
+        -- actions.st+=/fist_of_the_white_tiger,if=chi<=2&(buff.rushing_jade_wind.down|energy>46)
+        if S.FistOfTheWhiteTiger:IsReady() and Player:Chi() <= 2 and
+                (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 46) then
+            return S.FistOfTheWhiteTiger:Cast()
+        end
+        -- actions.st+=/energizing_elixir,if=chi<=3&energy<50
+        if S.EnergizingElixir:IsReady() and Player:Chi() <= 3 and Player:EnergyPredicted() < 50 then
+            return S.EnergizingElixir:Cast()
+        end
+        -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&(cooldown.rising_sun_kick.remains>2|chi>=3)&(cooldown.fists_of_fury.remains>2|chi>=4|azerite.swift_roundhouse.enabled)&buff.swift_roundhouse.stack<2
+        if S.BlackoutKick:IsReady()
+                and (
+                not Player:PrevGCD(1, S.BlackoutKick)
+                        and (S.RisingSunKick:CooldownRemainsP() > 2 or Player:Chi() >= 3)
+                        and (S.FistsofFury:CooldownRemainsP() > 2 or Player:Chi() >= 4 or S.SwiftRoundhouse:AzeriteEnabled())
+                        and Player:BuffStack(S.SwiftRoundhouseBuff) < 2
+        ) then
+            return S.BlackoutKick:Cast()
+        end
+        -- actions.st+=/chi_wave
+        if S.ChiWave:IsReady() then
+            return S.ChiWave:Cast()
+        end
+        -- actions.st+=/chi_burst,if=chi.max-chi>=1&active_enemies=1|chi.max-chi>=2
+        if S.ChiBurst:IsReady() and ((Player:ChiDeficit() >= 1 and Cache.EnemiesCount[8] == 1) or Player:ChiDeficit() >= 2) then
             return S.ChiBurst:Cast()
+        end
+        -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&(buff.rushing_jade_wind.down|energy>56)
+        if S.TigerPalm:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
+                (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 56) then
+            return S.TigerPalm:Cast()
+        end
+        -- actions.st+=/flying_serpent_kick,if=prev_gcd.1.blackout_kick&chi>1&buff.swift_roundhouse.stack<2,interrupt=1
+        -- actions.st+=/fists_of_fury,if=energy.time_to_max>2.5&cooldown.rising_sun_kick.remains>2&buff.swift_roundhouse.stack=2
+        if S.FistsofFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 and S.RisingSunKick:CooldownRemainsP() > 2 and
+                Player:BuffStack(S.SwiftRoundhouseBuff) == 2 then
+            return S.FistsofFury:Cast()
         end
     end
     -- call precombat
@@ -603,73 +354,44 @@ local function APL()
         return S.TouchofKarma:Cast()
     end
 
-    -- potion,if=buff.serenity.up|buff.storm_earth_and_fire.up|(!talent.serenity.enabled&trinket.proc.agility.react)|buff.bloodlust.react|target.time_to_die<=60
-    if I.ProlongedPower:IsReady() and RubimRH.PotionON() and (Player:Buff(S.SerenityBuff) or Player:Buff(S.StormEarthandFireBuff) or (not S.Serenity:IsAvailable()) or Player:HasHeroism() or Target:TimeToDie() <= 60) then
-        return I.ProlongedPower:Cast()
-    end
-    -- touch_of_death,if=target.time_to_die<=9
-    if S.TouchofDeath:IsReady() and (Target:TimeToDie() <= 9) then
-        return S.TouchofDeath:Cast()
-    end
-
-    -- call_action_list,name=serenitySR,if=((talent.serenity.enabled&cooldown.serenity.remains<=0)|buff.serenity.up)&azerite.swift_roundhouse.enabled&time>30
-    if (((S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() <= 0) or Player:BuffP(S.SerenityBuff)) and S.SwiftRoundhouse:AzeriteEnabled() and HL.CombatTime() > 30) then
-        if Serenitysr() ~= nil then
-            return Serenitysr()
-        end
-    end
-    -- call_action_list,name=serenity,if=((!azerite.swift_roundhouse.enabled&talent.serenity.enabled&cooldown.serenity.remains<=0)|buff.serenity.up)&time>30
-    if (((not S.SwiftRoundhouse:AzeriteEnabled() and S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() <= 0) or Player:BuffP(S.SerenityBuff)) and HL.CombatTime() > 30) then
-        if Serenity() ~= nil then
+    -- In Combat
+    -- actions+=/call_action_list,name=serenity,if=buff.serenity.up
+    if Player:BuffP(S.Serenity) then
+        if Sereniy() ~= nil then
             return Serenity()
         end
     end
-    -- call_action_list,name=serenity_openerSR,if=(talent.serenity.enabled&cooldown.serenity.remains<=0|buff.serenity.up)&time<30&azerite.swift_roundhouse.enabled
-    if ((S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() <= 0 or Player:BuffP(S.SerenityBuff)) and HL.CombatTime() < 30 and S.SwiftRoundhouse:AzeriteEnabled()) then
-        if SerenityOpenersr() ~= nil then
-            return SerenityOpenersr()
+    -- actions+=/fist_of_the_white_tiger,if=(energy.time_to_max<1|(talent.serenity.enabled&cooldown.serenity.remains<2))&chi.max-chi>=3
+    if S.FistOfTheWhiteTiger:IsReadyP() and (Player:EnergyTimeToMaxPredicted() < 1 or
+            (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and
+            Player:ChiDeficit() >= 3 then
+        return S.FistOfTheWhiteTiger:Cast()
+    end
+    -- actions+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=(energy.time_to_max<1|(talent.serenity.enabled&cooldown.serenity.remains<2))&chi.max-chi>=2&!prev_gcd.1.tiger_palm
+    if S.TigerPalm:IsReadyP() and
+            (
+                    Player:EnergyTimeToMaxPredicted() < 1 or
+                            (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)
+            ) and
+            Player:ChiDeficit() >= 2 and not Player:PrevGCD(1, S.TigerPalm) then
+        return S.TigerPalm:Cast()
+    end
+    -- actions.st=call_action_list,name=cd
+    if (true) then
+        if Cooldowns() ~= nil then
+            return Cooldowns()
         end
     end
-    -- call_action_list,name=serenity_opener,if=(!azerite.swift_roundhouse.enabled&talent.serenity.enabled&cooldown.serenity.remains<=0|buff.serenity.up)&time<30
-    if ((not S.SwiftRoundhouse:AzeriteEnabled() and S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() <= 0 or Player:BuffP(S.SerenityBuff)) and HL.CombatTime() < 30) then
-        if SerenityOpener() ~= nil then
-            return SerenityOpener()
+    -- actions+=/call_action_list,name=st,if=(active_enemies<4&azerite.swift_roundhouse.rank<3)|active_enemies<5
+    if ((Cache.EnemiesCount[8] < 4 and S.SwiftRoundhouse:AzeriteRank() < 3) or Cache.EnemiesCount[8] < 5) then
+        if SingleTarget() ~= nil then
+            return SingleTarget()
         end
-    end
-    -- call_action_list,name=sef,if=!talent.serenity.enabled&(buff.storm_earth_and_fire.up|cooldown.storm_earth_and_fire.charges=2)
-    if (not S.Serenity:IsAvailable() and (Player:BuffP(S.StormEarthandFireBuff) or S.StormEarthandFire:ChargesP() == 2)) then
-        if Sef() ~= nil then
-            return Sef()
-        end
-    end
-    -- call_action_list,name=sef,if=(!talent.serenity.enabled&cooldown.fists_of_fury.remains<=12&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=25|cooldown.touch_of_death.remains>112
-    if ((not S.Serenity:IsAvailable() and S.FistsofFury:CooldownRemainsP() <= 12 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1) or Target:TimeToDie() <= 25 or S.TouchofDeath:CooldownRemainsP() > 112) then
-        if Sef() ~= nil then
-            return Sef()
-        end
-    end
-    -- call_action_list,name=sef,if=(!talent.serenity.enabled&!equipped.drinking_horn_cover&cooldown.fists_of_fury.remains<=6&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=15|cooldown.touch_of_death.remains>112&cooldown.storm_earth_and_fire.charges=1
-    if ((not S.Serenity:IsAvailable() and not I.DrinkingHornCover:IsEquipped() and S.FistsofFury:CooldownRemainsP() <= 6 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1) or Target:TimeToDie() <= 15 or S.TouchofDeath:CooldownRemainsP() > 112 and S.StormEarthandFire:ChargesP() == 1) then
-        if Sef() ~= nil then
-            return Sef()
-        end
-    end
-    -- call_action_list,name=sef,if=(!talent.serenity.enabled&cooldown.fists_of_fury.remains<=12&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=25|cooldown.touch_of_death.remains>112&cooldown.storm_earth_and_fire.charges=1
-    if ((not S.Serenity:IsAvailable() and S.FistsofFury:CooldownRemainsP() <= 12 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1) or Target:TimeToDie() <= 25 or S.TouchofDeath:CooldownRemainsP() > 112 and S.StormEarthandFire:ChargesP() == 1) then
-        if Sef() ~= nil then
-            return Sef()
-        end
-    end
-    -- call_action_list,name=aoe,if=active_enemies>3
-    if (Cache.EnemiesCount[8] > 3) then
-        if Aoe() ~= nil then
-            return Aoe()
-        end
-    end
-    -- call_action_list,name=st,if=active_enemies<=3
-    if (Cache.EnemiesCount[8] <= 3) then
-        if St() ~= nil then
-            return St()
+    end ;
+    -- actions+=/call_action_list,name=st,if=(active_enemies<4&azerite.swift_roundhouse.rank<3)|active_enemies<5
+    if ((Cache.EnemiesCount[8] >= 4 and S.SwiftRoundhouse:AzeriteRank() < 3) or Cache.EnemiesCount[8] >= 5) then
+        if AoE() ~= nil then
+            return AoE()
         end
     end
 
