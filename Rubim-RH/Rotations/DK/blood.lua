@@ -343,9 +343,9 @@ local function APL()
         end
     end
 
-    if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() and S.DeathGrip:TimeSinceLastCast() >= Player:GCD() then
-        return S.DeathGrip:Cast()
-    end
+    --if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() and S.DeathGrip:TimeSinceLastCast() >= Player:GCD() then
+--        return S.DeathGrip:Cast()
+--    end
 
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.BloodDrinker) then

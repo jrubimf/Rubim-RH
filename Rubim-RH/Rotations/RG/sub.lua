@@ -58,7 +58,7 @@ RubimRH.Spell[261] = {
     Subterfuge = Spell(108208),
     Vigor = Spell(14983),
     -- Azerite Traits
-    SharpenedBladesPower = Spell(272911),
+    SharpenedBlades = Spell(272911),
     SharpenedBladesBuff = Spell(272916),
     -- Defensive
     CrimsonVial = Spell(185311),
