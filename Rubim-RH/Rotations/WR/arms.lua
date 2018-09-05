@@ -163,7 +163,6 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
     UpdateExecuteID()
-    print(S.Execute:IsReadyMorph())
     Precombat = function()
         -- flask
         -- food
