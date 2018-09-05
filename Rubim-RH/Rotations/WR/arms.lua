@@ -75,6 +75,7 @@ RubimRH.Spell[71] = {
 
     -- Utility
     HeroicLeap = Spell(6544), -- Unused
+    Disarm = Spell(236077),
     Pummel = Spell(6552),
     Hamstring = Spell(1715),
     SharpenBlade = Spell(198817),
@@ -162,6 +163,7 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
     UpdateExecuteID()
+    print(S.Execute:IsReadyMorph())
     Precombat = function()
         -- flask
         -- food
@@ -250,7 +252,7 @@ local function APL()
             return S.Cleave:Cast()
         end
         -- execute,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|(buff.sudden_death.react|buff.stone_heart.react)&(buff.sweeping_strikes.up|cooldown.sweeping_strikes.remains>8)
-        if S.Execute:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
+        if S.Execute:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:Buff(S.SuddenDeathBuff)) or bool(Player:Buff(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
             return S.Execute:Cast()
         end
         -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|buff.executioners_precision.stack=2)
@@ -309,7 +311,7 @@ local function APL()
             return S.Cleave:Cast()
         end
         -- execute,if=!raid_event.adds.up|(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sudden_death.react
-        if S.Execute:IsReadyMorph() and (not (Cache.EnemiesCount[8] > 1) or (not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or bool(Player:BuffStackP(S.SuddenDeathBuff))) then
+        if S.Execute:IsReadyMorph() and (not (Cache.EnemiesCount[8] > 1) or (not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or bool(Player:Buff(S.SuddenDeathBuff))) then
             return S.Execute:Cast()
         end
         -- mortal_strike,if=!raid_event.adds.up|(!talent.cleave.enabled&dot.deep_wounds.remains<2)
@@ -359,7 +361,7 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- execute,if=buff.sudden_death.react
-        if S.Execute:IsReadyMorph() and (bool(Player:BuffStackP(S.SuddenDeathBuff))) then
+        if S.Execute:IsReadyMorph() and (bool(Player:Buff(S.SuddenDeathBuff))) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=cooldown.mortal_strike.remains&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)

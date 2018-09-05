@@ -728,6 +728,10 @@ function RubimRH.mainRotation(option)
         return RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()
     end
 
+    if Rotation == "Defensive" then
+        return RubimRH.Rotation.DEFENSIVE[RubimRH.playerSpec]()
+    end
+
     if Rotation == "SingleTarget" then
         if RubimRHPvP ~= nil and RubimRHPvP.active and RubimRH.PvP() ~= nil then
             return RubimRH.PvP()
