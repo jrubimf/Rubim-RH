@@ -55,8 +55,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="344" column="259" lean-forward="false" selection-start-line="344" selection-start-column="259" selection-end-line="344" selection-end-column="259" />
+            <state relative-caret-position="244">
+              <caret line="249" column="43" lean-forward="true" selection-start-line="249" selection-start-column="43" selection-end-line="249" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -123,7 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>HR</find>
       <find>FistofWhite</find>
       <find>FistsofFury</find>
       <find>Settings</find>
@@ -150,9 +149,10 @@
       <find>Finishers</find>
       <find>NightsVengeance</find>
       <find>Stealt</find>
-      <find>BladeIntheShadows</find>
       <find>Stealthed</find>
       <find>Print</find>
+      <find>BladeIntheShadows</find>
+      <find>BladeInTheShadows</find>
     </findStrings>
     <replaceStrings>
       <replace>RubimRH.CDsON()</replace>
@@ -247,7 +247,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="523" />
     <option name="y" value="39" />
     <option name="width" value="974" />
@@ -442,14 +442,14 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20833333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.50625" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32946146" sideWeight="0.50625" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="LuaCheck" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -852,8 +852,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="344" column="259" lean-forward="false" selection-start-line="344" selection-start-column="259" selection-end-line="344" selection-end-column="259" />
+        <state relative-caret-position="244">
+          <caret line="249" column="43" lean-forward="true" selection-start-line="249" selection-start-column="43" selection-end-line="249" selection-end-column="43" />
           <folding />
         </state>
       </provider>

@@ -243,7 +243,7 @@ local function Stealthed()
     -- actions.stealthed+=/Shadowstrike,cycle_targets=1,if=talent.secret_technique.enabled&talent.find_weakness.enabled&debuff.find_weakness.remains<1&spell_targets.shuriken_storm=2&target.time_to_die-remains>6
     -- !!!NYI!!! (Is this worth it? How do we want to display it in an understandable way?)
     -- shadowstrike,if=!talent.deeper_stratagem.enabled&azerite.blade_in_the_shadows.rank=3&spell_targets.shuriken_storm=3
-    if S.Shadowstrike:IsReady() and (not S.DeeperStratagem:IsAvailable() and S.BladeIntheShadows:AzeriteRank() == 3 and Cache.EnemiesCount[10] == 3) then
+    if S.Shadowstrike:IsReady() and (not S.DeeperStratagem:IsAvailable() and S.BladeInTheShadows:AzeriteRank() == 3 and Cache.EnemiesCount[10] == 3) then
         return S.Shadowstrike:Cast()
     end
 
