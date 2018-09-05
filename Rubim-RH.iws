@@ -55,8 +55,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="249" column="43" lean-forward="true" selection-start-line="249" selection-start-column="43" selection-end-line="249" selection-end-column="43" />
+            <state relative-caret-position="184">
+              <caret line="200" column="320" lean-forward="false" selection-start-line="200" selection-start-column="320" selection-end-line="200" selection-end-column="320" />
               <folding />
             </state>
           </provider>
@@ -123,9 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>FistofWhite</find>
-      <find>FistsofFury</find>
-      <find>Settings</find>
       <find>Set</find>
       <find>IsCastableP</find>
       <find>queue</find>
@@ -153,9 +150,11 @@
       <find>Print</find>
       <find>BladeIntheShadows</find>
       <find>BladeInTheShadows</find>
+      <find>Refresh</find>
+      <find>ShadowDanceBuff</find>
+      <find>NightbladeDebuff</find>
     </findStrings>
     <replaceStrings>
-      <replace>RubimRH.CDsON()</replace>
       <replace>Shear:IsReadyMorph(&quot;Melee&quot;)</replace>
       <replace>unitID, spell, source</replace>
       <replace>S</replace>
@@ -185,6 +184,7 @@
       <replace>IsReady()</replace>
       <replace>Cat:IsReadyMorph()</replace>
       <replace>IsReady</replace>
+      <replace>BladeInTheShadows</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -852,8 +852,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="249" column="43" lean-forward="true" selection-start-line="249" selection-start-column="43" selection-end-line="249" selection-end-column="43" />
+        <state relative-caret-position="184">
+          <caret line="200" column="320" lean-forward="false" selection-start-line="200" selection-start-column="320" selection-end-line="200" selection-end-column="320" />
           <folding />
         </state>
       </provider>
