@@ -390,8 +390,8 @@ local function APL()
     end ;
     -- actions+=/call_action_list,name=st,if=(active_enemies<4&azerite.swift_roundhouse.rank<3)|active_enemies<5
     if ((Cache.EnemiesCount[8] >= 4 and S.SwiftRoundhouse:AzeriteRank() < 3) or Cache.EnemiesCount[8] >= 5) then
-        if AoE() ~= nil then
-            return AoE()
+        if Aoe() ~= nil then
+            return Aoe()
         end
     end
 
