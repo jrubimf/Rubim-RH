@@ -55,8 +55,8 @@
       <file leaf-file-name="sub.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="716">
-              <caret line="586" column="47" lean-forward="false" selection-start-line="586" selection-start-column="42" selection-end-line="586" selection-end-column="47" />
+            <state relative-caret-position="301">
+              <caret line="344" column="259" lean-forward="false" selection-start-line="344" selection-start-column="259" selection-end-line="344" selection-end-column="259" />
               <folding />
             </state>
           </provider>
@@ -123,26 +123,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TargetIsPlay</find>
-      <find>Execute</find>
-      <find>Disabled</find>
-      <find>snared</find>
-      <find>Snared</find>
-      <find>PvP</find>
-      <find>BuffPvp</find>
-      <find>RubimPvP</find>
-      <find>buffPvP</find>
-      <find>BuffPvP</find>
-      <find>Ready</find>
-      <find>HR.CDsON() and</find>
-      <find>ReadYP</find>
       <find>HR</find>
       <find>FistofWhite</find>
       <find>FistsofFury</find>
       <find>Settings</find>
       <find>Set</find>
       <find>IsCastableP</find>
-      <find>IsCastable</find>
       <find>queue</find>
       <find>Pool</find>
       <find>and HR.CDsON()</find>
@@ -153,6 +139,20 @@
       <find>Bestial</find>
       <find>BestialWrath</find>
       <find>Sharp</find>
+      <find>IsCastable</find>
+      <find>nightblade,cycle_targe</find>
+      <find>ShadowDance</find>
+      <find>NightsVengeancePower</find>
+      <find>Finisher</find>
+      <find>print</find>
+      <find>Azerite</find>
+      <find>nightblade, cyc</find>
+      <find>Finishers</find>
+      <find>NightsVengeance</find>
+      <find>Stealt</find>
+      <find>BladeIntheShadows</find>
+      <find>Stealthed</find>
+      <find>Print</find>
     </findStrings>
     <replaceStrings>
       <replace>RubimRH.CDsON()</replace>
@@ -183,8 +183,8 @@
       <replace>Ready</replace>
       <replace>FistsofFury</replace>
       <replace>IsReady()</replace>
-      <replace>IsReady</replace>
       <replace>Cat:IsReadyMorph()</replace>
+      <replace>IsReady</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -852,8 +852,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH/Rotations/RG/sub.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="716">
-          <caret line="586" column="47" lean-forward="false" selection-start-line="586" selection-start-column="42" selection-end-line="586" selection-end-column="47" />
+        <state relative-caret-position="301">
+          <caret line="344" column="259" lean-forward="false" selection-start-line="344" selection-start-column="259" selection-end-line="344" selection-end-column="259" />
           <folding />
         </state>
       </provider>

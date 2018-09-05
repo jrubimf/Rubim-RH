@@ -58,10 +58,22 @@ RubimRH.Spell[261] = {
     Subterfuge = Spell(108208),
     Vigor = Spell(14983),
     -- Azerite Traits
-    SharpenedBlades = Spell(272911),
+    BladeInTheShadows = Spell(275896),
+    NightsVengeancePower = Spell(273418),
+    NightsVengeanceBuff = Spell(273424),
+    SharpenedBladesPower = Spell(272911),
     SharpenedBladesBuff = Spell(272916),
     -- Defensive
     CrimsonVial = Spell(185311),
+    Feint = Spell(1966),
+    -- Utility
+    Blind = Spell(2094),
+    CheapShot = Spell(1833),
+    Kick = Spell(1766),
+    KidneyShot = Spell(408),
+    Sprint = Spell(2983),
+    -- Misc
+    TheDreadlordsDeceit = Spell(228224),
     -- Utility
     Blind = Spell(2094),
     CheapShot = Spell(1833),
@@ -171,6 +183,11 @@ end
 local function Finish ()
     local ShadowDanceBuff = Player:BuffP(S.ShadowDanceBuff)
 
+    -- actions.finish=eviscerate,if=talent.shadow_focus.enabled&spell_targets.shuriken_storm>=5&buff.nights_vengeance.up
+    if S.Eviscerate:IsReady() and IsInMeleeRange() and S.ShadowFocus:IsAvailable() and Cache.EnemiesCount[10] >= 5 and Player:BuffP(S.NightsVengeanceBuff) then
+        return S.Eviscerate:Cast()
+    end
+
     if S.Nightblade:IsReady() then
         local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3
         -- actions.finish=nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
@@ -181,7 +198,7 @@ local function Finish ()
             return S.Nightblade:Cast()
         end
         -- actions.finish+=/nightblade,cycle_targets=1,if=spell_targets.shuriken_storm>=2&(spell_targets.shuriken_storm<=5|talent.secret_technique.enabled)&!buff.shadow_dance.up&target.time_to_die>=(5+(2*combo_points))&refreshable
-        if RubimRH.AoEON() and S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (Cache.EnemiesCount[10] <= 5 or S.SecretTechnique:IsAvailable()) and not Player:Buff(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.Nightblade, NightbladeThreshold)) then
+        if S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (S.SecretTechnique:IsAvailable() or S.NightsVengeancePower:AzeriteEnabled() or Cache.EnemiesCount[10] <= 5) and not Player:BuffP(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.NightbladeDebuff)) then
             return S.Nightblade:Cast()
         end
 
@@ -225,6 +242,11 @@ local function Stealthed()
     end
     -- actions.stealthed+=/Shadowstrike,cycle_targets=1,if=talent.secret_technique.enabled&talent.find_weakness.enabled&debuff.find_weakness.remains<1&spell_targets.shuriken_storm=2&target.time_to_die-remains>6
     -- !!!NYI!!! (Is this worth it? How do we want to display it in an understandable way?)
+    -- shadowstrike,if=!talent.deeper_stratagem.enabled&azerite.blade_in_the_shadows.rank=3&spell_targets.shuriken_storm=3
+    if S.Shadowstrike:IsReady() and (not S.DeeperStratagem:IsAvailable() and S.BladeIntheShadows:AzeriteRank() == 3 and Cache.EnemiesCount[10] == 3) then
+        return S.Shadowstrike:Cast()
+    end
+
     -- actions.stealthed+=/shuriken_storm,if=spell_targets.shuriken_storm>=3
     if RubimRH.AoEON() and S.ShurikenStorm:IsReady() and Cache.EnemiesCount[10] >= 3 then
         return S.ShurikenStorm:Cast()
@@ -284,30 +306,30 @@ local function CDs ()
         if S.SymbolsofDeath:IsReady() then
             return S.SymbolsofDeath:Cast()
         end
-            -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit
-            -- Note: Done at the start of the Rotation (Rogue Commmon)
-            -- actions.cds+=/marked_for_death,if=raid_event.adds.in>30&!stealthed.all&combo_points.deficit>=cp_max_spend
-            if S.MarkedforDeath:IsCastable() then
-                if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit()) or (Player:ComboPointsDeficit() >= CPMaxSpend()) then
-                    return S.MarkedforDeath:Cast()
-                end
-            end
-            if S.MarkedforDeath:IsReady() and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() then
+        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit
+        -- Note: Done at the start of the Rotation (Rogue Commmon)
+        -- actions.cds+=/marked_for_death,if=raid_event.adds.in>30&!stealthed.all&combo_points.deficit>=cp_max_spend
+        if S.MarkedforDeath:IsCastable() then
+            if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit()) or (Player:ComboPointsDeficit() >= CPMaxSpend()) then
                 return S.MarkedforDeath:Cast()
             end
-            -- actions.cds+=/shadow_blades,if=combo_points.deficit>=2+stealthed.all
-            if S.ShadowBlades:IsReady() and not Player:Buff(S.ShadowBlades)
-                    and Player:ComboPointsDeficit() >= 2 + num(Player:IsStealthed(true, true)) then
-                return S.ShadowBlades:Cast()
-            end
-            -- actions.cds+=/shuriken_tornado,if=spell_targets>=3&dot.nightblade.ticking&buff.symbols_of_death.up&buff.shadow_dance.up
-            if S.ShurikenTornado:IsReady() and Cache.EnemiesCount[10] >= 3 and Target:DebuffP(S.Nightblade) and Player:BuffP(S.SymbolsofDeath) and Player:BuffP(S.ShadowDanceBuff) then
-                return S.ShurikenTornado:Cast()
-            end
-            -- actions.cds+=/shadow_dance,if=!buff.shadow_dance.up&target.time_to_die<=5+talent.subterfuge.enabled
-            if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
-                return S.ShadowDance:Cast()
-            end
+        end
+        if S.MarkedforDeath:IsReady() and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() then
+            return S.MarkedforDeath:Cast()
+        end
+        -- actions.cds+=/shadow_blades,if=combo_points.deficit>=2+stealthed.all
+        if S.ShadowBlades:IsReady() and not Player:Buff(S.ShadowBlades)
+                and Player:ComboPointsDeficit() >= 2 + num(Player:IsStealthed(true, true)) then
+            return S.ShadowBlades:Cast()
+        end
+        -- actions.cds+=/shuriken_tornado,if=spell_targets>=3&dot.nightblade.ticking&buff.symbols_of_death.up&buff.shadow_dance.up
+        if S.ShurikenTornado:IsReady() and Cache.EnemiesCount[10] >= 3 and Target:DebuffP(S.Nightblade) and Player:BuffP(S.SymbolsofDeath) and Player:BuffP(S.ShadowDanceBuff) then
+            return S.ShurikenTornado:Cast()
+        end
+        -- actions.cds+=/shadow_dance,if=!buff.shadow_dance.up&target.time_to_die<=5+talent.subterfuge.enabled
+        if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
+            return S.ShadowDance:Cast()
+        end
     end
 end
 
