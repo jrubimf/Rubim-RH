@@ -42,6 +42,15 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
+        if RubimPvP ~= nil then
+            info.text, info.hasArrow = "PVP: Smart Cleave", nil
+            info.checked = RubimRH.CleaveON()
+            info.func = function(self)
+                RubimRH.CleaveToggle()
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+            --
         info.text, info.hasArrow = "Cooldowns", nil
         info.checked = RubimRH.config.cooldown
         info.func = function(self)
@@ -202,7 +211,7 @@ local updateConfigFunc = function()
         IconRotationAoEText:SetTextColor(1, 1, 1, 0.5)
 
         IconRotation:SetScript("OnMouseDown", function(self, button)
-            if RubimPVP ~= nil and button == "MiddleButton" then
+            if button == "MiddleButton" and RubimPvP ~= nil then
                 RubimRH.PvPConfig()
             end
 
@@ -401,6 +410,7 @@ local updateIcon = CreateFrame("Frame");
 updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
     updateIcon:onUpdate(sinceLastUpdate);
 end)
+
 
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;

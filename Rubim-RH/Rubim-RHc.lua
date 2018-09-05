@@ -21,6 +21,17 @@ function RubimRH.playSoundR(soundID)
     end
 end
 
+function RubimRH.CleaveToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.smartCleave == false then
+        RubimRH.db.profile.mainOption.smartCleave = true
+        RubimRH.db.profile.mainOption.disabledSpellsCleave = {}
+    else
+        RubimRH.db.profile.mainOption.smartCleave = false
+    end
+    print("|cFF69CCF0Use Cleave" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.smartCleave))
+end
+
 function RubimRH.burstCDToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.burstCD == false then
@@ -177,6 +188,17 @@ function RubimRH.RacialON()
         return false
     end
     if RubimRH.db.profile.mainOption.useRacial == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.CleaveON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.smartCleave == true then
         return true
     else
         return false

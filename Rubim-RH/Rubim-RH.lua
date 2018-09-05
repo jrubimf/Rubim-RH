@@ -215,6 +215,7 @@ local defaults = {
             interruptsbind = nil,
             aoebind = nil,
             ccbreak = true,
+            smartCleave = false,
             usePotion = true,
             useInterrupts = true,
             useRacial = true,
@@ -231,6 +232,7 @@ local defaults = {
             yCord = 0,
             disabledSpells = {},
             disabledSpellsCD = {},
+            disabledSpellsCleave = {},
             useTrinkets = {},
             cooldownsUsage = "Everything",
             burstCD = false
@@ -723,6 +725,10 @@ function RubimRH.mainRotation(option)
     if _G.LootFrame:IsShown() then
         return 0, 975746
     end
+
+    --
+    --UpdateCleave()
+    --UpdateCD()
 
     if Rotation == "Passive" then
         return RubimRH.Rotation.PASSIVEs[RubimRH.playerSpec]()

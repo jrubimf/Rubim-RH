@@ -140,7 +140,7 @@ function Spell:CooldownRemains(BypassRecovery, Offset)
         return 1000
     end
 
-    if self:IsEnabledCD() == false then
+    if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return 1000
     end
 
@@ -211,7 +211,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
-    if self:IsEnabledCD() == false then
+    if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
     end
 
@@ -265,7 +265,7 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
         return false
     end
 
-    if self:IsEnabledCD() == false then
+    if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
     end
 
@@ -348,6 +348,46 @@ function RubimRH.delSpellDisabledCD(spellid)
         for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCD do
             if spellid == RubimRH.db.profile.mainOption.disabledSpellsCD[i].value then
                 table.remove(RubimRH.db.profile.mainOption.disabledSpellsCD, i)
+            end
+            break
+        end
+    end
+end
+
+function Spell:IsEnabledCleave()
+    if #RubimRH.db.profile.mainOption.disabledSpellsCleave == 0 and not RubimRH.db.profile.mainOption.smartCleave then
+        return true
+    end
+
+    for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCleave do
+        if self.SpellID == RubimRH.db.profile.mainOption.disabledSpellsCleave[i].value then
+            return false
+        end
+    end
+    return true
+end
+
+function RubimRH.addSpellDisabledCleave(spellid)
+    local exists = false
+
+    if #RubimRH.db.profile.mainOption.disabledSpellsCleave > 0 then
+        for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCleave do
+            if spellid == RubimRH.db.profile.mainOption.disabledSpellsCleave[i].value then
+                exists = true
+            end
+        end
+    end
+
+    if exists == false then
+        table.insert(RubimRH.db.profile.mainOption.disabledSpellsCleave, { text = GetSpellInfo(spellid), value = spellid })
+    end
+end
+
+function RubimRH.delSpellDisabledCleave(spellid)
+    if #RubimRH.db.profile.mainOption.disabledSpellsCleave > 0 then
+        for i = 1, #RubimRH.db.profile.mainOption.disabledSpellsCleave do
+            if spellid == RubimRH.db.profile.mainOption.disabledSpellsCleave[i].value then
+                table.remove(RubimRH.db.profile.mainOption.disabledSpellsCleave, i)
             end
             break
         end
