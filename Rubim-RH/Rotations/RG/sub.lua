@@ -287,7 +287,7 @@ local function CDs ()
             -- TODO: Add Potion Suggestion
 
             -- Racials
-            if Player:IsStealthedP(true, false) then
+            if Player:IsStealthed(true, false) then
                 -- actions.cds+=/blood_fury,if=stealthed.rogue
                 if S.BloodFury:IsReady() then
                     return S.BloodFury:Cast()
@@ -447,7 +447,7 @@ local function APL ()
 
     -- # Run fully switches to the Stealthed Rotation (by doing so, it forces pooling if nothing is available).
     -- actions+=/run_action_list,name=stealthed,if=stealthed.all
-    if Player:IsStealthedP(true, true) then
+    if Player:IsStealthed(true, true) then
         return Stealthed()
     end
 
