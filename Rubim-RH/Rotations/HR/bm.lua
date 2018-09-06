@@ -185,7 +185,7 @@ local function PASSIVE()
         return S.AspectoftheTurtle:Cast()
     end
 
-    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[255].sk3 then
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk3 then
         return S.Exhilaration:Cast()
     end
 
