@@ -221,8 +221,8 @@ local function APL()
             return S.EnergizingElixir:Cast()
         end
         -- actions.aoe+=/fists_of_fury,if=energy.time_to_max>2.5
-        if S.FistsOfFury:IsReadyP() and Player:EnergyTimeToMaxPredicted() > 2.5 then
-            return S.FistsOfFury:Cast()
+        if S.FistsofFury:IsReadyP() and Player:EnergyTimeToMaxPredicted() > 2.5 then
+            return S.FistsofFury:Cast()
         end
         -- actions.aoe+=/rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1
         if S.RushingJadeWind:IsReadyP() and Player:BufBuffDownPfP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 then
@@ -230,7 +230,7 @@ local function APL()
         end
         -- actions.aoe+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&cooldown.fists_of_fury.remains>3
         if S.RisingSunKick:IsReadyP() and (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() > Player:GCD()) and
-                S.FistsOfFury:CooldownRemainsP() > 3 then
+                S.FistsofFury:CooldownRemainsP() > 3 then
             return S.RisingSunKick:Cast()
         end
         -- actions.aoe+=/spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick

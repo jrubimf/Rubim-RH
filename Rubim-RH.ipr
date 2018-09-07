@@ -11,7 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$//Rubim-RH.iml" filepath="$PROJECT_DIR$//Rubim-RH.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Kahlua" project-jdk-type="Lua SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PropertiesComponent">
