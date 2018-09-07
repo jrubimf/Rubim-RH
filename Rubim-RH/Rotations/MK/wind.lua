@@ -217,51 +217,51 @@ local function APL()
             return S.WhirlingDragonPunch:Cast()
         end
         -- actions.aoe+=/energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&energy<50
-        if S.EnergizingElixir:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyPredicted() < 50 then
+        if S.EnergizingElixir:IsReadyP() and not Player:PrevGCD(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyPredicted() < 50 then
             return S.EnergizingElixir:Cast()
         end
         -- actions.aoe+=/fists_of_fury,if=energy.time_to_max>2.5
-        if S.FistsofFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 then
-            return S.FistsofFury:Cast()
+        if S.FistsOfFury:IsReadyP() and Player:EnergyTimeToMaxPredicted() > 2.5 then
+            return S.FistsOfFury:Cast()
         end
         -- actions.aoe+=/rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1
-        if S.RushingJadeWind:IsReady() and Player:BufBuffDownPfP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 then
+        if S.RushingJadeWind:IsReadyP() and Player:BufBuffDownPfP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 then
             return S.RushingJadeWind:Cast()
         end
         -- actions.aoe+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&cooldown.fists_of_fury.remains>3
-        if S.RisingSunKick:IsReady() and (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() > Player:GCD()) and
-                S.FistsofFury:CooldownRemainsP() > 3 then
+        if S.RisingSunKick:IsReadyP() and (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() > Player:GCD()) and
+                S.FistsOfFury:CooldownRemainsP() > 3 then
             return S.RisingSunKick:Cast()
         end
         -- actions.aoe+=/spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick
-        if S.SpinningCraneKick:IsReady() and not Player:PrevGCD(1, S.SpinningCraneKick) then
+        if S.SpinningCraneKick:IsReadyP() and not Player:PrevGCD(1, S.SpinningCraneKick)  then
             return S.SpinningCraneKick:Cast()
         end
         -- actions.aoe+=/chi_burst,if=chi<=3
-        if S.ChiBurst:IsReady() and Player:ChiDeficit() <= 3 then
+        if S.ChiBurst:IsReadyP() and Player:ChiDeficit() <= 3 then
             return S.ChiBurst:Cast()
         end
         -- actions.cd+=/arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReady() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
+        if S.ArcaneTorrent:IsReadyP() and Player:ChiDeficit() >= 1 and Player:EnergyTimeToMaxPredicted() > 0.5 then
             return S.ArcaneTorrent:Cast()
         end
         -- actions.aoe+=/fist_of_the_white_tiger,if=chi.max-chi>=3&(energy>46|buff.rushing_jade_wind.down)
-        if S.FistOfTheWhiteTiger:IsReady() and Player:ChiDeficit() >= 3 and
+        if S.FistOfTheWhiteTiger:IsReadyP() and Player:ChiDeficit() >= 3 and
                 (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 46) then
             return S.FistOfTheWhiteTiger:Cast()
         end
         -- actions.aoe+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&(energy>56|buff.rushing_jade_wind.down)
-        if S.TigerPalm:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
+        if S.TigerPalm:IsReadyP() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
                 (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 56) then
             return S.TigerPalm:Cast()
         end
         -- actions.st+=/chi_wave
-        if S.ChiWave:IsReady() then
+        if S.ChiWave:IsReadyP() then
             return S.ChiWave:Cast()
         end
         -- actions.aoe+=/flying_serpent_kick,if=buff.bok_proc.down,interrupt=1
         -- actions.aoe+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReady() and not Player:PrevGCD(1, S.BlackoutKick) then
+        if S.BlackoutKick:IsReadyP() and not Player:PrevGCD(1, S.BlackoutKick) then
             return S.BlackoutKick:Cast()
         end
     end
@@ -357,7 +357,7 @@ local function APL()
     -- In Combat
     -- actions+=/call_action_list,name=serenity,if=buff.serenity.up
     if Player:BuffP(S.Serenity) then
-        if Sereniy() ~= nil then
+        if Serenity() ~= nil then
             return Serenity()
         end
     end

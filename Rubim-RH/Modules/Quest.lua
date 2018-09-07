@@ -94,6 +94,10 @@ function Unit:IsQuestMob()
     local unit = self.UnitID
     local questFlag = GetQuestProgress(unit)
 
+    if select(1, IsInInstance()) == true then
+        return false
+    end
+
     if questFlag ~= nil and Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost()then
         return true
     end

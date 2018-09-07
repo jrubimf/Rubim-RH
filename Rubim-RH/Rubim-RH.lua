@@ -701,9 +701,12 @@ function RubimRH.mainRotation(option)
     --            return 1, RubimRH.TargetNext("Melee", 1030902)
     --end
     --endd
+    if UnitInVehicle("Player") then
+        return 0, 975744
+    end
 
     if Player:IsDeadOrGhost() then
-        return 0, 236399
+        return 0, 252181
     end
 
     if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
