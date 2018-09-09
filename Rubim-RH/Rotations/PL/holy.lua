@@ -37,7 +37,10 @@ RubimRH.Spell[65] = {
 	BeaconofVirtue = Spell(200025),
 	LightofDawn = Spell(85222),
 
-
+	LayOnHands = Spell(633),
+	Forbearance = Spell(25771),
+	DivineProtection = Spell(498),
+	DivineShield = Spell(642),
 	-- Legendaries
 	LiadrinsFuryUnleashed = Spell(208408),
 	ScarletInquisitorsExpurgation = Spell(248289);
@@ -124,6 +127,18 @@ end
 RubimRH.Rotation.SetAPL(65, APL);
 
 local function PASSIVE()
+	if S.DivineProtection:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
+		return S.ShieldOfVengance:Cast()
+	end
+
+	if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and not Player:Debuff(S.Forbearance) then
+		return S.DivineShield:Cast()
+	end
+
+	if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk3 and not Player:Debuff(S.Forbearance) then
+		return S.LayOnHands:Cast()
+	end
+
 	return RubimRH.Shared()
 end
 

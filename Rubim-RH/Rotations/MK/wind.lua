@@ -316,9 +316,9 @@ local function APL()
             return S.ChiWave:Cast()
         end
         -- flying_serpent_kick,if=buff.bok_proc.down,interrupt=1
-        if S.FlyingSerpentKick:IsReady() and (Player:BuffDownP(S.BokProcBuff)) then
-            return S.FlyingSerpentKick:Cast()
-        end
+--        if S.FlyingSerpentKick:IsReady() and (Player:BuffDownP(S.BokProcBuff)) then
+--            return S.FlyingSerpentKick:Cast()
+        --end
         -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
         if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
             return S.BlackoutKick:Cast()

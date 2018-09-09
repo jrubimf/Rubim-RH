@@ -129,9 +129,19 @@ end
 --- Unit Speed Functions
 
 -- Unit Slowed
+local magicSlow = {
+
+}
 function Unit:IsSnared()
 	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) or self:BuffPvP(Spell(227847))  then
 		return true
+	end
+
+	id = select(3, UnitClass("Player"))
+	for i = 1, #magicSlow do
+		if id == magicSlow[i] then
+			return true
+		end
 	end
 
 	local engName, standardName, classNumber = self:Class()

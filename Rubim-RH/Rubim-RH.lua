@@ -388,8 +388,21 @@ local defaults = {
 
             SoVOpener = false,
         },
-        [65] = {
+        [Holy] = {
             cooldown = true,
+            sk1 = 50,
+            sk1id = 498,
+            sk1tooltip = "Percent HP to use Divine Protection",
+
+            sk2 = 30,
+            sk2id = 642,
+            sk2tooltip = "Percent HP to use Divine Shield",
+
+            sk3 = 15, --
+            sk3id = 633, --Lay on HAnds
+            sk3tooltip = "Percent HP to use Lay on Hands",
+
+
         },
         [66] = {
             cooldown = true,
