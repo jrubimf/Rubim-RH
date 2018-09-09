@@ -43,7 +43,7 @@ end
 
 function RubimRH.Shared()
     if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
-        return 0, 538745
+        return 538745
     end
 
     if Target:Exists() and Target:MaxDistanceToPlayer(true) <= 8 and RubimRH.CDsON() then

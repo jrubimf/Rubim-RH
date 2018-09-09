@@ -20,7 +20,7 @@ local tableinsert = table.insert;
 RubimRH.Spell[261] = {
     -- Racials
     ArcanePulse = Spell(260364),
-    ArcaneTorrent = Spell(50613),
+    ArcaneTorrent = Spell(25046),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     LightsJudgment = Spell(255647),
