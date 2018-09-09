@@ -52,6 +52,7 @@ RubimRH.Spell[252] = {
     DeathGrip = Spell(49576),
     DeathPact = Spell(48743),
     IceboundFortitude = Spell(48792),
+    NecroticStrike = Spell(223829),
 
 };
 local S = RubimRH.Spell[252]

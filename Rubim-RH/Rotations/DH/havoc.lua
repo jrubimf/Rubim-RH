@@ -102,6 +102,9 @@ RubimRH.Spell[577] = {
     PreparedBuff = Spell(203650),
     -- Set Bonuses
     T21_4pc_Buff = Spell(252165),
+    -- azerite
+    RevolvingBlades = Spell(279581),
+    UnboundChaos = Spell(275144)
 }
 
 
@@ -177,6 +180,19 @@ local function IsMetaExtendedByDemonic()
 
     return false;
 end
+
+local function MetamorphosisCooldownAdjusted()
+    -- TODO: Make this better by sampling the Fury expenses over time instead of approximating
+    if I.ConvergenceofFates:IsEquipped() and I.DelusionsOfGrandeur:IsEquipped() then
+        return S.Metamorphosis:CooldownRemainsP() * 0.56;
+    elseif I.ConvergenceofFates:IsEquipped() then
+        return S.Metamorphosis:CooldownRemainsP() * 0.78;
+    elseif I.DelusionsOfGrandeur:IsEquipped() then
+        return S.Metamorphosis:CooldownRemainsP() * 0.67;
+    end
+    return S.Metamorphosis:CooldownRemainsP()
+end
+
 
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -258,7 +274,7 @@ local function APL()
             return S.Nemesis:Cast()
         end
         -- nemesis,if=!raid_event.adds.exists
-        if S.Nemesis:IsReady() then
+        if S.Nemesis:IsReady() and (not (Cache.EnemiesCount[40] > 1)) then
             return S.Nemesis:Cast()
         end
         -- potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
@@ -299,8 +315,13 @@ local function APL()
         if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
-        -- blade_dance,if=variable.blade_dance&cooldown.eye_beam.remains>5&!cooldown.metamorphosis.ready
-        if S.BladeDance:IsReady() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance) and S.EyeBeam:CooldownRemainsP() > 5 and not S.Metamorphosis:CooldownUpP()) then
+        -- eye_beam,if=!buff.metamorphosis.extended_by_demonic&(raid_event.adds.up|raid_event.adds.in>25)
+        if S.EyeBeam:IsReady() and (not IsMetaExtendedByDemonic() and ((Cache.EnemiesCount[10] > 1) or 10000000000 > 25)) then
+            return S.EyeBeam:Cast()
+        end
+
+        -- blade_dance,if=variable.blade_dance&!cooldown.metamorphosis.ready&(cooldown.eye_beam.remains>(5-azerite.revolving_blades.rank*3)|(raid_event.adds.in>cooldown&raid_event.adds.in<25))
+        if S.BladeDance:IsReady() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance) and not S.Metamorphosis:CooldownUpP() and (S.EyeBeam:CooldownRemainsP() > (5 - S.RevolvingBlades:AzeriteRank() * 3) or (10000000000 > S.BladeDance:Cooldown() and 10000000000 < 25))) then
             return S.BladeDance:Cast()
         end
         -- immolation_aura
@@ -310,10 +331,6 @@ local function APL()
         -- felblade,if=fury<40|(buff.metamorphosis.down&fury.deficit>=40)
         if S.Felblade:IsReady() and (Player:Fury() < 40 or (Player:BuffDownP(S.MetamorphosisBuff) and Player:FuryDeficit() >= 40)) then
             return S.Felblade:Cast()
-        end
-        -- eye_beam,if=(!talent.blind_fury.enabled|fury.deficit>=70)&(!buff.metamorphosis.extended_by_demonic|(set_bonus.tier21_4pc&buff.metamorphosis.remains>16))
-        if S.EyeBeam:IsReady() and ((not S.BlindFury:IsAvailable() or Player:FuryDeficit() >= 70) and (not IsMetaExtendedByDemonic() or (HL.Tier21_4Pc and Player:BuffRemainsP(S.MetamorphosisBuff) > 16))) then
-            return S.EyeBeam:Cast()
         end
         -- annihilation,if=(talent.blind_fury.enabled|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance
         if S.Annihilation:IsReadyMorph() and IsInMeleeRange() and ((S.BlindFury:IsAvailable() or Player:FuryDeficit() < 30 or Player:BuffRemainsP(S.MetamorphosisBuff) < 5) and not bool(VarPoolingForBladeDance)) then
@@ -351,8 +368,8 @@ local function APL()
     end
 
     Normal = function()
-        -- vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down
-        if S.VengefulRetreat:IsReady() and (S.Momentum:IsAvailable() and Player:BuffDownP(S.PreparedBuff)) then
+        -- vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down&time>1
+        if S.VengefulRetreat:IsReady() and (S.Momentum:IsAvailable() and Player:BuffDownP(S.PreparedBuff) and HL.CombatTime() > 1) then
             return S.VengefulRetreat:Cast()
         end
         -- fel_rush,if=(variable.waiting_for_momentum|talent.fel_mastery.enabled)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
@@ -363,6 +380,10 @@ local function APL()
         if S.FelBarrage:IsReady() and (not bool(VarWaitingForMomentum) and (Cache.EnemiesCount[30] > 1)) then
             return S.FelBarrage:Cast()
         end
+        -- death_sweep,if=variable.blade_dance
+        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
+            return S.DeathSweep:Cast()
+        end
         -- immolation_aura
         if S.ImmolationAura:IsReady() and (true) then
             return S.ImmolationAura:Cast()
@@ -371,13 +392,13 @@ local function APL()
         if S.EyeBeam:IsReady() and (Cache.EnemiesCount[10] >= 1 and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
-        -- death_sweep,if=variable.blade_dance
-        if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
-            return S.DeathSweep:Cast()
-        end
         -- blade_dance,if=variable.blade_dance
         if S.BladeDance:IsReady() and  Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.BladeDance:Cast()
+        end
+        -- fel_rush,if=!talent.momentum.enabled&!talent.demon_blades.enabled&azerite.unbound_chaos.enabled
+        if S.FelRush:IsReady() and (not S.Momentum:IsAvailable() and not S.DemonBlades:IsAvailable() and S.UnboundChaos:AzeriteEnabled()) then
+            return S.FelRush:Cast()
         end
         -- felblade,if=fury.deficit>=40
         if S.Felblade:IsReady() and (Player:FuryDeficit() >= 40) then
@@ -434,6 +455,7 @@ local function APL()
         return S.Disrupt:Cast()
     end
 
+    -- variable,name=blade_dance,value=talent.first_blood.enabled|set_bonus.tier20_4pc|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
     if (true) then
         VarBladeDance = num(S.FirstBlood:IsAvailable() or HL.Tier20_4Pc or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
     end

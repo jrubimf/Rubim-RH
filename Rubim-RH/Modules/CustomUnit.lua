@@ -130,7 +130,7 @@ end
 
 -- Unit Slowed
 function Unit:IsSnared()
-	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) then
+	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) or self:BuffPvP(Spell(227847))  then
 		return true
 	end
 
@@ -198,6 +198,14 @@ function Unit:IsInWarMode()
 		return true
 	end
 	return false
+end
+
+local stoppedtime = 9999999
+function Unit:StoppedFor()
+	if self:IsMoving() then
+		stoppedtime = GetTime()
+	end
+	return GetTime() - stoppedtime
 end
 
 local movedTimer = 0

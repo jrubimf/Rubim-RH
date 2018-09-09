@@ -49,6 +49,7 @@ RubimRH.Spell[250] = {
     RuneStrike = Spell(210764),
     RuneStrikeTalent = Spell(19217),
     UmbilicusEternus = Spell(193249),
+    WraithWalk = Spell(212552),
     -- Defensive
     IceboundFortitude = Spell(48792),
     VampiricBlood = Spell(55233),
@@ -348,7 +349,7 @@ local function APL()
 --    end
 
     ----CHANNEL BLOOD DRINKER
-    if Player:IsChanneling(S.BloodDrinker) then
+    if Player:IsChanneling(S.BloodDrinker) or Player:IsChanneling(S.WraithWalk) then
         return 0, 236353
     end
 
