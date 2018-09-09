@@ -171,11 +171,11 @@ local function APL()
             return S.Defile:Cast()
         end
         -- epidemic,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
-        if S.Epidemic:IsAvailable() and S.Epidemic:IsUsable() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
+        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
             return S.Epidemic:Cast()
         end
         -- death_coil,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
-        if S.DeathCoil:IsUsable() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
+        if S.DeathCoil:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
         -- scourge_strike,if=death_and_decay.ticking&cooldown.Apocalypse.remains
@@ -187,7 +187,7 @@ local function APL()
             return S.ClawingShadows:Cast()
         end
         -- epidemic,if=!variable.pooling_for_gargoyle
-        if S.Epidemic:IsAvailable() and S.Epidemic:IsUsable() and not bool(VarPoolingForGargoyle) then
+        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and not bool(VarPoolingForGargoyle) then
             return S.Epidemic:Cast()
         end
         -- festering_strike,if=talent.bursting_sores.enabled&spell_targets.bursting_sores>=2&debuff.festering_wound.stack<=1
@@ -195,15 +195,15 @@ local function APL()
             return S.FesteringStrike:Cast()
         end
         -- death_coil,if=buff.sudden_doom.react&rune.deficit>=4
-        if S.DeathCoil:IsUsable() and Player:Buff(S.SuddenDoomBuff) and Player:Runes() <= 2 then
+        if S.DeathCoil:IsReady() and Player:Buff(S.SuddenDoomBuff) and Player:Runes() <= 2 then
             return S.DeathCoil:Cast()
         end
         -- death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
-        if S.DeathCoil:IsUsable() and Player:Buff(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or S.SummonGargoyle:TimeSinceLastCast() <= 22 then
+        if S.DeathCoil:IsReady() and Player:Buff(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or S.SummonGargoyle:TimeSinceLastCast() <= 22 then
             return S.DeathCoil:Cast()
         end
         -- death_coil,if=runic_power.deficit<14&(cooldown.Apocalypse.remains>5|debuff.festering_wound.stack>4)&!variable.pooling_for_gargoyle
-        if S.DeathCoil:IsUsable() and Player:RunicPowerDeficit() < 14 and (S.Apocalypse:CooldownRemainsP() > 5 or Target:DebuffStackP(S.FesteringWoundDebuff) > 4) and not bool(VarPoolingForGargoyle) then
+        if S.DeathCoil:IsReady() and Player:RunicPowerDeficit() < 14 and (S.Apocalypse:CooldownRemainsP() > 5 or Target:DebuffStackP(S.FesteringWoundDebuff) > 4) and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
         -- scourge_strike,if=((debuff.festering_wound.up&cooldown.Apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5
@@ -215,7 +215,7 @@ local function APL()
             return S.ClawingShadows:Cast()
         end
         -- death_coil,if=runic_power.deficit<20&!variable.pooling_for_gargoyle
-        if S.DeathCoil:IsUsable() and Player:RunicPowerDeficit() < 20 and not bool(VarPoolingForGargoyle) then
+        if S.DeathCoil:IsReady() and Player:RunicPowerDeficit() < 20 and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
         -- festering_strike,if=((((debuff.festering_wound.stack<4&!buff.unholy_frenzy.up)|debuff.festering_wound.stack<3)&cooldown.Apocalypse.remains<3)|debuff.festering_wound.stack<1)&cooldown.army_of_the_dead.remains>5
@@ -223,7 +223,7 @@ local function APL()
             return S.FesteringStrike:Cast()
         end
         -- death_coil,if=!variable.pooling_for_gargoyle
-        if S.DeathCoil:IsUsable() and not bool(VarPoolingForGargoyle) then
+        if S.DeathCoil:IsReady() and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
         return 0, 135328
@@ -264,7 +264,7 @@ local function APL()
     end
     Generic = function()
         -- death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
-        if S.DeathCoil:IsReady() and Player:BuffP(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or Player:GargoyleActive() then
+        if S.DeathCoil:IsReady() and (Player:BuffP(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or Player:GargoyleActive()) then
             return S.DeathCoil:Cast()
         end
         -- death_coil,if=runic_power.deficit<14&(cooldown.apocalypse.remains>5|debuff.festering_wound.stack>4)&!variable.pooling_for_gargoyle
@@ -328,7 +328,7 @@ local function APL()
     end
 
     if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].sk2 then
-        if S.DeathStrike:IsUsable() then
+        if S.DeathStrike:IsReady() then
             return S.DeathStrike:Cast()
         else
             S.DeathStrike:Queue()

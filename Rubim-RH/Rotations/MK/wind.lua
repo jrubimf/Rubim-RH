@@ -148,7 +148,7 @@ local function APL()
     end
     Cd = function()
         -- invoke_xuen_the_white_tiger
-        if S.InvokeXuentheWhiteTiger:IsReady() and HR.CDsON() then
+        if S.InvokeXuentheWhiteTiger:IsReady()  then
             return S.InvokeXuentheWhiteTiger:Cast()
         end
         -- use_item,name=lustrous_golden_plumage
@@ -300,7 +300,7 @@ local function APL()
             return S.ChiBurst:Cast()
         end
         -- arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReady() and HR.CDsON() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
+        if S.ArcaneTorrent:IsReady() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
             return S.ArcaneTorrent:Cast()
         end
         -- fist_of_the_white_tiger,if=chi.max-chi>=3&(energy>46|buff.rushing_jade_wind.down)

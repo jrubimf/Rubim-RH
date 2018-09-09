@@ -137,6 +137,10 @@ local function APL()
         return 0, 462338
     end
 
+    if S.Rebuke:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
+        return S.Rebuke:Cast()
+    end
+
     if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].sk1 then
         return S.LightofTheProtector:Cast()
     end
