@@ -254,7 +254,7 @@ local function APL()
             return S.UnholyFrenzy:Cast()
         end
         -- soul_reaper,target_if=(target.time_to_die<8|rune<=2)&!buff.unholy_frenzy.up
-        if S.SoulReaper:IsReady() and (Target:TimeToDie() < 8 or Player:Runes() >= 2) and not Player:Buff(S.UnholyFrenzyBuff) then
+        if S.SoulReaper:IsReady() and (Target:TimeToDie() < 8 or Player:Runes() <= 2) and not Player:Buff(S.UnholyFrenzyBuff) then
             return S.SoulReaper:Cast()
         end
         -- unholy_blight
