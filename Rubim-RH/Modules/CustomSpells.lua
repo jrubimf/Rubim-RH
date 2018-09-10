@@ -242,6 +242,30 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
+function Spell:IsReadyNoTarget(Range, AoESpell, ThisUnit)
+    if not self:IsAvailable() or self:Queued() then
+        return false
+    end
+
+    if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
+        for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
+            if v.spellID == self:ID() and v.isActive == false then
+                return false
+            end
+        end
+    end
+
+    if self:IsEnabled() == false then
+        return false
+    end
+
+    if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
+        return false
+    end
+
+    return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
+end
+
 function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false

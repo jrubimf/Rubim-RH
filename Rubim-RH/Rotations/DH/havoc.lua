@@ -321,7 +321,7 @@ local function APL()
         end
 
         -- blade_dance,if=variable.blade_dance&!cooldown.metamorphosis.ready&(cooldown.eye_beam.remains>(5-azerite.revolving_blades.rank*3)|(raid_event.adds.in>cooldown&raid_event.adds.in<25))
-        if S.BladeDance:IsReady() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance) and not S.Metamorphosis:CooldownUpP() and (S.EyeBeam:CooldownRemainsP() > (5 - S.RevolvingBlades:AzeriteRank() * 3) or (10000000000 > S.BladeDance:Cooldown() and 10000000000 < 25))) then
+        if S.BladeDance:IsReady() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance) and not S.Metamorphosis:CooldownUpP() and (S.EyeBeam:CooldownRemainsP() > (5 - S.RevolvingBlades:AzeriteRank() * 3) or (10000000000 > S.BladeDance:CooldownRemains() and 10000000000 < 25))) then
             return S.BladeDance:Cast()
         end
         -- immolation_aura
