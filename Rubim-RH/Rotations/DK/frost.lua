@@ -208,11 +208,11 @@ local function Cooldowns()
     --return I.ProlongedPower:Cast()
     --end
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
-    if RubimRH.CDsON() and RubimRH.RacialON() and S.BloodFury:IsReady() and (Player:BuffP(S.PillarofFrost) and Player:BuffP(S.EmpowerRuneWeapon)) then
+    if RubimRH.CDsON() and S.BloodFury:IsReady() and (Player:BuffP(S.PillarofFrost) and Player:BuffP(S.EmpowerRuneWeapon)) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=buff.pillar_of_frost.up
-    if RubimRH.CDsON() and RubimRH.RacialON() and S.Berserking:IsReady() and (Player:BuffP(S.PillarofFrost)) then
+    if RubimRH.CDsON() and S.Berserking:IsReady() and (Player:BuffP(S.PillarofFrost)) then
         return S.Berserking:Cast()
     end
     -- pillar_of_frost,if=cooldown.empower_rune_weapon.remains
