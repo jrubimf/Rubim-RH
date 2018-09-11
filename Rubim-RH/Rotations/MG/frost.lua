@@ -133,11 +133,11 @@ local function APL()
             return S.IceNova:Cast()
         end
         -- flurry,if=prev_gcd.1.ebonbolt|buff.brain_freeze.react&(prev_gcd.1.frostbolt&(buff.icicles.stack<4|!talent.glacial_spike.enabled)|prev_gcd.1.glacial_spike)
-        if S.Flurry:IsReady() and (Player:PrevGCDP(1, S.Ebonbolt) or bool(Player:BuffStackP(S.BrainFreezeBuff)) and (Player:PrevGCDP(1, S.Frostbolt) and (Player:BuffStackP(S.IciclesBuff) < 4 or not S.GlacialSpike:IsAvailable()) or Player:PrevGCDP(1, S.GlacialSpike))) then
+        if S.Flurry:IsReady() and (Player:PrevGCDP(1, S.Ebonbolt) or bool(Player:Buff(S.BrainFreezeBuff)) and (Player:PrevGCDP(1, S.Frostbolt) and (Player:BuffStackP(S.IciclesBuff) < 4 or not S.GlacialSpike:IsAvailable()) or Player:PrevGCDP(1, S.GlacialSpike))) then
             return S.Flurry:Cast()
         end
         -- ice_lance,if=buff.fingers_of_frost.react
-        if S.IceLance:IsReady() and (bool(Player:BuffStackP(S.FingersofFrostBuff))) then
+        if S.IceLance:IsReady() and (bool(Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
         end
         -- ray_of_frost
@@ -271,7 +271,7 @@ local function APL()
             return S.IceNova:Cast()
         end
         -- flurry,if=azerite.winters_reach.enabled&!buff.brain_freeze.react&buff.winters_reach.react
-        if S.Flurry:IsReady() and (S.WintersReach:AzeriteEnabled() and not bool(Player:BuffStackP(S.BrainFreezeBuff)) and bool(Player:BuffStackP(S.WintersReachBuff))) then
+        if S.Flurry:IsReady() and (S.WintersReach:AzeriteEnabled() and not bool(Player:Buff(S.BrainFreezeBuff)) and bool(Player:Buff(S.WintersReachBuff))) then
             return S.Flurry:Cast()
         end
         -- frostbolt
@@ -291,7 +291,7 @@ local function APL()
     end
     TalentRop = function()
         -- rune_of_power,if=talent.glacial_spike.enabled&buff.icicles.stack=5&(buff.brain_freeze.react|talent.ebonbolt.enabled&cooldown.ebonbolt.remains<cast_time)
-        if S.RuneofPower:IsReady() and (S.GlacialSpike:IsAvailable() and Player:BuffStackP(S.IciclesBuff) == 5 and (bool(Player:BuffStackP(S.BrainFreezeBuff)) or S.Ebonbolt:IsAvailable() and S.Ebonbolt:CooldownRemainsP() < S.RuneofPower:CastTime())) then
+        if S.RuneofPower:IsReady() and (S.GlacialSpike:IsAvailable() and Player:BuffStackP(S.IciclesBuff) == 5 and (bool(Player:Buff(S.BrainFreezeBuff)) or S.Ebonbolt:IsAvailable() and S.Ebonbolt:CooldownRemainsP() < S.RuneofPower:CastTime())) then
             return S.RuneofPower:Cast()
         end
         -- rune_of_power,if=!talent.glacial_spike.enabled&(talent.ebonbolt.enabled&cooldown.ebonbolt.remains<cast_time|talent.comet_storm.enabled&cooldown.comet_storm.remains<cast_time|talent.ray_of_frost.enabled&cooldown.ray_of_frost.remains<cast_time|charges_fractional>1.9)
@@ -309,7 +309,7 @@ local function APL()
     if RubimRH.TargetIsValid() then
         -- counterspell
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
-        if S.IceLance:IsReady() and (Player:PrevGCDP(1, S.Flurry) and Player:Buff(S.BrainFreezeBuff) and not bool(Player:BuffStackP(S.FingersofFrostBuff))) then
+        if S.IceLance:IsReady() and (Player:PrevGCDP(1, S.Flurry) and Player:Buff(S.BrainFreezeBuff) and not bool(Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
         end
         -- call_action_list,name=cooldowns
