@@ -309,7 +309,7 @@ local function APL()
     if RubimRH.TargetIsValid() then
         -- counterspell
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
-        if S.IceLance:IsReady() and (Player:PrevGCDP(1, S.Flurry) and Player:BrainFreezeActive() and not bool(Player:BuffStackP(S.FingersofFrostBuff))) then
+        if S.IceLance:IsReady() and (Player:PrevGCDP(1, S.Flurry) and Player:Buff(S.BrainFreezeBuff) and not bool(Player:BuffStackP(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
         end
         -- call_action_list,name=cooldowns
