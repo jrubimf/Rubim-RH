@@ -64,7 +64,6 @@ RubimRH.Spell[261] = {
     SharpenedBladesPower = Spell(272911),
     SharpenedBladesBuff = Spell(272916),
     -- Defensive
-    CrimsonVial = Spell(185311),
     Feint = Spell(1966),
     -- Utility
     Blind = Spell(2094),
@@ -395,7 +394,7 @@ local function APL ()
     HL.GetEnemies("Melee"); -- Melee
     --- Defensives
     -- Crimson Vial
-    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].crimsonvial then
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].sk1 then
         return S.CrimsonVial:Cast()
     end
 
@@ -433,11 +432,11 @@ local function APL ()
     end
 
     -- In Combat
-    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].cloakofshadows then
+    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].sk2 then
         return S.CloakofShadows:Cast()
     end
 
-    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].evasion and Player:LastSwinged() <= 3 then
+    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].sk3 and Player:LastSwinged() <= 3 then
         return S.Evasion:Cast()
     end
 

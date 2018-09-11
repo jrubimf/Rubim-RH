@@ -333,6 +333,20 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
+    --ROGUE Sub
+    if RubimRH.playerSpec == Subtlety then
+        local sk_2_1 = StdUi:Checkbox(window, "Vanish Attack");
+        sk_2_1:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].vanishattack)
+        StdUi:GlueBelow(sk_2_1, sk_1_1, 15, -24, 'RIGHT');
+        function sk_2_1:OnValueChanged(value)
+            if RubimRH.db.profile[RubimRH.playerSpec].vanishattack then
+                RubimRH.db.profile[RubimRH.playerSpec].vanishattack = false
+            else
+                RubimRH.db.profile[RubimRH.playerSpec].vanishattack = true
+            end
+        end
+    end
+
     local sk_2_1
     if sk4 >= 0 then
         sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 5, false, 0, 19)
@@ -3522,8 +3536,6 @@ function RubimRH.ClassConfig(specID)
         AssMenu()
     elseif specID == 260 then
         OutMenu()
-    elseif specID == 261 then
-        SubMenu()
     else
         AllMenu()
     end

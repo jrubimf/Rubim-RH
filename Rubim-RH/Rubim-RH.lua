@@ -126,9 +126,9 @@ local EnabledRotation = {
     [254] = true, -- Marksmanship
     [255] = true, -- Survival
     -- Mage
-    [62] = false, -- Arcane
+    [62] = true, -- Arcane
     [63] = true, -- Fire
-    [64] = false, -- Frost
+    [64] = true, -- Frost
     -- Monk
     [268] = true, -- Brewmaster
     [269] = true, -- Windwalker
@@ -477,7 +477,7 @@ local defaults = {
             victoryrush = 80,
         },
         --ROGUE
-        [260] = {
+        [260] = { --Outlaw
             cooldown = true,
             stealthOOC = true,
             crimsonvial = 65,
@@ -490,9 +490,18 @@ local defaults = {
             cooldown = true,
             stealthOOC = true,
             vanishattack = true,
-            crimsonvial = 65,
-            cloakofshadows = 15,
-            evasion = 50,
+
+            sk1 = 65,
+            sk1id = 185311,
+            sk1tooltip = "Percent HP to use Crimson Vial",
+
+            sk2 = 15,
+            sk2id = 31224,
+            sk2tooltip = "Percent HP to use Cloak of Shadows",
+
+            sk3 = 50,
+            sk3id = 31224,
+            sk3tooltip = "Percent HP to use Evasion",
         },
         [259] = {
             cooldown = true,

@@ -337,6 +337,7 @@ local function APL()
         if Precombat() ~= nil then
             return Precombat()
         end
+        return 0, 462338
     end
     -- call_action_list,name=standard_rotation
     if (true) then

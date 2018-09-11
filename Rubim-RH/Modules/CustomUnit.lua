@@ -129,12 +129,12 @@ end
 --- Unit Speed Functions
 
 function Unit:IsSnared()
-	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) or self:BuffPvP(Spell(227847))  then
+	if self:BuffPvP(Spell(1044)) or self:BuffPvP(Spell(66115)) or self:BuffPvP(Spell(48265)) or self:BuffPvP(Spell(227847)) or self:BuffPvP(Spell(46924))  then
 		return true
 	end
 
 	local engName, standardName, classNumber = self:Class()
-	if classNumber == 6 and self:MaxSpeed() <= 99 then
+	if (classNumber == 6  or classNumber == 11) and self:MaxSpeed() <= 99 then
 		return true
 	end
 	return (self:MaxSpeed() < 70)	
