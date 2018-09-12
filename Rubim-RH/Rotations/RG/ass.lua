@@ -469,7 +469,8 @@ local function APL()
         end
 
         -- crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
-        if S.CrimsonTempest:IsReady() and (Cache.EnemiesCount[15] >= 2 and Player:BuffRemainsP(S.CrimsonTempestBuff) < 2 + num((Cache.EnemiesCount[15] >= 5)) and Player:ComboPoints() >= 4) then
+        if S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
+                and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
             return S.CrimsonTempest:Cast()
         end
         
