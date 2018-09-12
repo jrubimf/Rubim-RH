@@ -18,38 +18,46 @@ local Item = HL.Item
 
 -- Spells
 RubimRH.Spell[259] = {
-    Stealth = Spell(1784),
-    MarkedForDeath = Spell(137619),
-    VendettaDebuff = Spell(79140),
-    Vanish = Spell(1856),
-    BloodFury = Spell(20572),
+    -- Racials
+    ArcanePulse = Spell(260364),
+    ArcaneTorrent = Spell(25046),
     Berserking = Spell(26297),
-    Vendetta = Spell(79140),
-    RuptureDebuff = Spell(1943),
-    Exsanguinate = Spell(200806),
-    Nightstalker = Spell(14062),
-    Subterfuge = Spell(108208),
-    Garrote = Spell(703),
-    MasterAssassin = Spell(255989),
-    ToxicBlade = Spell(245388),
+    BloodFury = Spell(20572),
+    LightsJudgment = Spell(255647),
+    -- Abilities
     Envenom = Spell(32645),
-    DeeperStratagem = Spell(193531),
-    ToxicBladeDebuff = Spell(245389),
     FanofKnives = Spell(51723),
-    HiddenBladesBuff = Spell(270070),
-    TheDreadlordsDeceitBuff = Spell(208692),
+    Garrote = Spell(703),
+    KidneyShot = Spell(408),
+    Mutilate = Spell(1329),
+    PoisonedKnife = Spell(185565),
+    Rupture = Spell(1943),
+    Stealth = Spell(1784),
+    Stealth2 = Spell(115191), -- w/ Subterfuge Talent
+    Vanish = Spell(1856),
+    VanishBuff = Spell(11327),
+    Vendetta = Spell(79140),
+    -- Talents
     Blindside = Spell(111240),
     BlindsideBuff = Spell(121153),
-    VenomRush = Spell(152152),
-    Mutilate = Spell(1329),
-    Rupture = Spell(1943),
     CrimsonTempest = Spell(121411),
-    CrimsonTempestBuff = Spell(121411),
-    ArcaneTorrent = Spell(50613),
-    ArcanePulse = Spell(260364),
-    LightsJudgment = Spell(255647),
-    InternalBleeding = Spell(154904),
+    DeeperStratagem = Spell(193531),
+    Exsanguinate = Spell(200806),
+    HiddenBladesBuff = Spell(270070),
+    InternalBleeding = Spell(154953),
+    MarkedforDeath = Spell(137619),
+    MasterAssassin = Spell(255989),
+    Nightstalker = Spell(14062),
+    Subterfuge = Spell(108208),
+    ToxicBlade = Spell(245388),
+    ToxicBladeDebuff = Spell(245389),
+    VenomRush = Spell(152152),
+    -- Azerite Traits
+    SharpenedBladesPower = Spell(272911),
+    SharpenedBladesBuff = Spell(272916),
+    ShroudedSuffocation = Spell(278666),
     -- Poisons
+
     CripplingPoison = Spell(3408),
     DeadlyPoison = Spell(2823),
     DeadlyPoisonDebuff = Spell(2818),
@@ -60,10 +68,7 @@ RubimRH.Spell[259] = {
     CrimsonVial = Spell(185311),
     Evasion = Spell(5277),
     CloakofShadows = Spell(31224),
-    -- Azerite Traits
-    SharpenedBladesPower = Spell(272911),
-    SharpenedBladesBuff = Spell(272916),
-    ShroudedSuffocation = Spell(278666),
+    TheDreadlordsDeceit = Spell(208693),
 
 };
 local S = RubimRH.Spell[259];
@@ -189,7 +194,7 @@ local function PoisonedBleeds()
             if Unit:Debuff(S.InternalBleeding) then
                 PoisonedBleedsCount = PoisonedBleedsCount + 1;
             end
-            if Unit:Debuff(S.RuptureDebuff) then
+            if Unit:Debuff(S.Rupture) then
                 PoisonedBleedsCount = PoisonedBleedsCount + 1;
             end
         end
@@ -320,10 +325,35 @@ local Stealth;
 local RuptureThreshold, CrimsonTempestThreshold, RuptureDMGThreshold, GarroteDMGThreshold;
 local ComboPoints, ComboPointsDeficit, Energy_Regen_Combined;
 
+local OffensiveCDs = {
+    S.MarkedforDeath,
+    S.Vendetta,
+    
+}
+
+local function UpdateCDs()
+    if RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 --- ======= ACTION LISTS =======
 local function APL()
     local Precombat, Cds, Direct, Dot, Stealthed
     UpdateRanges()
+    UpdateCDs()
 
     Stealth = S.Subterfuge:IsAvailable() and S.Stealth2 or S.Stealth; -- w/ or w/o Subterfuge Talent
     ComboPoints = Player:ComboPoints();
@@ -451,12 +481,10 @@ local function APL()
     end
     Dot = function()
         -- rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
-        if S.Rupture:IsCastable("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
-                and ((ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1)
-                or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or (ComboPoints >= 2)))) then
+        if S.Rupture:IsReady() and (S.Exsanguinate:IsAvailable() and ((Player:ComboPoints() >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1) or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or Player:ComboPoints() >= 2)))) then
             return S.Rupture:Cast()
         end
-
+        
         -- pool_resource,for_next=1
         -- actions.dot+=/garrote,cycle_targets=1,if=(!talent.subterfuge.enabled|!(cooldown.vanish.up&cooldown.vendetta.remains<=4))&combo_points.deficit>=1&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(target.time_to_die-remains>4&spell_targets.fan_of_knives<=1|target.time_to_die-remains>12)
         if S.Garrote:IsReady() and ((not S.Subterfuge:IsAvailable() or not (S.Vanish:CooldownUpP() and S.Vendetta:CooldownRemainsP() <= 4)) and Player:ComboPointsDeficit() >= 1 and Target:DebuffRefreshableCP(S.Garrote) and (Target:PMultiplier(S.Garrote) <= 1 or Target:DebuffRemainsP(S.Garrote) <= S.Garrote:TickTime() and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (not HL.Exsanguinated(Target, "Garrote") or Target:DebuffRemainsP(S.Garrote) <= S.Garrote:TickTime() * 2 and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 4 and Cache.EnemiesCount[10] <= 1 or Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 12)) then
@@ -473,16 +501,16 @@ local function APL()
                 and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
             return S.CrimsonTempest:Cast()
         end
-        
+
         -- rupture,cycle_targets=1,if=combo_points>=4&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&target.time_to_die-remains>4
-        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and Target:DebuffRefreshableCP(S.RuptureDebuff) and (Target:PMultiplier(S.Rupture) <= 1 or Target:DebuffRemainsP(S.RuptureDebuff) <= S.RuptureDebuff:TickTime() and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (not HL.Exsanguinated(Target, "Rupture") or Target:DebuffRemainsP(S.RuptureDebuff) <= S.RuptureDebuff:TickTime() * 2 and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and Target:TimeToDie() - Target:DebuffRemainsP(S.RuptureDebuff) > 4) then
+        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and Target:DebuffRefreshableCP(S.Rupture) and (Target:PMultiplier(S.Rupture) <= 1 or Target:DebuffRemainsP(S.Rupture) <= S.Rupture:TickTime() and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (not HL.Exsanguinated(Target, "Rupture") or Target:DebuffRemainsP(S.Rupture) <= S.Rupture:TickTime() * 2 and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and Target:TimeToDie() - Target:DebuffRemainsP(S.Rupture) > 4) then
             return S.Rupture:Cast()
         end
 
     end
     Stealthed = function()
         -- rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&variable.single_target|!ticking)&target.time_to_die-remains>6
-        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and bool(VarSingleTarget) or not Target:DebuffP(S.RuptureDebuff)) and Target:TimeToDie() - Target:DebuffRemainsP(S.RuptureDebuff) > 6) then
+        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2 or not Target:DebuffP(S.Rupture)) and Target:TimeToDie() - Target:DebuffRemainsP(S.Rupture) > 6) then
             return S.Rupture:Cast()
         end
         -- envenom,if=combo_points>=cp_max_spend
@@ -498,7 +526,7 @@ local function APL()
             return S.Garrote:Cast()
         end
         -- rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
-        if S.Rupture:IsReady() and (S.Subterfuge:IsAvailable() and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.RuptureDebuff)) then
+        if S.Rupture:IsReady() and (S.Subterfuge:IsAvailable() and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture)) then
             return S.Rupture:Cast()
         end
         -- garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
@@ -507,7 +535,7 @@ local function APL()
         end
         -- pool_resource,for_next=1
         -- garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
-        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCDP(1, S.Rupture) and Target:DebuffRemainsP(S.RuptureDebuff) > 5 + 4 * CPMaxSpend()) then
+        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCDP(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend()) then
             if S.Garrote:IsUsablePPool() then
                 return S.Garrote:Cast()
             else
@@ -516,13 +544,26 @@ local function APL()
             end
         end
     end
+    Energy_Regen_Combined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste());
     -- call precombat
     if IsStealthed() and RubimRH.db.profile[259].vanishattack and Player:PrevGCD(1, S.Vanish) then
         return Stealthed();
     end
 
-    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].crimsonvial then
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
         return S.CrimsonVial:Cast()
+    end
+
+    -- Poisons
+    local PoisonRefreshTime = Player:AffectingCombat() and 3*60 or 15*60;
+    -- Lethal Poison
+    if Player:BuffRemainsP(S.DeadlyPoison) <= PoisonRefreshTime
+            and Player:BuffRemainsP(S.WoundPoison) <= PoisonRefreshTime then
+        S.DeadlyPoison:Cast()
+    end
+    -- Non-Lethal Poison
+    if Player:BuffRemainsP(S.CripplingPoison) <= PoisonRefreshTime then
+        return S.CripplingPoison:Cast()
     end
 
     if not Player:AffectingCombat() then
@@ -533,11 +574,11 @@ local function APL()
     end
 
     --CUSTOM
-    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].cloakofshadows then
+    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk2 then
         return S.CloakofShadows:Cast()
     end
 
-    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].evasion and Player:LastSwinged() <= 3 then
+    if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk3 and Player:LastSwinged() <= 3 then
         return S.Evasion:Cast()
     end
     --END OF CUSTOM
