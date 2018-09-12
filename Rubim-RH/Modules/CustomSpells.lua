@@ -242,7 +242,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
-function Spell:IsReadyNoTarget(Range, AoESpell, ThisUnit)
+function Spell:IsReadyP(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:Queued() then
         return false
     end
@@ -255,6 +255,12 @@ function Spell:IsReadyNoTarget(Range, AoESpell, ThisUnit)
         end
     end
 
+    if RubimRHPvP ~= nil and RubimRHPvP.active then
+        if RubimRH.breakableAreaCC(8) then
+            return false
+        end
+    end
+
     if self:IsEnabled() == false then
         return false
     end
@@ -263,7 +269,43 @@ function Spell:IsReadyNoTarget(Range, AoESpell, ThisUnit)
         return false
     end
 
-    return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
+    if RubimRH.db.profile.mainOption.startattack then
+
+        if Target:Exists() then
+            if self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable() then
+                return true
+            end
+        end
+
+        local range = self:MaximumRange()
+        if range == 0 or range > 8 then
+            range = 10
+        else
+            range = 8
+        end
+        HL.GetEnemies(8, true)
+        if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
+            return self:IsCastableP(nil, nil, nil) and self:IsUsableP();
+        end
+    end
+
+    if not RubimRH.TargetIsValid() then
+        return false
+    end
+
+    return self:IsCastableP(Range, AoESpell, ThisUnit) and self:IsUsableP();
+end
+
+function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
+    if not self:IsAvailable() or self:Queued() then
+        return false
+    end
+    if Range then
+        local RangeUnit = ThisUnit or Target
+        return self:IsLearned() and self:CooldownRemainsP(BypassRecovery or true, Offset or "Auto") == 0 and RangeUnit:IsInRange(Range, AoESpell)
+    else
+        return self:IsLearned() and self:CooldownRemainsP(BypassRecovery or true, Offset or "Auto") == 0
+    end
 end
 
 function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)

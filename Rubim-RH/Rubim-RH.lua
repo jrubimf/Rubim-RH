@@ -13,6 +13,7 @@ errorEvent:SetScript("OnEvent", function(self, event)
         message("Missing dependency: HeroCache")
         foundError = true
     end
+
     if RubimExtra == false then
         message("Missing dependency: RubimExtra")
         foundError = true

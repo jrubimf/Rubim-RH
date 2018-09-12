@@ -397,11 +397,11 @@ local function APL()
     end
     -- run_action_list,name=aoe,if=active_enemies>=2
     if (Cache.EnemiesCount[10] >= 2) then
-        return Aoe();
+       return Aoe();
     end
     -- call_action_list,name=standard
     if Standard() ~= nil then
-        return Standard()
+       return Standard()
     end
     return 0, 135328
 end
