@@ -33,9 +33,9 @@ Survival    | :heavy_check_mark:   | :x:   |   8.0.1  |   |
 ### Mage
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Fire    | :x:    |  :x:   |  8.0.1 |  | 
-Arcane    | :x:    |  :x:   |  8.0.1 |   | 
-Frost    | :x:   | :x:   |   8.0.1  |   | 
+Fire    | :heavy_check_mark:    |  :x:   |  8.0.1 |  | 
+Arcane    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Frost    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
 
 
 ### Monk
