@@ -334,7 +334,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     --ROGUE Sub
-    if RubimRH.playerSpec == Subtlety then
+    if RubimRH.playerSpec == Subtlety or RubimRH.playerSpec == Assassination then
         local sk_2_1 = StdUi:Checkbox(window, "Vanish Attack");
         sk_2_1:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].vanishattack)
         StdUi:GlueBelow(sk_2_1, sk_1_1, 15, -24, 'RIGHT');
@@ -3532,9 +3532,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 end
 
 function RubimRH.ClassConfig(specID)
-    if specID == 259 then
-        AssMenu()
-    elseif specID == 260 then
+    if specID == 260 then
         OutMenu()
     else
         AllMenu()

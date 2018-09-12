@@ -123,10 +123,12 @@ function ConcerationTime()
     return 0
 end
 
+local VarDsCastable
 local function APL()
     local Precombat, Cooldowns, Finishers, Generators, Opener
     UpdateRanges()
     Precombat = function()
+
     end
 
     if not Player:AffectingCombat() then
@@ -142,32 +144,57 @@ local function APL()
         return S.Rebuke:Cast()
     end
 
-    cooldowns = function()
-
-
-        if RubimRH.CDsON() and S.AvengingWrath:IsReady() and (Player:Buff(S.Inquisition) or not S.Inquisition:IsAvailable()) then
+    Cooldowns = function()
+        -- lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
+        if S.LightsJudgment:IsReady() and HR.CDsON() and (Cache.EnemiesCount[5] >= 2 or (not (Cache.EnemiesCount[30] > 1) or 10000000000 > 75)) then
+            return S.LightsJudgment:Cast()
+        end
+        -- fireblood,if=buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack=10
+        if S.Fireblood:IsReady() and HR.CDsON() and (Player:BuffP(S.AvengingWrathBuff) or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) == 10) then
+            return S.Fireblood:Cast()
+        end
+        -- shield_of_vengeance
+        if S.ShieldofVengeance:IsReady() then
+            return S.ShieldofVengeance:Cast()
+        end
+        -- avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
+        if S.AvengingWrath:IsReady() and (Player:BuffP(S.Inquisition) or not S.Inquisition:IsAvailable()) then
             return S.AvengingWrath:Cast()
         end
-
-        if RubimRH.CDsON() and S.HolyWrath:IsReady() then
-            return S.HolyWrath:Cast()
-        end
-        --actions.cooldowns+=/shield_of_vengeance
-        --actions.cooldowns+=/avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
-
-        --actions.cooldowns+=/crusade,if=holy_power>=4
-        if RubimRH.CDsON() and S.Crusade:IsReady() and Player:HolyPower() >= 4 then
+        -- crusade,if=holy_power>=4
+        if S.Crusade:IsReady() and (Player:HolyPower() >= 4) then
             return S.Crusade:Cast()
         end
-
-        --actions.cooldowns+=/lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
-        if RubimRH.RacialON() and G.LightsJudgment:IsReady() and Cache.EnemiesCount[8] >= 2 then
-            return G.LightsJudgment:Cast()
-        end
-
     end
-
-    local varDSCastable
+    --varDSCastable = RubimRH.AoEON() and (Cache.EnemiesCount[8] >= 3 or (not S.RighteousVerdict:IsAvailable() and S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2) or (S.DivineRight:AzeriteEnabled() and Target:HealthPercentage() <= 20 and not Player:Buff(S.DivineStormBuffAzerite)))
+    Finishers = function()
+        -- variable,name=ds_castable,value=spell_targets.divine_storm>=3|!talent.righteous_verdict.enabled&talent.divine_judgment.enabled&spell_targets.divine_storm>=2|azerite.divine_right.enabled&azerite.divine_right.rank>=2&target.health.pct<=20&buff.divine_right.down
+        local VarDsCastable = num(Cache.EnemiesCount[8] >= 3 or not S.RighteousVerdict:IsAvailable() and S.DivineJudgment:IsAvailable() and Cache.EnemiesCount[8] >= 2 or S.DivineRight:AzeriteEnabled() and S.DivineRight:AzeriteRank() >= 2 and Target:HealthPercentage() <= 20 and Player:BuffDownP(S.DivineRight))
+        -- inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
+        if S.Inquisition:IsReady() and (Player:BuffDownP(S.Inquisition) or Player:BuffRemainsP(S.Inquisition) < 5 and Player:HolyPower() >= 3 or S.ExecutionSentence:IsAvailable() and S.ExecutionSentence:CooldownRemainsP() < 10 and Player:BuffRemainsP(S.Inquisition) < 15 or S.AvengingWrath:CooldownRemainsP() < 15 and Player:BuffRemainsP(S.Inquisition) < 20 and Player:HolyPower() >= 3) then
+            return S.Inquisition:Cast()
+        end
+        -- execution_sentence,if=spell_targets.divine_storm<=3&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
+        if S.ExecutionSentence:IsReady() and (Cache.EnemiesCount[8] <= 3 and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 2)) then
+            return S.ExecutionSentence:Cast()
+        end
+        -- divine_storm,if=variable.ds_castable&buff.divine_purpose.react
+        if S.DivineStorm:IsReady() and (bool(VarDsCastable) and bool(Player:BuffStackP(S.DivinePurposeBuff))) then
+            return S.DivineStorm:Cast()
+        end
+        -- divine_storm,if=variable.ds_castable&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
+        if S.DivineStorm:IsReady() and (bool(VarDsCastable) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 2)) then
+            return S.DivineStorm:Cast()
+        end
+        -- templars_verdict,if=buff.divine_purpose.react&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd)
+        if S.TemplarsVerdict:IsReady() and (bool(Player:BuffStackP(S.DivinePurposeBuff)) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemainsP() > Player:GCD())) then
+            return S.TemplarsVerdict:Cast()
+        end
+        -- templars_verdict,if=(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)&(!talent.execution_sentence.enabled|buff.crusade.up&buff.crusade.stack<10|cooldown.execution_sentence.remains>gcd*2)
+        if S.TemplarsVerdict:IsReady() and ((not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 2) and (not S.ExecutionSentence:IsAvailable() or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) < 10 or S.ExecutionSentence:CooldownRemainsP() > Player:GCD() * 2)) then
+            return S.TemplarsVerdict:Cast()
+        end
+    end
     finishers = function()
 
 
