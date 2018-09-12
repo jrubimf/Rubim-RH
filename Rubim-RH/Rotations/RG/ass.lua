@@ -45,7 +45,7 @@ RubimRH.Spell[259] = {
     Exsanguinate = Spell(200806),
     HiddenBladesBuff = Spell(270070),
     InternalBleeding = Spell(154953),
-    MarkedforDeath = Spell(137619),
+    MarkedForDeath = Spell(137619),
     MasterAssassin = Spell(255989),
     Nightstalker = Spell(14062),
     Subterfuge = Spell(108208),
@@ -326,7 +326,7 @@ local RuptureThreshold, CrimsonTempestThreshold, RuptureDMGThreshold, GarroteDMG
 local ComboPoints, ComboPointsDeficit, Energy_Regen_Combined;
 
 local OffensiveCDs = {
-    S.MarkedforDeath,
+    S.MarkedForDeath,
     S.Vendetta,
 
 }
@@ -397,8 +397,8 @@ local function APL()
             end
 
             -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
-            if S.MarkedforDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
-                return S.MarkedforDeath:Cast()
+            if S.MarkedForDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
+                return S.MarkedForDeath:Cast()
             end
             -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
             if S.Vendetta:IsReady() and not Player:IsStealthed(true, false) and Target:DebuffP(S.Rupture)
