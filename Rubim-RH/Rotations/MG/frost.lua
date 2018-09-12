@@ -314,7 +314,9 @@ local function APL()
         end
         -- call_action_list,name=cooldowns
         if RubimRH.CDsON() then
-            local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end
+            if Cooldowns() ~= nil then
+                return Cooldowns()
+            end
         end
         -- call_action_list,name=aoe,if=active_enemies>3&talent.freezing_rain.enabled|active_enemies>4
         if (Cache.EnemiesCount[35] > 3 and S.FreezingRain:IsAvailable() or Cache.EnemiesCount[35] > 4) then
