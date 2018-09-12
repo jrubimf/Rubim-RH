@@ -3,14 +3,14 @@
 -- Addon
 local addonName, addonTable = ...
 -- HeroLib
-local HL     = HeroLib
-local Cache  = HeroCache
-local Unit   = HL.Unit
+local HL = HeroLib
+local Cache = HeroCache
+local Unit = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
-local Pet    = Unit.Pet
-local Spell  = HL.Spell
-local Item   = HL.Item
+local Pet = Unit.Pet
+local Spell = HL.Spell
+local Item = HL.Item
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -18,54 +18,59 @@ local Item   = HL.Item
 
 -- Spells
 RubimRH.Spell[MFrost] = {
-    ArcaneIntellectBuff                   = Spell(1459),
-    ArcaneIntellect                       = Spell(1459),
-    WaterElemental                        = Spell(31687),
-    MirrorImage                           = Spell(55342),
-    Frostbolt                             = Spell(116),
-    FrozenOrb                             = Spell(84714),
-    Blizzard                              = Spell(190356),
-    CometStorm                            = Spell(153595),
-    IceNova                               = Spell(157997),
-    Flurry                                = Spell(44614),
-    Ebonbolt                              = Spell(257537),
-    BrainFreezeBuff                       = Spell(190446),
-    IciclesBuff                           = Spell(205473),
-    GlacialSpike                          = Spell(199786),
-    IceLance                              = Spell(30455),
-    FingersofFrostBuff                    = Spell(44544),
-    RayofFrost                            = Spell(205021),
-    ConeofCold                            = Spell(120),
-    IcyVeins                              = Spell(12472),
-    RuneofPower                           = Spell(116011),
-    RuneofPowerBuff                       = Spell(116014),
-    BloodFury                             = Spell(20572),
-    Berserking                            = Spell(26297),
-    LightsJudgment                        = Spell(255647),
-    Fireblood                             = Spell(265221),
-    AncestralCall                         = Spell(274738),
-    Blink                                 = Spell(1953),
-    IceFloes                              = Spell(108839),
-    IceFloesBuff                          = Spell(108839),
-    WintersChillDebuff                    = Spell(228358),
-    GlacialSpikeBuff                      = Spell(199844),
-    SplittingIce                          = Spell(56377),
-    WintersReach                          = Spell(273346),
-    WintersReachBuff                      = Spell(273347),
-    FreezingRain                          = Spell(240555)
+    ArcaneIntellectBuff = Spell(1459),
+    ArcaneIntellect = Spell(1459),
+    WaterElemental = Spell(31687),
+    MirrorImage = Spell(55342),
+    Frostbolt = Spell(116),
+    FrozenOrb = Spell(84714),
+    Blizzard = Spell(190356),
+    CometStorm = Spell(153595),
+    IceNova = Spell(157997),
+    Flurry = Spell(44614),
+    Ebonbolt = Spell(257537),
+    BrainFreezeBuff = Spell(190446),
+    IciclesBuff = Spell(205473),
+    GlacialSpike = Spell(199786),
+    IceLance = Spell(30455),
+    FingersofFrostBuff = Spell(44544),
+    RayofFrost = Spell(205021),
+    ConeofCold = Spell(120),
+    IcyVeins = Spell(12472),
+    RuneofPower = Spell(116011),
+    RuneofPowerBuff = Spell(116014),
+    BloodFury = Spell(20572),
+    Berserking = Spell(26297),
+    LightsJudgment = Spell(255647),
+    Fireblood = Spell(265221),
+    AncestralCall = Spell(274738),
+    Blink = Spell(1953),
+    IceFloes = Spell(108839),
+    IceFloesBuff = Spell(108839),
+    WintersChillDebuff = Spell(228358),
+    GlacialSpikeBuff = Spell(199844),
+    SplittingIce = Spell(56377),
+    WintersReach = Spell(273346),
+    WintersReachBuff = Spell(273347),
+    FreezingRain = Spell(240555),
+
 };
+HL.Spell[MFrost] = RubimRH.Spell[MFrost]
+--Remove Watersomething
 local S = RubimRH.Spell[MFrost]
 
 -- Items
-if not Item.Mage then Item.Mage = {} end
+if not Item.Mage then
+    Item.Mage = {}
+end
 Item.Mage.Frost = {
-    ProlongedPower                   = Item(142117)
+    ProlongedPower = Item(142117)
 };
 local I = Item.Mage.Frost;
 
 -- Variables
 
-local EnemyRanges = {35}
+local EnemyRanges = { 35 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -73,7 +78,11 @@ local function UpdateRanges()
 end
 
 local function num(val)
-    if val then return 1 else return 0 end
+    if val then
+        return 1
+    else
+        return 0
+    end
 end
 
 local function bool(val)
@@ -90,7 +99,17 @@ S.Frostbolt:RegisterInFlight()
 -- S.Flurry.EffectID = S.WintersChillDebuff.SpellID
 -- S.Flurry:RegisterInFlight(S.BrainFreezeBuff)
 --- ======= ACTION LISTS =======
+
+S.WaterBolt:RemoveFromTriggerGCD()
+--Player:FilterTriggerGCD(RubimRH.playerSpec)
+
+local function FuckWaterBolt()
+    HL.Enum.TriggerGCD[31707] = nil
+    HL.Enum.TriggerGCD[33395] = nil
+end
+
 local function APL()
+    FuckWaterBolt()
     local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop
     UpdateRanges()
     Precombat = function()
@@ -168,7 +187,7 @@ local function APL()
         end
         -- ice_lance
         if S.IceLance:IsReady() then
-          return S.IceLance:Cast()
+            return S.IceLance:Cast()
         end
     end
     Cooldowns = function()
