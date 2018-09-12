@@ -570,7 +570,7 @@ local function APL()
         if Precombat() ~= nil then
             return Precombat()
         end
-        return 0, 462338
+        return 0, 135328
     end
 
     --CUSTOM
@@ -582,13 +582,10 @@ local function APL()
         return S.Evasion:Cast()
     end
     --END OF CUSTOM
-
     -- variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)
-    if (true) then
         VarEnergyRegenCombined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste())
-    end
     -- call_action_list,name=stealthed,if=stealthed.rogue
-    if (bool(IsStealthed())) then
+    if Player:IsStealthed(true, true) then
         if Stealthed() ~= nil then
             return Stealthed()
         end
