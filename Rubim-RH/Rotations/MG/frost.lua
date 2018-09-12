@@ -100,7 +100,6 @@ S.Frostbolt:RegisterInFlight()
 -- S.Flurry:RegisterInFlight(S.BrainFreezeBuff)
 --- ======= ACTION LISTS =======
 
-S.WaterBolt:RemoveFromTriggerGCD()
 --Player:FilterTriggerGCD(RubimRH.playerSpec)
 
 local function FuckWaterBolt()
