@@ -123,7 +123,7 @@ local function Poisoned (Unit)
 end
 
 local function CPSpend ()
-    return mathmin(Player:ComboPoints(), CPMaxSpend());
+    return math.min(Player:ComboPoints(), CPMaxSpend());
 end
 
 -- Spells Damage

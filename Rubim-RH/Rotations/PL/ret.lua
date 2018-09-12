@@ -124,8 +124,7 @@ function ConcerationTime()
 end
 
 local function APL()
-
-    local Precombat, cooldowns, finishers, generators, opener
+    local Precombat, Cooldowns, Finishers, Generators, Opener
     UpdateRanges()
     Precombat = function()
     end
