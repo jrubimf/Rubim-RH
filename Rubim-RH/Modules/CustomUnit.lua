@@ -78,7 +78,7 @@ local PvPDummyUnits = {
 }
 
 -- Unit = PvP Dummy
-function Unit:IsPvPDummy()
+function Unit:IsAPvPDummy()
 	local NPCID = self:NPCID()
 	return NPCID >= 0 and PvPDummyUnits[NPCID] == true
 end
@@ -240,4 +240,19 @@ function Unit:StackUp(min, max)
 		return true
 	end
 	return false
+end
+
+function Unit:AreaTTD(seconds)
+	HL.GetEnemies(10, true);
+	local seconds = seconds or 6
+	local ttdtotal = 0
+	local totalunits = 0
+	for _, CycleUnit in pairs(Cache.Enemies[10]) do
+		totalunits = totalunits + 1
+		local ttd = CycleUnit:TimeToDie()
+		if ttd <= seconds then
+			ttdtotal = ttdtotal + 1
+		end
+	end
+	return (ttdtotal > 0 and ttdtotal == totalunits)
 end

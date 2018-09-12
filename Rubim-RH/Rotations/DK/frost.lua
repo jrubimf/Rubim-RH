@@ -324,7 +324,6 @@ end
 
 local function APL()
     UpdateRanges()
-
     --Mov Speed
     if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()
@@ -389,7 +388,7 @@ local function APL()
         return BosPooling()
     end
     -- run_action_list,name=bos_ticking,if=dot.breath_of_sindragosa.ticking
-    if (Target:DebuffP(S.BreathofSindragosaDebuff)) then
+    if (Player:Buff(S.BreathofSindragosa)) then
         return BosTicking()
     end
     -- run_action_list,name=obliteration,if=buff.pillar_of_frost.up&talent.obliteration.enabled
