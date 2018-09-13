@@ -411,7 +411,7 @@ local function CDs ()
             end
         end
         -- actions.cds+=/toxic_blade,if=dot.rupture.ticking
-        if S.ToxicBlade:IsCastable("Melee") and Target:DebuffP(S.Rupture) then
+        if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
            return S.ToxicBlade:Cast()
         end
     end
@@ -419,16 +419,16 @@ end
 -- # Stealthed
 local function Stealthed ()
     -- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
-    if S.Rupture:IsCastable("Melee") and ComboPoints >= 4
+    if S.Rupture:IsReady("Melee") and ComboPoints >= 4
             and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
             and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
         return S.Rupture:Cast()
     end
     -- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
-    if S.Envenom:IsCastable("Melee") and ComboPoints >= CPMaxSpend() then
+    if S.Envenom:IsReady("Melee") and ComboPoints >= CPMaxSpend() then
         return S.Envenom:Cast()
     end
-    if S.Garrote:IsCastable("Melee") and S.Subterfuge:IsAvailable() then
+    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
         -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
         local function Evaluate_Garrote_Target_A(TargetUnit)
             return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
@@ -448,10 +448,10 @@ local function Stealthed ()
         end
     end
     -- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
-    if S.Rupture:IsCastable("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
+    if S.Rupture:IsReady("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
         return S.Rupture:Cast()
     end
-    if S.Garrote:IsCastable("Melee") and S.Subterfuge:IsAvailable() then
+    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
         -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
         local function Evaluate_Garrote_Target_C(TargetUnit)
             return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
@@ -473,7 +473,7 @@ end
 -- # Damage over time abilities
 local function Dot ()
     -- actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
-    if RubimRH.CDsON() and S.Rupture:IsCastable("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
+    if RubimRH.CDsON() and S.Rupture:IsReady("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
             and ((ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1)
             or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or (ComboPoints >= 2)))) then
         return S.Rupture:Cast()
@@ -500,7 +500,7 @@ local function Dot ()
         end
     end
     -- actions.dot+=/crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
-    if RubimRH.AoEON() and S.CrimsonTempest:IsCastable("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
+    if RubimRH.AoEON() and S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
             and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
         return S.CrimsonTempest:Cast()
     end
@@ -521,7 +521,7 @@ end
 -- # Direct damage abilities
 local function Direct ()
     -- actions.direct=envenom,if=combo_points>=4+talent.deeper_stratagem.enabled&(debuff.vendetta.up|debuff.toxic_blade.up|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2)&(!talent.exsanguinate.enabled|cooldown.exsanguinate.remains>2)
-    if S.Envenom:IsCastable("Melee") and ComboPoints >= 4 + (S.DeeperStratagem:IsAvailable() and 1 or 0)
+    if S.Envenom:IsReady("Melee") and ComboPoints >= 4 + (S.DeeperStratagem:IsAvailable() and 1 or 0)
             and (Target:DebuffP(S.Vendetta) or Target:DebuffP(S.ToxicBladeDebuff) or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2)
             and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
         return S.Envenom:Cast()
@@ -532,26 +532,26 @@ local function Direct ()
     -- actions.direct+=/variable,name=use_filler,value=combo_points.deficit>1|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2
     -- This is used in all following fillers, so we just return false if not true and won't consider these.
     if not (ComboPointsDeficit > 1 or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2) then
-        return 0, 135328
-    end
-    -------------------------------------------------------------------
-    -------------------------------------------------------------------
+    else
+        -------------------------------------------------------------------
+        -------------------------------------------------------------------
 
-    -- actions.direct+=/poisoned_knife,if=variable.use_filler&buff.sharpened_blades.stack>=29
-    if S.PoisonedKnife:IsCastable(30) and Player:BuffStack(S.SharpenedBladesBuff) >= 29 then
-        return S.PoisonedKnife:Cast()
-    end
-    -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-    if RubimRH.AoEON() and S.FanofKnives:IsCastable("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
-        return S.FanofKnives:Cast()
-    end
-    -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
-    if S.Blindside:IsCastable("Melee") and (Player:BuffP(S.BlindsideBuff) or (not S.VenomRush:IsAvailable() and Target:HealthPercentage() < 30)) then
-        return S.Blindside:Cast()
-    end
-    -- actions.direct+=/mutilate,if=variable.use_filler
-    if S.Mutilate:IsCastable("Melee") then
-        return S.Mutilate:Cast()
+        -- actions.direct+=/poisoned_knife,if=variable.use_filler&buff.sharpened_blades.stack>=29
+        if S.PoisonedKnife:IsReady(30) and Player:BuffStack(S.SharpenedBladesBuff) >= 29 then
+            return S.PoisonedKnife:Cast()
+        end
+        -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
+        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
+            return S.FanofKnives:Cast()
+        end
+        -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
+        if S.Blindside:IsReady("Melee") and (Player:BuffP(S.BlindsideBuff) or (not S.VenomRush:IsAvailable() and Target:HealthPercentage() < 30)) then
+            return S.Blindside:Cast()
+        end
+        -- actions.direct+=/mutilate,if=variable.use_filler
+        if S.Mutilate:IsReady("Melee") then
+            return S.Mutilate:Cast()
+        end
     end
 end
 -- APL Main
@@ -605,7 +605,7 @@ local function APL ()
         -- Stealth
         -- Precombat CDs
         if RubimRH.CDsON() then
-            if S.MarkedforDeath:IsCastableP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+            if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
                 return S.MarkedforDeath:Cast()
             end
         end
@@ -642,20 +642,20 @@ local function APL ()
     -- Racials
     if RubimRH.CDsON() then
         -- actions+=/arcane_torrent,if=energy.deficit>=15+variable.energy_regen_combined
-        if S.ArcaneTorrent:IsCastableP("Melee") and Player:EnergyDeficitPredicted() > 15 + Energy_Regen_Combined then
+        if S.ArcaneTorrent:IsReadyP("Melee") and Player:EnergyDeficitPredicted() > 15 + Energy_Regen_Combined then
             return S.ArcaneTorrent:Cast()
         end
         -- actions+=/arcane_pulse
-        if S.ArcanePulse:IsCastableP("Melee") then
+        if S.ArcanePulse:IsReadyP("Melee") then
             return S.ArcanePulse:Cast()
         end
         -- actions+=/lights_judgment
-        if S.LightsJudgment:IsCastableP("Melee") then
+        if S.LightsJudgment:IsReadyP("Melee") then
             return S.LightsJudgment:Cast()
         end
     end
     -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]
-    if S.PoisonedKnife:IsCastable(30) and not Player:IsStealthedP(true, true)
+    if S.PoisonedKnife:IsReady(30) and not Player:IsStealthedP(true, true)
             and ((not Target:IsInRange(10) and Player:EnergyTimeToMax() <= Player:GCD() * 1.2)
             or (not Target:IsInRange("Melee") and Target:DebuffRefreshableP(S.DeadlyPoisonDebuff, 4))) then
         return S.PoisonedKnife:Cast()
