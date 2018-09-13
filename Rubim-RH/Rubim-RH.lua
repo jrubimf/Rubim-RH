@@ -18,12 +18,7 @@ errorEvent:SetScript("OnEvent", function(self, event)
         message("Missing dependency: RubimExtra")
         foundError = true
     end
-
-    if RubimRH.db.profile.mainOption.useRacial ~= "bfa_2.0" then
-        message("New version detected.\nIf you have any problems, reset your profile at /rubimrh.")
-        RubimRH.db.profile.mainOption.useRacial = "bfa_2.0"
-    end
-
+    
     if GetCVar("nameplateShowEnemies") ~= "1" then
         message("Nameplates enabled to maximum AoE detection.");
         SetCVar("nameplateShowEnemies", 1)
