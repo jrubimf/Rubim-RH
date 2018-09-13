@@ -376,7 +376,7 @@ local function CDs ()
         -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
         if S.Vendetta:IsReady() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
                 and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
-            return S.Vanish:Vendetta()
+            return S.Vendetta:Cast()
         end
         if S.Vanish:IsReady() and not Player:IsTanking(Target) then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
