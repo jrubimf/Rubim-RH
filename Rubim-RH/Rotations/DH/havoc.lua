@@ -316,7 +316,7 @@ local function APL()
             return S.DeathSweep:Cast()
         end
         -- eye_beam,if=!buff.metamorphosis.extended_by_demonic&(raid_event.adds.up|raid_event.adds.in>25)
-        if S.EyeBeam:IsReady() and (not IsMetaExtendedByDemonic() and ((Cache.EnemiesCount[10] > 1) or 10000000000 > 25)) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (not IsMetaExtendedByDemonic() and ((Cache.EnemiesCount[10] > 1) or 10000000000 > 25)) then
             return S.EyeBeam:Cast()
         end
 
@@ -389,7 +389,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-        if S.EyeBeam:IsReady() and (Cache.EnemiesCount[10] >= 1 and not bool(VarWaitingForMomentum)) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (Cache.EnemiesCount[10] >= 1 and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
         -- blade_dance,if=variable.blade_dance
