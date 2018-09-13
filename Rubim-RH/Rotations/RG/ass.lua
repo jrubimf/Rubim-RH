@@ -45,7 +45,7 @@ RubimRH.Spell[259] = {
     Exsanguinate = Spell(200806),
     HiddenBladesBuff = Spell(270070),
     InternalBleeding = Spell(154953),
-    MarkedForDeath = Spell(137619),
+    MarkedforDeath = Spell(137619),
     MasterAssassin = Spell(255989),
     Nightstalker = Spell(14062),
     Subterfuge = Spell(108208),
@@ -106,6 +106,10 @@ end
 
 local function bool(val)
     return val ~= 0
+end
+
+local function CanDoTUnit(Unit, HealthThreshold)
+    return Unit:Health() >= HealthThreshold or Unit:IsDummy();
 end
 
 -- Master Assassin Remains Check
@@ -326,7 +330,7 @@ local RuptureThreshold, CrimsonTempestThreshold, RuptureDMGThreshold, GarroteDMG
 local ComboPoints, ComboPointsDeficit, Energy_Regen_Combined;
 
 local OffensiveCDs = {
-    S.MarkedForDeath,
+    S.MarkedforDeath,
     S.Vendetta,
 
 }
@@ -349,228 +353,229 @@ local function UpdateCDs()
     end
 end
 
---- ======= ACTION LISTS =======
-local function APL()
-    local Precombat, Cds, Direct, Dot, Stealthed
-    UpdateRanges()
-    UpdateCDs()
+local function CDs ()
+    if Target:IsInRange("Melee") then
+        -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
 
+        -- Racials
+        if Target:Debuff(S.Vendetta) then
+            -- actions.cds+=/blood_fury,if=debuff.vendetta.up
+            if S.BloodFury:IsReady() then
+                return S.BloodFury:Cast()
+            end
+            -- actions.cds+=/berserking,if=debuff.vendetta.up
+            if S.Berserking:IsReady() then
+                return S.Berserking:Cast()
+            end
+        end
+
+        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
+        if S.MarkedforDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
+            return S.MarkedforDeath:Cast()
+        end
+        -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
+        if S.Vendetta:IsReady() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
+                and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
+            return S.Vanish:Vendetta()
+        end
+        if S.Vanish:IsReady() and not Player:IsTanking(Target) then
+            -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
+            if S.Subterfuge:IsAvailable() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
+                return S.Vanish:Cast()
+            end
+            -- actions.cds+=/vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier<=1)
+            if S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
+                    and ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1
+                    and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) <= 1) then
+                return S.Vanish:Cast()
+            end
+            -- actions.cds+=/vanish,if=talent.nightstalker.enabled&!talent.exsanguinate.enabled&combo_points>=cp_max_spend&debuff.vendetta.up
+            if S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
+                return S.Vanish:Cast()
+            end
+            -- actions.cds+=/vanish,if=talent.subterfuge.enabled&(!talent.exsanguinate.enabled|spell_targets.fan_of_knives>=2)&!stealthed.rogue&cooldown.garrote.up&dot.garrote.refreshable&(spell_targets.fan_of_knives<=3&combo_points.deficit>=1+spell_targets.fan_of_knives|spell_targets.fan_of_knives>=4&combo_points.deficit>=4)
+            if S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthedP(true, false)
+                    and S.Garrote:CooldownUp() and Target:DebuffRefreshableP(S.Garrote, 5.4)
+                    and ((Cache.EnemiesCount[10] <= 3 and ComboPointsDeficit >= 1 + Cache.EnemiesCount[10]) or (Cache.EnemiesCount[10] >= 4 and ComboPointsDeficit >= 4)) then
+                return S.Vanish:Cast()
+            end
+            -- actions.cds+=/vanish,if=talent.master_assassin.enabled&!stealthed.all&master_assassin_remains<=0&!dot.rupture.refreshable
+            if S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
+                return S.Vanish:Cast()
+            end
+        end
+        if S.Exsanguinate:IsReady() then
+            -- actions.cds+=/exsanguinate,if=dot.rupture.remains>4+4*cp_max_spend&!dot.garrote.refreshable
+            if Target:DebuffRemainsP(S.Rupture) > 4 + 4 * CPMaxSpend() and not Target:DebuffRefreshableP(S.Garrote, 5.4) then
+                return S.Exsanguinate:Cast()
+            end
+        end
+        -- actions.cds+=/toxic_blade,if=dot.rupture.ticking
+        if S.ToxicBlade:IsCastable("Melee") and Target:DebuffP(S.Rupture) then
+           return S.ToxicBlade:Cast()
+        end
+    end
+end
+-- # Stealthed
+local function Stealthed ()
+    -- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
+    if S.Rupture:IsCastable("Melee") and ComboPoints >= 4
+            and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
+            and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
+        return S.Rupture:Cast()
+    end
+    -- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
+    if S.Envenom:IsCastable("Melee") and ComboPoints >= CPMaxSpend() then
+        return S.Envenom:Cast()
+    end
+    if S.Garrote:IsCastable("Melee") and S.Subterfuge:IsAvailable() then
+        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
+        local function Evaluate_Garrote_Target_A(TargetUnit)
+            return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
+                    and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+        end
+        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_A(Target)
+                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+            return S.Garrote:Cast()
+        end
+        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&pmultiplier<=1&target.time_to_die-remains>2
+        local function Evaluate_Garrote_Target_B(TargetUnit)
+            return TargetUnit:PMultiplier(S.Garrote) <= 1 and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+        end
+        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_B(Target)
+                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+            return S.Garrote:Cast()
+        end
+    end
+    -- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
+    if S.Rupture:IsCastable("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
+        return S.Rupture:Cast()
+    end
+    if S.Garrote:IsCastable("Melee") and S.Subterfuge:IsAvailable() then
+        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
+        local function Evaluate_Garrote_Target_C(TargetUnit)
+            return S.ShroudedSuffocation:AzeriteEnabled() and Rogue.CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+        end
+        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
+                and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+           return S.Garrote:Cast()
+        end
+        -- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
+        if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
+            -- actions.stealthed+=/pool_resource,for_next=1
+            if Player:EnergyPredicted() < 45 then
+                return 0, 135328
+            end
+            return S.Garrote:Cast()
+        end
+    end
+end
+-- # Damage over time abilities
+local function Dot ()
+    -- actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
+    if RubimRH.CDsON() and S.Rupture:IsCastable("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
+            and ((ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1)
+            or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or (ComboPoints >= 2)))) then
+        return S.Rupture:Cast()
+    end
+    -- actions.dot+=/garrote,cycle_targets=1,if=(!talent.subterfuge.enabled|!(cooldown.vanish.up&cooldown.vendetta.remains<=4))&combo_points.deficit>=1&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(target.time_to_die-remains>4&spell_targets.fan_of_knives<=1|target.time_to_die-remains>12)
+    local function EmpoweredDotRefresh()
+        return Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())
+    end
+    if S.Garrote:IsReady() and (not S.Subterfuge:IsAvailable() or not RubimRH.CDsON() or not (S.Vanish:CooldownUp() and S.Vendetta:CooldownRemainsP() <= 4)) and ComboPointsDeficit >= 1 then
+        local function Evaluate_Garrote_Target(TargetUnit)
+            return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
+                    and (TargetUnit:PMultiplier(S.Garrote) <= 1 or TargetUnit:DebuffRemainsP(S.Garrote) <= (HL.Exsanguinated(TargetUnit, "Garrote") and ExsanguinatedBleedTickTime or BleedTickTime) and EmpoweredDotRefresh())
+                    and (not HL.Exsanguinated(TargetUnit, "Garrote") or TargetUnit:DebuffRemainsP(S.Garrote) <= 1.5 and EmpoweredDotRefresh())
+                    and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+        end
+        local ttdval = Cache.EnemiesCount[10] <= 1 and 4 or 12;
+        if Target:IsInRange("Melee") and Evaluate_Garrote_Target(Target)
+                and (Target:FilteredTimeToDie(">", ttdval, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+            -- actions.maintain+=/pool_resource,for_next=1
+            if Player:EnergyPredicted() < 45 then
+                return 0, 135328
+            end
+           return S.Garrote:Cast()
+        end
+    end
+    -- actions.dot+=/crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
+    if RubimRH.AoEON() and S.CrimsonTempest:IsCastable("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
+            and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
+        return S.CrimsonTempest:Cast()
+    end
+    -- actions.dot+=/rupture,cycle_targets=1,if=combo_points>=4&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&target.time_to_die-remains>4
+    if ComboPoints >= 4 then
+        local function Evaluate_Rupture_Target(TargetUnit)
+            return TargetUnit:DebuffRefreshableP(S.Rupture, RuptureThreshold)
+                    and (TargetUnit:PMultiplier(S.Rupture) <= 1 or TargetUnit:DebuffRemainsP(S.Rupture) <= (HL.Exsanguinated(TargetUnit, "Rupture") and ExsanguinatedBleedTickTime or BleedTickTime) and EmpoweredDotRefresh())
+                    and (not HL.Exsanguinated(TargetUnit, "Rupture") or TargetUnit:DebuffRemainsP(S.Rupture) <= ExsanguinatedBleedTickTime * 2 and EmpoweredDotRefresh())
+                    and CanDoTUnit(TargetUnit, RuptureDMGThreshold);
+        end
+        if Target:IsInRange("Melee") and Evaluate_Rupture_Target(Target)
+                and (Target:FilteredTimeToDie(">", 4, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
+            return S.Rupture:Cast()
+        end
+    end
+end
+-- # Direct damage abilities
+local function Direct ()
+    -- actions.direct=envenom,if=combo_points>=4+talent.deeper_stratagem.enabled&(debuff.vendetta.up|debuff.toxic_blade.up|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2)&(!talent.exsanguinate.enabled|cooldown.exsanguinate.remains>2)
+    if S.Envenom:IsCastable("Melee") and ComboPoints >= 4 + (S.DeeperStratagem:IsAvailable() and 1 or 0)
+            and (Target:DebuffP(S.Vendetta) or Target:DebuffP(S.ToxicBladeDebuff) or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2)
+            and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
+        return S.Envenom:Cast()
+    end
+
+    -------------------------------------------------------------------
+    -------------------------------------------------------------------
+    -- actions.direct+=/variable,name=use_filler,value=combo_points.deficit>1|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2
+    -- This is used in all following fillers, so we just return false if not true and won't consider these.
+    if not (ComboPointsDeficit > 1 or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2) then
+        return 0, 135328
+    end
+    -------------------------------------------------------------------
+    -------------------------------------------------------------------
+
+    -- actions.direct+=/poisoned_knife,if=variable.use_filler&buff.sharpened_blades.stack>=29
+    if S.PoisonedKnife:IsCastable(30) and Player:BuffStack(S.SharpenedBladesBuff) >= 29 then
+        return S.PoisonedKnife:Cast()
+    end
+    -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
+    if RubimRH.AoEON() and S.FanofKnives:IsCastable("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
+        return S.FanofKnives:Cast()
+    end
+    -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
+    if S.Blindside:IsCastable("Melee") and (Player:BuffP(S.BlindsideBuff) or (not S.VenomRush:IsAvailable() and Target:HealthPercentage() < 30)) then
+        return S.Blindside:Cast()
+    end
+    -- actions.direct+=/mutilate,if=variable.use_filler
+    if S.Mutilate:IsCastable("Melee") then
+        return S.Mutilate:Cast()
+    end
+end
+-- APL Main
+local function APL ()
+    -- Spell ID Changes check
     Stealth = S.Subterfuge:IsAvailable() and S.Stealth2 or S.Stealth; -- w/ or w/o Subterfuge Talent
+
+    -- Unit Update
+    HL.GetEnemies(50); -- Used for Rogue.PoisonedBleeds()
+    HL.GetEnemies(30); -- Used for Poisoned Knife Poison refresh
+    HL.GetEnemies(10, true); -- Fan of Knives
+    HL.GetEnemies("Melee"); -- Melee
+
+    -- Compute Cache
     ComboPoints = Player:ComboPoints();
     ComboPointsDeficit = Player:ComboPointsMax() - ComboPoints;
     RuptureThreshold = (4 + ComboPoints * 4) * 0.3;
     CrimsonTempestThreshold = (2 + ComboPoints * 2) * 0.3;
     RuptureDMGThreshold = S.Envenom:Damage() * 3; -- Used to check if Rupture is worth to be casted since it's a finisher.
-    GarroteDMGThreshold = S.Mutilate:Damage() * 3 -- Used as TTD Not Valid fallback since it's a generator.
+    GarroteDMGThreshold = S.Mutilate:Damage() * 3; -- Used as TTD Not Valid fallback since it's a generator.
 
-    Precombat = function()
-        -- flask
-        -- augmentation
-        -- food
-        -- snapshot_stats
-        -- stealth
-        if S.Stealth:IsReady() and (true) then
-            return S.Stealth:Cast()
-        end
-        -- potion
-        -- marked_for_death,precombat_seconds=5,if=raid_event.adds.in>40
-        if RubimRH.TargetIsValid() then
-            if S.MarkedForDeath:IsReady() then
-                return S.MarkedForDeath:Cast()
-            end
-        end
-    end
-    Cds = function()
-        if Target:IsInRange("Melee") then
-            -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
-
-            -- Racials
-            if Target:Debuff(S.Vendetta) then
-                -- actions.cds+=/blood_fury,if=debuff.vendetta.up
-                if S.BloodFury:IsReady() then
-                    return S.BloodFury:Cast()
-                end
-                -- actions.cds+=/berserking,if=debuff.vendetta.up
-                if S.Berserking:IsReady() then
-                    return S.Berserking:Cast()
-                end
-            end
-
-            -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
-            if S.MarkedForDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
-                return S.MarkedForDeath:Cast()
-            end
-            -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
-            if S.Vendetta:IsReady() and not Player:IsStealthed(true, false) and Target:DebuffP(S.Rupture)
-                    and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
-                return S.Vendetta:Cast()
-            end
-            if S.Vanish:IsReady() and not Player:IsTanking(Target) then
-                -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
-                if S.Subterfuge:IsAvailable() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
-                    return S.Vanish:Cast()
-                end
-                -- actions.cds+=/vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier<=1)
-                if S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
-                        and ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1
-                        and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) <= 1) then
-                    return S.Vanish:Cast()
-                end
-                -- actions.cds+=/vanish,if=talent.nightstalker.enabled&!talent.exsanguinate.enabled&combo_points>=cp_max_spend&debuff.vendetta.up
-                if S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
-                    return S.Vanish:Cast()
-                end
-                -- actions.cds+=/vanish,if=talent.subterfuge.enabled&(!talent.exsanguinate.enabled|spell_targets.fan_of_knives>=2)&!stealthed.rogue&cooldown.garrote.up&dot.garrote.refreshable&(spell_targets.fan_of_knives<=3&combo_points.deficit>=1+spell_targets.fan_of_knives|spell_targets.fan_of_knives>=4&combo_points.deficit>=4)
-                if S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthed(true, false)
-                        and S.Garrote:CooldownUp() and Target:DebuffRefreshableP(S.Garrote, 5.4)
-                        and ((Cache.EnemiesCount[10] <= 3 and ComboPointsDeficit >= 1 + Cache.EnemiesCount[10]) or (Cache.EnemiesCount[10] >= 4 and ComboPointsDeficit >= 4)) then
-                    return S.Vanish:Cast()
-                end
-                -- actions.cds+=/vanish,if=talent.master_assassin.enabled&!stealthed.all&master_assassin_remains<=0&!dot.rupture.refreshable
-                if S.MasterAssassin:IsAvailable() and not Player:IsStealthed(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
-                    return S.Vanish:Cast()
-                end
-            end
-            if S.Exsanguinate:IsReady() then
-                -- actions.cds+=/exsanguinate,if=dot.rupture.remains>4+4*cp_max_spend&!dot.garrote.refreshable
-                if Target:DebuffRemainsP(S.Rupture) > 4 + 4 * CPMaxSpend() and not Target:DebuffRefreshableP(S.Garrote, 5.4) then
-                    return S.Exsanguinate:Cast()
-                end
-            end
-            -- actions.cds+=/toxic_blade,if=dot.rupture.ticking
-            if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
-                return S.ToxicBlade:Cast()
-            end
-        end
-    end
-    Direct = function()
-        -- actions.direct=envenom,if=combo_points>=4+talent.deeper_stratagem.enabled&(debuff.vendetta.up|debuff.toxic_blade.up|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2)&(!talent.exsanguinate.enabled|cooldown.exsanguinate.remains>2)
-        if S.Envenom:IsReady("Melee") and ComboPoints >= 4 + (S.DeeperStratagem:IsAvailable() and 1 or 0)
-                and (Target:DebuffP(S.Vendetta) or Target:DebuffP(S.ToxicBladeDebuff) or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2)
-                and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
-            return S.Envenom:Cast()
-        end
-
-        -------------------------------------------------------------------
-        -------------------------------------------------------------------
-        -- actions.direct+=/variable,name=use_filler,value=combo_points.deficit>1|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2
-        -- This is used in all following fillers, so we just return false if not true and won't consider these.
-        if not (ComboPointsDeficit > 1 or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2) then
-            return 0, 135328
-        end
-        -------------------------------------------------------------------
-        -------------------------------------------------------------------
-
-        -- actions.direct+=/poisoned_knife,if=variable.use_filler&buff.sharpened_blades.stack>=29
-        if S.PoisonedKnife:IsReady(30) and Player:BuffStack(S.SharpenedBladesBuff) >= 29 then
-            return S.PoisonedKnife:Cast()
-
-        end
-        -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthed(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
-            return S.FanofKnives:Cast()
-        end
-        -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
-        if S.Blindside:IsReady("Melee") and (Player:BuffP(S.BlindsideBuff) or (not S.VenomRush:IsAvailable() and Target:HealthPercentage() < 30)) then
-            return S.Blindside:Cast()
-        end
-        -- actions.direct+=/mutilate,if=variable.use_filler
-        if S.Mutilate:IsReady("Melee") then
-            return S.Mutilate:Cast()
-        end
-    end
-    Dot = function()
-        -- rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
-        if S.Rupture:IsReady() and (S.Exsanguinate:IsAvailable() and ((Player:ComboPoints() >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1) or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or Player:ComboPoints() >= 2)))) then
-            return S.Rupture:Cast()
-        end
-        
-        -- pool_resource,for_next=1
-        -- actions.dot+=/garrote,cycle_targets=1,if=(!talent.subterfuge.enabled|!(cooldown.vanish.up&cooldown.vendetta.remains<=4))&combo_points.deficit>=1&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(target.time_to_die-remains>4&spell_targets.fan_of_knives<=1|target.time_to_die-remains>12)
-        if S.Garrote:IsReady() and ((not S.Subterfuge:IsAvailable() or not (S.Vanish:CooldownUpP() and S.Vendetta:CooldownRemainsP() <= 4)) and Player:ComboPointsDeficit() >= 1 and Target:DebuffRefreshableCP(S.Garrote) and (Target:PMultiplier(S.Garrote) <= 1 or Target:DebuffRemainsP(S.Garrote) <= S.Garrote:TickTime() and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (not HL.Exsanguinated(Target, "Garrote") or Target:DebuffRemainsP(S.Garrote) <= S.Garrote:TickTime() * 2 and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 4 and Cache.EnemiesCount[10] <= 1 or Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 12)) then
-            if S.Garrote:IsUsablePPool() then
-                return S.Garrote:Cast()
-            else
-                S.Garrote:Queue()
-                return 135328
-            end
-        end
-
-        -- crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
-        if S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
-                and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
-            return S.CrimsonTempest:Cast()
-        end
-
-        -- rupture,cycle_targets=1,if=combo_points>=4&refreshable&(pmultiplier<=1|remains<=tick_time&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&(!exsanguinated|remains<=tick_time*2&spell_targets.fan_of_knives>=3+azerite.shrouded_suffocation.enabled)&target.time_to_die-remains>4
-        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and Target:DebuffRefreshableCP(S.Rupture) and (Target:PMultiplier(S.Rupture) <= 1 or Target:DebuffRemainsP(S.Rupture) <= S.Rupture:TickTime() and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and (not HL.Exsanguinated(Target, "Rupture") or Target:DebuffRemainsP(S.Rupture) <= S.Rupture:TickTime() * 2 and Cache.EnemiesCount[10] >= 3 + num(S.ShroudedSuffocation:AzeriteEnabled())) and Target:TimeToDie() - Target:DebuffRemainsP(S.Rupture) > 4) then
-            return S.Rupture:Cast()
-        end
-
-    end
-    Stealthed = function()
-        -- rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&variable.single_target|!ticking)&target.time_to_die-remains>6
-        if S.Rupture:IsReady() and (Player:ComboPoints() >= 4 and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2 or not Target:DebuffP(S.Rupture)) and Target:TimeToDie() - Target:DebuffRemainsP(S.Rupture) > 6) then
-            return S.Rupture:Cast()
-        end
-        -- envenom,if=combo_points>=cp_max_spend
-        if S.Envenom:IsReady() and (Player:ComboPoints() >= CPMaxSpend()) then
-            return S.Envenom:Cast()
-        end
-        -- garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
-        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and Target:DebuffRefreshableCP(S.Garrote) and Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 2) then
-            return S.Garrote:Cast()
-        end
-        -- garrote,cycle_targets=1,if=talent.subterfuge.enabled&remains<=10&pmultiplier<=1&target.time_to_die-remains>2
-        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and Target:DebuffRemainsP(S.Garrote) <= 10 and Target:PMultiplier(S.Garrote) <= 1 and Target:TimeToDie() - Target:DebuffRemainsP(S.Garrote) > 2) then
-            return S.Garrote:Cast()
-        end
-        -- rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
-        if S.Rupture:IsReady() and (S.Subterfuge:IsAvailable() and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture)) then
-            return S.Rupture:Cast()
-        end
-        -- garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
-        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and S.ShroudedSuffocation:AzeriteEnabled() and Target:TimeToDie() > Target:DebuffRemainsP(S.Garrote)) then
-            return S.Garrote:Cast()
-        end
-        -- pool_resource,for_next=1
-        -- garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
-        if S.Garrote:IsReady() and (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCDP(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend()) then
-            if S.Garrote:IsUsablePPool() then
-                return S.Garrote:Cast()
-            else
-                S.Garrote:Queue()
-                return 135328
-            end
-        end
-    end
-    Energy_Regen_Combined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste());
-    -- call precombat
-    if IsStealthed() and RubimRH.db.profile[259].vanishattack and Player:PrevGCD(1, S.Vanish) then
-        return Stealthed();
-    end
-
+    -- Defensives
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
         return S.CrimsonVial:Cast()
-    end
-
-    -- Poisons
-    local PoisonRefreshTime = Player:AffectingCombat() and 3*60 or 15*60;
-    -- Lethal Poison
-    if Player:BuffRemainsP(S.DeadlyPoison) <= PoisonRefreshTime
-            and Player:BuffRemainsP(S.WoundPoison) <= PoisonRefreshTime then
-        S.DeadlyPoison:Cast()
-    end
-    -- Non-Lethal Poison
-    if Player:BuffRemainsP(S.CripplingPoison) <= PoisonRefreshTime then
-        return S.CripplingPoison:Cast()
-    end
-
-    if not Player:AffectingCombat() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-        return 0, 135328
     end
 
     --CUSTOM
@@ -581,45 +586,81 @@ local function APL()
     if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk3 and Player:LastSwinged() <= 3 then
         return S.Evasion:Cast()
     end
-    --END OF CUSTOM
-    -- variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)
-        VarEnergyRegenCombined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste())
-    -- call_action_list,name=stealthed,if=stealthed.rogue
-    if Player:IsStealthed(true, true) then
+
+
+    -- Poisons
+    local PoisonRefreshTime = Player:AffectingCombat() and Settings.Assassination.PoisonRefreshCombat * 60 or Settings.Assassination.PoisonRefresh * 60;
+    -- Lethal Poison
+    if Player:BuffRemainsP(S.DeadlyPoison) <= PoisonRefreshTime
+            and Player:BuffRemainsP(S.WoundPoison) <= PoisonRefreshTime then
+        return S.DeadlyPoison:Cast()
+    end
+    -- Non-Lethal Poison
+    if Player:BuffRemainsP(S.CripplingPoison) <= PoisonRefreshTime then
+        return S.CripplingPoison:Cast()
+    end
+
+    -- Out of Combat
+    if not Player:AffectingCombat() then
+        -- Stealth
+        -- Precombat CDs
+        if RubimRH.CDsON() then
+            if S.MarkedforDeath:IsCastableP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+                return S.MarkedforDeath:Cast()
+            end
+        end
+        -- Flask
+        -- Food
+        -- Rune
+        -- PrePot w/ Bossmod Countdown
+    end
+
+    -- In Combat
+    -- actions=variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)
+    Energy_Regen_Combined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste());
+
+    -- actions+=/call_action_list,name=stealthed,if=stealthed.rogue
+    if Player:IsStealthedP(true, false) then
         if Stealthed() ~= nil then
             return Stealthed()
         end
     end
-    -- call_action_list,name=cds
-    if (true) then
-        if Cds() ~= nil then
-            return Cds()
+    -- actions+=/call_action_list,name=cds
+    if RubimRH.CDsON() then
+        if CDs() ~= nil then
+            return CDs()
         end
     end
-    -- call_action_list,name=dot
-    if (true) then
-        if Dot() ~= nil then
-            return Dot()
+    -- actions+=/call_action_list,name=dot
+    if Dot() ~= nil then
+        return Dot()
+    end
+    -- actions+=/call_action_list,name=direct
+    if Direct() ~= nil then
+        return Direct()
+    end
+    -- Racials
+    if RubimRH.CDsON() then
+        -- actions+=/arcane_torrent,if=energy.deficit>=15+variable.energy_regen_combined
+        if S.ArcaneTorrent:IsCastableP("Melee") and Player:EnergyDeficitPredicted() > 15 + Energy_Regen_Combined then
+            return S.ArcaneTorrent:Cast()
+        end
+        -- actions+=/arcane_pulse
+        if S.ArcanePulse:IsCastableP("Melee") then
+            return S.ArcanePulse:Cast()
+        end
+        -- actions+=/lights_judgment
+        if S.LightsJudgment:IsCastableP("Melee") then
+            return S.LightsJudgment:Cast()
         end
     end
-    -- call_action_list,name=direct
-    if (true) then
-        if Direct() ~= nil then
-            return Direct()
-        end
+    -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]
+    if S.PoisonedKnife:IsCastable(30) and not Player:IsStealthedP(true, true)
+            and ((not Target:IsInRange(10) and Player:EnergyTimeToMax() <= Player:GCD() * 1.2)
+            or (not Target:IsInRange("Melee") and Target:DebuffRefreshableP(S.DeadlyPoisonDebuff, 4))) then
+        return S.PoisonedKnife:Cast()
     end
-    -- arcane_torrent,if=energy.deficit>=15+variable.energy_regen_combined
-    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:EnergyDeficit() >= 15 + VarEnergyRegenCombined) then
-        return S.ArcaneTorrent:Cast()
-    end
-    -- arcane_pulse
-    if S.ArcanePulse:IsReady() and (true) then
-        return S.ArcanePulse:Cast()
-    end
-    -- lights_judgment
-    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (true) then
-        return S.LightsJudgment:Cast()
-    end
+    -- Trick to take in consideration the Recovery Setting
     return 0, 135328
 end
 

@@ -256,7 +256,6 @@ local function CDs ()
         end
     end
 end
-
 local function Stealth ()
     if Target:IsInRange(S.SinisterStrike) then
         -- actions.stealth=ambush
