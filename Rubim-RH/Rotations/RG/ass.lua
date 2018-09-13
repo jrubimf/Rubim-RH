@@ -589,7 +589,7 @@ local function APL ()
 
 
     -- Poisons
-    local PoisonRefreshTime = Player:AffectingCombat() and Settings.Assassination.PoisonRefreshCombat * 60 or Settings.Assassination.PoisonRefresh * 60;
+    local PoisonRefreshTime = Player:AffectingCombat() and 3 * 60 or 15* 60;
     -- Lethal Poison
     if Player:BuffRemainsP(S.DeadlyPoison) <= PoisonRefreshTime
             and Player:BuffRemainsP(S.WoundPoison) <= PoisonRefreshTime then
