@@ -97,7 +97,7 @@ Item.Paladin.Retribution = {
 }
 local I = Item.Paladin.Retribution;
 
-local EnemyRanges = { "Melee", 8, 12, 30 }
+local EnemyRanges = { "Melee", 5, 8, 12, 30 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -116,7 +116,7 @@ local function bool(val)
     return val ~= 0
 end
 
-function ConcerationTime()
+local function ConcerationTime()
     for i = 1, 5 do
         local active, totemName, startTime, duration, textureId = GetTotemInfo(i)
         if active == true then
@@ -126,11 +126,35 @@ function ConcerationTime()
     return 0
 end
 
+local OffensiveCDs = {
+    S.AvengingWrath,
+    S.Crusade,
+}
+
+local function UpdateCDs()
+    if RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if not spell:IsEnabledCD() then
+                RubimRH.delSpellDisabledCD(spell:ID())
+            end
+        end
+
+    end
+    if not RubimRH.CDsON() then
+        for i, spell in pairs(OffensiveCDs) do
+            if spell:IsEnabledCD() then
+                RubimRH.addSpellDisabledCD(spell:ID())
+            end
+        end
+    end
+end
+
 local VarDsCastable
 local VarHow
 local function APL()
     local Precombat, Cooldowns, Finishers, Generators, Opener
     UpdateRanges()
+    UpdateCDs()
     Precombat = function()
 
     end
@@ -207,7 +231,7 @@ local function APL()
             end
         end
         -- wake_of_ashes,if=(!raid_event.adds.exists|raid_event.adds.in>15)&(holy_power<=0|holy_power=1&cooldown.blade_of_justice.remains>gcd)
-        if S.WakeofAshes:IsReady() and ((not (Cache.EnemiesCount[30] > 1) or 10000000000 > 15) and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemainsP() > Player:GCD())) then
+        if S.WakeofAshes:IsReady() and Cache.EnemiesCount[5] >= 1 and ((not (Cache.EnemiesCount[30] > 1) or 10000000000 > 15) and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemainsP() > Player:GCD())) then
             return S.WakeofAshes:Cast()
         end
         -- blade_of_justice,if=holy_power<=2|(holy_power=3&(cooldown.hammer_of_wrath.remains>gcd*2|variable.HoW))

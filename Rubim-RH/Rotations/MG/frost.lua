@@ -241,7 +241,7 @@ local function APL()
     end
     Single = function()
         -- ice_nova,if=cooldown.ice_nova.ready&debuff.winters_chill.up
-        if S.IceNova:IsReadyP() and (S.IceNova:CooldownUpP() and Target:DebuffP(S.WintersChillDebuff)) then
+        if S.IceNova:IsReadyP() and  Target:DebuffP(S.WintersChillDebuff) then
             return S.IceNova:Cast()
         end
         -- flurry,if=!talent.glacial_spike.enabled&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&prev_gcd.1.frostbolt)
