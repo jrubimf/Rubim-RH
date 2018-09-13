@@ -454,7 +454,7 @@ local function Stealthed ()
     if S.Garrote:IsCastable("Melee") and S.Subterfuge:IsAvailable() then
         -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
         local function Evaluate_Garrote_Target_C(TargetUnit)
-            return S.ShroudedSuffocation:AzeriteEnabled() and Rogue.CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+            return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
         end
         if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
                 and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
