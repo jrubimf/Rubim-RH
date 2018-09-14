@@ -280,7 +280,7 @@ local function APL()
             return S.Blizzard:Cast()
         end
         -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
-        if S.GlacialSpike:IsReady() and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable()) then
+        if S.GlacialSpike:IsReadyP() and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable()) then
             return S.GlacialSpike:Cast()
         end
         -- ice_nova
