@@ -451,10 +451,6 @@ local function APL()
         return Precombat()
     end
 
-    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-        return S.Disrupt:Cast()
-    end
-
     -- variable,name=blade_dance,value=talent.first_blood.enabled|set_bonus.tier20_4pc|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
     if (true) then
         VarBladeDance = num(S.FirstBlood:IsAvailable() or HL.Tier20_4Pc or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
@@ -489,11 +485,11 @@ local function APL()
     end
 
     -- disrupt
-    --if S.Disrupt:IsReady() and (true) then
-        --return S.Disrupt:Cast()
-    --end
+    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Disrupt:Cast()
+    end
     -- call_action_list,name=cooldown,if=gcd.remains=0
-    if Cooldown() ~= nil and (Player:GCDRemains() == 0) then
+    if Cooldown() ~= nil then
         return Cooldown()
     end
     -- pick_up_fragment,if=fury.deficit>=35

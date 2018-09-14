@@ -344,3 +344,9 @@ function RubimRH.azerite(slot, azeriteID)
     end
     return false
 end
+
+function QueueSkill()
+    if RubimRH.QueuedSpell():IsReady() then
+        return RubimRH.QueuedSpell():Cast()
+    end
+end

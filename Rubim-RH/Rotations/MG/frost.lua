@@ -179,10 +179,8 @@ local function APL()
             return S.Frostbolt:Cast()
         end
         -- call_action_list,name=movement
-        if (true) then
-            if Movement() ~= nil then
-                return Movement()
-            end
+        if Movement() ~= nil and Player:IsMoving() then
+            return Movement()
         end
         -- ice_lance
         if S.IceLance:IsReadyP() then
@@ -241,7 +239,7 @@ local function APL()
     end
     Single = function()
         -- ice_nova,if=cooldown.ice_nova.ready&debuff.winters_chill.up
-        if S.IceNova:IsReadyP() and  Target:DebuffP(S.WintersChillDebuff) then
+        if S.IceNova:IsReadyP() and Target:DebuffP(S.WintersChillDebuff) then
             return S.IceNova:Cast()
         end
         -- flurry,if=!talent.glacial_spike.enabled&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&prev_gcd.1.frostbolt)
@@ -249,7 +247,7 @@ local function APL()
             return S.Flurry:Cast()
         end
         -- flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
-        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and (Player:Buff(S.BrainFreezeBuff)) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
+        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and (Player:Buff(S.BrainFreezeBuff) and Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
             return S.Flurry:Cast()
         end
         -- frozen_orb
@@ -281,7 +279,7 @@ local function APL()
             return S.Blizzard:Cast()
         end
         -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
-        if S.GlacialSpike:IsReady() and ((Player:Buff(S.BrainFreezeBuff)) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable()) then
+        if S.GlacialSpike:IsReady() and ((Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable())) then
             return S.GlacialSpike:Cast()
         end
         -- ice_nova
@@ -297,10 +295,8 @@ local function APL()
             return S.Frostbolt:Cast()
         end
         -- call_action_list,name=movement
-        if (true) then
-            if Movement() ~= nil then
-                return Movement()
-            end
+        if Movement() ~= nil and Player:IsMoving() then
+            return Movement()
         end
         -- ice_lance
         if S.IceLance:IsReadyP() then
