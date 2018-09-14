@@ -252,7 +252,7 @@ function Unit:AreaTTD()
 		ttdtotal = ttd + ttdtotal
 	end
 	if totalunits == 0 then
-		return 99999999
+		return 0
 	end
 
 	return ttdtotal / totalunits

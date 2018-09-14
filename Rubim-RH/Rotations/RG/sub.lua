@@ -343,7 +343,6 @@ local function Stealth_CDs ()
             return S.ShadowDance:Cast()
         end
     end
-    return false;
 end
 
 -- # Builders

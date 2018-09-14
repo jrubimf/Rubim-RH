@@ -11,6 +11,8 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local Masque = LibStub("Masque", true)
+local group = Masque:Group("RubimRH")
 
 --INTERRUPTS---
 local int_smart = true
@@ -244,6 +246,7 @@ local updateConfigFunc = function()
         runonce = 1
     end
 end
+group:AddButton(Icons.MainIcon)
 
 local updateConfig = CreateFrame("frame")
 updateConfig:SetScript("OnEvent", updateConfigFunc)
