@@ -107,6 +107,7 @@ local function FuckWaterBolt()
     HL.Enum.TriggerGCD[33395] = nil
 end
 
+local brainFreezewasActive = 9999999999
 local function APL()
     FuckWaterBolt()
     local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop
@@ -247,7 +248,7 @@ local function APL()
             return S.Flurry:Cast()
         end
         -- flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
-        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and (Player:Buff(S.BrainFreezeBuff) and Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
+        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:Buff(S.BrainFreezeBuff) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
             return S.Flurry:Cast()
         end
         -- frozen_orb
@@ -279,7 +280,7 @@ local function APL()
             return S.Blizzard:Cast()
         end
         -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
-        if S.GlacialSpike:IsReady() and ((Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable())) then
+        if S.GlacialSpike:IsReady() and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable()) then
             return S.GlacialSpike:Cast()
         end
         -- ice_nova
@@ -287,7 +288,7 @@ local function APL()
             return S.IceNova:Cast()
         end
         -- flurry,if=azerite.winters_reach.enabled&!buff.brain_freeze.react&buff.winters_reach.react
-        if S.Flurry:IsReadyP() and (S.WintersReach:AzeriteEnabled() and not (Player:Buff(S.BrainFreezeBuff)) and (Player:Buff(S.WintersReachBuff))) then
+        if S.Flurry:IsReadyP() and (S.WintersReach:AzeriteEnabled() and not Player:Buff(S.BrainFreezeBuff) and Player:Buff(S.WintersReachBuff)) then
             return S.Flurry:Cast()
         end
         -- frostbolt
@@ -321,10 +322,13 @@ local function APL()
         return 0, 462338
     end
 
-    if RubimRH.TargetIsValid() then
+    if Player:Buff(S.BrainFreezeBuff) then
+        brainFreezewasActive = GetTime()
+    end
+        if RubimRH.TargetIsValid() then
         -- counterspell
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
-        if S.IceLance:IsReadyP() and (Player:PrevGCDP(1, S.Flurry) and Player:Buff(S.BrainFreezeBuff) and not (Player:Buff(S.FingersofFrostBuff))) then
+        if S.IceLance:IsReadyP() and (Player:PrevGCDP(1, S.Flurry) and GetTime() - brainFreezewasActive <= S.Flurry:CastTime() and not (Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
         end
         -- call_action_list,name=cooldowns
