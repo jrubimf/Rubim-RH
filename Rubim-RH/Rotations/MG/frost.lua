@@ -267,7 +267,7 @@ local function APL()
             return S.CometStorm:Cast()
         end
         -- ebonbolt,if=!talent.glacial_spike.enabled|buff.icicles.stack=5&!buff.brain_freeze.react
-        if S.Ebonbolt:IsReadyP() and (not S.GlacialSpike:IsAvailable() or Player:BuffStackP(S.IciclesBuff) == 5 and not (Player:Buff(S.BrainFreezeBuff))) then
+        if S.Ebonbolt:IsReadyP() and (not S.GlacialSpike:IsAvailable() or Player:BuffStackP(S.IciclesBuff) == 5 and not Player:Buff(S.BrainFreezeBuff)) then
             return S.Ebonbolt:Cast()
         end
         -- ray_of_frost,if=!action.frozen_orb.in_flight&ground_aoe.frozen_orb.remains=0
