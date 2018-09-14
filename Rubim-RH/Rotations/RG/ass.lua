@@ -332,7 +332,6 @@ local ComboPoints, ComboPointsDeficit, Energy_Regen_Combined;
 local OffensiveCDs = {
     S.MarkedforDeath,
     S.Vendetta,
-
 }
 
 local function UpdateCDs()
@@ -522,6 +521,10 @@ end
 -- # Direct damage abilities
 local function Direct ()
     -- actions.direct=envenom,if=combo_points>=4+talent.deeper_stratagem.enabled&(debuff.vendetta.up|debuff.toxic_blade.up|energy.deficit<=25+variable.energy_regen_combined|spell_targets.fan_of_knives>=2)&(!talent.exsanguinate.enabled|cooldown.exsanguinate.remains>2)
+    if S.Envenom:IsReady("Melee") and Player:ComboPoints() >= 4 + num(S.DeeperStratagem:IsAvailable()) and (Target:DebuffP(S.Vendetta) or Target:DebuffP(S.ToxicBladeDebuff) or Player:EnergyDeficit() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2) and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2 or not RubimRH.CDsON()) then
+        return S.Envenom:Cast()
+    end
+
     if S.Envenom:IsReady("Melee") and ComboPoints >= 4 + (S.DeeperStratagem:IsAvailable() and 1 or 0)
             and (Target:DebuffP(S.Vendetta) or Target:DebuffP(S.ToxicBladeDebuff) or Player:EnergyDeficitPredicted() <= 25 + Energy_Regen_Combined or Cache.EnemiesCount[10] >= 2)
             and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
