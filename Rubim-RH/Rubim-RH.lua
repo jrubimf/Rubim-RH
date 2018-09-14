@@ -18,7 +18,7 @@ errorEvent:SetScript("OnEvent", function(self, event)
         message("Missing dependency: RubimExtra")
         foundError = true
     end
-    
+
     if GetCVar("nameplateShowEnemies") ~= "1" then
         message("Nameplates enabled to maximum AoE detection.");
         SetCVar("nameplateShowEnemies", 1)

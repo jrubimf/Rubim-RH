@@ -187,7 +187,7 @@ local function APL()
             return S.BloodBoil:Cast()
         end
         -- death_and_decay,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.death_and_decay>=2
-        if S.DeathandDecay:IsReady() and (Player:BuffP(S.CrimsonScourge) or S.RapidDecomposition:IsAvailable() or Cache.EnemiesCount[5] >= 2) then
+        if S.DeathandDecay:IsReady() and Player:AreaTTD() >= 6 and (Player:BuffP(S.CrimsonScourge) or S.RapidDecomposition:IsAvailable() or Cache.EnemiesCount[5] >= 2) then
             return S.DeathandDecay:Cast()
         end
         -- consumption

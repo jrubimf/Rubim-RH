@@ -242,17 +242,18 @@ function Unit:StackUp(min, max)
 	return false
 end
 
-function Unit:AreaTTD(seconds)
+function Unit:AreaTTD()
 	HL.GetEnemies(10, true);
-	local seconds = seconds or 6
 	local ttdtotal = 0
 	local totalunits = 0
 	for _, CycleUnit in pairs(Cache.Enemies[10]) do
-		totalunits = totalunits + 1
 		local ttd = CycleUnit:TimeToDie()
-		if ttd <= seconds then
-			ttdtotal = ttdtotal + 1
-		end
+		totalunits = totalunits + 1
+		ttdtotal = ttd + ttdtotal
 	end
-	return (ttdtotal > 0 and ttdtotal == totalunits)
+	if totalunits == 0 then
+		return 99999999
+	end
+
+	return ttdtotal / totalunits
 end
