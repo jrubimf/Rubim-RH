@@ -333,6 +333,7 @@ local function APL()
         if S.Slam:IsReady() and (not S.FervorofBattle:IsAvailable() and not (Cache.EnemiesCount[8] > 1)) then
             return S.Slam:Cast()
         end
+        return 0, 135328
     end
     SingleTarget = function()
         -- rend,if=remains<=duration*0.3&debuff.colossus_smash.down

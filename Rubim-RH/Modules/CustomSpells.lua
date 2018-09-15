@@ -71,14 +71,9 @@ end
 
 --/run RubimRH.queuedSpell ={ RubimRH.Spell[103].Prowl, 0 }
 
-function Spell:Queued(powerEx)
+function Spell:IsQueuedPowerCheck(powerEx)
     local powerExtra = powerEx or 0
     if RubimRH.queuedSpell[1] == RubimRH.Spell[1].Empty then
-        return false
-    end
-
-    if Player:PrevGCD(1, RubimRH.QueuedSpell()) then
-        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         return false
     end
 
@@ -176,7 +171,7 @@ end
   *]]
 
 function Spell:IsCastable(Range, AoESpell, ThisUnit)
-    if not self:IsAvailable() or self:Queued() then
+    if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
 
@@ -189,7 +184,8 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
-    if not self:IsAvailable() or self:Queued() then
+        
+    if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
 
@@ -243,7 +239,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReadyP(Range, AoESpell, ThisUnit)
-    if not self:IsAvailable() or self:Queued() then
+    if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
 
@@ -297,7 +293,7 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
-    if not self:IsAvailable() or self:Queued() then
+    if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
     if Range then

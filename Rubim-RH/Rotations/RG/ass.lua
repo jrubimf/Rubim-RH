@@ -366,6 +366,15 @@ local function CDs ()
             if S.Berserking:IsReady() then
                 return S.Berserking:Cast()
             end
+
+            --actions.cds+=/fireblood,if=debuff.vendetta.up
+            if S.Fireblood:IsReady() then
+                return S.Fireblood:Cast()
+            end
+            --actions.cds+=/ancestral_call,if=debuff.vendetta.up
+            --if S.AncestralCall:IsReady() then
+              --  return S.AncestralCall:Cast()
+            --end
         end
 
         -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
@@ -377,13 +386,13 @@ local function CDs ()
                 and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
             return S.Vendetta:Cast()
         end
-        if S.Vanish:IsReady() and not Player:IsTanking(Target) then
+        if S.Vanish:IsReady() and not Player:IsTanking(Target) and HL.CombatTime() >= 5 then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
             if S.Subterfuge:IsAvailable() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier<=1)
-            if S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
+            if HL.CombatTime() >= 5 and S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
                     and ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1
                     and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) <= 1) then
                 return S.Vanish:Cast()
@@ -399,7 +408,7 @@ local function CDs ()
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.master_assassin.enabled&!stealthed.all&master_assassin_remains<=0&!dot.rupture.refreshable
-            if S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
+            if HL.CombatTime() >= 5 and S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
                 return S.Vanish:Cast()
             end
         end
