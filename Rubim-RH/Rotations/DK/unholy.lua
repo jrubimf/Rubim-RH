@@ -163,11 +163,11 @@ local function APL()
         end
     end
     Aoe = function()
-        if S.DeathAndDecay:IsReady() and S.Apocalypse:CooldownDown() then
+        if S.DeathAndDecay:IsReady() and Cache.EnemiesCount[8] >= 1 and S.Apocalypse:CooldownDown() then
             return S.DeathAndDecay:Cast()
         end
         -- defile
-        if S.Defile:IsReady() then
+        if S.Defile:IsReady() and Cache.EnemiesCount[8] >= 1 then
             return S.Defile:Cast()
         end
         -- epidemic,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
@@ -272,11 +272,11 @@ local function APL()
             return S.DeathCoil:Cast()
         end
         -- death_and_decay,if=talent.pestilence.enabled&cooldown.apocalypse.remains
-        if S.DeathAndDecay:IsReady() and (S.Pestilence:IsAvailable() and S.Apocalypse:CooldownDown()) then
+        if S.DeathAndDecay:IsReady() and Cache.EnemiesCount[8] >= 1 and (S.Pestilence:IsAvailable() and S.Apocalypse:CooldownDown()) then
             return S.DeathAndDecay:Cast()
         end
         -- defile,if=cooldown.apocalypse.remains
-        if S.Defile:IsReady() and S.Apocalypse:CooldownDown() then
+        if S.Defile:IsReady() and S.Apocalypse:CooldownDown() and Cache.EnemiesCount[8] >= 1 then
             return S.Defile:Cast()
         end
         -- scourge_strike,if=((debuff.festering_wound.up&cooldown.apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5

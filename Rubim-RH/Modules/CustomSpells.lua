@@ -212,7 +212,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimRH.db.profile.mainOption.startattack then
-
         if Target:Exists() then
             if self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable() then
                 return true
@@ -231,7 +230,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         end
     end
 
-    if not RubimRH.TargetIsValid() then
+    if not RubimRH.TargetIsValid() and self:MaximumRange() <= 29 then
         return false
     end
 
