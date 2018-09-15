@@ -374,7 +374,7 @@ local function CDs ()
             --actions.cds+=/ancestral_call,if=debuff.vendetta.up
             --if S.AncestralCall:IsReady() then
               --  return S.AncestralCall:Cast()
-            end
+            --end
         end
 
         -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
