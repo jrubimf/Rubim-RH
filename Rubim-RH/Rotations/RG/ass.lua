@@ -371,9 +371,9 @@ local function CDs ()
             end
 
             --actions.cds+=/fireblood,if=debuff.vendetta.up
-            if S.Fireblood:IsReady() then
-                return S.Fireblood:Cast()
-            end
+            --if S.Fireblood:IsReady() then
+              --  return S.Fireblood:Cast()
+            --end
             --actions.cds+=/ancestral_call,if=debuff.vendetta.up
             --if S.AncestralCall:IsReady() then
             --  return S.AncestralCall:Cast()
