@@ -330,8 +330,11 @@ local RuptureThreshold, CrimsonTempestThreshold, RuptureDMGThreshold, GarroteDMG
 local ComboPoints, ComboPointsDeficit, Energy_Regen_Combined;
 
 local OffensiveCDs = {
+    S.Exsanguinate,
+    S.Vanish,
     S.MarkedforDeath,
     S.Vendetta,
+
 }
 
 local function UpdateCDs()
@@ -373,7 +376,7 @@ local function CDs ()
             end
             --actions.cds+=/ancestral_call,if=debuff.vendetta.up
             --if S.AncestralCall:IsReady() then
-              --  return S.AncestralCall:Cast()
+            --  return S.AncestralCall:Cast()
             --end
         end
 
@@ -420,7 +423,7 @@ local function CDs ()
         end
         -- actions.cds+=/toxic_blade,if=dot.rupture.ticking
         if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
-           return S.ToxicBlade:Cast()
+            return S.ToxicBlade:Cast()
         end
     end
 end
@@ -466,7 +469,7 @@ local function Stealthed ()
         end
         if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
                 and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-           return S.Garrote:Cast()
+            return S.Garrote:Cast()
         end
         -- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
         if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
@@ -482,7 +485,7 @@ end
 -- # Damage over time abilities
 local function Dot ()
     -- actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
-    if RubimRH.CDsON() and S.Rupture:IsReady("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
+    if S.Rupture:IsReady("Melee") and ComboPoints > 0 and S.Exsanguinate:IsAvailable()
             and ((ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1)
             or (not Target:DebuffP(S.Rupture) and (HL.CombatTime() > 10 or (ComboPoints >= 2)))) then
         return S.Rupture:Cast()
@@ -505,7 +508,7 @@ local function Dot ()
             if Player:EnergyPredicted() < 45 then
                 return 0, 135328
             end
-           return S.Garrote:Cast()
+            return S.Garrote:Cast()
         end
     end
     -- actions.dot+=/crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
@@ -570,6 +573,7 @@ end
 -- APL Main
 
 local function APL ()
+    UpdateCDs()
     -- Spell ID Changes check
     Stealth = S.Subterfuge:IsAvailable() and S.Stealth2 or S.Stealth; -- w/ or w/o Subterfuge Talent
 
@@ -608,7 +612,7 @@ local function APL ()
 
 
     -- Poisons
-    local PoisonRefreshTime = Player:AffectingCombat() and 3 * 60 or 15* 60;
+    local PoisonRefreshTime = Player:AffectingCombat() and 3 * 60 or 15 * 60;
     -- Lethal Poison
     if Player:BuffRemainsP(S.DeadlyPoison) <= PoisonRefreshTime
             and Player:BuffRemainsP(S.WoundPoison) <= PoisonRefreshTime then
@@ -623,10 +627,8 @@ local function APL ()
     if not Player:AffectingCombat() then
         -- Stealth
         -- Precombat CDs
-        if RubimRH.CDsON() then
-            if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
-                return S.MarkedforDeath:Cast()
-            end
+        if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+            return S.MarkedforDeath:Cast()
         end
         -- Flask
         -- Food
@@ -638,50 +640,48 @@ local function APL ()
     -- actions=variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)
     Energy_Regen_Combined = Player:EnergyRegen() + PoisonedBleeds() * 7 / (2 * Player:SpellHaste());
 
-        -- actions+=/call_action_list,name=stealthed,if=stealthed.rogue
-        if Player:IsStealthedP(true, false) then
-            if Stealthed() ~= nil then
-                return Stealthed()
-            end
+    -- actions+=/call_action_list,name=stealthed,if=stealthed.rogue
+    if Player:IsStealthedP(true, false) then
+        if Stealthed() ~= nil then
+            return Stealthed()
         end
-        -- actions+=/call_action_list,name=cds
-        if RubimRH.CDsON() then
-            if CDs() ~= nil then
-                return CDs()
-            end
-        end
-        -- actions+=/call_action_list,name=dot
-        if Dot() ~= nil then
-            return Dot()
-        end
-        -- actions+=/call_action_list,name=direct
-        if Direct() ~= nil then
-            return Direct()
-        end
-        -- Racials
-        if RubimRH.CDsON() then
-            -- actions+=/arcane_torrent,if=energy.deficit>=15+variable.energy_regen_combined
-            if S.ArcaneTorrent:IsReadyP("Melee") and Player:EnergyDeficitPredicted() > 15 + Energy_Regen_Combined then
-                return S.ArcaneTorrent:Cast()
-            end
-            -- actions+=/arcane_pulse
-            if S.ArcanePulse:IsReadyP("Melee") then
-                return S.ArcanePulse:Cast()
-            end
-            -- actions+=/lights_judgment
-            if S.LightsJudgment:IsReadyP("Melee") then
-                return S.LightsJudgment:Cast()
-            end
-        end
-        -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]
-        if S.PoisonedKnife:IsReady(30) and not Player:IsStealthedP(true, true)
-                and ((not Target:IsInRange(10) and Player:EnergyTimeToMax() <= Player:GCD() * 1.2)
-                or (not Target:IsInRange("Melee") and Target:DebuffRefreshableP(S.DeadlyPoisonDebuff, 4))) then
-            return S.PoisonedKnife:Cast()
-        end
-        -- Trick to take in consideration the Recovery Setting
-        return 0, 135328
     end
+    -- actions+=/call_action_list,name=cds
+    if CDs() ~= nil then
+        return CDs()
+    end
+    -- actions+=/call_action_list,name=dot
+    if Dot() ~= nil then
+        return Dot()
+    end
+    -- actions+=/call_action_list,name=direct
+    if Direct() ~= nil then
+        return Direct()
+    end
+    -- Racials
+    if RubimRH.CDsON() then
+        -- actions+=/arcane_torrent,if=energy.deficit>=15+variable.energy_regen_combined
+        if S.ArcaneTorrent:IsReadyP("Melee") and Player:EnergyDeficitPredicted() > 15 + Energy_Regen_Combined then
+            return S.ArcaneTorrent:Cast()
+        end
+        -- actions+=/arcane_pulse
+        if S.ArcanePulse:IsReadyP("Melee") then
+            return S.ArcanePulse:Cast()
+        end
+        -- actions+=/lights_judgment
+        if S.LightsJudgment:IsReadyP("Melee") then
+            return S.LightsJudgment:Cast()
+        end
+    end
+    -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]
+    if S.PoisonedKnife:IsReady(30) and not Player:IsStealthedP(true, true)
+            and ((not Target:IsInRange(10) and Player:EnergyTimeToMax() <= Player:GCD() * 1.2)
+            or (not Target:IsInRange("Melee") and Target:DebuffRefreshableP(S.DeadlyPoisonDebuff, 4))) then
+        return S.PoisonedKnife:Cast()
+    end
+    -- Trick to take in consideration the Recovery Setting
+    return 0, 135328
+end
 
 RubimRH.Rotation.SetAPL(259, APL)
 
