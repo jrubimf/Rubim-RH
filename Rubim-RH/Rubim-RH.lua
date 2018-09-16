@@ -513,7 +513,7 @@ local defaults = {
             sk2tooltip = "Percent HP to use Cloak of Shadows",
 
             sk3 = 50,
-            sk3id = 31224,
+            sk3id = 5277,
             sk3tooltip = "Percent HP to use Evasion",
         },
         --HUNTER

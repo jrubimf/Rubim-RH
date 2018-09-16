@@ -634,6 +634,7 @@ local function APL ()
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
+        return 0, 462338
     end
 
     -- In Combat
@@ -673,7 +674,7 @@ local function APL ()
             return S.LightsJudgment:Cast()
         end
     end
-    -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]
+    -- Poisoned Knife Out of Range [EnergyCap] or [PoisonRefresh]")
     if S.PoisonedKnife:IsReady(30) and not Player:IsStealthedP(true, true)
             and ((not Target:IsInRange(10) and Player:EnergyTimeToMax() <= Player:GCD() * 1.2)
             or (not Target:IsInRange("Melee") and Target:DebuffRefreshableP(S.DeadlyPoisonDebuff, 4))) then

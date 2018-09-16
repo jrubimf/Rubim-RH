@@ -19,7 +19,24 @@ local autoAttack = Spell(6603)
 local trinket1 = 1030910
 local trinket2 = 1030902
 
-function trinketReady(trinketPosition)
+function Item:IsBuffTrinket()
+
+end
+
+local AreaTrinket = {
+    159611,
+}
+
+local function IsAreaTrinket(itemID)
+    for i, itemArray in pairs() do
+        if itemID == itemArray then
+            return true
+        end
+    end
+    return false
+end
+
+local function trinketReady(trinketPosition)
     local inventoryPosition
 
     if trinketPosition == 1 then
@@ -38,6 +55,7 @@ function trinketReady(trinketPosition)
     if start + duration - GetTime() > 0 then
         return false
     end
+
     return true
 end
 

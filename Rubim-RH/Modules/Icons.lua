@@ -414,7 +414,7 @@ end)
 
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
-    if (self.sinceLastUpdate >= 0.050) then
+    if (self.sinceLastUpdate >= 0.066) then
         if RubimRH.db.profile.mainOption.mainIcon then
             Icons.MainIcon:Show()
             Icons.MainIcon:SetAlpha(RubimRH.db.profile.mainOption.mainIconOpacity / 100)
@@ -471,13 +471,6 @@ function updateIcon:onUpdate(sinceLastUpdate)
                 else
                     RubimRH.stIcon.texture:SetTexture(singleRotation)
                 end
-
-                if not UnitIsPlayer(Target.UnitID) and Target:IsInterruptible() then
-                    RubimRH.kickIcon.texture:SetTexture(1)
-                else
-                    RubimRH.kickIcon.texture:SetTexture(nil)
-                end
-
             end
             self.sinceLastUpdate = 0;
         end
