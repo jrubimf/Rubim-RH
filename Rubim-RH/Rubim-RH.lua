@@ -636,7 +636,10 @@ local defaults = {
             cooldowns = true
         },
         [64] = {
-            cooldowns = true
+            cooldowns = true,
+            sk1 = 10, -- IceBlock
+            sk1id = 45438, -- Iceblock
+            sk1tooltip = "Percent HP to use Ice Block",
         }
     }
 }

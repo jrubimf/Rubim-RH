@@ -53,6 +53,7 @@ RubimRH.Spell[MFrost] = {
     WintersReach = Spell(273346),
     WintersReachBuff = Spell(273347),
     FreezingRain = Spell(240555),
+    IceBlock = Spell(45438),
 
 };
 HL.Spell[MFrost] = RubimRH.Spell[MFrost]
@@ -168,7 +169,7 @@ local function APL()
             return S.Ebonbolt:Cast()
         end
         -- glacial_spike
-        if S.GlacialSpike:IsReadyP() then
+        if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 then
             return S.GlacialSpike:Cast()
         end
         -- cone_of_cold
@@ -356,6 +357,10 @@ end
 RubimRH.Rotation.SetAPL(64, APL)
 
 local function PASSIVE()
+    if S.IceBlock:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[64].sk1 then
+        return S.IceBlock:Cast()
+    end
+
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(64, PASSIVE)
