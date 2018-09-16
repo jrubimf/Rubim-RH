@@ -249,7 +249,7 @@ local function APL()
             return S.Flurry:Cast()
         end
             --flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
-        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:BuffP(S.BrainFreezeBuff, nil, 0.2) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
+        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:BuffRemains(S.BrainFreezeBuff, nil, 0.4) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
             return S.Flurry:Cast()
         end
         -- frozen_orb
