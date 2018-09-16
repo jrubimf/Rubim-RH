@@ -247,8 +247,8 @@ local function APL()
         if S.Flurry:IsReadyP() and (not S.GlacialSpike:IsAvailable() and (Player:PrevGCDP(1, S.Ebonbolt) or (Player:Buff(S.BrainFreezeBuff)) and Player:PrevGCDP(1, S.Frostbolt))) then
             return S.Flurry:Cast()
         end
-        -- flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
-        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:Buff(S.BrainFreezeBuff) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
+            --flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
+        if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:Buff(S.BrainFreezeBuff, nil, 0.2) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or Player:PrevGCDP(1, S.Ebonbolt))) then
             return S.Flurry:Cast()
         end
         -- frozen_orb
