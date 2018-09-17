@@ -190,11 +190,11 @@ local function BosTicking()
 end
 
 local function ColdHeart()
-    -- chains_of_ice,if=(buff.cold_heart_item.stack>5|buff.cold_heart_talent.stack>5)&target.time_to_die<gcd
+    --actions.cold_heart=chains_of_ice,if=buff.cold_heart.stack>5&target.time_to_die<gcd
     if S.ChainsofIce:IsReady() and ((Player:BuffStackP(S.ColdHeartItemBuff) > 5 or Player:BuffStackP(S.ColdHeartTalentBuff) > 5) and Target:TimeToDie() < Player:GCD()) then
         return S.ChainsofIce:Cast()
     end
-    -- chains_of_ice,if=(buff.pillar_of_frost.remains<=gcd*(1+cooldown.frostwyrms_fury.ready)|buff.pillar_of_frost.remains<rune.time_to_3)&buff.pillar_of_frost.up
+    --actions.cold_heart+=/chains_of_ice,if=(buff.pillar_of_frost.remains<=gcd*(1+cooldown.frostwyrms_fury.ready)|buff.pillar_of_frost.remains<rune.time_to_3)&buff.pillar_of_frost.up
     if S.ChainsofIce:IsReady() and ((Player:BuffRemainsP(S.PillarofFrost) <= Player:GCD() * (1 + num(S.FrostwyrmsFury:CooldownUpP() and RubimRH.config.Spells[3].isActive)) or Player:BuffRemainsP(S.PillarofFrost) < Player:RuneTimeToX(3)) and Player:BuffP(S.PillarofFrost)) then
         return S.ChainsofIce:Cast()
     end

@@ -138,54 +138,54 @@ local function APL()
             return S.RushingJadeWind:Cast()
         end
         -- chi_burst
-        --        if S.ChiBurst:IsReadyP() and (true) then
+        --        if S.ChiBurst:IsReady() and (true) then
         --            return S.ChiBurst:Cast()
         --      end
         -- chi_wave
-        --        if S.ChiWave:IsReadyP() and (true) then
+        --        if S.ChiWave:IsReady() and (true) then
         --            return S.ChiWave:Cast()
         --end
     end
     Cd = function()
         -- invoke_xuen_the_white_tiger
-        if S.InvokeXuentheWhiteTiger:IsReadyP() then
+        if S.InvokeXuentheWhiteTiger:IsReady() then
             return S.InvokeXuentheWhiteTiger:Cast()
         end
         -- use_item,name=lustrous_golden_plumage
         -- blood_fury
-        if S.BloodFury:IsReadyP() then
+        if S.BloodFury:IsReady() then
             return S.BloodFury:Cast()
         end
         -- berserking
-        if S.Berserking:IsReadyP() then
+        if S.Berserking:IsReady() then
             return S.Berserking:Cast()
         end
         -- arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReadyP() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
+        if S.ArcaneTorrent:IsReady() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
             return S.ArcaneTorrent:Cast()
         end
         -- lights_judgment
-        if S.LightsJudgment:IsReadyP() then
+        if S.LightsJudgment:IsReady() then
             return S.LightsJudgment:Cast()
         end
         -- fireblood
-        if S.Fireblood:IsReadyP() then
+        if S.Fireblood:IsReady() then
             return S.Fireblood:Cast()
         end
         -- ancestral_call
-        if S.AncestralCall:IsReadyP() then
+        if S.AncestralCall:IsReady() then
             return S.AncestralCall:Cast()
         end
         -- touch_of_death,if=target.time_to_die>9
-        if S.TouchofDeath:IsReadyP() and (Target:TimeToDie() > 9) then
+        if S.TouchofDeath:IsReady() and (Target:TimeToDie() > 9) then
             return S.TouchofDeath:Cast()
         end
         -- storm_earth_and_fire,if=cooldown.storm_earth_and_fire.charges=2|(cooldown.fists_of_fury.remains<=6&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=15
-        if S.StormEarthandFire:IsReadyP() and (S.StormEarthandFire:ChargesP() == 2 or (S.FistsOfFury:CooldownRemainsP() <= 6 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1) or Target:TimeToDie() <= 15) then
+        if S.StormEarthandFire:IsReady() and (S.StormEarthandFire:ChargesP() == 2 or (S.FistsOfFury:CooldownRemainsP() <= 6 and Player:Chi() >= 3 and S.RisingSunKick:CooldownRemainsP() <= 1) or Target:TimeToDie() <= 15) then
             return S.StormEarthandFire:Cast()
         end
         -- serenity,if=cooldown.rising_sun_kick.remains<=2|target.time_to_die<=12
-        if S.Serenity:IsReadyP() and (S.RisingSunKick:CooldownRemainsP() <= 2 or Target:TimeToDie() <= 12) then
+        if S.Serenity:IsReady() and (S.RisingSunKick:CooldownRemainsP() <= 2 or Target:TimeToDie() <= 12) then
             return S.Serenity:Cast()
         end
     end
@@ -195,26 +195,26 @@ local function APL()
     -- Serenity --
     Serenity = function()
         -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.RisingSunKick:IsReadyP() then
+        if S.RisingSunKick:IsReady() then
             return S.RisingSunKick:Cast()
         end
         -- fists_of_fury,if=(buff.bloodlust.up&prev_gcd.1.rising_sun_kick&!azerite.swift_roundhouse.enabled)|buff.serenity.remains<1|active_enemies>1
-        if S.FistsOfFury:IsReadyP() and ((Player:HasHeroism() and Player:PrevGCDP(1, S.RisingSunKick) and not S.SwiftRoundhouse:AzeriteEnabled()) or Player:BuffRemainsP(S.SerenityBuff) < 1 or Cache.EnemiesCount[8] > 1) then
+        if S.FistsOfFury:IsReady() and ((Player:HasHeroism() and Player:PrevGCDP(1, S.RisingSunKick) and not S.SwiftRoundhouse:AzeriteEnabled()) or Player:BuffRemainsP(S.SerenityBuff) < 1 or Cache.EnemiesCount[8] > 1) then
             return S.FistsOfFury:Cast()
         end
         -- spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick&(active_enemies>=3|(active_enemies=2&prev_gcd.1.blackout_kick))
-        if S.SpinningCraneKick:IsReadyP() and (not Player:PrevGCDP(1, S.SpinningCraneKick) and (Cache.EnemiesCount[8] >= 3 or (Cache.EnemiesCount[8] == 2 and Player:PrevGCDP(1, S.BlackoutKick)))) then
+        if S.SpinningCraneKick:IsReady() and (not Player:PrevGCDP(1, S.SpinningCraneKick) and (Cache.EnemiesCount[8] >= 3 or (Cache.EnemiesCount[8] == 2 and Player:PrevGCDP(1, S.BlackoutKick)))) then
             return S.SpinningCraneKick:Cast()
         end
         -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains
-        if S.BlackoutKick:IsReadyP() then
+        if S.BlackoutKick:IsReady() then
             return S.BlackoutKick:Cast()
         end
     end
 
     St = function()
         -- actions.st=cancel_buff,name=rushing_jade_wind,if=active_enemies=1&(!talent.serenity.enabled|cooldown.serenity.remains>3)
-        --if S.RushingJadeWind:IsReadyP() and Player:BuffP(S.RushingJadeWind) and Cache.EnemiesCount[5] == 1 and (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() > 3) then
+        --if S.RushingJadeWind:IsReady() and Player:BuffP(S.RushingJadeWind) and Cache.EnemiesCount[5] == 1 and (not S.Serenity:IsAvailable() or S.Serenity:CooldownRemainsP() > 3) then
             --return S.RushingJadeWind:Cast()
         --end
         -- actions.st+=/whirling_dragon_punch
@@ -222,15 +222,15 @@ local function APL()
             return S.WhirlingDragonPunch:Cast()
         end
         -- actions.st+=/rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(cooldown.fists_of_fury.remains>2|chi>=5|azerite.swift_roundhouse.rank>1)
-        if S.RisingSunKick:IsReadyP() and (S.FistsOfFury:CooldownRemainsP() > 2 or Player:Chi() >= 5 or S.SwiftRoundhouse:AzeriteRank() > 1) then
+        if S.RisingSunKick:IsReady() and (S.FistsOfFury:CooldownRemainsP() > 2 or Player:Chi() >= 5 or S.SwiftRoundhouse:AzeriteRank() > 1) then
             return S.RisingSunKick:Cast()
         end
         -- actions.st+=/rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1&active_enemies>1
-        if S.RushingJadeWind:IsReadyP() and Player:BuffDownP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 and Cache.EnemiesCount[8] > 1 then
+        if S.RushingJadeWind:IsReady() and Player:BuffDownP(S.RushingJadeWind) and Player:EnergyTimeToMaxPredicted() > 1 and Cache.EnemiesCount[8] > 1 then
             return S.RushingJadeWind:Cast()
         end
         -- actions.st+=/fists_of_fury,if=energy.time_to_max>2.5&(azerite.swift_roundhouse.rank<2|(cooldown.whirling_dragon_punch.remains<10&talent.whirling_dragon_punch.enabled)|active_enemies>1)
-        if S.FistsOfFury:IsReadyP() and Player:EnergyTimeToMaxPredicted() > 2.5 and
+        if S.FistsOfFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 and
                 (
                         S.SwiftRoundhouse:AzeriteRank() < 2 or
                                 (S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() < 10) or
@@ -239,16 +239,16 @@ local function APL()
             return S.FistsOfFury:Cast()
         end
         -- actions.st+=/fist_of_the_white_tiger,if=chi<=2&(buff.rushing_jade_wind.down|energy>46)
-        if S.FistOfTheWhiteTiger:IsReadyP() and Player:Chi() <= 2 and
+        if S.FistOfTheWhiteTiger:IsReady() and Player:Chi() <= 2 and
                 (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 46) then
             return S.FistOfTheWhiteTiger:Cast()
         end
         -- actions.st+=/energizing_elixir,if=chi<=3&energy<50
-        if S.EnergizingElixir:IsReadyP() and Player:Chi() <= 3 and Player:EnergyPredicted() < 50 then
+        if S.EnergizingElixir:IsReady() and Player:Chi() <= 3 and Player:EnergyPredicted() < 50 then
             return S.EnergizingElixir:Cast()
         end
         -- actions.st+=/blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick&(cooldown.rising_sun_kick.remains>2|chi>=3)&(cooldown.fists_of_fury.remains>2|chi>=4|azerite.swift_roundhouse.enabled)&buff.swift_roundhouse.stack<2
-        if S.BlackoutKick:IsReadyP()
+        if S.BlackoutKick:IsReady()
                 and (
                 not Player:PrevGCD(1, S.BlackoutKick)
                         and (S.RisingSunKick:CooldownRemainsP() > 2 or Player:Chi() >= 3)
@@ -262,21 +262,21 @@ local function APL()
             return S.BlackoutKick:Cast()
         end
         -- actions.st+=/chi_wave
-        if S.ChiWave:IsReadyP() then
+        if S.ChiWave:IsReady() then
             return S.ChiWave:Cast()
         end
         -- actions.st+=/chi_burst,if=chi.max-chi>=1&active_enemies=1|chi.max-chi>=2
-        if S.ChiBurst:IsReadyP() and ((Player:ChiDeficit() >= 1 and Cache.EnemiesCount[8] == 1) or Player:ChiDeficit() >= 2) then
+        if S.ChiBurst:IsReady() and ((Player:ChiDeficit() >= 1 and Cache.EnemiesCount[8] == 1) or Player:ChiDeficit() >= 2) then
             return S.ChiBurst:Cast()
         end
         -- actions.st+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&(buff.rushing_jade_wind.down|energy>56)
-        if S.TigerPalm:IsReadyP() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
+        if S.TigerPalm:IsReady() and not Player:PrevGCD(1, S.TigerPalm) and Player:ChiDeficit() >= 2 and
                 (Player:BuffDownP(S.RushingJadeWind) or Player:EnergyPredicted() > 56) then
             return S.TigerPalm:Cast()
         end
         -- actions.st+=/flying_serpent_kick,if=prev_gcd.1.blackout_kick&chi>1&buff.swift_roundhouse.stack<2,interrupt=1
         -- actions.st+=/fists_of_fury,if=energy.time_to_max>2.5&cooldown.rising_sun_kick.remains>2&buff.swift_roundhouse.stack=2
-        if S.FistsOfFury:IsReadyP() and Player:EnergyTimeToMaxPredicted() > 2.5 and S.RisingSunKick:CooldownRemainsP() > 2 and
+        if S.FistsOfFury:IsReady() and Player:EnergyTimeToMaxPredicted() > 2.5 and S.RisingSunKick:CooldownRemainsP() > 2 and
                 Player:BuffStack(S.SwiftRoundhouseBuff) == 2 then
            return S.FistsOfFury:Cast()
         end
@@ -284,55 +284,55 @@ local function APL()
 
     Aoe = function()
         -- whirling_dragon_punch
-        if S.WhirlingDragonPunch:IsReadyP() then
+        if S.WhirlingDragonPunch:IsReady() then
             return S.WhirlingDragonPunch:Cast()
         end
         -- energizing_elixir,if=!prev_gcd.1.tiger_palm&chi<=1&energy<50
-        if S.EnergizingElixir:IsReadyP() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyPredicted() < 50) then
+        if S.EnergizingElixir:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:Chi() <= 1 and Player:EnergyPredicted() < 50) then
             return S.EnergizingElixir:Cast()
         end
         -- fists_of_fury,if=energy.time_to_max>2.5
-        if S.FistsOfFury:IsReadyP() and Cache.EnemiesCount[8] >= 1 and (Player:EnergyTimeToMaxPredicted() > 2.5) then
+        if S.FistsOfFury:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:EnergyTimeToMaxPredicted() > 2.5) then
             return S.FistsOfFury:Cast()
         end
         -- rushing_jade_wind,if=buff.rushing_jade_wind.down&energy.time_to_max>1
-        if S.RushingJadeWind:IsReadyP() and (Player:BuffDownP(S.RushingJadeWindBuff) and Player:EnergyTimeToMaxPredicted() > 1) then
+        if S.RushingJadeWind:IsReady() and (Player:BuffDownP(S.RushingJadeWindBuff) and Player:EnergyTimeToMaxPredicted() > 1) then
             return S.RushingJadeWind:Cast()
         end
         -- rising_sun_kick,target_if=min:debuff.mark_of_the_crane.remains,if=(talent.whirling_dragon_punch.enabled&cooldown.whirling_dragon_punch.remains<gcd)&cooldown.fists_of_fury.remains>3
-        if S.RisingSunKick:IsReadyP() and ((S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() < Player:GCD()) and S.FistsOfFury:CooldownRemainsP() > 3) then
+        if S.RisingSunKick:IsReady() and ((S.WhirlingDragonPunch:IsAvailable() and S.WhirlingDragonPunch:CooldownRemainsP() < Player:GCD()) and S.FistsOfFury:CooldownRemainsP() > 3) then
             return S.RisingSunKick:Cast()
         end
         -- spinning_crane_kick,if=!prev_gcd.1.spinning_crane_kick
-        if S.SpinningCraneKick:IsReadyP() and (not Player:PrevGCDP(1, S.SpinningCraneKick)) then
+        if S.SpinningCraneKick:IsReady() and (not Player:PrevGCDP(1, S.SpinningCraneKick)) then
             return S.SpinningCraneKick:Cast()
         end
         -- chi_burst,if=chi<=3
-        if S.ChiBurst:IsReadyP() and (Player:Chi() <= 3) then
+        if S.ChiBurst:IsReady() and (Player:Chi() <= 3) then
             return S.ChiBurst:Cast()
         end
         -- arcane_torrent,if=chi.max-chi>=1&energy.time_to_max>=0.5
-        if S.ArcaneTorrent:IsReadyP() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
+        if S.ArcaneTorrent:IsReady() and (Player:ChiMax() - Player:Chi() >= 1 and Player:EnergyTimeToMaxPredicted() >= 0.5) then
             return S.ArcaneTorrent:Cast()
         end
         -- fist_of_the_white_tiger,if=chi.max-chi>=3&(energy>46|buff.rushing_jade_wind.down)
-        if S.FistOfTheWhiteTiger:IsReadyP() and (Player:ChiMax() - Player:Chi() >= 3 and (Player:EnergyPredicted() > 46 or Player:BuffDownP(S.RushingJadeWindBuff))) then
+        if S.FistOfTheWhiteTiger:IsReady() and (Player:ChiMax() - Player:Chi() >= 3 and (Player:EnergyPredicted() > 46 or Player:BuffDownP(S.RushingJadeWindBuff))) then
             return S.FistOfTheWhiteTiger:Cast()
         end
         -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.tiger_palm&chi.max-chi>=2&(energy>56|buff.rushing_jade_wind.down)
-        if S.TigerPalm:IsReadyP() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:ChiMax() - Player:Chi() >= 2 and (Player:EnergyPredicted() > 56 or Player:BuffDownP(S.RushingJadeWindBuff))) then
+        if S.TigerPalm:IsReady() and (not Player:PrevGCDP(1, S.TigerPalm) and Player:ChiMax() - Player:Chi() >= 2 and (Player:EnergyPredicted() > 56 or Player:BuffDownP(S.RushingJadeWindBuff))) then
             return S.TigerPalm:Cast()
         end
         -- chi_wave
-        if S.ChiWave:IsReadyP() then
+        if S.ChiWave:IsReady() then
             return S.ChiWave:Cast()
         end
         -- flying_serpent_kick,if=buff.bok_proc.down,interrupt=1
-        --if S.FlyingSerpentKick:IsReadyP() and (Player:BuffDownP(S.BokProcBuff)) then
+        --if S.FlyingSerpentKick:IsReady() and (Player:BuffDownP(S.BokProcBuff)) then
           --  return S.FlyingSerpentKick:Cast()
         --end
         -- blackout_kick,target_if=min:debuff.mark_of_the_crane.remains,if=!prev_gcd.1.blackout_kick
-        if S.BlackoutKick:IsReadyP() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
+        if S.BlackoutKick:IsReady() and (not Player:PrevGCDP(1, S.BlackoutKick)) then
             return S.BlackoutKick:Cast()
         end
     end
@@ -352,11 +352,11 @@ local function APL()
     end
 
     -- spear_hand_strike,if=target.debuff.casting.react
-    if S.SpearHandStrike:IsReadyP() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
+    if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
         return S.SpearHandStrike:Cast()
     end
     -- touch_of_karma,interval=90,pct_health=0.5,if=!talent.Good_Karma.enabled,interval=90,pct_health=0.5
-    if S.TouchofKarma:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk1 then
+    if S.TouchofKarma:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk1 then
         return S.TouchofKarma:Cast()
     end
 
@@ -368,11 +368,11 @@ local function APL()
         end
     end
     -- fist_of_the_white_tiger,if=(energy.time_to_max<1|(talent.serenity.enabled&cooldown.serenity.remains<2))&chi.max-chi>=3
-    if S.FistOfTheWhiteTiger:IsReadyP() and ((Player:EnergyTimeToMaxPredicted() < 1 or (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and Player:ChiMax() - Player:Chi() >= 3) then
+    if S.FistOfTheWhiteTiger:IsReady() and ((Player:EnergyTimeToMaxPredicted() < 1 or (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and Player:ChiMax() - Player:Chi() >= 3) then
         return S.FistOfTheWhiteTiger:Cast()
     end
     -- tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=(energy.time_to_max<1|(talent.serenity.enabled&cooldown.serenity.remains<2))&chi.max-chi>=2&!prev_gcd.1.tiger_palm
-    if S.TigerPalm:IsReadyP() and ((Player:EnergyTimeToMaxPredicted() < 1 or (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and Player:ChiMax() - Player:Chi() >= 2 and not Player:PrevGCDP(1, S.TigerPalm)) then
+    if S.TigerPalm:IsReady() and ((Player:EnergyTimeToMaxPredicted() < 1 or (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and Player:ChiMax() - Player:Chi() >= 2 and not Player:PrevGCDP(1, S.TigerPalm)) then
         return S.TigerPalm:Cast()
     end
 
@@ -402,7 +402,7 @@ RubimRH.Rotation.SetAPL(269, APL)
 
 local function PASSIVE()
 
-    if S.DampemHarm:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk2 then
+    if S.DampemHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk2 then
         return S.DampemHarm:Cast()
     end
 
