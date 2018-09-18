@@ -75,6 +75,7 @@ end
 local PvPDummyUnits = {
 	-- City (SW, Orgri, ...)
 	[114840] = true, -- Raider's Training Dummy
+	[114832] = true,
 }
 
 -- Unit = PvP Dummy
