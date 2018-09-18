@@ -322,12 +322,12 @@ function RubimRH.TargetIsValid(override)
         return false
     end
 
-    HL.GetEnemies(8);
     local isValid = false
 
     if Target:Exists() and Player:CanAttack(Target) and not Target:IsDeadOrGhost() then
         isValid = true
     end
+
     return isValid
 end
 

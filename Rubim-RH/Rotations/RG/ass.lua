@@ -524,7 +524,7 @@ local function Dot ()
                     and (not HL.Exsanguinated(TargetUnit, "Rupture") or TargetUnit:DebuffRemainsP(S.Rupture) <= ExsanguinatedBleedTickTime * 2 and EmpoweredDotRefresh())
                     and CanDoTUnit(TargetUnit, RuptureDMGThreshold);
         end
-        if Target:IsInRange("Melee") and Evaluate_Rupture_Target(Target)
+        if S.Rupture:IsReady() and Target:IsInRange("Melee") and Evaluate_Rupture_Target(Target)
                 and (Target:FilteredTimeToDie(">", 4, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
             return S.Rupture:Cast()
         end

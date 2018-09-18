@@ -210,7 +210,6 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
-        
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
@@ -238,12 +237,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 
     if RubimRH.db.profile.mainOption.startattack then
-        if Target:Exists() then
-            if self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable() then
-                return true
-            end
-        end
-
         local range = self:MaximumRange()
         if range == 0 or range > 8 then
             range = 10
@@ -256,10 +249,9 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         end
     end
 
-    if not RubimRH.TargetIsValid() and self:MaximumRange() <= 29 then
+    if RubimRH.TargetIsValid() == false and self:MaximumRange() <= 29 then
         return false
     end
-
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 

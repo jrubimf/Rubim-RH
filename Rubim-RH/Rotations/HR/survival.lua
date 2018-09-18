@@ -152,7 +152,7 @@ end
 
 local function UpdateWFB()
     if S.ShrapnelBomb:IsReadyMorph() then
-        S.WildfireBomb = Spell(259495)
+        S.WildfireBomb = Spell(270335)
     elseif S.VolatileBomb:IsReadyMorph() then
         S.WildfireBomb = Spell(271045)
     elseif S.PheromoneBomb:IsReadyMorph() then
