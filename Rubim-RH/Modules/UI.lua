@@ -8,7 +8,7 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
     if spellID ~= nil then
         if RubimRH.db.profile.mainOption.disabledSpells[1] == nil then
             table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
-            print("Added: " .. GetSpellInfo(spellID))
+            print("Added: " .. GetSpellLink(spellID))
         else
             local duplicated = false
             local duplicatedNumber = 0
@@ -22,10 +22,10 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
 
             if duplicated then
                 table.remove(RubimRH.db.profile.mainOption.disabledSpells, duplicatedNumber)
-                print("Removed: " .. GetSpellInfo(spellID))
+                print("Removed: " .. GetSpellLink(spellID))
             else
                 table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
-                print("Added: " .. GetSpellInfo(spellID))
+                print("Added: " .. GetSpellLink(spellID))
             end
         end
         return
@@ -76,7 +76,7 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
 
         if RubimRH.db.profile.mainOption.disabledSpells[1] == nil then
             table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(val), value = val })
-            print("Added: " .. GetSpellInfo(val))
+            print("Added: " .. GetSpellLink(val))
         else
             local duplicated = false
             local duplicatedNumber = 0
@@ -90,10 +90,10 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
 
             if duplicated then
                 table.remove(RubimRH.db.profile.mainOption.disabledSpells, duplicatedNumber)
-                print("Removed: " .. GetSpellInfo(val))
+                print("Removed: " .. GetSpellLink(val))
             else
                 table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(val), value = val })
-                print("Added: " .. GetSpellInfo(val))
+                print("Added: " .. GetSpellLink(val))
             end
         end
         self:GetParent():Hide();

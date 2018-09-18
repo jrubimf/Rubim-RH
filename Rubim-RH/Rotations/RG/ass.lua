@@ -475,7 +475,7 @@ local function Stealthed ()
         if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
             -- actions.stealthed+=/pool_resource,for_next=1
             if Player:EnergyPredicted() < 45 then
-                S.Garrote:Queue()
+                S.Garrote:QueueAuto()
                 return 0, 135328
             end
             return S.Garrote:Cast()

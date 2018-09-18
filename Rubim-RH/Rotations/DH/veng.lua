@@ -195,6 +195,10 @@ local function APL()
         return S.Disrupt:Cast()
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then
         return S.Metamorphosis:Cast()

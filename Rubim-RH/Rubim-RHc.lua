@@ -21,6 +21,17 @@ function RubimRH.playSoundR(soundID)
     end
 end
 
+function RubimRH.HideTextureToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.hidetexture == false then
+        RubimRH.db.profile.mainOption.hidetexture = true
+    else
+        RubimRH.db.profile.mainOption.hidetexture = false
+    end
+    print("|cFF69CCF0Hide Texture" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.hidetexture))
+end
+
+
 function RubimRH.DebugToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.debug == false then
@@ -293,6 +304,17 @@ local function getOptions()
                                         RubimRH.DebugToggle()
                                     end,
                                     name = "Verbose Debug Mode"
+                                },
+                                hidetexture = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.hidetexture
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.HideTextureToggle()
+                                    end,
+                                    name = "Hide Texture"
                                 },
                                 mainIcon = {
                                     order = 1,

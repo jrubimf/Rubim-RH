@@ -448,11 +448,15 @@ function updateIcon:onUpdate(sinceLastUpdate)
             local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
             local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
 
+        if RubimRH.db.profile.mainOption.hidetexture == false then
             if singleRotation == 0 or singleRotation == 1 then
                 MainIconFrame.texture:SetTexture(singleRotation2)
             else
                 MainIconFrame.texture:SetTexture(singleRotation)
             end
+        else
+            MainIconFrame.texture:SetTexture(nil)
+        end
 
             if RubimExtra then
                 RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
@@ -463,7 +467,6 @@ function updateIcon:onUpdate(sinceLastUpdate)
                 else
                     RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
                 end
-
                 if singleRotation == 0 then
                     RubimRH.stIcon.texture:SetTexture(nil)
                 elseif singleRotation == 1 then

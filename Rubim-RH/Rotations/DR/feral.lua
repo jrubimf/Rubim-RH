@@ -302,7 +302,7 @@ local function APL()
             if S.SavageRoar:IsUsablePPool() then
                 return S.SavageRoar:Cast()
             else
-                S.SavageRoar:Queue()
+                S.SavageRoar:QueueAuto()
                 return 0, 135328
             end
         end
@@ -312,7 +312,7 @@ local function APL()
             if S.Rip:IsUsablePPool() then
                 return S.Rip:Cast()
             else
-                S.Rip:Queue()
+                S.Rip:QueueAuto()
                 return 0, 135328
             end
         end
@@ -322,7 +322,7 @@ local function APL()
             if S.SavageRoar:IsUsablePPool() then
                 return S.SavageRoar:Cast()
             else
-                S.SavageRoar:Queue()
+                S.SavageRoar:QueueAuto()
                 return 0, 135328
             end
         end
@@ -351,7 +351,7 @@ local function APL()
             if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
-                S.ThrashCat:Queue()
+                S.ThrashCat:QueueAuto()
                 return 0, 135328
             end
         end
@@ -361,7 +361,7 @@ local function APL()
             if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
-                S.ThrashCat:Queue()
+                S.ThrashCat:QueueAuto()
                 return 0, 135328
             end
         end
@@ -371,7 +371,7 @@ local function APL()
             if S.Rake:IsUsablePPool() then
                 return S.Rake:Cast()
             else
-                S.Rake:Queue()
+                S.Rake:QueueAuto()
                 return 0, 135328
             end
         end
@@ -381,7 +381,7 @@ local function APL()
             if S.Rake:IsUsablePPool() then
                 return S.Rake:Cast()
             else
-                S.Rake:Queue()
+                S.Rake:QueueAuto()
                 return 0, 135328
             end
         end
@@ -399,7 +399,7 @@ local function APL()
             if S.ThrashCat:IsUsablePPool() then
                 return S.ThrashCat:Cast()
             else
-                S.ThrashCat:Queue()
+                S.ThrashCat:QueueAuto()
                 return 0, 135328
             end
         end
@@ -413,7 +413,7 @@ local function APL()
             if S.SwipeCat:IsUsablePPool() then
                 return S.SwipeCat:Cast()
             else
-                S.Swipe:Queue()
+                S.Swipe:QueueAuto()
                 return 0, 135328
             end
         end
@@ -426,6 +426,10 @@ local function APL()
     -- stuff
     if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+
+    if QueueSkill() ~= nil then
+        return QueueSkill()
     end
 
     -- call precombat

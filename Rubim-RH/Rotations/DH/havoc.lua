@@ -244,6 +244,10 @@ local function APL()
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     Precombat = function()
         -- flask
         -- augmentation

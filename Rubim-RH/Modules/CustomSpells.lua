@@ -60,9 +60,22 @@ end
 
 RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
 
-function Spell:Queue(powerExtra)
+function Spell:QueueAuto(powerExtra)
     local powerEx = powerExtra or 0
     RubimRH.queuedSpell = { self, powerEx }
+end
+
+function Spell:Queue(powerExtra)
+    local powerEx = powerExtra or 0
+
+    if self:ID() == RubimRH.queuedSpell[1]:ID() then
+        print("Removed from Queue: " .. GetSpellLink(self:ID()))
+        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        return
+    end
+
+    RubimRH.queuedSpell = { self, powerEx }
+    print("Queued: " .. GetSpellLink(self:ID()))
 end
 
 function RubimRH.QueuedSpell()
@@ -160,6 +173,28 @@ function Spell:CooldownRemains(BypassRecovery, Offset)
     end
 end
 
+function Spell:CooldownRemainsTrue(BypassRecovery, Offset)
+    local SpellInfo = Cache.SpellInfo[self.SpellID]
+    if not SpellInfo then
+        SpellInfo = {}
+        Cache.SpellInfo[self.SpellID] = SpellInfo
+    end
+    local Cooldown = Cache.SpellInfo[self.SpellID].Cooldown
+    local CooldownNoRecovery = Cache.SpellInfo[self.SpellID].CooldownNoRecovery
+    if (not BypassRecovery and not Cooldown) or (BypassRecovery and not CooldownNoRecovery) then
+        if BypassRecovery then
+            CooldownNoRecovery = self:ComputeCooldown(BypassRecovery)
+        else
+            Cooldown = self:ComputeCooldown()
+        end
+    end
+    if Offset then
+        return BypassRecovery and math.max(HL.OffsetRemains(CooldownNoRecovery, Offset), 0) or math.max(HL.OffsetRemains(Cooldown, Offset), 0)
+    else
+        return BypassRecovery and CooldownNoRecovery or Cooldown
+    end
+end
+
 --[[*
   * @function Spell:CooldownRemainsP
   * @override Spell:CooldownRemains
@@ -183,6 +218,15 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
     end
 end
 
+function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
+    if Range then
+        local RangeUnit = ThisUnit or Target;
+        return self:IsLearned() and self:CooldownRemainsTrue() <= 0.2 and RangeUnit:IsInRange(Range, AoESpell);
+    else
+        return self:IsLearned() and self:CooldownRemainsTrue() <= 0.2;
+    end
+end
+
 function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
     if RubimRH.db.profile.mainOption.startattack then
         if Target:Exists() then
@@ -198,7 +242,7 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
         end
         HL.GetEnemies(8, true)
         if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
-            return self:IsCastableMorph(nil, nil, nil) and self:IsUsable();
+            return self:IsCastableQueue(nil, nil, nil) and self:IsUsable();
         end
     end
 
@@ -206,7 +250,7 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
         return false
     end
 
-    return self:IsCastableMorph(Range, AoESpell, ThisUnit) and self:IsUsable();
+    return self:IsCastableQueue(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
@@ -227,12 +271,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
             if v.spellID == self:ID() and v.isActive == false then
                 return false
             end
-        end
-    end
-
-    if RubimRHPvP ~= nil and RubimRHPvP.active then
-        if RubimRH.breakableAreaCC(8) then
-            return false
         end
     end
 
@@ -277,12 +315,6 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
             if v.spellID == self:ID() and v.isActive == false then
                 return false
             end
-        end
-    end
-
-    if RubimRHPvP ~= nil and RubimRHPvP.active then
-        if RubimRH.breakableAreaCC(8) then
-            return false
         end
     end
 
@@ -346,12 +378,6 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
-    if RubimRHPvP ~= nil and RubimRHPvP.active then
-        if RubimRH.breakableAreaCC(range) then
-            return false
-        end
-    end
-
     if self:IsEnabled() == false then
         return false
     end

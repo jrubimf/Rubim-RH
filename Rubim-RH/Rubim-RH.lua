@@ -233,6 +233,7 @@ local defaults = {
             cooldownsUsage = "Everything",
             burstCD = false,
             debug = false,
+            hidetexture = false,
         },
         --DEMONHUTER
         [Havoc] = {

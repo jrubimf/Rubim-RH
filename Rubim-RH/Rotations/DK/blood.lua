@@ -353,6 +353,10 @@ local function APL()
         return 0, 236353
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     --Mov Speed
     if Player:MovingFor() >= 2 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()
