@@ -236,6 +236,10 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
+    if Target:Exists() and not Player:CanAttack(Target) then
+        return false
+    end
+
     if RubimRH.db.profile.mainOption.startattack then
         local range = self:MaximumRange()
         if range == 0 or range > 8 then
