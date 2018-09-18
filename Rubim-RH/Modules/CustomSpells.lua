@@ -210,6 +210,14 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsReady(Range, AoESpell, ThisUnit)
+
+    if RubimPvP ~= nil then
+        if self:CanBreakCC() then
+            return false
+        end
+    end
+
+
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end

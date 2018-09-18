@@ -73,7 +73,8 @@ RubimRH.Spell[255] = {
     -- PvP
     WingClip = Spell(195645),
     LatentPoison = Spell(273284),
-    LatentPoisonDebuff = Spell(273286)
+    LatentPoisonDebuff = Spell(273286),
+    HydrasBite = Spell(260241),
 };
 
 local S = RubimRH.Spell[255]
