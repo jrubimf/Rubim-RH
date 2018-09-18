@@ -426,18 +426,18 @@ local function APL ()
                 return S.ShadowBlades:Cast()
             end
         end
-        if Player:IsStealthedP(true, true) then
+        if Player:IsStealthedP(true, true) and S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack then
             if Stealthed() ~= nil then
                 return Stealthed()
             end
             if Player:EnergyPredicted() < 30 then
                 return 0, 135328
             end
-        elseif Player:ComboPoints() >= 5 then
+        elseif Player:ComboPoints() >= 5 and S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack then
             if Finish() ~= nil then
                 return Finish()
             end
-        elseif S.Backstab:IsReady() then
+        elseif S.Backstab:IsReady() and S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack then
             return S.Backstab:Cast()
         end
         return 0, 462338

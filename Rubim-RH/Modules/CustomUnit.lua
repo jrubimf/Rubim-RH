@@ -140,9 +140,14 @@ function Unit:IsSnared()
 	end
 
 	local engName, standardName, classNumber = self:Class()
-	if (classNumber == 6  or classNumber == 11) and self:MaxSpeed() <= 99 then
+	if classNumber == 6  and self:MaxSpeed() <= 99 then
 		return true
 	end
+
+	if classNumber == 11  and self:MaxSpeed() <= 135 then
+		return true
+	end
+
 	return (self:MaxSpeed() < 70)	
 end
 
