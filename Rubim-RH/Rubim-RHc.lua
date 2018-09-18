@@ -175,6 +175,10 @@ function RubimRH.CDsON()
             return true
         end
 
+        if Target:IsAPvPDummy() then
+            return true
+        end
+
         if UnitIsPlayer("target") then
             return true
         end
