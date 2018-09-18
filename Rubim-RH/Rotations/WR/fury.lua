@@ -247,6 +247,10 @@ local function APL()
         return 0, 462338
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     if S.Pummel:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Pummel:Cast()
     end

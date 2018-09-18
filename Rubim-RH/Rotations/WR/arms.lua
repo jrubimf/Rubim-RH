@@ -407,6 +407,10 @@ local function APL()
         return 0, 462338
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     -- charge
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
         return S.Charge:Cast()

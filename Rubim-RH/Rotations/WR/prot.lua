@@ -27,6 +27,10 @@ local function APL()
     if not Player:AffectingCombat() then
         return 0, 462338
     end
+    
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
 
     if Target:Exists()
             and Player:CanAttack(Unit("target")) then
