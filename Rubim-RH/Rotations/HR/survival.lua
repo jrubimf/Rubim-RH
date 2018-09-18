@@ -67,10 +67,11 @@ RubimRH.Spell[255] = {
     AspectoftheTurtle = Spell(186265),
     Exhilaration = Spell(109304),
     -- Utility
+    FreezingTrap = Spell(187650),
     AspectoftheEagle = Spell(186289),
     Muzzle = Spell(187707),
     -- PvP
-    WingClip = Spell(195645)
+    WingClip = Spell(195645),
 };
 
 local S = RubimRH.Spell[255]
@@ -148,7 +149,6 @@ local function UpdateCDs()
 end
 
 local function UpdateWFB()
-
     if S.ShrapnelBomb:IsReadyMorph() then
         S.WildfireBomb = Spell(259495)
     elseif S.VolatileBomb:IsReadyMorph() then
