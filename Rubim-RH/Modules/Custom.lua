@@ -349,7 +349,7 @@ function QueueSkill()
     if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1,RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
-    if RubimRH.QueuedSpell():IsReadyMorph() then
+    if RubimRH.QueuedSpell():IsReadyQueue() then
         return RubimRH.QueuedSpell():Cast()
     end
 end
