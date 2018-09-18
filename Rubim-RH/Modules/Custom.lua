@@ -353,3 +353,9 @@ function QueueSkill()
         return RubimRH.QueuedSpell():Cast()
     end
 end
+
+function RubimRH.DebugPrint(Text)
+    if RubimRH.db.profile.mainOption.debug  == true then
+        print("DEBUG: " .. Text)
+    end
+end

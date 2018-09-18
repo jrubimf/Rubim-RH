@@ -21,6 +21,16 @@ function RubimRH.playSoundR(soundID)
     end
 end
 
+function RubimRH.DebugToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.debug == false then
+        RubimRH.db.profile.mainOption.debug = true
+    else
+        RubimRH.db.profile.mainOption.debug = false
+    end
+    print("|cFF69CCF0Verbose Debug" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.debug))
+end
+
 function RubimRH.CleaveToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.smartCleave == false then
@@ -269,6 +279,17 @@ local function getOptions()
                                 RubimRH.db.profile.mainOption[key] = value
                             end,
                             args = {
+                                debug = {
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.debug
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.DebugToggle()
+                                    end,
+                                    name = "Verbose Debug Mode"
+                                },
                                 mainIcon = {
                                     order = 1,
                                     type = "toggle",

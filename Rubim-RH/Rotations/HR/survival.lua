@@ -72,6 +72,7 @@ RubimRH.Spell[255] = {
     Muzzle = Spell(187707),
     -- PvP
     WingClip = Spell(195645),
+    LatentPoiton = Spell(273284),
 };
 
 local S = RubimRH.Spell[255]

@@ -231,7 +231,8 @@ local defaults = {
             disabledSpellsCleave = {},
             useTrinkets = {},
             cooldownsUsage = "Everything",
-            burstCD = false
+            burstCD = false,
+            debug = false,
         },
         --DEMONHUTER
         [Havoc] = {
