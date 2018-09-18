@@ -80,8 +80,13 @@ local PvPDummyUnits = {
 
 -- Unit = PvP Dummy
 function Unit:IsAPvPDummy()
-	local NPCID = self:NPCID()
-	return NPCID >= 0 and PvPDummyUnits[NPCID] == true
+
+	if not self:Exists() then
+		return 0
+	end
+	local guid, name = UnitGUID("target"), UnitName("target")
+	local type, zero, server_id, instance_id, zone_uid, NPCID, spawn_uid = strsplit("-",guid);
+	return PvPDummyUnits[tonumber(NPCID)] == true
 end
 
 --- Unit Health Functions
