@@ -504,7 +504,7 @@ local function APL ()
 
     -- heal pet
     if Pet:IsActive() and Pet:HealthPercentage() <= 75 and not Pet:Buff(S.MendPet) then
-        return S.MendPet:cast()
+        return S.MendPet:Cast()
     end
     return 0, 135328
 end
