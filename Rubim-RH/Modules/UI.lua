@@ -157,6 +157,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
+    StdUi:FrameTooltip(gn_1_0, 'Will try to use skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
     StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
@@ -188,7 +189,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
-
+    StdUi:FrameTooltip(gn_1_1, 'Enable/Disable the usage of trinkets.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
@@ -223,6 +224,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_2_0 = StdUi:Checkbox(window, 'Use Potion');
+    StdUi:FrameTooltip(gn_2_0, 'For now this is depreciated.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion)
     StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
     function gn_2_0:OnValueChanged(value)
@@ -265,6 +267,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local gn_3_1 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    StdUi:FrameTooltip(gn_3_1, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
     gn_3_1:SetPlaceholder('-- CDs  --');
     gn_3_1.OnValueChanged = function(self, val)
         RubimRH.db.profile.mainOption.cooldownsUsage = val
@@ -397,6 +400,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    StdUi:FrameTooltip(extra1, 'Useful if you want to ban a spell from the rotation.', 'TOPLEFT', 'TOPRIGHT', true);
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()

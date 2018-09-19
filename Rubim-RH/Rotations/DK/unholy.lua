@@ -6,6 +6,7 @@ local HL = HeroLib;
 local Cache = HeroCache;
 local Unit = HL.Unit;
 local Player = Unit.Player;
+local MouseOver = Unit.MouseOver
 local Pet = Unit.Pet;
 local Target = Unit.Target;
 local Spell = HL.Spell;
@@ -53,6 +54,7 @@ RubimRH.Spell[252] = {
     DeathPact = Spell(48743),
     IceboundFortitude = Spell(48792),
     NecroticStrike = Spell(223829),
+    RaiseAlly = Spell(61999),
 
 };
 local S = RubimRH.Spell[252]
@@ -302,6 +304,7 @@ local function APL()
     end
     -- call precombat
 
+
     --Mov Speed
     if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()
@@ -316,6 +319,10 @@ local function APL()
             return Precombat()
         end
         return 0, 462338
+    end
+
+    if QueueSkill() ~= nil then
+        return QueueSkill()
     end
 
     -- custom

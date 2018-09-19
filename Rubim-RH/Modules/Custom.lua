@@ -346,7 +346,7 @@ function RubimRH.azerite(slot, azeriteID)
 end
 
 function QueueSkill()
-    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1,RubimRH.QueuedSpell()) then
+    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     if RubimRH.QueuedSpell():IsReadyQueue() then
@@ -355,8 +355,70 @@ function QueueSkill()
 end
 
 function RubimRH.DebugPrint(Text)
-    if RubimRH.db.profile.mainOption.debug  == true then
+    if RubimRH.db.profile.mainOption.debug == true then
         print("DEBUG: " .. Text)
+    end
+end
+
+
+--NeP RIP
+RubimRH.Buttons = {}
+
+local nBars = {
+    "ActionButton",
+    "MultiBarBottomRightButton",
+    "MultiBarBottomLeftButton",
+    "MultiBarRightButton",
+    "MultiBarLeftButton"
+}
+
+local function UpdateButtons()
+    wipe(RubimRH.Buttons)
+    for _, group in ipairs(nBars) do
+        for i = 1, 12 do
+            local button = _G[group .. i]
+            if button then
+                local actionType, id = _G.GetActionInfo(_G.ActionButton_CalculateAction(button, "LeftButton"))
+                if actionType == 'spell' then
+                    --local spell = GetSpellInfo(id)
+                    local spell = id
+                    if spell then
+                        RubimRH.Buttons[spell] = button
+                        --RubimRH.Buttons[spell] = button:GetName()
+                    end
+                end
+            end
+        end
+    end
+end
+
+RubimRH.Listener:Add('NeP_Buttons', 'PLAYER_ENTERING_WORLD', function()
+    UpdateButtons()
+end)
+
+RubimRH.Listener:Add('NeP_Buttons', 'ACTIONBAR_SLOT_CHANGED', function()
+    UpdateButtons()
+end)
+
+function RubimRH.HideButtonGlow()
+    for i, button in pairs(RubimRH.Buttons) do
+        RubimRH.Buttons[button].NormalTexture:SetColorTexture(0, 0, 0, 1)
+        ActionButton_HideOverlayGlow(button)
+    end
+end
+
+local lastSpell = 0
+function RubimRH.ShowButtonGlow(spellID)
+    if RubimRH.Buttons[spellID] ~= nil then
+        if lastSpell > 0 and spellID ~= lastSpell then
+            RubimRH.Buttons[lastSpell].NormalTexture:SetColorTexture(0, 0, 0, 0)
+            lastSpell = spellID
+        end
+        --ActionButton_ShowOverlayGlow(RubimRH.Buttons[spellID])
+
+        RubimRH.Buttons[spellID].NormalTexture:SetScale(0.1)
+        RubimRH.Buttons[spellID].NormalTexture:SetColorTexture(0, 1, 0, 0.5)
+        lastSpell = spellID
     end
 end
 

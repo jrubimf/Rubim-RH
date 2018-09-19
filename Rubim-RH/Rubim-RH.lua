@@ -234,6 +234,7 @@ local defaults = {
             burstCD = false,
             debug = false,
             hidetexture = false,
+            glowactionbar = false,
         },
         --DEMONHUTER
         [Havoc] = {

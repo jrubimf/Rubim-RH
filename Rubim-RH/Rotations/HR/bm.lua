@@ -11,8 +11,68 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 -- Spells
+RubimRH.Spell[253] = {
+    -- Racials
+    ArcaneTorrent = Spell(80483),
+    AncestralCall = Spell(274738),
+    Berserking = Spell(26297),
+    BloodFury = Spell(20572),
+    Fireblood = Spell(265221),
+    GiftoftheNaaru = Spell(59547),
+    LightsJudgment = Spell(255647),
+    -- Pet
+    CallPet = Spell(883),
+    MendPet = Spell(136),
+    RevivePet = Spell(982),
+    -- Abilities
+    AspectoftheWild = Spell(193530),
+    BarbedShot = Spell(217200),
+    Frenzy = Spell(272790),
+    FrenzyBuff = Spell(272790),
+    BeastCleave = Spell(115939),
+    BeastCleaveBuff = Spell(118455),
+    BestialWrath = Spell(19574),
+    BestialWrathBuff = Spell(19574),
+    CobraShot = Spell(193455),
+    KillCommand = Spell(34026),
+    MultiShot = Spell(2643),
+    -- Talents
+    AMurderofCrows = Spell(131894),
+    AnimalCompanion = Spell(267116),
+    AspectoftheBeast = Spell(191384),
+    Barrage = Spell(120360),
+    BindingShot = Spell(109248),
+    ChimaeraShot = Spell(53209),
+    DireBeast = Spell(120679),
+    KillerInstinct = Spell(273887),
+    OnewiththePack = Spell(199528),
+    ScentofBlood = Spell(193532),
+    SpittingCobra = Spell(194407),
+    Stampede = Spell(201430),
+    ThrilloftheHunt = Spell(257944),
+    VenomousBite = Spell(257891),
+    -- Defensive
+    AspectoftheTurtle = Spell(186265),
+    Exhilaration = Spell(109304),
+    -- Utility
+    AspectoftheCheetah = Spell(186257),
+    CounterShot = Spell(147362),
+    Disengage = Spell(781),
+    FreezingTrap = Spell(187650),
+    FeignDeath = Spell(5384),
+    TarTrap = Spell(187698),
+    -- Legendaries
+    ParselsTongueBuff = Spell(248084),
+    -- Misc
+    PotionOfProlongedPowerBuff = Spell(229206),
+    SephuzBuff = Spell(208052),
+    -- Macros
+}
 
 local S = RubimRH.Spell[253]
+
+S.CallPet.TextureSpellID = { S.MendPet:ID() }
+S.RevivePet.TextureSpellID = { S.MendPet:ID() }
 
 -- Items
 if not Item.Hunter then
@@ -49,6 +109,8 @@ local function APL ()
 
         if Pet:IsDeadOrGhost() then
             return S.MendPet:Cast()
+        elseif not Pet:IsActive() then
+            return S.CallPet:Cast()
         end
         -- Flask
         -- Food
@@ -83,7 +145,10 @@ local function APL ()
 
     if Pet:IsDeadOrGhost() then
         return S.MendPet:Cast()
+    elseif not Pet:IsActive() then
+        return S.MendPet:Cast()
     end
+
 
     -- In Combat
     if RubimRH.TargetIsValid() then

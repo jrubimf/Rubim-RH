@@ -73,14 +73,6 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
-        info.text, info.hasArrow = "CC Break", nil
-        info.checked = RubimRH.ccbreak()
-        info.func = function(self)
-            RubimRH.playSoundR(891);
-            RubimRH.CCToggle()
-        end
-        UIDropDownMenu_AddButton(info)
-        --
         if RubimRH.config.Spells ~= nil and #RubimRH.config.Spells > 0 then
             info.text, info.hasArrow, info.menuList = "Spells", true, "Spells"
             info.checked = false

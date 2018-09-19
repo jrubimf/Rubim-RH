@@ -21,6 +21,16 @@ function RubimRH.playSoundR(soundID)
     end
 end
 
+function RubimRH.GlowActionBarToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.glowactionbar == false then
+        RubimRH.db.profile.mainOption.glowactionbar = true
+    else
+        RubimRH.db.profile.mainOption.glowactionbar = false
+    end
+    print("|cFF69CCF0Glow Action Bar" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.glowactionbar))
+end
+
 function RubimRH.HideTextureToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.hidetexture == false then
@@ -174,12 +184,14 @@ function RubimRH.CDsON()
             return true
         end
 
-        if UnitExists("boss1") == true then
-            return true
-        end
+        if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss" then
+            if UnitExists("boss1") == true then
+                return true
+            end
 
-        if UnitExists("target") and (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare" or UnitLevel("Target") >= UnitLevel("Player") + 2) then
-            return true
+            if UnitExists("target") and (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+                return true
+            end
         end
 
         if Target:IsDummy() then
@@ -277,13 +289,13 @@ local function getOptions()
                     order = 1,
                     type = "group",
                     name = "General",
-                    childGroups = "tree",
+                    childGroups = "tab",
                     args = {
                         general = {
                             order = 1,
                             type = "group",
-                            childGroups = "tree",
-                            inline = true,
+                            childGroups = "tab",
+                            --inline = true,
                             name = "General",
                             get = function(info)
                                 local key = info.arg or info[#info]
@@ -295,6 +307,7 @@ local function getOptions()
                             end,
                             args = {
                                 debug = {
+                                    desc = "Will enable some debug verbose. That means when available it will show debug stuff.",
                                     order = 1,
                                     type = "toggle",
                                     get = function()
@@ -305,7 +318,20 @@ local function getOptions()
                                     end,
                                     name = "Verbose Debug Mode"
                                 },
+                                glowactionbar = {
+                                    desc = "Will make the action bar icons glow, showing what's the next ability on the priority list.",
+                                    order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.glowactionbar
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.GlowActionBarToggle()
+                                    end,
+                                    name = "Glow Action Bar"
+                                },
                                 hidetexture = {
+                                    desc = "Will hide the main icon texture. Text is still visible.",
                                     order = 1,
                                     type = "toggle",
                                     get = function()
@@ -317,6 +343,7 @@ local function getOptions()
                                     name = "Hide Texture"
                                 },
                                 mainIcon = {
+                                    desc = "Disable/Enable the entire icon.",
                                     order = 1,
                                     type = "toggle",
                                     get = function()
@@ -327,8 +354,38 @@ local function getOptions()
                                     end,
                                     name = "Show Interface"
                                 },
-                                mainIconLock = {
+                                mute = {
+                                    desc = "Mute all sounds that the addon uses.",
                                     order = 1,
+                                    type = "toggle",
+                                    get = function()
+                                        return RubimRH.db.profile.mainOption.mute
+                                    end,
+                                    set = function(info, v)
+                                        RubimRH.MuteToggle()
+                                    end,
+                                    name = "Mute Sounds"
+                                },
+                            }
+                        },
+                        positionsize = {
+                            order = 1,
+                            type = "group",
+                            childGroups = "tab",
+                            --inline = true,
+                            name = "Position and Size",
+                            get = function(info)
+                                local key = info.arg or info[#info]
+                                return RubimRH.db.profile.mainOption[key]
+                            end,
+                            set = function(info, value)
+                                local key = info.arg or info[#info]
+                                RubimRH.db.profile.mainOption[key] = value
+                            end,
+                            args = {
+                                mainIconLock = {
+                                    desc = "Lock the position of the Main Icon.",
+                                    order = 4,
                                     type = "toggle",
                                     get = function()
                                         return RubimRH.db.profile.mainOption.mainIconLock
@@ -339,7 +396,8 @@ local function getOptions()
                                     name = "Lock Icon"
                                 },
                                 mainIconOpacity = {
-                                    order = 2,
+                                    desc = "Set the opacity.",
+                                    order = 1,
                                     type = "range",
                                     min = 5,
                                     max = 100,
@@ -348,7 +406,8 @@ local function getOptions()
                                     name = "Icon Opacity",
                                 },
                                 mainIconScale = {
-                                    order = 3,
+                                    desc = "Set the size of the icon.",
+                                    order = 2,
                                     type = "range",
                                     min = 5,
                                     max = 1000,
@@ -357,7 +416,8 @@ local function getOptions()
                                     name = "Icon Size",
                                 },
                                 mainIconRecenter = {
-                                    order = 4,
+                                    desc = "Recenter the icon in case it's missing.",
+                                    order = 3,
                                     type = "execute",
                                     name = "Recenter",
                                     func = function()
@@ -366,17 +426,6 @@ local function getOptions()
                                         RubimRH.db.profile.mainOption.yCord = 0
                                         ReloadUI()
                                     end
-                                },
-                                mute = {
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.mute
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.MuteToggle()
-                                    end,
-                                    name = "Mute Sounds"
                                 },
                             }
                         },
