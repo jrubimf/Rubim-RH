@@ -92,6 +92,23 @@ Item.Hunter.BeastMastery = {
 };
 local I = Item.Hunter.BeastMastery;
 
+local function PetActive()
+    local petActive = false
+    if Pet:Exists() then
+        petActive = true
+    end
+
+    if Pet:IsActive() then
+        petActive = true
+    end
+
+    if Pet:IsDeadOrGhost() then
+        petActive = false
+    end
+
+    return petActive
+end
+
 --- APL Main
 local function APL ()
     -- Unit Update
@@ -123,13 +140,13 @@ local function APL ()
                     return S.AMurderofCrows:Cast()
                 end
             end
-            if S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
+            if PetActive() and S.BestialWrath:IsReady() and not Player:Buff(S.BestialWrath) then
                 return S.BestialWrath:Cast()
             end
             -- if S.BarbedShot:IsReady() then
 
             -- end
-            if S.KillCommand:IsReady() then
+            if PetActive() and S.KillCommand:IsReady() then
                 return S.KillCommand:Cast()
             end
             if S.CobraShot:IsReady() then
@@ -207,7 +224,7 @@ local function APL ()
             return S.AspectoftheWild:Cast()
         end
         -- bestial_wrath,if=!buff.bestial_wrath.up
-        if S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
+        if PetActive() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
             return S.BestialWrath:Cast()
         end
         -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
@@ -219,7 +236,7 @@ local function APL ()
             return S.ChimaeraShot:Cast()
         end
         -- kill_command
-        if S.KillCommand:IsReady() and (true) then
+        if PetActive() and S.KillCommand:IsReady() and (true) then
             return S.KillCommand:Cast()
         end
         -- dire_beast
