@@ -63,6 +63,10 @@ function RubimRH.Shared()
 
     if Player:AffectingCombat() then
 
+        if Player:ShouldStopCasting() then
+            return 249170
+        end
+
         if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end

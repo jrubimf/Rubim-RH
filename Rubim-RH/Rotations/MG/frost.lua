@@ -54,6 +54,7 @@ RubimRH.Spell[MFrost] = {
     WintersReachBuff = Spell(273347),
     FreezingRain = Spell(240555),
     IceBlock = Spell(45438),
+    Quake = Spell(240447),
 
 };
 HL.Spell[MFrost] = RubimRH.Spell[MFrost]
@@ -113,6 +114,7 @@ local function APL()
     FuckWaterBolt()
     local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop
     UpdateRanges()
+
     Precombat = function()
         -- flask
         -- food

@@ -55,6 +55,7 @@ RubimRH.Spell[252] = {
     IceboundFortitude = Spell(48792),
     NecroticStrike = Spell(223829),
     RaiseAlly = Spell(61999),
+    DarkSimulacrum = Spell(77606),
 
 };
 local S = RubimRH.Spell[252]

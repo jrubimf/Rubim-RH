@@ -191,6 +191,10 @@ local function APL()
         end
     end
 
+    if not Player:AffectingCombat() and not Target:IsQuestMob() then
+        return 0, 462338
+    end
+
     if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Disrupt:Cast()
     end
