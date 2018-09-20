@@ -60,23 +60,28 @@ local function trinketReady(trinketPosition)
 end
 
 function RubimRH.Shared()
-    if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
-        return 538745
-    end
 
-    if Target:Exists() and Target:MaxDistanceToPlayer(true) <= 8 and RubimRH.CDsON() and Player:CanAttack(Target) then
-        for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
-            if RubimRH.db.profile.mainOption.useTrinkets[i] == 1 then
-                if trinketReady(1) then
-                    return trinket1
+    if Player:AffectingCombat() then
+
+        if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+            return 538745
+        end
+
+        if Target:Exists() and Target:MaxDistanceToPlayer(true) <= 8 and RubimRH.CDsON() and Player:CanAttack(Target) then
+            for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == 1 then
+                    if trinketReady(1) then
+                        return trinket1
+                    end
                 end
-            end
 
-            if RubimRH.db.profile.mainOption.useTrinkets[i] == 2 then
-                if trinketReady(2) then
-                    return trinket1
+                if RubimRH.db.profile.mainOption.useTrinkets[i] == 2 then
+                    if trinketReady(2) then
+                        return trinket1
+                    end
                 end
             end
         end
+
     end
 end

@@ -594,7 +594,7 @@ local function APL ()
 
     if QueueSkill() ~= nil then
         return QueueSkill()
-    end
+        end
 
     -- Defensives
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then

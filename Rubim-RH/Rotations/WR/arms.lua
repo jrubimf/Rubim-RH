@@ -412,7 +412,7 @@ local function APL()
     end
 
     -- charge
-    if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
+    if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and S.HeroicLeap:TimeSinceLastCast() >= 0.2 then
         return S.Charge:Cast()
     end
     -- auto_attack

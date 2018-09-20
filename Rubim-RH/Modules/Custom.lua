@@ -402,8 +402,8 @@ end)
 
 function RubimRH.HideButtonGlow()
     for i, button in pairs(RubimRH.Buttons) do
-        RubimRH.Buttons[button].NormalTexture:SetColorTexture(0, 0, 0, 1)
-        ActionButton_HideOverlayGlow(button)
+        button.NormalTexture:SetColorTexture(0, 0, 0, 0)
+        --ActionButton_HideOverlayGlow(button)
     end
 end
 

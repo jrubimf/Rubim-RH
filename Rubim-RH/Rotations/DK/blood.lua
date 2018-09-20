@@ -345,8 +345,8 @@ local function APL()
     end
 
     --if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() and S.DeathGrip:TimeSinceLastCast() >= Player:GCD() then
---        return S.DeathGrip:Cast()
---    end
+    --        return S.DeathGrip:Cast()
+    --    end
 
     ----CHANNEL BLOOD DRINKER
     if Player:IsChanneling(S.BloodDrinker) or Player:IsChanneling(S.WraithWalk) then
@@ -354,7 +354,16 @@ local function APL()
     end
 
     if QueueSkill() ~= nil then
-        return QueueSkill()
+
+        if RubimRH.QueuedSpell():ID() == S.Bonestorm:ID() then
+
+            if Player:RunicPower() >= 100 then
+                return QueueSkill()
+            end
+
+        else
+            return QueueSkill()
+        end
     end
 
     --Mov Speed

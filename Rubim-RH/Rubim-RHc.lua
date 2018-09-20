@@ -184,7 +184,7 @@ function RubimRH.CDsON()
             return true
         end
 
-        if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss" then
+        if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
             if UnitExists("boss1") == true then
                 return true
             end
