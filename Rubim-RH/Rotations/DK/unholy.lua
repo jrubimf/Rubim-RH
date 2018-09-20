@@ -157,7 +157,7 @@ local function APL()
         -- snapshot_stats
         -- potion
         -- raise_dead
-        if S.RaiseDead:IsReady() and not Pet:IsActive() then
+        if S.RaiseDead:IsCastable() and not Pet:IsActive() then
             return S.RaiseDead:Cast()
         end
         -- army_of_the_dead
@@ -354,7 +354,7 @@ local function APL()
         return S.MindFreeze:Cast()
     end
 
-    if S.RaiseDead:IsReady() and not Pet:IsActive() then
+    if S.RaiseDead:IsCastable() and not Pet:IsActive() then
         return S.RaiseDead:Cast()
     end
     -- variable,name=pooling_for_gargoyle,value=(cooldown.summon_gargoyle.remains<5&(cooldown.dark_transformation.remains<5|!equipped.137075))&talent.summon_gargoyle.enabled
