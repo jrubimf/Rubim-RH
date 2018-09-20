@@ -63,7 +63,7 @@ function RubimRH.Shared()
 
     if Player:AffectingCombat() then
 
-        if Player:ShouldStopCasting() then
+        if Player:ShouldStopCasting() and Player:IsCasting() then
             return 249170
         end
 
