@@ -51,7 +51,8 @@ RubimRH.Spell[62] = {
     ArcaneTorrent = Spell(50613),
     Shimmer = Spell(212653),
     Blink = Spell(1953),
-    Counterspell = Spell(2139)
+    Counterspell = Spell(2139),
+    BrainStorm = Spell(273329),
 };
 local S = RubimRH.Spell[62];
 
@@ -129,7 +130,7 @@ local function APL()
         -- food
         -- augmentation
         -- arcane_intellect
-        if S.ArcaneIntellect:CastableP() and Player:BuffDownP(S.ArcaneIntellectBuff, true) then
+        if S.ArcaneIntellect:IsCastableP() and Player:BuffDownP(S.ArcaneIntellectBuff, true) then
             return S.ArcaneIntellect:Cast()
         end
         -- summon_arcane_familiar
