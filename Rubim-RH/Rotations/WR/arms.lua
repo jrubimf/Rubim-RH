@@ -192,7 +192,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
+        if S.Warbreaker:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
             return S.Warbreaker:Cast()
         end
         -- bladestorm,if=rage<30&!buff.deadly_calm.up
@@ -239,7 +239,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
+        if S.Warbreaker:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
             return S.Warbreaker:Cast()
         end
         -- bladestorm,if=buff.sweeping_strikes.down&!buff.deadly_calm.up&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
@@ -294,7 +294,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=raid_event.adds.up|raid_event.adds.in>40|(raid_event.adds.in>20&talent.anger_management.enabled)
-        if S.Warbreaker:IsReadyMorph() and ((Cache.EnemiesCount[8] > 1) or 10000000000 > 40 or (10000000000 > 20 and S.AngerManagement:IsAvailable())) then
+        if S.Warbreaker:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and ((Cache.EnemiesCount[8] > 1) or 10000000000 > 40 or (10000000000 > 20 and S.AngerManagement:IsAvailable())) then
             return S.Warbreaker:Cast()
         end
         -- bladestorm,if=(debuff.colossus_smash.up&raid_event.adds.in>target.time_to_die)|raid_event.adds.up&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
@@ -357,7 +357,7 @@ local function APL()
             return S.ColossusSmash:Cast()
         end
         -- warbreaker,if=debuff.colossus_smash.down
-        if S.Warbreaker:IsReadyMorph() and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
+        if S.Warbreaker:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
             return S.Warbreaker:Cast()
         end
         -- execute,if=buff.sudden_death.react
