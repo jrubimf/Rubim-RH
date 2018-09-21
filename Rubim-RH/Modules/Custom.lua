@@ -422,6 +422,7 @@ function RubimRH.HideButtonGlow()
 end
 
 function RubimRH.ShowButtonGlow(spellID)
+    RubimRH.HideButtonGlow()
     if RubimRH.Buttons[spellID] ~= nil then
         if lastSpell > 0 and spellID ~= lastSpell then
             RubimRH.Buttons[lastSpell].NormalTexture:SetColorTexture(0, 0, 0, 0)
