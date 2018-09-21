@@ -184,16 +184,6 @@ function RubimRH.CDsON()
             return true
         end
 
-        if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
-            if UnitExists("boss1") == true then
-                return true
-            end
-
-            if UnitExists("target") and (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
-                return true
-            end
-        end
-
         if Target:IsDummy() then
             return true
         end
@@ -204,6 +194,16 @@ function RubimRH.CDsON()
 
         if UnitIsPlayer("target") then
             return true
+        end
+
+        if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
+            if UnitExists("boss1") == true then
+                return true
+            end
+
+            if UnitExists("target") and (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+                return true
+            end
         end
     end
     return false

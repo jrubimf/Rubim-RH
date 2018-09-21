@@ -139,7 +139,7 @@ local function APL()
             return S.BloodBoil:Cast()
         end
 
-        if Player:NeedThreat() and S.HeartStrike:IsReady() and Cache.EnemiesCount[8] >= 1 then
+        if Player:NeedThreat() and S.HeartStrike:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
             return S.HeartStrike:Cast()
         end
 
@@ -148,11 +148,11 @@ local function APL()
             return S.BloodDrinker:Cast()
         end
         -- marrowrend,if=(buff.bone_shield.remains<=rune.time_to_3|buff.bone_shield.remains<=(gcd+cooldown.BloodDrinker.ready*talent.BloodDrinker.enabled*2)|buff.bone_shield.stack<3)&runic_power.deficit>=20
-        if S.Marrowrend:IsReady() and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:RuneTimeToX(3) or Player:BuffRemainsP(S.BoneShieldBuff) <= (Player:GCD() + num(S.BloodDrinker:CooldownUpP()) * num(S.BloodDrinker:IsAvailable()) * 2) or Player:BuffStackP(S.BoneShieldBuff) < 3) and Player:RunicPowerDeficit() >= 20) then
+        if S.Marrowrend:IsReady("Melee") and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:RuneTimeToX(3) or Player:BuffRemainsP(S.BoneShieldBuff) <= (Player:GCD() + num(S.BloodDrinker:CooldownUpP()) * num(S.BloodDrinker:IsAvailable()) * 2) or Player:BuffStackP(S.BoneShieldBuff) < 3) and Player:RunicPowerDeficit() >= 20) then
             return S.Marrowrend:Cast()
         end
 
-        if S.Marrowrend:IsReady() and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:GCD() * 2)) then
+        if S.Marrowrend:IsReady("Melee") and ((Player:BuffRemainsP(S.BoneShieldBuff) <= Player:GCD() * 2)) then
             return S.Marrowrend:Cast()
         end
         -- blood_boil,if=charges_fractional>=1.8&(buff.hemostasis.stack<=(5-spell_targets.blood_boil)|spell_targets.blood_boil>2)
@@ -160,7 +160,7 @@ local function APL()
             return S.BloodBoil:Cast()
         end
         -- marrowrend,if=buff.bone_shield.stack<5&talent.ossuary.enabled&runic_power.deficit>=15
-        if S.Marrowrend:IsReady() and (Player:BuffStackP(S.BoneShieldBuff) < 5 and S.Ossuary:IsAvailable() and Player:RunicPowerDeficit() >= 15) then
+        if S.Marrowrend:IsReady("Melee") and (Player:BuffStackP(S.BoneShieldBuff) < 5 and S.Ossuary:IsAvailable() and Player:RunicPowerDeficit() >= 15) then
             return S.Marrowrend:Cast()
         end
         -- bonestorm,if=runic_power>=100&!buff.dancing_rune_weapon.up
@@ -176,11 +176,11 @@ local function APL()
             return S.DeathandDecay:Cast()
         end
         -- rune_strike,if=(charges_fractional>=1.8|buff.dancing_rune_weapon.up)&rune.time_to_3>=gcd
-        if S.RuneStrike:IsReady() and ((S.RuneStrike:ChargesFractional() >= 1.8 or Player:BuffP(S.DancingRuneWeaponBuff)) and Player:RuneTimeToX(3) >= Player:GCD()) then
+        if S.RuneStrike:IsReady("Melee") and ((S.RuneStrike:ChargesFractional() >= 1.8 or Player:BuffP(S.DancingRuneWeaponBuff)) and Player:RuneTimeToX(3) >= Player:GCD()) then
             return S.RuneStrike:Cast()
         end
         -- heart_strike,if=buff.dancing_rune_weapon.up|rune.time_to_4<gcd
-        if S.HeartStrike:IsReady() and (Player:BuffP(S.DancingRuneWeaponBuff) or Player:RuneTimeToX(4) < Player:GCD()) then
+        if S.HeartStrike:IsReady("Melee") and (Player:BuffP(S.DancingRuneWeaponBuff) or Player:RuneTimeToX(4) < Player:GCD()) then
             return S.HeartStrike:Cast()
         end
         -- blood_boil,if=buff.dancing_rune_weapon.up
@@ -200,11 +200,11 @@ local function APL()
             return S.BloodBoil:Cast()
         end
         -- heart_strike,if=rune.time_to_3<gcd|buff.bone_shield.stack>6
-        if S.HeartStrike:IsReady() and (Player:RuneTimeToX(3) < Player:GCD() or Player:BuffStackP(S.BoneShieldBuff) > 6) then
+        if S.HeartStrike:IsReady("Melee") and (Player:RuneTimeToX(3) < Player:GCD() or Player:BuffStackP(S.BoneShieldBuff) > 6) then
             return S.HeartStrike:Cast()
         end
         -- rune_strike
-        if S.RuneStrike:IsReady() and (true) then
+        if S.RuneStrike:IsReady("Melee") and (true) then
             return S.RuneStrike:Cast()
         end
         -- arcane_torrent,if=runic_power.deficit>20

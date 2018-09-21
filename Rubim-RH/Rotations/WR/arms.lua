@@ -94,6 +94,7 @@ RubimRH.Spell[71] = {
     TestofMight = Spell(275529),
     TestofMightBuff = Spell(275540),
     SeismicWave = Spell(277639),
+    DeathSentence = Spell(198500)
 
 };
 

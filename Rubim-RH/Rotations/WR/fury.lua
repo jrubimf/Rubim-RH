@@ -85,7 +85,7 @@ Item.Warrior.Fury = {
 
 local I = Item.Warrior.Fury;
 
-local EnemyRanges = { 5, z8 }
+local EnemyRanges = { 5, 8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
