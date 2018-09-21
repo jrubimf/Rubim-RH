@@ -169,7 +169,7 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
-        if S.BattleShout:IsCastable() and not Player:Buff(S.BattleShout) then
+        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
             return S.BattleShout:Cast()
         end
     end

@@ -372,7 +372,9 @@ local nBars = {
     "MultiBarLeftButton"
 }
 
+local lastSpell = 0
 local function UpdateButtons()
+    lastSpell = 0
     wipe(RubimRH.Buttons)
     for _, group in ipairs(nBars) do
         for i = 1, 12 do
@@ -392,11 +394,23 @@ local function UpdateButtons()
     end
 end
 
+RubimRH.Listener:Add('NeP_Buttons', 'ACTIVE_TALENT_GROUP_CHANGED', function()
+    UpdateButtons()
+end)
+
+RubimRH.Listener:Add('NeP_Buttons', 'PLAYER_PVP_TALENT_UPDATE', function()
+    UpdateButtons()
+end)
+
 RubimRH.Listener:Add('NeP_Buttons', 'PLAYER_ENTERING_WORLD', function()
     UpdateButtons()
 end)
 
 RubimRH.Listener:Add('NeP_Buttons', 'ACTIONBAR_SLOT_CHANGED', function()
+    UpdateButtons()
+end)
+
+RubimRH.Listener:Add('NeP_Buttons', 'PLAYER_TALENT_UPDATE', function()
     UpdateButtons()
 end)
 
@@ -407,7 +421,6 @@ function RubimRH.HideButtonGlow()
     end
 end
 
-local lastSpell = 0
 function RubimRH.ShowButtonGlow(spellID)
     if RubimRH.Buttons[spellID] ~= nil then
         if lastSpell > 0 and spellID ~= lastSpell then

@@ -18,6 +18,7 @@ local Item = HL.Item
 
 -- Spells
 RubimRH.Spell[62] = {
+    Fireblood = Spell(265221),
     ArcaneIntellectBuff = Spell(1459),
     ArcaneIntellect = Spell(1459),
     SummonArcaneFamiliarBuff = Spell(210126),
