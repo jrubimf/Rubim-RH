@@ -48,6 +48,7 @@ RubimRH.Spell[72] = {
     Carnage = Spell(202922),
     Massacre = Spell(206315),
     FrothingBerserker = Spell(215571),
+    MeatCleaver = Spell(280392),
     MeatCleaverBuff = Spell(280392),
     DragonRoar = Spell(118000),
     Bladestorm = Spell(46924),
@@ -150,42 +151,6 @@ local function APL()
         end
     end
 
-    AoE = function()
-        --Cast Whirlwind Icon Whirlwind for two stacks of its buff.
-        if S.Whirlwind:IsReady() and Player:BuffStackP(S.WhirlwindBuff) < 2 and Cache.EnemiesCount[5] >= 2 then
-            return S.Whirlwind:Cast()
-        end
-        
-        --Cast Recklessness Icon Recklessness if able.
-        if S.Recklessness:IsReady() then
-            return S.Recklessness:Cast()
-        end
-        
-        --Cast Siegebreaker Icon Siegebreaker to debuff multiple targets.
-        if S.Siegebreaker:IsReady() and (Player:BuffP(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 20) then
-            return S.Siegebreaker:Cast()
-        end
-        
-        --Cast Rampage Icon Rampage for Enrage Icon Enrage.
-        if S.Rampage:IsReady() then
-            return S.Rampage:Cast()
-        end
-        
-        --Cast Bladestorm Icon Bladestorm or Dragon Roar Icon Dragon Roar as appropriate.
-        if S.Bladestorm:IsReady() then
-            return S.Bladestorm:Cast()
-        end
-        -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-        if S.DragonRoar:IsReady() and Cache.EnemiesCount[5] >= 1 then
-            return S.DragonRoar:Cast()
-        end
-        
-        --Cast Whirlwind Icon Whirlwind to refresh its buff.
-        if S.Whirlwind:IsReady() and Player:BuffRemainsP(S.WhirlwindBuff) < Player:GCD() * 2 and Cache.EnemiesCount[5] >= 2 then
-            return S.Whirlwind:Cast()
-        end
-    end
-
     SingleTarget = function()
         -- siegebreaker,if=buff.recklessness.up|cooldown.recklessness.remains>20
         if S.Siegebreaker:IsReady() and (Player:BuffP(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 20) then
@@ -280,6 +245,9 @@ local function APL()
     --   return S.Bloodthirst:Cast()
     --end
     -- rampage,if=cooldown.recklessness.remains<3
+    if S.Rampage:IsReady() then
+        return S.Rampage:Cast()
+    end
     if S.Rampage:IsReady() and (S.Recklessness:CooldownRemainsP() < 3) then
         return S.Rampage:Cast()
     end
@@ -288,7 +256,7 @@ local function APL()
         return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    if S.Whirlwind:IsReady() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.WhirlwindBuff)) then
+    if S.Whirlwind:IsReady() and S.MeatCleaver:IsAvailable() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
         return S.Whirlwind:Cast()
     end
     -- blood_fury,if=buff.recklessness.up

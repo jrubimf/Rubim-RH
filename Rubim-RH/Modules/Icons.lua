@@ -460,6 +460,7 @@ function updateIcon:onUpdate(sinceLastUpdate)
                     RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
                 end
                 if singleRotation == 0 then
+                    RubimRH.HideButtonGlow()
                     RubimRH.stIcon.texture:SetTexture(nil)
                 elseif singleRotation == 1 then
                     RubimRH.stIcon.texture:SetTexture(singleRotation2)
