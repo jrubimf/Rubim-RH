@@ -135,13 +135,13 @@ local function APL()
     UpdateRanges()
     Precombat = function()
         -- actions.precombat+=/chi_burst,if=(!talent.serenity.enabled|!talent.fist_of_the_white_tiger.enabled)
-        if S.ChiBurst:IsReady() and (not S.Serenity:IsAvailable() or not S.FistOfTheWhiteTiger:IsAvailable()) then
-            return S.ChiBurst:Cast()
-        end
+        --if S.ChiBurst:IsReady() and (not S.Serenity:IsAvailable() or not S.FistOfTheWhiteTiger:IsAvailable()) then
+          --  return S.ChiBurst:Cast()
+        --end
         -- actions.precombat+=/chi_wave
-        if S.ChiWave:IsReady() then
-            return S.ChiWave:Cast()
-        end
+        --if S.ChiWave:IsReady() then
+          --  return S.ChiWave:Cast()
+        --end
     end
     Cd = function()
         -- actions.cd=invoke_xuen_the_white_tiger
