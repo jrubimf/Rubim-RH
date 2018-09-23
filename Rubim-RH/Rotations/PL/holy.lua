@@ -117,7 +117,7 @@ local function APL()
         if S.LayOnHands:IsCastableP() then
             --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and CanUse(HolyShock)
             if LowestAlly("TANK", "HP") <= 25 then
-                ForceHealingTarget("ALL")
+                ForceHealingTarget("TANK")
             end
 
             if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 25 then
@@ -128,7 +128,7 @@ local function APL()
         --Blessing on Low Ally
         if S.BlessingofProtection:IsCastableP() then
             if LowestAlly("ALL", "HP") <= 30 then
-                ForceHealingTarget("DPS")
+                ForceHealingTarget("ALL")
             end
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 30 then
