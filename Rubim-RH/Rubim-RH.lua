@@ -19,6 +19,8 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
 
+
+
     if GetCVar("nameplateShowEnemies") ~= "1" then
         message("Nameplates enabled to maximum AoE detection.");
         SetCVar("nameplateShowEnemies", 1)
@@ -206,7 +208,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            version = "bfa_2.0",
+            version = 26092018,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -655,6 +657,15 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
+
+    if RubimRH.db.profile.mainOption.version ~= (26092018) then
+        self.db:ResetDB(defaultProfile)
+        message("New version:\nResetting Profile")
+        print("Reseting profile")
+        RubimRH.db.profile.mainOption.version = 26092018
+    end
+
+
 end
 
 local updateClassVariables = CreateFrame("Frame")

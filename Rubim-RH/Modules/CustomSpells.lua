@@ -69,13 +69,18 @@ function Spell:Queue(powerExtra)
     local powerEx = powerExtra or 0
 
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
-        print("Removed from Queue: " .. GetSpellLink(self:ID()))
+        print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         return
     end
 
-    RubimRH.queuedSpell = { self, powerEx }
-    print("Queued: " .. GetSpellLink(self:ID()))
+    if Spell:IsAvailable() then
+        RubimRH.queuedSpell = { self, powerEx }
+        print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
+        return
+    end
+    print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
+
 end
 
 function RubimRH.QueuedSpell()
@@ -412,23 +417,11 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsEnabled()
-    if #RubimRH.db.profile.mainOption.disabledSpells == 0 then
-        return true
+    if RubimRH.db.profile.mainOption.disabledSpells[self.SpellID] ~= nil then
+        return false
     end
 
-    for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
-        if self.SpellID == RubimRH.db.profile.mainOption.disabledSpells[i].value then
-            return false
-        end
-    end
     return true
-end
-
-function RubimRH.updateEnabledSpells()
-    for i, spell in ipairs(table_name) do
-        print(i, v)
-    end
-
 end
 
 function Spell:IsEnabledCD()

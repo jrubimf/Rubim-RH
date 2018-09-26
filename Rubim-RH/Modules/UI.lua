@@ -3,30 +3,186 @@ local Cache = HeroCache;
 local StdUi = LibStub('StdUi')
 local AceGUI = LibStub("AceGUI-3.0")
 
-testTable = {}
 function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, yOfs)
     if spellID ~= nil then
-        if RubimRH.db.profile.mainOption.disabledSpells[1] == nil then
-            table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
-            print("Added: " .. GetSpellLink(spellID))
+        if RubimRH.db.profile.mainOption.disabledSpells[spellID] ~= nil then
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = nil
+            print("Removed: " .. GetSpellLink(spellID))
         else
-            local duplicated = false
-            local duplicatedNumber = 0
-            for i = 1, #RubimRH.db.profile.mainOption.disabledSpells do
-                if RubimRH.db.profile.mainOption.disabledSpells[i].value == spellID then
-                    duplicated = true
-                    duplicatedNumber = i
-                    break
-                end
-            end
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = true
+            print("Added: " .. GetSpellLink(spellID))
+        end
+        return
+    end
 
-            if duplicated then
-                table.remove(RubimRH.db.profile.mainOption.disabledSpells, duplicatedNumber)
+    local window = StdUi:Window(UIParent, 'Spell Blocker', 500, 500);
+    window:SetPoint('CENTER');
+    if point ~= nil then
+        window:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+    end
+
+    local function showTooltip(frame, show, spellId)
+        if show then
+            GameTooltip:SetOwner(frame);
+            GameTooltip:SetPoint('RIGHT');
+            GameTooltip:SetSpellByID(spellId)
+        else
+            GameTooltip:Hide();
+        end
+
+    end
+
+    local data = {};
+    local cols = {
+
+        {
+            name = 'Enabled',
+            width = 60,
+            align = 'LEFT',
+            index = 'enabled',
+            format = 'string',
+            color        = function(table, value, rowData, columnData)
+                if value == "True" then return {r=0, g=1, b=0, a=1} end
+                if value == "False" then return {r=1, g=0, b=0, a=1} end
+            end
+        },
+
+        {
+            name = 'Spell Id',
+            width = 60,
+            align = 'LEFT',
+            index = 'spellId',
+            format = 'number',
+            color = function(table, value)
+                --local x = value / 200000;
+                --return { r = x, g = 1 - x, b = 0, a = 1 };
+            end
+        },
+        {
+            name = 'Text',
+            width = 180,
+            align = 'LEFT',
+            index = 'name',
+            format = 'string',
+        },
+
+        {
+            name = 'Icon',
+            width = 40,
+            align = 'LEFT',
+            index = 'icon',
+            format = 'icon',
+            sortable = false,
+            events = {
+                OnEnter = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                    local cellData = rowData[columnData.index];
+                    showTooltip(cellFrame, true, rowData.spellId);
+                    return false;
+                end,
+                OnLeave = function(rowFrame, cellFrame)
+                    showTooltip(cellFrame, false);
+                    return false;
+                end,
+            },
+        },
+    }
+
+    local st = StdUi:ScrollTable(window, cols, 14, 24);
+    st:EnableSelection(true);
+    StdUi:GlueTop(st, window, 0, -60);
+
+    local function getRandomSpell()
+        local name = nil;
+        local icon, castTime, minRange, maxRange, spellId;
+
+        while name == nil do
+            name, _, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(math.random(100, 200000));
+        end
+
+        return {
+            enabled = "True",
+            name = name,
+            icon = icon,
+            castTime = castTime,
+            minRange = minRange,
+            maxRange = maxRange,
+            spellId = spellId;
+        };
+    end
+
+    local function addSpell(spellID)
+        local name = nil;
+        local icon, castTime, minRange, maxRange, spellId;
+
+        name, _, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID);
+        local enabled = "True"
+        if RubimRH.db.profile.mainOption.disabledSpells[spellID] == true then
+            enabled = "False"
+        end
+
+
+        return {
+            enabled = enabled,
+            name = name,
+            icon = icon,
+            castTime = castTime,
+            minRange = minRange,
+            maxRange = maxRange,
+            spellId = spellId;
+        };
+    end
+
+    local data = {};
+
+    for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
+        tinsert(data, addSpell(spell.SpellID));
+    end
+
+    -- update scroll table data
+    st:SetData(data);
+
+    local function btn_blockSpell()
+        if data[st:GetSelection()].spellId ~= nil then
+            local spellID = data[st:GetSelection()].spellId
+            if RubimRH.db.profile.mainOption.disabledSpells[spellID] ~= nil then
+                RubimRH.db.profile.mainOption.disabledSpells[spellID] = nil
                 print("Removed: " .. GetSpellLink(spellID))
             else
-                table.insert(RubimRH.db.profile.mainOption.disabledSpells, { text = GetSpellInfo(spellID), value = spellID })
+                RubimRH.db.profile.mainOption.disabledSpells[spellID] = true
                 print("Added: " .. GetSpellLink(spellID))
             end
+            st:ClearSelection()
+
+            --
+            window:Hide();
+            local point, relativeTo, relativePoint, xOfs, yOfs = window:GetPoint()
+            RubimRH.SpellBlocker(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+            --
+
+            return
+        end
+        print("No Spell Selected")
+    end
+
+    local btn = StdUi:Button(window, 100, 24, 'Block Spell');
+    StdUi:GlueBelow(btn, st, 0, -20);
+
+    btn:SetScript('OnClick', btn_blockSpell);
+
+    local blockingTip = StdUi:FontString(window, 'You can macro the spell blocker by using:\n/run RubimRH.SpellBlocker(spellID)');
+    StdUi:GlueTop(blockingTip, btn, 0, -30);
+
+end
+
+testTable = {}
+function RubimRH.SpellBlocker2(spellID, point, relativeTo, relativePoint, xOfs, yOfs)
+    if spellID ~= nil then
+        if RubimRH.db.profile.mainOption.disabledSpells[spellID] ~= nil then
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = nil
+            print("Removed: " .. GetSpellLink(spellID))
+        else
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = true
+            print("Added: " .. GetSpellLink(spellID))
         end
         return
     end

@@ -69,6 +69,7 @@ RubimRH.Spell[259] = {
     Evasion = Spell(5277),
     CloakofShadows = Spell(31224),
     TheDreadlordsDeceit = Spell(208693),
+    Kick = Spell(1766),
 
 };
 local S = RubimRH.Spell[259];

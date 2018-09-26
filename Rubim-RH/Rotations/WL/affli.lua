@@ -7,7 +7,7 @@ local Cache = HeroCache
 local Unit = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
-local Pet = Unit.Pet;
+local Pet = Unit.Pet
 local Spell = HL.Spell
 
 RubimRH.Spell[265] = {

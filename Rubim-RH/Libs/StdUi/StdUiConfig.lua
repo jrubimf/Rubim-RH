@@ -4,17 +4,19 @@ if not StdUi then
 	return;
 end
 
-local module, version = 'Config', 1;
+local module, version = 'Config', 2;
 if not StdUi:UpgradeNeeded(module, version) then return end;
 
 StdUi.config = {};
 
 function StdUi:ResetConfig()
+	local font, fontSize = GameFontNormal:GetFont();
+	local _, largeFontSize = GameFontNormalLarge:GetFont();
 	self.config = {
 		font      = {
-			familly       = [[Fonts\FRIZQT__.ttf]],
-			size          = 12,
-			titleSize     = 16,
+			family        = font,
+			size          = fontSize,
+			titleSize     = largeFontSize,
 			effect        = 'NONE',
 			strata        = 'OVERLAY',
 			color         = {
@@ -26,7 +28,7 @@ function StdUi:ResetConfig()
 
 		backdrop  = {
 			texture        = [[Interface\Buttons\WHITE8X8]],
-			panel          = { r = 0.0588, g = 0.0588, b = 0, a = 0.6 },
+			panel          = { r = 0.0588, g = 0.0588, b = 0, a = 0.8 },
 			slider         = { r = 0.15, g = 0.15, b = 0.15, a = 1 },
 
 			button         = { r = 0.20, g = 0.20, b = 0.20, a = 1 },
@@ -63,7 +65,7 @@ end
 StdUi:ResetConfig();
 
 function StdUi:SetDefaultFont(font, size, effect, strata)
-	self.config.font.familly = font;
+	self.config.font.family = font;
 	self.config.font.size = size;
 	self.config.font.effect = effect;
 	self.config.font.strata = strata;
