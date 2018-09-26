@@ -108,10 +108,6 @@ local function APL()
         return S.BattleShout:Cast()
     end
 
-    if Player:StackUp() and S.ThunderClap:IsReady() then
-        return S.ThunderClap:Cast()
-    end
-
     if Player:NeedThreat() and S.ThunderClap:IsReady() and Cache.EnemiesCount[8] >= 1 then
         return S.ThunderClap:Cast()
     end

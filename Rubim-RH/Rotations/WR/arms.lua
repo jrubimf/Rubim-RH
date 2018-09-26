@@ -244,7 +244,7 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- bladestorm,if=buff.sweeping_strikes.down&!buff.deadly_calm.up&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
-        if S.Bladestorm:IsReady() and (Player:BuffDownP(S.SweepingStrikesBuff) and not Player:BuffP(S.DeadlyCalmBuff) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
+        if S.Bladestorm:IsReady() and Player:AreaTTD() >= 6 and (Player:BuffDownP(S.SweepingStrikesBuff) and not Player:BuffP(S.DeadlyCalmBuff) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
             return S.Bladestorm:Cast()
         end
         -- cleave
@@ -299,7 +299,7 @@ local function APL()
             return S.Warbreaker:Cast()
         end
         -- bladestorm,if=(debuff.colossus_smash.up&raid_event.adds.in>target.time_to_die)|raid_event.adds.up&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
-        if S.Bladestorm:IsReady() and ((Target:DebuffP(S.ColossusSmashDebuff) and 10000000000 > Target:TimeToDie()) or (Cache.EnemiesCount[8] > 1) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
+        if S.Bladestorm:IsReady() and Player:AreaTTD() >= 6 and ((Target:DebuffP(S.ColossusSmashDebuff) and 10000000000 > Target:TimeToDie()) or (Cache.EnemiesCount[8] > 1) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
             return S.Bladestorm:Cast()
         end
         -- overpower,if=!raid_event.adds.up|(raid_event.adds.up&azerite.seismic_wave.enabled)
