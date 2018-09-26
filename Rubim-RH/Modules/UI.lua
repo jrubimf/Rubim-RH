@@ -135,7 +135,9 @@ function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, y
     local data = {};
 
     for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
-        tinsert(data, addSpell(spell.SpellID));
+        if spell:IsAvailable() then
+            tinsert(data, addSpell(spell.SpellID));
+        end
     end
 
     -- update scroll table data

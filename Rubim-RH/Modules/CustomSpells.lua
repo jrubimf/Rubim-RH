@@ -74,7 +74,7 @@ function Spell:Queue(powerExtra)
         return
     end
 
-    if Spell:IsAvailable() then
+    if self:IsAvailable() then
         RubimRH.queuedSpell = { self, powerEx }
         print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
         return
@@ -136,7 +136,7 @@ function Spell:IsQueuedPowerCheck(powerEx)
     return true
 end
 
-function Spell:IsAvailable (CheckPet)
+function Spell:IsAvailable(CheckPet)
     return CheckPet and IsSpellKnown(self.SpellID, true) or IsPlayerSpell(self.SpellID);
 end
 
