@@ -53,7 +53,7 @@ Rotations\HR\mm.lua
 Rotations\DR\feral.lua
 Rotations\DR\guardian.lua
 Rotations\DR\balance.lua
-Rotations\WL\Affliction.lua
+Rotations\WL\affli.lua
 Rotations\MG\fire.lua
 Rotations\MG\frost.lua
 Rotations\MG\arcane.lua

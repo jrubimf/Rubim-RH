@@ -275,15 +275,15 @@ end
 RubimRH.Rotation.SetAPL(65, APL);
 
 local function PASSIVE()
-    if S.DivineProtection:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
+    if S.DivineProtection:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk1 then
         return S.DivineProtection:Cast()
     end
 
-    if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and not Player:Debuff(S.Forbearance) then
+    if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
         return S.DivineShield:Cast()
     end
 
-    if S.LayOnHands:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk3 and not Player:Debuff(S.Forbearance) then
+    if S.LayOnHands:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk3 and not Player:Debuff(S.Forbearance) then
         return S.LayOnHands:Cast()
     end
 

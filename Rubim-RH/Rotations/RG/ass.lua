@@ -634,7 +634,18 @@ local function APL ()
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
+
+        if RubimRH.TargetIsValid(true) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
+            if Stealthed() ~= nil then
+                return Stealthed()
+            end
+        end
+
         return 0, 462338
+    end
+
+    if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Kick:Cast()
     end
 
     -- In Combat

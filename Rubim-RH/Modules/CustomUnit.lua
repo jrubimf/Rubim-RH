@@ -161,13 +161,13 @@ function Unit:MaxSpeed()
 	return math.floor(select(2, GetUnitSpeed(self.UnitID)) / 7 * 100)
 end
 
-local randomChannel = math.random(10, 20)
+local randomChannel = math.random(20, 30)
 local randomInterrupt = math.random(40, 70)
 local randomTimer = GetTime()
 local function randomGenerator(option)
 	if GetTime() - randomTimer >= 1 then
 		randomInterrupt = math.random(40, 70)
-		randomChannel = math.random(10, 20)
+		randomChannel = math.random(20, 30)
 		randomTimer = GetTime()
 	end
 

@@ -355,7 +355,7 @@ local function APL()
         return Opener()
     end
 
-    if S.FlashOfLight:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and Player:StoppedFor() >= 0.5 then
+    if S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and Player:StoppedFor() >= 0.5 then
         return S.FlashOfLight:Cast()
     end
 
