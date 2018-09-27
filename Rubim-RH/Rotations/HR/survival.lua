@@ -168,7 +168,13 @@ local function UpdateWFB()
 
 end
 
+local function cacheOverwrite()
+    Cache.Persistent.SpellLearned.Player[S.MendPet.SpellID] = true
+end
+
+--- APL Main
 local function APL ()
+    cacheOverwrite()
     local Precombat, Cds, Cleave, St, WfiSt
     UpdateRanges()
     UpdateCDs()

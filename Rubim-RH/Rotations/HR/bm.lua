@@ -109,8 +109,13 @@ local function PetActive()
     return petActive
 end
 
+local function cacheOverwrite()
+    Cache.Persistent.SpellLearned.Player[S.MendPet.SpellID] = true
+end
+
 --- APL Main
 local function APL ()
+    cacheOverwrite()
     -- Unit Update
     HL.GetEnemies(40);
     -- Defensives

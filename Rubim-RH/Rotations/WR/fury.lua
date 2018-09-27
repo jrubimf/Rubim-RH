@@ -245,6 +245,11 @@ local function APL()
     --   return S.Bloodthirst:Cast()
     --end
     -- rampage,if=cooldown.recklessness.remains<3
+    if S.Whirlwind:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:BuffP(S.WhirlwindBuff) then
+        return S.Whirlwind:Cast()
+    end
+
+
     if S.Rampage:IsReady() then
         return S.Rampage:Cast()
     end

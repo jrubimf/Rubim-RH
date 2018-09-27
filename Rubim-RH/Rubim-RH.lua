@@ -473,9 +473,21 @@ local defaults = {
                 { spellID = Charge, isActive = true }
             }
         },
-        [73] = {
+        [Protection] = {
             cooldown = true,
             victoryrush = 80,
+            sk1 = 2.5,
+            sk1id = "Light Damage",
+            sk1tooltip = "How much DMG Taken is considered a Light Damage intake.",
+
+            sk2 = 5, -- ImpendingVictory
+            sk2id = "Moderate Damage",
+            sk2tooltip =  "How much DMG Taken is considered a Moderate Damage intake.",
+
+            sk3 = 10, -- RallyingCry
+            sk3id = "High Damage",
+            sk3tooltip =  "How much DMG Taken is considered a High Damage intake.",
+
         },
         --ROGUE
         [260] = { --Outlaw

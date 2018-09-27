@@ -116,19 +116,23 @@ local function APL()
         return S.Revenge:Cast()
     end
 
-
+    -- Shield Bash -> PvP usage
+    if S.ShieldBash:IsReady("Melee")
+            and Target:IsCasting() then
+        return S.ShieldBash:Cast()
+    end
     -- TODO: Berserker Rage: Implement cast while feared.
 
     -- Shield Wall -> Panic Heal
     if S.ShieldWall:IsReady("Melee")
-            and (Player:NeedMajorHealing() or Player:NeedPanicHealing())
-            and (S.Bolster:IsAvailable() and (not Player:Buff(S.LastStand))) then
+            and ((Player:IncDmgPercentage() > RubimRH.db.profile[73].sk2 or Player:HealthPercentage() <= 85) or (Player:IncDmgPercentage() > RubimRH.db.profile[73].sk3 or Player:HealthPercentage() <= 85))
+            and (S.Bolster:IsAvailable() and (not Player:Buff((S).LastStand))) then
         return S.ShieldWall:Cast()
     end
 
     -- Last Stand -> Panic Heal
     if S.LastStand:IsReady("Melee")
-            and (Player:NeedPanicHealing() or Player:NeedMajorHealing())
+            and ((Player:IncDmgPercentage() > RubimRH.db.profile[73].sk3 or Player:HealthPercentage() <= 85) or (Player:IncDmgPercentage() > RubimRH.db.profile[73].sk2 or Player:HealthPercentage() <= 85))
             and (not Player:Buff(S.ShieldWall)) then
         return S.LastStand:Cast()
     end
@@ -140,9 +144,9 @@ local function APL()
             and ((not S.Bolster:IsAvailable())
             or (S.Bolster:IsAvailable() and not Player:Buff(S.LastStand)))
             and S.ShieldBlock:ChargesFractional() >= 1
-            and (Player:NeedMinorHealing()
-            or Player:NeedMajorHealing()
-            or Player:NeedPanicHealing()) then
+            and ((Player:IncDmgPercentage() > RubimRH.db.profile[73].sk1 or Player:HealthPercentage() <= 85)
+            or (Player:IncDmgPercentage() > RubimRH.db.profile[73].sk2 or Player:HealthPercentage() <= 85)
+            or (Player:IncDmgPercentage() > RubimRH.db.profile[73].sk3 or Player:HealthPercentage() <= 85)) then
         return S.ShieldBlock:Cast()
     end
 
@@ -151,12 +155,6 @@ local function APL()
             and ((Target:TimeToDie() >= 10) or (GetNumGroupMembers() == 0)) -- Use all the time in solo content
             and Player:RageDeficit() >= 20 then
         return S.Avatar:Cast()
-    end
-
-    -- Shield Bash -> PvP usage
-    if S.ShieldBash:IsReady("Melee")
-            and Target:IsCasting() then
-        return S.ShieldBash:Cast()
     end
 
     -- Demoralizing Shout -> Use on CD with Boomking Shout
@@ -207,9 +205,9 @@ local function APL()
     end
 
     -- Shield Bash -> Target not casting / lower priority
-    if S.ShieldBash:IsReady("Melee") then
-        return S.ShieldBash:Cast()
-    end
+--    if S.ShieldBash:IsReady("Melee") then
+--        return S.ShieldBash:Cast()
+    --end
 
     -- Ignore Pain -> Vengeance Ignore Pain
     if S.IgnorePain:IsReady("Melee")
@@ -237,7 +235,7 @@ local function APL()
     if S.IgnorePain:IsReady("Melee")
             and Player:Rage() >= 40
             and not Player:Buff(S.IgnorePain)
-            and (Player:NeedMinorHealing() or Player:NeedMajorHealing()) then
+            and ((Player:IncDmgPercentage() > RubimRH.db.profile[73].sk1 or Player:HealthPercentage() <= 85) or (Player:IncDmgPercentage() > RubimRH.db.profile[73].sk2 or Player:HealthPercentage() <= 85)) then
         -- TODO: See IsTanking note
         return S.IgnorePain:Cast()
     end

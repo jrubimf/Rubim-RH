@@ -158,11 +158,11 @@ function RubimRH.getDMG(UNIT)
             Data[GUID] = nil
         else
             local combatTime = RubimRH.CombatTime(UNIT)
-            total = Data[GUID].dmgTaken / combatTime
-            phys = Data[GUID].dmgTaken_P / combatTime
-            magic = Data[GUID].dmgTaken_M / combatTime
-            Hits = Data[GUID].hits_taken
-            swingD = Data[GUID].dmgTaken_S / combatTime
+            total = (Data[GUID].dmgTaken / combatTime) or 0
+            phys = (Data[GUID].dmgTaken_P / combatTime) or 0
+            magic = (Data[GUID].dmgTaken_M / combatTime) or 0
+            Hits = (Data[GUID].hits_taken) or 0
+            swingD = (Data[GUID].dmgTaken_S / combatTime) or 0
         end
     end
     return total, Hits, phys, magic, swingD
