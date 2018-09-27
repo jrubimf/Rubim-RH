@@ -93,12 +93,31 @@ local function bool(val)
 end
 
 local function APL()
-    local Precombat, StandardSimc, Standard
+    local Precombat, StandardSimc, Standard, Immunity
     UpdateRanges()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
 
     Precombat = function()
 
+    end
+
+    Immunity = function()
+        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= RubimRH.db.profile[250].sk6) then
+            return S.DeathStrike:Cast()
+        end
+
+        if S.DeathStrike:IsReady() and Player:HealthPercentage() <= 90 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+            return S.DeathStrike:Cast()
+        end
+
+        if S.HeartStrike:IsReady("Melee") and Player:RunicPowerDeficit() <= RubimRH.db.profile[250].sk6 * 1.5 then
+            return S.HeartStrike:Cast()
+        end
+
+        if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 7) then
+            return S.Marrowrend:Cast()
+        end
+        return 0, 135328
     end
 
     StandardSimc = function()
@@ -384,7 +403,7 @@ local function APL()
     end
 
     -- custom
-    if S.VampiricBlood:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[250].sk3 then
+    if S.VampiricBlood:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[250].sk3 then
         return S.VampiricBlood:Cast()
     end
 
@@ -393,11 +412,11 @@ local function APL()
         return S.MindFreeze:Cast()
     end
     -- blood_fury,if=cooldown.dancing_rune_weapon.ready&(!cooldown.BloodDrinker.ready|!talent.BloodDrinker.enabled)
-    if S.BloodFury:IsReady() and (S.DancingRuneWeapon:CooldownUpP() and (not S.BloodDrinker:CooldownUpP() or not S.BloodDrinker:IsAvailable())) then
+    if S.BloodFury:IsCastable() and (S.DancingRuneWeapon:CooldownUpP() and (not S.BloodDrinker:CooldownUpP() or not S.BloodDrinker:IsAvailable())) then
         return S.BloodFury:Cast()
     end
     -- berserking
-    if S.Berserking:IsReady() and (true) then
+    if S.Berserking:IsCastable() and (true) then
         return S.Berserking:Cast()
     end
     -- use_items
@@ -407,9 +426,14 @@ local function APL()
         return S.DancingRuneWeapon:Cast()
     end
     -- tombstone,if=buff.bone_shield.stack>=7
-    if S.Tombstone:IsReady() and (Player:BuffStackP(S.BoneShieldBuff) >= 7) then
+    if S.Tombstone:IsCastable() and (Player:BuffStackP(S.BoneShieldBuff) >= 7) then
         return S.Tombstone:Cast()
     end
+
+    if Target:IsPvEImmunity() then
+        return Immunity()
+    end
+
     -- call_action_list,name=standard
     if (true) then
         if StandardSimc() ~= nil then

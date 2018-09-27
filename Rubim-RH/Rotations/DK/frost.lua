@@ -216,15 +216,15 @@ local function Cooldowns()
         return S.Berserking:Cast()
     end
     -- pillar_of_frost,if=cooldown.empower_rune_weapon.remains
-    if S.PillarofFrost:IsReady() and (bool(S.EmpowerRuneWeapon:CooldownRemains())) then
+    if S.PillarofFrost:IsCastable() and (bool(S.EmpowerRuneWeapon:CooldownRemains())) then
         return S.PillarofFrost:Cast()
     end
     -- empower_rune_weapon,if=cooldown.pillar_of_frost.ready&!talent.breath_of_sindragosa.enabled&rune.time_to_5>gcd&runic_power.deficit>=10
-    if RubimRH.CDsON() and S.EmpowerRuneWeapon:IsReady() and (S.PillarofFrost:CooldownUpP() and (not S.BreathofSindragosa:IsAvailable() or not RubimRH.config.Spells[2].isActive) and Player:RuneTimeToX(5) > Player:GCD() and Player:RunicPowerDeficit() >= 10) then
+    if RubimRH.CDsON() and S.EmpowerRuneWeapon:IsCastable() and (S.PillarofFrost:CooldownUpP() and (not S.BreathofSindragosa:IsAvailable() or not RubimRH.config.Spells[2].isActive) and Player:RuneTimeToX(5) > Player:GCD() and Player:RunicPowerDeficit() >= 10) then
         return S.EmpowerRuneWeapon:Cast()
     end
     -- empower_rune_weapon,if=cooldown.pillar_of_frost.ready&talent.breath_of_sindragosa.enabled&rune>=3&runic_power>60
-    if RubimRH.CDsON() and S.EmpowerRuneWeapon:IsReady() and (S.PillarofFrost:CooldownUpP() and (S.BreathofSindragosa:IsAvailable() or not RubimRH.config.Spells[2].isActive) and Player:Runes() >= 3 and Player:RunicPower() > 60) then
+    if RubimRH.CDsON() and S.EmpowerRuneWeapon:IsCastable() and (S.PillarofFrost:CooldownUpP() and (S.BreathofSindragosa:IsAvailable() or not RubimRH.config.Spells[2].isActive) and Player:Runes() >= 3 and Player:RunicPower() > 60) then
         return S.EmpowerRuneWeapon:Cast()
     end
     -- call_action_list,name=cold_heart,if=(equipped.cold_heart|talent.cold_heart.enabled)&(((buff.cold_heart_item.stack>=10|buff.cold_heart_talent.stack>=10)&debuff.razorice.stack=5)|target.time_to_die<=gcd)
@@ -376,7 +376,7 @@ local function APL()
         return S.FrostStrike:Cast()
     end
     -- breath_of_sindragosa,if=cooldown.empower_rune_weapon.remains&cooldown.pillar_of_frost.remains
-    if RubimRH.CDsON() and S.BreathofSindragosa:IsReady() and RubimRH.config.Spells[2].isActive and (bool(S.EmpowerRuneWeapon:CooldownRemains()) and bool(S.PillarofFrost:CooldownRemains())) then
+    if RubimRH.CDsON() and S.BreathofSindragosa:IsCastable() and RubimRH.config.Spells[2].isActive and (bool(S.EmpowerRuneWeapon:CooldownRemains()) and bool(S.PillarofFrost:CooldownRemains())) then
         return S.BreathofSindragosa:Cast()
     end
     -- call_action_list,name=cooldowns

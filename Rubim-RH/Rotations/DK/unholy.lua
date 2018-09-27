@@ -161,7 +161,7 @@ local function APL()
             return S.RaiseDead:Cast()
         end
         -- army_of_the_dead
-        if S.ArmyoftheDead:IsReady() and HL.BMPullTime() <= select(2, GetRuneCooldown(1)) - 1 then
+        if S.ArmyoftheDead:IsCastable() and HL.BMPullTime() <= select(2, GetRuneCooldown(1)) - 1 then
             return S.ArmyoftheDead:Cast()
         end
     end
@@ -210,11 +210,11 @@ local function APL()
             return S.DeathCoil:Cast()
         end
         -- scourge_strike,if=((debuff.festering_wound.up&cooldown.Apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5
-        if S.ScourgeStrike:IsReady() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsReady()) then
+        if S.ScourgeStrike:IsReady() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsCastable()) then
             return S.ScourgeStrike:Cast()
         end
         -- clawing_shadows,if=((debuff.festering_wound.up&cooldown.Apocalypse.remains>5)|debuff.festering_wound.stack>4)&cooldown.army_of_the_dead.remains>5
-        if S.ClawingShadows:IsReadyMorph() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsReady()) then
+        if S.ClawingShadows:IsReadyMorph() and (((Target:Debuff(S.FesteringWoundDebuff) and S.Apocalypse:CooldownRemainsP() > 5) or Target:DebuffStack(S.FesteringWoundDebuff) > 4) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsCastable()) then
             return S.ClawingShadows:Cast()
         end
         -- death_coil,if=runic_power.deficit<20&!variable.pooling_for_gargoyle
@@ -222,7 +222,7 @@ local function APL()
             return S.DeathCoil:Cast()
         end
         -- festering_strike,if=((((debuff.festering_wound.stack<4&!buff.unholy_frenzy.up)|debuff.festering_wound.stack<3)&cooldown.Apocalypse.remains<3)|debuff.festering_wound.stack<1)&cooldown.army_of_the_dead.remains>5
-        if S.FesteringStrike:IsReady() and (((((Target:DebuffStack(S.FesteringWoundDebuff) < 4 and not Player:Buff(S.UnholyFrenzy)) or Target:DebuffStack(S.FesteringWoundDebuff) < 3) and S.Apocalypse:CooldownRemainsP() < 3) or Target:DebuffStack(S.FesteringWoundDebuff) < 1) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsReady()) then
+        if S.FesteringStrike:IsReady() and (((((Target:DebuffStack(S.FesteringWoundDebuff) < 4 and not Player:Buff(S.UnholyFrenzy)) or Target:DebuffStack(S.FesteringWoundDebuff) < 3) and S.Apocalypse:CooldownRemainsP() < 3) or Target:DebuffStack(S.FesteringWoundDebuff) < 1) and S.ArmyoftheDead:CooldownRemainsP() > 5 or S.ArmyoftheDead:IsCastable()) then
             return S.FesteringStrike:Cast()
         end
         -- death_coil,if=!variable.pooling_for_gargoyle
@@ -233,7 +233,7 @@ local function APL()
     end
     Cooldowns = function()
         -- army_of_the_dead
-        if S.ArmyoftheDead:IsReady() and (true) then
+        if S.ArmyoftheDead:IsCastable() and (true) then
             return S.ArmyoftheDead:Cast()
         end
         -- apocalypse,if=debuff.festering_wound.stack>=4
@@ -241,19 +241,19 @@ local function APL()
             return S.Apocalypse:Cast()
         end
         -- dark_transformation,if=(equipped.137075&cooldown.summon_gargoyle.remains>40)|(!equipped.137075|!talent.summon_gargoyle.enabled)
-        if S.DarkTransformation:IsReady() and not S.SummonGargoyle:IsAvailable() then
+        if S.DarkTransformation:IsCastable() and not S.SummonGargoyle:IsAvailable() then
             return S.DarkTransformation:Cast()
         end
         -- summon_gargoyle,if=runic_power.deficit<14
-        if S.SummonGargoyle:IsReady() and (Player:RunicPowerDeficit() < 14) then
+        if S.SummonGargoyle:IsCastable() and (Player:RunicPowerDeficit() < 14) then
             return S.SummonGargoyle:Cast()
         end
         -- unholy_frenzy,if=debuff.festering_wound.stack<4
-        if S.UnholyFrenzy:IsReady() and (Target:DebuffStackP(S.FesteringWoundDebuff) < 4) then
+        if S.UnholyFrenzy:IsCastable() and (Target:DebuffStackP(S.FesteringWoundDebuff) < 4) then
             return S.UnholyFrenzy:Cast()
         end
         -- unholy_frenzy,if=active_enemies>=2&((cooldown.death_and_decay.remains<=gcd&!talent.defile.enabled)|(cooldown.defile.remains<=gcd&talent.defile.enabled))
-        if S.UnholyFrenzy:IsReady() and (Cache.EnemiesCount[30] >= 2 and ((S.DeathAndDecay:CooldownRemainsP() <= Player:GCD() and not S.Defile:IsAvailable()) or (S.Defile:CooldownRemainsP() <= Player:GCD() and S.Defile:IsAvailable()))) then
+        if S.UnholyFrenzy:IsCastable() and (Cache.EnemiesCount[30] >= 2 and ((S.DeathAndDecay:CooldownRemainsP() <= Player:GCD() and not S.Defile:IsAvailable()) or (S.Defile:CooldownRemainsP() <= Player:GCD() and S.Defile:IsAvailable()))) then
             return S.UnholyFrenzy:Cast()
         end
         -- soul_reaper,target_if=(target.time_to_die<8|rune<=2)&!buff.unholy_frenzy.up

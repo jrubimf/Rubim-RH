@@ -257,7 +257,7 @@ local function APL()
         return S.Rampage:Cast()
     end
     -- recklessness
-    if S.Recklessness:IsReady() then
+    if S.Recklessness:IsCastable() then
         return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up

@@ -258,7 +258,7 @@ local function APL()
         --return S.ProlongedPower:Cast()
         --end
         -- metamorphosis
-        --if S.Metamorphosis:IsReady() and Player:BuffDownP(S.MetamorphosisBuff) then
+        --if S.Metamorphosis:IsCastable() and Player:BuffDownP(S.MetamorphosisBuff) then
         --return S.Metamorphosis:Cast()
         --end
         return 0, 462338
@@ -266,11 +266,11 @@ local function APL()
 
     Cooldown = function()
         -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis)|target.time_to_die<25
-        if S.Metamorphosis:IsReady() and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingForNemesis)) or Target:TimeToDie() < 25) then
+        if S.Metamorphosis:IsCastable() and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingForNemesis)) or Target:TimeToDie() < 25) then
             return S.Metamorphosis:Cast()
         end
         -- metamorphosis,if=talent.demonic.enabled&buff.metamorphosis.up
-        if S.Metamorphosis:IsReady() and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
+        if S.Metamorphosis:IsCastable() and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
             return S.Metamorphosis:Cast()
         end
         -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
