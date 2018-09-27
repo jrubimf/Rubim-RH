@@ -42,6 +42,19 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         end
         UIDropDownMenu_AddButton(info)
         --
+        if RubimRH.playerSpec == 65 then
+            info.text, info.hasArrow = "Pure DPS", nil
+            info.checked = RubimRH.db.profile[65].dps
+            info.func = function(self)
+                if RubimRH.db.profile[65].dps then
+                    RubimRH.db.profile[65].dps = false
+                else
+                    RubimRH.db.profile[65].dps = true
+                end
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+        --
         if RubimPvP ~= nil then
             info.text, info.hasArrow = "PVP: Smart Cleave", nil
             info.checked = RubimRH.CleaveON()
@@ -50,7 +63,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
             end
             UIDropDownMenu_AddButton(info)
         end
-            --
+        --
         info.text, info.hasArrow = "Cooldowns", nil
         info.checked = RubimRH.config.cooldown
         info.func = function(self)
@@ -403,7 +416,6 @@ updateIcon:SetScript("OnUpdate", function(self, sinceLastUpdate)
     updateIcon:onUpdate(sinceLastUpdate);
 end)
 
-
 function updateIcon:onUpdate(sinceLastUpdate)
     self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate;
     if (self.sinceLastUpdate >= 0.066) then
@@ -411,7 +423,6 @@ function updateIcon:onUpdate(sinceLastUpdate)
             Icons.MainIcon:Show()
             Icons.MainIcon:SetAlpha(RubimRH.db.profile.mainOption.mainIconOpacity / 100)
             Icons.MainIcon:SetScale(RubimRH.db.profile.mainOption.mainIconScale / 100)
-
 
             if CDText ~= nil then
                 CDText:SetText(RubimRH.ColorOnOff(RubimRH.config.cooldown) .. "CD")
@@ -432,13 +443,13 @@ function updateIcon:onUpdate(sinceLastUpdate)
 
         end
 
-            if RubimRH.mainRotation() == "ERROR" then
-                MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
-                return
-            end
+        if RubimRH.mainRotation() == "ERROR" then
+            MainIconFrame.texture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\nosupport.tga")
+            return
+        end
 
-            local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
-            local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
+        local singleRotation, singleRotation2 = RubimRH.mainRotation("SingleTarget")
+        local passiveRotation, passiveRotation2 = RubimRH.mainRotation("Passive")
 
         if RubimRH.db.profile.mainOption.hidetexture == false then
             if singleRotation == 0 or singleRotation == 1 then
@@ -450,26 +461,26 @@ function updateIcon:onUpdate(sinceLastUpdate)
             MainIconFrame.texture:SetTexture(nil)
         end
 
-            if RubimExtra then
+        if RubimExtra then
+            RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
+            if passiveRotation == 0 then
+                RubimRH.passiveIcon.texture:SetTexture(nil)
+            elseif passiveRotation == 1 then
                 RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
-                if passiveRotation == 0 then
-                    RubimRH.passiveIcon.texture:SetTexture(nil)
-                elseif passiveRotation == 1 then
-                    RubimRH.passiveIcon.texture:SetTexture(passiveRotation2)
-                else
-                    RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
-                end
-                if singleRotation == 0 then
-                    RubimRH.HideButtonGlow()
-                    RubimRH.stIcon.texture:SetTexture(nil)
-                elseif singleRotation == 1 then
-                    RubimRH.stIcon.texture:SetTexture(singleRotation2)
-                else
-                    RubimRH.stIcon.texture:SetTexture(singleRotation)
-                end
+            else
+                RubimRH.passiveIcon.texture:SetTexture(passiveRotation)
             end
-            self.sinceLastUpdate = 0;
+            if singleRotation == 0 then
+                RubimRH.HideButtonGlow()
+                RubimRH.stIcon.texture:SetTexture(nil)
+            elseif singleRotation == 1 then
+                RubimRH.stIcon.texture:SetTexture(singleRotation2)
+            else
+                RubimRH.stIcon.texture:SetTexture(singleRotation)
+            end
         end
+        self.sinceLastUpdate = 0;
+    end
 end
 
 CinematicFrame:HookScript("OnShow", function(self, ...)

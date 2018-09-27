@@ -22,6 +22,12 @@ RubimRH.Spell[65] = {
     GiftoftheNaaru = Spell(59547),
 
     --Spells
+    LightsHammer = Spell(114158),
+    HolyPrism = Spell(114165),
+    BestowFaith = Spell(223306),
+    JudgementofLight = Spell(183778),
+    AvengingCrusade = Spell(216331),
+    CrusadersMight = Spell(196926),
     Cleanse = Spell(4987),
     Judgement = Spell(275773),
     CrusaderStrike = Spell(35395),
@@ -37,6 +43,7 @@ RubimRH.Spell[65] = {
 
     --Azerite
     DivineRevelations = Spell(275469),
+    GraveofJusticar = Spell(278593),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -108,7 +115,22 @@ local function APL()
     LeftAlt = IsLeftAltKeyDown();
 
     local DPS = function()
+        if S.HolyShock:IsReady(40) then
+            return S.HolyShock:Cast()
+        end
 
+        if S.Judgement:IsReady(30) then
+            return S.Judgement:Cast()
+        end
+
+        if S.CrusaderStrike:IsReady()  then
+            return S.CrusaderStrike:Cast()
+        end
+
+        if S.Consecration:IsReady() and Cache.EnemiesCount[6] >= 1 then
+            return S.Consecration:Cast()
+        end
+        return 0, 135328
     end
 
     local Healing = function()
@@ -138,8 +160,27 @@ local function APL()
         end
 
         --14Judgment
+        if Player:CanAttack(Target) and S.Judgement:IsReady() and Player:Buff(S.AvengingCrusade) then
+            return S.Judgement:Cast()
+        end
+
         --15 Crusader Strike
+        if Player:CanAttack(Target) and S.CrusaderStrike:IsReady() and Player:Buff(S.AvengingCrusade) then
+            return S.CrusaderStrike:Cast()
+        end
+
         --16Beacon of Virtue
+        if S.BeaconofVirtue:IsCastableP() then
+            --if InjuredAlliesInExplicitRadius(30, true, 0.75) >= 3
+            if GroupedBelow(75) >= 3 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") then
+                return S.BeaconofVirtue:Cast()
+            end
+        end
+
         --17Aura Mastery
         --18Avenging Wrath
         --19Avenging Crusader
@@ -209,8 +250,26 @@ local function APL()
         end
 
         --26Light's Hammer
+        if S.LightsHammer:IsAvailable() and S.LightsHammer:IsCastableP() then
+            if GroupedBelow(75) >= 3 then
+                return S.LightsHammer:Cast()
+            end
+        end
+
         --27Holy Prism
+        if S.HolyPrism:IsAvailable() and S.HolyPrism:IsCastableP() then
+            if GroupedBelow(75) >= 3 then
+                return S.HolyPrism:Cast()
+            end
+        end
+
         --28Bestow Faith
+        if S.BestowFaith:IsAvailable() and S.BestowFaith:IsCastableP() then
+            ForceHealingTarget("TANK")
+            if Target:GUID() == LowestAlly("TANK", "GUID") then
+                return S.BestowFaith:Cast()
+            end
+        end
 
         --29Holy Light
         if S.HolyLight:IsCastableP() and Player:Buff(S.InfusionofLight) and not Target:Buff(S.BeaconofLight) and not Target:Buff(S.BeaconofVirtue) then
@@ -247,8 +306,20 @@ local function APL()
         end
 
         --32Judgment
+        if Player:CanAttack(Target) and S.Judgement:IsReady() and S.JudgementofLight:IsAvailable() then
+            return S.Judgement:Cast()
+        end
+
         --33Judgment
+        if Player:CanAttack(Target) and S.Judgement:IsReady() and S.GraveofJusticar:AzeriteEnabled() then
+            return S.Judgement:Cast()
+        end
+
         --34Crusader Strike
+        if Player:CanAttack(Target) and S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() then
+            return S.CrusaderStrike:Cast()
+        end
+
         --35 Holy Light
         if S.HolyLight:IsCastableP() then
             if LowestAlly("ALL", "HP") <= 85 then
@@ -264,6 +335,11 @@ local function APL()
 
     if Player:IsChanneling() or Player:IsCasting() then
         return 0, 236353
+    end
+
+    if Player:CanAttack(Target) then
+        ForceHealingTarget("None")
+            return DPS()
     end
 
     if Healing() ~= nil then

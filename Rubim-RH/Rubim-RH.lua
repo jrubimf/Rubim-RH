@@ -390,6 +390,7 @@ local defaults = {
             SoVOpener = false,
         },
         [Holy] = {
+            dps = false,
             cooldown = true,
             sk1 = 50,
             sk1id = 498,
