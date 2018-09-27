@@ -312,7 +312,13 @@ local MeleeSpecs = {
     [260] = true, -- Icon Legion 18x18 Outlaw
     [261] = true, -- Subtlety
 }
-function Unit:IsMelee()
+function Unit:IsMelee(ID)
+    if ID ~= nil then
+        if MeleeSpecs[ID] == true then
+            return true
+        end
+        return false
+    end
     local specID = GetSpecialization() or 0
     if MeleeSpecs[GetSpecializationInfo(specID)] == true then
         return true
@@ -341,9 +347,15 @@ local RangedSpecs = {
     [267] = true, -- Destruction
 }
 
-function Unit:IsRanged()
+function Unit:IsRanged(ID)
+    if ID ~= nil then
+        if RangedSpecs[ID] == true then
+            return true
+        end
+        return false
+    end
     local specID = GetSpecialization() or 0
-    if MeleeSpecs[GetSpecializationInfo(specID)] == true then
+    if RangedSpecs[GetSpecializationInfo(specID)] == true then
         return true
     end
     return false

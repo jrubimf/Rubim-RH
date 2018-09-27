@@ -67,7 +67,6 @@ end
 
 function Spell:Queue(powerExtra)
     local powerEx = powerExtra or 0
-
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
         print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
@@ -119,11 +118,6 @@ function Spell:IsQueuedPowerCheck(powerEx)
 
     if costType == 3 and RubimRH.queuedSpell[1]:CooldownRemains() >= Player:EnergyTimeToX(costsQ) then
         return true
-    end
-
-    if Player:PrevGCD(1, RubimRH.queuedSpell[1]) and UnitPower("player", costTypeQ) >= costsQ + RubimRH.queuedSpell[2] then
-        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-        return false
     end
 
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
@@ -520,7 +514,10 @@ end
 
 -- Player On Cast Success Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
-    for i, spell in ipairs(RubimRH.allSpells) do
+    if RubimRH.QueuedSpell().SpellID == SpellID then
+        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+    end
+    for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
         if SpellID == spell.SpellID then
             spell.LastCastTime = HL.GetTime()
             spell.LastHitTime = HL.GetTime() + spell:TravelTime()
@@ -530,7 +527,7 @@ end, "SPELL_CAST_SUCCESS")
 
 -- Pet On Cast Success Listener
 HL:RegisterForPetCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
-    for i, spell in ipairs(RubimRH.allSpells) do
+    for i, spell in pairs(RubimRH.allSpells) do
         if SpellID == spell.SpellID then
             spell.LastCastTime = HL.GetTime()
             spell.LastHitTime = HL.GetTime() + spell:TravelTime()
@@ -540,7 +537,7 @@ end, "SPELL_CAST_SUCCESS")
 
 -- Player Aura Applied Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
-    for i, spell in ipairs(RubimRH.allSpells) do
+    for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
         if SpellID == spell.SpellID then
             spell.LastAppliedOnPlayerTime = HL.GetTime()
         end
@@ -549,7 +546,7 @@ end, "SPELL_AURA_APPLIED")
 
 -- Player Aura Removed Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
-    for i, spell in ipairs(RubimRH.allSpells) do
+    for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
         if SpellID == spell.SpellID then
             spell.LastRemovedFromPlayerTime = HL.GetTime()
         end
