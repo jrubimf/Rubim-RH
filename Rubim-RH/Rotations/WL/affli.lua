@@ -128,6 +128,7 @@ S.SeedofCorruption:RegisterInFlight()
 local function APL()
     local Precombat, Fillers
     UpdateRanges()
+
     time_to_shard = TimeToShard()
     Precombat = function()
         -- flask
@@ -290,7 +291,7 @@ local function APL()
             return S.SiphonLife:Cast()
         end
         -- corruption,cycle_targets=1,if=active_enemies<3+talent.writhe_in_agony.enabled&refreshable&target.time_to_die>10
-        if S.Corruption:IsCastableP() and (Cache.EnemiesCount[35] < 3 + num(S.WritheInAgony:IsAvailable()) and Target:DebuffRefreshableCP(S.CorruptionDebuff) and Target:TimeToDie() > 10) then
+        if S.Corruption:IsCastableP() and (Cache.EnemiesCount[35] < 3 + num(S.WritheInAgony:IsAvailable()) and (Target:DebuffRefreshableCP(S.CorruptionDebuff) and (S.AbsoluteCorruption:IsAvailable() and not Target:Debuff(S.CorruptionDebuff) or not S.AbsoluteCorruption:IsAvailable())) and Target:TimeToDie() > 10) then
             return S.Corruption:Cast()
         end
         -- phantom_singularity,if=time<=40
@@ -344,8 +345,8 @@ local function APL()
         if Fillers() ~= nil then
             return Fillers()
         end
-        return 0, 135328
     end
+    return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(265, APL)

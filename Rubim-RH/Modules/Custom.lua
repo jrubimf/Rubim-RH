@@ -435,4 +435,3 @@ function RubimRH.ShowButtonGlow(spellID)
         lastSpell = spellID
     end
 end
-
