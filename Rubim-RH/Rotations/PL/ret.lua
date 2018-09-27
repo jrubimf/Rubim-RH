@@ -359,16 +359,6 @@ local function APL()
         return S.FlashOfLight:Cast()
     end
 
-    --actions+=/call_action_list,name=cooldowns
-    if Cooldowns() ~= nil then
-        return Cooldowns()
-    end
-
-    --actions+=/call_action_list,name=generators
-    if Generators() ~= nil then
-        return Generators()
-    end
-
     if S.JusticarsVengeance:IsReady() and Target:IsInRange("Melee") then
         -- Regular
         if Player:HealthPercentage() <= RubimRH.db.profile[70].sk3 and not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 5 then
@@ -381,7 +371,7 @@ local function APL()
 
     end
 
-    if S.WordofGlory:IsReady() then
+    if S.WordofGlory:IsCastable() then
         -- Regular
         if Player:HealthPercentage() <= RubimRH.db.profile[70].sk6 and not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 3 then
             return S.WordofGlory:Cast()
@@ -390,7 +380,16 @@ local function APL()
         if Player:HealthPercentage() <= RubimRH.db.profile[70].sk6 - 5 and Player:Buff(S.DivinePurposeBuff) then
             return S.WordofGlory:Cast()
         end
+    end
 
+    --actions+=/call_action_list,name=cooldowns
+    if Cooldowns() ~= nil then
+        return Cooldowns()
+    end
+
+    --actions+=/call_action_list,name=generators
+    if Generators() ~= nil then
+        return Generators()
     end
 
     return 0, 135328
