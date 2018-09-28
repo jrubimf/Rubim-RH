@@ -113,7 +113,7 @@ function Spell:IsQueuedPowerCheck(powerEx)
     end
 
     for i = 1, #powerCostQ do
-        if powerCostQ[i].cost > 0 then
+        if powerCostQ[i].cost > 0 or powerCostQ[i].costPerSec > 0 or powerCostQ[i].costPercent > 0 then
             costTypeQ = powerCostQ[i].type
             costsQ = powerCostQ[i].cost
             break
@@ -131,6 +131,7 @@ function Spell:IsQueuedPowerCheck(powerEx)
     if costType ~= costTypeQ then
         return false
     end
+
     return true
 end
 

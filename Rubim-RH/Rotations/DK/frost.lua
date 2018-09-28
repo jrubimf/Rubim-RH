@@ -333,6 +333,16 @@ local function APL()
         return 0, 462338
     end
 
+    if QueueSkill() ~= nil then
+        if RubimRH.QueuedSpell():ID() == S.BreathofSindragosa:ID() then
+            if Player:Buff(S.EmpowerRuneWeapon) and Player:Buff(S.PillarofFrost) then
+                return QueueSkill()
+            end
+        else
+            return QueueSkill()
+        end
+    end
+
     if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
         return S.DeathGrip:Cast()
     end

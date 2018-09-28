@@ -128,8 +128,6 @@ S.SeedofCorruption:RegisterInFlight()
 local function APL()
     local Precombat, Fillers
     UpdateRanges()
-
-    time_to_shard = TimeToShard()
     Precombat = function()
         -- flask
         -- food
@@ -262,8 +260,8 @@ local function APL()
         if S.VileTaint:IsCastableP() and (HL.CombatTime() > 20) then
             return S.VileTaint:Cast()
         end
-        -- seed_of_corruption,if=dot.corruption.remains<=action.seed_of_corruption.cast_time+time_to_shard+4.2*(1-talent.creeping_death.enabled*0.15)&spell_targets.seed_of_corruption_aoe>=3+talent.writhe_in_agony.enabled&!dot.seed_of_corruption.remains&!action.seed_of_corruption.in_flight
-        if S.SeedofCorruption:IsCastableP() and (Target:DebuffRemainsP(S.CorruptionDebuff) <= S.SeedofCorruption:CastTime() + time_to_shard + 4.2 * (1 - num(S.CreepingDeath:IsAvailable()) * 0.15) and Cache.EnemiesCount[35] >= 3 + num(S.WritheInAgony:IsAvailable()) and not bool(Target:DebuffRemainsP(S.SeedofCorruptionDebuff)) and not S.SeedofCorruption:InFlight()) then
+        -- seed_of_corruption,if=dot.corruption.remains<=action.seed_of_corruption.cast_time+TimeToShard()+4.2*(1-talent.creeping_death.enabled*0.15)&spell_targets.seed_of_corruption_aoe>=3+talent.writhe_in_agony.enabled&!dot.seed_of_corruption.remains&!action.seed_of_corruption.in_flight
+        if S.SeedofCorruption:IsCastableP() and (Target:DebuffRemainsP(S.CorruptionDebuff) <= S.SeedofCorruption:CastTime() + TimeToShard() + 4.2 * (1 - num(S.CreepingDeath:IsAvailable()) * 0.15) and Cache.EnemiesCount[35] >= 3 + num(S.WritheInAgony:IsAvailable()) and not bool(Target:DebuffRemainsP(S.SeedofCorruptionDebuff)) and not S.SeedofCorruption:InFlight()) then
             return S.SeedofCorruption:Cast()
         end
         -- agony,cycle_targets=1,max_cycle_targets=6,if=talent.creeping_death.enabled&target.time_to_die>10&refreshable
@@ -318,8 +316,8 @@ local function APL()
         if S.UnstableAffliction:IsReadyP() and (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) then
             return S.UnstableAffliction:Cast()
         end
-        -- call_action_list,name=fillers,if=(cooldown.summon_darkglare.remains<time_to_shard*(5-soul_shard)|cooldown.summon_darkglare.up)&time_to_die>cooldown.summon_darkglare.remains
-        if ((S.SummonDarkglare:CooldownRemainsP() < time_to_shard * (5 - Player:SoulShardsP()) or S.SummonDarkglare:CooldownUpP()) and Target:TimeToDie() > S.SummonDarkglare:CooldownRemainsP()) then
+        -- call_action_list,name=fillers,if=(cooldown.summon_darkglare.remains<TimeToShard()*(5-soul_shard)|cooldown.summon_darkglare.up)&time_to_die>cooldown.summon_darkglare.remains
+        if ((S.SummonDarkglare:CooldownRemainsP() < TimeToShard() * (5 - Player:SoulShardsP()) or S.SummonDarkglare:CooldownUpP()) and Target:TimeToDie() > S.SummonDarkglare:CooldownRemainsP()) then
             local ShouldReturn = Fillers();
             if ShouldReturn then
                 return ShouldReturn;
@@ -337,8 +335,8 @@ local function APL()
         if S.UnstableAffliction:IsReadyP() and (not bool(VarSpammableSeed) and Target:DebuffRemainsP(S.UnstableAfflictionDebuff)) then
             return S.UnstableAffliction:Cast()
         end
-        -- unstable_affliction,cycle_targets=1,if=!variable.spammable_seed&(!talent.deathbolt.enabled|cooldown.deathbolt.remains>time_to_shard|soul_shard>1)&contagion<=cast_time+variable.padding
-        if S.UnstableAffliction:IsReadyP() and (not bool(VarSpammableSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > time_to_shard or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding) then
+        -- unstable_affliction,cycle_targets=1,if=!variable.spammable_seed&(!talent.deathbolt.enabled|cooldown.deathbolt.remains>TimeToShard()|soul_shard>1)&contagion<=cast_time+variable.padding
+        if S.UnstableAffliction:IsReadyP() and (not bool(VarSpammableSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > TimeToShard() or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding) then
             return S.UnstableAffliction:Cast()
         end
         -- call_action_list,name=fillers
