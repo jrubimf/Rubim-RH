@@ -33,7 +33,9 @@ RubimRH.Spell[72] = {
     Recklessness = Spell(1719),
     VictoryRush = Spell(34428),
     Whirlwind = Spell(190411),
+    WhirlwindPassive = Spell(12950),
     WhirlwindBuff = Spell(85739),
+    EnragedRegeneration = Spell(184364),
     Enrage = Spell(184362),
     -- Talents
     WarMachine = Spell(262231),
@@ -236,6 +238,10 @@ local function APL()
         return S.RallyingCry:Cast()
     end
 
+    if S.Bloodthirst:IsReady() and Player:HealthPercentage() <= 80 and Player:Buff(S.EnragedRegeneration) then
+        return S.Bloodthirst:Cast()
+    end
+
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
     if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
         return S.FuriousSlash:Cast()
@@ -245,7 +251,7 @@ local function APL()
     --   return S.Bloodthirst:Cast()
     --end
     -- rampage,if=cooldown.recklessness.remains<3
-    if S.Whirlwind:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:BuffP(S.WhirlwindBuff) then
+    if S.Whirlwind:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:BuffP(S.WhirlwindBuff) and S.WhirlwindPassive:IsAvailable() then
         return S.Whirlwind:Cast()
     end
 

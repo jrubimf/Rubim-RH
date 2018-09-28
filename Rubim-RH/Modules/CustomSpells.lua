@@ -70,12 +70,16 @@ function Spell:Queue(powerExtra)
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
         print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        RubimRH.playSoundR(73280)
+        RubimRH.HideButtonGlow(self:ID())
         return
     end
 
     if self:IsAvailable() then
         RubimRH.queuedSpell = { self, powerEx }
         print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
+        RubimRH.playSoundR(73279)
+        RubimRH.ShowButtonGlowQueue(self:ID())
         return
     end
     print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
@@ -514,8 +518,10 @@ end
 
 -- Player On Cast Success Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    RubimRH.HideButtonGlow(SpellID)
     if RubimRH.QueuedSpell().SpellID == SpellID then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        RubimRH.playSoundR(73280)
     end
     for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
         if SpellID == spell.SpellID then

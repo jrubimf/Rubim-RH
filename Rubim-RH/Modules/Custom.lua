@@ -386,12 +386,20 @@ local function UpdateButtons()
                     local spell = id
                     if spell then
                         RubimRH.Buttons[spell] = button
+                        RubimRH.Buttons[spell].glow = false
+                        RubimRH.Buttons[spell].text = RubimRH.Buttons[spell]:CreateFontString('ButtonText')
+                        RubimRH.Buttons[spell].text:SetFont("Fonts\\ARIALN.TTF", 22, "OUTLINE")
+                        RubimRH.Buttons[spell].text:SetPoint("CENTER", RubimRH.Buttons[spell])
+                        RubimRH.Buttons[spell].NormalTexture:SetScale(0.1)
+                        RubimRH.Buttons[spell].NormalTexture:SetAlpha(1)
+                        RubimRH.Buttons[spell].NormalTexture:SetPoint("CENTER")
                         --RubimRH.Buttons[spell] = button:GetName()
                     end
                 end
             end
         end
     end
+
 end
 
 RubimRH.Listener:Add('NeP_Buttons', 'ACTIVE_TALENT_GROUP_CHANGED', function()
@@ -414,24 +422,52 @@ RubimRH.Listener:Add('NeP_Buttons', 'PLAYER_TALENT_UPDATE', function()
     UpdateButtons()
 end)
 
-function RubimRH.HideButtonGlow()
-    for i, button in pairs(RubimRH.Buttons) do
-        button.NormalTexture:SetColorTexture(0, 0, 0, 0)
+function RubimRH.HideButtonGlow(spellID)
+    local isString = (type(spellID) == "string")
+
+    if isString and spellID == "All" then
+        for i, button in pairs(RubimRH.Buttons) do
+            if button.glow == true then
+                button.glow = false
+                button.NormalTexture:SetTexture("")
+                --button.text:SetText("")
+                --button.NormalTexture:SetColorTexture(0, 0, 0, 0)
+                --ActionButton_HideOverlayGlow(button)
+            end
+        end
+        return
+    end
+
+    if RubimRH.Buttons[spellID] ~= nil then
+        RubimRH.Buttons[spellID].NormalTexture:SetTexture("")
+        --RubimRH.Buttons[spellID].text:SetText("")
+        --RubimRH.Buttons[spellID].NormalTexture:SetColorTexture(0, 0, 0, 0)
+        --for i, button in pairs(RubimRH.Buttons) do
+        --button.NormalTexture:SetColorTexture(0, 0, 0, 0)
         --ActionButton_HideOverlayGlow(button)
+        --end
     end
 end
 
 function RubimRH.ShowButtonGlow(spellID)
-    RubimRH.HideButtonGlow()
+    RubimRH.HideButtonGlow("All")
     if RubimRH.Buttons[spellID] ~= nil then
         if lastSpell > 0 and spellID ~= lastSpell then
-            RubimRH.Buttons[lastSpell].NormalTexture:SetColorTexture(0, 0, 0, 0)
+            RubimRH.Buttons[spellID].NormalTexture:SetTexture("")
             lastSpell = spellID
         end
         --ActionButton_ShowOverlayGlow(RubimRH.Buttons[spellID])
 
-        RubimRH.Buttons[spellID].NormalTexture:SetScale(0.1)
-        RubimRH.Buttons[spellID].NormalTexture:SetColorTexture(0, 1, 0, 0.5)
+        RubimRH.Buttons[spellID].NormalTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\combat.tga")
+
+        --RubimRH.Buttons[spellID].text:SetText("|cffff0000=>|r")
+        RubimRH.Buttons[spellID].glow = true
         lastSpell = spellID
+    end
+end
+
+function RubimRH.ShowButtonGlowQueue(spellID)
+    if RubimRH.Buttons[spellID] ~= nil then
+        RubimRH.Buttons[spellID].NormalTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\disarmed.tga")
     end
 end

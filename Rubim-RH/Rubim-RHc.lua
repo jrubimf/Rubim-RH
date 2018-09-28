@@ -12,12 +12,14 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 
 function RubimRH.playSoundR(soundID)
-    local soundID = soundID or 891
-
+    local isString = (type(soundID) == "string")
     if RubimRH.db.profile.mainOption.mute then
-
     else
-        PlaySound(soundID, "Master");
+        if not isString then
+            PlaySound(soundID, "Master");
+        else
+            PlaySoundFile(soundID, "Master");
+        end
     end
 end
 
@@ -40,7 +42,6 @@ function RubimRH.HideTextureToggle()
     end
     print("|cFF69CCF0Hide Texture" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.hidetexture))
 end
-
 
 function RubimRH.DebugToggle()
     RubimRH.playSoundR(891);

@@ -184,6 +184,11 @@ local function APL()
         return S.ShieldSlam:Cast()
     end
 
+    if S.Revenge:IsReady("Melee")
+            and Player:RageDeficit() <= 15 then
+        return S.Revenge:Cast()
+    end
+
     -- ThunderClap
     if S.ThunderClap:IsReady() and Player:RageDeficit() >= 5 and Cache.EnemiesCount[8] >= 1 then
         return S.ThunderClap:Cast()
