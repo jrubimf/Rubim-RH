@@ -122,16 +122,20 @@ local function APL()
 
     StandardSimc = function()
         -- death_strike,custom==bossmechanics
-        if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() then
+        if S.DeathStrike:IsReady("Melee") and Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 50 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
+        if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 and Player:BuffStack(S.BoneShield) >= 3 then
+            return S.BloodBoil:Cast()
+        end
+
         --Needs Marrowrend
-        if Target:MinDistanceToPlayer(true) <= 8 and (not Player:Buff(S.BoneShield) or (Player:BuffRemains(S.BoneShield) <= Player:RuneTimeToX(2) and Player:BuffStack(S.BoneShield) <= 5)) then
+        if Target:MinDistanceToPlayer(true) <= 8 and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= Player:RuneTimeToX(3) or Player:BuffStack(S.BoneShield) <= 5) then
             S.Marrowrend:QueueAuto()
         end
 
-        if Player:LastDamage3Seconds() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+        if Player:LastDamage3Seconds() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 90 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
@@ -145,17 +149,13 @@ local function APL()
             return S.BloodBoil:Cast()
         end
 
+        if Player:NeedThreat() and S.HeartStrike:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
+            return S.HeartStrike:Cast()
+        end
+
         --Aggro
         if Player:StackUp() and S.DeathandDecay:IsReady() then
             return S.DeathandDecay:Cast()
-        end
-
-        if Player:NeedThreat() and S.BloodBoil:IsReady() and Cache.EnemiesCount[8] >= 1 then
-            return S.BloodBoil:Cast()
-        end
-
-        if Player:NeedThreat() and S.HeartStrike:IsReady("Melee") and Cache.EnemiesCount[8] >= 1 then
-            return S.HeartStrike:Cast()
         end
 
         -- BloodDrinker,if=!buff.dancing_rune_weapon.up
