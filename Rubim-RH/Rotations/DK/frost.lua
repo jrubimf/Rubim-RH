@@ -195,7 +195,7 @@ local function ColdHeart()
         return S.ChainsofIce:Cast()
     end
     --actions.cold_heart+=/chains_of_ice,if=(buff.pillar_of_frost.remains<=gcd*(1+cooldown.frostwyrms_fury.ready)|buff.pillar_of_frost.remains<rune.time_to_3)&buff.pillar_of_frost.up
-    if S.ChainsofIce:IsReady() and ((Player:BuffRemainsP(S.PillarofFrost) <= Player:GCD() * (1 + num(S.FrostwyrmsFury:CooldownUpP() and RubimRH.config.Spells[3].isActive)) or Player:BuffRemainsP(S.PillarofFrost) < Player:RuneTimeToX(3)) and Player:BuffP(S.PillarofFrost)) then
+    if S.ChainsofIce:IsReady() and ((Player:BuffRemainsP(S.PillarofFrost) <= Player:GCD() * (1 + num(S.FrostwyrmsFury:CooldownUpP())) or Player:BuffRemainsP(S.PillarofFrost) < Player:RuneTimeToX(3)) and Player:BuffP(S.PillarofFrost)) then
         return S.ChainsofIce:Cast()
     end
 end
