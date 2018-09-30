@@ -389,7 +389,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -451,7 +451,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0
     if sk1 >= 0 then
-        sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 5, false, 1, 40)
+        sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
         local sk_1_0Label = StdUi:FontString(window, sk1id .. sk1);
         StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -466,7 +466,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1
     if sk2 >= 0 then
-        sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 5, false, 1, 40)
+        sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
         local sk_1_1Label = StdUi:FontString(window, sk2id .. sk2);
         StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -481,7 +481,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_2_0
     if sk3 >= 0 then
-        sk_2_0 = StdUi:Slider(window, 100, 16, sk3 / 5, false, 1, 40)
+        sk_2_0 = StdUi:Slider(window, 100, 16, sk3 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
         local sk_2_0Label = StdUi:FontString(window, sk3id .. sk3);
         StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -510,7 +510,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_2_1
     if sk4 >= 0 then
-        sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 5, false, 1, 40)
+        sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
         local sk_2_1Label = StdUi:FontString(window, sk4id .. sk4);
         StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -525,7 +525,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     if sk5 >= 0 then
-        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5 / 5, false, 1, 40)
+        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
         local sk_3_0Label = StdUi:FontString(window, sk5id .. sk5);
         StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
@@ -539,7 +539,7 @@ local function AllMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     if sk6 >= 0 then
-        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6 / 5, false, 1, 40)
+        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6 / 2.5, false, 1, 40)
         StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
         local sk_3_1Label = StdUi:FontString(window, sk6id .. sk6);
         StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
@@ -677,7 +677,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -729,7 +729,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -741,7 +741,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -753,7 +753,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -765,7 +765,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -777,7 +777,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_1Label:SetText(sk4text .. sk4var)
     end
 
-    local sk_3_0 = StdUi:Slider(window, 100, 16, sk5var / 5, false, 1, 40)
+    local sk_3_0 = StdUi:Slider(window, 100, 16, sk5var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
     local sk_3_0Label = StdUi:FontString(window, sk5text .. sk5var);
     StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
@@ -789,7 +789,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_3_0Label:SetText(sk5text .. sk5var)
     end
 
-    local sk_3_1 = StdUi:Slider(window, 100, 16, sk6var / 5, false, 1, 40)
+    local sk_3_1 = StdUi:Slider(window, 100, 16, sk6var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
     local sk_3_1Label = StdUi:FontString(window, sk6text .. sk6var);
     StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
@@ -916,7 +916,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -968,7 +968,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -980,7 +980,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -992,7 +992,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1004,7 +1004,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1130,7 +1130,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1182,7 +1182,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1194,7 +1194,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1206,7 +1206,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1218,7 +1218,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1340,7 +1340,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1392,7 +1392,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1404,7 +1404,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1416,7 +1416,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1533,7 +1533,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1585,7 +1585,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1597,7 +1597,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1715,7 +1715,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1777,7 +1777,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk2var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1899,7 +1899,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1961,7 +1961,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1973,7 +1973,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -2083,7 +2083,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2564,7 +2564,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2883,7 +2883,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3046,7 +3046,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3272,7 +3272,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3324,7 +3324,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -3462,7 +3462,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3612,7 +3612,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);

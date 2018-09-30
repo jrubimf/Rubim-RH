@@ -58,20 +58,19 @@ function RubimRH.CastSequence()
     return RubimRH.castSpellSequence[lastCast]
 end
 
-RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-
+RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
 function Spell:QueueAuto(powerExtra)
     local powerEx = powerExtra or 0
-    RubimRH.queuedSpell = { self, powerEx }
+    RubimRH.queuedSpellAuto = { self, powerEx }
 end
 
+RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
 function Spell:Queue(powerExtra)
     local powerEx = powerExtra or 0
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
         print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         RubimRH.playSoundR(73280)
-        RubimRH.HideButtonGlow(self:ID())
         return
     end
 
@@ -79,7 +78,6 @@ function Spell:Queue(powerExtra)
         RubimRH.queuedSpell = { self, powerEx }
         print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
         RubimRH.playSoundR(73279)
-        RubimRH.ShowButtonGlowQueue(self:ID())
         return
     end
     print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
@@ -90,16 +88,30 @@ function RubimRH.QueuedSpell()
     return RubimRH.queuedSpell[1] or RubimRH.Spell[1].Empty
 end
 
+function RubimRH.QueuedSpellAuto()
+    return RubimRH.queuedSpellAuto[1] or RubimRH.Spell[1].Empty
+end
+
 --/run RubimRH.queuedSpell ={ RubimRH.Spell[103].Prowl, 0 }
 
 function Spell:IsQueuedPowerCheck(powerEx)
     local powerExtra = powerEx or 0
-    if RubimRH.queuedSpell[1] == RubimRH.Spell[1].Empty then
+    if RubimRH.queuedSpell[1] == RubimRH.Spell[1].Empty and RubimRH.queuedSpellAuto[1] == RubimRH.Spell[1].Empty then
         return false
     end
 
+    local powerCostQ, queuedSpellCD, queuedSpellID
+    if RubimRH.queuedSpell[1] == RubimRH.Spell[1].Empty then
+        powerCostQ = GetSpellPowerCost(RubimRH.queuedSpellAuto[1]:ID())
+        queuedSpellCD = RubimRH.queuedSpellAuto[1]:CooldownRemains()
+        queuedSpellID = RubimRH.queuedSpellAuto[1]:ID()
+    else
+        powerCostQ = GetSpellPowerCost(RubimRH.queuedSpell[1]:ID())
+        queuedSpellCD = RubimRH.queuedSpell[1]:CooldownRemains()
+        queuedSpellID = RubimRH.queuedSpell[1]:ID()
+    end
+
     local powerCost = GetSpellPowerCost(self:ID())
-    local powerCostQ = GetSpellPowerCost(RubimRH.queuedSpell[1]:ID())
     local costType = nil
     local costTypeQ = nil
     local costs = 0
@@ -120,18 +132,17 @@ function Spell:IsQueuedPowerCheck(powerEx)
         end
     end
 
-    if costType == 3 and RubimRH.queuedSpell[1]:CooldownRemains() >= Player:EnergyTimeToX(costsQ) then
+    if costType == 3 and queuedSpellCD >= Player:EnergyTimeToX(costsQ) then
         return true
     end
 
-    if self:ID() == RubimRH.queuedSpell[1]:ID() then
+    if self:ID() == queuedSpellID then
         return false
     end
 
     if costType ~= costTypeQ then
         return false
     end
-
     return true
 end
 
@@ -519,7 +530,14 @@ end
 
 -- Player On Cast Success Listener
 HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
-    RubimRH.HideButtonGlow(SpellID)
+    if SpellID == 49998 then
+        RubimRH.clearLastDamage()
+    end
+
+    if RubimRH.QueuedSpellAuto().SpellID == SpellID then
+        RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
+    end
+
     if RubimRH.QueuedSpell().SpellID == SpellID then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         RubimRH.playSoundR(73280)

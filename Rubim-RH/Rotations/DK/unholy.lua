@@ -335,7 +335,7 @@ local function APL()
         return S.DeathStrike:Cast()
     end
 
-    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].sk2 then
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[252].sk3 then
         if S.DeathStrike:IsReady() then
             return S.DeathStrike:Cast()
         else

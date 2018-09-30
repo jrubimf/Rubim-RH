@@ -59,6 +59,22 @@ local function trinketReady(trinketPosition)
     return true
 end
 
+function QueueSkill()
+    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
+        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+    end
+    if RubimRH.QueuedSpell():IsReadyQueue() then
+        return RubimRH.QueuedSpell():Cast()
+    end
+
+    if RubimRH.QueuedSpellAuto() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
+        RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
+    end
+    if RubimRH.QueuedSpellAuto():IsReadyQueue() then
+        return RubimRH.QueuedSpellAuto():Cast()
+    end
+end
+
 function RubimRH.Shared()
 
     if Player:AffectingCombat() then

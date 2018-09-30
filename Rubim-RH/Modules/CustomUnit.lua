@@ -92,6 +92,11 @@ end
 --- Unit Health Functions
 
 -- Incoming damage as percentage of Unit's max health
+function Unit:LastDamage3Seconds()
+    local IncomingDPS = (RubimRH.getLastDamage() / UnitHealthMax("player")) * 100
+    return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
+end
+
 function Unit:IncDmgPercentage()
     local unit = self.UnitID
     local IncomingDPS = (RubimRH.getDMG(unit) / UnitHealthMax(unit)) * 100

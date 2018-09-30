@@ -127,15 +127,11 @@ local function APL()
         end
 
         --Needs Marrowrend
-        if S.Marrowrend:IsReady("Melee") and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= 3 or Player:BuffStack(S.BoneShield) <= 1) then
-            return S.Marrowrend:Cast()
+        if Target:MinDistanceToPlayer(true) <= 8 and (not Player:Buff(S.BoneShield) or (Player:BuffRemains(S.BoneShield) <= Player:RuneTimeToX(2) and Player:BuffStack(S.BoneShield) <= 5)) then
+            S.Marrowrend:QueueAuto()
         end
 
-        if Player:IncDmgPercentage() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
-            return S.DeathStrike:Cast()
-        end
-
-        if S.DeathStrike:IsReady() and Player:HealthPercentage() <= 90 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+        if Player:LastDamage3Seconds() > RubimRH.db.profile[250].sk5 and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= 85 and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 
@@ -426,7 +422,7 @@ local function APL()
         return S.DancingRuneWeapon:Cast()
     end
     -- tombstone,if=buff.bone_shield.stack>=7
-    if S.Tombstone:IsCastable() and (Player:BuffStackP(S.BoneShieldBuff) >= 7) then
+    if S.Tombstone:IsReady() and (Player:BuffStackP(S.BoneShieldBuff) >= 7) then
         return S.Tombstone:Cast()
     end
 

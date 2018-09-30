@@ -71,7 +71,7 @@ local function APL()
 
     -- Player not in combat
     if not Player:AffectingCombat() then
-        if S.BattleShout:IsCastable() and not Player:Buff(S.BattleShout) then
+        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
             return S.BattleShout:Cast()
         end
         return 0, 462338

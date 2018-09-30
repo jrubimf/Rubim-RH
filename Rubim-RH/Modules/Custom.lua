@@ -224,7 +224,7 @@ end
 
 local playerGUID
 local damageAmounts, damageTimestamps = {}, {}
-damageInLast3Seconds = 0
+local damageInLast3Seconds = 0
 local lastMeleeHit = 0
 
 local combatLOG = CreateFrame("Frame")
@@ -274,12 +274,17 @@ function RubimRH.lastSwing()
     return 0
 end
 
-function RubimRH.lastDamage(option)
-    if option == nil then
-        return damageInLast3Seconds
-    else
-        return (damageInLast3Seconds * 100) / UnitHealthMax("player")
-    end
+function RubimRH.getLastDamage()
+    return damageInLast3Seconds
+end
+
+function RubimRH.clearLastDamage()
+    damageInLast3Seconds = 0
+end
+
+function RubimRH.LastDamage()
+    local IncomingDPS = (damageInLast3Seconds / UnitHealthMax("player")) * 100
+    return (math.floor((IncomingDPS * ((100) + 0.5)) / (100)))
 end
 
 function RubimRH.SetFramePos(frame, x, y, w, h)
@@ -345,15 +350,6 @@ function RubimRH.azerite(slot, azeriteID)
     return false
 end
 
-function QueueSkill()
-    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
-        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-    end
-    if RubimRH.QueuedSpell():IsReadyQueue() then
-        return RubimRH.QueuedSpell():Cast()
-    end
-end
-
 function RubimRH.DebugPrint(Text)
     if RubimRH.db.profile.mainOption.debug == true then
         print("DEBUG: " .. Text)
@@ -386,13 +382,14 @@ local function UpdateButtons()
                     local spell = id
                     if spell then
                         RubimRH.Buttons[spell] = button
-                        RubimRH.Buttons[spell].glow = false
-                        RubimRH.Buttons[spell].text = RubimRH.Buttons[spell]:CreateFontString('ButtonText')
-                        RubimRH.Buttons[spell].text:SetFont("Fonts\\ARIALN.TTF", 22, "OUTLINE")
-                        RubimRH.Buttons[spell].text:SetPoint("CENTER", RubimRH.Buttons[spell])
-                        RubimRH.Buttons[spell].NormalTexture:SetScale(0.1)
-                        RubimRH.Buttons[spell].NormalTexture:SetAlpha(1)
-                        RubimRH.Buttons[spell].NormalTexture:SetPoint("CENTER")
+                        --RubimRH.Buttons[spell].glow = false
+                        --RubimRH.Buttons[spell].text = RubimRH.Buttons[spell]:CreateFontString('ButtonText')
+                        --RubimRH.Buttons[spell].text:SetFont("Fonts\\ARIALN.TTF", 22, "OUTLINE")
+                        --RubimRH.Buttons[spell].text:SetPoint("CENTER", RubimRH.Buttons[spell])
+                        --RubimRH.Buttons[spell].GlowTexture = RubimRH.Buttons[spell]:CreateTexture(nil, "TOOLTIP")
+                        --RubimRH.Buttons[spell].GlowTexture:SetScale(0.8)
+                        --RubimRH.Buttons[spell].GlowTexture:SetAlpha(0.5)
+                        --RubimRH.Buttons[spell].GlowTexture:SetPoint("CENTER")
                         --RubimRH.Buttons[spell] = button:GetName()
                     end
                 end
@@ -427,19 +424,20 @@ function RubimRH.HideButtonGlow(spellID)
 
     if isString and spellID == "All" then
         for i, button in pairs(RubimRH.Buttons) do
-            if button.glow == true then
+            --if button.glow == true then
                 button.glow = false
-                button.NormalTexture:SetTexture("")
+                button.GlowTexture:SetTexture(nil)
                 --button.text:SetText("")
                 --button.NormalTexture:SetColorTexture(0, 0, 0, 0)
                 --ActionButton_HideOverlayGlow(button)
-            end
+            --end
         end
         return
     end
 
     if RubimRH.Buttons[spellID] ~= nil then
-        RubimRH.Buttons[spellID].NormalTexture:SetTexture("")
+        --RubimRH.Buttons[spellID].GlowTexture:SetTexture(nil)
+        --RubimRH.Buttons[spellID].glow = false
         --RubimRH.Buttons[spellID].text:SetText("")
         --RubimRH.Buttons[spellID].NormalTexture:SetColorTexture(0, 0, 0, 0)
         --for i, button in pairs(RubimRH.Buttons) do
@@ -449,18 +447,17 @@ function RubimRH.HideButtonGlow(spellID)
     end
 end
 
-function RubimRH.ShowButtonGlow(spellID)
+function RubimRH.OLDShowButtonGlow(spellID)
     RubimRH.HideButtonGlow("All")
     if RubimRH.Buttons[spellID] ~= nil then
         if lastSpell > 0 and spellID ~= lastSpell then
-            RubimRH.Buttons[spellID].NormalTexture:SetTexture("")
+            --RubimRH.Buttons[spellID].glow = false
+           -- RubimRH.Buttons[spellID].GlowTexture:SetTexture(nil)
             lastSpell = spellID
         end
         --ActionButton_ShowOverlayGlow(RubimRH.Buttons[spellID])
-
-        RubimRH.Buttons[spellID].NormalTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\combat.tga")
-
         --RubimRH.Buttons[spellID].text:SetText("|cffff0000=>|r")
+        RubimRH.Buttons[spellID].GlowTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\combat.tga")
         RubimRH.Buttons[spellID].glow = true
         lastSpell = spellID
     end
@@ -468,6 +465,51 @@ end
 
 function RubimRH.ShowButtonGlowQueue(spellID)
     if RubimRH.Buttons[spellID] ~= nil then
-        RubimRH.Buttons[spellID].NormalTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\disarmed.tga")
+        RubimRH.Buttons[spellID].GlowTexture:SetTexture("Interface\\Addons\\Rubim-RH\\Media\\disarmed.tga")
     end
+end
+
+local activeFrame = CreateFrame('Frame', 'ShowIcon', _G.UIParent)
+activeFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+                         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+                         tile = true, tileSize = 16, edgeSize = 16,
+                         insets = { left = 4, right = 4, top = 4, bottom = 4 }
+});
+
+
+activeFrame:SetBackdropColor(0,0,0,0);
+activeFrame.texture = activeFrame:CreateTexture()
+activeFrame.texture:SetTexture("Interface/Addons/Rubim-RH/Media/combat.tga")
+activeFrame.texture:SetPoint("CENTER")
+activeFrame:SetFrameStrata('HIGH')
+activeFrame:Hide()
+
+local display = CreateFrame('Frame', 'Faceroll_Info', activeFrame)
+display:SetClampedToScreen(true)
+display:SetSize(0, 0)
+display:SetPoint("TOP")
+display:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+                     edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+                     tile = true, tileSize = 16, edgeSize = 16,
+                     insets = { left = 4, right = 4, top = 4, bottom = 4 }
+});
+display:SetBackdropColor(0,0,0,1);
+display.text = display:CreateFontString('Nothing')
+display.text:SetFont("Fonts\\ARIALN.TTF", 16)
+display.text:SetPoint("CENTER", display)
+
+function RubimRH.ShowButtonGlow(spellID)
+    local spellButton = RubimRH.Buttons[spellID]
+    if not spellButton then return end
+    local bSize = spellButton:GetWidth()
+    activeFrame:SetSize(bSize+5, bSize+5)
+    --display:SetSize(display.text:GetStringWidth()+20, display.text:GetStringHeight()+20)
+    activeFrame.texture:SetSize(activeFrame:GetWidth()-5,activeFrame:GetHeight()-5)
+    activeFrame:SetPoint("CENTER", spellButton, "CENTER")
+    --display:SetPoint("TOP", spellButton, 0, display.text:GetStringHeight()+20)
+    --spell = '|cff'..NeP.Color.."Spell:|r "..spell
+    --local isTargeting = '|cff'..NeP.Color..tostring(_G.UnitIsUnit("target", target or 'player'))
+    --target = '|cff'..NeP.Color.."\nTarget:|r"..(_G.UnitName(target or 'player') or '')
+    --display.text:SetText(spell..target.."("..isTargeting..")")
+    activeFrame:Show()
 end
