@@ -211,7 +211,7 @@ local function CacheOtherTank()
     end
 end
 
-RubimRH.Listener:Add('Rubim_Events', 'GROUP_ROSTER_CHANGED', function(...)
+RubimRH.Listener:Add('Rubim_Events', 'GROUP_ROSTER_UPDATE', function(...)
     CacheOtherTank()
 end)
 
@@ -223,9 +223,10 @@ function Unit:NeedThreat()
     HL.GetEnemies(10, true);
     local mobsnoAggro = 0
     local mobsonOtherTank = 0
-    local totalMobs = #Cache.EnemiesCount[10]
+    local totalMobs = 0
 
     for _, CycleUnit in pairs(Cache.Enemies[10]) do
+        totalMobs = totalMobs + 1
         local threat
         if otherTank:Exists() and otherTank:IsTank() and otherTank:GUID() ~= Player:GUID() then
             threat = UnitThreatSituation(otherTank, CycleUnit.UnitID) or 3

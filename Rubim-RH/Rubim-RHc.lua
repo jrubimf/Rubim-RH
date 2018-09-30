@@ -28,6 +28,7 @@ function RubimRH.GlowActionBarToggle()
     if RubimRH.db.profile.mainOption.glowactionbar == false then
         RubimRH.db.profile.mainOption.glowactionbar = true
     else
+        RubimRH.HideButtonGlow()
         RubimRH.db.profile.mainOption.glowactionbar = false
     end
     print("|cFF69CCF0Glow Action Bar" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.glowactionbar))

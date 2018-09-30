@@ -518,3 +518,7 @@ function RubimRH.ShowButtonGlow(spellID)
     --display.text:SetText(spell..target.."("..isTargeting..")")
     activeFrame:Show()
 end
+
+function RubimRH.HideButtonGlow()
+    activeFrame:Hide()
+end
