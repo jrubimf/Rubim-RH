@@ -499,6 +499,11 @@ display.text:SetFont("Fonts\\ARIALN.TTF", 16)
 display.text:SetPoint("CENTER", display)
 
 function RubimRH.ShowButtonGlow(spellID)
+
+    if RubimRH.db.profile.mainOption.glowactionbar == false then
+        return
+    end
+
     local spellButton = RubimRH.Buttons[spellID]
     if not spellButton then return end
     local bSize = spellButton:GetWidth()
