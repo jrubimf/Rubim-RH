@@ -65,13 +65,14 @@ function Spell:QueueAuto(powerExtra)
 end
 
 RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-function Spell:Queue(powerExtra)
+function Spell:Queue(powerExtra, bypassRemove)
+    local bypassRemove = bypassRemove or false
     local powerEx = powerExtra or 0
-    if self:ID() == RubimRH.queuedSpell[1]:ID() then
-        --print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
-        --RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-        --RubimRH.playSoundR(73280)
-        --return
+    if self:ID() == RubimRH.queuedSpell[1]:ID() and bypassRemove == true then
+        print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
+        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        RubimRH.playSoundR(73280)
+        return
     end
 
     if self:IsAvailable() then
