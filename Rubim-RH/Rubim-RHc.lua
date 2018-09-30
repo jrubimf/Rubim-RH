@@ -293,144 +293,6 @@ local function getOptions()
                     name = "General",
                     childGroups = "tab",
                     args = {
-                        general = {
-                            order = 1,
-                            type = "group",
-                            childGroups = "tab",
-                            --inline = true,
-                            name = "General",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.mainOption[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.mainOption[key] = value
-                            end,
-                            args = {
-                                debug = {
-                                    desc = "Will enable some debug verbose. That means when available it will show debug stuff.",
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.debug
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.DebugToggle()
-                                    end,
-                                    name = "Verbose Debug Mode"
-                                },
-                                glowactionbar = {
-                                    desc = "Will make the action bar icons glow, showing what's the next ability on the priority list.",
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.glowactionbar
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.GlowActionBarToggle()
-                                    end,
-                                    name = "Glow Action Bar"
-                                },
-                                hidetexture = {
-                                    desc = "Will hide the main icon texture. Text is still visible.",
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.hidetexture
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.HideTextureToggle()
-                                    end,
-                                    name = "Hide Texture"
-                                },
-                                mainIcon = {
-                                    desc = "Disable/Enable the entire icon.",
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.mainIcon
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.MainIconToggle()
-                                    end,
-                                    name = "Show Interface"
-                                },
-                                mute = {
-                                    desc = "Mute all sounds that the addon uses.",
-                                    order = 1,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.mute
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.MuteToggle()
-                                    end,
-                                    name = "Mute Sounds"
-                                },
-                            }
-                        },
-                        positionsize = {
-                            order = 1,
-                            type = "group",
-                            childGroups = "tab",
-                            --inline = true,
-                            name = "Position and Size",
-                            get = function(info)
-                                local key = info.arg or info[#info]
-                                return RubimRH.db.profile.mainOption[key]
-                            end,
-                            set = function(info, value)
-                                local key = info.arg or info[#info]
-                                RubimRH.db.profile.mainOption[key] = value
-                            end,
-                            args = {
-                                mainIconLock = {
-                                    desc = "Lock the position of the Main Icon.",
-                                    order = 4,
-                                    type = "toggle",
-                                    get = function()
-                                        return RubimRH.db.profile.mainOption.mainIconLock
-                                    end,
-                                    set = function(info, v)
-                                        RubimRH.MainIconLockToggle()
-                                    end,
-                                    name = "Lock Icon"
-                                },
-                                mainIconOpacity = {
-                                    desc = "Set the opacity.",
-                                    order = 1,
-                                    type = "range",
-                                    min = 5,
-                                    max = 100,
-                                    step = 5,
-                                    --fontSize = "medium",
-                                    name = "Icon Opacity",
-                                },
-                                mainIconScale = {
-                                    desc = "Set the size of the icon.",
-                                    order = 2,
-                                    type = "range",
-                                    min = 5,
-                                    max = 1000,
-                                    step = 5,
-                                    --fontSize = "medium",
-                                    name = "Icon Size",
-                                },
-                                mainIconRecenter = {
-                                    desc = "Recenter the icon in case it's missing.",
-                                    order = 3,
-                                    type = "execute",
-                                    name = "Recenter",
-                                    func = function()
-                                        RubimRH.db.profile.mainOption.align = "CENTER"
-                                        RubimRH.db.profile.mainOption.xCord = 0
-                                        RubimRH.db.profile.mainOption.yCord = 0
-                                        ReloadUI()
-                                    end
-                                },
-                            }
-                        },
                         keybind = {
                             order = 3,
                             type = "group",
@@ -446,41 +308,11 @@ local function getOptions()
                                 RubimRH.db.profile.mainOption[key] = value
                             end,
                             args = {
-                                cooldownbind = {
-                                    order = 3,
-                                    type = "keybinding",
-                                    get = function()
-                                        return GetBindingKey("Cooldown Toggle")
-                                    end,
-                                    set = function(info, v)
-                                        SetBinding(v, "Cooldown Toggle")
-                                        SaveBindings(GetCurrentBindingSet())
-                                    end,
-                                    name = "Cooldowns"
-                                },
-                                interruptsbind = {
-                                    order = 4,
-                                    type = "keybinding",
-                                    get = function()
-                                        return GetBindingKey("Interrupt Toggle")
-                                    end,
-                                    set = function(info, v)
-                                        SetBinding(v, "Interrupt Toggle")
-                                        SaveBindings(GetCurrentBindingSet())
-                                    end,
-                                    name = "Interrupts"
-                                },
-                                aoebind = {
-                                    order = 5,
-                                    type = "keybinding",
-                                    get = function()
-                                        return GetBindingKey("AoE Toggle")
-                                    end,
-                                    set = function(info, v)
-                                        SetBinding(v, "AoE Toggle")
-                                        SaveBindings(GetCurrentBindingSet())
-                                    end,
-                                    name = "AoE"
+                                bindingsText = {
+                                    order = 1,
+                                    type = "description",
+                                    name = "To change keybindgs, press ESC > Keybindings > RubimRH.",
+                                    fontSize = "large",
                                 },
                             }
                         },
@@ -489,12 +321,12 @@ local function getOptions()
                             type = "group",
                             childGroups = "tree",
                             inline = true,
-                            name = "Class Config",
+                            name = "Configuration",
                             args = {
                                 description = {
                                     order = 1,
                                     type = "description",
-                                    name = "Class Config are acessible by right clicking the Main Icon.",
+                                    name = "All configuration was moved to the Class Config.",
                                     fontSize = "large",
                                 },
                             }

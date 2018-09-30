@@ -339,7 +339,7 @@ local function APL ()
     HL.GetEnemies(S.Dispatch); -- Blade Flurry
     HL.GetEnemies(S.SinisterStrike); -- Melee
 
-    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].crimsonvial then
+    if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
     end
 
@@ -375,11 +375,11 @@ local function APL ()
         return S.Kick:Cast()
     end
 
-    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].cloakofshadows then
+    if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk2 then
         return S.CloakofShadows:Cast()
     end
 
-    if S.Riposte:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].riposte and Player:LastSwinged() <= 3 then
+    if S.Riposte:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk3 and Player:LastSwinged() <= 3 then
         return S.Riposte:Cast()
     end
 

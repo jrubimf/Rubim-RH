@@ -66,6 +66,7 @@ RubimRH.Spell[253] = {
     -- Misc
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
+    ConcusiveShot = Spell(5116)
     -- Macros
 }
 
@@ -209,7 +210,7 @@ local function APL ()
         end
         -- actions+=/potion,if=buff.bestial_wrath.up&buff.aspect_of_the_wild.up
         -- barbed_shot,if=pet.cat.buff.frenzy.up&pet.cat.buff.frenzy.remains<=gcd.max
-        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() * 2) then
+        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() * 3) then
             return S.BarbedShot:Cast()
         end
         -- a_murder_of_crows
@@ -276,6 +277,10 @@ local function PASSIVE()
         return S.Exhilaration:Cast()
     end
 
+    return RubimRH.Shared()
+end
+
+local function PASSIVE()
     return RubimRH.Shared()
 end
 

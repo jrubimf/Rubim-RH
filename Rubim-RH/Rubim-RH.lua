@@ -494,11 +494,19 @@ local defaults = {
         [260] = { --Outlaw
             cooldown = true,
             stealthOOC = true,
-            crimsonvial = 65,
-            cloakofshadows = 15,
-            riposte = 50,
+            vanishattack = true,
+            sk1 = 65,
+            sk1id = 185311,
+            sk1tooltip = "Percent HP to use Crimson Vial",
+
+            sk2 = 15,
+            sk2id = 31224,
+            sk2tooltip = "Percent HP to use Cloak of Shadows",
+
+            sk3 = 50,
+            sk3id = 199754,
+            sk3tooltip = "Percent HP to use Riposte",
             dice = "Simcraft",
-            vanishattack = true
         },
         [261] = {
             cooldown = true,

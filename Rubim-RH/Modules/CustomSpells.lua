@@ -68,10 +68,10 @@ RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
 function Spell:Queue(powerExtra)
     local powerEx = powerExtra or 0
     if self:ID() == RubimRH.queuedSpell[1]:ID() then
-        print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
-        RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
-        RubimRH.playSoundR(73280)
-        return
+        --print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
+        --RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        --RubimRH.playSoundR(73280)
+        --return
     end
 
     if self:IsAvailable() then
