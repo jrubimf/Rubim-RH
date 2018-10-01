@@ -37,6 +37,23 @@ do
         end
         return false
     end
+
+    function Unit:HasStealableBuff()
+        local GUID = self:GUID()
+        if GUID then
+            UnitID = self.UnitID
+            local Buffs = Cache.Get("UnitInfo", GUID, "Buffs", _UnitBuff)
+            for i = 1, #Buffs do
+                local Buff = Buffs[i]
+                if Buff[8] == true then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
+
 end
 
 do
@@ -204,9 +221,10 @@ function Unit:IsTank()
 end
 
 local function CacheOtherTank()
+
     for i, CycleUnit in pairs(Unit.Raid) do
         if CycleUnit:IsTank() and CycleUnit:GUID() ~= Player:GUID() then
-            otherTank = CycleUnit()
+            otherTank = CycleUnit
         end
     end
 end
@@ -263,161 +281,161 @@ function Unit:NeedThreat()
 end
 
 function Unit:IsInWarMode()
-if self:Buff(Spell(269083)) then
-return true
-end
-return false
+    if self:Buff(Spell(269083)) then
+        return true
+    end
+    return false
 end
 
 local stoppedtime = 9999999
 function Unit:StoppedFor()
-if self:IsMoving() then
-stoppedtime = GetTime()
-end
-return GetTime() - stoppedtime
+    if self:IsMoving() then
+        stoppedtime = GetTime()
+    end
+    return GetTime() - stoppedtime
 end
 
 local movedTimer = 0
 function Unit:MovingFor()
-if not self:IsMoving() then
-movedTimer = GetTime()
-end
-return GetTime() - movedTimer
+    if not self:IsMoving() then
+        movedTimer = GetTime()
+    end
+    return GetTime() - movedTimer
 end
 
 function Unit:IsTargeting(otherUnit)
-local oGUID = UnitGUID(otherUnit.UnitID)
-local tGUID = UnitGUID(self.UnitID .. "target")
+    local oGUID = UnitGUID(otherUnit.UnitID)
+    local tGUID = UnitGUID(self.UnitID .. "target")
 
-if tGUID == oGUID then
-return true
-end
-return false
+    if tGUID == oGUID then
+        return true
+    end
+    return false
 end
 
 function Unit:StackUp(min, max)
-local min = min or 8
-local max = max or 25
+    local min = min or 8
+    local max = max or 25
 
-HL.GetEnemies(min, true);
-HL.GetEnemies(max, true);
+    HL.GetEnemies(min, true);
+    HL.GetEnemies(max, true);
 
-if Cache.EnemiesCount[min] == 0 then
-return false
-end
+    if Cache.EnemiesCount[min] == 0 then
+        return false
+    end
 
-if Cache.EnemiesCount[min] == Cache.EnemiesCount[max] then
-return true
-end
-return false
+    if Cache.EnemiesCount[min] == Cache.EnemiesCount[max] then
+        return true
+    end
+    return false
 end
 
 function Unit:AreaTTD()
-HL.GetEnemies(10, true);
-local ttdtotal = 0
-local totalunits = 0
-for _, CycleUnit in pairs(Cache.Enemies[10]) do
-local ttd = CycleUnit:TimeToDie()
-totalunits = totalunits + 1
-ttdtotal = ttd + ttdtotal
-end
-if totalunits == 0 then
-return 0
-end
+    HL.GetEnemies(10, true);
+    local ttdtotal = 0
+    local totalunits = 0
+    for _, CycleUnit in pairs(Cache.Enemies[10]) do
+        local ttd = CycleUnit:TimeToDie()
+        totalunits = totalunits + 1
+        ttdtotal = ttd + ttdtotal
+    end
+    if totalunits == 0 then
+        return 0
+    end
 
-return ttdtotal / totalunits
+    return ttdtotal / totalunits
 end
 
 local PvEImmunity = {
-275129, -- Corpulent Mass
-263217, -- BloodShield
-271965, -- Powered Down
-260189, -- Config Drill
+    275129, -- Corpulent Mass
+    263217, -- BloodShield
+    271965, -- Powered Down
+    260189, -- Config Drill
 }
 
 function Unit:IsPvEImmunity()
-if not self:Exists() then
-return false
-end
-for p = 1, #PvEImmunity do
-if self:BuffPvP(Spell(PvEImmunity[p])) then
-return true
-end
+    if not self:Exists() then
+        return false
+    end
+    for p = 1, #PvEImmunity do
+        if self:BuffPvP(Spell(PvEImmunity[p])) then
+            return true
+        end
 
-if self:DebuffPvP(Spell(PvEImmunity[p])) then
-return true
-end
-end
-return false
+        if self:DebuffPvP(Spell(PvEImmunity[p])) then
+            return true
+        end
+    end
+    return false
 end
 
 local MeleeSpecs = {
-[0] = false,
-[250] = true, -- Blood
-[251] = true, -- Frost
-[252] = true, -- Unholy
-[577] = true, -- Havoc
-[581] = true, -- Vengeance
-[103] = true, -- Feral
-[104] = true, -- Guardian
-[255] = true, -- Survival
-[268] = true, -- Brewmaster
-[269] = true, -- Windwalker
-[66] = true, -- Protection
-[70] = true, -- Retribution
-[71] = true, -- Arms
-[72] = true, -- Fury
-[73] = true, -- Protection
-[263] = true, -- Enhancement
-[259] = true, -- Assassination
-[260] = true, -- Icon Legion 18x18 Outlaw
-[261] = true, -- Subtlety
+    [0] = false,
+    [250] = true, -- Blood
+    [251] = true, -- Frost
+    [252] = true, -- Unholy
+    [577] = true, -- Havoc
+    [581] = true, -- Vengeance
+    [103] = true, -- Feral
+    [104] = true, -- Guardian
+    [255] = true, -- Survival
+    [268] = true, -- Brewmaster
+    [269] = true, -- Windwalker
+    [66] = true, -- Protection
+    [70] = true, -- Retribution
+    [71] = true, -- Arms
+    [72] = true, -- Fury
+    [73] = true, -- Protection
+    [263] = true, -- Enhancement
+    [259] = true, -- Assassination
+    [260] = true, -- Icon Legion 18x18 Outlaw
+    [261] = true, -- Subtlety
 }
 function Unit:IsMelee(ID)
-if ID ~= nil then
-if MeleeSpecs[ID] == true then
-return true
-end
-return false
-end
-local specID = GetSpecialization() or 0
-if MeleeSpecs[GetSpecializationInfo(specID)] == true then
-return true
-end
-return false
+    if ID ~= nil then
+        if MeleeSpecs[ID] == true then
+            return true
+        end
+        return false
+    end
+    local specID = GetSpecialization() or 0
+    if MeleeSpecs[GetSpecializationInfo(specID)] == true then
+        return true
+    end
+    return false
 end
 
 local RangedSpecs = {
-[102] = true, -- Balance
-[104] = true, -- Guardian
-[105] = true, -- Restoration
-[253] = true, -- Beast Mastery
-[254] = true, -- Marksmanship
-[62] = true, -- Arcane
-[63] = true, -- Fire
-[64] = true, -- Frost
-[270] = true, -- Mistweaver
-[65] = true, -- Holy
-[256] = true, -- Discipline
-[257] = true, -- Holy
-[258] = true, -- Shadow
-[262] = true, -- Elemental
-[264] = true, -- Restoration
-[265] = true, -- Affliction
-[266] = true, -- Demonology
-[267] = true, -- Destruction
+    [102] = true, -- Balance
+    [104] = true, -- Guardian
+    [105] = true, -- Restoration
+    [253] = true, -- Beast Mastery
+    [254] = true, -- Marksmanship
+    [62] = true, -- Arcane
+    [63] = true, -- Fire
+    [64] = true, -- Frost
+    [270] = true, -- Mistweaver
+    [65] = true, -- Holy
+    [256] = true, -- Discipline
+    [257] = true, -- Holy
+    [258] = true, -- Shadow
+    [262] = true, -- Elemental
+    [264] = true, -- Restoration
+    [265] = true, -- Affliction
+    [266] = true, -- Demonology
+    [267] = true, -- Destruction
 }
 
 function Unit:IsRanged(ID)
-if ID ~= nil then
-if RangedSpecs[ID] == true then
-return true
-end
-return false
-end
-local specID = GetSpecialization() or 0
-if RangedSpecs[GetSpecializationInfo(specID)] == true then
-return true
-end
-return false
+    if ID ~= nil then
+        if RangedSpecs[ID] == true then
+            return true
+        end
+        return false
+    end
+    local specID = GetSpecialization() or 0
+    if RangedSpecs[GetSpecializationInfo(specID)] == true then
+        return true
+    end
+    return false
 end

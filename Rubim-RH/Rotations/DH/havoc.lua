@@ -492,6 +492,11 @@ local function APL()
     if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Disrupt:Cast()
     end
+
+    if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
+        return S.ConsumeMagic:Cast()
+    end
+
     -- call_action_list,name=cooldown,if=gcd.remains=0
     if Cooldown() ~= nil then
         return Cooldown()

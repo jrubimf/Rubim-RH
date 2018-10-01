@@ -220,8 +220,6 @@ local function APL()
             if Target:HealthPercentage() <= 65 then
                 return S.FlashofLight:Cast()
             end
-
-
         end
 
         --24HolyLight
@@ -341,7 +339,7 @@ local function APL()
 
     if Player:CanAttack(Target) then
         ForceHealingTarget("None")
-            return DPS()
+        return DPS()
     end
 
     if Healing() ~= nil then
