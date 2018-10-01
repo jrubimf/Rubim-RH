@@ -122,7 +122,7 @@ local function APL()
 
     StandardSimc = function()
         -- death_strike,custom==bossmechanics
-        if S.DeathStrike:IsReady("Melee") and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 5) and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
+        if S.DeathStrike:IsReady("Melee") and (Player:ActiveMitigationNeeded() or Player:HealthPercentage() <= 50) and S.DeathStrike:TimeSinceLastCast() >= Player:GCD() * 2 then
             return S.DeathStrike:Cast()
         end
 

@@ -300,6 +300,10 @@ local defaults = {
             sk6id = "Defict DS",
             sk6tooltip = "How much RP should we pool. MaximumRP - ThisAmount",
 
+            sk7 = 50,
+            sk7id = 49998,
+            sk7tooltip = "How much HP is low enough so we can start the panic Death Strike.",
+
             Spells = {
                 { spellID = DeathStrike, isActive = true, description = "Enable Smart USE of Death Strike.\nBanking DS and only use on extreme scenarios." },
                 { spellID = RuneTap, isActive = false, description = "Always bank runes so we can use Rune Tap." },

@@ -52,8 +52,6 @@ do
         end
         return false
     end
-
-
 end
 
 do
@@ -81,6 +79,33 @@ do
             for i = 1, #Debuffs do
                 local Debuff = Debuffs[i]
                 if Spell:ID() == Debuff[10] then
+                    return true
+                end
+            end
+        end
+        return false
+    end
+
+    function Unit:HasDispelableDebuff(debuffType1, debuffType2, debuffType3, debuffType4)
+        local GUID = self:GUID()
+        if GUID then
+            UnitID = self.UnitID
+            local Debuffs = Cache.Get("UnitInfo", GUID, "Debuffs", _UnitDebuff)
+            for i = 1, #Debuffs do
+                local Debuffs = Debuffs[i]
+                if debuffType1 ~= nil and Debuffs[4] == debuffType1 then
+                    return true
+                end
+
+                if debuffType2 ~= nil and Debuffs[4] == debuffType2 then
+                    return true
+                end
+
+                if debuffType3 ~= nil and Debuffs[4] == debuffType3 then
+                    return true
+                end
+
+                if debuffType4 ~= nil and Debuffs[4] == debuffType4 then
                     return true
                 end
             end

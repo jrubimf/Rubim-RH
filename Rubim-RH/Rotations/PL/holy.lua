@@ -142,22 +142,22 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 25 then
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
                 return S.LayOnHands:Cast()
             end
         end
 
         --Blessing on Low Ally
-        if S.BlessingofProtection:IsCastableP() then
-            if LowestAlly("ALL", "HP") <= 30 then
-                ForceHealingTarget("ALL")
-            end
+        --if S.BlessingofProtection:IsCastableP() then
+            --if LowestAlly("ALL", "HP") <= 30 then
+              --  ForceHealingTarget("ALL")
+            --end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 30 then
-                return S.BlessingofProtection:Cast()
-            end
+            --if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 30 then
+              --  return S.BlessingofProtection:Cast()
+            --end
 
-        end
+        --end
 
         --14Judgment
         if Player:CanAttack(Target) and S.Judgement:IsReady() and Player:Buff(S.AvengingCrusade) then
@@ -176,7 +176,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") then
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:GUID() == LowestAlly("TANK", "GUID") then
                 return S.BeaconofVirtue:Cast()
             end
         end
@@ -192,7 +192,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() <= 95 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.LightofDawn:Cast()
             end
         end
@@ -205,7 +205,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() <= 95 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.HolyLight:Cast()
             end
         end
@@ -217,7 +217,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() <= 65 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 65 then
                 return S.FlashofLight:Cast()
             end
         end
@@ -229,7 +229,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() <= 95 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.HolyLight:Cast()
             end
         end
@@ -241,7 +241,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() < 95 then
+            if Target:Exists() and Target:HealthPercentage() < 95 then
                 return S.HolyShock:Cast()
             end
 
@@ -278,7 +278,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() < 90 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() < 90 then
                 return S.HolyLight:Cast()
             end
         end
@@ -289,7 +289,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() < 65 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() < 65 then
                 return S.LightoftheMartyr:Cast()
             end
         end
@@ -300,7 +300,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:HealthPercentage() <= 65 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 65 then
                 return S.FlashofLight:Cast()
             end
         end
@@ -326,11 +326,15 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 85 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 85 then
                 return S.HolyLight:Cast()
             end
         end
 
+    end
+
+    if MouseOver:HasDispelableDebuff("Magic", "Poison", "Disease") then
+        return S.Cleanse:Cast()
     end
 
     if Player:IsChanneling() or Player:IsCasting() then
@@ -338,7 +342,6 @@ local function APL()
     end
 
     if Player:CanAttack(Target) then
-        ForceHealingTarget("None")
         return DPS()
     end
 
