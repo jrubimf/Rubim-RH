@@ -6,15 +6,6 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
-TargetColor:SetBackdrop(nil)
-TargetColor:SetFrameStrata("HIGH")
-TargetColor:SetSize(1, 1)
-TargetColor:SetScale(1);
-TargetColor:SetPoint("TOPLEFT", 442, 0)
-TargetColor.texture = TargetColor:CreateTexture(nil, "TOOLTIP")
-TargetColor.texture:SetAllPoints(true)
-TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
 members = {}
 
 local function CalculateHP(t)
@@ -810,6 +801,10 @@ function showHealingColor(healingTarget)
 end
 
 function setColorTarget()
+    if TargetColor == nil then
+        return
+    end
+
     --Default START COLOR
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
 
@@ -1244,9 +1239,13 @@ function setColorTarget()
 end
 
 local function refreshColor()
-    HealingEngine() -- Updates Arrays/Table
-    --setHealingTarget() -- Who to heal?
-    --setColorTarget() -- Show Pixels
+    if TargetColor == nil then
+        return
+    else
+        HealingEngine() -- Updates Arrays/Table
+        --setHealingTarget() -- Who to heal?
+        --setColorTarget() -- Show Pixels
+    end
 end
 
 --Not usable.
