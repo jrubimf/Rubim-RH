@@ -23,7 +23,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
         },
         {
             name = 'thirdTab',
-            title = 'Spell Blocker',
+            title = 'Spells',
         },
         {
             name = 'forthTab',
@@ -32,7 +32,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
     }
     local tabFrame = StdUi:TabPanel(window, nil, nil, tabs);
     StdUi:GlueAcross(tabFrame, window, 10, -40, -10, 20);
-
 
     if selectedTab ~= nil then
         tabFrame:SelectTab(selectedTab)
@@ -54,7 +53,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local config1_1 = StdUi:Checkbox(tab.frame, 'Mute Sounds');
             StdUi:GlueTop(config1_1, gn_separator, 50, -24, 'RIGHT');
-            config1_1:SetChecked(RubimRH.db.profile.mainOption.mute )
+            config1_1:SetChecked(RubimRH.db.profile.mainOption.mute)
             function config1_1:OnValueChanged(self, state, value)
                 RubimRH.MuteToggle()
             end
@@ -101,7 +100,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             ic_2_1:Hide()
 
-            local ic_3_0 = StdUi:Slider(tab.frame, 100, 16, RubimRH.db.profile.mainOption.mainIconOpacity , false, 0, 100)
+            local ic_3_0 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.mainIconOpacity, false, 0, 100)
             StdUi:GlueBelow(ic_3_0, ic_2_0, 0, -24, 'LEFT');
             local config3_1Label = StdUi:FontString(tab.frame, "Icon Opacity: " .. RubimRH.db.profile.mainOption.mainIconOpacity)
             StdUi:GlueTop(config3_1Label, ic_3_0, 0, 16);
@@ -113,7 +112,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 config3_1Label:SetText("Icon Opacity: " .. RubimRH.db.profile.mainOption.mainIconOpacity)
             end
 
-            local ic_3_1 = StdUi:Slider(tab.frame, 100, 16, RubimRH.db.profile.mainOption.mainIconScale / 10 , false, 5, 75)
+            local ic_3_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.mainIconScale / 10, false, 5, 75)
             StdUi:GlueBelow(ic_3_1, ic_2_1, 0, -24, 'RIGT');
             local config3_1Label = StdUi:FontString(tab.frame, "Icon Size: " .. RubimRH.db.profile.mainOption.mainIconScale)
             StdUi:GlueTop(config3_1Label, ic_3_1, 0, 16);
@@ -195,58 +194,32 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Trinket 2', value = 2 },
             }
 
-            for i = 1, #trinketOptions do
-                local duplicated = false
-                for p = 1, #RubimRH.db.profile.mainOption.useTrinkets do
-                    if trinketOptions[i].value == RubimRH.db.profile.mainOption.useTrinkets[p] then
-                        trinketOptions[i].text = "|cFF00FF00" .. "Trinket " .. i .. "|r"
-                        duplicated = true
-                    end
-                    if duplicated == false then
-                        trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
-                    end
-                end
-            end
-
-            if #RubimRH.db.profile.mainOption.useTrinkets == 0 then
-                for i = 1, #trinketOptions do
-                    trinketOptions[i].text = "|cFFFF0000" .. "Trinket " .. i .. "|r"
-                end
-            end
-
-            local gn_1_1 = StdUi:Dropdown(tab.frame, 100, 20, trinketOptions, nil, nil);
-            StdUi:FrameTooltip(gn_1_1, 'Enable/Disable the usage of trinkets.', 'TOPLEFT', 'TOPRIGHT', true);
-            gn_1_1:SetPlaceholder('-- Trinkets --');
+            local gn_1_1 = StdUi:Dropdown(tab.frame, 125, 20, trinketOptions, nil, true);
+            gn_1_1:SetPlaceholder(' -- Trinkets --');
+            item1 = gn_1_1.optsFrame.scrollChild.items[1]
+            item2 = gn_1_1.optsFrame.scrollChild.items[2]
             StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
-            gn_1_1.OnValueChanged = function(self, val)
+            gn_1_1.OnValueChanged = function(self, value)
+                local option1, option2 = unpack(value)
 
-                if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
-                    table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
-                    print("Trinket " .. val .. ": Enabled")
-                else
-                    local duplicated = false
-                    local duplicatedNumber = 0
-                    for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
-                        if RubimRH.db.profile.mainOption.useTrinkets[i] == val then
-                            duplicated = true
-                            duplicatedNumber = i
-                            break
-                        end
-                    end
-
-                    if duplicated then
-                        table.remove(RubimRH.db.profile.mainOption.useTrinkets, duplicatedNumber)
-                        print("Trinket " .. val .. ": Disabled")
-                    else
-                        table.insert(RubimRH.db.profile.mainOption.useTrinkets, val)
-                        print("Trinket " .. val .. ": Enabled")
-                    end
+                if option1 == 1 or option2 == 1 then
+                    RubimRH.db.profile.mainOption.useTrinkets[1] = true
                 end
 
-                --self:GetParent():Hide();
-                self:GetParent():Hide();
-                local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-                AllMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+                if option1 == 2 or option2 == 2 then
+                    RubimRH.db.profile.mainOption.useTrinkets[2] = true
+                end
+
+            end;
+
+            if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
+                gn_1_1:ToggleValue(1, true)
+                gn_1_1.optsFrame.scrollChild.items[1]:SetChecked(true)
+            end
+
+            if RubimRH.db.profile.mainOption.useTrinkets[2] == true then
+                gn_1_1:ToggleValue(2, true)
+                gn_1_1.optsFrame.scrollChild.items[2]:SetChecked(true)
             end
 
             local gn_2_0 = StdUi:Checkbox(tab.frame, 'Use Potion');
@@ -257,7 +230,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.PotionToggle()
             end
 
-            local gn_2_1 = StdUi:Slider(tab.frame, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+            local gn_2_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
             StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
             local gn_2_1Label = StdUi:FontString(tab.frame, 'Healthstone: |cff00ff00' .. RubimRH.db.profile.mainOption.healthstoneper);
 
@@ -281,34 +254,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Everything', value = "Everything" },
                 { text = 'Boss Only', value = "Boss Only" },
             }
-            if RubimRH.db.profile.mainOption.cooldownsUsage == "Everything" then
-                cdOptions[1].text = "|cFF00FF00" .. "Everything " .. "|r"
-            else
-                cdOptions[1].text = "|cFFFF0000" .. "Everything " .. "|r"
-            end
-
-            if RubimRH.db.profile.mainOption.cooldownsUsage == "Boss Only" then
-                cdOptions[2].text = "|cFF00FF00" .. "Boss Only " .. "|r"
-            else
-                cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
-            end
-
-            local gn_3_1 = StdUi:Dropdown(tab.frame, 100, 20, cdOptions, nil, nil);
+            local gn_3_1 = StdUi:Dropdown(tab.frame, 125, 20, cdOptions, nil, nil);
             StdUi:FrameTooltip(gn_3_1, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
-            gn_3_1:SetPlaceholder('-- CDs  --');
+            gn_3_1:SetPlaceholder("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.cooldownsUsage);
             gn_3_1.OnValueChanged = function(self, val)
                 RubimRH.db.profile.mainOption.cooldownsUsage = val
-
                 if val == "Everything" then
                     print("CDs will be used on every mob")
                 else
                     print("CDs will only be used on Bosses/Rares")
                 end
-
-                --self:GetParent():Hide();
-                self:GetParent():Hide();
-                local point, relativeTo, relativePoint, xOfs, yOfs = self:GetParent():GetPoint()
-                AllMenu(nil, point, relativeTo, relativePoint, xOfs, yOfs)
+                gn_3_1:SetText("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.cooldownsUsage);
             end
             StdUi:GlueBelow(gn_3_1, gn_2_1, 0, -24, 'RIGHT');
 
@@ -320,7 +276,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local sk_1_0
             if sk1 >= 0 then
-                sk_1_0 = StdUi:Slider(tab.frame, 100, 16, sk1 / 2.5, false, 1, 40)
+                sk_1_0 = StdUi:Slider(tab.frame, 125, 16, sk1 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
                 local sk_1_0Label = StdUi:FontString(tab.frame, sk1id .. sk1);
                 StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -335,7 +291,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local sk_1_1
             if sk2 >= 0 then
-                sk_1_1 = StdUi:Slider(tab.frame, 100, 16, sk2 / 2.5, false, 1, 40)
+                sk_1_1 = StdUi:Slider(tab.frame, 125, 16, sk2 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
                 local sk_1_1Label = StdUi:FontString(tab.frame, sk2id .. sk2);
                 StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -350,7 +306,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local sk_2_0
             if sk3 >= 0 then
-                sk_2_0 = StdUi:Slider(tab.frame, 100, 16, sk3 / 2.5, false, 1, 40)
+                sk_2_0 = StdUi:Slider(tab.frame, 125, 16, sk3 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
                 local sk_2_0Label = StdUi:FontString(tab.frame, sk3id .. sk3);
                 StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -389,7 +345,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         { text = 'Ture Bearing', value = 9 },
                     };
 
-                    local diceRoll = StdUi:Dropdown(tab.frame, 100, 24, dice, 1);
+                    local diceRoll = StdUi:Dropdown(tab.frame, 125, 24, dice, 1);
                     StdUi:GlueBelow(diceRoll, sk_1_0, 0, -64, 'LEFT');
                     StdUi:AddLabel(tab.frame, diceRoll, 'Roll the Bones', 'TOP');
                     function diceRoll:OnValueChanged(value)
@@ -402,7 +358,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local sk_2_1
             if sk4 >= 0 then
-                sk_2_1 = StdUi:Slider(tab.frame, 100, 16, sk4 / 2.5, false, 1, 40)
+                sk_2_1 = StdUi:Slider(tab.frame, 125, 16, sk4 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
                 local sk_2_1Label = StdUi:FontString(tab.frame, sk4id .. sk4);
                 StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -417,7 +373,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 
             if sk5 >= 0 then
-                local sk_3_0 = StdUi:Slider(tab.frame, 100, 16, sk5 / 2.5, false, 1, 40)
+                local sk_3_0 = StdUi:Slider(tab.frame, 125, 16, sk5 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
                 local sk_3_0Label = StdUi:FontString(tab.frame, sk5id .. sk5);
                 StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
@@ -431,7 +387,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 
             if sk6 >= 0 then
-                local sk_3_1 = StdUi:Slider(tab.frame, 100, 16, sk6 / 2.5, false, 1, 40)
+                local sk_3_1 = StdUi:Slider(tab.frame, 125, 16, sk6 / 2.5, false, 0, 40)
                 StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
                 local sk_3_1Label = StdUi:FontString(tab.frame, sk6id .. sk6);
                 StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
@@ -445,7 +401,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 
         end
-        if tab.title == "Spell Blocker" then
+        if tab.title == "Spells" then
             local spellBlocker_title = StdUi:FontString(tab.frame, 'Spell Blocker');
             StdUi:GlueTop(spellBlocker_title, tab.frame, 0, -10, 'CENTER');
 
@@ -533,7 +489,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
                 return {
                     enabled = "True",
-                    name = name,
+                    name = GetSpellLink(spellId),
                     icon = icon,
                     castTime = castTime,
                     minRange = minRange,
@@ -565,32 +521,29 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local data = {};
 
-            for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
-                if spell:IsAvailable() then
+            for i, spell in pairs(RubimRH.allSpells) do
                     tinsert(data, addSpell(spell.SpellID));
-                end
             end
 
             -- update scroll table data
             st:SetData(data);
 
             local function btn_blockSpell()
-                if data[st:GetSelection()].spellId ~= nil then
+                if data[st:GetSelection()] ~= nil then
                     local spellID = data[st:GetSelection()].spellId
                     if RubimRH.db.profile.mainOption.disabledSpells[spellID] ~= nil then
                         RubimRH.db.profile.mainOption.disabledSpells[spellID] = nil
+                        data[st:GetSelection()].enabled = "True"
                         print("Removed: " .. GetSpellLink(spellID))
                     else
                         RubimRH.db.profile.mainOption.disabledSpells[spellID] = true
                         print("Added: " .. GetSpellLink(spellID))
+                        data[st:GetSelection()].enabled = "False"
                     end
-                    st:ClearSelection()
-
-                    --
-                    --tab.frame:Hide();
-                    window:Hide()
-                    local point, relativeTo, relativePoint, xOfs, yOfs = window:GetPoint()
-                    AllMenu("thirdTab", point, relativeTo, relativePoint, xOfs, yOfs)
+                    RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                    --window:Hide()
+                    --local point, relativeTo, relativePoint, xOfs, yOfs = window:GetPoint()
+                    --AllMenu("thirdTab", point, relativeTo, relativePoint, xOfs, yOfs)
                     --RubimRH.SpellBlocker(nil, point, relativeTo, relativePoint, xOfs, yOfs)
                     --
 
@@ -599,18 +552,39 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 print("No Spell Selected")
             end
 
-            local btn = StdUi:Button(tab.frame, 100, 24, 'Block Spell');
-            StdUi:GlueBelow(btn, st, 0, -20);
+            local function btn_createMacro()
+                if data[st:GetSelection()] ~= nil then
+                    local SpellDATA = data[st:GetSelection()]
+                    local SpellVAR = nil
 
+                    for i = 1, #RubimRH.allSpells do
+                        if RubimRH.allSpells[i].SpellID == SpellDATA.spellId then
+                            SpellVAR = i
+                            break
+                        end
+                    end
+                    RubimRH.print("Macro for: " .. GetSpellLink(SpellDATA.spellId) .. " was created. Check your Character Macros.")
+                    CreateMacro(SpellDATA.name, SpellDATA.icon, "/run RubimRH.allSpells[" .. tostring(SpellVAR) .. "]:Queue()", 1)
+                    RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                    return
+                end
+                print("No Spell Selected")
+            end
+
+            local btn = StdUi:Button(tab.frame, 125, 24, 'Block Spell');
+            StdUi:GlueBelow(btn, st, 0, -24, "LEFT");
             btn:SetScript('OnClick', btn_blockSpell);
+            StdUi:FrameTooltip(btn, 'This will block the spell from the spellist of the rotation aka it will never cast it.', 'TOPLEFT', 'TOPRIGHT', true);
 
-            local blockingTip = StdUi:FontString(tab.frame, 'You can macro the spell blocker by using:\n/run RubimRH.SpellBlocker(spellID)');
-            StdUi:GlueTop(blockingTip, btn, 0, -30);
+            local btn2 = StdUi:Button(tab.frame, 125, 24, 'Create Macro');
+            StdUi:GlueBelow(btn2, st, 0, -24, "RIGHT");
+            btn2:SetScript('OnClick', btn_createMacro);
+            StdUi:FrameTooltip(btn2, 'This will create a Queue macro :).', 'TOPLEFT', 'TOPRIGHT', true);
+
+            --local blockingTip = StdUi:FontString(tab.frame, 'You can macro the spell blocker by using:\n/run RubimRH.SpellBlocker(spellID)');
+            --StdUi:GlueTop(blockingTip, btn, 0, -30);
         end
     end);
-
-
-
 end
 
 function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, yOfs)
@@ -872,7 +846,7 @@ function RubimRH.SpellBlocker2(spellID, point, relativeTo, relativePoint, xOfs, 
         RubimRH.SpellBlocker(nil, point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Clear');
+    local extra1 = StdUi:Button(window, 125, 20, 'Clear');
     StdUi:GlueBelow(extra1, spellList, 0, -24, 'CENTER');
     extra1:SetScript('OnClick', function()
         print("RubimRH: Disabled spells cleared.")
@@ -959,7 +933,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
     StdUi:FrameTooltip(gn_1_1, 'Enable/Disable the usage of trinkets.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -1002,7 +976,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1037,7 +1011,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_1 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_1 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
     StdUi:FrameTooltip(gn_3_1, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
     gn_3_1:SetPlaceholder('-- CDs  --');
     gn_3_1.OnValueChanged = function(self, val)
@@ -1064,7 +1038,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0
     if sk1 >= 0 then
-        sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 2.5, false, 1, 40)
+        sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
         local sk_1_0Label = StdUi:FontString(window, sk1id .. sk1);
         StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1079,7 +1053,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1
     if sk2 >= 0 then
-        sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 2.5, false, 1, 40)
+        sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
         local sk_1_1Label = StdUi:FontString(window, sk2id .. sk2);
         StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1094,7 +1068,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_2_0
     if sk3 >= 0 then
-        sk_2_0 = StdUi:Slider(window, 100, 16, sk3 / 2.5, false, 1, 40)
+        sk_2_0 = StdUi:Slider(window, 100, 16, sk3 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
         local sk_2_0Label = StdUi:FontString(window, sk3id .. sk3);
         StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1123,7 +1097,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_2_1
     if sk4 >= 0 then
-        sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 2.5, false, 1, 40)
+        sk_2_1 = StdUi:Slider(window, 100, 16, sk4 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
         local sk_2_1Label = StdUi:FontString(window, sk4id .. sk4);
         StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1138,7 +1112,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     if sk5 >= 0 then
-        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5 / 2.5, false, 1, 40)
+        local sk_3_0 = StdUi:Slider(window, 100, 16, sk5 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
         local sk_3_0Label = StdUi:FontString(window, sk5id .. sk5);
         StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
@@ -1152,7 +1126,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     if sk6 >= 0 then
-        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6 / 2.5, false, 1, 40)
+        local sk_3_1 = StdUi:Slider(window, 100, 16, sk6 / 2.5, false, 0, 40)
         StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
         local sk_3_1Label = StdUi:FontString(window, sk6id .. sk6);
         StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
@@ -1170,7 +1144,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:FrameTooltip(extra1, 'Useful if you want to ban a spell from the rotation.', 'TOPLEFT', 'TOPRIGHT', true);
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
@@ -1248,7 +1222,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -1290,7 +1264,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1317,7 +1291,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -1342,7 +1316,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1354,7 +1328,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1366,7 +1340,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1378,7 +1352,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1390,7 +1364,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_1Label:SetText(sk4text .. sk4var)
     end
 
-    local sk_3_0 = StdUi:Slider(window, 100, 16, sk5var / 2.5, false, 1, 40)
+    local sk_3_0 = StdUi:Slider(window, 100, 16, sk5var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_3_0, sk_2_0, 0, -24, 'LEFT');
     local sk_3_0Label = StdUi:FontString(window, sk5text .. sk5var);
     StdUi:GlueTop(sk_3_0Label, sk_3_0, 0, 16);
@@ -1402,7 +1376,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_3_0Label:SetText(sk5text .. sk5var)
     end
 
-    local sk_3_1 = StdUi:Slider(window, 100, 16, sk6var / 2.5, false, 1, 40)
+    local sk_3_1 = StdUi:Slider(window, 100, 16, sk6var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_3_1, sk_2_1, 0, -24, 'RIGHT');
     local sk_3_1Label = StdUi:FontString(window, sk6text .. sk6var);
     StdUi:GlueTop(sk_3_1Label, sk_3_1, 0, 16);
@@ -1419,7 +1393,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -1487,7 +1461,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -1529,7 +1503,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1556,7 +1530,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -1581,7 +1555,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1593,7 +1567,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1605,7 +1579,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1617,7 +1591,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1634,7 +1608,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '===================');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -1701,7 +1675,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -1743,7 +1717,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1770,7 +1744,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -1795,7 +1769,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -1807,7 +1781,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -1819,7 +1793,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -1831,7 +1805,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -1848,7 +1822,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '===================');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -1911,7 +1885,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets1 --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -1953,7 +1927,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -1980,7 +1954,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -2005,7 +1979,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -2017,7 +1991,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -2029,7 +2003,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -2046,7 +2020,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2104,7 +2078,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -2146,7 +2120,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2173,7 +2147,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -2198,7 +2172,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -2210,7 +2184,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_0Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
@@ -2227,7 +2201,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2286,7 +2260,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -2328,7 +2302,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2355,7 +2329,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -2390,7 +2364,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk1text .. sk1var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -2407,7 +2381,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2470,7 +2444,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -2512,7 +2486,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2539,7 +2513,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -2574,7 +2548,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_1_1Label:SetText(sk2text .. sk2var)
     end
 
-    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 1, 40)
+    local sk_2_0 = StdUi:Slider(window, 100, 16, sk3var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_0, sk_1_0, 0, -24, 'LEFT');
     local sk_2_0Label = StdUi:FontString(window, sk3text .. sk3var);
     StdUi:GlueTop(sk_2_0Label, sk_2_0, 0, 16);
@@ -2586,7 +2560,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         sk_2_0Label:SetText(sk3text .. sk3var)
     end
 
-    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 1, 40)
+    local sk_2_1 = StdUi:Slider(window, 100, 16, sk4var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_2_1, sk_1_1, 0, -24, 'RIGHT');
     local sk_2_1Label = StdUi:FontString(window, sk4text .. sk4var);
     StdUi:GlueTop(sk_2_1Label, sk_2_1, 0, 16);
@@ -2603,7 +2577,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2654,7 +2628,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -2696,7 +2670,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -2723,7 +2697,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -2769,7 +2743,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2890,7 +2864,7 @@ local function OutMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -2987,7 +2961,7 @@ local function SubMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3084,7 +3058,7 @@ local function AssMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3135,7 +3109,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -3177,7 +3151,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3204,7 +3178,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -3250,7 +3224,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3403,7 +3377,7 @@ local function RetributionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, 0, -14, 'CENTER');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3454,7 +3428,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -3496,7 +3470,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3523,7 +3497,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -3569,7 +3543,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3617,7 +3591,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -3659,7 +3633,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3686,7 +3660,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -3776,7 +3750,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, 0, -14, 'CENTER');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -3843,7 +3817,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -3885,7 +3859,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -3912,7 +3886,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -3937,7 +3911,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_separator = StdUi:FontString(window, '===================');
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
-    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 1, 40)
+    local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
     StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
@@ -3981,7 +3955,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -4033,7 +4007,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -4075,7 +4049,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -4102,7 +4076,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -4132,7 +4106,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -4183,7 +4157,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         end
     end
 
-    local gn_1_1 = StdUi:Dropdown(window, 100, 20, trinketOptions, nil, nil);
+    local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
     StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
@@ -4225,7 +4199,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         RubimRH.PotionToggle()
     end
 
-    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 1, 40)
+    local gn_2_1 = StdUi:Slider(window, 100, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
     StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
     local gn_2_1Label = StdUi:FontString(window, 'Healthstone: ' .. RubimRH.db.profile.mainOption.healthstoneper);
     StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -4252,7 +4226,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
         cdOptions[2].text = "|cFFFF0000" .. "Boss Only " .. "|r"
     end
 
-    local gn_3_0 = StdUi:Dropdown(window, 100, 20, cdOptions, nil, nil);
+    local gn_3_0 = StdUi:Dropdown(window, 125, 20, cdOptions, nil, nil);
 
     gn_3_0:SetPlaceholder('-- CDs  --');
     StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
@@ -4298,7 +4272,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local extraSep = StdUi:FontString(window, '=====');
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
-    local extra1 = StdUi:Button(window, 100, 20, 'Spells Blocker');
+    local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
     StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
@@ -4307,5 +4281,5 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 end
 
 function RubimRH.ClassConfig(specID)
-        AllMenu('secondTab')
+    AllMenu('secondTab')
 end

@@ -522,3 +522,8 @@ end
 function RubimRH.HideButtonGlow()
     activeFrame:Hide()
 end
+
+function RubimRH.print(text, color)
+    print("|cffcd0000RubimRH: |r" .. text)
+end
+

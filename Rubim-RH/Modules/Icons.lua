@@ -39,6 +39,7 @@ UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         info.checked = false
         info.func = function(self)
             RubimRH.ClassConfig(RubimRH.playerSpec)
+            RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
         end
         UIDropDownMenu_AddButton(info)
         --

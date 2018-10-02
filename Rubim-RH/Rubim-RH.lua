@@ -231,7 +231,10 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
-            useTrinkets = {},
+            useTrinkets = {
+                [1] = false,
+                [2] = false
+            },
             cooldownsUsage = "Everything",
             burstCD = false,
             debug = false,

@@ -89,13 +89,13 @@ function RubimRH.Shared()
 
         if Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
-                if RubimRH.db.profile.mainOption.useTrinkets[i] == 1 then
+                if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
                     if trinketReady(1) then
                         return trinket1
                     end
                 end
 
-                if RubimRH.db.profile.mainOption.useTrinkets[i] == 2 then
+                if RubimRH.db.profile.mainOption.useTrinkets[2] == true then
                     if trinketReady(2) then
                         return trinket1
                     end
