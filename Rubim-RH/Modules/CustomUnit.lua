@@ -246,7 +246,6 @@ function Unit:IsTank()
 end
 
 local function CacheOtherTank()
-
     for i, CycleUnit in pairs(Unit.Raid) do
         if CycleUnit:IsTank() and CycleUnit:GUID() ~= Player:GUID() then
             otherTank = CycleUnit
@@ -259,6 +258,7 @@ RubimRH.Listener:Add('Rubim_Events', 'GROUP_ROSTER_UPDATE', function(...)
 end)
 
 function Unit:NeedThreat()
+    CacheOtherTank()
     if not otherTank:Exists() then
         otherTank = Player
     end
@@ -272,8 +272,8 @@ function Unit:NeedThreat()
         totalMobs = totalMobs + 1
         local threat
         if otherTank:Exists() and otherTank:IsTank() and otherTank:GUID() ~= Player:GUID() then
-            threat = UnitThreatSituation(otherTank, CycleUnit.UnitID) or 3
-            if threat >= 3 then
+            threat = UnitThreatSituation(otherTank:ID(), CycleUnit.UnitID) or 3
+            if threat >= 2 then
                 mobsonOtherTank = mobsonOtherTank + 1
             end
         end

@@ -131,7 +131,7 @@ local function APL()
         end
 
         --Needs Marrowrend
-        if Target:MinDistanceToPlayer(true) <= 8 and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= Player:RuneTimeToX(3) or Player:BuffStack(S.BoneShield) <= 5) then
+        if Target:MinDistanceToPlayer(true) <= 5 and (not Player:Buff(S.BoneShield) or Player:BuffRemains(S.BoneShield) <= Player:RuneTimeToX(3) or Player:BuffStack(S.BoneShield) <= 5) then
             S.Marrowrend:QueueAuto()
         end
 

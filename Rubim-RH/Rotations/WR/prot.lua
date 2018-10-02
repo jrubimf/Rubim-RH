@@ -178,15 +178,15 @@ local function APL()
         return S.VictoryRush:Cast()
     end
 
+    if S.Revenge:IsReady("Melee")
+            and Player:RageDeficit() <= 15 then
+        return S.Revenge:Cast()
+    end
+
     -- Shield Slam
     if S.ShieldSlam:IsReady("Melee")
             and Player:RageDeficit() >= 15 then
         return S.ShieldSlam:Cast()
-    end
-
-    if S.Revenge:IsReady("Melee")
-            and Player:RageDeficit() <= 15 then
-        return S.Revenge:Cast()
     end
 
     -- ThunderClap
