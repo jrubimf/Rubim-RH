@@ -19,6 +19,10 @@ errorEvent:SetScript("OnEvent", function(self, event)
         foundError = true
     end
 
+    if RubimExtraVer ~= 01102018 then
+        message("Update Extra :)")
+    end
+
 
 
     if GetCVar("nameplateShowEnemies") ~= "1" then
@@ -720,6 +724,9 @@ updateClassVariables:SetScript("OnEvent", function(self, event, ...)
     if RubimRH.playerSpec ~= 0 then
         RubimRH.config = RubimRH.db.profile[RubimRH.playerSpec]
         for pos, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
+            if spell:ID() == 183752 then
+                print("that")
+            end
             if spell:IsAvailable() then
                 table.insert(RubimRH.allSpells, spell)
             end

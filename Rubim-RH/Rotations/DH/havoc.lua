@@ -59,7 +59,7 @@ RubimRH.Spell[577] = {
     -- Abilities
     Annihilation = Spell(201427),
     BladeDance = Spell(188499),
-    ConsumeMagic = Spell(183752),
+    ConsumeMagic = Spell(278326),
     ChaosStrike = Spell(162794),
     ChaosNova = Spell(179057),
     Disrupt = Spell(183752),

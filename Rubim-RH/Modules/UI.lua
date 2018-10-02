@@ -479,24 +479,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             st:EnableSelection(true);
             StdUi:GlueTop(st, tab.frame, 0, -60);
 
-            local function getRandomSpell()
-                local name = nil;
-                local icon, castTime, minRange, maxRange, spellId;
-
-                while name == nil do
-                    name, _, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(math.random(100, 200000));
-                end
-
-                return {
-                    enabled = "True",
-                    name = GetSpellLink(spellId),
-                    icon = icon,
-                    castTime = castTime,
-                    minRange = minRange,
-                    maxRange = maxRange,
-                    spellId = spellId;
-                };
-            end
 
             local function addSpell(spellID)
                 local name = nil;
@@ -541,6 +523,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         data[st:GetSelection()].enabled = "False"
                     end
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                    st:ClearSelection()
                     --window:Hide()
                     --local point, relativeTo, relativePoint, xOfs, yOfs = window:GetPoint()
                     --AllMenu("thirdTab", point, relativeTo, relativePoint, xOfs, yOfs)
@@ -566,6 +549,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     RubimRH.print("Macro for: " .. GetSpellLink(SpellDATA.spellId) .. " was created. Check your Character Macros.")
                     CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run RubimRH.allSpells[" .. tostring(SpellVAR) .. "]:Queue()", 1)
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                    st:ClearSelection()
                     return
                 end
                 print("No Spell Selected")
