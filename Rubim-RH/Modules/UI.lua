@@ -564,7 +564,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         end
                     end
                     RubimRH.print("Macro for: " .. GetSpellLink(SpellDATA.spellId) .. " was created. Check your Character Macros.")
-                    CreateMacro(SpellDATA.name, SpellDATA.icon, "/run RubimRH.allSpells[" .. tostring(SpellVAR) .. "]:Queue()", 1)
+                    CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run RubimRH.allSpells[" .. tostring(SpellVAR) .. "]:Queue()", 1)
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
                     return
                 end
