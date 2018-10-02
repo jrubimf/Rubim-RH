@@ -354,7 +354,7 @@ local function APL()
     --if HL.CombatTime() < 2 and opener ~= nil and RubimRH.CDsON() and Target:IsInRange("Melee") then
         --return Opener()
     --end
-    
+
     if QueueSkill() ~= nil then
         return QueueSkill()
     end

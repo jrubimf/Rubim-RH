@@ -540,14 +540,13 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     local SpellDATA = data[st:GetSelection()]
                     local SpellVAR = nil
 
-                    for i = 1, #RubimRH.allSpells do
-                        if RubimRH.allSpells[i].SpellID == SpellDATA.spellId then
-                            SpellVAR = i
-                            break
+                    for key, Spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
+                        if Spell:ID() == SpellDATA.spellId then
+                            SpellVAR = key
                         end
                     end
                     RubimRH.print("Macro for: " .. GetSpellLink(SpellDATA.spellId) .. " was created. Check your Character Macros.")
-                    CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run RubimRH.allSpells[" .. tostring(SpellVAR) .. "]:Queue()", 1)
+                    CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run RubimRH.Spell[RubimRH.playerSpec]." .. tostring(SpellVAR) .. ":Queue()", 1)
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
                     st:ClearSelection()
                     return

@@ -524,6 +524,6 @@ function RubimRH.HideButtonGlow()
 end
 
 function RubimRH.print(text, color)
-    print("|cffcd0000RubimRH: |r" .. text)
+    print("|cff828282RRH: |r" .. text)
 end
 

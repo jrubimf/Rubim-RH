@@ -69,7 +69,7 @@ function Spell:Queue(powerExtra, bypassRemove)
     local bypassRemove = bypassRemove or false
     local powerEx = powerExtra or 0
     if self:ID() == RubimRH.queuedSpell[1]:ID() and bypassRemove == false then
-        print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
+        RubimRH.print("|cFFFF0000Removed from Queue:|r " .. GetSpellLink(self:ID()))
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
         RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queuecast.ogg")
         return
@@ -77,11 +77,11 @@ function Spell:Queue(powerExtra, bypassRemove)
 
     if self:IsAvailable() then
         RubimRH.queuedSpell = { self, powerEx }
-        print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
+        RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
         RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
         return
     end
-    print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
+    RubimRH.print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
 
 end
 
@@ -541,6 +541,7 @@ HL:RegisterForSelfCombatEvent(function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
 
     if RubimRH.QueuedSpell().SpellID == SpellID then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
+        RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(SpellID) .. " casted!")
         RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queuecast.ogg")
     end
     for i, spell in pairs(RubimRH.Spell[RubimRH.playerSpec]) do
