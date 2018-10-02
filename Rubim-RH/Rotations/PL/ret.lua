@@ -354,6 +354,10 @@ local function APL()
     --if HL.CombatTime() < 2 and opener ~= nil and RubimRH.CDsON() and Target:IsInRange("Melee") then
         --return Opener()
     --end
+    
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
 
     if S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and Player:StoppedFor() >= 0.5 then
         return S.FlashOfLight:Cast()
