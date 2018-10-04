@@ -255,7 +255,6 @@ local function APL()
         return S.Whirlwind:Cast()
     end
 
-
     if S.Rampage:IsReady() then
         return S.Rampage:Cast()
     end

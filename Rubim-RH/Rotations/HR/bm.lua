@@ -172,6 +172,10 @@ local function APL ()
         return S.MendPet:Cast()
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
 
     -- In Combat
     if RubimRH.TargetIsValid() then

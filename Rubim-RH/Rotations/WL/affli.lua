@@ -15,7 +15,6 @@ RubimRH.Spell[265] = {
     GrimoireofSacrificeBuff = Spell(196099),
     GrimoireofSacrifice = Spell(108503),
     SeedofCorruption = Spell(27243),
-    HauntDebuff = Spell(48181),
     Haunt = Spell(48181),
     ShadowBolt = Spell(232670),
     Deathbolt = Spell(264106),
@@ -44,8 +43,6 @@ RubimRH.Spell[265] = {
     ActiveUasBuff = Spell(30108),
     CreepingDeath = Spell(264000),
     WritheInAgony = Spell(196102),
-    SeedofCorruptionDebuff = Spell(27243),
-    SiphonLifeDebuff = Spell(63106),
     UnstableAffliction = Spell(30108),
     UnstableAfflictionDebuff = Spell(30108),
     Berserking = Spell(26297)
@@ -147,7 +144,7 @@ local function APL()
                 return S.SeedofCorruption:Cast()
             end
             -- haunt
-            if S.Haunt:IsCastableP() and (not Player:IsMoving()) and Player:DebuffDownP(S.HauntDebuff) then
+            if S.Haunt:IsCastableP() and (not Player:IsMoving()) and Player:DebuffDownP(S.Haunt) then
                 return S.Haunt:Cast()
             end
             -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
@@ -269,7 +266,7 @@ local function APL()
             return S.VileTaint:Cast()
         end
         -- seed_of_corruption,if=dot.corruption.remains<=action.seed_of_corruption.cast_time+TimeToShard()+4.2*(1-talent.creeping_death.enabled*0.15)&spell_targets.seed_of_corruption_aoe>=3+talent.writhe_in_agony.enabled&!dot.seed_of_corruption.remains&!action.seed_of_corruption.in_flight
-        if S.SeedofCorruption:IsCastableP() and (not Player:IsMoving()) and (Target:DebuffRemainsP(S.CorruptionDebuff) <= S.SeedofCorruption:CastTime() + TimeToShard() + 4.2 * (1 - num(S.CreepingDeath:IsAvailable()) * 0.15) and Cache.EnemiesCount[35] >= 3 + num(S.WritheInAgony:IsAvailable()) and not bool(Target:DebuffRemainsP(S.SeedofCorruptionDebuff)) and not S.SeedofCorruption:InFlight()) then
+        if S.SeedofCorruption:IsCastableP() and (not Player:IsMoving()) and (Target:DebuffRemainsP(S.CorruptionDebuff) <= S.SeedofCorruption:CastTime() + TimeToShard() + 4.2 * (1 - num(S.CreepingDeath:IsAvailable()) * 0.15) and Cache.EnemiesCount[35] >= 3 + num(S.WritheInAgony:IsAvailable()) and not bool(Target:DebuffRemainsP(S.SeedofCorruption)) and not S.SeedofCorruption:InFlight()) then
             return S.SeedofCorruption:Cast()
         end
         -- agony,cycle_targets=1,max_cycle_targets=6,if=talent.creeping_death.enabled&target.time_to_die>10&refreshable
@@ -285,19 +282,19 @@ local function APL()
             return S.Corruption:Cast()
         end
         -- siphon_life,cycle_targets=1,max_cycle_targets=1,if=refreshable&target.time_to_die>10&((!(cooldown.summon_darkglare.remains<=soul_shard*action.unstable_affliction.execute_time)&active_enemies>=8)|active_enemies=1)
-        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLifeDebuff) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] >= 8) or Cache.EnemiesCount[35] == 1)) then
+        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLife) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] >= 8) or Cache.EnemiesCount[35] == 1)) then
             return S.SiphonLife:Cast()
         end
         -- siphon_life,cycle_targets=1,max_cycle_targets=2,if=refreshable&target.time_to_die>10&((!(cooldown.summon_darkglare.remains<=soul_shard*action.unstable_affliction.execute_time)&active_enemies=7)|active_enemies=2)
-        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLifeDebuff) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 7) or Cache.EnemiesCount[35] == 2)) then
+        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLife) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 7) or Cache.EnemiesCount[35] == 2)) then
             return S.SiphonLife:Cast()
         end
         -- siphon_life,cycle_targets=1,max_cycle_targets=3,if=refreshable&target.time_to_die>10&((!(cooldown.summon_darkglare.remains<=soul_shard*action.unstable_affliction.execute_time)&active_enemies=6)|active_enemies=3)
-        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLifeDebuff) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 6) or Cache.EnemiesCount[35] == 3)) then
+        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLife) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 6) or Cache.EnemiesCount[35] == 3)) then
             return S.SiphonLife:Cast()
         end
         -- siphon_life,cycle_targets=1,max_cycle_targets=4,if=refreshable&target.time_to_die>10&((!(cooldown.summon_darkglare.remains<=soul_shard*action.unstable_affliction.execute_time)&active_enemies=5)|active_enemies=4)
-        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLifeDebuff) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 5) or Cache.EnemiesCount[35] == 4)) then
+        if S.SiphonLife:IsCastableP() and (Target:DebuffRefreshableCP(S.SiphonLife) and Target:TimeToDie() > 10 and ((not (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) and Cache.EnemiesCount[35] == 5) or Cache.EnemiesCount[35] == 4)) then
             return S.SiphonLife:Cast()
         end
         -- corruption,cycle_targets=1,if=active_enemies<3+talent.writhe_in_agony.enabled&refreshable&target.time_to_die>10

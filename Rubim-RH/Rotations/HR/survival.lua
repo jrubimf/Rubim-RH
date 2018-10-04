@@ -471,6 +471,10 @@ local function APL ()
         return Precombat()
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
     if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[255].sk1 and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end

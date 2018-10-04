@@ -51,6 +51,8 @@ local function addToData(GUID)
             -- Swing
             dmgTaken_S = 0,
             lastSwing = GetTime(),
+            -- DS Timer
+            dmgTakenDS = 0,
         }
     end
 end
@@ -79,6 +81,7 @@ local logDamage = function(...)
         Data[SourceGUID].dmgDone_M = Data[SourceGUID].dmgDone_M + Amount
     end
     -- Totals
+    Data[DestGUID].dmgTakenDS = Data[DestGUID].dmgTakenDS + Amount
     Data[DestGUID].dmgTaken = Data[DestGUID].dmgTaken + Amount
     Data[DestGUID].hits_taken = Data[DestGUID].hits_taken + 1
     Data[SourceGUID].dmgDone = Data[SourceGUID].dmgDone + Amount
@@ -98,6 +101,7 @@ local logSwing = function(...)
 
     Data[GUID].dmgTaken_S = Data[GUID].dmgTaken_S + Amount
     Data[SourceGUID].lastSwing = GetTime()
+    Data[GUID].dmgTakenDS = Data[GUID].dmgTakenDS + Amount
 
 
 end
@@ -149,7 +153,7 @@ function RubimRH.CombatTime(UNIT)
 end
 
 function RubimRH.getDMG(UNIT)
-    local total, Hits, phys, magic, swingD = 0, 0, 0, 0, 0
+    local total, Hits, phys, magic, swingD, takenDS = 0, 0, 0, 0, 0, 0
     local GUID = UnitGUID(UNIT)
     if Data[GUID] then
         local time = GetTime()
@@ -163,9 +167,10 @@ function RubimRH.getDMG(UNIT)
             magic = (Data[GUID].dmgTaken_M / combatTime) or 0
             Hits = (Data[GUID].hits_taken) or 0
             swingD = (Data[GUID].dmgTaken_S / combatTime) or 0
+            takenDS = (Data[GUID].dmgTakenDS / combatTime) or 0
         end
     end
-    return total, Hits, phys, magic, swingD
+    return total, Hits, phys, magic, swingD, takenDS
 end
 
 function RubimRH.TimeToDie(unit)
@@ -265,6 +270,14 @@ function RubimRH.incdmgmagic(unit)
     if UnitExists(unit) then
         local mDMG = select(4, RubimRH.getDMG(unit))
         return mDMG
+    end
+    return 0
+end
+
+function RubimRH.lastDmg5(unit)
+    if UnitExists(unit) then
+        local pDMG = select(5, RubimRH.getDMG(unit))
+        return pDMG
     end
     return 0
 end

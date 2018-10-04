@@ -118,6 +118,11 @@ local function APL ()
         return 0, 462338
     end
 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+
+
     if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
         return S.Exhilaration:Cast()
     end

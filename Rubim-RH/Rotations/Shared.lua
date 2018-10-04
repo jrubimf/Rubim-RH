@@ -16,8 +16,8 @@ local ProlongedPower = Item(142117)
 local Healthstone = 5512
 local autoAttack = Spell(6603)
 
-local trinket1 = 1030910
-local trinket2 = 1030902
+local trinket2 = 1030910
+local trinket1 = 1030902
 
 function Item:IsBuffTrinket()
 
@@ -76,7 +76,6 @@ function QueueSkill()
 end
 
 function RubimRH.Shared()
-
     if Player:AffectingCombat() then
 
         if Player:ShouldStopCasting() and Player:IsCasting() then
@@ -97,7 +96,7 @@ function RubimRH.Shared()
 
                 if RubimRH.db.profile.mainOption.useTrinkets[2] == true then
                     if trinketReady(2) then
-                        return trinket1
+                        return trinket2
                     end
                 end
             end
