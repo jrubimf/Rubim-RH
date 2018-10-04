@@ -84,13 +84,8 @@ local I = Item.Hunter.Marksmanship
 
 S.AimedShot:RegisterInFlight()
 
-local function cacheOverwrite()
-    Cache.Persistent.SpellLearned.Player[S.MendPet.SpellID] = true
-end
-
 --- APL Main
 local function APL ()
-    cacheOverwrite()
     HL.GetEnemies(40)
 
     if Player:IsChanneling() then
