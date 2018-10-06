@@ -480,9 +480,9 @@ local function APL()
 
     --TODO: WHATS IS THIS??
     -- run_action_list,name=hac,if=raid_event.adds.exists
-    if ((Cache.EnemiesCount[8] > 1)) then
-        return Hac();
-    end
+    --if ((Cache.EnemiesCount[8] > 1)) then
+      --  return Hac();
+    --end
     -- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20
     if ((S.Massacre:IsAvailable() and Target:HealthPercentage() < 35) or Target:HealthPercentage() < 20) then
         return Execute();

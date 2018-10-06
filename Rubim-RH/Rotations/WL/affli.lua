@@ -214,6 +214,10 @@ local function APL()
             return Precombat()
         end
     end
+
+    if Player:IsChanneling() then
+        return 0, 236353
+    end
     if RubimRH.TargetIsValid() then
         -- variable,name=spammable_seed,value=talent.sow_the_seeds.enabled&spell_targets.seed_of_corruption_aoe>=3|talent.siphon_life.enabled&spell_targets.seed_of_corruption>=5|spell_targets.seed_of_corruption>=8
         if (true) then
