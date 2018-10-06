@@ -60,7 +60,7 @@ local function trinketReady(trinketPosition)
 end
 
 function QueueSkill()
-    if Automata.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
+    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     if RubimRH.QueuedSpell():IsReadyQueue() then
