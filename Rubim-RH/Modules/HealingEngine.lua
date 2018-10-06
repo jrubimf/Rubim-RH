@@ -384,6 +384,10 @@ end
 
 function showHealingColor(healingTarget)
     --Default START COLOR
+    if TargetColor == nil then
+        return
+    end
+
     TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
     if healingTarget == "None" then
         TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)

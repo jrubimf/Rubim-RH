@@ -10,8 +10,10 @@ local Pet = Unit.Pet;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local mainAddon = RubimRH
+
 -- Spells
-RubimRH.Spell[253] = {
+mainAddon.Spell[253] = {
     -- Racials
     ArcaneTorrent = Spell(80483),
     AncestralCall = Spell(274738),
@@ -70,7 +72,7 @@ RubimRH.Spell[253] = {
     -- Macros
 }
 
-local S = RubimRH.Spell[253]
+local S = mainAddon.Spell[253]
 
 S.CallPet.TextureSpellID = { S.MendPet:ID() }
 S.RevivePet.TextureSpellID = { S.MendPet:ID() }
@@ -126,7 +128,7 @@ local function APL ()
     --    end
     -- Out of Combat
     if not Player:AffectingCombat() then
-        if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
+        if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= mainAddon.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
         end
 
@@ -140,8 +142,8 @@ local function APL ()
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-        if RubimRH.TargetIsValid() and Target:IsInRange(40) then
-            if RubimRH.CDsON() then
+        if mainAddon.TargetIsValid() and Target:IsInRange(40) then
+            if mainAddon.CDsON() then
                 if S.AMurderofCrows:IsReady() then
                     return S.AMurderofCrows:Cast()
                 end
@@ -162,7 +164,7 @@ local function APL ()
         return 0, 462338
     end
 
-    if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
+    if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= mainAddon.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
         return S.MendPet:Cast()
     end
 
@@ -178,15 +180,15 @@ local function APL ()
 
 
     -- In Combat
-    if RubimRH.TargetIsValid() then
+    if mainAddon.TargetIsValid() then
 
         -- Counter Shot -> User request
-        if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        if S.CounterShot:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
             return S.CounterShot:Cast()
         end
 
         -- actions+=/counter_shot,if=target.debuff.casting.react // Sephuz Specific
-        if RubimRH.CDsON() then
+        if mainAddon.CDsON() then
             -- actions+=/arcane_torrent,if=focus.deficit>=30
             --if S.ArcaneTorrent:IsReady() and Player:FocusDeficit() >= 30 then
 
@@ -230,7 +232,7 @@ local function APL ()
             return S.Stampede:Cast()
         end
         -- aspect_of_the_wild
-        if RubimRH.CDsON() and S.AspectoftheWild:IsReady() and (true) then
+        if mainAddon.CDsON() and S.AspectoftheWild:IsReady() and (true) then
             return S.AspectoftheWild:Cast()
         end
         -- bestial_wrath,if=!buff.bestial_wrath.up
@@ -238,7 +240,7 @@ local function APL ()
             return S.BestialWrath:Cast()
         end
         -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
+        if mainAddon.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
             return S.MultiShot:Cast()
         end
         -- chimaera_shot
@@ -258,7 +260,7 @@ local function APL ()
             return S.BarbedShot:Cast()
         end
         -- MultiShot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if RubimRH.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 1 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
+        if mainAddon.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 1 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
             return S.MultiShot:Cast()
         end
         -- cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(buff.bestial_wrath.up&active_enemies>1|cooldown.kill_command.remains>1+gcd&cooldown.bestial_wrath.remains>focus.time_to_max|focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost)
@@ -270,25 +272,22 @@ local function APL ()
     return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(253, APL);
+mainAddon.Rotation.SetAPL(253, APL);
 
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk2 then
         return S.AspectoftheTurtle:Cast()
     end
 
-    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk3 then
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk3 then
         return S.Exhilaration:Cast()
     end
 
-    return RubimRH.Shared()
+    return mainAddon.Shared()
 end
 
-local function PASSIVE()
-    return RubimRH.Shared()
-end
 
-RubimRH.Rotation.SetPASSIVE(253, PASSIVE);
+mainAddon.Rotation.SetPASSIVE(253, PASSIVE);
 --- Last Update: 07/17/2018
 
 -- # Executed before combat begins. Accepts non-harmful actions only.
