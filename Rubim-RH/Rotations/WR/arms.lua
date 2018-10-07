@@ -1,6 +1,4 @@
 --- Localize Vars
-local RubimRH = LibStub("AceAddon-3.0"):GetAddon("RubimRH")
-
 -- Addon
 local addonName, addonTable = ...;
 
@@ -13,7 +11,9 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-RubimRH.Spell[71] = {
+local mainAddon = RubimRH
+
+mainAddon.Spell[71] = {
     -- Racials
     ArcaneTorrent = Spell(80483),
     AncestralCall = Spell(274738),
@@ -98,7 +98,7 @@ RubimRH.Spell[71] = {
 
 };
 
-local S = RubimRH.Spell[71]
+local S = mainAddon.Spell[71]
 
 if not Item.Warrior then
     Item.Warrior = {}
@@ -135,18 +135,18 @@ local OffensiveCDs = {
 }
 
 local function UpdateCDs()
-    if RubimRH.CDsON() then
+    if mainAddon.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if not spell:IsEnabledCD() then
-                RubimRH.delSpellDisabledCD(spell:ID())
+                mainAddon.delSpellDisabledCD(spell:ID())
             end
         end
 
     end
-    if not RubimRH.CDsON() then
+    if not mainAddon.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
             if spell:IsEnabledCD() then
-                RubimRH.addSpellDisabledCD(spell:ID())
+                mainAddon.addSpellDisabledCD(spell:ID())
             end
         end
     end
@@ -209,7 +209,7 @@ local function APL()
             return S.Slam:Cast()
         end
         -- mortal_strike,if=debuff.colossus_smash.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|buff.executioners_precision.stack=2)
-        if S.MortalStrike:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff) and Player:BuffStackP(S.OverpowerBuff) == 2 and (S.Dreadnaught:IsAvailable() or Player:BuffStackP(S.ExecutionersPrecisionBuff) == 2)) then
+        if S.MortalStrike:IsReady() and (Target:DebuffP(S.ColossusSmashDebuff) and Player:BuffStackP(S.OverpowerBuff) == 2 and (S.Dreadnaught:IsAvailable() or Target:DebuffStackP(S.ExecutionersPrecisionBuff) == 2)) then
             return S.MortalStrike:Cast()
         end
         -- overpower
@@ -256,7 +256,7 @@ local function APL()
             return S.Execute:Cast()
         end
         -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|buff.executioners_precision.stack=2)
-        if S.MortalStrike:IsReady() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or Player:BuffP(S.SweepingStrikesBuff) and Player:BuffStackP(S.OverpowerBuff) == 2 and (S.Dreadnaught:IsAvailable() or Player:BuffStackP(S.ExecutionersPrecisionBuff) == 2)) then
+        if S.MortalStrike:IsReady() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or Player:BuffP(S.SweepingStrikesBuff) and Player:BuffStackP(S.OverpowerBuff) == 2 and (S.Dreadnaught:IsAvailable() or Target:DebuffStackP(S.ExecutionersPrecisionBuff) == 2)) then
             return S.MortalStrike:Cast()
         end
         -- whirlwind,if=debuff.colossus_smash.up|(buff.crushing_assault.up&talent.fervor_of_battle.enabled)
@@ -421,52 +421,52 @@ local function APL()
     -- blood_fury,if=debuff.colossus_smash.up
     -- In Combat
 
-    if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk1 then
+    if S.VictoryRush:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk1 then
         return S.VictoryRush:Cast()
     end
 
-    if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk2 then
+    if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk2 then
         return S.VictoryRush:Cast()
     end
 
-    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk4 then
+    if S.RallyingCry:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk4 then
         return S.RallyingCry:Cast()
     end
 
-    if S.Pummel:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.Pummel:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
         return S.Pummel:Cast()
     end
 
-    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
+    if S.BloodFury:IsReady() and mainAddon.CDsON() and (Target:Debuff(S.ColossusSmashDebuff)) then
         return S.BloodFury:Cast()
     end
 
     -- blood_fury,if=debuff.colossus_smash.up
-    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.BloodFury:IsReady() and mainAddon.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=debuff.colossus_smash.up
-    if S.Berserking:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.Berserking:IsReady() and mainAddon.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
         return S.Berserking:Cast()
     end
     -- arcane_torrent,if=debuff.colossus_smash.down&cooldown.mortal_strike.remains>1.5&rage<50
-    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Target:DebuffDownP(S.ColossusSmashDebuff) and S.MortalStrike:CooldownRemainsP() > 1.5 and Player:Rage() < 50) then
+    if S.ArcaneTorrent:IsReady() and mainAddon.CDsON() and (Target:DebuffDownP(S.ColossusSmashDebuff) and S.MortalStrike:CooldownRemainsP() > 1.5 and Player:Rage() < 50) then
         return S.ArcaneTorrent:Cast()
     end
     -- lights_judgment,if=debuff.colossus_smash.down
-    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
+    if S.LightsJudgment:IsReady() and mainAddon.CDsON() and (Target:DebuffDownP(S.ColossusSmashDebuff)) then
         return S.LightsJudgment:Cast()
     end
     -- fireblood,if=debuff.colossus_smash.up
-    if S.Fireblood:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.Fireblood:IsReady() and mainAddon.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
         return S.Fireblood:Cast()
     end
     -- ancestral_call,if=debuff.colossus_smash.up
-    if S.AncestralCall:IsReady() and RubimRH.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
+    if S.AncestralCall:IsReady() and mainAddon.CDsON() and (Target:DebuffP(S.ColossusSmashDebuff)) then
         return S.AncestralCall:Cast()
     end
     -- avatar,if=cooldown.colossus_smash.remains<8|(talent.warbreaker.enabled&cooldown.warbreaker.remains<8)
-    if S.Avatar:IsCastable() and RubimRH.CDsON() and (S.ColossusSmash:CooldownRemainsP() < 8 or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemainsP() < 8)) then
+    if S.Avatar:IsCastable() and mainAddon.CDsON() and (S.ColossusSmash:CooldownRemainsP() < 8 or (S.Warbreaker:IsAvailable() and S.Warbreaker:CooldownRemainsP() < 8)) then
         return S.Avatar:Cast()
     end
     -- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
@@ -481,7 +481,7 @@ local function APL()
     --TODO: WHATS IS THIS??
     -- run_action_list,name=hac,if=raid_event.adds.exists
     --if ((Cache.EnemiesCount[8] > 1)) then
-      --  return Hac();
+    --  return Hac();
     --end
     -- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20
     if ((S.Massacre:IsAvailable() and Target:HealthPercentage() < 35) or Target:HealthPercentage() < 20) then
@@ -494,14 +494,14 @@ local function APL()
     return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(71, APL);
+mainAddon.Rotation.SetAPL(71, APL);
 
 local function PASSIVE()
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk3 then
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk3 then
         return S.DiebytheSword:Cast()
     end
 
-    return RubimRH.Shared()
+    return mainAddon.Shared()
 end
 
-RubimRH.Rotation.SetPASSIVE(71, PASSIVE);
+mainAddon.Rotation.SetPASSIVE(71, PASSIVE);
