@@ -11,7 +11,7 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-local mainAddon = Automata
+local mainAddon = RubimRH
 
 -- Spells
 mainAddon.Spell[253] = {
