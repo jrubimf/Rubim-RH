@@ -11,33 +11,32 @@ local Target = Unit.Target
 local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
+local mainAddon = RubimRH
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
 
 -- Spells
-RubimRH.Spell[62] = {
+mainAddon.Spell[62] = {
     ArcaneIntellectBuff = Spell(1459),
     ArcaneIntellect = Spell(1459),
     SummonArcaneFamiliarBuff = Spell(210126),
     SummonArcaneFamiliar = Spell(205022),
-    BrainStormBuff = Spell(273330),
-    BrainStorm = Spell(273326),
-    RuneofPowerBuff = Spell(116014),
-    RuneofPower = Spell(116011),
     MirrorImage = Spell(55342),
-    Evocation = Spell(12051),
     ArcaneBlast = Spell(30451),
-    ArcanePowerBuff = Spell(12042),
-    ArcanePower = Spell(12042),
+    Evocation = Spell(12051),
     ChargedUp = Spell(205032),
     ArcaneChargeBuff = Spell(36032),
     NetherTempest = Spell(114923),
     NetherTempestDebuff = Spell(114923),
+    RuneofPowerBuff = Spell(116014),
+    ArcanePowerBuff = Spell(12042),
     RuleofThreesBuff = Spell(264774),
     Overpowered = Spell(155147),
     LightsJudgment = Spell(255647),
+    RuneofPower = Spell(116011),
+    ArcanePower = Spell(12042),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     Fireblood = Spell(265221),
@@ -59,7 +58,7 @@ RubimRH.Spell[62] = {
     Blink = Spell(1953),
     Counterspell = Spell(2139)
 };
-local S = RubimRH.Spell[62];
+local S = mainAddon.Spell[62];
 
 -- Items
 if not Item.Mage then
@@ -152,7 +151,7 @@ local function APL()
         end
         -- snapshot_stats
         -- mirror_image
-        if S.MirrorImage:IsCastableP() and RubimRH.CDsON() then
+        if S.MirrorImage:IsCastableP() and mainAddon.CDsON() then
             return S.MirrorImage:Cast()
         end
         -- arcane_blast
@@ -198,7 +197,7 @@ local function APL()
             return S.Evocation:Cast()
         end
         -- mirror_image
-        if S.MirrorImage:IsCastableP() and RubimRH.CDsON() then
+        if S.MirrorImage:IsCastableP() and mainAddon.CDsON() then
             return S.MirrorImage:Cast()
         end
         -- nether_tempest,if=(refreshable|!ticking)&buff.arcane_charge.stack=buff.arcane_charge.max_stack&buff.rune_of_power.down&buff.arcane_power.down
@@ -210,7 +209,7 @@ local function APL()
             return S.ArcaneBlast:Cast()
         end
         -- lights_judgment,if=buff.arcane_power.down
-        if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() and (Player:BuffDownP(S.ArcanePowerBuff)) then
+        if S.LightsJudgment:IsCastableP() and mainAddon.CDsON() and (Player:BuffDownP(S.ArcanePowerBuff)) then
             return S.LightsJudgment:Cast()
         end
         -- rune_of_power,if=!buff.arcane_power.up&(mana.pct>=50|cooldown.arcane_power.remains=0)&(buff.arcane_charge.stack=buff.arcane_charge.max_stack)
@@ -218,28 +217,28 @@ local function APL()
             return S.RuneofPower:Cast()
         end
         -- berserking
-        if S.Berserking:IsCastableP() and RubimRH.CDsON() then
+        if S.Berserking:IsCastableP() and mainAddon.CDsON() then
             return S.Berserking:Cast()
         end
         -- arcane_power
-        if S.ArcanePower:IsCastableP() and RubimRH.CDsON() then
+        if S.ArcanePower:IsCastableP() and mainAddon.CDsON() then
             return S.ArcanePower:Cast()
         end
         -- use_items,if=buff.arcane_power.up|target.time_to_die<cooldown.arcane_power.remains
         -- blood_fury
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
+        if S.BloodFury:IsCastableP() and mainAddon.CDsON() then
             return S.BloodFury:Cast()
         end
         -- fireblood
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() then
+        if S.Fireblood:IsCastableP() and mainAddon.CDsON() then
             return S.Fireblood:Cast()
         end
         -- ancestral_call
-        if S.AncestralCall:IsCastableP() and RubimRH.CDsON() then
+        if S.AncestralCall:IsCastableP() and mainAddon.CDsON() then
             return S.AncestralCall:Cast()
         end
         -- presence_of_mind,if=buff.rune_of_power.remains<=buff.presence_of_mind.max_stack*action.arcane_blast.execute_time|buff.arcane_power.remains<=buff.presence_of_mind.max_stack*action.arcane_blast.execute_time
-        if S.PresenceofMind:IsCastableP() and RubimRH.CDsON() and (Player:BuffRemainsP(S.RuneofPowerBuff) <= PresenceOfMindMax() * S.ArcaneBlast:ExecuteTime() or Player:BuffRemainsP(S.ArcanePowerBuff) <= PresenceOfMindMax() * S.ArcaneBlast:ExecuteTime()) then
+        if S.PresenceofMind:IsCastableP() and mainAddon.CDsON() and (Player:BuffRemainsP(S.RuneofPowerBuff) <= PresenceOfMindMax() * S.ArcaneBlast:ExecuteTime() or Player:BuffRemainsP(S.ArcanePowerBuff) <= PresenceOfMindMax() * S.ArcaneBlast:ExecuteTime()) then
             return S.PresenceofMind:Cast()
         end
         -- potion,if=buff.arcane_power.up&(buff.berserking.up|buff.blood_fury.up|!(race.troll|race.orc))
@@ -278,7 +277,7 @@ local function APL()
     end
     Conserve = function()
         -- mirror_image
-        if S.MirrorImage:IsCastableP() and RubimRH.CDsON() then
+        if S.MirrorImage:IsCastableP() and mainAddon.CDsON() then
             return S.MirrorImage:Cast()
         end
         -- charged_up,if=buff.arcane_charge.stack=0
@@ -336,7 +335,7 @@ local function APL()
         --return S.Blink:Cast()
         --end
         -- presence_of_mind
-        if S.PresenceofMind:IsCastableP() and RubimRH.CDsON() then
+        if S.PresenceofMind:IsCastableP() and mainAddon.CDsON() then
             return S.PresenceofMind:Cast()
         end
         -- arcane_missiles
@@ -360,29 +359,29 @@ local function APL()
         return 0, 462338
     end
     -- counterspell,if=target.debuff.casting.react
-    if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
+    if S.Counterspell:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
         return S.Counterspell:Cast()
     end
     -- call_action_list,name=burn,if=burn_phase|target.time_to_die<variable.average_burn_length
-    if RubimRH.CDsON() and (bool(VarBurnPhase) or Target:TimeToDie() < VarAverageBurnLength) then
+    if mainAddon.CDsON() and (bool(VarBurnPhase) or Target:TimeToDie() < VarAverageBurnLength) then
         if Burn() ~= nil then
             return Burn()
         end
     end
     -- call_action_list,name=burn,if=(cooldown.arcane_power.remains=0&cooldown.evocation.remains<=variable.average_burn_length&(buff.arcane_charge.stack=buff.arcane_charge.max_stack|(talent.charged_up.enabled&cooldown.charged_up.remains=0)))
-    if RubimRH.CDsON() and ((S.ArcanePower:CooldownRemainsP() == 0 and S.Evocation:CooldownRemainsP() <= VarAverageBurnLength and (Player:ArcaneChargesP() == Player:ArcaneChargesMax() or (S.ChargedUp:IsAvailable() and S.ChargedUp:CooldownRemainsP() == 0)))) then
+    if mainAddon.CDsON() and ((S.ArcanePower:CooldownRemainsP() == 0 and S.Evocation:CooldownRemainsP() <= VarAverageBurnLength and (Player:ArcaneChargesP() == Player:ArcaneChargesMax() or (S.ChargedUp:IsAvailable() and S.ChargedUp:CooldownRemainsP() == 0)))) then
         if Burn() ~= nil then
             return Burn()
         end
     end
     -- call_action_list,name=burn,if=variable.bs_rotation=1&(cooldown.evocation.remains=0|cooldown.evocation.remains<=variable.average_burn_length)&(buff.arcane_charge.stack=buff.arcane_charge.max_stack|(talent.charged_up.enabled&cooldown.charged_up.remains=0))
-    if RubimRH.CDsON() and (VarBsRotation == 1 and (S.Evocation:CooldownRemainsP() == 0 or S.Evocation:CooldownRemainsP() <= VarAverageBurnLength) and (Player:ArcaneChargesP() == Player:ArcaneChargesMax() or (S.ChargedUp:IsAvailable() and S.ChargedUp:CooldownRemainsP() == 0))) then
+    if mainAddon.CDsON() and (VarBsRotation == 1 and (S.Evocation:CooldownRemainsP() == 0 or S.Evocation:CooldownRemainsP() <= VarAverageBurnLength) and (Player:ArcaneChargesP() == Player:ArcaneChargesMax() or (S.ChargedUp:IsAvailable() and S.ChargedUp:CooldownRemainsP() == 0))) then
         if Burn() ~= nil then
             return Burn()
         end
     end
     -- call_action_list,name=conserve,if=!burn_phase
-    if (not bool(VarBurnPhase)) or (not RubimRH.CDsON()) then
+    if (not bool(VarBurnPhase)) or (not mainAddon.CDsON()) then
         if Conserve() ~= nil then
             return Conserve()
         end
@@ -390,9 +389,9 @@ local function APL()
     return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(62, APL)
+mainAddon.Rotation.SetAPL(62, APL)
 
 local function PASSIVE()
-    return RubimRH.Shared()
+    return mainAddon.Shared()
 end
-RubimRH.Rotation.SetPASSIVE(62, PASSIVE)
+mainAddon.Rotation.SetPASSIVE(62, PASSIVE)

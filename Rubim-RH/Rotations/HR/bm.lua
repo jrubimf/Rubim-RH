@@ -10,7 +10,8 @@ local Pet = Unit.Pet;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
-local mainAddon = RubimRH
+
+local mainAddon = Automata
 
 -- Spells
 mainAddon.Spell[253] = {
@@ -68,7 +69,8 @@ mainAddon.Spell[253] = {
     -- Misc
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
-    ConcusiveShot = Spell(5116)
+    ConcusiveShot = Spell(5116),
+    Intimidation = Spell(19577)
     -- Macros
 }
 
@@ -285,7 +287,6 @@ local function PASSIVE()
 
     return mainAddon.Shared()
 end
-
 
 mainAddon.Rotation.SetPASSIVE(253, PASSIVE);
 --- Last Update: 07/17/2018
