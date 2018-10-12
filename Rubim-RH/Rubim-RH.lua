@@ -667,7 +667,10 @@ local defaults = {
         },
         --Mage
         [62] = {
-            cooldowns = true
+            cooldowns = true,
+            sk1 = 10, -- IceBlock
+            sk1id = 45438, -- Iceblock
+            sk1tooltip = "Percent HP to use Ice Block",
         },
         [63] = {
             cooldowns = true

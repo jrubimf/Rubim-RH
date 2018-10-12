@@ -1,3 +1,4 @@
+local mainAddon = RubimRH
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -11,7 +12,6 @@ local Target = Unit.Target
 local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
-local mainAddon = RubimRH
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -56,7 +56,9 @@ mainAddon.Spell[62] = {
     Supernova = Spell(157980),
     Shimmer = Spell(212653),
     Blink = Spell(1953),
-    Counterspell = Spell(2139)
+    Counterspell = Spell(2139),
+    IceBarrier= Spell(11426)
+
 };
 local S = mainAddon.Spell[62];
 
@@ -359,7 +361,7 @@ local function APL()
         return 0, 462338
     end
     -- counterspell,if=target.debuff.casting.react
-    if S.Counterspell:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
+    if S.Counterspell:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
         return S.Counterspell:Cast()
     end
     -- call_action_list,name=burn,if=burn_phase|target.time_to_die<variable.average_burn_length
@@ -392,6 +394,10 @@ end
 mainAddon.Rotation.SetAPL(62, APL)
 
 local function PASSIVE()
+    if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[62].sk1 then
+        return S.IceBlock:Cast()
+    end
+
     return mainAddon.Shared()
 end
 mainAddon.Rotation.SetPASSIVE(62, PASSIVE)

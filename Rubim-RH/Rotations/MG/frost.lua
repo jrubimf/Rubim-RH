@@ -1,3 +1,4 @@
+local mainAddon = RubimRH
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -17,7 +18,7 @@ local Item = HL.Item
 -- luacheck: max_line_length 9999
 
 -- Spells
-RubimRH.Spell[MFrost] = {
+mainAddon.Spell[MFrost] = {
     ArcaneIntellectBuff = Spell(1459),
     ArcaneIntellect = Spell(1459),
     WaterElemental = Spell(31687),
@@ -57,9 +58,9 @@ RubimRH.Spell[MFrost] = {
     Quake = Spell(240447),
 
 };
-HL.Spell[MFrost] = RubimRH.Spell[MFrost]
+HL.Spell[MFrost] = mainAddon.Spell[MFrost]
 --Remove Watersomething
-local S = RubimRH.Spell[MFrost]
+local S = mainAddon.Spell[MFrost]
 
 -- Items
 if not Item.Mage then
@@ -102,7 +103,7 @@ S.Frostbolt:RegisterInFlight()
 -- S.Flurry:RegisterInFlight(S.BrainFreezeBuff)
 --- ======= ACTION LISTS =======
 
---Player:FilterTriggerGCD(RubimRH.playerSpec)
+--Player:FilterTriggerGCD(mainAddon.playerSpec)
 
 local function FuckWaterBolt()
     HL.Enum.TriggerGCD[31707] = nil
@@ -129,11 +130,11 @@ local function APL()
         end
         -- snapshot_stats
         -- mirror_image
-        if S.MirrorImage:IsReadyP() and RubimRH.CDsON() then
+        if S.MirrorImage:IsReadyP() and mainAddon.CDsON() then
             return S.MirrorImage:Cast()
         end
         -- frostbolt
-        if S.Frostbolt:IsReadyP() and not Player:IsMoving() and RubimRH.TargetIsValid() then
+        if S.Frostbolt:IsReadyP() and not Player:IsMoving() and mainAddon.TargetIsValid() then
             return S.Frostbolt:Cast()
         end
     end
@@ -194,11 +195,11 @@ local function APL()
     Cooldowns = function()
         -- time_warp
         -- icy_veins
-        if S.IcyVeins:IsReadyP() and RubimRH.CDsON() then
+        if S.IcyVeins:IsReadyP() and mainAddon.CDsON() then
             return S.IcyVeins:Cast()
         end
         -- mirror_image
-        if S.MirrorImage:IsReadyP() and RubimRH.CDsON() then
+        if S.MirrorImage:IsReadyP() and mainAddon.CDsON() then
             return S.MirrorImage:Cast()
         end
         -- rune_of_power,if=prev_gcd.1.frozen_orb|time_to_die>10+cast_time&time_to_die<20
@@ -214,23 +215,23 @@ local function APL()
         -- potion,if=prev_gcd.1.icy_veins|target.time_to_die<70
         -- use_items
         -- blood_fury
-        if S.BloodFury:IsReadyP() and RubimRH.CDsON() then
+        if S.BloodFury:IsReadyP() and mainAddon.CDsON() then
             return S.BloodFury:Cast()
         end
         -- berserking
-        if S.Berserking:IsReadyP() and RubimRH.CDsON() then
+        if S.Berserking:IsReadyP() and mainAddon.CDsON() then
             return S.Berserking:Cast()
         end
         -- lights_judgment
-        if S.LightsJudgment:IsReadyP() and RubimRH.CDsON() then
+        if S.LightsJudgment:IsReadyP() and mainAddon.CDsON() then
             return S.LightsJudgment:Cast()
         end
         -- fireblood
-        if S.Fireblood:IsReadyP() and RubimRH.CDsON() then
+        if S.Fireblood:IsReadyP() and mainAddon.CDsON() then
             return S.Fireblood:Cast()
         end
         -- ancestral_call
-        if S.AncestralCall:IsReadyP() and RubimRH.CDsON() then
+        if S.AncestralCall:IsReadyP() and mainAddon.CDsON() then
             return S.AncestralCall:Cast()
         end
     end
@@ -250,7 +251,7 @@ local function APL()
         if S.Flurry:IsReadyP() and (not S.GlacialSpike:IsAvailable() and (Player:PrevGCDP(1, S.Ebonbolt) or (Player:Buff(S.BrainFreezeBuff)) and Player:PrevGCDP(1, S.Frostbolt))) then
             return S.Flurry:Cast()
         end
-            --flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
+        --flurry,if=talent.glacial_spike.enabled&buff.brain_freeze.react&(prev_gcd.1.frostbolt&buff.icicles.stack<4|prev_gcd.1.glacial_spike|prev_gcd.1.ebonbolt)
         if S.Flurry:IsReadyP() and (S.GlacialSpike:IsAvailable() and Player:BuffP(S.BrainFreezeBuff) and (Player:PrevGCDP(1, S.Frostbolt) and Player:BuffStackP(S.IciclesBuff) < 4 or Player:PrevGCDP(1, S.GlacialSpike) or (Player:PrevGCDP(1, S.Ebonbolt) and S.GlacialSpike:CooldownRemainsP() > 0))) then
             return S.Flurry:Cast()
         end
@@ -328,14 +329,18 @@ local function APL()
     if Player:Buff(S.BrainFreezeBuff) then
         brainFreezewasActive = GetTime()
     end
-        if RubimRH.TargetIsValid() then
+    if mainAddon.TargetIsValid() then
         -- counterspell
+        if S.Counterspell:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
+            return S.Counterspell:Cast()
+        end
+        
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
         if S.IceLance:IsReadyP() and (Player:PrevGCDP(1, S.Flurry) and GetTime() - brainFreezewasActive <= S.Flurry:CastTime() and not (Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
         end
         -- call_action_list,name=cooldowns
-        if RubimRH.CDsON() then
+        if mainAddon.CDsON() then
             if Cooldowns() ~= nil then
                 return Cooldowns()
             end
@@ -356,13 +361,13 @@ local function APL()
     return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(64, APL)
+mainAddon.Rotation.SetAPL(64, APL)
 
 local function PASSIVE()
-    if S.IceBlock:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[64].sk1 then
+    if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[64].sk1 then
         return S.IceBlock:Cast()
     end
 
-    return RubimRH.Shared()
+    return mainAddon.Shared()
 end
-RubimRH.Rotation.SetPASSIVE(64, PASSIVE)
+mainAddon.Rotation.SetPASSIVE(64, PASSIVE)
