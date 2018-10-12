@@ -1,4 +1,5 @@
 local mainAddon = RubimRH
+
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -56,6 +57,8 @@ mainAddon.Spell[MFrost] = {
     FreezingRain = Spell(240555),
     IceBlock = Spell(45438),
     Quake = Spell(240447),
+    Counterspell = Spell(2139),
+    IceBarrier = Spell(11426),
 
 };
 HL.Spell[MFrost] = mainAddon.Spell[MFrost]
@@ -207,7 +210,7 @@ local function APL()
             return S.RuneofPower:Cast()
         end
         -- call_action_list,name=talent_rop,if=talent.rune_of_power.enabled&active_enemies=1&cooldown.rune_of_power.full_recharge_time<cooldown.frozen_orb.remains
-        if (S.RuneofPower:IsAvailable() and Cache.EnemiesCount[35] == 1 and S.RuneofPower:FullRechargeTime() < S.FrozenOrb:CooldownRemainsP()) then
+        if (S.RuneofPower:IsAvailable() and Player:EnemiesAround(35) == 1 and S.RuneofPower:FullRechargeTime() < S.FrozenOrb:CooldownRemainsP()) then
             if TalentRop() ~= nil then
                 return TalentRop()
             end
@@ -260,7 +263,7 @@ local function APL()
             return S.FrozenOrb:Cast()
         end
         -- blizzard,if=active_enemies>2|active_enemies>1&cast_time=0&buff.fingers_of_frost.react<2
-        if S.Blizzard:IsReadyP() and (Cache.EnemiesCount[35] > 2 or Cache.EnemiesCount[35] > 1 and S.Blizzard:CastTime() == 0 and Player:BuffStackP(S.FingersofFrostBuff) < 2) then
+        if S.Blizzard:IsReadyP() and (Player:EnemiesAround(35) > 2 or Player:EnemiesAround(35) > 1 and S.Blizzard:CastTime() == 0 and Player:BuffStackP(S.FingersofFrostBuff) < 2) then
             return S.Blizzard:Cast()
         end
         -- ice_lance,if=buff.fingers_of_frost.react
@@ -280,11 +283,11 @@ local function APL()
             return S.RayofFrost:Cast()
         end
         -- blizzard,if=cast_time=0|active_enemies>1
-        if S.Blizzard:IsReadyP() and (S.Blizzard:CastTime() == 0 or Cache.EnemiesCount[35] > 1) then
+        if S.Blizzard:IsReadyP() and (S.Blizzard:CastTime() == 0 or Player:EnemiesAround(35) > 1) then
             return S.Blizzard:Cast()
         end
         -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
-        if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Cache.EnemiesCount[35] > 1 and S.SplittingIce:IsAvailable()) then
+        if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Player:EnemiesAround(35) > 1 and S.SplittingIce:IsAvailable()) then
             return S.GlacialSpike:Cast()
         end
         -- ice_nova
@@ -331,10 +334,6 @@ local function APL()
     end
     if mainAddon.TargetIsValid() then
         -- counterspell
-        if S.Counterspell:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
-            return S.Counterspell:Cast()
-        end
-        
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
         if S.IceLance:IsReadyP() and (Player:PrevGCDP(1, S.Flurry) and GetTime() - brainFreezewasActive <= S.Flurry:CastTime() and not (Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
@@ -346,7 +345,7 @@ local function APL()
             end
         end
         -- call_action_list,name=aoe,if=active_enemies>3&talent.freezing_rain.enabled|active_enemies>4
-        if (Cache.EnemiesCount[35] > 3 and S.FreezingRain:IsAvailable() or Cache.EnemiesCount[35] > 4) then
+        if (Player:EnemiesAround(35) > 3 and S.FreezingRain:IsAvailable() or Player:EnemiesAround(35) > 4) then
             if Aoe() ~= nil then
                 return Aoe()
             end
@@ -366,6 +365,10 @@ mainAddon.Rotation.SetAPL(64, APL)
 local function PASSIVE()
     if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[64].sk1 then
         return S.IceBlock:Cast()
+    end
+
+    if S.IceBarrier:IsReady() and Player:LastSwinged() <= 3 and not Player:Buff(S.IceBarrier) then
+        return S.IceBarrier:Cast()
     end
 
     return mainAddon.Shared()

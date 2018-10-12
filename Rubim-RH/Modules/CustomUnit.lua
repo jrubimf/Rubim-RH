@@ -464,3 +464,10 @@ function Unit:IsRanged(ID)
     end
     return false
 end
+
+local timer = GetTime()
+local totalEnemies = 0
+
+function Unit:EnemiesAround(distance, ignoreCombat)
+    return Cache.EnemiesCount[distance] or 0
+end
