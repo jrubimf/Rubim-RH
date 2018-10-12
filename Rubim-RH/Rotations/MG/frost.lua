@@ -367,7 +367,7 @@ local function PASSIVE()
         return S.IceBlock:Cast()
     end
 
-    if S.IceBarrier:IsReady() and Player:LastSwinged() <= 3 and not Player:Buff(S.IceBarrier) then
+    if S.IceBarrier:IsReady() and not Player:Buff(S.IceBarrier) then
         return S.IceBarrier:Cast()
     end
 
