@@ -269,25 +269,9 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
     return self:IsCastableQueue(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
-function Spell:IsReady(Range, AoESpell, ThisUnit)
-
-    if RubimPvP ~= nil then
-        if self:CanBreakCC() then
-            return false
-        end
-    end
-
-
-    if not self:IsAvailable() or self:IsQueuedPowerCheck() then
+function Spell:SanityChecks()
+    if self:IsQueuedPowerCheck() then
         return false
-    end
-
-    if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
-        for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
-            if v.spellID == self:ID() and v.isActive == false then
-                return false
-            end
-        end
     end
 
     if self:IsEnabled() == false then
@@ -298,26 +282,23 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 
-    if Target:Exists() and not Player:CanAttack(Target) then
+    if Target:Exists() then
+        if (not Player:CanAttack(Target) or not RubimRH.TargetIsValid()) then
+            return false
+        end
+    end
+end
+
+function Spell:IsReady(Range, AoESpell, ThisUnit)
+
+    if self:SanityChecks() == false then
         return false
     end
 
-    if RubimRH.db.profile.mainOption.startattack then
-        local range = self:MaximumRange()
-        if range == 0 or range > 8 then
-            range = 10
-        else
-            range = 8
-        end
-        HL.GetEnemies(8, true)
-        if self:IsMelee() and Cache.EnemiesCount[8] >= 1 then
-            return self:IsCastable(nil, nil, nil) and self:IsUsable();
-        end
-    end
-
-    if RubimRH.TargetIsValid() == false and self:MaximumRange() <= 29 then
+    if not self:IsAvailable() then
         return false
     end
+
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 

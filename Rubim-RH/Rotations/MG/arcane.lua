@@ -57,7 +57,8 @@ mainAddon.Spell[62] = {
     Shimmer = Spell(212653),
     Blink = Spell(1953),
     Counterspell = Spell(2139),
-    IceBarrier= Spell(11426)
+    IceBarrier= Spell(11426),
+    IceBlock = Spell(45438),
 
 };
 local S = mainAddon.Spell[62];
