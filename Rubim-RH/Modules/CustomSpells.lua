@@ -601,3 +601,46 @@ function Unit:LustDuration()
     end
     return 0
 end
+
+
+
+-- Returns the amount of wild imps that are up
+function Player:PetStack(PetType)
+  PetType = PetType or false
+  local count = 0;
+	if not HL.GuardiansTable.Pets or not PetType then
+		return count
+	end
+  
+	for key, petData in pairs(HL.GuardiansTable.Pets) do
+		if petData[1] == PetType then
+			count = count +1
+		end 
+	end
+	return count
+end
+-- Summoned pet duration
+function Player:PetDuration(PetType)
+	if not PetType then 
+		return 0 
+	end
+	local PetsInfo = {
+		[55659] = {"Wild Imp", 20},
+		[99737] = {"Wild Imp", 20},
+		[98035] = {"Dreadstalker", 12},
+		[17252] = {"Felguard", 15},
+		[135002] = {"Demonic Tyrant", 15},
+	}
+	local maxduration = 0
+	for key, Value in pairs(HL.GuardiansTable.Pets) do
+		if HL.GuardiansTable.Pets[key][1] == PetType then
+			if (PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])) > maxduration then
+				maxduration = HL.OffsetRemains((PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])), "Auto" );
+			end
+		end
+	end
+	return maxduration
+end
+	
+-- END CUSTOM EVENTS / OVERRIDES	
+	

@@ -153,7 +153,7 @@ local EnabledRotation = {
     [264] = false, -- Restoration
     -- Warlock
     [265] = true, -- Affliction
-    [266] = false, -- Demonology
+    [266] = true, -- Demonology
     [267] = false, -- Destruction
     -- Warrior
     [71] = true, -- Arms
