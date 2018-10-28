@@ -772,7 +772,7 @@ function RubimRH.mainRotation(option)
         return "ERROR"
     end
 
-    if EnabledRotation[RubimRH.playerSpec] == false then
+    if EnabledRotation[RubimRH.playerSpec] ~= true then
         return "ERROR"
     end
 

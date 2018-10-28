@@ -183,7 +183,8 @@ local function APL()
             return S.Bonestorm:Cast()
         end
         -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.HeartBreaker.enabled*2)|target.time_to_die<10
-        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= (15 + num(Player:BuffP(S.DancingRuneWeaponBuff)) * 5 + Cache.EnemiesCount[5] * num(S.HeartBreaker:IsAvailable()) * 2) or Target:TimeToDie() < 10) then
+        local AoEDS = (15 + num(Player:BuffP(S.DancingRuneWeaponBuff)) * 5 + Cache.EnemiesCount[5]  * num(S.HeartBreaker:IsAvailable()) * 2)
+        if S.DeathStrike:IsReady() and (Player:RunicPowerDeficit() <= AoEDS or Target:TimeToDie() < 10) then
             return S.DeathStrike:Cast()
         end
         -- death_and_decay,if=spell_targets.death_and_decay>=3

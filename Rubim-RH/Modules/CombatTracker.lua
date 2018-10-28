@@ -274,9 +274,9 @@ function RubimRH.incdmgmagic(unit)
     return 0
 end
 
-function RubimRH.lastDmg5(unit)
-    if UnitExists(unit) then
-        local pDMG = select(5, RubimRH.getDMG(unit))
+function RubimRH.lastDmg5()
+    if UnitExists("player") then
+        local pDMG = (select(6, RubimRH.getDMG("player")) * 100) / UnitHealthMax("Player")
         return pDMG
     end
     return 0
