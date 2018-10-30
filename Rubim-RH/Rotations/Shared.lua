@@ -78,7 +78,7 @@ function QueueSkill()
         return RubimRH.QueuedSpellAuto():Cast()
     end
 end
-
+--#TODO FIX THIS
 function RubimRH.Shared()
     if Player:AffectingCombat() then
 
