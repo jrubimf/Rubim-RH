@@ -83,6 +83,7 @@ function RubimRH.Shared()
     if Player:AffectingCombat() then
 
         if Player:AffectingCombat() and not Target:Exists() then
+            HL.GetEnemies(8)
             if Cache.EnemiesCount[8] >= 1 then
                 return 153911
             end
