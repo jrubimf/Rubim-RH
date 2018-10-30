@@ -776,10 +776,6 @@ function RubimRH.mainRotation(option)
         return "ERROR"
     end
 
-    --    if Player:AffectingCombat() and not Target:Exists() then
-    --        if RubimRH.TargetNext("Melee", 1030902) ~= nil then
-    --            return 1, RubimRH.TargetNext("Melee", 1030902)
-    --end
     --endd
     if UnitInVehicle("Player") then
         return 0, 975744

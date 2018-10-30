@@ -82,6 +82,12 @@ end
 function RubimRH.Shared()
     if Player:AffectingCombat() then
 
+        if Player:AffectingCombat() and not Target:Exists() then
+            if Cache.EnemiesCount[8] >= 1 then
+                return 153911
+            end
+        end
+
         if Player:ShouldStopCasting() and Player:IsCasting() then
             return 249170
         end
