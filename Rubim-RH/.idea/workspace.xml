@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="veng.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="veng.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/DH/veng.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="104" column="26" lean-forward="false" selection-start-line="104" selection-start-column="26" selection-end-line="104" selection-end-column="26" />
+            <state relative-caret-position="556">
+              <caret line="66" column="33" lean-forward="true" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -63,7 +63,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomSpells.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CustomSpells.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="655">
@@ -121,9 +121,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Rotations/DH/veng.lua" />
         <option value="$PROJECT_DIR$/Rotations/Shared.lua" />
         <option value="$PROJECT_DIR$/Modules/CustomSpells.lua" />
+        <option value="$PROJECT_DIR$/Rotations/DH/veng.lua" />
       </list>
     </option>
   </component>
@@ -167,6 +167,12 @@
               <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
               <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
               <item name="Rotations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Rotations" type="462c0819:PsiDirectoryNode" />
+              <item name="DH" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
@@ -302,14 +308,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DH/veng.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="104" column="26" lean-forward="false" selection-start-line="104" selection-start-column="26" selection-end-line="104" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/Shared.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -348,6 +346,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="655">
           <caret line="300" column="7" lean-forward="true" selection-start-line="300" selection-start-column="7" selection-end-line="300" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/DH/veng.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="556">
+          <caret line="66" column="33" lean-forward="true" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
           <folding />
         </state>
       </provider>

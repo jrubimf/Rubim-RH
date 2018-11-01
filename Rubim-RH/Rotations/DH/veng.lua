@@ -60,7 +60,7 @@ local function UpdateRanges()
 end
 
 
-RubimRH.Listener:Add('Automata.Veng', 'UNIT_SPELLCAST_SUCCEEDED', function(...)
+RubimRH.Listener:Add('Vengeance', 'UNIT_SPELLCAST_SUCCEEDED', function(...)
     local unit, castGUID, spellID = ...
 
     if unit == "player" then
