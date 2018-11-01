@@ -59,6 +59,18 @@ local function UpdateRanges()
     end
 end
 
+
+RubimRH.Listener:Add('Automata.Veng', 'UNIT_SPELLCAST_SUCCEEDED', function(...)
+    local unit, castGUID, spellID = ...
+
+    if unit == "player" then
+        if spellID == 189110 then
+            S.InfernalStrike.LastCastTime = GetTime()
+        end
+    end
+
+end)
+
 local function APL()
     local Precombat, Brand, Defensives, Normal
     UpdateRanges()
@@ -89,7 +101,7 @@ local function APL()
         end
 
         --actions.brand+=/infernal_strike,if=cooldown.fiery_brand.remains=0
-        if S.InfernalStrike:IsReady() and S.FieryBrand:CooldownRemains() == 0 and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+        if S.InfernalStrike:TimeSinceLastCast() > 1 and S.InfernalStrike:IsReady() and S.FieryBrand:CooldownRemains() == 0 and S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
             return S.InfernalStrike:Cast()
         end
 
@@ -109,7 +121,7 @@ local function APL()
         end
 
         --actions.brand+=/infernal_strike,if=dot.fiery_brand.ticking
-        if S.InfernalStrike:IsReady() and Cache.EnemiesCount[8] >= 1 and Target:Debuff(S.FieryBrand) then
+        if S.InfernalStrike:TimeSinceLastCast() > 1  and S.InfernalStrike:IsReady() and Cache.EnemiesCount[8] >= 1 and Target:Debuff(S.FieryBrand) then
             return S.InfernalStrike:Cast()
         end
 
@@ -136,7 +148,7 @@ local function APL()
     Normal = function()
         --# Normal Rotation
         --actions.normal=infernal_strike
-        if S.InfernalStrike:TimeSinceLastCast() > 2 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
+        if S.InfernalStrike:TimeSinceLastCast() > 1 and S.InfernalStrike:IsReady("Melee") and S.InfernalStrike:ChargesFractional() >= 2.0 - Player:GCD()/10 then
             return S.InfernalStrike:Cast()
         end
 

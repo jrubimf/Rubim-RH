@@ -60,7 +60,7 @@ local function trinketReady(trinketPosition)
 end
 
 function QueueSkill()
-    if RubimRH.QueuedSpell() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
+    if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     if RubimRH.QueuedSpell():IsReadyQueue() then
@@ -70,7 +70,7 @@ function QueueSkill()
         end
     end
 
-    if RubimRH.QueuedSpellAuto() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
+    if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
         RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
     end
 
