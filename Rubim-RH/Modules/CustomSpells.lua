@@ -286,6 +286,11 @@ function Spell:SanityChecks()
         if (not Player:CanAttack(Target) or not RubimRH.TargetIsValid()) then
             return false
         end
+    else
+        local range = self:MaximumRange()
+        if range > 0 then
+            return false
+        end
     end
 end
 
