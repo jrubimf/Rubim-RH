@@ -220,7 +220,7 @@ local function APL ()
         end
         -- actions+=/potion,if=buff.bestial_wrath.up&buff.aspect_of_the_wild.up
         -- barbed_shot,if=pet.cat.buff.frenzy.up&pet.cat.buff.frenzy.remains<=gcd.max
-        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() * 3) then
+        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD()) then
             return S.BarbedShot:Cast()
         end
         -- a_murder_of_crows
