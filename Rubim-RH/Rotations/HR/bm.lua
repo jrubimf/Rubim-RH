@@ -70,8 +70,10 @@ mainAddon.Spell[253] = {
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
     ConcusiveShot = Spell(5116),
-    Intimidation = Spell(19577)
+    ScorpidSting = Spell(202900),
+    Intimidation = Spell(19577),
     -- Macros
+
 }
 
 local S = mainAddon.Spell[253]
@@ -277,11 +279,11 @@ end
 mainAddon.Rotation.SetAPL(253, APL);
 
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk2 then
+    if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk2 then
         return S.AspectoftheTurtle:Cast()
     end
 
-    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk3 then
+    if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk3 then
         return S.Exhilaration:Cast()
     end
 

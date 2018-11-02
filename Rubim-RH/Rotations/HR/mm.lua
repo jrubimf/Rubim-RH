@@ -229,7 +229,7 @@ end
 
 RubimRH.Rotation.SetAPL(254, APL)
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk2 then
+    if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk2 then
         return S.AspectoftheTurtle:Cast()
     end
 
