@@ -69,7 +69,7 @@ mainAddon.Spell[253] = {
     -- Misc
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
-    ConcusiveShot = Spell(5116),
+    ConcussiveShot = Spell(5116),
     ScorpidSting = Spell(202900),
     Intimidation = Spell(19577),
     -- Macros

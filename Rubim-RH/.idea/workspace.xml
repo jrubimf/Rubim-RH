@@ -21,11 +21,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="797" column="7" lean-forward="true" selection-start-line="797" selection-start-column="7" selection-end-line="797" selection-end-column="7" />
+            <state relative-caret-position="266">
+              <caret line="1086" column="11" lean-forward="true" selection-start-line="1086" selection-start-column="11" selection-end-line="1086" selection-end-column="11" />
               <folding>
                 <element signature="e#2638#3088#1" expanded="false" />
                 <element signature="e#3104#3549#1" expanded="false" />
@@ -49,8 +49,6 @@
                 <element signature="e#10366#10565#0" expanded="false" />
                 <element signature="e#10589#10893#0" expanded="false" />
                 <element signature="e#28251#30330#0" expanded="false" />
-                <element signature="e#30367#31505#0" expanded="false" />
-                <element signature="e#31546#32629#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -59,8 +57,8 @@
       <file leaf-file-name="rubim-rh_extraPvP.lua" pinned="false" current-in-tab="false">
         <entry file="file://G:/Rubim-rh_extraPvP--Modded_BM_Only/Rubim-rh_extraPvP--Modded BM Only/rubim-rh_extraPvP.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="1162" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1321" selection-end-column="3" />
+            <state relative-caret-position="474">
+              <caret line="1123" column="26" lean-forward="true" selection-start-line="1123" selection-start-column="26" selection-end-line="1123" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -99,7 +97,7 @@
       <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
+            <state relative-caret-position="862">
               <caret line="114" column="3" lean-forward="false" selection-start-line="114" selection-start-column="3" selection-end-line="115" selection-end-column="0" />
               <folding />
             </state>
@@ -109,18 +107,18 @@
       <file leaf-file-name="CustomSpells.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4539">
+            <state relative-caret-position="434">
               <caret line="267" column="20" lean-forward="false" selection-start-line="267" selection-start-column="20" selection-end-line="267" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bm.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bm.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/HR/bm.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="225" column="28" lean-forward="true" selection-start-line="225" selection-start-column="28" selection-end-line="225" selection-end-column="28" />
+            <state relative-caret-position="288">
+              <caret line="72" column="16" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -159,8 +157,11 @@
       <find>Feign</find>
       <find>SpellFeignDeath</find>
       <find>DistanceT</find>
-      <find>ScorpidSting</find>
       <find>BeastMaster</find>
+      <find>SlowSpell()</find>
+      <find>ConcussiveShot</find>
+      <find>Sting</find>
+      <find>ScorpidSting</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -171,8 +172,8 @@
         <option value="$PROJECT_DIR$/Modules/CustomSpells.lua" />
         <option value="$PROJECT_DIR$/Rotations/HR/mm.lua" />
         <option value="G:/Rubim-rh_extraPvP--Modded_BM_Only/Rubim-rh_extraPvP--Modded BM Only/rubim-rh_extraPvP.lua" />
-        <option value="$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
         <option value="$PROJECT_DIR$/Rotations/HR/bm.lua" />
+        <option value="$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua" />
       </list>
     </option>
   </component>
@@ -453,8 +454,6 @@
             <element signature="e#10366#10565#0" expanded="false" />
             <element signature="e#10589#10893#0" expanded="false" />
             <element signature="e#28251#30330#0" expanded="false" />
-            <element signature="e#30367#31505#0" expanded="false" />
-            <element signature="e#31546#32629#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -502,8 +501,6 @@
             <element signature="e#10366#10565#0" expanded="false" />
             <element signature="e#10589#10893#0" expanded="false" />
             <element signature="e#28251#30330#0" expanded="false" />
-            <element signature="e#30367#31505#0" expanded="false" />
-            <element signature="e#31546#32629#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -591,14 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="3" lean-forward="false" selection-start-line="114" selection-start-column="3" selection-end-line="115" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/DH/veng.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
@@ -623,14 +612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4539">
-          <caret line="267" column="20" lean-forward="false" selection-start-line="267" selection-start-column="20" selection-end-line="267" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/HR/mm.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3910">
@@ -639,18 +620,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/HR/survival.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="513" column="0" lean-forward="true" selection-start-line="513" selection-start-column="0" selection-end-line="513" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/HR/bm.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="72" column="16" lean-forward="false" selection-start-line="72" selection-start-column="4" selection-end-line="72" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="267" column="20" lean-forward="false" selection-start-line="267" selection-start-column="20" selection-end-line="267" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="862">
+          <caret line="114" column="3" lean-forward="false" selection-start-line="114" selection-start-column="3" selection-end-line="115" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://G:/Rubim-rh_extraPvP--Modded_BM_Only/Rubim-rh_extraPvP--Modded BM Only/rubim-rh_extraPvP.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="1162" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1321" selection-end-column="3" />
+        <state relative-caret-position="474">
+          <caret line="1123" column="26" lean-forward="true" selection-start-line="1123" selection-start-column="26" selection-end-line="1123" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="797" column="7" lean-forward="true" selection-start-line="797" selection-start-column="7" selection-end-line="797" selection-end-column="7" />
+        <state relative-caret-position="266">
+          <caret line="1086" column="11" lean-forward="true" selection-start-line="1086" selection-start-column="11" selection-end-line="1086" selection-end-column="11" />
           <folding>
             <element signature="e#2638#3088#1" expanded="false" />
             <element signature="e#3104#3549#1" expanded="false" />
@@ -674,25 +687,7 @@
             <element signature="e#10366#10565#0" expanded="false" />
             <element signature="e#10589#10893#0" expanded="false" />
             <element signature="e#28251#30330#0" expanded="false" />
-            <element signature="e#30367#31505#0" expanded="false" />
-            <element signature="e#31546#32629#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/HR/survival.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="513" column="0" lean-forward="true" selection-start-line="513" selection-start-column="0" selection-end-line="513" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/HR/bm.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="225" column="28" lean-forward="true" selection-start-line="225" selection-start-column="28" selection-end-line="225" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
