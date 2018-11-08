@@ -45,14 +45,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
             local config1_0 = StdUi:Checkbox(tab.frame, 'Glow Action Bar');
-            StdUi:GlueTop(config1_0, gn_separator, -50, -24, 'LEFT');
+            StdUi:GlueTop(config1_0, gn_separator, -100, -24, 'LEFT');
             config1_0:SetChecked(RubimRH.db.profile.mainOption.glowactionbar)
             function config1_0:OnValueChanged(self, state, value)
                 RubimRH.GlowActionBarToggle()
             end
 
             local config1_1 = StdUi:Checkbox(tab.frame, 'Mute Sounds');
-            StdUi:GlueTop(config1_1, gn_separator, 50, -24, 'RIGHT');
+            StdUi:GlueTop(config1_1, gn_separator, 100, -24, 'RIGHT');
             config1_1:SetChecked(RubimRH.db.profile.mainOption.mute)
             function config1_1:OnValueChanged(self, state, value)
                 RubimRH.MuteToggle()
@@ -71,14 +71,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueTop(ic_separator, ic_title, 0, -12);
 
             local ic_1_0 = StdUi:Checkbox(tab.frame, 'Lock Icon');
-            StdUi:GlueTop(ic_1_0, ic_separator, -50, -24, 'LEFT');
+            StdUi:GlueTop(ic_1_0, ic_separator, -100, -24, 'LEFT');
             ic_1_0:SetChecked(RubimRH.db.profile.mainOption.mainIconLock)
             function ic_1_0:OnValueChanged(self, state, value)
                 RubimRH.MainIconLockToggle()
             end
 
             local ic_1_1 = StdUi:Checkbox(tab.frame, 'Enable Icon');
-            StdUi:GlueTop(ic_1_1, ic_separator, 50, -24, 'RIGHT');
+            StdUi:GlueTop(ic_1_1, ic_separator, 100, -24, 'RIGHT');
             ic_1_1:SetChecked(RubimRH.db.profile.mainOption.mainIcon)
             function ic_1_1:OnValueChanged(self, state, value)
                 RubimRH.MainIconToggle()
@@ -184,7 +184,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto Next Target');
             StdUi:FrameTooltip(gn_1_0, 'When you are in combat, it will suggest skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
             gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-            StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+            StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
             function gn_1_0:OnValueChanged(value)
                 RubimRH.AttackToggle()
             end
@@ -198,7 +198,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_1_1:SetPlaceholder(' -- Trinkets --');
             item1 = gn_1_1.optsFrame.scrollChild.items[1]
             item2 = gn_1_1.optsFrame.scrollChild.items[2]
-            StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+            StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
             gn_1_1.OnValueChanged = function(self, value)
                 local option1, option2 = unpack(value)
 
@@ -277,7 +277,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local sk_1_0
             if sk1 >= 0 then
                 sk_1_0 = StdUi:Slider(tab.frame, 125, 16, sk1 / 2.5, false, 0, 40)
-                StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+                StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
                 local sk_1_0Label = StdUi:FontString(tab.frame, sk1id .. sk1);
                 StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
                 StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -292,7 +292,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local sk_1_1
             if sk2 >= 0 then
                 sk_1_1 = StdUi:Slider(tab.frame, 125, 16, sk2 / 2.5, false, 0, 40)
-                StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+                StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
                 local sk_1_1Label = StdUi:FontString(tab.frame, sk2id .. sk2);
                 StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
                 StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -887,7 +887,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     StdUi:FrameTooltip(gn_1_0, 'Will try to use skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -919,7 +919,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
     StdUi:FrameTooltip(gn_1_1, 'Enable/Disable the usage of trinkets.', 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -1022,7 +1022,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_1_0
     if sk1 >= 0 then
         sk_1_0 = StdUi:Slider(window, 100, 16, sk1 / 2.5, false, 0, 40)
-        StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+        StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
         local sk_1_0Label = StdUi:FontString(window, sk1id .. sk1);
         StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
         StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1037,7 +1037,7 @@ local function AllMenuOLD(point, relativeTo, relativePoint, xOfs, yOfs)
     local sk_1_1
     if sk2 >= 0 then
         sk_1_1 = StdUi:Slider(window, 100, 16, sk2 / 2.5, false, 0, 40)
-        StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+        StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
         local sk_1_1Label = StdUi:FontString(window, sk2id .. sk2);
         StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
         StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1176,7 +1176,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     StdUi:FrameTooltip(gn_1_0, "This is will enable auto switching target and auto attacking outside of combat.", 'TOPLEFT', 'TOPRIGHT', true);
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -1208,7 +1208,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -1300,7 +1300,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1312,7 +1312,7 @@ local function BloodMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
     StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1415,7 +1415,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -1447,7 +1447,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -1539,7 +1539,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1551,7 +1551,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
     StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1592,7 +1592,7 @@ local function FrostMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
         RubimRH.SpellBlocker()
@@ -1629,7 +1629,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -1661,7 +1661,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -1753,7 +1753,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1765,7 +1765,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
     StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1806,7 +1806,7 @@ local function UnholyMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(extraSep, extra, 0, -12);
 
     local extra1 = StdUi:Button(window, 125, 20, 'Spells Blocker');
-    StdUi:GlueBelow(extra1, extraSep, -50, -24, 'LEFT');
+    StdUi:GlueBelow(extra1, extraSep, -100, -24, 'LEFT');
     extra1:SetScript('OnClick', function()
         window:Hide()
         RubimRH.SpellBlocker()
@@ -1839,7 +1839,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -1871,7 +1871,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets1 --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -1963,7 +1963,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -1975,7 +1975,7 @@ local function ArmsMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
     StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -2032,7 +2032,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -2064,7 +2064,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -2156,7 +2156,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -2168,7 +2168,7 @@ local function FuryMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     end
 
     local sk_1_1 = StdUi:Slider(window, 100, 16, sk2var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     local sk_1_1Label = StdUi:FontString(window, sk2text .. sk2var);
     StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
     StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -2214,7 +2214,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -2246,7 +2246,7 @@ local function MMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -2398,7 +2398,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -2430,7 +2430,7 @@ local function SurvivalMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -2582,7 +2582,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -2614,7 +2614,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -2707,7 +2707,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].mendpet);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Mend Pet', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].mendpet = value
@@ -2715,7 +2715,7 @@ local function BMMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].aspectoftheturtle);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Aspect of the Turtle', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].aspectoftheturtle = value
@@ -2754,14 +2754,14 @@ local function OutMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
@@ -2789,7 +2789,7 @@ local function OutMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].crimsonvial);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Crimson Vial', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].crimsonvial = value
@@ -2797,7 +2797,7 @@ local function OutMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows = value
@@ -2871,14 +2871,14 @@ local function SubMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
@@ -2906,7 +2906,7 @@ local function SubMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].crimsonvial);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Crimson Vial', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].crimsonvial = value
@@ -2914,7 +2914,7 @@ local function SubMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows = value
@@ -2968,14 +2968,14 @@ local function AssMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
 
     local gn_1_1 = StdUi:Checkbox(window, 'Use Racial');
     gn_1_1:SetChecked(RubimRH.db.profile.mainOption.useRacial)
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     function gn_1_1:OnValueChanged(value)
         RubimRH.RacialToggle()
     end
@@ -3003,7 +3003,7 @@ local function AssMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].crimsonvial);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Crimson Vial', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].crimsonvial = value
@@ -3011,7 +3011,7 @@ local function AssMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Cloak of Shadows', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].cloakofshadows = value
@@ -3063,7 +3063,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3095,7 +3095,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -3188,7 +3188,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].blur);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Blur', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].blur = value
@@ -3196,7 +3196,7 @@ local function HavocMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].darkness);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Darkness', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].darkness = value
@@ -3227,14 +3227,14 @@ local function RetributionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local healthStoneValue = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile.mainOption.healthstoneper);
     healthStoneValue:SetMinMaxValue(0, 100);
     StdUi:AddLabel(window, healthStoneValue, 'Healthstone', 'TOP');
-    StdUi:GlueBelow(healthStoneValue, gn_separator, 50, -25, 'RIGHT');
+    StdUi:GlueBelow(healthStoneValue, gn_separator, 100, -25, 'RIGHT');
     function healthStoneValue:OnValueChanged(value)
         RubimRH.db.profile.mainOption.healthstoneper = value
     end
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -15, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -15, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3254,7 +3254,7 @@ local function RetributionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_3_0 = StdUi:Checkbox(window, 'Vengance');
     gn_3_0:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].SoVEnabled)
-    StdUi:GlueBelow(gn_3_0, sk_separator, -50, -5, 'LEFT');
+    StdUi:GlueBelow(gn_3_0, sk_separator, -100, -5, 'LEFT');
     function gn_3_0:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].SoVEnabled = value
         print("|cFF69CCF0Vengance" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[RubimRH.playerSpec].SoVEnabled))
@@ -3269,7 +3269,7 @@ local function RetributionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local flashoflight = StdUi:Checkbox(window, 'Flash of Light');
     flashoflight:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].FoL)
-    StdUi:GlueBelow(flashoflight, sk_separator, 50, -5, 'RIGHT');
+    StdUi:GlueBelow(flashoflight, sk_separator, 100, -5, 'RIGHT');
     function flashoflight:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].FoL = value
         print("|cFF69CCF0Flash of Light" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[RubimRH.playerSpec].FoL))
@@ -3382,7 +3382,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3414,7 +3414,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -3507,7 +3507,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].touchofkarma);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Touch of Karma', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].touchofkarma = value
@@ -3515,7 +3515,7 @@ local function WWMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].dampemharm);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Dampem Harm', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].dampemharm = value
@@ -3545,7 +3545,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3577,7 +3577,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -3670,7 +3670,7 @@ local function PProtectionMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local LayOnHandEnabled = StdUi:Checkbox(window, 'Lay on Hands');
     LayOnHandEnabled:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].lohEnabled)
-    StdUi:GlueBelow(LayOnHandEnabled, sk_separator, -50, -5, 'LEFT');
+    StdUi:GlueBelow(LayOnHandEnabled, sk_separator, -100, -5, 'LEFT');
     function LayOnHandEnabled:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].lohEnabled = value
         print("|cFF69CCF0Lay on Hands" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[RubimRH.playerSpec].lohEnabled))
@@ -3771,7 +3771,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3803,7 +3803,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -3895,7 +3895,7 @@ local function EnhancementMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     StdUi:GlueTop(sk_separator, sk_title, 0, -12);
 
     local sk_1_0 = StdUi:Slider(window, 100, 16, sk1var / 2.5, false, 0, 40)
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     local sk_1_0Label = StdUi:FontString(window, sk1text .. sk1var);
     StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
     StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
@@ -3961,7 +3961,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -3993,7 +3993,7 @@ local function FeralMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -4111,7 +4111,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local gn_1_0 = StdUi:Checkbox(window, 'Auto Target');
     gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-    StdUi:GlueBelow(gn_1_0, gn_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
     function gn_1_0:OnValueChanged(value)
         RubimRH.AttackToggle()
     end
@@ -4143,7 +4143,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
     local gn_1_1 = StdUi:Dropdown(window, 125, 20, trinketOptions, nil, nil);
 
     gn_1_1:SetPlaceholder('-- Trinkets --');
-    StdUi:GlueBelow(gn_1_1, gn_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
     gn_1_1.OnValueChanged = function(self, val)
 
         if RubimRH.db.profile.mainOption.useTrinkets[1] == nil then
@@ -4236,7 +4236,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_0 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].metamorphosis);
     sk_1_0 :SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_0, sk_separator, -50, -24, 'LEFT');
+    StdUi:GlueBelow(sk_1_0, sk_separator, -100, -24, 'LEFT');
     StdUi:AddLabel(window, sk_1_0, 'Metamorphosis', 'TOP');
     function sk_1_0 :OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].metamorphosis = value
@@ -4244,7 +4244,7 @@ local function VengMenu(point, relativeTo, relativePoint, xOfs, yOfs)
 
     local sk_1_1 = StdUi:NumericBox(window, 100, 24, RubimRH.db.profile[RubimRH.playerSpec].soulbarrier);
     sk_1_1:SetMinMaxValue(0, 100);
-    StdUi:GlueBelow(sk_1_1, sk_separator, 50, -24, 'RIGHT');
+    StdUi:GlueBelow(sk_1_1, sk_separator, 100, -24, 'RIGHT');
     StdUi:AddLabel(window, sk_1_1, 'Soul Barrier', 'TOP');
     function sk_1_1:OnValueChanged(value)
         RubimRH.db.profile[RubimRH.playerSpec].soulbarrier = value

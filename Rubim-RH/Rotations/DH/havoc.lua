@@ -54,7 +54,7 @@ end, "SPELL_DAMAGE");
 --Havoc
 RubimRH.Spell[577] = {
     -- Racials
-    ArcaneTorrent = Spell(80483),
+    ArcaneTorrent = Spell(202719),
     Shadowmeld = Spell(58984),
     -- Abilities
     Annihilation = Spell(201427),

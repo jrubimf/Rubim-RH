@@ -119,6 +119,10 @@ local function APL()
     local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop
     UpdateRanges()
 
+    if Player:Buff(S.Invisibility) then
+        return 0, 236390
+    end
+
     Precombat = function()
         -- flask
         -- food
@@ -363,6 +367,10 @@ end
 mainAddon.Rotation.SetAPL(64, APL)
 
 local function PASSIVE()
+    if Player:Buff(S.Invisibility) then
+        return false
+    end
+
     if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[64].sk1 then
         return S.IceBlock:Cast()
     end

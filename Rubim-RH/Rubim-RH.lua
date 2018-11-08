@@ -2,6 +2,8 @@ local RubimRH = LibStub("AceAddon-3.0"):NewAddon("RubimRH", "AceEvent-3.0", "Ace
 _G["RubimRH"] = RubimRH
 
 local foundError = false
+
+
 local errorEvent = CreateFrame("Frame")
 errorEvent:RegisterEvent("PLAYER_LOGIN")
 errorEvent:SetScript("OnEvent", function(self, event)
@@ -22,8 +24,6 @@ errorEvent:SetScript("OnEvent", function(self, event)
     if RubimExtraVer ~= 01102018 then
         message("Update Extra :)")
     end
-
-
 
     if GetCVar("nameplateShowEnemies") ~= "1" then
         message("Nameplates enabled to maximum AoE detection.");
@@ -768,7 +768,7 @@ end
 --- ============================   MAIN_ROT   ============================
 function RubimRH.mainRotation(option)
     local Rotation = option or "SingleTarget"
-    if foundError == 1 then
+    if foundError == true then
         return "ERROR"
     end
 

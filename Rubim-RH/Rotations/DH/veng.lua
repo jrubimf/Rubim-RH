@@ -39,7 +39,11 @@ RubimRH.Spell[581] = {
     ConsumeMagic = Spell(183752),
     InfernalStrike = Spell(189110),
     Disrupt = Spell(183752),
-    CharredFlesh = Spell(264002)
+    CharredFlesh = Spell(264002),
+    SigilofSilence = Spell(202137),
+    SigilofMisery = Spell(207684),
+    SigilofChains = Spell(202138),
+    ArcaneTorrent = Spell(202719),
 }
 
 local S = RubimRH.Spell[581]
