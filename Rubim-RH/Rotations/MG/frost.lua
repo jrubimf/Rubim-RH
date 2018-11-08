@@ -375,7 +375,7 @@ local function PASSIVE()
         return S.IceBlock:Cast()
     end
 
-    if S.IceBarrier:IsReady() and not Player:Buff(S.IceBarrier) then
+    if S.IceBarrier:IsReady() and not Player:Buff(S.IceBarrier) and  Player:HealthPercentage() <= mainAddon.db.profile[64].sk2 then
         return S.IceBarrier:Cast()
     end
 

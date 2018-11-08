@@ -680,6 +680,9 @@ local defaults = {
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
+            sk2 = 90, -- IceBarrier
+            sk2id = 11426, -- IceBarrier
+            sk2tooltip = "Percent HP to use Ice Barrier",
         }
     }
 }
