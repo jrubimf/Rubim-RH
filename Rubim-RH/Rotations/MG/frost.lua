@@ -59,6 +59,7 @@ mainAddon.Spell[MFrost] = {
     Quake = Spell(240447),
     Counterspell = Spell(2139),
     IceBarrier = Spell(11426),
+    Invisibility = Spell(66),
 
 };
 HL.Spell[MFrost] = mainAddon.Spell[MFrost]
@@ -367,10 +368,6 @@ end
 mainAddon.Rotation.SetAPL(64, APL)
 
 local function PASSIVE()
-    if Player:Buff(S.Invisibility) then
-        return false
-    end
-
     if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[64].sk1 then
         return S.IceBlock:Cast()
     end

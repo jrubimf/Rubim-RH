@@ -71,7 +71,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="573">
@@ -101,11 +101,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Rotations/MG/frost.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="363" column="20" lean-forward="true" selection-start-line="363" selection-start-column="20" selection-end-line="363" selection-end-column="20" />
+            <state relative-caret-position="423">
+              <caret line="61" column="29" lean-forward="false" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -141,10 +141,10 @@
       <find>foundError</find>
       <find>, -150,</find>
       <find>Asp</find>
-      <find>Invisi</find>
       <find>Beast</find>
       <find>Ice</find>
       <find>IceBlock</find>
+      <find>Invisi</find>
     </findStrings>
     <replaceStrings>
       <replace>, -100,</replace>
@@ -165,8 +165,8 @@
         <option value="$PROJECT_DIR$/Rotations/DK/unholy.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.toc" />
         <option value="$PROJECT_DIR$/Modules/PVP.lua" />
-        <option value="$PROJECT_DIR$/Rotations/MG/frost.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.lua" />
+        <option value="$PROJECT_DIR$/Rotations/MG/frost.lua" />
       </list>
     </option>
   </component>
@@ -728,18 +728,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/MG/frost.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="363" column="20" lean-forward="true" selection-start-line="363" selection-start-column="20" selection-end-line="363" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="573">
           <caret line="685" column="9" lean-forward="true" selection-start-line="685" selection-start-column="9" selection-end-line="685" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/MG/frost.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="61" column="29" lean-forward="false" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
           <folding />
         </state>
       </provider>
