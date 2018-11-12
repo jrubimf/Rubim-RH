@@ -1126,72 +1126,57 @@ local function GeneralPvP()
     end
 end
 
+local function getArenaTarget(arenaTarget)
+    RubimRH.arena1.texture:SetColorTexture(0, 0, 0, 0)
+    RubimRH.arena2.texture:SetColorTexture(0, 0, 0, 0)
+    RubimRH.arena3.texture:SetColorTexture(0, 0, 0, 0)
+
+    local arenaTarget = arenaTarget:ID()
+    if UnitName(arenaTarget) == UnitName('arena1') then
+        RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
+    elseif UnitName(arenaTarget) == UnitName('arena2') then
+        RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
+    elseif UnitName(arenaTarget) == UnitName('arena3') then
+        RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
+    end
+end
+
+function Spell:ArenaCast(arenaTarget)
+    local arenaTarget = arenaTarget:ID()
+    if UnitName(arenaTarget) == UnitName('arena1') then
+        RubimRH.Arena1Icon(self:Cast())
+    elseif UnitName(arenaTarget) == UnitName('arena2') then
+        RubimRH.Arena2Icon(self:Cast())
+    elseif UnitName(arenaTarget) == UnitName('arena3') then
+        RubimRH.Arena3Icon(self:Cast())
+    end
+end
+
 local function ArmsAPL()
     if select(2, IsInInstance()) == "arena" then
-        if not Arena.arena1:IsImmune() and Arena.arena1:CastingHealing() and Arena.arena1:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
 
-        if not Arena.arena2:IsImmune() and Arena.arena2:CastingHealing() and Arena.arena2:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
+        for i, arenaTarget in pairs(Arena) do
+            if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and WRArms.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
+                getArenaTarget(arenaTarget)
+            end
 
-        if not Arena.arena3:IsImmune() and Arena.arena3:CastingHealing() and Arena.arena3:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and WRArms.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
+                getArenaTarget(arenaTarget)
+            end
 
-        if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and Arena.arena1:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and WRArms.SpellReflection:IsCastable() and arenaTarget:CastPercentage() >= randomGenerator("Reflect") then
+                getArenaTarget(arenaTarget)
+            end
 
-        if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and Arena.arena2:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
+            if not arenaTarget:IsImmune() and WRArms.Rend:IsCastable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
+                WRArms.Rend:ArenaCast(arenaTarget)
+                return
+            end
 
-        if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and Arena.arena3:IsInterruptible() and WRArms.Pummel:IsCastable() then
-            RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
-        end
-
-        if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and Arena.arena1:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena1:CastPercentage() >= randomGenerator("Reflect") then
-            return WRArms.SpellReflection:Cast()
-        end
-
-        if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and Arena.arena2:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena2:CastPercentage() >= randomGenerator("Reflect") then
-            return WRArms.SpellReflection:Cast()
-        end
-
-        if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and Arena.arena3:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena3:CastPercentage() >= randomGenerator("Reflect") then
-            return WRArms.SpellReflection:Cast()
-        end
-
-        if not Arena.arena1:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena1Icon(WRArms.Rend:Cast())
-            return
-        end
-
-        if not Arena.arena2:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena2:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena2Icon(WRArms.Rend:Cast())
-            return
-        end
-
-        if not Arena.arena3:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena3:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena3Icon(WRArms.Rend:Cast())
-            return
-        end
-
-        if not Arena.arena1:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena1:IsBursting() and Arena.arena1:IsDisarmable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena1Icon(WRArms.Disarm:Cast())
-            return
-        end
-
-        if not Arena.arena2:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena2:IsBursting() and Arena.arena2:IsDisarmable() and Arena.arena2:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena2Icon(WRArms.Disarm:Cast())
-            return
-        end
-
-        if not Arena.arena3:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena3:IsBursting() and Arena.arena3:IsDisarmable() and Arena.arena3:MinDistanceToPlayer(true) <= 5 then
-            RubimRH.Arena3Icon(WRArms.Disarm:Cast())
-            return
+            if not arenaTarget:IsImmune() and WRArms.Disarm:IsCastable() and arenaTarget:IsBursting() and arenaTarget:IsDisarmable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
+                WRArms.Disarm:ArenaCast(arenaTarget)
+                return
+            end
         end
     end
 
@@ -1213,6 +1198,7 @@ local function ArmsAPL()
         end
     end
 end
+
 local function UnholyAPL()
     if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and DKUnholy.DarkSimulacrum:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 30 then
         RubimRH.Arena1Icon(DKUnholy.DarkSimulacrum:Cast())
@@ -1337,7 +1323,7 @@ RubimRH.Rotation.SetPvP(265, emptyAPL)
 RubimRH.Rotation.SetPvP(266, emptyAPL)
 RubimRH.Rotation.SetPvP(267, emptyAPL)
 
-RubimRH.Rotation.SetPvP(ArmsAPL, emptyAPL)
+RubimRH.Rotation.SetPvP(71, ArmsAPL)
 RubimRH.Rotation.SetPvP(72, emptyAPL)
 RubimRH.Rotation.SetPvP(73, emptyAPL)
 
@@ -1740,9 +1726,6 @@ local function AllPvP()
 
     end
     UnholyArenaInterrupt = function()
-        RubimRH.arena1.texture:SetColorTexture(0, 0, 0, 0)
-        RubimRH.arena2.texture:SetColorTexture(0, 0, 0, 0)
-        RubimRH.arena3.texture:SetColorTexture(0, 0, 0, 0)
         if not Arena.arena1:IsImmune() and Arena.arena1:CastingHealing() and Arena.arena1:IsInterruptible() and DKUnholy.MindFreeze:IsCastable() then
             RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
         end

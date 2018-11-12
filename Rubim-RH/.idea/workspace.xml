@@ -11,18 +11,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PVP.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PVP.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Modules/PVP.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="746">
-              <caret line="1940" column="43" lean-forward="false" selection-start-line="1940" selection-start-column="43" selection-end-line="1940" selection-end-column="43" />
+            <state relative-caret-position="620">
+              <caret line="1325" column="29" lean-forward="true" selection-start-line="1325" selection-start-column="29" selection-end-line="1325" selection-end-column="29" />
               <folding>
-                <element signature="e#29537#34052#0" expanded="false" />
-                <element signature="e#34082#35510#0" expanded="false" />
-                <element signature="e#42986#47774#0" expanded="false" />
-                <element signature="e#43039#46825#0" expanded="false" />
-                <element signature="e#49367#66438#0" expanded="false" />
-                <element signature="e#66469#66894#0" expanded="false" />
+                <element signature="e#30550#32809#0" expanded="false" />
+                <element signature="e#32840#34268#0" expanded="false" />
+                <element signature="e#34304#35951#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -105,7 +102,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="frost.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rotations/MG/frost.lua">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-4660">
@@ -129,12 +126,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CDs()</find>
-      <find>HR.</find>
-      <find>HR\.</find>
-      <find>grimoire_felguard</find>
-      <find>(S\..*\:Cast\(\))</find>
-      <find>buffstack</find>
       <find>Item132369:IsEquipped() or</find>
       <find>I.Item132369:IsEquipped()</find>
       <find>PetT</find>
@@ -159,6 +150,12 @@
       <find>BeastMa</find>
       <find>\(\)\)</find>
       <find>Automata</find>
+      <find>arena</find>
+      <find>arena1</find>
+      <find>color</find>
+      <find>arena1.tex</find>
+      <find>RubimRH.arena1.tex</find>
+      <find>getArena</find>
     </findStrings>
     <replaceStrings>
       <replace>, -100,</replace>
@@ -400,7 +397,7 @@
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="16" />
+      <option name="time" value="17" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -774,21 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/PVP.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="746">
-          <caret line="1940" column="43" lean-forward="false" selection-start-line="1940" selection-start-column="43" selection-end-line="1940" selection-end-column="43" />
-          <folding>
-            <element signature="e#29537#34052#0" expanded="false" />
-            <element signature="e#34082#35510#0" expanded="false" />
-            <element signature="e#42986#47774#0" expanded="false" />
-            <element signature="e#43039#46825#0" expanded="false" />
-            <element signature="e#49367#66438#0" expanded="false" />
-            <element signature="e#66469#66894#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rotations/MG/fire.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-5255">
@@ -802,6 +784,18 @@
         <state relative-caret-position="-4660">
           <caret line="60" column="30" lean-forward="false" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/PVP.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="1325" column="29" lean-forward="true" selection-start-line="1325" selection-start-column="29" selection-end-line="1325" selection-end-column="29" />
+          <folding>
+            <element signature="e#30550#32809#0" expanded="false" />
+            <element signature="e#32840#34268#0" expanded="false" />
+            <element signature="e#34304#35951#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
