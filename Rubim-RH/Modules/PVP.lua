@@ -1125,6 +1125,222 @@ local function GeneralPvP()
         end
     end
 end
+
+local function ArmsAPL()
+    if select(2, IsInInstance()) == "arena" then
+        if not Arena.arena1:IsImmune() and Arena.arena1:CastingHealing() and Arena.arena1:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena2:IsImmune() and Arena.arena2:CastingHealing() and Arena.arena2:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena3:IsImmune() and Arena.arena3:CastingHealing() and Arena.arena3:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and Arena.arena1:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena1.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and Arena.arena2:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and Arena.arena3:IsInterruptible() and WRArms.Pummel:IsCastable() then
+            RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
+        end
+
+        if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and Arena.arena1:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena1:CastPercentage() >= randomGenerator("Reflect") then
+            return WRArms.SpellReflection:Cast()
+        end
+
+        if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and Arena.arena2:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena2:CastPercentage() >= randomGenerator("Reflect") then
+            return WRArms.SpellReflection:Cast()
+        end
+
+        if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and Arena.arena3:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Arena.arena3:CastPercentage() >= randomGenerator("Reflect") then
+            return WRArms.SpellReflection:Cast()
+        end
+
+        if not Arena.arena1:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena1Icon(WRArms.Rend:Cast())
+            return
+        end
+
+        if not Arena.arena2:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena2:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena2Icon(WRArms.Rend:Cast())
+            return
+        end
+
+        if not Arena.arena3:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena3:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena3Icon(WRArms.Rend:Cast())
+            return
+        end
+
+        if not Arena.arena1:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena1:IsBursting() and Arena.arena1:IsDisarmable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena1Icon(WRArms.Disarm:Cast())
+            return
+        end
+
+        if not Arena.arena2:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena2:IsBursting() and Arena.arena2:IsDisarmable() and Arena.arena2:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena2Icon(WRArms.Disarm:Cast())
+            return
+        end
+
+        if not Arena.arena3:IsImmune() and WRArms.Disarm:IsCastable() and Arena.arena3:IsBursting() and Arena.arena3:IsDisarmable() and Arena.arena3:MinDistanceToPlayer(true) <= 5 then
+            RubimRH.Arena3Icon(WRArms.Disarm:Cast())
+            return
+        end
+    end
+
+    if Target:Exists() then
+        if WRArms.Execute:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 15 and WRArms.DeathSentence:IsAvailable() then
+            return WRArms.Execute:Cast()
+        end
+
+        if not Target:IsImmune() and Target:CastingCC() and Target:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Target:CastPercentage() >= randomGenerator("Reflect") then
+            return WRArms.SpellReflection:Cast()
+        end
+
+        if not Target:IsImmune() and Target:IsBursting() and Target:IsDisarmable() and WRArms.Disarm:IsReady("Melee") then
+            return WRArms.Disarm:Cast()
+        end
+
+        if not Target:IsImmune() and Target:HealthPercentage() <= 50 and WRArms.SharpenBlade:IsReady("Melee") and Target:IsAPlayer() then
+            return WRArms.SharpenBlade:Cast()
+        end
+    end
+end
+local function UnholyAPL()
+    if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and DKUnholy.DarkSimulacrum:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena1Icon(DKUnholy.DarkSimulacrum:Cast())
+        return
+    end
+
+    if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and DKUnholy.DarkSimulacrum:IsCastable() and Arena.arena2:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena2Icon(DKUnholy.DarkSimulacrum:Cast())
+        return
+    end
+
+    if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and DKUnholy.DarkSimulacrum:IsCastable() and Arena.arena3:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena3Icon(DKUnholy.DarkSimulacrum:Cast())
+        return
+    end
+
+    if not Arena.arena1:IsImmune() and Arena.arena1:CastingCC() and DKUnholy.MindFreeze:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena1Icon(DKUnholy.MindFreeze:Cast())
+        return
+    end
+
+    if not Arena.arena2:IsImmune() and Arena.arena2:CastingCC() and DKUnholy.MindFreeze:IsCastable() and Arena.arena2:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena2Icon(DKUnholy.MindFreeze:Cast())
+        return
+    end
+
+    if not Arena.arena3:IsImmune() and Arena.arena3:CastingCC() and DKUnholy.MindFreeze:IsCastable() and Arena.arena3:MinDistanceToPlayer(true) <= 30 then
+        RubimRH.Arena3Icon(DKUnholy.MindFreeze:Cast())
+        return
+    end
+end
+local function BeastMasteryAPL()
+    if Target:Exists() and (Target:IsAPlayer() or Target:IsAPvPDummy() or select(2, IsInInstance()) == "arena" or select(2, IsInInstance()) == "battleground") then
+        if RubimRH.CDsON() then
+            if HRBM.BestialWrath:IsReady() then
+                return HRBM.BestialWrath:Cast()
+            end
+
+            if HRBM.AMurderofCrows:IsReady() then
+                return HRBM.AMurderofCrows:Cast()
+            end
+
+            if HRBM.BarbedShot:IsReady() and Pet:BuffRemains(HRBM.FrenzyBuff) <= Player:GCD() then
+                return HRBM.BarbedShot:Cast()
+            end
+
+            if HRBM.KillCommand:IsReady() then
+                return HRBM.KillCommand:Cast()
+            end
+
+            if HRBM.BarbedShot:IsReady() and Pet:BuffStack(HRBM.FrenzyBuff) <= 2 then
+                return HRBM.BarbedShot:Cast()
+            end
+
+            if HRBM.ChimaeraShot:IsReady() then
+                return HRBM.ChimaeraShot:Cast()
+            end
+
+            if HRBM.BarbedShot:IsReady() and (Pet:BuffStack(HRBM.FrenzyBuff) <= 3 or Pet:BuffRemainsP(HRBM.FrenzyBuff) <= Player:GCD()) then
+                return HRBM.BarbedShot:Cast()
+            end
+        else
+            if HRBM.BarbedShot:IsReady() and (Pet:BuffStack(HRBM.FrenzyBuff) <= 3 or Pet:BuffRemainsP(HRBM.FrenzyBuff) <= Player:GCD()) then
+                return HRBM.BarbedShot:Cast()
+            end
+
+            if HRBM.KillCommand:IsReady() then
+                return HRBM.KillCommand:Cast()
+            end
+
+            if HRBM.ChimaeraShot:IsReady() then
+                return HRBM.ChimaeraShot:Cast()
+            end
+        end
+        return 236329
+    end
+end
+
+local function emptyAPL()
+end
+RubimRH.Rotation.SetPvP(250, emptyAPL)
+RubimRH.Rotation.SetPvP(251, emptyAPL)
+RubimRH.Rotation.SetPvP(252, UnholyAPL)
+
+RubimRH.Rotation.SetPvP(577, emptyAPL)
+RubimRH.Rotation.SetPvP(581, emptyAPL)
+
+RubimRH.Rotation.SetPvP(102, emptyAPL)
+RubimRH.Rotation.SetPvP(103, emptyAPL)
+RubimRH.Rotation.SetPvP(104, emptyAPL)
+RubimRH.Rotation.SetPvP(105, emptyAPL)
+
+RubimRH.Rotation.SetPvP(253, BeastMasteryAPL)
+RubimRH.Rotation.SetPvP(254, emptyAPL)
+RubimRH.Rotation.SetPvP(255, emptyAPL)
+
+RubimRH.Rotation.SetPvP(62, emptyAPL)
+RubimRH.Rotation.SetPvP(63, emptyAPL)
+RubimRH.Rotation.SetPvP(64, emptyAPL)
+
+RubimRH.Rotation.SetPvP(268, emptyAPL)
+RubimRH.Rotation.SetPvP(270, emptyAPL)
+RubimRH.Rotation.SetPvP(269, emptyAPL)
+
+RubimRH.Rotation.SetPvP(65, emptyAPL)
+RubimRH.Rotation.SetPvP(66, emptyAPL)
+RubimRH.Rotation.SetPvP(70, emptyAPL)
+
+RubimRH.Rotation.SetPvP(256, emptyAPL)
+RubimRH.Rotation.SetPvP(257, emptyAPL)
+RubimRH.Rotation.SetPvP(258, emptyAPL)
+
+RubimRH.Rotation.SetPvP(259, emptyAPL)
+RubimRH.Rotation.SetPvP(260, emptyAPL)
+RubimRH.Rotation.SetPvP(261, emptyAPL)
+
+RubimRH.Rotation.SetPvP(262, emptyAPL)
+RubimRH.Rotation.SetPvP(263, emptyAPL)
+RubimRH.Rotation.SetPvP(264, emptyAPL)
+
+RubimRH.Rotation.SetPvP(265, emptyAPL)
+RubimRH.Rotation.SetPvP(266, emptyAPL)
+RubimRH.Rotation.SetPvP(267, emptyAPL)
+
+RubimRH.Rotation.SetPvP(ArmsAPL, emptyAPL)
+RubimRH.Rotation.SetPvP(72, emptyAPL)
+RubimRH.Rotation.SetPvP(73, emptyAPL)
+
 local function PvPRotation(specID)
     if specID == BeastMastery then
         if Target:Exists() and (Target:IsAPlayer() or Target:IsAPvPDummy() or select(2, IsInInstance()) == "arena" or select(2, IsInInstance()) == "battleground") then
@@ -1289,7 +1505,7 @@ local function PvPRotation(specID)
         end
 
         if Target:Exists() then
-            if WRArms.Execute:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 15  and WRArms.DeathSentence:IsAvailable() then
+            if WRArms.Execute:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 15 and WRArms.DeathSentence:IsAvailable() then
                 return WRArms.Execute:Cast()
             end
 
@@ -1721,8 +1937,7 @@ function RubimRH.PvP()
         return GeneralPvP()
     end
 
-    if PvPRotation(RubimRH.playerSpec) ~= nil then
-        return PvPRotation(RubimRH.playerSpec)
+    if RubimRH.Rotation.PvP[RubimRH.playerSpec]() ~= nil then
+        return RubimRH.Rotation.PvP[RubimRH.playerSpec]()
     end
-
 end

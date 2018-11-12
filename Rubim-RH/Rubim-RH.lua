@@ -101,13 +101,18 @@ Protection = 73
 RubimRH.Rotation = {}
 RubimRH.Rotation.APLs = {}
 RubimRH.Rotation.PASSIVEs = {}
+RubimRH.Rotation.PvP = {}
 
 function RubimRH.Rotation.SetAPL (Spec, APL)
     RubimRH.Rotation.APLs[Spec] = APL;
 end
 
-function RubimRH.Rotation.SetPASSIVE (Spec, PASSIVE)
-    RubimRH.Rotation.PASSIVEs[Spec] = PASSIVE;
+function RubimRH.Rotation.SetPASSIVE (Spec, APL)
+    RubimRH.Rotation.PASSIVEs[Spec] = APL;
+end
+
+function RubimRH.Rotation.SetPvP (Spec, APL)
+    RubimRH.Rotation.PvP[Spec] = APL;
 end
 
 local EnabledRotation = {
@@ -821,7 +826,7 @@ function RubimRH.mainRotation(option)
     end
 
     if Rotation == "SingleTarget" then
-        if RubimRHPvP ~= nil and RubimRHPvP.active and RubimRH.PvP() ~= nil then
+        if RubimRH.PvP() ~= nil then
             return RubimRH.PvP()
         else
             return RubimRH.Rotation.APLs[RubimRH.playerSpec]()
