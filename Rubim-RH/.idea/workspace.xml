@@ -218,8 +218,8 @@
       <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="222" column="26" lean-forward="true" selection-start-line="222" selection-start-column="26" selection-end-line="222" selection-end-column="26" />
+            <state relative-caret-position="123">
+              <caret line="225" column="29" lean-forward="true" selection-start-line="225" selection-start-column="29" selection-end-line="225" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -228,18 +228,18 @@
       <file leaf-file-name="CustomSpells.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="487" column="29" lean-forward="false" selection-start-line="487" selection-start-column="28" selection-end-line="487" selection-end-column="29" />
+            <state relative-caret-position="133">
+              <caret line="484" column="50" lean-forward="false" selection-start-line="484" selection-start-column="50" selection-end-line="484" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-367">
-              <caret line="252" column="7" lean-forward="true" selection-start-line="252" selection-start-column="7" selection-end-line="252" selection-end-column="7" />
+            <state relative-caret-position="352">
+              <caret line="247" column="20" lean-forward="false" selection-start-line="247" selection-start-column="20" selection-end-line="247" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -285,11 +285,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="748" column="12" lean-forward="true" selection-start-line="748" selection-start-column="12" selection-end-line="748" selection-end-column="12" />
+            <state relative-caret-position="119">
+              <caret line="734" column="48" lean-forward="true" selection-start-line="734" selection-start-column="48" selection-end-line="734" selection-end-column="48" />
               <folding>
                 <element signature="e#189#33441#0" expanded="false" />
                 <element signature="e#312#316#0" expanded="false" />
@@ -446,9 +446,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>RubimRH.arena1.tex</find>
-      <find>getArena</find>
-      <find>CounterShot</find>
       <find>min:</find>
       <find>BurstMode</find>
       <find>WRArms.</find>
@@ -476,6 +473,9 @@
       <find>RubimRH.db.profile.mainOption.useInterrupts</find>
       <find>fontString</find>
       <find>u</find>
+      <find>IsInterruptible</find>
+      <find>/dump RubimRH.db.profile.mainOption.interruptList</find>
+      <find>RubimRH.db.profile.mainOption.interruptList</find>
     </findStrings>
     <replaceStrings>
       <replace>, -100,</replace>
@@ -512,8 +512,8 @@
         <option value="$PROJECT_DIR$/Rotations/WR/arms.lua" />
         <option value="$PROJECT_DIR$/Modules/PVP.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.lua" />
-        <option value="$PROJECT_DIR$/Modules/CustomUnit.lua" />
         <option value="$PROJECT_DIR$/Modules/UI.lua" />
+        <option value="$PROJECT_DIR$/Modules/CustomUnit.lua" />
       </list>
     </option>
   </component>
@@ -1284,22 +1284,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="222" column="26" lean-forward="true" selection-start-line="222" selection-start-column="26" selection-end-line="222" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="487" column="29" lean-forward="false" selection-start-line="487" selection-start-column="28" selection-end-line="487" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
@@ -1308,18 +1292,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-367">
-          <caret line="252" column="7" lean-forward="true" selection-start-line="252" selection-start-column="7" selection-end-line="252" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="748" column="12" lean-forward="true" selection-start-line="748" selection-start-column="12" selection-end-line="748" selection-end-column="12" />
+        <state relative-caret-position="119">
+          <caret line="734" column="48" lean-forward="true" selection-start-line="734" selection-start-column="48" selection-end-line="734" selection-end-column="48" />
           <folding>
             <element signature="e#189#33441#0" expanded="false" />
             <element signature="e#312#316#0" expanded="false" />
@@ -1468,6 +1444,30 @@
             <element signature="e#33978#33979#0" expanded="false" />
             <element signature="e#34005#34008#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="225" column="29" lean-forward="true" selection-start-line="225" selection-start-column="29" selection-end-line="225" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="484" column="50" lean-forward="false" selection-start-line="484" selection-start-column="50" selection-end-line="484" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="247" column="20" lean-forward="false" selection-start-line="247" selection-start-column="20" selection-end-line="247" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>

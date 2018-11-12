@@ -244,7 +244,7 @@ function Unit:IsInterruptible()
         return false
     end
 
-    if #RubimRH.db.profile.mainOption.interruptList[spellId] > 0 then
+    for i, v in pairs(RubimRH.db.profile.mainOption.interruptList) do
         return false
     end
 
