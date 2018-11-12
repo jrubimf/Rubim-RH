@@ -108,7 +108,6 @@ local CleaveSpell = {
     [RubimRH.Spell[Havoc].ImmolationAura:ID()] = true,
 
 }
-
 local pvpSpells = {
     211714, -- Thal'kiel's Consumption
     157695, -- Demonbolt**
@@ -125,7 +124,6 @@ local pvpSpells = {
     214634, -- Ebonbolt
     205495, -- Stormkeeper
 }
-
 local pvpDMG = {
     116, --  Frostbolt
     2948, --  Scorch
@@ -145,7 +143,6 @@ local pvpDMG = {
     117014, --  Elemental Blast
     118297     --  Immolate
 }
-
 local pvpHEALING = {
     2060, --Heal
     5185, --  Healing Touch
@@ -184,7 +181,6 @@ local pvpHEALING = {
     152116, --  Saving Grace
     186263  --  Shadow Mend
 }
-
 local pvpHEX = {
     5782, --  Fear
     33786, --  Cyclone
@@ -239,7 +235,6 @@ local pvpBreakableCC = {
     339, -- Entagle Roots
     34787, --Frozen Circles
 }
-
 local pvpDisarm = {
     207777,
     236077,
@@ -247,7 +242,6 @@ local pvpDisarm = {
     209749,
     233759
 }
-
 local pvpReflect = {
     161372, -- Poly
     190319, -- Combustion
@@ -260,7 +254,6 @@ local pvpReflect = {
     191634, -- Stormkeeper
     116858, -- Chaos Bolt
 }
-
 local pvpBurst = {
     51271, -- Pillar of Frost
     47568, -- Empower Rune Weapon
@@ -343,7 +336,6 @@ local pvpBurst = {
 
     265187, -- Summon Demonic Tyrant
 }
-
 local pvpImmunity = {
     196555, -- Netherwak
     198111, -- Temporal Shield
@@ -355,13 +347,11 @@ local pvpImmunity = {
     33786, --  Cyclone
     186265, -- Aspect of Turtle
 }
-
 local pvpStunImmunity = {
     48792, -- Icebound Fortitude
     53271, -- Master's Call
     198144, --Iceform
 }
-
 local pvpDefensiveAll = {
     48792, -- Icebound Fortitude
     61336, -- Survival Instics
@@ -377,13 +367,11 @@ local pvpDefensiveAll = {
 
 
 }
-
 local pvpImmuneMagic = {
     48707, -- AMS
     122783, -- Diffuse Magic
     31224, -- Cloak of Shadows
 }
-
 local pvpImmunePhys = {
     212800, -- Blur
     1022, -- Blessing of Protection
@@ -393,6 +381,7 @@ local pvpImmunePhys = {
     118038, -- Die by Sword
     236696, -- Thorns
 }
+
 local PvPMelee = {
     250,
     251,
@@ -413,7 +402,6 @@ local PvPMelee = {
     72,
     73,
 }
-
 local PvPRangedClass = {
     3,
     5,
@@ -422,7 +410,6 @@ local PvPRangedClass = {
     9,
     11
 }
-
 local PvPDesarmableClass = {
     1,
     2,
@@ -444,7 +431,6 @@ function Unit:IsDisarmed()
     end
     return false
 end
-
 function Unit:IsRanged()
     local target = self.UnitID
     if target == nil then
@@ -458,7 +444,6 @@ function Unit:IsRanged()
     end
     return false
 end
-
 function Unit:IsDisarmable()
     local target = self.UnitID
     if target == nil then
@@ -472,7 +457,6 @@ function Unit:IsDisarmable()
     end
     return false
 end
-
 function Unit:IsBursting()
     if not self:Exists() then
         return false
@@ -485,7 +469,6 @@ function Unit:IsBursting()
     end
     return false
 end
-
 function Unit:IsCC()
     if not self:Exists() then
         return false
@@ -501,8 +484,6 @@ function Unit:IsCC()
     end
     return false
 end
-
-local AreaCCcooldown = 0
 function Unit:AreaCC(range)
     if not self:Exists() then
         return false
@@ -519,7 +500,6 @@ function Unit:AreaCC(range)
     end
     return false
 end
-
 function Unit:IsImmuneMagic()
     if not self:Exists() then
         return false
@@ -536,7 +516,6 @@ function Unit:IsImmuneMagic()
     end
     return false
 end
-
 function Unit:IsImmunePhys()
     if not self:Exists() then
         return false
@@ -553,7 +532,6 @@ function Unit:IsImmunePhys()
     end
     return false
 end
-
 function Unit:IsImmune()
     if not self:Exists() then
         return false
@@ -571,7 +549,6 @@ function Unit:IsImmune()
     end
     return false
 end
-
 function Unit:ShouldReflect()
     if not self:Exists() then
         return false
@@ -584,7 +561,6 @@ function Unit:ShouldReflect()
 
     return false
 end
-
 function Unit:CastingCC()
     if not self:Exists() then
         return false
@@ -602,7 +578,6 @@ function Unit:CastingCC()
     end
     return false
 end
-
 function Unit:CastingHealing()
     if not self:Exists() then
         return false
@@ -665,7 +640,6 @@ function RubimRH.PvPBursting(tar)
     end
     return false
 end
-
 function RubimRH.PvPSpells(tar)
     if tar == nil then
         return false
@@ -709,7 +683,6 @@ function RubimRH.PvPSpells(tar)
     end
     return false
 end
-
 function RubimRH.InterruptHex(tar)
     if tar == nil then
         return false
@@ -755,7 +728,6 @@ function RubimRH.InterruptHex(tar)
 
     return false
 end
-
 function Unit:IsInterruptibleCC()
     if not self:IsInterruptible() then
         return false
@@ -775,7 +747,6 @@ function Unit:IsInterruptibleCC()
         --end
     end
 end
-
 function Unit:IsInterruptibleHeal()
     if not self:IsInterruptible() then
         return false
@@ -1053,7 +1024,6 @@ local stunsSpellList = {
     WRProt.Stormbolt,
     DKBlood.Asphyxiate,
 }
-
 local interruptSpellsList = {
     WRArms.Pummel,
     WRFury.Pummel,
@@ -1070,7 +1040,6 @@ local interruptSpellsList = {
     RGSub.Kick,
     RGOut.Kick,
 }
-
 local slowSpellsList = {
     WRArms.Hamstring,
     WRFury.PiercingHowl,
@@ -1083,7 +1052,6 @@ local slowSpellsList = {
     HRSurv.WingClip,
     HRBM.ConcusiveShot,
 }
-
 local function interruptSpell(useStuns)
     local useStuns = useStuns or false
 
@@ -1103,7 +1071,6 @@ local function interruptSpell(useStuns)
 
     return Spell(1)
 end
-
 local function slowSpell()
     for i, v in pairs(slowSpellsList) do
         if v:IsReady(v:MaximumRange()) then
@@ -1112,7 +1079,6 @@ local function slowSpell()
     end
     return Spell(1)
 end
-
 local slowSpellClass = {
     5,
     6,
@@ -1121,7 +1087,6 @@ local slowSpellClass = {
     9,
     11
 }
-
 function Unit:HasMagicSlow()
     local target = self.UnitID
     if target == nil then
@@ -1160,14 +1125,6 @@ local function GeneralPvP()
         end
     end
 end
-
-WRArms.ExecuteDefault = Spell(163201)
-WRArms.ExecuteMassacre = Spell(281000)
-
-local function UpdateExecuteID()
-    WRArms.Execute = WRArms.Massacre:IsAvailable() and WRArms.ExecuteMassacre or WRArms.ExecuteDefault
-end
-
 local function PvPRotation(specID)
     if specID == BeastMastery then
         if Target:Exists() and (Target:IsAPlayer() or Target:IsAPvPDummy() or select(2, IsInInstance()) == "arena" or select(2, IsInInstance()) == "battleground") then
@@ -1383,7 +1340,6 @@ local function PvPRotation(specID)
     end
 
 end
-
 local function AllPvP()
     local ArmsArenaSpell, ArmsArenaInterrupt
     local ArmsArenaPvP, ArmsPvP, FuryPvP
@@ -1720,7 +1676,6 @@ local function AllPvP()
         --end
     end
 end
-
 function Spell:CanBreakCC()
     local willBreak = CleaveSpell[self:ID()] or false
 
@@ -1738,7 +1693,6 @@ function Spell:CanBreakCC()
         end
     end
 end
-
 function RubimRH.PvP()
     RubimRH.Arena1Icon(nil)
     RubimRH.Arena2Icon(nil)

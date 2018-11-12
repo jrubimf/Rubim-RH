@@ -59,6 +59,7 @@ mainAddon.Spell[62] = {
     Counterspell = Spell(2139),
     IceBarrier= Spell(11426),
     IceBlock = Spell(45438),
+    BrainStorm = Spell(273329),
 
 };
 local S = mainAddon.Spell[62];

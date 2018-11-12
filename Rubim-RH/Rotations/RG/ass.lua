@@ -386,7 +386,7 @@ local function CDs ()
             return S.MarkedforDeath:Cast()
         end
         -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
-        if S.Vendetta:IsReady() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
+        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
                 and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
             return S.Vendetta:Cast()
         end

@@ -86,6 +86,7 @@ S.ShrapnelBomb.TextureSpellID = { 269747 }
 S.PheromoneBomb.TextureSpellID = { 269747 }
 S.VolatileBomb.TextureSpellID = { 269747 }
 S.WildfireBomb.TextureSpellID = { 269747 }
+S.WingClip.TextureSpellID = { 76151 }
 
 -- Items
 if not Item.Hunter then
