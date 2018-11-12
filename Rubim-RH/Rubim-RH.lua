@@ -240,6 +240,7 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
+            interruptList = {},
             useTrinkets = {
                 [1] = false,
                 [2] = false

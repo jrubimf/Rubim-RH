@@ -90,24 +90,8 @@ local AceGUI = LibStub("AceGUI-3.0")
 ---
 
 
-local CleaveSpell = {
-    [RubimRH.Spell[Blood].BloodBoil:ID()] = true,
+RubimRH.CleaveSpell = {}
 
-    [RubimRH.Spell[Arms].Whirlwind:ID()] = true,
-    [RubimRH.Spell[Fury].Whirlwind:ID()] = true,
-
-    [RubimRH.Spell[Survival].PheromoneBomb:ID()] = true,
-    [RubimRH.Spell[Survival].VolatileBomb:ID()] = true,
-    [RubimRH.Spell[Survival].ShrapnelBomb:ID()] = true,
-    [RubimRH.Spell[Survival].WildfireBomb:ID()] = true,
-    [RubimRH.Spell[Survival].SerpentSting:ID()] = false,
-    [RubimRH.Spell[Survival].Carve:ID()] = true,
-    [RubimRH.Spell[Survival].AMurderofCrows:ID()] = true,
-
-    [RubimRH.Spell[Havoc].FelBarrage:ID()] = true,
-    [RubimRH.Spell[Havoc].ImmolationAura:ID()] = true,
-
-}
 local pvpSpells = {
     211714, -- Thal'kiel's Consumption
     157695, -- Demonbolt**
@@ -781,29 +765,8 @@ local arenaSTART = CreateFrame("Frame")
 arenaSTART:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
 arenaSTART:RegisterEvent("ARENA_OPPONENT_UPDATE")
 
-enemyHealer = {}
-enemyDPS = {}
-enemySpec = {}
 arenaSTART:SetScript("OnEvent", function(self, event, ...)
     updateArena()
-    local numOpps = GetNumArenaOpponentSpecs()
-    enemyHealer = {}
-    enemyDPS = {}
-    enemySpec = {}
-    for i = 1, numOpps do
-        enemySpec["arena" .. tostring(i)] = GetArenaOpponentSpec(i)
-        local specID = GetArenaOpponentSpec(i)
-        if specID > 0 then
-            local id, name, description, icon, role, class = GetSpecializationInfoByID(specID)
-            local repeated = 0
-            if role == "HEALER" then
-                table.insert(enemyHealer, { Unit = "arena" .. i, Class = class, Spec = name })
-            else
-                table.insert(enemyDPS, { Unit = "arena" .. i, Class = class, Spec = name })
-            end
-        end
-    end
-
 end)
 
 local interruptSpell = 0
@@ -821,7 +784,6 @@ function RubimRH.InterruptNextHealToggle()
         InfoText:SetText("Interrupting")
     end
 end
-
 function RubimRH.InterruptNextHealCheck()
     if GetTime() - timeElapsed >= 6 and RubimRH.InterruptingNext == true then
         print("Auto-Heal Interrupt: OFF")
@@ -1126,7 +1088,7 @@ local function GeneralPvP()
     end
 end
 
-local function getArenaTarget(arenaTarget)
+function RubimRH.getArenaTarget(arenaTarget)
     RubimRH.arena1.texture:SetColorTexture(0, 0, 0, 0)
     RubimRH.arena2.texture:SetColorTexture(0, 0, 0, 0)
     RubimRH.arena3.texture:SetColorTexture(0, 0, 0, 0)
@@ -1138,64 +1100,6 @@ local function getArenaTarget(arenaTarget)
         RubimRH.arena2.texture:SetColorTexture(0, 0.56, 0, 1)
     elseif UnitName(arenaTarget) == UnitName('arena3') then
         RubimRH.arena3.texture:SetColorTexture(0, 0.56, 0, 1)
-    end
-end
-
-function Spell:ArenaCast(arenaTarget)
-    local arenaTarget = arenaTarget:ID()
-    if UnitName(arenaTarget) == UnitName('arena1') then
-        RubimRH.Arena1Icon(self:Cast())
-    elseif UnitName(arenaTarget) == UnitName('arena2') then
-        RubimRH.Arena2Icon(self:Cast())
-    elseif UnitName(arenaTarget) == UnitName('arena3') then
-        RubimRH.Arena3Icon(self:Cast())
-    end
-end
-
-local function ArmsAPL()
-    if select(2, IsInInstance()) == "arena" then
-
-        for i, arenaTarget in pairs(Arena) do
-            if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and WRArms.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
-                getArenaTarget(arenaTarget)
-            end
-
-            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and WRArms.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
-                getArenaTarget(arenaTarget)
-            end
-
-            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and WRArms.SpellReflection:IsCastable() and arenaTarget:CastPercentage() >= randomGenerator("Reflect") then
-                getArenaTarget(arenaTarget)
-            end
-
-            if not arenaTarget:IsImmune() and WRArms.Rend:IsCastable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
-                WRArms.Rend:ArenaCast(arenaTarget)
-                return
-            end
-
-            if not arenaTarget:IsImmune() and WRArms.Disarm:IsCastable() and arenaTarget:IsBursting() and arenaTarget:IsDisarmable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
-                WRArms.Disarm:ArenaCast(arenaTarget)
-                return
-            end
-        end
-    end
-
-    if Target:Exists() then
-        if WRArms.Execute:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 15 and WRArms.DeathSentence:IsAvailable() then
-            return WRArms.Execute:Cast()
-        end
-
-        if not Target:IsImmune() and Target:CastingCC() and Target:IsTargeting(Player) and WRArms.SpellReflection:IsCastable() and Target:CastPercentage() >= randomGenerator("Reflect") then
-            return WRArms.SpellReflection:Cast()
-        end
-
-        if not Target:IsImmune() and Target:IsBursting() and Target:IsDisarmable() and WRArms.Disarm:IsReady("Melee") then
-            return WRArms.Disarm:Cast()
-        end
-
-        if not Target:IsImmune() and Target:HealthPercentage() <= 50 and WRArms.SharpenBlade:IsReady("Melee") and Target:IsAPlayer() then
-            return WRArms.SharpenBlade:Cast()
-        end
     end
 end
 
@@ -1323,7 +1227,6 @@ RubimRH.Rotation.SetPvP(265, emptyAPL)
 RubimRH.Rotation.SetPvP(266, emptyAPL)
 RubimRH.Rotation.SetPvP(267, emptyAPL)
 
-RubimRH.Rotation.SetPvP(71, ArmsAPL)
 RubimRH.Rotation.SetPvP(72, emptyAPL)
 RubimRH.Rotation.SetPvP(73, emptyAPL)
 

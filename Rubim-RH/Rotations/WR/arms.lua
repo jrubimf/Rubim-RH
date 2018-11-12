@@ -8,6 +8,7 @@ local Cache = HeroCache;
 local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
+local Arena = Unit.Arena
 local Spell = HL.Spell;
 local Item = HL.Item;
 
@@ -503,5 +504,53 @@ local function PASSIVE()
 
     return mainAddon.Shared()
 end
+
+local function PvP()
+    if select(2, IsInInstance()) == "arena" then
+
+        for i, arenaTarget in pairs(Arena) do
+            if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.Pummel:IsCastable() and arenaTarget:MinDistanceToPlayer() <= 5 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.SpellReflection:IsCastable() and arenaTarget:CastPercentage() >= randomGenerator("Reflect") then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+
+            if not arenaTarget:IsImmune() and S.Rend:IsCastable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
+                S.Rend:ArenaCast(arenaTarget)
+                return
+            end
+
+            if not arenaTarget:IsImmune() and S.Disarm:IsCastable() and arenaTarget:IsBursting() and arenaTarget:IsDisarmable() and arenaTarget:MinDistanceToPlayer(true) <= 5 then
+                S.Disarm:ArenaCast(arenaTarget)
+                return
+            end
+        end
+    end
+
+    if Target:Exists() then
+        if S.Execute:IsReadyMorph() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 15 and S.DeathSentence:IsAvailable() then
+            return S.Execute:Cast()
+        end
+
+        if not Target:IsImmune() and Target:CastingCC() and Target:IsTargeting(Player) and S.SpellReflection:IsCastable() and Target:CastPercentage() >= randomGenerator("Reflect") then
+            return S.SpellReflection:Cast()
+        end
+
+        if not Target:IsImmune() and Target:IsBursting() and Target:IsDisarmable() and S.Disarm:IsReady("Melee") then
+            return S.Disarm:Cast()
+        end
+
+        if not Target:IsImmune() and Target:HealthPercentage() <= 50 and S.SharpenBlade:IsReady("Melee") and Target:IsAPlayer() then
+            return S.SharpenBlade:Cast()
+        end
+    end
+end
+RubimRH.Rotation.SetPvP(71, PvP)
 
 mainAddon.Rotation.SetPASSIVE(71, PASSIVE);

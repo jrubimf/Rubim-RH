@@ -544,3 +544,14 @@ function Unit:LustDuration()
     end
     return 0
 end
+
+function Spell:ArenaCast(arenaTarget)
+    local arenaTarget = arenaTarget:ID()
+    if UnitName(arenaTarget) == UnitName('arena1') then
+        RubimRH.Arena1Icon(self:Cast())
+    elseif UnitName(arenaTarget) == UnitName('arena2') then
+        RubimRH.Arena2Icon(self:Cast())
+    elseif UnitName(arenaTarget) == UnitName('arena3') then
+        RubimRH.Arena3Icon(self:Cast())
+    end
+end
