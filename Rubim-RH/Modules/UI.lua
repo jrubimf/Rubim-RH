@@ -483,7 +483,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             st:EnableSelection(true);
             StdUi:GlueTop(st, tab.frame, 0, -60);
 
-
             local function addSpell(spellID)
                 local name = nil;
                 local icon, castTime, minRange, maxRange, spellId;
@@ -508,7 +507,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local data = {};
 
             for i, spell in pairs(RubimRH.allSpells) do
-                    tinsert(data, addSpell(spell.SpellID));
+                tinsert(data, addSpell(spell.SpellID));
             end
 
             -- update scroll table data
@@ -648,7 +647,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             st:EnableSelection(true);
             StdUi:GlueTop(st, tab.frame, 0, -60);
 
-
             local function addSpell(spellID)
                 local name = nil;
                 local icon, castTime, minRange, maxRange, spellId;
@@ -664,7 +662,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     spellId = spellId;
                 };
             end
-
 
             local data = {};
 
@@ -688,7 +685,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
                 st:SetData(data);
             end
-
 
             local function btn_delSpell()
                 if selectedSpell ~= nil then
@@ -730,10 +726,23 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueBelow(btn2, st, 0, -24, "RIGHT");
             btn2:SetScript('OnClick', btn_delSpell);
             StdUi:FrameTooltip(btn2, 'This will create a Queue macro :).', 'TOPLEFT', 'TOPRIGHT', true);
-            end
+        end
 
 
     end);
+end
+
+function RubimRH.SpellBlocker(spellID, point, relativeTo, relativePoint, xOfs, yOfs)
+    if spellID ~= nil then
+        if RubimRH.db.profile.mainOption.disabledSpells[spellID] ~= nil then
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = nil
+            print("Removed: " .. GetSpellLink(spellID))
+        else
+            RubimRH.db.profile.mainOption.disabledSpells[spellID] = true
+            print("Added: " .. GetSpellLink(spellID))
+        end
+        return
+    end
 end
 
 function RubimRH.ClassConfig(specID)
