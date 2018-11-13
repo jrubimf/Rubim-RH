@@ -24,8 +24,9 @@ local currentSize = 40
 --DB to VAR
 RubimRH.config.Spells = {}
 
+
 -- Create the dropdown, and configure its appearance
-local dropDown = CreateFrame("FRAME", "DropDownMenu", UIParent, "UIDropDownMenuTemplate")
+local dropDown = CreateFrame("FRAME", "IconDropDown", UIParent, "UIDropDownMenuTemplate")
 dropDown:SetPoint("CENTER")
 dropDown:Hide()
 UIDropDownMenu_SetWidth(dropDown, 200)

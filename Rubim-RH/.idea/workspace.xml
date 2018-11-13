@@ -11,236 +11,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PVP.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/PVP.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="170" column="27" lean-forward="true" selection-start-line="170" selection-start-column="26" selection-end-line="170" selection-end-column="27" />
-              <folding>
-                <element signature="e#326#586#0" expanded="false" />
-                <element signature="e#383#582#0" expanded="false" />
-                <element signature="e#485#574#0" expanded="false" />
-                <element signature="e#511#515#0" expanded="false" />
-                <element signature="e#562#565#0" expanded="false" />
-                <element signature="e#805#992#1" expanded="false" />
-                <element signature="e#821#990#0" expanded="false" />
-                <element signature="e#844#983#0" expanded="false" />
-                <element signature="e#1027#1410#0" expanded="false" />
-                <element signature="e#1650#1985#0" expanded="false" />
-                <element signature="e#2036#2037#0" expanded="false" />
-                <element signature="e#2071#2074#0" expanded="false" />
-                <element signature="e#2121#2224#0" expanded="false" />
-                <element signature="e#2154#2156#0" expanded="false" />
-                <element signature="e#2187#2190#0" expanded="false" />
-                <element signature="e#2272#2342#0" expanded="false" />
-                <element signature="e#2305#2307#0" expanded="false" />
-                <element signature="e#2338#2341#0" expanded="false" />
-                <element signature="e#2543#2993#1" expanded="false" />
-                <element signature="e#3009#3454#1" expanded="false" />
-                <element signature="e#3474#4453#1" expanded="false" />
-                <element signature="e#4942#5887#1" expanded="false" />
-                <element signature="e#5906#5968#1" expanded="false" />
-                <element signature="e#5988#6250#1" expanded="false" />
-                <element signature="e#6268#8085#1" expanded="false" />
-                <element signature="e#8106#8354#1" expanded="false" />
-                <element signature="e#8379#8465#1" expanded="false" />
-                <element signature="e#8490#8813#1" expanded="false" />
-                <element signature="e#8837#8918#1" expanded="false" />
-                <element signature="e#8941#9123#1" expanded="false" />
-                <element signature="e#9142#9303#1" expanded="false" />
-                <element signature="e#9327#9372#1" expanded="false" />
-                <element signature="e#9400#9446#1" expanded="false" />
-                <element signature="e#9474#9677#0" expanded="false" />
-                <element signature="e#9563#9656#0" expanded="false" />
-                <element signature="e#9705#9965#0" expanded="false" />
-                <element signature="e#9863#9944#0" expanded="false" />
-                <element signature="e#9997#10265#0" expanded="false" />
-                <element signature="e#10159#10244#0" expanded="false" />
-                <element signature="e#10295#10494#0" expanded="false" />
-                <element signature="e#10383#10473#0" expanded="false" />
-                <element signature="e#10518#10822#0" expanded="false" />
-                <element signature="e#10612#10801#0" expanded="false" />
-                <element signature="e#10853#11216#0" expanded="false" />
-                <element signature="e#11030#11195#0" expanded="false" />
-                <element signature="e#11068#11187#0" expanded="false" />
-                <element signature="e#11249#11551#0" expanded="false" />
-                <element signature="e#11343#11530#0" expanded="false" />
-                <element signature="e#11583#11882#0" expanded="false" />
-                <element signature="e#11676#11861#0" expanded="false" />
-                <element signature="e#11910#12207#0" expanded="false" />
-                <element signature="e#12000#12186#0" expanded="false" />
-                <element signature="e#12240#12445#0" expanded="false" />
-                <element signature="e#12329#12423#0" expanded="false" />
-                <element signature="e#12474#12806#0" expanded="false" />
-                <element signature="e#12567#12665#0" expanded="false" />
-                <element signature="e#12695#12785#0" expanded="false" />
-                <element signature="e#12840#13044#0" expanded="false" />
-                <element signature="e#12929#13023#0" expanded="false" />
-                <element signature="e#13083#13338#0" expanded="false" />
-                <element signature="e#13242#13317#0" expanded="false" />
-                <element signature="e#13371#13630#0" expanded="false" />
-                <element signature="e#13528#13609#0" expanded="false" />
-                <element signature="e#13668#14138#0" expanded="false" />
-                <element signature="e#13958#14117#0" expanded="false" />
-                <element signature="e#14173#15436#0" expanded="false" />
-                <element signature="e#14464#14648#0" expanded="false" />
-                <element signature="e#14763#14931#0" expanded="false" />
-                <element signature="e#15756#15931#0" expanded="false" />
-                <element signature="e#16893#17077#0" expanded="false" />
-                <element signature="e#17009#17069#0" expanded="false" />
-                <element signature="e#17189#17581#0" expanded="false" />
-                <element signature="e#17320#17508#0" expanded="false" />
-                <element signature="e#17440#17500#0" expanded="false" />
-                <element signature="e#17607#17812#0" expanded="false" />
-                <element signature="e#17627#17808#0" expanded="false" />
-                <element signature="e#17741#17800#0" expanded="false" />
-                <element signature="e#18179#18511#0" expanded="false" />
-                <element signature="e#18224#18342#0" expanded="false" />
-                <element signature="e#18346#18507#0" expanded="false" />
-                <element signature="e#18556#18762#0" expanded="false" />
-                <element signature="e#18634#18722#0" expanded="false" />
-                <element signature="e#18978#19626#0" expanded="false" />
-                <element signature="e#19092#19622#0" expanded="false" />
-                <element signature="e#19177#19311#0" expanded="false" />
-                <element signature="e#19796#20058#0" expanded="false" />
-                <element signature="e#19844#20054#0" expanded="false" />
-                <element signature="e#20092#24562#0" expanded="false" />
-                <element signature="e#22962#23056#0" expanded="false" />
-                <element signature="e#23355#23448#0" expanded="false" />
-                <element signature="e#24763#25191#0" expanded="false" />
-                <element signature="e#24804#24975#0" expanded="false" />
-                <element signature="e#25690#25783#1" expanded="false" />
-                <element signature="e#25812#26037#1" expanded="false" />
-                <element signature="e#26061#26259#1" expanded="false" />
-                <element signature="e#26299#26668#0" expanded="false" />
-                <element signature="e#26385#26467#0" expanded="false" />
-                <element signature="e#26492#26643#0" expanded="false" />
-                <element signature="e#26537#26635#0" expanded="false" />
-                <element signature="e#26698#26845#0" expanded="false" />
-                <element signature="e#26739#26821#0" expanded="false" />
-                <element signature="e#26872#26917#1" expanded="false" />
-                <element signature="e#26946#27206#0" expanded="false" />
-                <element signature="e#27104#27185#0" expanded="false" />
-                <element signature="e#27238#28139#0" expanded="false" />
-                <element signature="e#27677#28135#0" expanded="false" />
-                <element signature="e#27746#27918#0" expanded="false" />
-                <element signature="e#27955#28127#0" expanded="false" />
-                <element signature="e#28188#28766#0" expanded="false" />
-                <element signature="e#28797#30225#0" expanded="false" />
-                <element signature="e#28956#29035#0" expanded="false" />
-                <element signature="e#29198#29277#0" expanded="false" />
-                <element signature="e#29440#29519#0" expanded="false" />
-                <element signature="e#29678#29753#0" expanded="false" />
-                <element signature="e#29912#29987#0" expanded="false" />
-                <element signature="e#30146#30221#0" expanded="false" />
-                <element signature="e#30261#31908#0" expanded="false" />
-                <element signature="e#30425#31904#0" expanded="false" />
-                <element signature="e#30457#31434#0" expanded="false" />
-                <element signature="e#31438#31874#0" expanded="false" />
-                <element signature="e#31938#31939#0" expanded="false" />
-                <element signature="e#33354#44012#0" expanded="false" />
-                <element signature="e#33389#35185#0" expanded="false" />
-                <element signature="e#33557#35176#0" expanded="false" />
-                <element signature="e#33593#34658#0" expanded="false" />
-                <element signature="e#34662#35138#0" expanded="false" />
-                <element signature="e#35219#37628#0" expanded="false" />
-                <element signature="e#37658#42446#0" expanded="false" />
-                <element signature="e#37711#41497#0" expanded="false" />
-                <element signature="e#40096#40187#0" expanded="false" />
-                <element signature="e#40316#40407#0" expanded="false" />
-                <element signature="e#40536#40627#0" expanded="false" />
-                <element signature="e#40820#40913#0" expanded="false" />
-                <element signature="e#41106#41199#0" expanded="false" />
-                <element signature="e#41392#41485#0" expanded="false" />
-                <element signature="e#41533#42438#0" expanded="false" />
-                <element signature="e#42478#44007#0" expanded="false" />
-                <element signature="e#42641#42732#0" expanded="false" />
-                <element signature="e#42899#42990#0" expanded="false" />
-                <element signature="e#43157#43248#0" expanded="false" />
-                <element signature="e#43411#43498#0" expanded="false" />
-                <element signature="e#43661#43748#0" expanded="false" />
-                <element signature="e#43911#43998#0" expanded="false" />
-                <element signature="e#44039#60933#0" expanded="false" />
-                <element signature="e#44232#51081#0" expanded="false" />
-                <element signature="e#45058#46673#0" expanded="false" />
-                <element signature="e#46677#51015#0" expanded="false" />
-                <element signature="e#46808#46939#0" expanded="false" />
-                <element signature="e#47213#47405#0" expanded="false" />
-                <element signature="e#47566#47758#0" expanded="false" />
-                <element signature="e#48205#48370#0" expanded="false" />
-                <element signature="e#48502#48662#0" expanded="false" />
-                <element signature="e#48877#49054#0" expanded="false" />
-                <element signature="e#49362#49584#0" expanded="false" />
-                <element signature="e#49952#50127#0" expanded="false" />
-                <element signature="e#50263#50373#0" expanded="false" />
-                <element signature="e#50455#50560#0" expanded="false" />
-                <element signature="e#50700#50805#0" expanded="false" />
-                <element signature="e#50898#51003#0" expanded="false" />
-                <element signature="e#51111#52948#0" expanded="false" />
-                <element signature="e#51339#51433#0" expanded="false" />
-                <element signature="e#51665#51759#0" expanded="false" />
-                <element signature="e#51991#52085#0" expanded="false" />
-                <element signature="e#52276#52370#0" expanded="false" />
-                <element signature="e#52561#52655#0" expanded="false" />
-                <element signature="e#52846#52940#0" expanded="false" />
-                <element signature="e#52979#53186#0" expanded="false" />
-                <element signature="e#53227#54590#0" expanded="false" />
-                <element signature="e#54619#55685#0" expanded="false" />
-                <element signature="e#55713#57129#0" expanded="false" />
-                <element signature="e#57169#58843#0" expanded="false" />
-                <element signature="e#58878#60400#0" expanded="false" />
-                <element signature="e#59095#59174#0" expanded="false" />
-                <element signature="e#59299#59378#0" expanded="false" />
-                <element signature="e#59503#59582#0" expanded="false" />
-                <element signature="e#59771#59852#0" expanded="false" />
-                <element signature="e#60041#60122#0" expanded="false" />
-                <element signature="e#60311#60392#0" expanded="false" />
-                <element signature="e#60491#60581#0" expanded="false" />
-                <element signature="e#60827#60929#0" expanded="false" />
-                <element signature="e#60964#61389#0" expanded="false" />
-                <element signature="e#61297#61385#0" expanded="false" />
-                <element signature="e#61415#62121#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="arms.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rotations/WR/arms.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="540" column="40" lean-forward="true" selection-start-line="540" selection-start-column="40" selection-end-line="540" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Rubim-RH.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="225" column="29" lean-forward="true" selection-start-line="225" selection-start-column="29" selection-end-line="225" selection-end-column="29" />
+            <state relative-caret-position="477">
+              <caret line="243" column="29" lean-forward="false" selection-start-line="243" selection-start-column="29" selection-end-line="243" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomSpells.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
+      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="484" column="50" lean-forward="false" selection-start-line="484" selection-start-column="50" selection-end-line="484" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="247" column="20" lean-forward="false" selection-start-line="247" selection-start-column="20" selection-end-line="247" selection-end-column="20" />
-              <folding />
+            <state relative-caret-position="442">
+              <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+              <folding>
+                <element signature="e#20299#27242#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -248,196 +36,19 @@
       <file leaf-file-name="Icons.lua" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="317" column="11" lean-forward="true" selection-start-line="317" selection-start-column="11" selection-end-line="317" selection-end-column="11" />
+            <state relative-caret-position="272">
+              <caret line="42" column="38" lean-forward="false" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Rubim-RHc.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rubim-RHc.lua">
+      <file leaf-file-name="CustomUnit.lua" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="268" column="9" lean-forward="false" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="31" />
+            <state relative-caret-position="403">
+              <caret line="246" column="11" lean-forward="false" selection-start-line="246" selection-start-column="11" selection-end-line="246" selection-end-column="11" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="bm.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Rotations/HR/bm.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="191" column="11" lean-forward="true" selection-start-line="189" selection-start-column="8" selection-end-line="191" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Custom.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-243">
-              <caret line="353" column="37" lean-forward="true" selection-start-line="353" selection-start-column="7" selection-end-line="353" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UI.lua" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="734" column="48" lean-forward="true" selection-start-line="734" selection-start-column="48" selection-end-line="734" selection-end-column="48" />
-              <folding>
-                <element signature="e#189#33441#0" expanded="false" />
-                <element signature="e#312#316#0" expanded="false" />
-                <element signature="e#391#394#0" expanded="false" />
-                <element signature="e#413#884#1" expanded="false" />
-                <element signature="e#423#496#1" expanded="false" />
-                <element signature="e#506#624#1" expanded="false" />
-                <element signature="e#634#706#1" expanded="false" />
-                <element signature="e#716#791#1" expanded="false" />
-                <element signature="e#801#877#1" expanded="false" />
-                <element signature="e#1031#1035#0" expanded="false" />
-                <element signature="e#1080#1083#0" expanded="false" />
-                <element signature="e#1125#33435#0" expanded="false" />
-                <element signature="e#1164#6188#0" expanded="false" />
-                <element signature="e#1726#1727#0" expanded="false" />
-                <element signature="e#1786#1789#0" expanded="false" />
-                <element signature="e#2067#2068#0" expanded="false" />
-                <element signature="e#2118#2121#0" expanded="false" />
-                <element signature="e#2396#2397#0" expanded="false" />
-                <element signature="e#2448#2451#0" expanded="false" />
-                <element signature="e#2991#2992#0" expanded="false" />
-                <element signature="e#3050#3053#0" expanded="false" />
-                <element signature="e#3323#3324#0" expanded="false" />
-                <element signature="e#3378#3381#0" expanded="false" />
-                <element signature="e#3646#3647#0" expanded="false" />
-                <element signature="e#3704#3707#0" expanded="false" />
-                <element signature="e#3976#3977#0" expanded="false" />
-                <element signature="e#4036#4039#0" expanded="false" />
-                <element signature="e#4598#4888#0" expanded="false" />
-                <element signature="e#5420#5686#0" expanded="false" />
-                <element signature="e#6274#20258#0" expanded="false" />
-                <element signature="e#8239#8324#0" expanded="false" />
-                <element signature="e#8356#8441#0" expanded="false" />
-                <element signature="e#9551#9552#0" expanded="false" />
-                <element signature="e#9604#9607#0" expanded="false" />
-                <element signature="e#9644#9761#1" expanded="false" />
-                <element signature="e#10150#10511#0" expanded="false" />
-                <element signature="e#10255#10259#0" expanded="false" />
-                <element signature="e#10348#10351#0" expanded="false" />
-                <element signature="e#10401#10405#0" expanded="false" />
-                <element signature="e#10494#10497#0" expanded="false" />
-                <element signature="e#10589#10717#0" expanded="false" />
-                <element signature="e#10794#10922#0" expanded="false" />
-                <element signature="e#11276#11277#0" expanded="false" />
-                <element signature="e#11329#11332#0" expanded="false" />
-                <element signature="e#11866#12103#0" expanded="false" />
-                <element signature="e#12464#12465#0" expanded="false" />
-                <element signature="e#12518#12521#0" expanded="false" />
-                <element signature="e#12614#12753#1" expanded="false" />
-                <element signature="e#13132#13523#0" expanded="false" />
-                <element signature="e#13239#13243#0" expanded="false" />
-                <element signature="e#13319#13323#0" expanded="false" />
-                <element signature="e#13319#13323#0" expanded="false" />
-                <element signature="e#13407#13410#0" expanded="false" />
-                <element signature="e#13984#14666#0" expanded="false" />
-                <element signature="e#14418#14650#0" expanded="false" />
-                <element signature="e#14724#15406#0" expanded="false" />
-                <element signature="e#15158#15390#0" expanded="false" />
-                <element signature="e#15464#16137#0" expanded="false" />
-                <element signature="e#15889#16121#0" expanded="false" />
-                <element signature="e#16287#18087#0" expanded="false" />
-                <element signature="e#16570#16883#0" expanded="false" />
-                <element signature="e#16646#16650#0" expanded="false" />
-                <element signature="e#16755#16759#0" expanded="false" />
-                <element signature="e#16755#16759#0" expanded="false" />
-                <element signature="e#16863#16866#0" expanded="false" />
-                <element signature="e#16940#18070#0" expanded="false" />
-                <element signature="e#16974#17550#1" expanded="false" />
-                <element signature="e#17847#18050#0" expanded="false" />
-                <element signature="e#18145#18820#0" expanded="false" />
-                <element signature="e#18571#18803#0" expanded="false" />
-                <element signature="e#18853#19532#0" expanded="false" />
-                <element signature="e#19284#19516#0" expanded="false" />
-                <element signature="e#19565#20245#0" expanded="false" />
-                <element signature="e#19997#20229#0" expanded="false" />
-                <element signature="e#20299#27242#0" expanded="false" />
-                <element signature="e#20522#20800#0" expanded="false" />
-                <element signature="e#20551#20722#0" expanded="false" />
-                <element signature="e#20722#20726#0" expanded="false" />
-                <element signature="e#20783#20786#0" expanded="false" />
-                <element signature="e#20859#22938#1" expanded="false" />
-                <element signature="e#20878#21462#1" expanded="false" />
-                <element signature="e#21135#21441#0" expanded="false" />
-                <element signature="e#21179#21183#0" expanded="false" />
-                <element signature="e#21274#21277#0" expanded="false" />
-                <element signature="e#21322#21326#0" expanded="false" />
-                <element signature="e#21417#21420#0" expanded="false" />
-                <element signature="e#21481#21881#1" expanded="false" />
-                <element signature="e#21718#21860#0" expanded="false" />
-                <element signature="e#21899#22103#1" expanded="false" />
-                <element signature="e#22122#22923#1" expanded="false" />
-                <element signature="e#22367#22904#0" expanded="false" />
-                <element signature="e#22470#22684#0" expanded="false" />
-                <element signature="e#22752#22878#0" expanded="false" />
-                <element signature="e#23140#23844#0" expanded="false" />
-                <element signature="e#23457#23461#0" expanded="false" />
-                <element signature="e#23516#23519#0" expanded="false" />
-                <element signature="e#23544#23830#1" expanded="false" />
-                <element signature="e#23932#23934#0" expanded="false" />
-                <element signature="e#24003#24006#0" expanded="false" />
-                <element signature="e#24122#25384#0" expanded="false" />
-                <element signature="e#24177#25325#0" expanded="false" />
-                <element signature="e#24334#24572#0" expanded="false" />
-                <element signature="e#24576#24814#0" expanded="false" />
-                <element signature="e#25433#26399#0" expanded="false" />
-                <element signature="e#25488#26340#0" expanded="false" />
-                <element signature="e#25674#25830#0" expanded="false" />
-                <element signature="e#25734#25738#0" expanded="false" />
-                <element signature="e#25806#25809#0" expanded="false" />
-                <element signature="e#27286#33425#0" expanded="false" />
-                <element signature="e#27514#27792#0" expanded="false" />
-                <element signature="e#27543#27714#0" expanded="false" />
-                <element signature="e#27714#27718#0" expanded="false" />
-                <element signature="e#27775#27778#0" expanded="false" />
-                <element signature="e#27888#30045#1" expanded="false" />
-                <element signature="e#27907#28552#1" expanded="false" />
-                <element signature="e#28144#28286#0" expanded="false" />
-                <element signature="e#28320#28534#0" expanded="false" />
-                <element signature="e#28422#28423#0" expanded="false" />
-                <element signature="e#28508#28511#0" expanded="false" />
-                <element signature="e#28570#29018#1" expanded="false" />
-                <element signature="e#28786#29000#0" expanded="false" />
-                <element signature="e#28888#28889#0" expanded="false" />
-                <element signature="e#28974#28977#0" expanded="false" />
-                <element signature="e#29037#30030#1" expanded="false" />
-                <element signature="e#29282#30011#0" expanded="false" />
-                <element signature="e#29384#29385#0" expanded="false" />
-                <element signature="e#29470#29473#0" expanded="false" />
-                <element signature="e#29577#29791#0" expanded="false" />
-                <element signature="e#29859#29985#0" expanded="false" />
-                <element signature="e#30247#30729#0" expanded="false" />
-                <element signature="e#30468#30715#1" expanded="false" />
-                <element signature="e#30843#30845#0" expanded="false" />
-                <element signature="e#30907#30910#0" expanded="false" />
-                <element signature="e#31059#31516#0" expanded="false" />
-                <element signature="e#31167#31171#0" expanded="false" />
-                <element signature="e#31273#31276#0" expanded="false" />
-                <element signature="e#31394#31396#0" expanded="false" />
-                <element signature="e#31466#31469#0" expanded="false" />
-                <element signature="e#31562#32211#0" expanded="false" />
-                <element signature="e#31607#32152#0" expanded="false" />
-                <element signature="e#31947#31949#0" expanded="false" />
-                <element signature="e#32027#32030#0" expanded="false" />
-                <element signature="e#32830#32949#0" expanded="false" />
-                <element signature="e#33030#33122#0" expanded="false" />
-                <element signature="e#33978#33979#0" expanded="false" />
-                <element signature="e#34005#34008#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -446,36 +57,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>min:</find>
-      <find>BurstMode</find>
-      <find>WRArms.</find>
-      <find>spellBlocker</find>
-      <find>db</find>
-      <find>BlockSpell</find>
-      <find>block</find>
-      <find>window</find>
-      <find>point</find>
-      <find>AllMenu</find>
-      <find>tooltip</find>
-      <find>showTooltip</find>
-      <find>Fuck</find>
-      <find>events</find>
-      <find>function</find>
-      <find>db.main</find>
-      <find>interruptPvPList</find>
-      <find>interruptList</find>
-      <find>CC</find>
-      <find>event</find>
-      <find>interrup</find>
-      <find>useIn</find>
-      <find>mainOption</find>
-      <find>interrupt</find>
-      <find>RubimRH.db.profile.mainOption.useInterrupts</find>
       <find>fontString</find>
       <find>u</find>
       <find>IsInterruptible</find>
       <find>/dump RubimRH.db.profile.mainOption.interruptList</find>
       <find>RubimRH.db.profile.mainOption.interruptList</find>
+      <find>interruptList</find>
+      <find>Delete</find>
+      <find>dropdown</find>
+      <find>dropDown</find>
+      <find>DownMenuB</find>
+      <find>DropdownMenu</find>
+      <find>arg1</find>
+      <find>DropDownMenu</find>
+      <find>moused</find>
+      <find>UIDropDownMenu</find>
+      <find>Right</find>
+      <find>selectedSpell</find>
+      <find>del</find>
+      <find>Dropdown</find>
+      <find>MSA</find>
+      <find>Spells</find>
+      <find>Interr</find>
+      <find>Typ</find>
+      <find>whiteList</find>
+      <find>CheckBox</find>
+      <find>This wi</find>
+      <find>tooltip</find>
+      <find>Add</find>
+      <find>trinket</find>
+      <find>CD:Ever</find>
     </findStrings>
     <replaceStrings>
       <replace>, -100,</replace>
@@ -486,6 +97,8 @@
       <replace>)</replace>
       <replace>S.</replace>
       <replace>interruptList</replace>
+      <replace>MSA_DropDownMenu_</replace>
+      <replace>MSA_DropDownMenu</replace>
     </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -511,9 +124,12 @@
         <option value="$PROJECT_DIR$/Modules/CustomSpells.lua" />
         <option value="$PROJECT_DIR$/Rotations/WR/arms.lua" />
         <option value="$PROJECT_DIR$/Modules/PVP.lua" />
+        <option value="$PROJECT_DIR$/embeds.xml" />
+        <option value="$PROJECT_DIR$/Libs/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.lua" />
+        <option value="$PROJECT_DIR$/Modules/Icons.lua" />
         <option value="$PROJECT_DIR$/Rubim-RH.lua" />
-        <option value="$PROJECT_DIR$/Modules/UI.lua" />
         <option value="$PROJECT_DIR$/Modules/CustomUnit.lua" />
+        <option value="$PROJECT_DIR$/Modules/UI.lua" />
       </list>
     </option>
   </component>
@@ -538,12 +154,41 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
               <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Libs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Libs" type="462c0819:PsiDirectoryNode" />
+              <item name="LibStub" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Libs" type="462c0819:PsiDirectoryNode" />
+              <item name="MSA-DropDownMenu-1.0" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Libs" type="462c0819:PsiDirectoryNode" />
+              <item name="StdUi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rubim-RH" type="462c0819:PsiDirectoryNode" />
+              <item name="Media" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Rubim-RH" type="b2602c69:ProjectViewProjectNode" />
@@ -619,9 +264,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -699,7 +343,6 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="LuaCheck" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -711,6 +354,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -730,86 +374,12 @@
           <line>44</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="lua-line">
-          <url>file://$PROJECT_DIR$/Modules/UI.lua</url>
-          <line>407</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Rotations/HR/bm.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="53" column="22" lean-forward="false" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/HR/mm.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3910">
-          <caret line="230" column="24" lean-forward="true" selection-start-line="230" selection-start-column="24" selection-end-line="230" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19567">
-          <caret line="1151" column="42" lean-forward="true" selection-start-line="1151" selection-start-column="42" selection-end-line="1151" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DH/veng.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="66" column="33" lean-forward="false" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/Shared.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Rubim-RH_ExtraPvP/rubim-rh_extraPvP.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19941">
-          <caret line="1173" column="35" lean-forward="false" selection-start-line="1173" selection-start-column="35" selection-end-line="1173" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/DR/feral.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2023">
-          <caret line="119" column="0" lean-forward="true" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/HR/survival.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7378">
-          <caret line="434" column="60" lean-forward="false" selection-start-line="434" selection-start-column="60" selection-end-line="434" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="3" lean-forward="false" selection-start-line="114" selection-start-column="3" selection-end-line="115" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5100">
@@ -836,7 +406,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5508">
           <caret line="324" column="30" lean-forward="false" selection-start-line="324" selection-start-column="25" selection-end-line="324" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -881,7 +450,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="318">
           <caret line="67" column="4" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -889,7 +457,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -897,7 +464,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="58" column="14" lean-forward="false" selection-start-line="58" selection-start-column="14" selection-end-line="58" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -905,7 +471,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="84" column="28" lean-forward="false" selection-start-line="84" selection-start-column="28" selection-end-line="84" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -913,7 +478,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1003">
           <caret line="59" column="15" lean-forward="false" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -921,7 +485,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2380">
           <caret line="140" column="39" lean-forward="false" selection-start-line="140" selection-start-column="39" selection-end-line="140" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -929,7 +492,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="21" lean-forward="false" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -937,23 +499,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="407">
           <caret line="162" column="11" lean-forward="true" selection-start-line="162" selection-start-column="11" selection-end-line="162" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Rotations/WL/Demonology.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="41" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Rotations/WL/Demonology.lua" />
     <entry file="file://$PROJECT_DIR$/Rotations/MG/arcane.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="526">
           <caret line="75" column="27" lean-forward="true" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -961,7 +514,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1802">
           <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -969,7 +521,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="556">
           <caret line="58" column="67" lean-forward="true" selection-start-line="58" selection-start-column="67" selection-end-line="58" selection-end-column="82" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -977,7 +528,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -985,7 +535,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -993,7 +542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="19" lean-forward="false" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1001,14 +549,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="394" column="44" lean-forward="false" selection-start-line="394" selection-start-column="44" selection-end-line="394" selection-end-column="44" />
-          <folding>
-            <element signature="e#2479#3686#0" expanded="false" />
-            <element signature="e#2582#3682#0" expanded="false" />
-            <element signature="e#3157#3287#0" expanded="false" />
-            <element signature="e#3328#3459#0" expanded="false" />
-            <element signature="e#3501#3636#0" expanded="false" />
-            <element signature="e#3817#3930#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1016,7 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="90" column="8" lean-forward="true" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1024,7 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1032,7 +570,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-5255">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1040,7 +577,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4660">
           <caret line="60" column="30" lean-forward="false" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1048,7 +584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
           <caret line="191" column="11" lean-forward="true" selection-start-line="189" selection-start-column="8" selection-end-line="191" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1056,7 +591,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="542">
           <caret line="349" column="31" lean-forward="true" selection-start-line="349" selection-start-column="31" selection-end-line="349" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1064,7 +598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
           <caret line="540" column="40" lean-forward="true" selection-start-line="540" selection-start-column="40" selection-end-line="540" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1072,7 +605,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="174" column="35" lean-forward="true" selection-start-line="174" selection-start-column="35" selection-end-line="174" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1268,206 +800,133 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Debug.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Global.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Enemies.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="41" column="7" lean-forward="false" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/embeds.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Rubim-RHc.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="268" column="9" lean-forward="false" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-243">
-          <caret line="353" column="37" lean-forward="true" selection-start-line="353" selection-start-column="7" selection-end-line="353" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="317" column="11" lean-forward="true" selection-start-line="317" selection-start-column="11" selection-end-line="317" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="734" column="48" lean-forward="true" selection-start-line="734" selection-start-column="48" selection-end-line="734" selection-end-column="48" />
-          <folding>
-            <element signature="e#189#33441#0" expanded="false" />
-            <element signature="e#312#316#0" expanded="false" />
-            <element signature="e#391#394#0" expanded="false" />
-            <element signature="e#413#884#1" expanded="false" />
-            <element signature="e#423#496#1" expanded="false" />
-            <element signature="e#506#624#1" expanded="false" />
-            <element signature="e#634#706#1" expanded="false" />
-            <element signature="e#716#791#1" expanded="false" />
-            <element signature="e#801#877#1" expanded="false" />
-            <element signature="e#1031#1035#0" expanded="false" />
-            <element signature="e#1080#1083#0" expanded="false" />
-            <element signature="e#1125#33435#0" expanded="false" />
-            <element signature="e#1164#6188#0" expanded="false" />
-            <element signature="e#1726#1727#0" expanded="false" />
-            <element signature="e#1786#1789#0" expanded="false" />
-            <element signature="e#2067#2068#0" expanded="false" />
-            <element signature="e#2118#2121#0" expanded="false" />
-            <element signature="e#2396#2397#0" expanded="false" />
-            <element signature="e#2448#2451#0" expanded="false" />
-            <element signature="e#2991#2992#0" expanded="false" />
-            <element signature="e#3050#3053#0" expanded="false" />
-            <element signature="e#3323#3324#0" expanded="false" />
-            <element signature="e#3378#3381#0" expanded="false" />
-            <element signature="e#3646#3647#0" expanded="false" />
-            <element signature="e#3704#3707#0" expanded="false" />
-            <element signature="e#3976#3977#0" expanded="false" />
-            <element signature="e#4036#4039#0" expanded="false" />
-            <element signature="e#4598#4888#0" expanded="false" />
-            <element signature="e#5420#5686#0" expanded="false" />
-            <element signature="e#6274#20258#0" expanded="false" />
-            <element signature="e#8239#8324#0" expanded="false" />
-            <element signature="e#8356#8441#0" expanded="false" />
-            <element signature="e#9551#9552#0" expanded="false" />
-            <element signature="e#9604#9607#0" expanded="false" />
-            <element signature="e#9644#9761#1" expanded="false" />
-            <element signature="e#10150#10511#0" expanded="false" />
-            <element signature="e#10255#10259#0" expanded="false" />
-            <element signature="e#10348#10351#0" expanded="false" />
-            <element signature="e#10401#10405#0" expanded="false" />
-            <element signature="e#10494#10497#0" expanded="false" />
-            <element signature="e#10589#10717#0" expanded="false" />
-            <element signature="e#10794#10922#0" expanded="false" />
-            <element signature="e#11276#11277#0" expanded="false" />
-            <element signature="e#11329#11332#0" expanded="false" />
-            <element signature="e#11866#12103#0" expanded="false" />
-            <element signature="e#12464#12465#0" expanded="false" />
-            <element signature="e#12518#12521#0" expanded="false" />
-            <element signature="e#12614#12753#1" expanded="false" />
-            <element signature="e#13132#13523#0" expanded="false" />
-            <element signature="e#13239#13243#0" expanded="false" />
-            <element signature="e#13319#13323#0" expanded="false" />
-            <element signature="e#13319#13323#0" expanded="false" />
-            <element signature="e#13407#13410#0" expanded="false" />
-            <element signature="e#13984#14666#0" expanded="false" />
-            <element signature="e#14418#14650#0" expanded="false" />
-            <element signature="e#14724#15406#0" expanded="false" />
-            <element signature="e#15158#15390#0" expanded="false" />
-            <element signature="e#15464#16137#0" expanded="false" />
-            <element signature="e#15889#16121#0" expanded="false" />
-            <element signature="e#16287#18087#0" expanded="false" />
-            <element signature="e#16570#16883#0" expanded="false" />
-            <element signature="e#16646#16650#0" expanded="false" />
-            <element signature="e#16755#16759#0" expanded="false" />
-            <element signature="e#16755#16759#0" expanded="false" />
-            <element signature="e#16863#16866#0" expanded="false" />
-            <element signature="e#16940#18070#0" expanded="false" />
-            <element signature="e#16974#17550#1" expanded="false" />
-            <element signature="e#17847#18050#0" expanded="false" />
-            <element signature="e#18145#18820#0" expanded="false" />
-            <element signature="e#18571#18803#0" expanded="false" />
-            <element signature="e#18853#19532#0" expanded="false" />
-            <element signature="e#19284#19516#0" expanded="false" />
-            <element signature="e#19565#20245#0" expanded="false" />
-            <element signature="e#19997#20229#0" expanded="false" />
-            <element signature="e#20299#27242#0" expanded="false" />
-            <element signature="e#20522#20800#0" expanded="false" />
-            <element signature="e#20551#20722#0" expanded="false" />
-            <element signature="e#20722#20726#0" expanded="false" />
-            <element signature="e#20783#20786#0" expanded="false" />
-            <element signature="e#20859#22938#1" expanded="false" />
-            <element signature="e#20878#21462#1" expanded="false" />
-            <element signature="e#21135#21441#0" expanded="false" />
-            <element signature="e#21179#21183#0" expanded="false" />
-            <element signature="e#21274#21277#0" expanded="false" />
-            <element signature="e#21322#21326#0" expanded="false" />
-            <element signature="e#21417#21420#0" expanded="false" />
-            <element signature="e#21481#21881#1" expanded="false" />
-            <element signature="e#21718#21860#0" expanded="false" />
-            <element signature="e#21899#22103#1" expanded="false" />
-            <element signature="e#22122#22923#1" expanded="false" />
-            <element signature="e#22367#22904#0" expanded="false" />
-            <element signature="e#22470#22684#0" expanded="false" />
-            <element signature="e#22752#22878#0" expanded="false" />
-            <element signature="e#23140#23844#0" expanded="false" />
-            <element signature="e#23457#23461#0" expanded="false" />
-            <element signature="e#23516#23519#0" expanded="false" />
-            <element signature="e#23544#23830#1" expanded="false" />
-            <element signature="e#23932#23934#0" expanded="false" />
-            <element signature="e#24003#24006#0" expanded="false" />
-            <element signature="e#24122#25384#0" expanded="false" />
-            <element signature="e#24177#25325#0" expanded="false" />
-            <element signature="e#24334#24572#0" expanded="false" />
-            <element signature="e#24576#24814#0" expanded="false" />
-            <element signature="e#25433#26399#0" expanded="false" />
-            <element signature="e#25488#26340#0" expanded="false" />
-            <element signature="e#25674#25830#0" expanded="false" />
-            <element signature="e#25734#25738#0" expanded="false" />
-            <element signature="e#25806#25809#0" expanded="false" />
-            <element signature="e#27286#33425#0" expanded="false" />
-            <element signature="e#27514#27792#0" expanded="false" />
-            <element signature="e#27543#27714#0" expanded="false" />
-            <element signature="e#27714#27718#0" expanded="false" />
-            <element signature="e#27775#27778#0" expanded="false" />
-            <element signature="e#27888#30045#1" expanded="false" />
-            <element signature="e#27907#28552#1" expanded="false" />
-            <element signature="e#28144#28286#0" expanded="false" />
-            <element signature="e#28320#28534#0" expanded="false" />
-            <element signature="e#28422#28423#0" expanded="false" />
-            <element signature="e#28508#28511#0" expanded="false" />
-            <element signature="e#28570#29018#1" expanded="false" />
-            <element signature="e#28786#29000#0" expanded="false" />
-            <element signature="e#28888#28889#0" expanded="false" />
-            <element signature="e#28974#28977#0" expanded="false" />
-            <element signature="e#29037#30030#1" expanded="false" />
-            <element signature="e#29282#30011#0" expanded="false" />
-            <element signature="e#29384#29385#0" expanded="false" />
-            <element signature="e#29470#29473#0" expanded="false" />
-            <element signature="e#29577#29791#0" expanded="false" />
-            <element signature="e#29859#29985#0" expanded="false" />
-            <element signature="e#30247#30729#0" expanded="false" />
-            <element signature="e#30468#30715#1" expanded="false" />
-            <element signature="e#30843#30845#0" expanded="false" />
-            <element signature="e#30907#30910#0" expanded="false" />
-            <element signature="e#31059#31516#0" expanded="false" />
-            <element signature="e#31167#31171#0" expanded="false" />
-            <element signature="e#31273#31276#0" expanded="false" />
-            <element signature="e#31394#31396#0" expanded="false" />
-            <element signature="e#31466#31469#0" expanded="false" />
-            <element signature="e#31562#32211#0" expanded="false" />
-            <element signature="e#31607#32152#0" expanded="false" />
-            <element signature="e#31947#31949#0" expanded="false" />
-            <element signature="e#32027#32030#0" expanded="false" />
-            <element signature="e#32830#32949#0" expanded="false" />
-            <element signature="e#33030#33122#0" expanded="false" />
-            <element signature="e#33978#33979#0" expanded="false" />
-            <element signature="e#34005#34008#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="225" column="29" lean-forward="true" selection-start-line="225" selection-start-column="29" selection-end-line="225" selection-end-column="29" />
+        <state relative-caret-position="94">
+          <caret line="260" column="7" lean-forward="true" selection-start-line="260" selection-start-column="7" selection-end-line="260" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/CustomSpells.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="484" column="50" lean-forward="false" selection-start-line="484" selection-start-column="50" selection-end-line="484" selection-end-column="50" />
+        <state relative-caret-position="613">
+          <caret line="484" column="34" lean-forward="false" selection-start-line="484" selection-start-column="34" selection-end-line="484" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Custom.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="315" column="8" lean-forward="false" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libs/StdUi/StdUi.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libs/LibDBIcon-1.0/lib.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libs/LibStub/LibStub.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libs/MSA-DropDownMenu-1.0/MSA-DropDownMenu-1.0.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="542">
+          <caret line="1617" column="28" lean-forward="false" selection-start-line="1617" selection-start-column="9" selection-end-line="1617" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rubim-RH.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="243" column="29" lean-forward="false" selection-start-line="243" selection-start-column="29" selection-end-line="243" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Icons.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="42" column="38" lean-forward="false" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/CustomUnit.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="247" column="20" lean-forward="false" selection-start-line="247" selection-start-column="20" selection-end-line="247" selection-end-column="20" />
+        <state relative-caret-position="403">
+          <caret line="246" column="11" lean-forward="false" selection-start-line="246" selection-start-column="11" selection-end-line="246" selection-end-column="11" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/UI.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="756" column="0" lean-forward="true" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#20299#27242#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -241,6 +241,7 @@ local defaults = {
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
             interruptList = {},
+            whiteList = true,
             useTrinkets = {
                 [1] = false,
                 [2] = false

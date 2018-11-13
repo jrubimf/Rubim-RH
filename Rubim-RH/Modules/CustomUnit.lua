@@ -233,9 +233,16 @@ function Unit:IsInterruptible()
     local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
 
     if spellId ~= nil then
-        if RubimRH.db.profile.mainOption.interruptList[spellId] ~= nil then
-            if self:CastPercentage() >= randomGenerator("Interrupt") then
-                return true
+
+        if RubimRH.db.profile.mainOption.whitelist then
+            if RubimRH.db.profile.mainOption.interruptList[spellId] then
+                if self:CastPercentage() >= randomGenerator("Interrupt") then
+                    return true
+                end
+            end
+        else
+            if RubimRH.db.profile.mainOption.interruptList[spellId] then
+                return false
             end
         end
     end
@@ -245,7 +252,9 @@ function Unit:IsInterruptible()
     end
 
     for i, v in pairs(RubimRH.db.profile.mainOption.interruptList) do
-        return false
+        if RubimRH.db.profile.mainOption.whitelist then
+            return false
+        end
     end
 
     if self:CastPercentage() >= randomGenerator("Interrupt") then

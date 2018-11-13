@@ -584,7 +584,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
 
             end
-
             local selectedSpell = {}
             local data = {};
             local cols = {
@@ -620,7 +619,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
                 {
                     name = 'Icon',
-                    width = 40,
+                    width = 35,
                     align = 'LEFT',
                     index = 'icon',
                     format = 'icon',
@@ -675,6 +674,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local tempAddSpell = 0
             local function btn_addSpell()
 
+                if not GetSpellInfo(tempAddSpell) then
+                    return
+                end
+
                 if tempAddSpell ~= 0 and RubimRH.db.profile.mainOption.interruptList[tempAddSpell] == nil then
                     RubimRH.db.profile.mainOption.interruptList[tempAddSpell] = true
                 end
@@ -686,6 +689,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 st:SetData(data);
             end
 
+            function RubimRH.RefreshList()
+                local data = {};
+                for i, spell in pairs(RubimRH.db.profile.mainOption.interruptList) do
+                    table.insert(data, addSpell(i));
+                end
+                st:SetData(data);
+                st:ClearSelection()
+            end
             local function btn_delSpell()
                 if selectedSpell ~= nil then
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
@@ -706,7 +717,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local btn = StdUi:Button(tab.frame, 125, 24, 'Add Spell');
             StdUi:GlueBelow(btn, st, 0, -24, "LEFT");
             btn:SetScript('OnClick', btn_addSpell);
-            StdUi:FrameTooltip(btn, 'This will block the spell from the spellist of the rotation aka it will never cast it.', 'TOPLEFT', 'TOPRIGHT', true);
+            StdUi:FrameTooltip(btn, 'Add spell to the White or Black list.', 'TOPLEFT', 'TOPRIGHT', true);
 
             local btn_num = StdUi:NumericBox(tab.frame, 125, 24, 1);
             btn_num:SetMaxValue(9999999);
@@ -718,6 +729,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end)
 
             btn_num:SetScript("OnEnterPressed", function(self, bool, value)
+                showTooltip(self, false)
                 tempAddSpell = self:GetNumber()
                 btn_addSpell()
             end)
@@ -725,7 +737,35 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local btn2 = StdUi:Button(tab.frame, 125, 24, 'Delete Spell');
             StdUi:GlueBelow(btn2, st, 0, -24, "RIGHT");
             btn2:SetScript('OnClick', btn_delSpell);
-            StdUi:FrameTooltip(btn2, 'This will create a Queue macro :).', 'TOPLEFT', 'TOPRIGHT', true);
+            StdUi:FrameTooltip(btn2, 'Delete a Spell.', 'TOPLEFT', 'TOPRIGHT', true);
+
+            local whiteListOptions = {
+                { text = 'Whitelist', value = "Whitelist" },
+                { text = 'Blacklist', value = "Blacklist" },
+            }
+
+            local whiteListText = (RubimRH.db.profile.mainOption.whiteList == true and 'Whitelist' or 'Blacklist')
+
+            local gn_2_1 = StdUi:Dropdown(tab.frame, 125, 20, whiteListOptions, nil, nil);
+            gn_2_1:SetPlaceholder(whiteListText);
+            gn_2_1.OnValueChanged = function(self, val)
+                RubimRH.db.profile.mainOption.whiteList = (val == "Whitelist" and true or false)
+                whiteListText = (RubimRH.db.profile.mainOption.whiteList == true and 'Whitelist' or 'Blacklist')
+                gn_2_1:SetText(whiteListText);
+            end
+            StdUi:GlueBelow(gn_2_1, btn2, 0, -24, 'RIGHT');
+
+
+            local ic_2_1 = StdUi:Checkbox(tab.frame, 'Whitelist');
+            StdUi:GlueBelow(ic_2_1, btn2, 0, -24, 'RIGHT');
+            ic_2_1:SetChecked(RubimRH.db.profile.mainOption.whiteList)
+            function ic_2_1:OnValueChanged(self, state, value)
+                if RubimRH.db.profile.mainOption.whiteList then
+                    RubimRH.db.profile.mainOption.whiteList = false
+                else
+                    RubimRH.db.profile.mainOption.whiteList = true
+                end
+            end
         end
 
 
