@@ -154,8 +154,8 @@ local function APL()
         -- food
         -- augmentation
         -- summon_pet
-        if S.SummonPet:IsCastableP() then
-            return S.SummonPet:Cast()
+        if S.SummonFelguard:CooldownRemainsP() == 0 and (not IsPetInvoked() or not S.AxeToss:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
+	        return S.SummonFelguard:Cast()
         end
         -- inner_demons,if=talent.inner_demons.enabled
         if S.InnerDemons:IsCastableP() and (S.InnerDemons:IsAvailable()) then
