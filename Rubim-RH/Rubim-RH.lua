@@ -668,6 +668,12 @@ local defaults = {
         },
         [266] = {
             cooldowns = true,
+			sk1 = 5, -- Implosion
+            sk1id = 196277, -- Implosion
+            sk1tooltip = "Number of imps to use Implosion (Default: 5)",
+		    sk2 = 6, -- Demonic Tyrant
+            sk2id = 205180, -- Demonic Tyrant
+            sk2tooltip = "Number of imps to use Demonic Tyrant (Default: 6)",
         },
         [267] = {
             cooldowns = true,
