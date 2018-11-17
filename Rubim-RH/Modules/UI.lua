@@ -286,7 +286,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 StdUi:GlueTop(sk_1_0Label, sk_1_0, 0, 16);
                 StdUi:FrameTooltip(sk_1_0, sk1tooltip, 'TOPLEFT', 'TOPRIGHT', true);
                 function sk_1_0:OnValueChanged(value)
-                    local value = math.floor(value) * 2.5
+                    local value = math.floor(value) * 1
                     RubimRH.db.profile[RubimRH.playerSpec].sk1 = value
                     sk1 = value
                     sk_1_0Label:SetText(sk1id .. sk1)
@@ -301,7 +301,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 StdUi:GlueTop(sk_1_1Label, sk_1_1, 0, 16);
                 StdUi:FrameTooltip(sk_1_1, sk2tooltip, 'TOPLEFT', 'TOPRIGHT', true);
                 function sk_1_1:OnValueChanged(value)
-                    local value = math.floor(value) * 2.5
+                    local value = math.floor(value) * 1
                     RubimRH.db.profile[RubimRH.playerSpec].sk2 = value
                     sk2 = value
                     sk_1_1Label:SetText(sk2id .. sk2)
