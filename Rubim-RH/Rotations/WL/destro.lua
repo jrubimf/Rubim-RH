@@ -184,22 +184,25 @@ local function InfernalIsActive()
 	end
 end
 
-local function handleSettings ()
-  if Settings.Destruction.SpellType == "Auto" then --auto
+local function handleSettings()
+	--auto
+	if RubimRH.db.profile[267].color == 1 then 
 		CastIncinerate = S.IncinerateAuto
 		CastImmolate = S.ImmolateAuto
 		CastConflagrate = S.ConflagrateAuto
 		CastRainOfFire = S.RainOfFireAuto
-   elseif Settings.Destruction.SpellType == "Green" then --green
+	--green
+	elseif RubimRH.db.profile[267].color == 2 then 
 		CastIncinerate = S.IncinerateGreen
 		CastImmolate = S.ImmolateGreen
 		CastConflagrate = S.ConflagrateGreen
 		CastRainOfFire = S.RainOfFireGreen
-   else --orange
+	--orange
+	else 
 		CastIncinerate = S.IncinerateOrange
 		CastImmolate = S.ImmolateOrange
 		CastConflagrate = S.ConflagrateOrange
-	CastRainOfFire = S.RainOfFireOrange
+	    CastRainOfFire = S.RainOfFireOrange
     end
 end
 

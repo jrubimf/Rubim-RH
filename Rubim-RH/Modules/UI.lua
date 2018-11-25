@@ -359,6 +359,27 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
 
             end
+			
+			--DESTRUCTION LOCK
+
+
+                if RubimRH.playerSpec == Destruction then
+                    local color = {
+                        { text = 'Auto', value = 1 },
+                        { text = 'Green', value = 2 },
+                        { text = 'Orange', value = 3 },
+                    };
+
+                    local colorRoll = StdUi:Dropdown(tab.frame, 125, 24, color, 1);
+                    StdUi:GlueBelow(colorRoll, sk_1_0, 0, -64, 'LEFT');
+                    StdUi:AddLabel(tab.frame, colorRoll, 'Flames Color', 'TOP');
+                    function colorRoll:OnValueChanged(value)
+                        RubimRH.db.profile[RubimRH.playerSpec].color = self:GetText()
+                        print("Flames Color set on: " .. RubimRH.db.profile[RubimRH.playerSpec].color)
+                    end
+                end
+
+            
 
             local sk_2_1
             if sk4 >= 0 then

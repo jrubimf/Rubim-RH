@@ -670,13 +670,23 @@ local defaults = {
             cooldowns = true,
 			sk1 = 5, -- Implosion
             sk1id = 196277, -- Implosion
-            sk1tooltip = "Number of imps to use Implosion (Default: 5)",
+            sk1tooltip = "Number of imps to use Implosion",
 		    sk2 = 6, -- Demonic Tyrant
             sk2id = 265187, -- Demonic Tyrant
-            sk2tooltip = "Number of imps to use Demonic Tyrant (Default: 6)",
+            sk2tooltip = "Number of imps to use Demonic Tyrant",
         },
         [267] = {
             cooldowns = true,
+			flamecolor = "Auto",
+			
+			sk1 = 8,
+            sk1id = 5740,
+            sk1tooltip = "Number of units to use Rain of Fire",
+
+            sk2 = 15,
+            sk2id = 31224,
+            sk2tooltip = "Percent HP to use Cloak of Shadows",
+			
         },
         --Mage
         [62] = {
