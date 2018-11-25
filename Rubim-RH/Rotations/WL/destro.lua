@@ -137,9 +137,52 @@ end
 --    },
 --	PetList={
 --	[86929]="Infernal",
---	}
+--}
 --};
 	
+--HL:RegisterForSelfCombatEvent(
+--function (...)
+--    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+--    local t={} ; i=1
+    
+--	for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+--        t[i] = str
+--        i = i + 1
+--    end
+--    local PetType=HL.GuardiansTable.PetList[tonumber(t[6])]
+--    if PetType then
+--        table.insert(HL.GuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+--    end
+--end
+--    , "SPELL_SUMMON"
+--);
+    	
+-- Summoned pet duration
+--local function PetDuration(PetType)
+--	if not PetType then 
+--		return 0 
+--	end
+--	local PetsInfo = {
+--		[86929] = {"Infernal", 30},
+--	}
+--	local maxduration = 0
+--	for key, Value in pairs(HL.GuardiansTable.Pets) do
+--		if HL.GuardiansTable.Pets[key][1] == PetType then
+--			if (PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])) > maxduration then
+--				maxduration = HL.OffsetRemains((PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])), "Auto" );
+--			end
+--		end
+--	end
+--	return maxduration
+--end
+
+--local function InfernalIsActive()
+--	if PetDuration("Infernal") > 1 then
+--		return true
+ --   else
+--		return false
+--	end
+--end
 
 --local function handleSettings ()
   --  if Settings.Destruction.SpellType == "Auto" then --auto
