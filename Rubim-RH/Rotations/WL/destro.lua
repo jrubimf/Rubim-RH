@@ -127,81 +127,81 @@ local function EnemyHasHavoc ()
     return 0
 end
 
---local PetType = {
---  [86929] = {"Infernal", 30},
---};
+local PetType = {
+  [86929] = {"Infernal", 30},
+};
 
---HL.GuardiansTable = {
+HL.DestroGuardiansTable = {
     --{PetType,petID,dateEvent,UnitPetGUID,CastsLeft}
---    Pets = {
---    },
---	PetList={
---	[86929]="Infernal",
---}
---};
+    Pets = {
+    },
+	PetList={
+	[86929]="Infernal",
+}
+};
 	
---HL:RegisterForSelfCombatEvent(
---function (...)
---    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
---    local t={} ; i=1
-    
---	for str in string.gmatch(UnitPetGUID, "([^-]+)") do
---        t[i] = str
---        i = i + 1
---    end
---    local PetType=HL.GuardiansTable.PetList[tonumber(t[6])]
---    if PetType then
---        table.insert(HL.GuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
---    end
---end
---    , "SPELL_SUMMON"
---);
+HL:RegisterForSelfCombatEvent(
+function (...)
+    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+    local t={} ; i=1
+  
+	for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+        t[i] = str
+        i = i + 1
+    end
+    local PetType=HL.DestroGuardiansTable.PetList[tonumber(t[6])]
+    if PetType then
+        table.insert(HL.DestroGuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+    end
+end
+    , "SPELL_SUMMON"
+);
     	
 -- Summoned pet duration
---local function PetDuration(PetType)
---	if not PetType then 
---		return 0 
---	end
---	local PetsInfo = {
---		[86929] = {"Infernal", 30},
---	}
---	local maxduration = 0
---	for key, Value in pairs(HL.GuardiansTable.Pets) do
---		if HL.GuardiansTable.Pets[key][1] == PetType then
---			if (PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])) > maxduration then
---				maxduration = HL.OffsetRemains((PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])), "Auto" );
---			end
---		end
---	end
---	return maxduration
---end
+local function PetDuration(PetType)
+	if not PetType then 
+		return 0 
+	end
+	local PetsInfo = {
+		[86929] = {"Infernal", 30},
+	}
+	local maxduration = 0
+	for key, Value in pairs(HL.DestroGuardiansTable.Pets) do
+		if HL.DestroGuardiansTable.Pets[key][1] == PetType then
+			if (PetsInfo[HL.DestroGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.DestroGuardiansTable.Pets[key][3])) > maxduration then
+				maxduration = HL.OffsetRemains((PetsInfo[HL.DestroGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.DestroGuardiansTable.Pets[key][3])), "Auto" );
+			end
+		end
+	end
+	return maxduration
+end
 
---local function InfernalIsActive()
---	if PetDuration("Infernal") > 1 then
---		return true
- --   else
---		return false
---	end
---end
+local function InfernalIsActive()
+	if PetDuration("Infernal") > 1 then
+		return true
+   else
+		return false
+	end
+end
 
---local function handleSettings ()
-  --  if Settings.Destruction.SpellType == "Auto" then --auto
---		CastIncinerate = S.IncinerateAuto
---		CastImmolate = S.ImmolateAuto
---		CastConflagrate = S.ConflagrateAuto
---		CastRainOfFire = S.RainOfFireAuto
- --   elseif Settings.Destruction.SpellType == "Green" then --green
---		CastIncinerate = S.IncinerateGreen
---		CastImmolate = S.ImmolateGreen
---		CastConflagrate = S.ConflagrateGreen
---		CastRainOfFire = S.RainOfFireGreen
- --   else --orange
---		CastIncinerate = S.IncinerateOrange
---		CastImmolate = S.ImmolateOrange
---		CastConflagrate = S.ConflagrateOrange
-	--	CastRainOfFire = S.RainOfFireOrange
---    end
---end
+local function handleSettings ()
+  if Settings.Destruction.SpellType == "Auto" then --auto
+		CastIncinerate = S.IncinerateAuto
+		CastImmolate = S.ImmolateAuto
+		CastConflagrate = S.ConflagrateAuto
+		CastRainOfFire = S.RainOfFireAuto
+   elseif Settings.Destruction.SpellType == "Green" then --green
+		CastIncinerate = S.IncinerateGreen
+		CastImmolate = S.ImmolateGreen
+		CastConflagrate = S.ConflagrateGreen
+		CastRainOfFire = S.RainOfFireGreen
+   else --orange
+		CastIncinerate = S.IncinerateOrange
+		CastImmolate = S.ImmolateOrange
+		CastConflagrate = S.ConflagrateOrange
+	CastRainOfFire = S.RainOfFireOrange
+    end
+end
 
 local function FutureShard ()
     local Shard = Player:SoulShards()
@@ -276,11 +276,11 @@ local function APL()
 			return S.ChannelDemonfire:Cast()
 		end
 		-- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=8+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and PetDuration("Infernal") <= 10) then
+		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- havoc,if=spell_targets.rain_of_fire<=8+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and PetDuration("Infernal") <= 10) then
+		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&active_enemies<=8+raid_event.invulnerable.up&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%3)<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
@@ -331,7 +331,7 @@ local function APL()
 			return S.SummonInfernal:Cast()
 		end
 		-- dark_soul_instability,if=target.time_to_die>=140|pet.infernal.active|target.time_to_die<=20+gcd
-		if S.DarkSoulInstability:IsCastableP() and (Target:TimeToDie() >= 140 or bool(InfernalIsActive()) or Target:TimeToDie() <= 20 + Player:GCD()) then
+		if S.DarkSoulInstability:IsCastableP() and (Target:TimeToDie() >= 140 or InfernalIsActive() or Target:TimeToDie() <= 20 + Player:GCD()) then
 			return S.DarkSoulInstability:Cast()
 		end
 		-- potion,if=pet.infernal.active|target.time_to_die<65
@@ -373,11 +373,11 @@ local function APL()
 			return S.ChannelDemonfire:Cast()
 		end
 		-- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and Target:DebuffRemainsP(S.HavocDebuff) <= 10) then
+		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and Target:DebuffRemainsP(S.HavocDebuff) <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and PetDuration("Infernal") <= 10) then
+		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&active_enemies<=4+raid_event.invulnerable.up&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%3)<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
@@ -440,11 +440,11 @@ local function APL()
 			return S.ChannelDemonfire:Cast()
 		end
 		-- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and PetDuration("Infernal") <= 10) then
+		if S.Havoc:IsCastableP() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and bool(InfernalIsActive()) and PetDuration("Infernal") <= 10) then
+		if S.Havoc:IsCastableP() and (Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10) then
 			return S.Havoc:Cast()
 		end
 		-- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%(3-0.16*(spell_targets.rain_of_fire+raid_event.invulnerable.up)))<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
@@ -544,7 +544,7 @@ local function APL()
 			return S.ChaosBolt:Cast()
 		end
 		-- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(soul_shard>=4|buff.dark_soul_instability.remains>cast_time|pet.infernal.active|buff.active_havoc.remains>cast_time)
-		if S.ChaosBolt:IsCastableP() and (Player:SoulShardsP() >= 2) and (not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or bool(InfernalIsActive()) or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime())) then
+		if S.ChaosBolt:IsCastableP() and (Player:SoulShardsP() >= 2) and (not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime())) then
 			return S.ChaosBolt:Cast()
 		end
 		-- conflagrate,if=!debuff.havoc.remains&((talent.flashover.enabled&buff.backdraft.stack<=2)|(!talent.flashover.enabled&buff.backdraft.stack<2))
