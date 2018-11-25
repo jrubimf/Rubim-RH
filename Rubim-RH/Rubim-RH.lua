@@ -672,7 +672,7 @@ local defaults = {
             sk1id = 196277, -- Implosion
             sk1tooltip = "Number of imps to use Implosion (Default: 5)",
 		    sk2 = 6, -- Demonic Tyrant
-            sk2id = 205180, -- Demonic Tyrant
+            sk2id = 265187, -- Demonic Tyrant
             sk2tooltip = "Number of imps to use Demonic Tyrant (Default: 6)",
         },
         [267] = {
