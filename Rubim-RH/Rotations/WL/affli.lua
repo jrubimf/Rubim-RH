@@ -161,15 +161,15 @@ local function APL()
     --end
     -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
     if S.SeedofCorruption:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (Cache.EnemiesCount[5] >= 3) then
-      return (S.SeedofCorruption):Cast()
+      return S.SeedofCorruption:Cast()
     end
     -- haunt
     if S.Haunt:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
-      return (S.Haunt):Cast()
+      return S.Haunt:Cast()
     end
     -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
     if S.ShadowBolt:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and (not S.Haunt:IsAvailable() and Cache.EnemiesCount[5] < 3) then
-      return (S.ShadowBolt):Cast()
+      return S.ShadowBolt:Cast()
     end
 	return 0, 462338
   end
@@ -298,8 +298,8 @@ local function APL()
     if S.Corruption:IsCastableP() and Player:IsMoving() and not Player:PrevGCDP(1, S.Corruption) and not S.AbsoluteCorruption:IsAvailable() then
       return S.Corruption:Cast()
     end
-    -- drain_life,if=(buff.inevitable_demise.stack>=85-(spell_targets.seed_of_corruption_aoe-raid_event.invulnerable.up>2)*20&(cooldown.deathbolt.remains>execute_time|!talent.deathbolt.enabled)&(cooldown.phantom_singularity.remains>execute_time|!talent.phantom_singularity.enabled)&(cooldown.dark_soul.remains>execute_time|!talent.dark_soul_misery.enabled)&(cooldown.vile_taint.remains>execute_time|!talent.vile_taint.enabled)&cooldown.summon_darkglare.remains>execute_time+10|buff.inevitable_demise.stack>30&target.time_to_die<=10)
-    if S.DrainLife:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and ((Player:BuffStackP(S.InevitableDemiseBuff) >= 85 - num((Cache.EnemiesCount[5] > 2)) * 20 and (S.Deathbolt:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.Deathbolt:IsAvailable()) and (S.PhantomSingularity:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.PhantomSingularity:IsAvailable()) and (S.DarkSoul:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.DarkSoulMisery:IsAvailable()) and (S.VileTaint:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.VileTaint:IsAvailable()) and S.SummonDarkglare:CooldownRemainsP() > S.DrainLife:ExecuteTime() + 10 or Player:BuffStackP(S.InevitableDemiseBuff) > 30 and Target:TimeToDie() <= 10)) then
+    -- drain_life,if=(buff.inevitable_demise.stack>=85&(cooldown.deathbolt.remains>execute_time|!talent.deathbolt.enabled)&(cooldown.phantom_singularity.remains>execute_time|!talent.phantom_singularity.enabled)&(cooldown.dark_soul.remains>execute_time|!talent.dark_soul_misery.enabled)&(cooldown.vile_taint.remains>execute_time|!talent.vile_taint.enabled)&cooldown.summon_darkglare.remains>execute_time+10|buff.inevitable_demise.stack>30&target.time_to_die<=10)
+    if S.DrainLife:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and (Player:BuffStackP(S.InevitableDemiseBuff) >= 85 and (S.Deathbolt:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.Deathbolt:IsAvailable()) and (S.PhantomSingularity:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.PhantomSingularity:IsAvailable()) and (S.DarkSoul:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.DarkSoulMisery:IsAvailable()) and (S.VileTaint:CooldownRemainsP() > S.DrainLife:ExecuteTime() or not S.VileTaint:IsAvailable()) and S.SummonDarkglare:CooldownRemainsP() > S.DrainLife:ExecuteTime() + 10 or Player:BuffStackP(S.InevitableDemiseBuff) > 30 and Target:TimeToDie() <= 10) then
       return S.DrainLife:Cast()
     end
     -- haunt
@@ -459,7 +459,7 @@ local function APL()
 		end
     end
     -- phantom_singularity,if=time<=35&soul_shard<=1
-    if S.PhantomSingularity:IsCastableP() and (HL.CombatTime() <= 35) and Player:SoulShardsP() <= 1 then
+    if S.PhantomSingularity:IsCastableP() and (HL.CombatTime() <= 35) and (ActiveUAs() == 5 or Player:SoulShardsP() <= 1) then
       return S.PhantomSingularity:Cast()
     end
     -- vile_taint,if=time<15
