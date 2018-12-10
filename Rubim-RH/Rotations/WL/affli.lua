@@ -70,7 +70,6 @@ local function num(val)
         return 0
     end
 end
-
 local function bool(val)
     return val ~= 0
 end

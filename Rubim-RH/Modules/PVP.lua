@@ -1483,7 +1483,7 @@ local function AllPvP()
                 return HRSurv.AMurderofCrows:Cast()
             end
 
-            --3. Co-ordinated assault (266779)
+            --3. Co-ordinatewd assault (266779)
             if HRSurv.CoordinatedAssault:IsReady() and (true) then
                 return HRSurv.CoordinatedAssault:Cast()
             end
