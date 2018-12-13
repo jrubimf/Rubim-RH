@@ -220,12 +220,32 @@ local function APL ()
         end
         -- actions+=/potion,if=buff.bestial_wrath.up&buff.aspect_of_the_wild.up
         -- barbed_shot,if=pet.cat.buff.frenzy.up&pet.cat.buff.frenzy.remains<=gcd.max
-        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD()) then
+        if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() * 1.2) then
             return S.BarbedShot:Cast()
+        end
+		-- kill_command
+        if PetActive() and S.KillCommand:IsReady() and (true) then
+            return S.KillCommand:Cast()
+        end
+		-- bestial_wrath,if=!buff.bestial_wrath.up
+        if PetActive() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
+            return S.BestialWrath:Cast()
+        end
+		-- chimaera_shot
+        if S.ChimaeraShot:IsReady() and (true) then
+            return S.ChimaeraShot:Cast()
+        end
+		-- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
+        if mainAddon.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
+            return S.MultiShot:Cast()
         end
         -- a_murder_of_crows
         if S.AMurderofCrows:IsReady() and (true) then
             return S.AMurderofCrows:Cast()
+        end
+		-- barbed_shot,if=pet.cat.buff.frenzy.down&charges_fractional>1.4|full_recharge_time<gcd.max|target.time_to_die<9
+        if S.BarbedShot:IsReady() and (S.BarbedShot:ChargesFractional() > 1.5 or S.BarbedShot:FullRechargeTimeP() < Player:GCD()) then
+            return S.BarbedShot:Cast()
         end
         -- spitting_cobra
         if S.SpittingCobra:IsReady() and (true) then
@@ -235,40 +255,24 @@ local function APL ()
         if S.Stampede:IsReady() and (Player:BuffP(S.BestialWrathBuff) or S.BestialWrath:CooldownRemainsP() < Player:GCD() or Target:TimeToDie() < 15) then
             return S.Stampede:Cast()
         end
+		-- Focus dump
+		if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 and (Player:Focus() > 90))) then
+            return S.CobraShot:Cast()
+        end
         -- aspect_of_the_wild
         if mainAddon.CDsON() and S.AspectoftheWild:IsReady() and (true) then
             return S.AspectoftheWild:Cast()
         end
-        -- bestial_wrath,if=!buff.bestial_wrath.up
-        if PetActive() and S.BestialWrath:IsReady() and (not Player:BuffP(S.BestialWrathBuff)) then
-            return S.BestialWrath:Cast()
-        end
-        -- MultiShot,if=spell_targets>2&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
-        if mainAddon.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 2 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
-            return S.MultiShot:Cast()
-        end
-        -- chimaera_shot
-        if S.ChimaeraShot:IsReady() and (true) then
-            return S.ChimaeraShot:Cast()
-        end
-        -- kill_command
-        if PetActive() and S.KillCommand:IsReady() and (true) then
-            return S.KillCommand:Cast()
-        end
         -- dire_beast
         if S.DireBeast:IsReady() and (true) then
             return S.DireBeast:Cast()
-        end
-        -- barbed_shot,if=pet.cat.buff.frenzy.down&charges_fractional>1.4|full_recharge_time<gcd.max|target.time_to_die<9
-        if S.BarbedShot:IsReady() and (Pet:BuffDownP(S.FrenzyBuff) and S.BarbedShot:ChargesFractional() > 1.4 or S.BarbedShot:FullRechargeTimeP() < Player:GCD() * 2 or Target:TimeToDie() < 9) then
-            return S.BarbedShot:Cast()
         end
         -- MultiShot,if=spell_targets>1&(pet.cat.buff.beast_cleave.remains<gcd.max|pet.cat.buff.beast_cleave.down)
         if mainAddon.AoEON() and S.MultiShot:IsReady() and (Cache.EnemiesCount[40] > 1 and (Pet:BuffRemainsP(S.BeastCleaveBuff) < Player:GCD() or Pet:BuffDownP(S.BeastCleaveBuff))) then
             return S.MultiShot:Cast()
         end
         -- cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(buff.bestial_wrath.up&active_enemies>1|cooldown.kill_command.remains>1+gcd&cooldown.bestial_wrath.remains>focus.time_to_max|focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost)
-        if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemains() > Player:FocusTimeToMax()) and (Player:Buff(S.BestialWrathBuff) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemains() > 1 + Player:GCD() and S.BestialWrath:CooldownRemains() > Player:FocusTimeToMax() or S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemains() - 1) > S.KillCommand:Cost())) then
+        if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemains() > Player:FocusTimeToMax()) and (Player:Buff(S.BestialWrathBuff) and Cache.EnemiesCount[40] > 1 or S.KillCommand:CooldownRemains() > 1 + Player:GCD() and S.BestialWrath:CooldownRemains() > Player:FocusTimeToMax() or S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemains() - 2) > S.KillCommand:Cost())) then
             return S.CobraShot:Cast()
         end
 
