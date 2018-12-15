@@ -28,7 +28,7 @@ RubimRH.Spell[269] = {
     AncestralCall = Spell(274738),
     Fireblood = Spell(265221),
     LightsJudgment = Spell(255647),
-    FistsOfFury = Spell(113656),
+    FistsofFury = Spell(113656),
     Serenity = Spell(152173),
     WhirlingDragonPunch = Spell(152175),
     SpinningCraneKick = Spell(101546),
@@ -40,9 +40,9 @@ RubimRH.Spell[269] = {
     BloodFury = Spell(20572),
     Berserking = Spell(26297),
     LightsJudgment = Spell(255647),
-    TouchOfDeath = Spell(115080),
-    StormEarthAndFire = Spell(137639),
-    StormEarthAndFireBuff = Spell(137639),
+    TouchofDeath = Spell(115080),
+    StormEarthandFire = Spell(137639),
+    StormEarthandFireBuff = Spell(137639),
     SerenityBuff = Spell(152173),
     RushingJadeWind = Spell(261715),
     RushingJadeWindBuff = Spell(261715),
@@ -56,6 +56,10 @@ RubimRH.Spell[269] = {
     GrappleWeapon = Spell(233759),
     FlyingSerpentKick = Spell(101545),
     FlyingSerpentKick2 = Spell(115057),
+    MarkoftheCrane = Spell(228287),
+    HitCombo = Spell(196740),
+    Paralysis = Spell(115078),
+    RingofPeace = Spell(19995),
 
 };
 local S = RubimRH.Spell[269];
@@ -66,6 +70,7 @@ if not Item.Monk then
     Item.Monk = {}
 end
 Item.Monk.Windwalker = {
+    -- Legendaries
     DrinkingHornCover                = Item(137097, {9}),
     TheEmperorsCapacitor             = Item(144239, {5}),
     KatsuosEclipse                   = Item(137029, {8}),
@@ -119,13 +124,6 @@ local function UpdateCDs()
         end
     end
 end
-
-local BaseCost = {
-    [S.BlackoutKick] = (Player:Level() < 12 and 3 or (Player:Level() < 22 and 2 or 1)),
-    [S.RisingSunKick] = 2,
-    [S.FistsOfFury] = ((I.KatsuosEclipse:IsEquipped() and Player:Level() < 116) and 2 or 3),
-    [S.SpinningCraneKick] = 2
-}
 
 
 --- ======= ACTION LISTS =======

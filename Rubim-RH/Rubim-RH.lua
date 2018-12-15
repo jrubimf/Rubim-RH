@@ -18,7 +18,6 @@ errorEvent:SetScript("OnEvent", function(self, event)
 
     if RubimExtra == false then
         message("Missing dependency: RubimExtra")
-        foundError = true
     end
 
     if RubimExtraVer ~= 01102018 then

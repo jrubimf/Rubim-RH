@@ -458,6 +458,11 @@ function RubimRH.delSpellDisabledCleave(spellid)
     end
 end
 
+local GroundSpells = {
+    [43265] = true,
+    [152280] = true,
+}
+
 function Spell:Cast()
     RubimRH.ShowButtonGlow(self:ID())
     return GetTexture(self)

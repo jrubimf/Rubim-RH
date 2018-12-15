@@ -527,8 +527,16 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local data = {};
 
-            for i, spell in pairs(RubimRH.allSpells) do
-                tinsert(data, addSpell(spell.SpellID));
+            for key, spell in pairs(HeroCache.Persistent.SpellLearned.Player) do
+                if IsPassiveSpell(key) == false then
+                    tinsert(data, addSpell(key));
+                end
+            end
+
+            for key, spell in pairs(HeroCache.Persistent.SpellLearned.Pet) do
+                if IsPassiveSpell(key) == false then
+                    tinsert(data, addSpell(key));
+                end
             end
 
             -- update scroll table data
@@ -570,7 +578,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         end
                     end
                     RubimRH.print("Macro for: " .. GetSpellLink(SpellDATA.spellId) .. " was created. Check your Character Macros.")
-                    CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run RubimRH.Spell[RubimRH.playerSpec]." .. tostring(SpellVAR) .. ":Queue()", 1)
+                    CreateMacro(SpellDATA.name, SpellDATA.icon, "#showtooltip " .. GetSpellInfo(SpellDATA.spellId) .. "\n/run HeroLib.Spell(" .. tostring(SpellDATA.spellId) .. "):Queue()", 1)
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
                     st:ClearSelection()
                     return

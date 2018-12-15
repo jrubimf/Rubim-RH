@@ -1185,7 +1185,7 @@ local function emptyAPL()
 end
 RubimRH.Rotation.SetPvP(250, emptyAPL)
 RubimRH.Rotation.SetPvP(251, emptyAPL)
-RubimRH.Rotation.SetPvP(252, UnholyAPL)
+RubimRH.Rotation.SetPvP(252, emptyAPL)
 
 RubimRH.Rotation.SetPvP(577, emptyAPL)
 RubimRH.Rotation.SetPvP(581, emptyAPL)
@@ -1195,7 +1195,7 @@ RubimRH.Rotation.SetPvP(103, emptyAPL)
 RubimRH.Rotation.SetPvP(104, emptyAPL)
 RubimRH.Rotation.SetPvP(105, emptyAPL)
 
-RubimRH.Rotation.SetPvP(253, BeastMasteryAPL)
+RubimRH.Rotation.SetPvP(253, emptyAPL)
 RubimRH.Rotation.SetPvP(254, emptyAPL)
 RubimRH.Rotation.SetPvP(255, emptyAPL)
 
@@ -1483,7 +1483,7 @@ local function AllPvP()
                 return HRSurv.AMurderofCrows:Cast()
             end
 
-            --3. Co-ordinated assault (266779)
+            --3. Co-ordinatewd assault (266779)
             if HRSurv.CoordinatedAssault:IsReady() and (true) then
                 return HRSurv.CoordinatedAssault:Cast()
             end
