@@ -341,7 +341,7 @@ local function Implosion()
             return S.SummonVilefiend:Cast()
         end
         -- bilescourge_bombers,if=cooldown.summon_demonic_tyrant.remains>9
-        if S.BilescourgeBombers:IsCastableP() and (S.SummonDemonicTyrant:CooldownRemainsP() > 9) then
+        if S.BilescourgeBombers:IsCastableP() and FutureShard() >= 2 and (S.SummonDemonicTyrant:CooldownRemainsP() > 9) then
             return S.BilescourgeBombers:Cast()
         end
         -- soul_strike,if=soul_shard<5&buff.demonic_core.stack<=2
@@ -397,7 +397,7 @@ local function Implosion()
             end
         end
         -- hand_of_guldan,if=((cooldown.call_dreadstalkers.remains>action.demonbolt.cast_time)&(cooldown.call_dreadstalkers.remains>action.shadow_bolt.cast_time))&cooldown.nether_portal.remains>(160+action.hand_of_guldan.cast_time)
-        if S.HandofGuldan:IsCastableP() and (((S.CallDreadStalkers:CooldownRemainsP() > S.Demonbolt:CastTime()) and (S.CallDreadStalkers:CooldownRemainsP() > S.ShadowBolt:CastTime())) and S.NetherPortal:CooldownRemainsP() > (160 + S.HandofGuldan:CastTime())) then
+        if S.HandofGuldan:IsCastableP() and FutureShard() >= 1 and (((S.CallDreadStalkers:CooldownRemainsP() > S.Demonbolt:CastTime()) and (S.CallDreadStalkers:CooldownRemainsP() > S.ShadowBolt:CastTime())) and S.NetherPortal:CooldownRemainsP() > (160 + S.HandofGuldan:CastTime())) then
             return S.HandofGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=buff.nether_portal.remains<10&soul_shard=0
@@ -498,11 +498,17 @@ local function APL()
             return S.DemonicStrength:Cast()
         end
         -- call_action_list,name=nether_portal,if=talent.nether_portal.enabled&spell_targets.implosion<=2
-        if (S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2) then
-            if NetherPortal() ~= nil then
-                return NetherPortal()
-            end
-        end
+		if (S.NetherPortal:CooldownRemainsP() < 20) and S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2 then
+			if NetherPortalBuilding() ~= nil then
+				return NetherPortalBuilding()
+			end
+		end
+		-- call_action_list,name=nether_portal_active,if=cooldown.nether_portal.remains>160
+		if (S.NetherPortal:CooldownRemainsP() > 160) and S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2 then
+			if NetherPortalActive() ~= nil then
+				return NetherPortalActive()
+			end
+		end        
 		-- summon_demonic_tyrant
         if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 then
             return S.SummonDemonicTyrant:Cast()
@@ -554,7 +560,7 @@ local function APL()
             return S.Demonbolt:Cast()
         end
         -- bilescourge_bombers,if=ptr=1
-        if S.BilescourgeBombers:IsCastableP() and (ptr == 1) then
+        if S.BilescourgeBombers:IsCastableP() and FutureShard() >= 2 then
             return S.BilescourgeBombers:Cast()
         end
         -- call_action_list,name=build_a_shard
