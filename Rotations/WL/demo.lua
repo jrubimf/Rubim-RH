@@ -307,6 +307,10 @@ local function Implosion()
         -- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk1+RubimRH.AoeON
         if S.Implosion:IsCastableP() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk1 then
             return S.Implosion:Cast()
+        end	
+        -- bilescourge_bombers,if=cooldown.summon_demonic_tyrant.remains>9
+        if S.BilescourgeBombers:IsCastableP() and Player:SoulShardsP() >= 2 and Cache.EnemiesCount[40] >= 3 then
+            return S.BilescourgeBombers:Cast()
         end		
 		-- implosion,if=(buff.wild_imps.stack>=6&(soul_shard<3|prev_gcd.1.call_dreadstalkers|buff.wild_imps.stack>=9|prev_gcd.1.bilescourge_bombers|(!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan))&!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&buff.demonic_power.down)|(time_to_die<3&buff.wild_imps.stack>0)|(prev_gcd.2.call_dreadstalkers&buff.wild_imps.stack>2&!talent.demonic_calling.enabled)
        -- if S.Implosion:IsCastableP() and ((PetStack("Wild Imp") >= 6 and (Player:SoulShardsP() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or PetStack("Wild Imp") >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandofGuldan) and not Player:PrevGCDP(2, S.HandofGuldan))) and not Player:PrevGCDP(1, S.HandofGuldan) and not Player:PrevGCDP(2, S.HandofGuldan) and Player:BuffDownP(S.DemonicPowerBuff)) or (Target:TimeToDie() < 3 and PetStack("Wild Imp") > 0) or (Player:PrevGCDP(2, S.CallDreadStalkers) and PetStack("Wild Imp") > 2 and not S.DemonicCalling:IsAvailable())) then
@@ -337,11 +341,11 @@ local function Implosion()
             return S.Demonbolt:Cast()
         end
         -- summon_vilefiend,if=(cooldown.summon_demonic_tyrant.remains>40&spell_targets.implosion<=2)|cooldown.summon_demonic_tyrant.remains<12
-        if S.SummonVilefiend:IsCastableP() and ((S.SummonDemonicTyrant:CooldownRemainsP() > 40 and Cache.EnemiesCount[40] <= 2) or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
+        if S.SummonVilefiend:IsCastableP() and Player:SoulShardsP() >= 1  and ((S.SummonDemonicTyrant:CooldownRemainsP() > 40 and Cache.EnemiesCount[40] <= 2) or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
             return S.SummonVilefiend:Cast()
         end
         -- bilescourge_bombers,if=cooldown.summon_demonic_tyrant.remains>9
-        if S.BilescourgeBombers:IsCastableP() and (S.SummonDemonicTyrant:CooldownRemainsP() > 9) then
+        if S.BilescourgeBombers:IsCastableP() and FutureShard() >= 2 and (S.SummonDemonicTyrant:CooldownRemainsP() > 9) then
             return S.BilescourgeBombers:Cast()
         end
         -- soul_strike,if=soul_shard<5&buff.demonic_core.stack<=2
@@ -370,20 +374,24 @@ local function Implosion()
                 return NetherPortalBuilding()
             end
         end
-        -- call_action_list,name=nether_portal_active,if=cooldown.nether_portal.remains>160
-        if (S.NetherPortal:CooldownRemainsP() > 160) then
+        -- call_action_list,name=nether_portal_active,if=cooldown.nether_portal.remains>165
+        if (S.NetherPortal:CooldownRemainsP() > 165) then
             if NetherPortalActive() ~= nil then
                 return NetherPortalActive()
             end
         end
     end
     local function NetherPortalActive()
+	    -- bilescourge_bombers
+        if S.BilescourgeBombers:IsCastableP() and FutureShard() >= 2 then
+            return S.BilescourgeBombers:Cast()
+        end
         -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13|!equipped.132369
         if S.GrimoireFelguard:IsCastableP() and (S.SummonDemonicTyrant:CooldownRemainsP() < 13) then
             return S.GrimoireFelguard:Cast()
         end
         -- summon_vilefiend,if=cooldown.summon_demonic_tyrant.remains>40|cooldown.summon_demonic_tyrant.remains<12
-        if S.SummonVilefiend:IsCastableP() and (S.SummonDemonicTyrant:CooldownRemainsP() > 40 or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
+        if S.SummonVilefiend:IsCastableP() and Player:SoulShardsP() >= 1 and (S.SummonDemonicTyrant:CooldownRemainsP() > 40 or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
             return S.SummonVilefiend:Cast()
         end
         -- call_dreadstalkers,if=(cooldown.summon_demonic_tyrant.remains<9&buff.demonic_calling.remains)|(cooldown.summon_demonic_tyrant.remains<11&!buff.demonic_calling.remains)|cooldown.summon_demonic_tyrant.remains>14
@@ -396,16 +404,16 @@ local function Implosion()
                 return BuildAShard()
             end
         end
-        -- hand_of_guldan,if=((cooldown.call_dreadstalkers.remains>action.demonbolt.cast_time)&(cooldown.call_dreadstalkers.remains>action.shadow_bolt.cast_time))&cooldown.nether_portal.remains>(160+action.hand_of_guldan.cast_time)
-        if S.HandofGuldan:IsCastableP() and (((S.CallDreadStalkers:CooldownRemainsP() > S.Demonbolt:CastTime()) and (S.CallDreadStalkers:CooldownRemainsP() > S.ShadowBolt:CastTime())) and S.NetherPortal:CooldownRemainsP() > (160 + S.HandofGuldan:CastTime())) then
+        -- hand_of_guldan,if=((cooldown.call_dreadstalkers.remains>action.demonbolt.cast_time)&(cooldown.call_dreadstalkers.remains>action.shadow_bolt.cast_time))&cooldown.nether_portal.remains>(165+action.hand_of_guldan.cast_time)
+        if S.HandofGuldan:IsCastableP() and FutureShard() >= 1 and (((S.CallDreadStalkers:CooldownRemainsP() > S.Demonbolt:CastTime()) and (S.CallDreadStalkers:CooldownRemainsP() > S.ShadowBolt:CastTime())) and S.NetherPortal:CooldownRemainsP() > (165 + S.HandofGuldan:CastTime())) then
             return S.HandofGuldan:Cast()
         end
-        -- summon_demonic_tyrant,if=buff.nether_portal.remains<10&soul_shard=0
-        if S.SummonDemonicTyrant:IsCastableP() and (Player:BuffRemainsP(S.NetherPortalBuff) < 10 and FutureShard() == 0) then
+        -- summon_demonic_tyrant,if=buff.nether_portal.remains<5&soul_shard=0
+        if S.SummonDemonicTyrant:IsCastableP() and (Player:BuffRemainsP(S.NetherPortalBuff) < 5 and FutureShard() == 0) then
             return S.SummonDemonicTyrant:Cast()
         end
-        -- summon_demonic_tyrant,if=buff.nether_portal.remains<action.summon_demonic_tyrant.cast_time+5.5
-        if S.SummonDemonicTyrant:IsCastableP() and (Player:BuffRemainsP(S.NetherPortalBuff) < S.SummonDemonicTyrant:CastTime() + 5.5) then
+        -- summon_demonic_tyrant,if=buff.nether_portal.remains<action.summon_demonic_tyrant.cast_time+0.5
+        if S.SummonDemonicTyrant:IsCastableP() and (Player:BuffRemainsP(S.NetherPortalBuff) < S.SummonDemonicTyrant:CastTime() + 0.5) then
             return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=buff.demonic_core.up
@@ -478,15 +486,15 @@ local function APL()
         -- potion,if=pet.demonic_tyrant.active|target.time_to_die<30
         -- use_items,if=pet.demonic_tyrant.active|target.time_to_die<=15
         -- berserking,if=pet.demonic_tyrant.active|target.time_to_die<=15
-       -- if S.Berserking:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) or Target:TimeToDie() <= 15 then
-       --     return S.Berserking:Cast()
-       -- end
+        if S.Berserking:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) then
+            return S.Berserking:Cast()
+        end
         -- blood_fury,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) or Target:TimeToDie() <= 15 then
+        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) then
             return S.BloodFury:Cast()
         end
         -- fireblood,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) or Target:TimeToDie() <= 15 then
+        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and Player:Buff(S.DemonicPowerBuff) then
             return S.Fireblood:Cast()
         end
         -- doom,if=!ticking&time_to_die>30&spell_targets.implosion<2
@@ -498,11 +506,17 @@ local function APL()
             return S.DemonicStrength:Cast()
         end
         -- call_action_list,name=nether_portal,if=talent.nether_portal.enabled&spell_targets.implosion<=2
-        if S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2 then
-            if NetherPortal() then
-                return NetherPortal()
-            end
-        end
+		if (S.NetherPortal:CooldownRemainsP() < 20) and S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2 then
+			if NetherPortalBuilding() ~= nil then
+				return NetherPortalBuilding()
+			end
+		end
+		-- call_action_list,name=nether_portal_active,if=cooldown.nether_portal.remains>165
+		if (S.NetherPortal:CooldownRemainsP() > 165) and S.NetherPortal:IsAvailable() and Cache.EnemiesCount[40] <= 2 then
+			if NetherPortalActive() ~= nil then
+				return NetherPortalActive()
+			end
+		end        
 		-- summon_demonic_tyrant
         if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 then
             return S.SummonDemonicTyrant:Cast()
@@ -518,21 +532,21 @@ local function APL()
             return S.GrimoireFelguard:Cast()
         end
         -- summon_vilefiend,if=equipped.132369|cooldown.summon_demonic_tyrant.remains>40|cooldown.summon_demonic_tyrant.remains<12
-        if S.SummonVilefiend:IsCastableP() and (S.SummonDemonicTyrant:CooldownRemainsP() > 40 or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
+        if S.SummonVilefiend:IsCastableP() and Player:SoulShardsP() >= 1 and (S.SummonDemonicTyrant:CooldownRemainsP() > 40 or S.SummonDemonicTyrant:CooldownRemainsP() < 12) then
             return S.SummonVilefiend:Cast()
         end
         -- actions+=/call_dreadstalkers,if=equipped.132369|(cooldown.summon_demonic_tyrant.remains<9&buff.demonic_calling.remains)|(cooldown.summon_demonic_tyrant.remains<11&!buff.demonic_calling.remains)|cooldown.summon_demonic_tyrant.remains>14
-        if S.CallDreadStalkers:IsReadyP() and Player:SoulShardsP() >= 2 and not Player:ShouldStopCasting() and ( (S.SummonDemonicTyrant:CooldownRemainsP() < 9 and Player:BuffRemainsP(S.DemonicCallingBuff) > 0) or (S.SummonDemonicTyrant:CooldownRemainsP() < 11 and Player:BuffRemainsP(S.DemonicCallingBuff) == 0) or S.SummonDemonicTyrant:CooldownRemainsP() > 14 ) then
+        if S.CallDreadStalkers:IsReadyP() and Player:SoulShardsP() >= 2 and not Player:ShouldStopCasting() and (S.SummonDemonicTyrant:CooldownRemainsP() < 9 and bool(Player:BuffRemainsP(S.DemonicCallingBuff))) or (S.SummonDemonicTyrant:CooldownRemainsP() < 11 and not bool(Player:BuffRemainsP(S.DemonicCallingBuff))) or (S.SummonDemonicTyrant:CooldownRemainsP() > 14 ) then
            return S.CallDreadStalkers:Cast()
         end
         -- summon_demonic_tyrant,if=ptr=0&(equipped.132369|(buff.dreadstalkers.remains>cast_time&(buff.wild_imps.stack>=3|prev_gcd.1.hand_of_guldan)&(soul_shard<3|buff.dreadstalkers.remains<gcd*2.7|buff.grimoire_felguard.remains<gcd*2.7)))
-        if S.SummonDemonicTyrant:IsCastableP() and (ptr == 0 and ((PetDuration("Dreadstalker") > S.SummonDemonicTyrant:CastTime() and (PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 or Player:PrevGCDP(1, S.HandofGuldan)) and (Player:SoulShardsP() < 3 or PetDuration("Dreadstalker") < Player:GCD() * 2.7 or Player:BuffRemainsP(S.GrimoireFelguardBuff) < Player:GCD() * 2.7)))) then
+        if S.SummonDemonicTyrant:IsCastableP() and (PetDuration("Dreadstalker") > S.SummonDemonicTyrant:CastTime() and (PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 or Player:PrevGCDP(1, S.HandofGuldan)) and (Player:SoulShardsP() < 3 or PetDuration("Dreadstalker") < Player:GCD() * 2.7 or Player:BuffRemainsP(S.GrimoireFelguardBuff) < Player:GCD() * 2.7)) then
             return S.SummonDemonicTyrant:Cast()
         end
         -- summon_demonic_tyrant,if=ptr=1&(equipped.132369|(buff.dreadstalkers.remains>cast_time&(buff.wild_imps.stack>=3+talent.inner_demons.enabled+talent.demonic_consumption.enabled*3|prev_gcd.1.hand_of_guldan&(!talent.demonic_consumption.enabled|buff.wild_imps.stack>=3+talent.inner_demons.enabled))&(soul_shard<3|buff.dreadstalkers.remains<gcd*2.7|buff.grimoire_felguard.remains<gcd*2.7)))
-        if S.SummonDemonicTyrant:IsCastableP() and (ptr == 1 and ((PetDuration("Dreadstalker") > S.SummonDemonicTyrant:CastTime() and (PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 + num(S.InnerDemons:IsAvailable()) + num(S.DemonicConsumption:IsAvailable()) * 3 or Player:PrevGCDP(1, S.HandofGuldan) and (not S.DemonicConsumption:IsAvailable() or PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 + num(S.InnerDemons:IsAvailable()))) and (Player:SoulShardsP() < 3 or PetDuration("Dreadstalker") < Player:GCD() * 2.7 or Player:BuffRemainsP(S.GrimoireFelguardBuff) < Player:GCD() * 2.7)))) then
-            return S.SummonDemonicTyrant:Cast()
-        end
+       -- if S.SummonDemonicTyrant:IsCastableP() and (PetDuration("Dreadstalker") > S.SummonDemonicTyrant:CastTime() and (PetStack("Wild Imp") >= 3 + num(S.InnerDemons:IsAvailable()) + num(S.DemonicConsumption:IsAvailable()) * 3 or Player:PrevGCDP(1, S.HandofGuldan) and (not S.DemonicConsumption:IsAvailable() or PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 + num(S.InnerDemons:IsAvailable()))) and (Player:SoulShardsP() < 3 or PetDuration("Dreadstalker") < Player:GCD() * 2.7 or Player:BuffRemainsP(S.GrimoireFelguardBuff) < Player:GCD() * 2.7)) then
+       --     return S.SummonDemonicTyrant:Cast()
+       -- end
         -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
         if S.PowerSiphon:IsCastableP() and (PetStack("Wild Imp") >= 2 and Player:BuffStackP(S.DemonicCoreBuff) <= 2 and Player:BuffDownP(S.DemonicPowerBuff) and Cache.EnemiesCount[40] < 2) then
             return S.PowerSiphon:Cast()
@@ -554,7 +568,7 @@ local function APL()
             return S.Demonbolt:Cast()
         end
         -- bilescourge_bombers,if=ptr=1
-        if S.BilescourgeBombers:IsCastableP() and (ptr == 1) then
+        if S.BilescourgeBombers:IsCastableP() and FutureShard() >= 2 then
             return S.BilescourgeBombers:Cast()
         end
         -- call_action_list,name=build_a_shard
