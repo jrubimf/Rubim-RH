@@ -38,7 +38,7 @@ mainAddon.Spell[253] = {
     BestialWrathBuff = Spell(19574),
     CobraShot = Spell(193455),
     KillCommand = Spell(34026),
-    MultiShot = Spell(2643),
+    Multishot = Spell(2643),
     -- Talents
     AMurderofCrows = Spell(131894),
     AnimalCompanion = Spell(267116),
