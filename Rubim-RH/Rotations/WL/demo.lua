@@ -95,185 +95,149 @@ local S = RubimRH.Spell[266]
 local ShouldReturn; -- Used to get the return string
 local BestUnit, BestUnitTTD, BestUnitSpellToCast, DebuffRemains; -- Used for cycling
 
--- Demono pets function start
-
-HL.GuardiansTable = {
-    --{ID, name, spawnTime, ImpCasts, Duration, despawnTime}
-    Pets = { 
-      },
-      ImpCount = 0,
-      FelguardDuration = 0,
-      DreadstalkerDuration = 0,
-      DemonicTyrantDuration = 0
+local PetsInfo = {
+  [55659] = {"Wild Imp", 20},
+  [99737] = {"Wild Imp", 20},
+  [98035] = {"Dreadstalker", 12},
+  [17252] = {"Felguard", 15},
+  [135002] = {"Demonic Tyrant", 15},
 };
 
--- local for pets count & duration functions    
-local PetDurations = {["Dreadstalker"] = 12.25, ["Wild Imp"] = 20, ["Felguard"] = 28, ["Demonic Tyrant"] = 15};
-local PetTypes = {["Dreadstalker"] = true, ["Wild Imp"]  = true, ["Felguard"]  = true, ["Demonic Tyrant"]  = true};
+local PetType = {
+  [55659] = {"Wild Imp", 20},
+  [99737] = {"Wild Imp", 20},
+  [98035] = {"Dreadstalker", 12},
+  [17252] = {"Felguard", 15},
+  [135002] = {"Demonic Tyrant", 15},
+};
+	
+--Guardians table
+HL.GuardiansTable = {
+      --{PetType,petID,dateEvent,UnitPetGUID,CastsLeft}
+      Pets = {
+      },
+      PetList= {
+	  [55659]="Wild Imp",
+	  [99737]="Wild Imp",
+	  [98035]="Dreadstalker",
+	  [135002]="Demonic Tyrant",
+	  [17252]="Felguard"}
+};
 
--- range for spell checking
+-- Demono Part 1 Clean
 local range = 40
-    
---------------------------
------ Demonology ---------
---------------------------
--- Update the GuardiansTable
-function UpDatePetTable()   
-    for key, petTable in pairs (HL.ActivePetsTable.Pets) do               
-        if petTable then           
-            -- Remove expired pet
-            if GetTime() >= petTable.despawnTime  then
-                if petTable.name == "Wild Imp"  then
-                    HL.ActivePetsTable.ImpCount = HL.ActivePetsTable.ImpCount - 1
-                end
-                if petTable.name == "Felguard"  then
-                    HL.ActivePetsTable.FelGuardDuration = 0
-                elseif petTable.name == "Dreadstalker" then
-                    HL.ActivePetsTable.DreadstalkerDuration = 0
-                elseif petTable.name == "Demonic Tyrant" then
-                    HL.ActivePetsTable.DemonicTyrantDuration = 0
-                elseif petTable.name == "Vilefiend" then
-                    HL.ActivePetsTable.VilefiendDuration = 0
-                elseif petTable.name == "Wild Imp" then
-                    HL.ActivePetsTable.WildImpDuration = 0
-                    HL.ActivePetsTable.ImpCastsRemaing = HL.ActivePetsTable.ImpCastsRemaing - petTable.ImpCasts
-                    HL.ActivePetsTable.ImpTotalEnergy =  HL.ActivePetsTable.ImpCastsRemaing * 20
-                end
-                HL.ActivePetsTable.Pets[key] = nil
-            end
-            -- Remove Imp's that casted 5 times
-            if petTable.ImpCasts <= 0 and  petTable.WildImpFrozenEnd < 1 then
-                HL.ActivePetsTable.ImpCount = HL.ActivePetsTable.ImpCount - 1
-                HL.ActivePetsTable.Pets[key] = nil
-            end
+
+-- Demono Part 2     
+	HL:RegisterForSelfCombatEvent(
+      function (...)
+        dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+       
+        local t={} ; i=1
+        for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+          t[i] = str
+          i = i + 1
+        end
+        local PetType=HL.GuardiansTable.PetList[tonumber(t[6])]
+        if PetType then
+          table.insert(HL.GuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+        end
+
+      end
+      , "SPELL_SUMMON"
+    );
+
+	-- Arguments Variables
+
  
-            -- Update Duration
-            if GetTime() <= petTable.despawnTime then
-                if petTable.name == "Felguard"  then
-                    petTable.Duration =  petTable.spawnTime - GetTime() + PetDurations[petTable.name]
-                    HL.ActivePetsTable.FelGuardDuration = petTable.Duration
-                elseif petTable.name == "Dreadstalker" then
-                    petTable.Duration =  petTable.spawnTime  - GetTime() + PetDurations[petTable.name]
-                    HL.ActivePetsTable.DreadstalkerDuration = petTable.Duration
-                elseif petTable.name == "Demonic Tyrant" then
-                    HL.ActivePetsTable.DemonicTyrantDuration = petTable.Duration
-                    petTable.Duration =  petTable.spawnTime - GetTime() + PetDurations[petTable.name]
-                elseif petTable.name == "Vilefiend" then
-                    petTable.Duration =  petTable.spawnTime - GetTime() + PetDurations[petTable.name]
-                    HL.ActivePetsTable.VilefiendDuration = petTable.Duration
-                elseif petTable.name == "Wild Imp" then
-                    petTable.Duration =  petTable.spawnTime - GetTime() + PetDurations[petTable.name]
-                    HL.ActivePetsTable.WildImpDuration = petTable.Duration
-                    if petTable.WildImpFrozenEnd ~= 0 then
-                        local ImpTime =  math.floor(petTable.WildImpFrozenEnd - GetTime() + 0.5)
-                        if ImpTime < 1 then petTable.WildImpFrozenEnd = 0 end;  
-                    end
-                end
+    --Implosion listener (kill all wild imps)
+    HL:RegisterForSelfCombatEvent(
+      function (...)
+        local DestGUID, _, _, _, SpellID = select(8, ...);
+        if SpellID == 196277 then
+          for key, Value in pairs(HL.GuardiansTable.Pets) do
+            if HL.GuardiansTable.Pets[key][1]=="Wild Imp" then
+              HL.GuardiansTable.Pets[key]=nil
             end
-            -- Add Time to pets  
-            if TyrantSpawed then
-                if petTable.name ~= "Demonic Tyrant" then
-                    petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
-                    petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
-                    if petTable.name == "Wild Imp" then
-                        petTable.WildImpFrozenEnd = GetTime() + 15
-                    end
-                end
-            end
+          end
         end
+      end
+      , "SPELL_CAST_SUCCESS"
+    );
+
+    -- Listen for imp felfirebolts and remove imps after 5 casts
+    HL:RegisterForCombatEvent(
+      function (...)
+        local UnitGUID, _, _, _, _, _, _, _, SpellID = select(4, ...);
+        if SpellID == 104318 then
+          for key, Value in pairs(HL.GuardiansTable.Pets) do
+            if HL.GuardiansTable.Pets[key][4] == UnitGUID then
+              if HL.GuardiansTable.Pets[key][5] - 1 > 0 then
+                HL.GuardiansTable.Pets[key][5] = HL.GuardiansTable.Pets[key][5] - 1
+              else
+                HL.GuardiansTable.Pets[key]=nil
+              end
+            end
+          end
+        end
+      end
+      , "SPELL_CAST_SUCCESS"
+    );
+
+	-- updates the pet table
+local function RefreshPetsTimers()
+  if not HL.GuardiansTable.Pets then
+    return
+  end
+  for key, Value in pairs(HL.GuardiansTable.Pets) do
+    local duration = 0
+    if PetsInfo[HL.GuardiansTable.Pets[key][2]] then
+      duration = PetsInfo[HL.GuardiansTable.Pets[key][2]][2]
     end
-    if TyrantSpawed then TyrantSpawed = false end  
+    if GetTime() - HL.GuardiansTable.Pets[key][3] >= duration then
+      HL.GuardiansTable.Pets[key] = nil
+    end
+  end
 end
- 
-HL:RegisterForSelfCombatEvent(function (...)
-    local timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)           
-    -- ADD PET --
-    if (UnitGUID("pet") ~= UnitPetGUID and "SPELL_SUMMON" == Event and PetTypes[petName] ) then
-        local petTable = {
-            ID = UnitPetGUID,
-            name = petName,
-            spawnTime = GetTime(),
-            ImpCasts = 5,
-            Duration = PetDurations[petName],
-            despawnTime = GetTime() + tonumber(PetDurations[petName])
-        }
-        table.insert(HL.ActivePetsTable.Pets,petTable)
-        if petName == "Wild Imp"  then
-            HL.ActivePetsTable.ImpCount = HL.ActivePetsTable.ImpCount + 1
-            HL.ActivePetsTable.ImpCastsRemaing = HL.ActivePetsTable.ImpCastsRemaing + 5
-            HL.ActivePetsTable.WildImpDuration = PetDurations[petName]
-            petTable.WildImpFrozenEnd = 0              
-        end
-        if petName == "Felguard"  then
-            HL.ActivePetsTable.FelGuardDuration = PetDurations[petName]
-        elseif petName == "Dreadstalker" then
-            HL.ActivePetsTable.DreadstalkerDuration = PetDurations[petName]
-        elseif petName == "Demonic Tyrant" then
-            if not TyrantSpawed then TyrantSpawed = true  end
-            HL.ActivePetsTable.DemonicTyrantDuration = PetDurations[petName]
-            UpDatePetTable()
-        elseif petName == "Vilefiend" then
-            HL.ActivePetsTable.VilefiendDuration = PetDurations[petName]   
-        end
-    end
-    UpDatePetTable()
-    end
-    , "SPELL_SUMMON"
-);
-   
-HL:RegisterForCombatEvent(function (...)
-    local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,spell,SpellName=select(1,...)
-    --Count Wild Imp casts
-    if (104318 == spell) then  
-        for key, petTable in pairs (HL.ActivePetsTable.Pets) do
-            if SourceGUID == petTable.ID then
-                if  petTable.WildImpFrozenEnd < 1 then
-                    petTable.ImpCasts = petTable.ImpCasts - 1
-                    HL.ActivePetsTable.ImpCastsRemaing = HL.ActivePetsTable.ImpCastsRemaing - 1
-                end
-            end
-        end
-        HL.ActivePetsTable.ImpTotalEnergy =  HL.ActivePetsTable.ImpCastsRemaing * 20      
-    end
-    --Implosion remove all wild imps
-    if spell == 196277 then
-        for key, petTable in pairs(HL.ActivePetsTable.Pets) do
-            if petTable.name == "Wild Imp" then
-                HL.ActivePetsTable.Pets[key] = nil
-            end
-        end
-        HL.ActivePetsTable.ImpCount = 0
-        HL.ActivePetsTable.ImpCastsRemaing = 0
-        HL.ActivePetsTable.ImpTotalEnergy = 0
-    end
-        UpDatePetTable()
-    end
-    , "SPELL_CAST_SUCCESS"
-);
-    
--- Function to check for imp count
-local function WildImpsCount()
-    return HL.GuardiansTable.ImpCount or 0
+	
+-- Demono Part 3 Clean
+	
+-- Returns the amount of wild imps that are up
+local function PetStack(PetType)
+  PetType = PetType or false
+  local count = 0
+	if not HL.GuardiansTable.Pets or not PetType then
+		return count
+	end
+  
+	for key, petData in pairs(HL.GuardiansTable.Pets) do
+		if petData[1] == PetType then
+			count = count + 1
+		end 
+	end
+	return count
 end
 
--- Function to check for remaining Dreadstalker duration
-local function DreadStalkersTime()
-    return HL.GuardiansTable.DreadstalkerDuration or 0
-end
-
--- Function to check for remaining Grimoire Felguard duration
-local function GrimoireFelguardTime()
-    return HL.GuardiansTable.FelGuardDuration or 0
-end
-
--- Function to check for Demonic Tyrant duration
-local function DemonicTyrantTime()
-    return HL.GuardiansTable.DemonicTyrantDuration or 0
-end     
-
--- Function to check Total active Imp Energy (More accurate than imp count for "Demonic Consumption" talent)
-local function WildImpTotalEnergy()
-    return HL.ActivePetsTable.ImpTotalEnergy or 0
+-- Summoned pet duration
+local function PetDuration(PetType)
+	if not PetType then 
+		return 0 
+	end
+	local PetsInfo = {
+		[55659] = {"Wild Imp", 20},
+		[99737] = {"Wild Imp", 20},
+		[98035] = {"Dreadstalker", 12},
+		[17252] = {"Felguard", 15},
+		[135002] = {"Demonic Tyrant", 15},
+	}
+	local maxduration = 0
+	for key, Value in pairs(HL.GuardiansTable.Pets) do
+		if HL.GuardiansTable.Pets[key][1] == PetType then
+			if (PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])) > maxduration then
+				maxduration = HL.OffsetRemains((PetsInfo[HL.GuardiansTable.Pets[key][2]][2] - (GetTime() - HL.GuardiansTable.Pets[key][3])), "Auto" );
+			end
+		end
+	end
+	return maxduration
 end
 
 -- Demono pets function end
@@ -355,7 +319,7 @@ end
 
 local function Implosion()
         -- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk1+RubimRH.AoEON
-        if S.Implosion:IsCastableP() and RubimRH.AoEON() and WildImpsCount() >= mainAddon.db.profile[266].sk1 then
+        if S.Implosion:IsCastableP() and RubimRH.AoEON() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk1 then
             return S.Implosion:Cast()
         end    
         -- bilescourge_bombers,if=cooldown.summon_demonic_tyrant.remains>9
@@ -363,7 +327,7 @@ local function Implosion()
             return S.BilescourgeBombers:Cast()
         end        
         -- implosion,if=(buff.wild_imps.stack>=6&(soul_shard<3|prev_gcd.1.call_dreadstalkers|buff.wild_imps.stack>=9|prev_gcd.1.bilescourge_bombers|(!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan))&!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&buff.demonic_power.down)|(time_to_die<3&buff.wild_imps.stack>0)|(prev_gcd.2.call_dreadstalkers&buff.wild_imps.stack>2&!talent.demonic_calling.enabled)
-        if S.Implosion:IsCastableP() and (WildImpsCount() >= 6 and (FutureShard() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or WildImpsCount() >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan))) and not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and Player:BuffRemainsP(S.DemonicPowerBuff) == 0) or (Target:TimeToDie() < 3 and WildImpsCount() > 0) or (Player:PrevGCDP(2, S.CallDreadStalkers) and WildImpsCount() > 2 and not S.DemonicCalling:IsAvailable()) then
+        if S.Implosion:IsCastableP() and (PetStack("Wild Imp") >= 6 and (FutureShard() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or PetStack("Wild Imp") >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan))) and not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and Player:BuffRemainsP(S.DemonicPowerBuff) == 0) or (Target:TimeToDie() < 3 and PetStack("Wild Imp") > 0) or (Player:PrevGCDP(2, S.CallDreadStalkers) and PetStack("Wild Imp") > 2 and not S.DemonicCalling:IsAvailable()) then
             return S.Implosion:Cast()
         end
         -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13|!equipped.132369
@@ -375,7 +339,7 @@ local function Implosion()
             return S.CallDreadStalkers:Cast()
         end
         -- summon_demonic_tyrant
-    --    if S.SummonDemonicTyrant:IsCastableP() and WildImpsCount() >= mainAddon.db.profile[266].sk2 then
+    --    if S.SummonDemonicTyrant:IsCastableP() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 then
     --        return S.SummonDemonicTyrant:Cast()
     --    end
         -- hand_of_guldan,if=soul_shard>=5
@@ -383,11 +347,11 @@ local function Implosion()
             return S.HandOfGuldan:Cast()
         end
         -- hand_of_guldan,if=soul_shard>=3&(((prev_gcd.2.hand_of_guldan|buff.wild_imps.stack>=3)&buff.wild_imps.stack<9)|cooldown.summon_demonic_tyrant.remains<=gcd*2|buff.demonic_power.remains>gcd*2)
-        if S.HandOfGuldan:IsCastableP() and FutureShard() >= 3 and (((Player:PrevGCDP(2, S.HandOfGuldan) or WildImpsCount() >= 3) and WildImpsCount() < 9) or S.SummonDemonicTyrant:CooldownRemainsP() <= Player:GCD() * 2 or Player:BuffRemainsP(S.DemonicPowerBuff) > Player:GCD() * 2) then
+        if S.HandOfGuldan:IsCastableP() and FutureShard() >= 3 and (((Player:PrevGCDP(2, S.HandOfGuldan) or PetStack("Wild Imp") >= 3) and PetStack("Wild Imp") < 9) or S.SummonDemonicTyrant:CooldownRemainsP() <= Player:GCD() * 2 or Player:BuffRemainsP(S.DemonicPowerBuff) > Player:GCD() * 2) then
             return S.HandOfGuldan:Cast()
         end
         -- demonbolt,if=prev_gcd.1.hand_of_guldan&soul_shard>=1&(buff.wild_imps.stack<=3|prev_gcd.3.hand_of_guldan)&soul_shard<4&buff.demonic_core.up
-        if S.Demonbolt:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() >= 1 and (WildImpsCount() <= 3 or Player:PrevGCDP(3, S.HandOfGuldan)) and FutureShard() < 4 and Player:BuffRemainsP(S.DemonicCoreBuff) > 0 then
+        if S.Demonbolt:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() >= 1 and (PetStack("Wild Imp") <= 3 or Player:PrevGCDP(3, S.HandOfGuldan)) and FutureShard() < 4 and Player:BuffRemainsP(S.DemonicCoreBuff) > 0 then
             return S.Demonbolt:Cast()
         end
         -- summon_vilefiend,if=(cooldown.summon_demonic_tyrant.remains>40&spell_targets.implosion<=2)|cooldown.summon_demonic_tyrant.remains<12
@@ -501,7 +465,7 @@ local function Implosion()
             return S.HandOfGuldan:Cast()
         end
         -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&soul_shard>=3
-        if S.PowerSiphon:IsCastableP() and WildImpsCount() >= 2 and Player:BuffStackP(S.DemonicCoreBuff) <= 2 and Player:BuffDownP(S.DemonicPowerBuff) and FutureShard() >= 3 then
+        if S.PowerSiphon:IsCastableP() and PetStack("Wild Imp") >= 2 and Player:BuffStackP(S.DemonicCoreBuff) <= 2 and Player:BuffDownP(S.DemonicPowerBuff) and FutureShard() >= 3 then
             return S.PowerSiphon:Cast()
         end
         -- hand_of_guldan,if=soul_shard>=5
@@ -562,7 +526,7 @@ local function APL()
             return S.Doom:Cast()
         end
         -- demonic_strength,if=(buff.wild_imps.stack<6|buff.demonic_power.up)|spell_targets.implosion<2
-        if S.DemonicStrength:IsCastableP() and ((WildImpsCount() < 6 or Player:BuffP(S.DemonicPowerBuff)) or Cache.EnemiesCount[40] < 2) then
+        if S.DemonicStrength:IsCastableP() and ((PetStack("Wild Imp") < 6 or Player:BuffP(S.DemonicPowerBuff)) or Cache.EnemiesCount[40] < 2) then
             return S.DemonicStrength:Cast()
         end
         -- call_action_list,name=nether_portal,if=talent.nether_portal.enabled&spell_targets.implosion<=2
@@ -578,7 +542,7 @@ local function APL()
             end
         end        
         -- summon_demonic_tyrant
-        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and WildImpsCount() >= mainAddon.db.profile[266].sk2 then
+        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 then
             return S.SummonDemonicTyrant:Cast()
         end
         -- call_action_list,name=implosion,if=spell_targets.implosion>1
@@ -600,11 +564,11 @@ local function APL()
            return S.CallDreadStalkers:Cast()
         end
         -- summon_demonic_tyrant,if=ptr=0&(equipped.132369|(buff.dreadstalkers.remains>cast_time&(buff.wild_imps.stack>=3|prev_gcd.1.hand_of_guldan)&(soul_shard<3|buff.dreadstalkers.remains<gcd*2.7|buff.grimoire_felguard.remains<gcd*2.7)))
-        if S.SummonDemonicTyrant:IsCastableP() and DreadStalkersTime() > S.SummonDemonicTyrant:CastTime() and (WildImpsCount() >= 3 + num(S.InnerDemons:IsAvailable()) + (num(S.DemonicConsumption:IsAvailable())*3) or Player:PrevGCDP(1, S.HandOfGuldan) and (not S.DemonicConsumption:IsAvailable() or WildImpsCount() >= 3 + num(S.InnerDemons:IsAvailable()))) and (FutureShard() < 3 or DreadStalkersTime() < Player:GCD() * 2.7 or GrimoireFelguardTime() < Player:GCD() * 2.7) then
-            return S.SummonDemonicTyrant:Cast()
-        end
+       -- if S.SummonDemonicTyrant:IsCastableP() and PetDuration("Dreadstalker") > S.SummonDemonicTyrant:CastTime() and (PetStack("Wild Imp") >= 3 + num(S.InnerDemons:IsAvailable()) + (num(S.DemonicConsumption:IsAvailable())*3) or Player:PrevGCDP(1, S.HandOfGuldan) and (not S.DemonicConsumption:IsAvailable() or PetStack("Wild Imp") >= 3 + num(S.InnerDemons:IsAvailable()))) and (FutureShard() < 3 or PetDuration("Dreadstalker")() < Player:GCD() * 2.7 or PetDuration("Felguard")() < Player:GCD() * 2.7) then
+       --     return S.SummonDemonicTyrant:Cast()
+       -- end
         -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
-        if S.PowerSiphon:IsCastableP() and (WildImpsCount() >= 2 and Player:BuffStackP(S.DemonicCoreBuff) <= 2 and Player:BuffDownP(S.DemonicPowerBuff) and Cache.EnemiesCount[40] < 2) then
+        if S.PowerSiphon:IsCastableP() and (PetStack("Wild Imp") >= 2 and Player:BuffStackP(S.DemonicCoreBuff) <= 2 and Player:BuffDownP(S.DemonicPowerBuff) and Cache.EnemiesCount[40] < 2) then
             return S.PowerSiphon:Cast()
         end
         -- doom,if=talent.doom.enabled&refreshable&time_to_die>(dot.doom.remains+30)
