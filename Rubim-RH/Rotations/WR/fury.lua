@@ -12,55 +12,39 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 -- Spells
 RubimRH.Spell[72] = {
-    -- Racials
-    ArcaneTorrent = Spell(80483),
-    AncestralCall = Spell(274738),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    Fireblood = Spell(265221),
-    GiftoftheNaaru = Spell(59547),
-    LightsJudgment = Spell(255647),
-    -- Abilities
-    BattleShout = Spell(6673),
-    BerserkerRage = Spell(18499),
-    Bloodthirst = Spell(23881),
-    Charge = Spell(100),
-    Execute = Spell(5308),
-    HeroicLeap = Spell(6544),
-    HeroicThrow = Spell(57755),
-    RagingBlow = Spell(85288),
-    Rampage = Spell(184367),
+    RecklessnessBuff = Spell(1719),
     Recklessness = Spell(1719),
-    VictoryRush = Spell(34428),
+    FuriousSlashBuff = Spell(202539),
+    FuriousSlash = Spell(100130),
+    RecklessAbandon = Spell(202751),
+    HeroicLeap = Spell(6544),
+    Siegebreaker = Spell(280772),
+    Rampage = Spell(184367),
+    FrothingBerserker = Spell(215571),
+    Carnage = Spell(202922),
+    EnrageBuff = Spell(184362),
+    Massacre = Spell(206315),
+    Execute = Spell(5308),
+    Bloodthirst = Spell(23881),
+    RagingBlow = Spell(85288),
+    Bladestorm = Spell(46924),
+    SiegebreakerDebuff = Spell(280773),
+    DragonRoar = Spell(118000),
     Whirlwind = Spell(190411),
-    WhirlwindPassive = Spell(12950),
     WhirlwindBuff = Spell(85739),
-    EnragedRegeneration = Spell(184364),
-    Enrage = Spell(184362),
-    -- Talents
-    WarMachine = Spell(262231),
-    EndlessRage = Spell(202296),
-    FreshMeat = Spell(215568),
-    DoubleTime = Spell(103827),
+    Charge = Spell(100),
+    FujiedasFuryBuff = Spell(207775),
+    MeatCleaverBuff = Spell(280392),
+    BloodFury = Spell(20572),
+    Berserking = Spell(26297),
+    LightsJudgment = Spell(255647),
+    Fireblood = Spell(265221),
+    AncestralCall = Spell(274738),
+
+    --CUSTOM
+    BattleShout = Spell(6673),
     ImpendingVictory = Spell(202168),
     StormBolt = Spell(107570),
-    InnerRage = Spell(215573),
-    FuriousSlash = Spell(100130),
-    FuriousSlashBuff = Spell(202539),
-    Carnage = Spell(202922),
-    Massacre = Spell(206315),
-    FrothingBerserker = Spell(215571),
-    MeatCleaver = Spell(280392),
-    MeatCleaverBuff = Spell(280392),
-    DragonRoar = Spell(118000),
-    Bladestorm = Spell(46924),
-    RecklessAbandon = Spell(202751),
-    AngerManagement = Spell(152278),
-    Siegebreaker = Spell(280772),
-    SiegebreakerDebuff = Spell(280773),
-    SuddenDeath = Spell(280721),
-    SuddenDeathBuff = Spell(280776),
-    SuddenDeathBuffLeg = Spell(225947),
     Victorious = Spell(32216),
     VictoryRush = Spell(34428),
     -- Defensive
@@ -154,53 +138,58 @@ local function APL()
     end
 
     SingleTarget = function()
-        -- siegebreaker,if=buff.recklessness.up|cooldown.recklessness.remains>20
-        if S.Siegebreaker:IsReady() and (Player:BuffP(S.Recklessness) or S.Recklessness:CooldownRemainsP() > 20) then
+        -- siegebreaker
+        if S.Siegebreaker:IsCastableP() and RubimRH.CDsON() then
             return S.Siegebreaker:Cast()
         end
         -- rampage,if=buff.recklessness.up|(talent.frothing_berserker.enabled|talent.carnage.enabled&(buff.enrage.remains<gcd|rage>90)|talent.massacre.enabled&(buff.enrage.remains<gcd|rage>90))
-        if S.Rampage:IsReady() and (Player:BuffP(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
+        if S.Rampage:IsReadyP() and (Player:BuffP(S.RecklessnessBuff) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90))) then
             return S.Rampage:Cast()
         end
         -- execute,if=buff.enrage.up
-        if S.Execute:IsReadyMorph() and (Player:BuffP(S.Enrage)) then
+        if S.Execute:IsCastableP() and (Player:BuffP(S.EnrageBuff)) then
             return S.Execute:Cast()
         end
         -- bloodthirst,if=buff.enrage.down
-        if S.Bloodthirst:IsReady() and (Player:BuffDownP(S.Enrage)) then
+        if S.Bloodthirst:IsCastableP() and (Player:BuffDownP(S.EnrageBuff)) then
             return S.Bloodthirst:Cast()
         end
         -- raging_blow,if=charges=2
-        if S.RagingBlow:IsReady() and (S.RagingBlow:ChargesP() == 2) then
+        if S.RagingBlow:IsCastableP() and (S.RagingBlow:ChargesP() == 2) then
             return S.RagingBlow:Cast()
         end
         -- bloodthirst
-        if S.Bloodthirst:IsReady() then
+        if S.Bloodthirst:IsCastableP() then
             return S.Bloodthirst:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-        if S.Bladestorm:IsReady() and (Player:PrevGCDP(1, S.Rampage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
+        if S.Bladestorm:IsCastableP() and Cache.EnemiesCount[8] >= 1 and RubimRH.CDsON() and (Player:PrevGCDP(1, S.Rampage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
             return S.Bladestorm:Cast()
         end
-        -- dragon_roar,if=buff.enrage.up&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-        if S.DragonRoar:IsReady() and Cache.EnemiesCount[5] >= 1  and (Player:BuffP(S.Enrage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
+        -- dragon_roar,if=buff.enrage.up
+        if S.DragonRoar:IsCastableP() and Cache.EnemiesCount[8] >= 1 and RubimRH.CDsON() and (Player:BuffP(S.EnrageBuff)) then
             return S.DragonRoar:Cast()
         end
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
-        if S.RagingBlow:IsReady() and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
+        if S.RagingBlow:IsCastableP() and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
             return S.RagingBlow:Cast()
         end
         -- furious_slash,if=talent.furious_slash.enabled
-        if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable()) then
+        if S.FuriousSlash:IsCastableP() and (S.FuriousSlash:IsAvailable()) then
             return S.FuriousSlash:Cast()
         end
         -- whirlwind
-        if S.Whirlwind:IsReady() and Cache.EnemiesCount[5] >= 1 then
+        if S.Whirlwind:IsCastableP() and Cache.EnemiesCount[8] >= 1 then
             return S.Whirlwind:Cast()
         end
-        return 0, 135328
     end
-
+    -- call precombat
+    if not Player:AffectingCombat() then
+        local ShouldReturn = Precombat();
+        if ShouldReturn then
+            return ShouldReturn;
+        end
+    end
 
     if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
         return S.Charge:Cast()
@@ -222,7 +211,7 @@ local function APL()
         return S.Pummel:Cast()
     end
 
-    if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 then
+    if S.Charge:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 then
         return S.Charge:Cast()
     end
 
@@ -242,65 +231,67 @@ local function APL()
         return S.Bloodthirst:Cast()
     end
 
-    -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
-    if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
-        return S.FuriousSlash:Cast()
-    end
-    -- bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
-    --if S.Bloodthirst:IsReady() and (I.KazzalaxFujiedasFury:IsEquipped() and (Player:BuffDownP(S.FujiedasFuryBuff) or remains < 2)) then
-    --   return S.Bloodthirst:Cast()
-    --end
-    -- rampage,if=cooldown.recklessness.remains<3
-    if S.Whirlwind:IsReady() and Cache.EnemiesCount[8] >= 3 and not Player:BuffP(S.WhirlwindBuff) and S.WhirlwindPassive:IsAvailable() then
-        return S.Whirlwind:Cast()
-    end
+    if RubimRH.TargetIsValid() then
+        -- auto_attack
+        -- charge
+        if S.Charge:IsReady() and Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 then
+            return S.Charge:Cast()
+        end
+        -- run_action_list,name=movement,if=movement.distance>5
+        -- potion
+        -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
+        if S.FuriousSlash:IsCastableP() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
+            return S.FuriousSlash:Cast()
+        end
+        -- bloodthirst,if=equipped.kazzalax_fujiedas_fury&(buff.fujiedas_fury.down|remains<2)
+        if S.Bloodthirst:IsCastableP() and (I.KazzalaxFujiedasFury:IsEquipped() and (Player:BuffDownP(S.FujiedasFuryBuff) or remains < 2)) then
+            return S.Bloodthirst:Cast()
+        end
+        -- rampage,if=cooldown.recklessness.remains<3
+        if S.Rampage:IsReadyP() and (S.Recklessness:CooldownRemainsP() < 3) then
+            return S.Rampage:Cast()
+        end
+        -- recklessness
+        if S.Recklessness:IsCastableP() and RubimRH.CDsON() then
+            return S.Recklessness:Cast()
+        end
+        -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
+        if S.Whirlwind:IsCastableP() and (Cache.EnemiesCount[8] > 1 and S.MeatCleaverBuff:IsAvailable() and not Player:BuffP(S.MeatCleaverBuff)) then
+            return S.Whirlwind:Cast()
+        end
 
-    if S.Rampage:IsReady() then
-        return S.Rampage:Cast()
-    end
-    if S.Rampage:IsReady() and (S.Recklessness:CooldownRemainsP() < 3) then
-        return S.Rampage:Cast()
-    end
-    -- recklessness
-    if S.Recklessness:IsCastable() then
-        return S.Recklessness:Cast()
-    end
-    -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    if S.Whirlwind:IsReady() and S.MeatCleaver:IsAvailable() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
-        return S.Whirlwind:Cast()
-    end
-    -- blood_fury,if=buff.recklessness.up
-    if S.BloodFury:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S.BloodFury:Cast()
-    end
-    -- berserking,if=buff.recklessness.up
-    if S.Berserking:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S.Berserking:Cast()
-    end
-    -- arcane_torrent,if=rage<40&!buff.recklessness.up
-    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:Rage() < 40 and not Player:BuffP(S.Recklessness)) then
-        return S.ArcaneTorrent:Cast()
-    end
-    -- lights_judgment,if=buff.recklessness.down
-    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Player:BuffDownP(S.Recklessness)) then
-        return S.LightsJudgment:Cast()
-    end
-    -- fireblood,if=buff.recklessness.up
-    if S.Fireblood:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S.Fireblood:Cast()
-    end
-    -- ancestral_call,if=buff.recklessness.up
-    if S.AncestralCall:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
-        return S.AncestralCall:Cast()
-    end
+        if S.Whirlwind:IsCastableP() and (Cache.EnemiesCount[8] > 1 and not S.MeatCleaverBuff:IsAvailable() and not Player:BuffP(S.WhirlwindBuff)) then
+            return S.Whirlwind:Cast()
+        end
 
-    -- run_action_list,name=single_target
-    if (true) then
-        return SingleTarget();
+        -- blood_fury,if=buff.recklessness.up
+        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.RecklessnessBuff)) then
+            return S.BloodFury:Cast()
+        end
+        -- berserking,if=buff.recklessness.up
+        if S.Berserking:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.RecklessnessBuff)) then
+            return S.Berserking:Cast()
+        end
+        -- lights_judgment,if=buff.recklessness.down
+        if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() and (Player:BuffDownP(S.RecklessnessBuff)) then
+            return S.LightsJudgment:Cast()
+        end
+        -- fireblood,if=buff.recklessness.up
+        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.RecklessnessBuff)) then
+            return S.Fireblood:Cast()
+        end
+        -- ancestral_call,if=buff.recklessness.up
+        if S.AncestralCall:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.RecklessnessBuff)) then
+            return S.AncestralCall:Cast()
+        end
+        -- run_action_list,name=single_target
+        if (true) then
+            return SingleTarget();
+        end
+
     end
     return 0, 135328
 end
-
 
 RubimRH.Rotation.SetAPL(72, APL);
 

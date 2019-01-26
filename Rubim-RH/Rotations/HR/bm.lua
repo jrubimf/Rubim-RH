@@ -66,13 +66,14 @@ mainAddon.Spell[253] = {
     TarTrap = Spell(187698),
     -- Legendaries
     ParselsTongueBuff = Spell(248084),
+    -- AzeriteEnabled
+    PrimalInstincts = Spell(279806),
+    FeedingFrenzy = Spell(278529),
     -- Misc
     PotionOfProlongedPowerBuff = Spell(229206),
     SephuzBuff = Spell(208052),
-    ConcussiveShot = Spell(5116),
-    ScorpidSting = Spell(202900),
+    ConcusiveShot = Spell(5116),
     Intimidation = Spell(19577),
-    -- Macros
 
 }
 
@@ -207,15 +208,15 @@ local function APL ()
     end
     -- potion,if=buff.bestial_wrath.up&buff.aspect_of_the_wild.up&(target.health.pct<35|!talent.killer_instinct.enabled)|target.time_to_die<25
     -- barbed_shot,if=pet.cat.buff.frenzy.up&pet.cat.buff.frenzy.remains<=gcd.max|full_recharge_time<gcd.max&cooldown.bestial_wrath.remains
-    if S.BarbedShot:IsReady(Target) and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() or S.BarbedShot:FullRechargeTimeP() < Player:GCD() and bool(S.BestialWrath:CooldownRemainsP())) then
+    if S.BarbedShot:IsReady() and (Pet:BuffP(S.FrenzyBuff) and Pet:BuffRemainsP(S.FrenzyBuff) <= Player:GCD() or S.BarbedShot:FullRechargeTimeP() < Player:GCD() and bool(S.BestialWrath:CooldownRemainsP())) then
         return S.BarbedShot:Cast(Target)
     end
     -- lights_judgment
-    if S.LightsJudgment:IsReady(Target) and RubimRH.CDsON() then
+    if S.LightsJudgment:IsReady() and RubimRH.CDsON() then
         return S.LightsJudgment:Cast(Target)
     end
     -- spitting_cobra
-    if S.SpittingCobra:IsReady(Target) then
+    if S.SpittingCobra:IsReady() then
         return S.SpittingCobra:Cast(Target)
     end
     -- aspect_of_the_wild
@@ -223,59 +224,59 @@ local function APL ()
         return S.AspectoftheWild:Cast()
     end
     -- a_murder_of_crows,if=active_enemies=1
-    if S.AMurderofCrows:IsReady(Target) and (Player:EnemiesAround(40) == 1) then
-        return S.AMurderofCrows:Cast(Target)
+    if S.AMurderofCrows:IsReady() and (Player:EnemiesAround(40) == 1) then
+        return S.AMurderofCrows:Cast()
     end
     -- stampede,if=buff.aspect_of_the_wild.up&buff.bestial_wrath.up|target.time_to_die<15
-    if S.Stampede:IsReady(Target) and (Player:BuffP(S.AspectoftheWildBuff) and Player:BuffP(S.BestialWrathBuff) or Target:TimeToDie() < 15) then
-        return S.Stampede:Cast(Target)
+    if S.Stampede:IsReady() and (Player:BuffP(S.AspectoftheWildBuff) and Player:BuffP(S.BestialWrathBuff) or Target:TimeToDie() < 15) then
+        return S.Stampede:Cast()
     end
     -- multishot,if=spell_targets>2&gcd.max-pet.cat.buff.beast_cleave.remains>0.25
-    if S.Multishot:IsReady(Target) and (Cache.EnemiesCount[40] > 2 and Player:GCD() - Pet:BuffRemainsP(S.BeastCleaveBuff) > 0.25) then
-        return S.Multishot:Cast(Target)
+    if S.Multishot:IsReady() and (Cache.EnemiesCount[40] > 2 and Player:GCD() - Pet:BuffRemainsP(S.BeastCleaveBuff) > 0.25) then
+        return S.Multishot:Cast()
     end
     -- bestial_wrath,if=cooldown.aspect_of_the_wild.remains>20|target.time_to_die<15
     if S.BestialWrath:IsReady() and (S.AspectoftheWild:CooldownRemainsP() > 20 or Target:TimeToDie() < 15) then
         return S.BestialWrath:Cast()
     end
     -- barrage,if=active_enemies>1
-    if S.Barrage:IsReady(Target) and Target:Exists() and (Cache.EnemiesCount[40] > 1) then
+    if S.Barrage:IsReady() and Target:Exists() and (Cache.EnemiesCount[40] > 1) then
         return S.Barrage:Cast()
     end
     -- chimaera_shot,if=spell_targets>1
-    if S.ChimaeraShot:IsReady(Target) and (Cache.EnemiesCount[40] > 1) then
+    if S.ChimaeraShot:IsReady() and (Cache.EnemiesCount[40] > 1) then
         return S.ChimaeraShot:Cast()
     end
     -- multishot,if=spell_targets>1&gcd.max-pet.cat.buff.beast_cleave.remains>0.25
-    if S.Multishot:IsReady(Target) and (Cache.EnemiesCount[40] > 1 and Player:GCD() - Pet:BuffRemainsP(S.BeastCleaveBuff) > 0.25) then
+    if S.Multishot:IsReady() and (Cache.EnemiesCount[40] > 1 and Player:GCD() - Pet:BuffRemainsP(S.BeastCleaveBuff) > 0.25) then
         return S.Multishot:Cast()
     end
     -- kill_command
-    if S.KillCommand:IsReady(Target) then
+    if S.KillCommand:IsReady() then
         return S.KillCommand:Cast()
     end
     -- chimaera_shot
-    if S.ChimaeraShot:IsReady(Target) then
+    if S.ChimaeraShot:IsReady() then
         return S.ChimaeraShot:Cast()
     end
     -- a_murder_of_crows
-    if S.AMurderofCrows:IsReady(Target) then
+    if S.AMurderofCrows:IsReady() then
         return S.AMurderofCrows:Cast()
     end
     -- dire_beast
-    if S.DireBeast:IsReady(Target) then
+    if S.DireBeast:IsReady() then
         return S.DireBeast:Cast()
     end
     -- barbed_shot,if=pet.cat.buff.frenzy.down&(charges_fractional>1.8|buff.bestial_wrath.up)|cooldown.aspect_of_the_wild.remains<6&azerite.primal_instincts.enabled|target.time_to_die<9
-    if S.BarbedShot:IsReady(Target) and (Pet:BuffDownP(S.FrenzyBuff) and (S.BarbedShot:ChargesFractionalP() > 1.8 or Player:BuffP(S.BestialWrathBuff)) or S.AspectoftheWild:CooldownRemainsP() < 6 and S.PrimalInstincts:AzeriteEnabled() or Target:TimeToDie() < 9) then
+    if S.BarbedShot:IsReady() and (Pet:BuffDownP(S.FrenzyBuff) and (S.BarbedShot:ChargesFractionalP() > 1.8 or Player:BuffP(S.BestialWrathBuff)) or S.AspectoftheWild:CooldownRemainsP() < 6 and S.PrimalInstincts:AzeriteEnabled() or Target:TimeToDie() < 9) then
         return S.BarbedShot:Cast()
     end
     -- barrage
-    if S.Barrage:IsReady(Target) and Target:Exists() then
+    if S.Barrage:IsReady() and Target:Exists() then
         return S.Barrage:Cast()
     end
     -- cobra_shot,if=(active_enemies<2|cooldown.kill_command.remains>focus.time_to_max)&(focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost|cooldown.kill_command.remains>1+gcd)&cooldown.kill_command.remains>1
-    if S.CobraShot:IsReady(Target) and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemainsP() > Player:FocusTimeToMaxPredicted()) and (Player:Focus() - S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemainsP() - 1) > S.KillCommand:Cost() or S.KillCommand:CooldownRemainsP() > 1 + Player:GCD()) and S.KillCommand:CooldownRemainsP() > 1) then
+    if S.CobraShot:IsReady() and ((Cache.EnemiesCount[40] < 2 or S.KillCommand:CooldownRemainsP() > Player:FocusTimeToMaxPredicted()) and (Player:Focus() - S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemainsP() - 1) > S.KillCommand:Cost() or S.KillCommand:CooldownRemainsP() > 1 + Player:GCD()) and S.KillCommand:CooldownRemainsP() > 1) then
         return S.CobraShot:Cast()
     end
     -- arcane_torrent
