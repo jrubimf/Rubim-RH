@@ -359,7 +359,7 @@ local function APL()
       return S.UnstableAffliction:Cast()
     end
     -- unstable_affliction,cycle_targets=1,if=!variable.use_seed&(!talent.deathbolt.enabled|cooldown.deathbolt.remains>time_to_shard|soul_shard>1)&(!talent.vile_taint.enabled|soul_shard>1)&contagion<=cast_time+variable.padding&(!azerite.cascading_calamity.enabled|buff.cascading_calamity.remains>time_to_shard)
-    if S.UnstableAffliction:IsReadyP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > time_to_shard or Player:SoulShardsP() > 1) and (not S.VileTaint:IsAvailable() or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding and (not CascadingCalamity:AzeriteEnabled() or Target:DebuffRemainsP(S.CascadingCalamityBuff) > time_to_shard) then
+    if S.UnstableAffliction:IsReadyP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > time_to_shard or Player:SoulShardsP() > 1) and (not S.VileTaint:IsAvailable() or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding and (not S.CascadingCalamity:AzeriteEnabled() or Target:DebuffRemainsP(S.CascadingCalamityBuff) > time_to_shard) then
       return S.UnstableAffliction:Cast()
     end
   end
