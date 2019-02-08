@@ -66,7 +66,7 @@ RubimRH.Spell[267] = {
   SummonInfernal                        = Spell(1122),
   SummonInfernalSuppremacy              = Spell(157898),
   SummonImp                             = Spell(688),
-  GrimoireImp                            = Spell(111859)
+  GrimoireImp                           = Spell(111859)
 
  };
 local S = RubimRH.Spell[267]
@@ -502,19 +502,19 @@ local function APL()
     -- combat
     if RubimRH.TargetIsValid() then
         -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
-        if Cache.EnemiesCount[5] >= 1 and S.Cataclysm:IsAvailable() then
+        if Cache.EnemiesCount[5] >= 3 and S.Cataclysm:IsAvailable() then
             if Cata() ~= nil then
                 return Cata()
             end
         end
         -- run_action_list,name=fnb,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.fire_and_brimstone.enabled
-        if Cache.EnemiesCount[5] >= 1 and S.FireandBrimstone:IsAvailable() then
+        if Cache.EnemiesCount[5] >= 3 and S.FireandBrimstone:IsAvailable() then
             if Fnb() ~= nil then
                 return Fnb()
             end
         end
         -- run_action_list,name=inf,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.inferno.enabled
-        if Cache.EnemiesCount[5] >= 1 and S.Inferno:IsAvailable() then
+        if Cache.EnemiesCount[5] >= 3 and S.Inferno:IsAvailable() then
             if Inf() ~= nil then
                 return Inf()
             end
@@ -549,12 +549,13 @@ local function APL()
         if S.SoulFire:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
             return S.SoulFire:Cast()
         end
-        -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(cooldown.summon_infernal.remains>=20|!talent.grimoire_of_supremacy.enabled)&(cooldown.dark_soul_instability.remains>=20|!talent.dark_soul_instability.enabled)&(talent.eradication.enabled&debuff.eradication.remains<=cast_time|buff.backdraft.remains|talent.internal_combustion.enabled)
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (S.SummonInfernal:CooldownRemainsP() >= 20 or not S.GrimoireofSupremacy:IsAvailable()) and (S.DarkSoulInstability:CooldownRemainsP() >= 20 or not S.DarkSoulInstability:IsAvailable()) and (S.Eradication:IsAvailable() and Target:DebuffRemainsP(S.EradicationDebuff) <= S.ChaosBolt:CastTime() or bool(Player:BuffRemainsP(S.BackdraftBuff)) or S.InternalCombustion:IsAvailable()) then
+        -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(cooldown.summon_infernal.remains>=20|!talent.grimoire_of_supremacy.enabled)&(cooldown.dark_soul_instability.remains>=20|!talent.dark_soul_instability.enabled)&(talent.eradication.enabled&debuff.eradication.remains<=cast_time|buff.backdraft.remains|talent.internal_combustion.enabled) 
+		-- removed and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie()
+        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and (S.SummonInfernal:CooldownRemainsP() >= 20 or not S.GrimoireofSupremacy:IsAvailable()) and (S.DarkSoulInstability:CooldownRemainsP() >= 20 or not S.DarkSoulInstability:IsAvailable()) and (S.Eradication:IsAvailable() and Target:DebuffRemainsP(S.EradicationDebuff) <= S.ChaosBolt:CastTime() or bool(Player:BuffRemainsP(S.BackdraftBuff)) or S.InternalCombustion:IsAvailable()) then
             return S.ChaosBolt:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(soul_shard>=4|buff.dark_soul_instability.remains>cast_time|pet.infernal.active|buff.active_havoc.remains>cast_time)
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (FutureShard() >= 2 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime()) then
+        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime()) then
             return S.ChaosBolt:Cast()
         end
 		-- conflagrate,if=!debuff.havoc.remains&((talent.flashover.enabled&buff.backdraft.stack<=2)|(!talent.flashover.enabled&buff.backdraft.stack<2))
