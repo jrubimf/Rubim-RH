@@ -555,7 +555,8 @@ local function APL()
             return S.ChaosBolt:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(soul_shard>=4|buff.dark_soul_instability.remains>cast_time|pet.infernal.active|buff.active_havoc.remains>cast_time)
-        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie() and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime()) then
+		-- removed and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie()
+        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime()) then
             return S.ChaosBolt:Cast()
         end
 		-- conflagrate,if=!debuff.havoc.remains&((talent.flashover.enabled&buff.backdraft.stack<=2)|(!talent.flashover.enabled&buff.backdraft.stack<2))
