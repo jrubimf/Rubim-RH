@@ -283,11 +283,11 @@ local function BosTicking()
         return S.Frostscythe:Cast()
     end
     -- obliterate,target_if=(debuff.razorice.stack<5|debuff.razorice.remains<10)&runic_power.deficit>25|rune>3&!talent.frostscythe.enabled
-    if S.Obliterate:IsReady("Melee") and ((Target:DebuffStackP(S.RazoriceDebuff) < 5 or Target:DebuffRemainsP(S.RazoriceDebuff) < 10) and Player:RunicPowerDeficit() > 25 or Player:Runes() > 3 and not S.Frostscythe:IsAvailable()) then
+    if S.Obliterate:IsReady("Melee") and ((Target:DebuffStackP(S.RazoriceDebuff) < 5 or Target:DebuffRemainsP(S.RazoriceDebuff) < 10) and Player:RunicPowerDeficit() > 25 or Player:Rune() > 3 and not S.Frostscythe:IsAvailable()) then
         return S.Obliterate:Cast()
     end
     -- obliterate,if=runic_power.deficit>25|rune>3
-    if S.Obliterate:IsReady("Melee") and (Player:RunicPowerDeficit() > 25 or Player:Runes() > 3) then
+    if S.Obliterate:IsReady("Melee") and (Player:RunicPowerDeficit() > 25 or Player:Rune() > 3) then
         return S.Obliterate:Cast()
     end
     -- arcane_torrent,if=runic_power.deficit>20
@@ -332,7 +332,7 @@ local function Cooldowns()
         return S.EmpowerRuneWeapon:Cast()
     end
     -- empower_rune_weapon,if=cooldown.pillar_of_frost.ready&talent.breath_of_sindragosa.enabled&rune>=3&runic_power>60
-    if S.EmpowerRuneWeapon:IsCastable() and (S.PillarofFrost:CooldownUpP() and S.BreathofSindragosa:IsAvailable() and Player:Runes() >= 3 and Player:RunicPower() > 60) then
+    if S.EmpowerRuneWeapon:IsCastable() and (S.PillarofFrost:CooldownUpP() and S.BreathofSindragosa:IsAvailable() and Player:Rune() >= 3 and Player:RunicPower() > 60) then
         return S.EmpowerRuneWeapon:Cast()
     end
     -- call_action_list,name=cold_heart,if=talent.cold_heart.enabled&((buff.cold_heart.stack>=10&debuff.razorice.stack=5)|target.time_to_die<=gcd)

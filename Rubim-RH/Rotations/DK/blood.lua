@@ -231,7 +231,7 @@ local function APL()
 
     Standard = function()
         --Get Runes
-        if S.RuneStrike:IsAvailable() and S.RuneStrike:IsReady("Melee") and Player:Runes() <= 4 then
+        if S.RuneStrike:IsAvailable() and S.RuneStrike:IsReady("Melee") and Player:Rune() <= 4 then
             return S.RuneStrike:Cast()
         end
 
@@ -294,7 +294,7 @@ local function APL()
         end
 
         --actions.standard+=/BloodDrinker,if=!buff.dancing_rune_weapon.up
-        if S.BloodDrinker:IsReady() and S.BloodDrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) and Player:BuffRemains(S.BoneShield) >= 3 and Player:Runes() >= 2 then
+        if S.BloodDrinker:IsReady() and S.BloodDrinker:IsReady() and not Player:Buff(S.DancingRuneWeaponBuff) and Player:BuffRemains(S.BoneShield) >= 3 and Player:Rune() >= 2 then
             return S.BloodDrinker:Cast()
         end
 
@@ -329,7 +329,7 @@ local function APL()
             return S.HeartStrike:Cast()
         end
 
-        if S.HeartStrike:IsReady("Melee") and Player:Buff(S.DancingRuneWeaponBuff) and RubimRH.config.Spells[2].isActive and Player:Runes() >= 3 then
+        if S.HeartStrike:IsReady("Melee") and Player:Buff(S.DancingRuneWeaponBuff) and RubimRH.config.Spells[2].isActive and Player:Rune() >= 3 then
             return S.HeartStrike:Cast()
         end
 
@@ -347,7 +347,7 @@ local function APL()
             return S.DeathandDecay:Cast()
         end
 
-        if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and RubimRH.config.Spells[2].isActive and Player:Runes() >= 3 then
+        if S.DeathandDecay:IsReady(10) and Cache.EnemiesCount[8] >= 1 and RubimRH.lastMoved() > 0.5 and RubimRH.config.Spells[2].isActive and Player:Rune() >= 3 then
             return S.DeathandDecay:Cast()
         end
 
@@ -356,7 +356,7 @@ local function APL()
             return S.HeartStrike:Cast()
         end
 
-        if S.HeartStrike:IsReady("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or (Player:BuffStack(S.BoneShield) >= 6 and Player:Runes() >= 3)) and RubimRH.config.Spells[2].isActive then
+        if S.HeartStrike:IsReady("Melee") and ((Player:RuneTimeToX(3) <= Player:GCD()) or (Player:BuffStack(S.BoneShield) >= 6 and Player:Rune() >= 3)) and RubimRH.config.Spells[2].isActive then
             return S.HeartStrike:Cast()
         end
     end
