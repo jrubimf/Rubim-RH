@@ -104,7 +104,8 @@ RubimRH.Spell[577] = {
     T21_4pc_Buff = Spell(252165),
     -- azerite
     RevolvingBlades = Spell(279581),
-    UnboundChaos = Spell(275144)
+    UnboundChaos = Spell(275144),
+    ChaoticTransformation = Spell(288754)
 }
 
 
@@ -213,6 +214,8 @@ local VarWaitingForDarkSlash = 0;
 local OffensiveCDs = {
     S.Nemesis,
     S.Metamorphosis,
+    S.EyeBeam,
+    S.FelBarrage,
 }
 
 local function UpdateCDs()
@@ -266,11 +269,11 @@ local function APL()
 
     Cooldown = function()
         -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis)|target.time_to_die<25
-        if S.Metamorphosis:IsCastable() and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingForNemesis)) or Target:TimeToDie() < 25) then
+        if S.Metamorphosis:IsCastable() and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingemesis)) or Target:TimeToDie() < 25) then
             return S.Metamorphosis:Cast()
         end
-        -- metamorphosis,if=talent.demonic.enabled&buff.metamorphosis.up
-        if S.Metamorphosis:IsCastable() and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) then
+        -- metamorphosis,if=talent.demonic.enabled&buff.metamorphosis.up&(!azerite.chaotic_transformation.enabled|!variable.blade_dance|!cooldown.blade_dance.ready)
+        if S.Metamorphosis:IsCastable() and (S.Demonic:IsAvailable() and Player:BuffP(S.MetamorphosisBuff)) and (not S.ChaoticTransformation:AzeriteEnabled() or not bool(VarBladeDance) or not S.BladeDance:CooldownUpP()) then
             return S.Metamorphosis:Cast()
         end
         -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
@@ -311,16 +314,17 @@ local function APL()
     end
 
     Demonic = function()
-        -- fel_barrage,if=active_enemies>desired_targets|raid_event.adds.in>30
-        if S.FelBarrage:IsReady() and (Cache.EnemiesCount[30] > 1 or 10000000000 > 30) then
-            return S.FelBarrage:Cast()
-        end
+        
         -- death_sweep,if=variable.blade_dance
         if S.DeathSweep:IsReadyMorph() and Cache.EnemiesCount[8] >= 1 and (bool(VarBladeDance)) then
             return S.DeathSweep:Cast()
         end
+        -- fel_barrage,if=active_enemies>desired_targets|raid_event.adds.in>30
+        if S.FelBarrage:IsReady() and (Cache.EnemiesCount[30] >= 2 ) and Player:BuffP(S.MetamorphosisBuff)  then
+            return S.FelBarrage:Cast()
+        end
         -- eye_beam,if=!buff.metamorphosis.extended_by_demonic&(raid_event.adds.up|raid_event.adds.in>25)
-        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (not IsMetaExtendedByDemonic() and ((Cache.EnemiesCount[10] > 1) or 10000000000 > 25)) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 then
             return S.EyeBeam:Cast()
         end
 
