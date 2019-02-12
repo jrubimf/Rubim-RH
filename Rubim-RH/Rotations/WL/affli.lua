@@ -359,7 +359,7 @@ local function APL()
       return S.UnstableAffliction:Cast()
     end
     -- unstable_affliction,cycle_targets=1,if=!variable.use_seed&(!talent.deathbolt.enabled|cooldown.deathbolt.remains>time_to_shard|soul_shard>1)&(!talent.vile_taint.enabled|soul_shard>1)&contagion<=cast_time+variable.padding&(!azerite.cascading_calamity.enabled|buff.cascading_calamity.remains>time_to_shard)
-    if S.UnstableAffliction:IsReadyP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > time_to_shard or Player:SoulShardsP() > 1) and (not S.VileTaint:IsAvailable() or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding and (not CascadingCalamity:AzeriteEnabled() or Target:DebuffRemainsP(S.CascadingCalamityBuff) > time_to_shard) then
+    if S.UnstableAffliction:IsReadyP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() > time_to_shard or Player:SoulShardsP() > 1) and (not S.VileTaint:IsAvailable() or Player:SoulShardsP() > 1) and contagion <= S.UnstableAffliction:CastTime() + VarPadding and (not S.CascadingCalamity:AzeriteEnabled() or Target:DebuffRemainsP(S.CascadingCalamityBuff) > time_to_shard) then
       return S.UnstableAffliction:Cast()
     end
   end
@@ -384,7 +384,7 @@ local function APL()
       VarPadding = S.ShadowBolt:ExecuteTime() * num(S.CascadingCalamity:AzeriteEnabled())
     end
     -- variable,name=padding,op=reset,value=gcd,if=azerite.cascading_calamity.enabled&(talent.drain_soul.enabled|talent.deathbolt.enabled&cooldown.deathbolt.remains<=gcd)
-    if (S.CascadingCalamity:AzeriteEnabled() and (S.DrainSoul:IsAvailable() or S.Deathbolt:IsAvailable() and S.Deathbolt:CooldownRemainsP() <= Player:GCD())) then
+    if S.CascadingCalamity:AzeriteEnabled() and (S.DrainSoul:IsAvailable() or S.Deathbolt:IsAvailable() and S.Deathbolt:CooldownRemainsP() <= Player:GCD()) then
       VarPadding = 0
     end
     -- variable,name=maintain_se,value=spell_targets.seed_of_corruption_aoe<=1+talent.writhe_in_agony.enabled+talent.absolute_corruption.enabled*2+(talent.writhe_in_agony.enabled&talent.sow_the_seeds.enabled&spell_targets.seed_of_corruption_aoe>2)+(talent.siphon_life.enabled&!talent.creeping_death.enabled&!talent.drain_soul.enabled)+raid_event.invulnerable.up
@@ -444,7 +444,7 @@ local function APL()
       return S.VileTaint:Cast()
     end
     -- unstable_affliction,target_if=min:contagion,if=!variable.use_seed&soul_shard=5
-    if S.UnstableAffliction:IsReadyP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and Player:SoulShardsP() == 5 then
+    if S.UnstableAffliction:IsReadyP() and not Player:IsCasting(S.UnstableAffliction) and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not bool(VarUseSeed) and Player:SoulShardsP() == 5 then
       return S.UnstableAffliction:Cast()
     end
     -- seed_of_corruption,if=variable.use_seed&soul_shard=5

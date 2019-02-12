@@ -175,11 +175,11 @@ local function APL()
             return S.Defile:Cast()
         end
         -- epidemic,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
-        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
+        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Rune() < 2 and not bool(VarPoolingForGargoyle) then
             return S.Epidemic:Cast()
         end
         -- death_coil,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
-        if S.DeathCoil:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Runes() < 2 and not bool(VarPoolingForGargoyle) then
+        if S.DeathCoil:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Rune() < 2 and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
         -- scourge_strike,if=death_and_decay.ticking&cooldown.Apocalypse.remains
@@ -199,7 +199,7 @@ local function APL()
             return S.FesteringStrike:Cast()
         end
         -- death_coil,if=buff.sudden_doom.react&rune.deficit>=4
-        if S.DeathCoil:IsReady() and Player:Buff(S.SuddenDoomBuff) and Player:Runes() <= 2 then
+        if S.DeathCoil:IsReady() and Player:Buff(S.SuddenDoomBuff) and Player:Rune() <= 2 then
             return S.DeathCoil:Cast()
         end
         -- death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
@@ -258,7 +258,7 @@ local function APL()
             return S.UnholyFrenzy:Cast()
         end
         -- soul_reaper,target_if=(target.time_to_die<8|rune<=2)&!buff.unholy_frenzy.up
-        if S.SoulReaper:IsReady() and (Target:TimeToDie() < 8 or Player:Runes() <= 2) and not Player:Buff(S.UnholyFrenzyBuff) then
+        if S.SoulReaper:IsReady() and (Target:TimeToDie() < 8 or Player:Rune() <= 2) and not Player:Buff(S.UnholyFrenzyBuff) then
             return S.SoulReaper:Cast()
         end
         -- unholy_blight
@@ -363,7 +363,7 @@ local function APL()
         VarPoolingForGargoyle = num((S.SummonGargoyle:CooldownRemains() < 5 and (S.DarkTransformation:CooldownRemains() < 5 or not I.Taktheritrixs:IsEquipped())) and S.SummonGargoyle:IsAvailable())
     end
     -- arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
-    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:Runes() <= 1) then
+    if S.ArcaneTorrent:IsReady() and (Player:RunicPowerDeficit() > 65 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) and Player:Rune() <= 1) then
         return S.ArcaneTorrent:Cast()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
