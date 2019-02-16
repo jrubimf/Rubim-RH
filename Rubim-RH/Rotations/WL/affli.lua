@@ -50,7 +50,7 @@ RubimRH.Spell[265] = {
   SowtheSeeds                           = Spell(196226),
   ActiveUasBuff                         = Spell(233490),
   PhantomSingularityDebuff              = Spell(205179),
-  SpellLock 							= Spell(19647),
+  SpellLock 							= Spell(119898),
   Shadowfury							= Spell(30283),
   Berserking                            = Spell(26297)
 };
@@ -159,7 +159,7 @@ local function APL()
     --  Return I.ProlongedPower:Cast()
     --end
     -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
-    if S.SeedofCorruption:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (Cache.EnemiesCount[5] >= 3) then
+    if S.SeedofCorruption:IsCastableP() and Player:SoulShardsP() >= 1 and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (Cache.EnemiesCount[5] >= 3) then
       return S.SeedofCorruption:Cast()
     end
     -- haunt
@@ -262,7 +262,7 @@ local function APL()
 		end
     end
     -- call_action_list,name=db_refresh,if=spell_targets.seed_of_corruption_aoe=1+raid_event.invulnerable.up&cooldown.summon_darkglare.remains<=soul_shard*action.agony.gcd+action.agony.gcd*3&(dot.agony.remains<dot.agony.duration*1|dot.corruption.remains<dot.corruption.duration*1|dot.siphon_life.remains<dot.siphon_life.duration*1)
-    if  RubimRH.CDsON() and (S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * Player:GCD() + Player:GCD() * 3 and (Target:DebuffRemainsP(S.AgonyDebuff) < S.Agony:BaseDuration() * 1 or Target:DebuffRemainsP(S.CorruptionDebuff) < S.Corruption:BaseDuration() * 1 or Target:DebuffRemainsP(S.SiphonLifeDebuff) < S.SiphonLife:BaseDuration() * 1)) then
+    if  RubimRH.CDsON() and S.SummonDarkglare:CooldownRemainsP() <= Player:SoulShardsP() * Player:GCD() + Player:GCD() * 3 and (Target:DebuffRemainsP(S.AgonyDebuff) < S.Agony:BaseDuration() * 1 or Target:DebuffRemainsP(S.CorruptionDebuff) < S.Corruption:BaseDuration() * 1 or Target:DebuffRemainsP(S.SiphonLifeDebuff) < S.SiphonLife:BaseDuration() * 1) then
 		local ShouldReturn = DbRefresh(); 
 			if ShouldReturn then return ShouldReturn; 
 		end
@@ -282,11 +282,11 @@ local function APL()
         return S.Deathbolt:Cast()
     end  
     -- shadow_bolt,if=buff.movement.up&buff.nightfall.remains
-    if S.ShadowBolt:IsCastableP() and (Player:IsMoving() and bool(Player:BuffRemainsP(S.NightfallBuff))) then
+    if S.ShadowBolt:IsCastableP() and Player:IsMoving() and bool(Player:BuffRemainsP(S.NightfallBuff)) then
       return S.ShadowBolt:Cast()
     end
     -- agony,if=buff.movement.up&!(talent.siphon_life.enabled&(prev_gcd.1.agony&prev_gcd.2.agony&prev_gcd.3.agony)|prev_gcd.1.agony)
-    if S.Agony:IsCastableP() and (Player:IsMoving() and not (S.SiphonLife:IsAvailable() and (Player:PrevGCDP(1, S.Agony) and Player:PrevGCDP(2, S.Agony) and Player:PrevGCDP(3, S.Agony)) or Player:PrevGCDP(1, S.Agony))) then
+    if S.Agony:IsCastableP() and Player:IsMoving() and not (S.SiphonLife:IsAvailable() and (Player:PrevGCDP(1, S.Agony) and Player:PrevGCDP(2, S.Agony) and Player:PrevGCDP(3, S.Agony)) or Player:PrevGCDP(1, S.Agony)) then
       return S.Agony:Cast()
     end
     -- siphon_life,if=buff.movement.up&!(prev_gcd.1.siphon_life&prev_gcd.2.siphon_life&prev_gcd.3.siphon_life)
@@ -395,7 +395,11 @@ local function APL()
     if (true) then
       local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end
     end
-	-- Mythic+ - interrupt
+	-- Mythic+ - interrupt (icon not working)
+	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+		return S.SpellLock:Cast()
+	end
+    -- Mythic+ - interrupt2 (command demon)
 	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
 		return S.SpellLock:Cast()
 	end

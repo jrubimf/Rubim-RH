@@ -35,10 +35,11 @@ RubimRH.Spell[266] = {
   -- Pet abilities
   CauterizeMaster         = Spell(119905),--imp
   Suffering               = Spell(119907),--voidwalker
-  SpellLock               = Spell(119910),--Dogi
   Whiplash                = Spell(119909),--Bitch
-  AxeToss                 =  Spell(119914),--FelGuard
+  FelStormFake            = Spell(29893),-- HAck == CreateSoulwell
   FelStorm                = Spell(89751),--FelGuard
+  PetStun                 = Spell(119914),
+  SpellLock               = Spell(119898),
 
   -- Talents
   Dreadlash               = Spell(264078),
@@ -82,7 +83,7 @@ RubimRH.Spell[266] = {
 
   -- Utility
   TargetEnemy             = Spell(153911),
-  
+  CreateHealthstone       = Spell(6201),
   -- Misc
   DemonicCallingBuff      = Spell(205146),
   DemonicCoreBuff         = Spell(264173),
@@ -151,61 +152,61 @@ local range = 40
 	-- Arguments Variables
 
  
-    --Implosion listener (kill all wild imps)
-    HL:RegisterForSelfCombatEvent(
-      function (...)
+--Implosion listener (kill all wild imps)
+HL:RegisterForSelfCombatEvent(
+    function (...)
         local DestGUID, _, _, _, SpellID = select(8, ...);
         if SpellID == 196277 then
-          for key, Value in pairs(HL.GuardiansTable.Pets) do
-            if HL.GuardiansTable.Pets[key][1]=="Wild Imp" then
-              HL.GuardiansTable.Pets[key]=nil
+            for key, Value in pairs(HL.GuardiansTable.Pets) do
+                if HL.GuardiansTable.Pets[key][1]=="Wild Imp" then
+                   HL.GuardiansTable.Pets[key]=nil
+                end
             end
-          end
         end
-      end
-      , "SPELL_CAST_SUCCESS"
-    );
+    end
+    , "SPELL_CAST_SUCCESS"
+);
 
-    -- Listen for imp felfirebolts and remove imps after 5 casts
-    HL:RegisterForCombatEvent(
-      function (...)
-        local UnitGUID, _, _, _, _, _, _, _, SpellID = select(4, ...);
-        if SpellID == 104318 then
-          for key, Value in pairs(HL.GuardiansTable.Pets) do
+-- Listen for imp felfirebolts and remove imps after 5 casts
+HL:RegisterForCombatEvent(
+function (...)
+    local UnitGUID, _, _, _, _, _, _, _, SpellID = select(4, ...);
+    if SpellID == 104318 then
+        for key, Value in pairs(HL.GuardiansTable.Pets) do
             if HL.GuardiansTable.Pets[key][4] == UnitGUID then
-              if HL.GuardiansTable.Pets[key][5] - 1 > 0 then
-                HL.GuardiansTable.Pets[key][5] = HL.GuardiansTable.Pets[key][5] - 1
-              else
-                HL.GuardiansTable.Pets[key]=nil
-              end
+                if HL.GuardiansTable.Pets[key][5] - 1 > 0 then
+                        HL.GuardiansTable.Pets[key][5] = HL.GuardiansTable.Pets[key][5] - 1
+                    else
+                        HL.GuardiansTable.Pets[key]=nil
+                    end
+                end
             end
-          end
         end
-      end
-      , "SPELL_CAST_SUCCESS"
-    );
+    end
+    , "SPELL_CAST_SUCCESS"
+);
 
 	-- updates the pet table
 local function RefreshPetsTimers()
-  if not HL.GuardiansTable.Pets then
-    return
-  end
-  for key, Value in pairs(HL.GuardiansTable.Pets) do
+    if not HL.GuardiansTable.Pets then
+        return
+    end
+    for key, Value in pairs(HL.GuardiansTable.Pets) do
     local duration = 0
-    if PetsInfo[HL.GuardiansTable.Pets[key][2]] then
-      duration = PetsInfo[HL.GuardiansTable.Pets[key][2]][2]
+        if PetsInfo[HL.GuardiansTable.Pets[key][2]] then
+            duration = PetsInfo[HL.GuardiansTable.Pets[key][2]][2]
+        end
+        if GetTime() - HL.GuardiansTable.Pets[key][3] >= duration then
+            HL.GuardiansTable.Pets[key] = nil
+        end
     end
-    if GetTime() - HL.GuardiansTable.Pets[key][3] >= duration then
-      HL.GuardiansTable.Pets[key] = nil
-    end
-  end
 end
 	
 	
 -- Get if the pet are invoked. Parameter = true if you also want to test big pets
 local function IsPetInvoked (testBigPets)
-  testBigPets = testBigPets or false
-  return S.Suffering:IsLearned() or S.SpellLock:IsLearned() or S.Whiplash:IsLearned() or S.CauterizeMaster:IsLearned() or S.AxeToss:IsLearned() or (testBigPets and (S.ShadowLock:IsLearned() or S.MeteorStrike:IsLearned()))
+    testBigPets = testBigPets or false
+    return S.Suffering:IsLearned() or S.SpellLock:IsLearned() or S.Whiplash:IsLearned() or S.CauterizeMaster:IsLearned() or S.PetStun:IsLearned() or (testBigPets and (S.ShadowLock:IsLearned() or S.MeteorStrike:IsLearned()))
 end	
 -- Demono Part 3 Clean
 	
@@ -301,12 +302,23 @@ local function FutureShard()
 end
 
 -- New Doom multi dot test 
+local function DoomDoTCycle()
+   if RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 and Target:DebuffRemainsP(S.Doom) >= 5 and not Target:DebuffRefreshableCP(S.Doom) then
+        return S.CreateHealthstone:Cast()
+	end
+end
 --local function DoomDoTCycle()
---    if Cache.EnemiesCount[40] > 1 and if S.Doom:IsCastableP() and (not Target:DebuffP(S.DoomDebuff) and Target:TimeToDie() > 30 and Cache.EnemiesCount[40] < 7 then
---        return S.TargetEnemy:Cast()	
+--    local TargetGUID = Target:GUID()
+--    for _, CycleUnit in pairs(Cache.Enemies[40]) do
+--        if CycleUnit:GUID() ~= TargetGUID and RubimRH.UnitIsCycleValid(CycleUnit, 30, -CycleUnit:DebuffRemainsP(S.Doom)) and CycleUnit:DebuffRefreshableCP(S.Doom) then
+--	        BestUnit, BestUnitTTD = CycleUnit, CycleUnit:TimeToDie()
+--	    end
+--    end
+--    if BestUnit then
+      --return S.TargetEnemy:Cast()	
+--		return S.CreateHealthstone:Cast()
 --    end
 --end
-
 
 -- enemy in range
 local EnemyRanges = { 40, 5 }
@@ -322,7 +334,7 @@ end
     -- food
     -- augmentation
     -- actions.precombat+=/summon_pet
-    if S.SummonFelguard:CooldownRemainsP() == 0 and (not IsPetInvoked() or not S.AxeToss:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
+    if S.SummonFelguard:CooldownRemainsP() == 0 and (not IsPetInvoked() or not S.PetStun:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
         return S.SummonFelguard:Cast()
     end
     -- inner_demons,if=talent.inner_demons.enabled
@@ -363,7 +375,7 @@ end
       return S.Doom:Cast()
     end
     -- demonic_strength
-    if S.DemonicStrength:IsCastableP() and IsPetInvoked() then
+    if S.DemonicStrength:IsCastableP() and IsPetInvoked() and S.FelStorm:CooldownRemainsP() <= 25.5 then
       return S.DemonicStrength:Cast()
     end
     -- bilescourge_bombers
@@ -371,7 +383,7 @@ end
       return S.BilescourgeBombers:Cast()
     end
 	-- soul_strike,if=(soul_shard<3|soul_shard=4&buff.demonic_core.stack<=3)|buff.demonic_core.down&soul_shard<5
-    if S.SoulStrike:IsCastableP() and ((FutureShard() < 3 or FutureShard() == 4 and Player:BuffStackP(S.DemonicCoreBuff) <= 3) or Player:BuffDownP(S.DemonicCoreBuff) and FutureShard() < 5) then
+    if S.SoulStrike:IsCastableP() and ((Player:SoulShardsP() < 3 or Player:SoulShardsP() == 4 and Player:BuffStackP(S.DemonicCoreBuff) <= 3) or Player:BuffDownP(S.DemonicCoreBuff) and Player:SoulShardsP() < 5) then
       return S.SoulStrike:Cast()
     end
 	-- implosion,if=buff.wild_imps.stack>2&buff.explosive_potential.down
@@ -395,15 +407,15 @@ end
       return S.HandOfGuldan:Cast()
     end
 	-- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
-  --  if S.HandOfGuldan:IsCastableP() and FutureShard() > 2 and (Player:PrevGCDP(1, S.HandOfGuldan)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 5 then
+   -- if S.HandOfGuldan:IsCastableP() and FutureShard() > 1 and (Player:PrevGCDP(1, S.HandOfGuldan)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 5 then
    --   return S.HandOfGuldan:Cast()
-  --  end
+   -- end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
     if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (PetStack("Wild Imp") > 2 or ((Player:PrevGCDP(1, S.HandOfGuldan)) and FutureShard() == 0)) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and Player:BuffRemainsP(S.DemonicCoreBuff) > 1 then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffRemainsP(S.DemonicCoreBuff) > 1 then
       return S.Demonbolt:Cast()
     end
     -- call_action_list,name=build_a_shard
@@ -415,13 +427,18 @@ end
   end
   
   
+  
     local function Implosion()
     -- bilescourge_bombers,if=cooldown.summon_demonic_tyrant.remains>9
     if S.BilescourgeBombers:IsCastableP() and FutureShard() > 2 and Cache.EnemiesCount[40] >= 3 and Target:TimeToDie() > 6 then
         return S.BilescourgeBombers:Cast()
     end  
-  	-- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk1+RubimRH.AoEON
-    if S.Implosion:IsCastableP() and PetStack("Wild Imp") > 1 and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk1 and RubimRH.AoEON() then
+	-- felguard felstorm
+	if S.FelStorm:CooldownRemainsP() < 1 and IsPetInvoked() and Cache.EnemiesCount[40] > 1 then
+	    return S.FelStormFake:Cast()
+	end
+  	-- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk2+RubimRH.AoEON
+    if S.Implosion:IsCastableP() and PetStack("Wild Imp") > 1 and PetStack("Wild Imp") >= mainAddon.db.profile[266].sk2 and RubimRH.AoEON() then
         return S.Implosion:Cast()
     end  
     -- implosion,if=(buff.wild_imps.stack>=6&(soul_shard<3|prev_gcd.1.call_dreadstalkers|buff.wild_imps.stack>=9|prev_gcd.1.bilescourge_bombers|(!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan))&!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&buff.demonic_power.down)|(time_to_die<3&buff.wild_imps.stack>0)|(prev_gcd.2.call_dreadstalkers&buff.wild_imps.stack>2&!talent.demonic_calling.enabled)
@@ -449,7 +466,7 @@ end
       return S.HandOfGuldan:Cast()
     end
     -- demonbolt,if=prev_gcd.1.hand_of_guldan&soul_shard>=1&(buff.wild_imps.stack<=3|prev_gcd.3.hand_of_guldan)&soul_shard<4&buff.demonic_core.up
-    if S.Demonbolt:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() >= 1 and (PetStack("Wild Imp") <= 3 or Player:PrevGCDP(3, S.HandOfGuldan)) and FutureShard() < 4 and Player:BuffP(S.DemonicCoreBuff) then
+    if S.Demonbolt:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() >= 1 and (PetStack("Wild Imp") <= 3 or Player:PrevGCDP(3, S.HandOfGuldan)) and FutureShard() < 5 and Player:BuffP(S.DemonicCoreBuff) then
       return S.Demonbolt:Cast()
     end
     -- summon_vilefiend,if=(cooldown.summon_demonic_tyrant.remains>40&spell_targets.implosion<=2)|cooldown.summon_demonic_tyrant.remains<12
@@ -465,26 +482,21 @@ end
       return S.SoulStrike:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.up&(buff.demonic_core.stack>=3|buff.demonic_core.remains<=gcd*5.7)
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff) and (Player:BuffStackP(S.DemonicCoreBuff) >= 3 or Player:BuffRemainsP(S.DemonicCoreBuff) <= Player:GCD() * 5.7) then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffP(S.DemonicCoreBuff) and (Player:BuffStackP(S.DemonicCoreBuff) >= 3 or Player:BuffRemainsP(S.DemonicCoreBuff) <= Player:GCD() * 5.7) then
       return S.Demonbolt:Cast()
     end
     -- New Doom multidotting test
-    -- actions.implosion+=/doom,cycle_targets=1,max_cycle_targets=7,if=refreshable
-    if RubimRH.AoEON() then
-            if S.Doom:IsCastableP() and Target:DebuffRefreshableCP(S.Doom) and Target:TimeToDie() > 30 then
-                return S.Doom:Cast()
-            end
-			
-			-- Auto switch to next non dotted target
-            --DoomDoTCycle()
-			--if S.Doom:IsAvailable() then
-	       --     DoomDoTCycle()
-          --  end
-        else
-            if S.Doom:IsCastableP() and Target:DebuffRefreshableCP(S.Doom) and Target:TimeToDie() > 30 then
-                return S.Doom:Cast()
-            end
-        end
+    -- actions.implosion+=/doom,cycle_targets=1,max_cycle_targets=7,if=refreshable		
+    if S.Doom:IsAvailable() and RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 then
+        if Target:DebuffRemainsP(S.Doom) <= 5 then
+            return S.Doom:Cast()
+	    elseif Target:DebuffRemainsP(S.Doom) >= 21 then
+		    return S.CreateHealthstone:Cast()
+		else
+		    return		
+		end		
+	end
+     
         
 	    -- call_action_list,name=build_a_shard
         if (true) then
@@ -548,7 +560,7 @@ end
             return S.SummonDemonicTyrant:Cast()
         end
         -- summon_demonic_tyrant,if=buff.nether_portal.remains<action.summon_demonic_tyrant.cast_time+0.5.no_balefulinvocation:azerite
-        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:BuffRemainsP(S.NetherPortalBuff) < S.SummonDemonicTyrant:CastTime() + 0.5) then
+        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:BuffRemainsP(S.NetherPortalBuff) < S.SummonDemonicTyrant:CastTime() + 0.5) and Player:BuffRemainsP(S.ExplosivePotentialBuff) > 3 then
             return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=buff.demonic_core.up
@@ -592,13 +604,7 @@ end
             end
         end
   end
-    
-    -- Get if the pet are invoked. Parameter = true if you also want to test big pets
-    local function IsPetInvoked (testBigPets)
-        testBigPets = testBigPets or false;
-        return S.Suffering:IsLearned() or S.SpellLock:IsLearned() or S.Whiplash:IsLearned() or S.CauterizeMaster:IsLearned() or S.AxeToss:IsLearned() or (testBigPets and (S.ShadowLock:IsLearned() or S.MeteorStrike:IsLearned()))
-    end
-    
+        
 
 --- ======= ACTION LISTS =======
 local function APL()
@@ -626,6 +632,10 @@ local function APL()
     if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
       return S.Fireblood:Cast()
     end
+	-- unending resolve,defensive,player.health<=40
+    if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
+        return S.UnendingResolve:Cast()
+    end  
     -- call_action_list,name=dcon_ep_opener,if=azerite.explosive_potential.rank&talent.demonic_consumption.enabled&time<30&!cooldown.summon_demonic_tyrant.remains
     if S.ExplosivePotential:AzeriteEnabled() and S.DemonicConsumption:IsAvailable() and HL.CombatTime() < 20 and S.SummonDemonicTyrant:CooldownRemainsP() <= 5 then
 	    if DconEpOpener() ~= nil then
@@ -637,7 +647,7 @@ local function APL()
       return S.HandOfGuldan:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.up&buff.demonic_core.stack=4
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff) and Player:BuffStackP(S.DemonicCoreBuff) == 4 then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffP(S.DemonicCoreBuff) and Player:BuffStackP(S.DemonicCoreBuff) == 4 then
       return S.Demonbolt:Cast()
     end
     -- implosion,if=azerite.explosive_potential.rank&buff.wild_imps.stack>2&buff.explosive_potential.remains<action.shadow_bolt.execute_time
@@ -657,7 +667,7 @@ local function APL()
       return S.BilescourgeBombers:Cast()
     end
     -- demonic_strength,if=(buff.wild_imps.stack<6|buff.demonic_power.up)|spell_targets.implosion<2
-    if S.DemonicStrength:IsCastableP() and ((PetStack("Wild Imp") < 6 or Player:BuffP(S.DemonicPowerBuff)) or Cache.EnemiesCount[40] < 2) then
+    if S.DemonicStrength:IsCastableP() and S.FelStorm:CooldownRemainsP() <= 25.5 and ((PetStack("Wild Imp") < 6 or Player:BuffP(S.DemonicPowerBuff)) or Cache.EnemiesCount[40] < 2) then
       return S.DemonicStrength:Cast()
     end
         -- call_action_list,name=nether_portal,if=talent.nether_portal.enabled&spell_targets.implosion<=2
@@ -678,8 +688,8 @@ local function APL()
                 return Implosion()
             end
         end
-    -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13
-    if S.GrimoireFelguard:IsCastableP() and FutureShard() > 1 and (S.SummonDemonicTyrant:CooldownRemainsP() < 13) then
+    -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13and (S.SummonDemonicTyrant:CooldownRemainsP() < 13)
+    if S.GrimoireFelguard:IsCastableP() and FutureShard() > 1 and RubimRH.CDsON() then
       return S.GrimoireFelguard:Cast()
     end
     -- summon_vilefiend,if=cooldown.summon_demonic_tyrant.remains>40|cooldown.summon_demonic_tyrant.remains<12
@@ -695,7 +705,7 @@ local function APL()
       return S.BilescourgeBombers:Cast()
     end
     -- summon_demonic_tyrant,if=soul_shard<3&(!talent.demonic_consumption.enabled|buff.wild_imps.stack>0)
-    if S.SummonDemonicTyrant:IsCastableP() and FutureShard() < 3 and RubimRH.CDsON() and (not S.DemonicConsumption:IsAvailable() or PetStack("Wild Imp") > 0) then
+    if S.SummonDemonicTyrant:IsCastableP() and FutureShard() < 3 and RubimRH.CDsON() and (not S.DemonicConsumption:IsAvailable() or PetStack("Wild Imp") > 3) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
@@ -715,9 +725,13 @@ local function APL()
       return S.SoulStrike:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.up&((cooldown.summon_demonic_tyrant.remains<6|cooldown.summon_demonic_tyrant.remains>22)|buff.demonic_core.stack>=3|buff.demonic_core.remains<5|time_to_die<25)
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff) and ((S.SummonDemonicTyrant:CooldownRemainsP() < 6 or S.SummonDemonicTyrant:CooldownRemainsP() > 22) or Player:BuffStackP(S.DemonicCoreBuff) >= 3 or Player:BuffRemainsP(S.DemonicCoreBuff) < 5 or Target:TimeToDie() < 25) then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffP(S.DemonicCoreBuff) and ((S.SummonDemonicTyrant:CooldownRemainsP() < 6 or S.SummonDemonicTyrant:CooldownRemainsP() > 22) or Player:BuffStackP(S.DemonicCoreBuff) >= 3 or Player:BuffRemainsP(S.DemonicCoreBuff) < 5 or Target:TimeToDie() < 25) then
       return S.Demonbolt:Cast()
     end
+	-- felguard felstorm
+	if S.FelStorm:CooldownRemainsP() < 1 and IsPetInvoked() and HL.CombatTime() >= 3 then
+	    return S.FelStormFake:Cast()
+	end
     -- call_action_list,name=build_a_shard
         if (true) then
             if BuildAShard() ~= nil then
@@ -725,6 +739,14 @@ local function APL()
             end
         end
     end
+	-- Mythic+ - interrupt2 (command demon)
+	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+		return S.SpellLock:Cast()
+	end
+	-- Mythic+ - Shadowfury aoe stun test
+    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and Cache.EnemiesCount[40] >= 3 and Target:IsInterruptible() then
+		return S.Shadowfury:Cast()
+    end	
     return 0, 135328
 end
 

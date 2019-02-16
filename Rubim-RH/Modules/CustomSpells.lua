@@ -5,6 +5,9 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local Focus, MouseOver = Unit.Focus, Unit.MouseOver;
+local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
+local Party, Raid = Unit.Party, Unit.Raid;
 
 local function GetTexture (Object)
     -- Spells
@@ -559,4 +562,9 @@ function Spell:ArenaCast(arenaTarget)
     elseif UnitName(arenaTarget) == UnitName('arena3') then
         RubimRH.Arena3Icon(self:Cast())
     end
+end
+
+  -- Is the current unit valid during cycle ?
+function RubimRH.UnitIsCycleValid (Unit, BestUnitTTD, TimeToDieOffset)
+    return not Unit:IsFacingBlacklisted() and not Unit:IsUserCycleBlacklisted() and (not BestUnitTTD or Unit:FilteredTimeToDie(">", BestUnitTTD, TimeToDieOffset));
 end

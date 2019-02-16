@@ -661,30 +661,37 @@ local defaults = {
         [Guardian] = {
             cooldowns = true,
         },
-        --Warlock
+        -- WARLOCK
         [265] = {
             cooldowns = true,
+			
+			sk1 = 40,
+            sk1id = 104773,
+            sk1tooltip = "Percent HP to use Unending Resolve",
         },
         [266] = {
             cooldowns = true,
-			sk1 = 5, -- Implosion
-            sk1id = 196277, -- Implosion
-            sk1tooltip = "Number of imps to use Implosion",
-		    sk2 = 6, -- Demonic Tyrant
-            sk2id = 265187, -- Demonic Tyrant
-            sk2tooltip = "Number of imps to use Demonic Tyrant",
+			
+			sk1 = 40,
+            sk1id = 104773,
+            sk1tooltip = "Percent HP to use Unending Resolve",
+			sk2 = 5, -- Implosion
+            sk2id = 196277, -- Implosion
+            sk2tooltip = "Imps to use Implosion (Aoe Mode)",
+
         },
         [267] = {
             cooldowns = true,
 			flamecolor = "Auto",
 			
-			sk1 = 8,
-            sk1id = 5740,
-            sk1tooltip = "Number of units to use Rain of Fire",
+			sk1 = 40,
+            sk1id = 104773,
+            sk1tooltip = "Percent HP to use Unending Resolve",
+			sk2 = 7,
+            sk2id = 5740,
+            sk2tooltip = "Number of units to use Rain of Fire",
 
-            sk2 = 15,
-            sk2id = 31224,
-            sk2tooltip = "Percent HP to use Cloak of Shadows",
+
 			
         },
         --Mage

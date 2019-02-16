@@ -96,7 +96,9 @@ local S = RubimRH.Spell[266]
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
 local BestUnit, BestUnitTTD, BestUnitSpellToCast, DebuffRemains; -- Used for cycling
-
+-- range for spell checking
+local range = 40
+    
 -- Demono pets function start
 
 HL.GuardiansTable = {
@@ -116,12 +118,14 @@ HL.GuardiansTable = {
 
 
 -- local for pets count & duration functions    
-local PetDurations = {["Dreadstalker"] = 12.25, ["Wild Imp"] = 20, ["Felguard"] = 28, ["Demonic Tyrant"] = 15};
-local PetTypes = {["Dreadstalker"] = true, ["Wild Imp"]  = true, ["Felguard"]  = true, ["Demonic Tyrant"]  = true};
-
--- range for spell checking
-local range = 40
-    
+local PetDurations = {["Traqueffroi"] = 12.25, ["Diablotin sauvage"] = 20, ["Gangregarde"] = 28, ["Tyran Démoniaque"] = 15, ["Démon abject"] = 15};
+local PetTypes = {["Traqueffroi"] = true, ["Diablotin sauvage"]  = true, ["Gangregarde"]  = true, ["Tyran Démoniaque"]  = true, ["Démon abject"] = true};
+local PetList= {
+	  [55659]="Wild Imp",
+	  [99737]="Wild Imp",
+	  [98035]="Dreadstalker",
+	  [135002]="Demonic Tyrant",
+	  [17252]="Felguard"};
 --------------------------
 ----- Demonology ---------
 --------------------------
@@ -131,18 +135,18 @@ local function UpdatePetTable()
         if petTable then
             -- Remove expired pets
             if GetTime() >= petTable.despawnTime then
-		        if petTable.name == "Wild Imp" then
+		        if petTable.name == "Diablotin sauvage" then
                     HL.GuardiansTable.ImpCount = HL.GuardiansTable.ImpCount - 1
 			    end
-			    if petTable.name == "Felguard"  then
+			    if petTable.name == "Gangregarde"  then
                     HL.GuardiansTable.FelguardDuration = 0
-                elseif petTable.name == "Dreadstalker" then
+                elseif petTable.name == "Traqueffroi" then
                     HL.GuardiansTable.DreadstalkerDuration = 0
-                elseif petTable.name == "Demonic Tyrant" then
+                elseif petTable.name == "Tyran Démoniaque" then
                     HL.GuardiansTable.DemonicTyrantDuration = 0
-			    elseif petTable.name == "Vilefiend" then
+			    elseif petTable.name == "Démon abject" then
                     HL.GuardiansTable.VilefiendDuration = 0
-                elseif petTable.name == "Wild Imp" then
+                elseif petTable.name == "Diablotin sauvage" then
                     HL.GuardiansTable.WildImpDuration = 0
                     HL.GuardiansTable.ImpCastsRemaing = HL.GuardiansTable.ImpCastsRemaing - petTable.ImpCasts
                     HL.GuardiansTable.ImpTotalEnergy =  HL.GuardiansTable.ImpCastsRemaing * 20
@@ -158,15 +162,15 @@ local function UpdatePetTable()
         -- Update Durations
         if GetTime() <= petTable.despawnTime then
             petTable.Duration = petTable.despawnTime - GetTime()
-            if petTable.name == "Felguard" then
+            if petTable.name == "Gangregarde" then
                 HL.GuardiansTable.FelguardDuration = petTable.Duration
-            elseif petTable.name == "Dreadstalker" then
+            elseif petTable.name == "Traqueffroi" then
                 HL.GuardiansTable.DreadstalkerDuration = petTable.Duration
-            elseif petTable.name == "Demonic Tyrant" then
+            elseif petTable.name == "Tyran Démoniaque" then
                 HL.GuardiansTable.DemonicTyrantDuration = petTable.Duration
-            elseif petTable.name == "Vilefiend" then
+            elseif petTable.name == "Démon abject" then
                 HL.GuardiansTable.VilefiendDuration = petTable.Duration
-            elseif petTable.name == "Wild Imp" then
+            elseif petTable.name == "Diablotin sauvage" then
                 HL.GuardiansTable.WildImpDuration = petTable.Duration
                 if petTable.WildImpFrozenEnd ~= 0 then
                     local ImpTime =  math.floor(petTable.WildImpFrozenEnd - GetTime() + 0.5)
@@ -176,23 +180,28 @@ local function UpdatePetTable()
                 end
             end	
             -- Add Time to pets  
-            if TyrantSpawed then
-                if petTable.name ~= "Demonic Tyrant" then
-                    petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
-                    petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
-                    if petTable.name == "Wild Imp" then
-                        petTable.WildImpFrozenEnd = GetTime() + 15
+		    if TyrantSpawed then
+                if petName == "Tyran Démoniaque" then
+                    for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                        if petTable then
+                            petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
+                            petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
+                            if petTable.name == "Diablotin sauvage" then
+                                petTable.WildImpFrozenEnd = GetTime() + 15
+							end
+                        end
                     end
                 end
             end
         end
-    end
-    if TyrantSpawed then TyrantSpawed = false end  
+        if TyrantSpawed then TyrantSpawed = false end  
+	end
 end	
 -- Add demon to table
 HL:RegisterForSelfCombatEvent(
     function (...)
-        local timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
+        --local timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
+		timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
         -- Add pet
         if (UnitPetGUID ~= UnitGUID("pet") and Event == "SPELL_SUMMON" and PetTypes[petName]) then
             local petTable = {
@@ -201,23 +210,24 @@ HL:RegisterForSelfCombatEvent(
             spawnTime = GetTime(),
             ImpCasts = 5,
             Duration = PetDurations[petName],
+			WildImpFrozenEnd = 0,
             despawnTime = GetTime() + tonumber(PetDurations[petName])
             }
             table.insert(HL.GuardiansTable.Pets,petTable)
-		    if petName == "Wild Imp" then
+		    if petName == "Diablotin sauvage" then
                 HL.GuardiansTable.ImpCount = HL.GuardiansTable.ImpCount + 1
 		    	HL.GuardiansTable.ImpCastsRemaing = HL.GuardiansTable.ImpCastsRemaing + 5
                 HL.GuardiansTable.WildImpDuration = PetDurations[petName]
                 petTable.WildImpFrozenEnd = 0 
-		    elseif petName == "Felguard" then
+		    elseif petName == "Gangregarde" then
 		        HL.GuardiansTable.FelguardDuration = PetDurations[petName]
-		    elseif petName == "Dreadstalker" then
+		    elseif petName == "Traqueffroi" then
 		        HL.GuardiansTable.DreadstalkerDuration = PetDurations[petName]
-		    elseif petName == "Demonic Tyrant" then
+		    elseif petName == "Tyran Démoniaque" then
                 if not TyrantSpawed then TyrantSpawed = true  end
                 HL.GuardiansTable.DemonicTyrantDuration = PetDurations[petName]
                 UpdatePetTable()
-		    elseif petName == "Vilefiend" then
+		    elseif petName == "Démon abject" then
                 HL.GuardiansTable.VilefiendDuration = PetDurations[petName]   
 		    end
         end
@@ -242,9 +252,10 @@ HL:RegisterForSelfCombatEvent(
 -- Decrement ImpCasts and Implosion Listener
 HL:RegisterForCombatEvent(
     function (...)
-      --local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,SpellID = select(4, ...);
-      local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,spell,SpellName=select(1,...)
-        
+      local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,SpellID = select(4, ...);
+      --local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,spell,SpellName=select(1,...)
+        --local SourceGUID,_,_,_,UnitPetGUID,_,_,_,SpellID = select(4, ...);
+		
 		-- Check for imp bolt casts
         if SpellID == 104318 then
             for key, petTable in pairs(HL.GuardiansTable.Pets) do
@@ -261,7 +272,7 @@ HL:RegisterForCombatEvent(
         -- Clear the imp table upon Implosion cast
         if SpellID == 196277 then
           for key, petTable in pairs(HL.GuardiansTable.Pets) do
-            if petTable.name == "Wild Imp" then
+            if petTable.name == "Diablotin sauvage" then
               HL.GuardiansTable.Pets[key] = nil
             end
           end
@@ -275,7 +286,9 @@ HL:RegisterForCombatEvent(
       end
     , "SPELL_CAST_SUCCESS"
 );
-    
+   
+
+   
 -- Get if the pet are invoked. Parameter = true if you also want to test big pets
 local function IsPetInvoked (testBigPets)
   testBigPets = testBigPets or false
@@ -450,11 +463,11 @@ end
       return S.HandOfGuldan:Cast()
     end
 	-- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
-  --  if S.HandOfGuldan:IsCastableP() and FutureShard() > 2 and (Player:PrevGCDP(1, S.HandOfGuldan)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 5 then
-   --   return S.HandOfGuldan:Cast()
+ --   if S.HandOfGuldan:IsCastableP() and FutureShard() > 2 and (Player:PrevGCDP(1, S.HandOfGuldan)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 5 then
+  --    return S.HandOfGuldan:Cast()
   --  end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
-    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and WildImpsCount() > 2 then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and WildImpsCount() > 5 then
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains

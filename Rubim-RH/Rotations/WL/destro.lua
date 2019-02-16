@@ -54,12 +54,12 @@ RubimRH.Spell[267] = {
   -- Pet abilities
   CauterizeMaster                       = Spell(119905),--imp
   Suffering                             = Spell(119907),--voidwalker
-  SpellLock                             = Spell(119910),--Dogi
   Whiplash                              = Spell(119909),--Bitch
   ShadowLock                            = Spell(171140),--doomguard
   MeteorStrike                          = Spell(171152),--infernal
   SingeMagic                            = Spell(89808),--imp
-  SpellLock                             = Spell(19647),--felhunter
+  SpellLock 							= Spell(119898),
+  Shadowfury                            = Spell(30283),
   
   SummonDoomGuard                       = Spell(18540),
   SummonDoomGuardSuppremacy             = Spell(157757),
@@ -519,6 +519,14 @@ local function APL()
                 return Inf()
             end
         end
+    -- Mythic+ - interrupt2 (command demon)
+	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+		return S.SpellLock:Cast()
+	end
+	-- Mythic+ - Shadowfury aoe stun test
+    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and Cache.EnemiesCount[40] >= 3 and Target:IsInterruptible() then
+		return S.Shadowfury:Cast()
+    end	
         -- cataclysm
         if S.Cataclysm:IsCastableP() then
             return S.Cataclysm:Cast()
