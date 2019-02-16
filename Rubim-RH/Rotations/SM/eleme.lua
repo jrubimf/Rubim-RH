@@ -479,7 +479,7 @@ local function APL ()
     if true then
         return single_target()
     end
-  end
+  
     return 0, 135328
 end
 
