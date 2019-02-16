@@ -385,7 +385,7 @@ local function APL()
  -- combat
  if RubimRH.TargetIsValid() then
     -- wind_shear
-    if S.WindShear:IsCastableP() and Target:IsInterruptible() and Settings.General.InterruptEnabled then
+    if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
       return S.WindShear:Cast()
     end
     -- variable,name=cooldown_sync,value=(talent.ascendance.enabled&(buff.ascendance.up|cooldown.ascendance.remains>50))|(!talent.ascendance.enabled&(feral_spirit.remains>5|cooldown.feral_spirit.remains>50))

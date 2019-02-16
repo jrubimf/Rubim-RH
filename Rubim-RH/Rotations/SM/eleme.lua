@@ -295,7 +295,7 @@ local function APL()
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear
-    if S.WindShear:IsCastableP() and Target:IsInterruptible() and Settings.General.InterruptEnabled then
+    if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
       return S.WindShear:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&buff.resonance_totem.remains<2
