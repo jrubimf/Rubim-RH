@@ -54,7 +54,7 @@ RubimRH.Spell[262] = {
   Fireblood                             = Spell(265221),
   AncestralCall                         = Spell(274738)
 };
-local S = Spell.Shaman.Elemental;
+local S = RubimRH.Spell[262]
 
 -- Items
 if not Item.Shaman then Item.Shaman = {} end
