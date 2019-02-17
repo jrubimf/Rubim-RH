@@ -52,6 +52,8 @@ RubimRH.Spell[265] = {
   PhantomSingularityDebuff              = Spell(205179),
   SpellLock 							= Spell(119898),
   Shadowfury							= Spell(30283),
+  -- Defensive
+  UnendingResolve                       = Spell(104773),
   Berserking                            = Spell(26297)
 };
 local S = RubimRH.Spell[265]
@@ -395,10 +397,10 @@ local function APL()
     if (true) then
       local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end
     end
-	-- Mythic+ - interrupt (icon not working)
-	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-		return S.SpellLock:Cast()
-	end
+    -- unending resolve,defensive,player.health<=40
+    if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
+        return S.UnendingResolve:Cast()
+    end  
     -- Mythic+ - interrupt2 (command demon)
 	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
 		return S.SpellLock:Cast()

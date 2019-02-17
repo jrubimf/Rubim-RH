@@ -60,7 +60,8 @@ RubimRH.Spell[267] = {
   SingeMagic                            = Spell(89808),--imp
   SpellLock 							= Spell(119898),
   Shadowfury                            = Spell(30283),
-  
+  -- Defensive
+  UnendingResolve                       = Spell(104773),
   SummonDoomGuard                       = Spell(18540),
   SummonDoomGuardSuppremacy             = Spell(157757),
   SummonInfernal                        = Spell(1122),
@@ -519,6 +520,10 @@ local function APL()
                 return Inf()
             end
         end
+	-- unending resolve,defensive,player.health<=40
+    if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
+        return S.UnendingResolve:Cast()
+    end  
     -- Mythic+ - interrupt2 (command demon)
 	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
 		return S.SpellLock:Cast()
