@@ -32,7 +32,6 @@ RubimRH.Spell[263] = {
   AscendanceBuff                        = Spell(114051),
   Ascendance                            = Spell(114051),
   FeralSpirit                           = Spell(51533),
-  Strike                                = Spell(),
   EarthenSpike                          = Spell(188089),
   Stormstrike                           = Spell(17364),
   LightningConduit                      = Spell(275388),
@@ -492,6 +491,7 @@ local function APL()
     end
   return 0, 135328
 end
+end 
 
 RubimRH.Rotation.SetAPL(263, APL);
 

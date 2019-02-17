@@ -338,7 +338,7 @@ local function APL()
     end
   return 0, 135328
 end
-
+end
 RubimRH.Rotation.SetAPL(262, APL);
 
 local function PASSIVE()
