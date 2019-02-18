@@ -528,7 +528,7 @@ end
    --   return S.HandOfGuldan:Cast()
    -- end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
-    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and WildImpsCount() > 2 or ((Player:PrevGCDP(1, S.HandOfGuldan)) and FutureShard() == 0) then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (WildImpsCount() > 2 or ((Player:PrevGCDP(1, S.HandOfGuldan)) and FutureShard() == 0)) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
