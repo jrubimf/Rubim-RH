@@ -1,6 +1,7 @@
 -- Addon
 local addonName, addonTable = ...
 -- HeroLib
+local mainAddon = RubimRH
 local HL     = HeroLib
 local Cache  = HeroCache
 local Unit   = HL.Unit
