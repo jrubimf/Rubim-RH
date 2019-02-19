@@ -472,7 +472,7 @@ end
       return S.SoulStrike:Cast()
     end
 	-- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffRemainsP(S.DemonicCoreBuff) > 1 then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffRemainsP(S.DemonicCoreBuff) >= 1 then
       return S.Demonbolt:Cast()
     end
     -- shadow_bolt
@@ -532,7 +532,7 @@ end
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffRemainsP(S.DemonicCoreBuff) > 1 then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 5 and Player:BuffRemainsP(S.DemonicCoreBuff) >= 1 then
       return S.Demonbolt:Cast()
     end
     -- call_action_list,name=build_a_shard
