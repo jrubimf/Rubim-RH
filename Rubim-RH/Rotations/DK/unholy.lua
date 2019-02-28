@@ -175,7 +175,7 @@ local function APL()
             return S.Defile:Cast()
         end
         -- epidemic,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
-        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and Player:Buff(S.DeathAndDecayBuff) and Player:Rune() < 2 and not bool(VarPoolingForGargoyle) then
+        if S.Epidemic:IsAvailable() and S.Epidemic:IsReadyP() and Player:Buff(S.DeathAndDecayBuff) and Player:Rune() < 2 and not bool(VarPoolingForGargoyle) then
             return S.Epidemic:Cast()
         end
         -- death_coil,if=death_and_decay.ticking&rune<2&!variable.pooling_for_gargoyle
@@ -191,7 +191,7 @@ local function APL()
             return S.ClawingShadows:Cast()
         end
         -- epidemic,if=!variable.pooling_for_gargoyle
-        if S.Epidemic:IsAvailable() and S.Epidemic:IsReady() and not bool(VarPoolingForGargoyle) then
+        if S.Epidemic:IsAvailable() and S.Epidemic:IsReadyP() and not bool(VarPoolingForGargoyle) then
             return S.Epidemic:Cast()
         end
         -- festering_strike,if=talent.bursting_sores.enabled&spell_targets.bursting_sores>=2&debuff.festering_wound.stack<=1
