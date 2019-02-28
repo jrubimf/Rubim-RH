@@ -103,11 +103,11 @@ local function APL()
     end
     -- fire_elemental,if=!talent.storm_elemental.enabled
     if S.FireElemental:IsCastableP() and RubimRH.CDsON() and (not S.StormElemental:IsAvailable()) then
-      return S.FireElemental, Settings.Elemental.GCDasOffGCD.FireElemental:Cast()
+      return S.FireElemental:Cast()
     end
     -- storm_elemental,if=talent.storm_elemental.enabled
     if S.StormElemental:IsCastableP() and RubimRH.CDsON() and (S.StormElemental:IsAvailable()) then
-      return S.StormElemental, Settings.Elemental.GCDasOffGCD.StormElemental:Cast()
+      return S.StormElemental:Cast()
     end
     -- potion
     -- elemental_blast,if=talent.elemental_blast.enabled&spell_targets.chain_lightning<3
@@ -192,7 +192,7 @@ local function APL()
     end
     -- ascendance,if=talent.ascendance.enabled&(time>=60|buff.bloodlust.up)&cooldown.lava_burst.remains>0&(!talent.storm_elemental.enabled|cooldown.storm_elemental.remains>120)&(!talent.icefury.enabled|!buff.icefury.up&!cooldown.icefury.up)
     if S.Ascendance:IsCastableP() and RubimRH.CDsON() and (S.Ascendance:IsAvailable() and (HL.CombatTime() >= 60 or Player:HasHeroism()) and S.LavaBurst:CooldownRemainsP() > 0 and (not S.StormElemental:IsAvailable() or S.StormElemental:CooldownRemainsP() > 120) and (not S.Icefury:IsAvailable() or not Player:BuffP(S.IcefuryBuff) and not S.Icefury:CooldownUpP())) then
-      return S.Ascendance, Settings.Elemental.GCDasOffGCD.Ascendance:Cast()
+      return S.Ascendance:Cast()
     end
     -- elemental_blast,if=talent.elemental_blast.enabled&(talent.master_of_the_elements.enabled&buff.master_of_the_elements.up&maelstrom<60|!talent.master_of_the_elements.enabled)&(!(cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled)|azerite.natural_harmony.rank=3&buff.wind_gust.stack<14)
     if S.ElementalBlast:IsCastableP() and (S.ElementalBlast:IsAvailable() and (S.MasteroftheElements:IsAvailable() and Player:BuffP(S.MasteroftheElementsBuff) and Player:Maelstrom() < 60 or not S.MasteroftheElements:IsAvailable()) and (not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) or S.NaturalHarmony:AzeriteRank() == 3 and Player:BuffStackP(S.WindGustBuff) < 14)) then
