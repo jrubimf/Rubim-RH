@@ -564,7 +564,252 @@ function Spell:ArenaCast(arenaTarget)
     end
 end
 
-  -- Is the current unit valid during cycle ?
+-- Is the current unit valid during cycle ?
 function RubimRH.UnitIsCycleValid (Unit, BestUnitTTD, TimeToDieOffset)
     return not Unit:IsFacingBlacklisted() and not Unit:IsUserCycleBlacklisted() and (not BestUnitTTD or Unit:FilteredTimeToDie(">", BestUnitTTD, TimeToDieOffset));
 end
+
+-- Demono pets function start
+HL.GuardiansTable = {
+    --{ID, name, spawnTime, ImpCasts, Duration, despawnTime}
+    Pets = { 
+      },
+      ImpCount = 0,
+	  ImpCastsRemaing = 0,
+	  ImpTotalEnergy = 0,
+	  WildImpDuration = 0,
+      FelguardDuration = 0,
+      DreadstalkerDuration = 0,
+      DemonicTyrantDuration = 0,
+	  VilefiendDuration = 0,	  
+};
+
+
+-- local for pets count & duration functions    
+local PetDurations = {
+ -- en, fr ,de ,ru
+ ["Traqueffroi"] = 12.25,
+ ["Dreadstalker"] = 12.25, 
+ ["Зловещий охотник"] = 12.25, 
+ ["Schreckenspirscher"] = 12.25, 
+ ["Diablotin sauvage"] = 20, 
+ ["Wild Imp"] = 20, 
+ ["Дикий бес"] = 20, 
+ ["Wildwichtel"] = 20,  
+ ["Gangregarde"] = 28, 
+ ["Felguard"] = 20, 
+ ["Страж Скверны"] = 20, 
+ ["Teufelswache"] = 20,  
+ ["Tyran démoniaque"] = 15, 
+ ["Demonic Tyrant"] = 20, 
+ ["Демонический тиран"] = 20, 
+ ["Dämonischer Tyrann"] = 20, 
+ ["Démon abject"] = 15,
+ ["Vilefiend"] = 20, 
+ ["Мерзотень"] = 20, 
+ ["Finsteres Scheusal"] = 20 
+ 
+ };
+
+ local PetTypes = {
+  -- en, fr ,de ,ru
+ ["Traqueffroi"] = true, 
+ ["Dreadstalker"] = true, 
+ ["Зловещий охотник"] = true, 
+ ["Schreckenspirscher"] = true,
+ ["Diablotin sauvage"]  = true, 
+ ["Wild Imp"] = true, 
+ ["Дикий бес"] = true, 
+ ["Wildwichtel"] = true, 
+ ["Gangregarde"] = true, 
+ ["Felguard"] = true, 
+ ["Страж Скверны"] = true, 
+ ["Teufelswache"] = true,   
+ ["Tyran démoniaque"] = true, 
+ ["Demonic Tyrant"] = true, 
+ ["Демонический тиран"] = true, 
+ ["Dämonischer Tyrann"] = true,  
+ ["Démon abject"] = true,
+ ["Vilefiend"] = true, 
+ ["Мерзотень"] = true, 
+ ["Finsteres Scheusal"] = true  
+ };
+local PetList= {
+	    ["Wild Imp"] = 55659,
+	    ["Wild Imp"] = 99737,
+	    ["Dreadstalker"] = 98035,
+	    ["Demonic Tyrant"] = 135002,
+	    ["Felguard"] = 17252};
+--------------------------
+----- Demonology ---------
+--------------------------
+	-- Update the GuardiansTable
+local function UpdatePetTable()
+    for key, petTable in pairs(HL.GuardiansTable.Pets) do
+        if petTable then
+            -- Remove expired pets
+            if GetTime() >= petTable.despawnTime then
+		        if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                    HL.GuardiansTable.ImpCount = HL.GuardiansTable.ImpCount - 1
+			    end
+			    if petTable.name == "Gangregarde" or petTable.name == "Felguard" or petTable.name == "Страж Скверны" or petTable.name == "Teufelswache"  then
+                    HL.GuardiansTable.FelguardDuration = 0
+                elseif petTable.name == "Traqueffroi" or petTable.name == "Dreadstalker" or petTable.name == "Зловещий охотник" or petTable.name == "Schreckenspirscher" then
+                    HL.GuardiansTable.DreadstalkerDuration = 0
+                elseif petTable.name == "Tyran démoniaque" or petTable.name == "Demonic Tyrant" or petTable.name == "Демонический тиран" or petTable.name == "Dämonischer Tyrann" then
+                    HL.GuardiansTable.DemonicTyrantDuration = 0
+			    elseif petTable.name == "Démon abject" or petTable.name == "Vilefiend" or petTable.name == "Мерзотень" or petTable.name == "Finsteres Scheusal" then
+                    HL.GuardiansTable.VilefiendDuration = 0
+                elseif petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                    HL.GuardiansTable.WildImpDuration = 0
+                    HL.GuardiansTable.ImpCastsRemaing = HL.GuardiansTable.ImpCastsRemaing - petTable.ImpCasts
+                    HL.GuardiansTable.ImpTotalEnergy =  HL.GuardiansTable.ImpCastsRemaing * 20
+                end
+                HL.GuardiansTable.Pets[key] = nil
+            end
+        end
+        -- Remove any imp that has casted all of its bolts
+        if petTable.ImpCasts <= 0 and  petTable.WildImpFrozenEnd < 1 then
+            HL.GuardiansTable.ImpCount = HL.GuardiansTable.ImpCount - 1
+            HL.GuardiansTable.Pets[key] = nil
+        end
+        -- Update Durations
+        if GetTime() <= petTable.despawnTime then
+            petTable.Duration = petTable.despawnTime - GetTime()
+            if petTable.name == "Gangregarde" or petTable.name == "Felguard" or petTable.name == "Страж Скверны" or petTable.name == "Teufelswache" then
+                HL.GuardiansTable.FelguardDuration = petTable.Duration
+            elseif petTable.name == "Traqueffroi" or petTable.name == "Dreadstalker" or petTable.name == "Зловещий охотник" or petTable.name == "Schreckenspirscher" then
+                HL.GuardiansTable.DreadstalkerDuration = petTable.Duration
+            elseif petTable.name == "Tyran démoniaque" or petTable.name == "Demonic Tyrant" or petTable.name == "Демонический тиран" or petTable.name == "Dämonischer Tyrann" then
+                HL.GuardiansTable.DemonicTyrantDuration = petTable.Duration
+            elseif petTable.name == "Démon abject" or petTable.name == "Vilefiend" or petTable.name == "Мерзотень" or petTable.name == "Finsteres Scheusal" then
+                HL.GuardiansTable.VilefiendDuration = petTable.Duration
+            elseif petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                HL.GuardiansTable.WildImpDuration = petTable.Duration
+                if petTable.WildImpFrozenEnd ~= 0 then
+                    local ImpTime =  math.floor(petTable.WildImpFrozenEnd - GetTime() + 0.5)
+                    if ImpTime < 1 then 
+					    petTable.WildImpFrozenEnd = 0 
+					end
+                end
+            end	
+            -- Add Time to pets  
+		    if TyrantSpawed then
+                if petName == "Tyran démoniaque" or petTable.name == "Demonic Tyrant" or petTable.name == "Демонический тиран" or petTable.name == "Dämonischer Tyrann" then
+				    -- If not Talent Demonic Consumption
+					if not S.DemonicConsumption:IsAvailable() then
+                        for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                            if petTable then
+                                petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
+                                petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
+                                if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                                    petTable.WildImpFrozenEnd = GetTime() + 15
+							    end
+                            end
+                        end
+                    -- If Talent Demonic Consumption
+					elseif S.DemonicConsumption:IsAvailable() then
+					    for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                            if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                                HL.GuardiansTable.Pets[key] = nil
+                            end
+                        end
+                        HL.GuardiansTable.ImpCount = 0
+                        HL.GuardiansTable.ImpCastsRemaing = 0
+                        HL.GuardiansTable.ImpTotalEnergy = 0
+					end	
+				end
+            end
+        end
+        if TyrantSpawed then TyrantSpawed = false end  
+	end
+end	
+-- Add demon to table
+HL:RegisterForSelfCombatEvent(
+    function (...)
+        --local timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
+		timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
+        -- Add pet
+        if (UnitPetGUID ~= UnitGUID("pet") and Event == "SPELL_SUMMON" and PetTypes[petName]) then
+            local petTable = {
+            ID = UnitPetGUID,
+            name = petName,
+            spawnTime = GetTime(),
+            ImpCasts = 5,
+            Duration = PetDurations[petName],
+			WildImpFrozenEnd = 0,
+            despawnTime = GetTime() + tonumber(PetDurations[petName])
+            }
+            table.insert(HL.GuardiansTable.Pets,petTable)
+		    if petName == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                HL.GuardiansTable.ImpCount = HL.GuardiansTable.ImpCount + 1
+		    	HL.GuardiansTable.ImpCastsRemaing = HL.GuardiansTable.ImpCastsRemaing + 5
+                HL.GuardiansTable.WildImpDuration = PetDurations[petName]
+                petTable.WildImpFrozenEnd = 0 
+		    elseif petName == "Gangregarde" or petTable.name == "Felguard" or petTable.name == "Страж Скверны" or petTable.name == "Teufelswache" then
+		        HL.GuardiansTable.FelguardDuration = PetDurations[petName]
+		    elseif petName == "Traqueffroi" or petTable.name == "Dreadstalker" or petTable.name == "Зловещий охотник" or petTable.name == "Schreckenspirscher" then
+		        HL.GuardiansTable.DreadstalkerDuration = PetDurations[petName]
+		    elseif petName == "Tyran démoniaque" or petTable.name == "Demonic Tyrant" or petTable.name == "Демонический тиран" or petTable.name == "Dämonischer Tyrann" then
+                if not TyrantSpawed then TyrantSpawed = true  end
+                HL.GuardiansTable.DemonicTyrantDuration = PetDurations[petName]
+                UpdatePetTable()
+		    elseif petName == "Démon abject" or petTable.name == "Vilefiend" or petTable.name == "Мерзотень" or petTable.name == "Finsteres Scheusal" then
+                HL.GuardiansTable.VilefiendDuration = PetDurations[petName]   
+		    end
+        end
+		
+		
+			-- Add 15 seconds and 7 casts to all pets when Tyrant is cast
+        --    if petName == "Demonic Tyrant" then
+        --        for key, petTable in pairs(HL.GuardiansTable.Pets) do
+        --           if petTable then
+        --               petTable.despawnTime = petTable.despawnTime + 15
+        --               petTable.ImpCasts = petTable.ImpCasts + 7
+        --           end
+        --       end
+        --    end
+		
+        -- Update the pet table
+        UpdatePetTable()
+    end
+    , "SPELL_SUMMON"
+);
+	
+-- Decrement ImpCasts and Implosion Listener
+HL:RegisterForCombatEvent(
+    function (...)
+      --local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,SpellID = select(4, ...);
+      --local timestamp,Event,_,SourceGUID,SourceName,_,_,UnitPetGUID,petName,_,_,spell,SpellName=select(1,...)
+        local SourceGUID,_,_,_,UnitPetGUID,_,_,_,SpellID = select(4, ...);
+		
+		-- Check for imp bolt casts
+        if SpellID == 104318 then
+            for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                if SourceGUID == petTable.ID then
+                    if  petTable.WildImpFrozenEnd < 1 then
+                        petTable.ImpCasts = petTable.ImpCasts - 1
+                        HL.GuardiansTable.ImpCastsRemaing = HL.GuardiansTable.ImpCastsRemaing - 1
+                    end
+                end
+            end
+			HL.GuardiansTable.ImpTotalEnergy =  HL.GuardiansTable.ImpCastsRemaing * 20
+        end
+        
+        -- Clear the imp table upon Implosion cast
+        if SpellID == 196277 then
+            for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                    HL.GuardiansTable.Pets[key] = nil
+                end
+            end
+            HL.GuardiansTable.ImpCount = 0
+            HL.GuardiansTable.ImpCastsRemaing = 0
+            HL.GuardiansTable.ImpTotalEnergy = 0
+        end
+        
+        -- Update the imp table
+        UpdatePetTable()
+      end
+    , "SPELL_CAST_SUCCESS"
+);

@@ -229,21 +229,34 @@ local function UpdatePetTable()
             -- Add Time to pets  
 		    if TyrantSpawed then
                 if petName == "Tyran démoniaque" or petTable.name == "Demonic Tyrant" or petTable.name == "Демонический тиран" or petTable.name == "Dämonischer Tyrann" then
-                    for key, petTable in pairs(HL.GuardiansTable.Pets) do
-                        if petTable then
-                            petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
-                            petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
-                            if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
-                                petTable.WildImpFrozenEnd = GetTime() + 15
-							end
+				    -- If not Talent Demonic Consumption
+					if not S.DemonicConsumption:IsAvailable() then
+                        for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                            if petTable then
+                                petTable.spawnTime = GetTime() + petTable.Duration + 15 - PetDurations[petTable.name]
+                                petTable.despawnTime = petTable.spawnTime + PetDurations[petTable.name]
+                                if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                                    petTable.WildImpFrozenEnd = GetTime() + 15
+							    end
+                            end
                         end
-                    end
-                end
+                    -- If Talent Demonic Consumption
+					elseif S.DemonicConsumption:IsAvailable() then
+					    for key, petTable in pairs(HL.GuardiansTable.Pets) do
+                            if petTable.name == "Wild Imp" or petTable.name == "Diablotin sauvage" or petTable.name == "Дикий бес" or petTable.name == "Wildwichtel" then
+                                HL.GuardiansTable.Pets[key] = nil
+                            end
+                        end
+                        HL.GuardiansTable.ImpCount = 0
+                        HL.GuardiansTable.ImpCastsRemaing = 0
+                        HL.GuardiansTable.ImpTotalEnergy = 0
+					end	
+				end
             end
         end
         if TyrantSpawed then TyrantSpawed = false end  
 	end
-end	
+end		
 -- Add demon to table
 HL:RegisterForSelfCombatEvent(
     function (...)
@@ -406,7 +419,7 @@ local function FutureShard()
             else
                 return Shard + 2
             end
-        elseif Player:IsCasting(S.Shadowbolt) then
+        elseif Player:IsCasting(S.ShadowBolt) then
             if Shard == 5 then
                 return Shard
             else
@@ -476,7 +489,7 @@ end
       return S.Demonbolt:Cast()
     end
     -- shadow_bolt
-    if S.ShadowBolt:IsCastableP() and Player:SoulShardsP() < 5 then
+    if S.ShadowBolt:IsCastableP() and FutureShard() <= 5 then
       return S.ShadowBolt:Cast()
     end
   end
