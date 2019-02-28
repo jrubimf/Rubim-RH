@@ -169,7 +169,56 @@ end
 
 local SpellsInterrupt = {
     194610, 198405, 194657, 199514, 199589, 216197, --Maw of Souls
-    0
+    -- PvP Spells
+	118, -- Polymorph
+    20066, -- Repentance
+    51514, -- Hex
+    19386, -- Wyvern Sting
+    5782, -- Fear
+    33786, -- Cyclone
+    605, -- Mind Control 
+    982, -- Revive Pet 
+    32375, -- Mass Dispel 
+    203286, -- Greatest Pyroblast
+    116858, -- Chaos Bolt 
+    20484, -- Rebirth
+    203155, -- Sniper Shot 
+    47540, -- Penance
+    596, -- Prayer of Healing
+    2060, -- Heal
+    2061, -- Flash Heal
+    32546, -- Binding Heal                        (priest, holy)
+    33076, -- Prayer of Mending
+    64843, -- Divine Hymn
+    120517, -- Halo                                (priest, holy/disc)
+    186263, -- Shadow Mend
+    194509, -- Power Word: Radiance
+    265202, -- Holy Word: Salvation                (priest, holy)
+    289666, -- Greater Heal                        (priest, holy)
+    740, -- Tranquility
+    8936, -- Regrowth
+    48438, -- Wild Growth
+    289022, -- Nourish                             (druid, restoration)
+    1064, -- Chain Heal
+    8004, -- Healing Surge
+    73920, -- Healing Rain
+    77472, -- Healing Wave
+    197995, -- Wellspring                          (shaman, restoration)
+    207778, -- Downpour                            (shaman, restoration)
+    19750, -- Flash of Light
+    82326, -- Holy Light
+    116670, -- Vivify
+    124682, -- Enveloping Mist
+    191837, -- Essence Font
+    209525, -- Soothing Mist
+    227344, -- Surging Mist                        (monk, mistweaver)
+	
+	
+	
+	
+	
+	
+	0
 }
 
 local function ShouldInterrupt()
@@ -526,4 +575,14 @@ end
 function RubimRH.print(text, color)
     print("|cff828282RRH: |r" .. text)
 end
+
+function RubimRH.GetCurrentLatency()
+    local latency = select(3,GetNetStats())	
+	local percentlatency = latency * 0.001
+	
+	return percentlatency or 0
+	
+end
+	
+
 
