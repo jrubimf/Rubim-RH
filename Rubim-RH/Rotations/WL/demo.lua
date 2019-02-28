@@ -433,8 +433,6 @@ local function FutureShard()
             return Shard - 1
 		elseif Player:IsCasting(S.CallDreadStalkers) and Player:BuffP(S.DemonicCallingBuff) then
             return Shard - 1
-		elseif Player:IsCasting(S.SoulStrike) then
-            return Shard + 1
         elseif Player:IsCasting(S.SummonDemonicTyrant) and S.BalefulInvocation:AzeriteEnabled() then
             return 5
         elseif Player:IsCasting(S.HandOfGuldan) then
@@ -450,6 +448,12 @@ local function FutureShard()
                 return Shard + 2
             end
         elseif Player:IsCasting(S.ShadowBolt) then
+            if Shard == 5 then
+                return Shard
+            else
+                return Shard + 1
+            end
+		elseif Player:IsCasting(S.SoulStrike) then
             if Shard == 5 then
                 return Shard
             else
@@ -570,7 +574,7 @@ local function DconEpOpener()
     end
 	-- build to 3shards
     -- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
-    if S.HandOfGuldan:IsCastableP() and Player:SoulShardsP() >= 2 and DreadStalkersTime() > 1 and WildImpsCount() > 1 then
+    if S.HandOfGuldan:IsCastableP() and Player:SoulShardsP() > 2 and DreadStalkersTime() > 1 and WildImpsCount() > 1 then
         return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
@@ -803,10 +807,6 @@ local function APL()
 	    if DconEpOpener() ~= nil then
             return DconEpOpener()
         end
-    end
-	-- implosion,if=buff.wild_imps.stack>2&buff.explosive_potential.down
-    if S.Implosion:IsCastableP() and Player:PrevGCDP(1, S.SummonDemonicTyrant) and HL.CombatTime() <= 40 then
-        return S.Implosion:Cast()
     end
     -- hand_of_guldan,if=azerite.explosive_potential.rank&time<5&soul_shard>2&buff.explosive_potential.down&buff.wild_imps.stack<3&!prev_gcd.1.hand_of_guldan&&!prev_gcd.2.hand_of_guldan
     if S.HandOfGuldan:IsCastableP() and S.ExplosivePotential:AzeriteEnabled() and HL.CombatTime() < 5 and FutureShard() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff) and WildImpsCount() < 3 and not Player:PrevGCDP(1, S.HandOfGuldan) and true and not Player:PrevGCDP(2, S.HandOfGuldan) then
