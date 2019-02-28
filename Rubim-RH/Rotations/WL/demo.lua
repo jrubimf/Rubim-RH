@@ -431,6 +431,8 @@ local function FutureShard()
             return Shard - 1
         elseif Player:IsCasting(S.SummonFelguard) then
             return Shard - 1
+		elseif Player:IsCasting(S.GrimoireFelguard) then
+            return Shard - 1
 		elseif Player:IsCasting(S.CallDreadStalkers) and Player:BuffP(S.DemonicCallingBuff) then
             return Shard - 1
         elseif Player:IsCasting(S.SummonDemonicTyrant) and S.BalefulInvocation:AzeriteEnabled() then
@@ -530,6 +532,10 @@ end
         
 		
 local function DconEpOpener()
+	-- demonic_strength
+    if S.DemonicStrength:IsCastableP() and IsPetInvoked() then
+        return S.DemonicStrength:Cast()
+    end
     -- doom,line_cd=30
     if S.Doom:IsCastableP() and not Target:DebuffP(S.DoomDebuff) then
         return S.Doom:Cast()
@@ -546,25 +552,21 @@ local function DconEpOpener()
     if S.SoulStrike:IsCastableP() and ((FutureShard() <= 2 or FutureShard() == 4 and Player:BuffStackP(S.DemonicCoreBuff) <= 3) or Player:BuffDownP(S.DemonicCoreBuff) and FutureShard() < 5) then
         return S.SoulStrike:Cast()
     end
-	-- demonic_strength
-    if S.DemonicStrength:IsCastableP() and IsPetInvoked() and S.FelStorm:CooldownRemainsP() <= 25 then
-        return S.DemonicStrength:Cast()
-    end
 	-- implosion,if=buff.wild_imps.stack>2&buff.explosive_potential.down
-    if S.Implosion:IsCastableP() and WildImpsCount() > 1 and Player:BuffDownP(S.ExplosivePotentialBuff) and FutureShard() >= 2 and HL.CombatTime() < 8 then
+    if S.Implosion:IsCastableP() and WildImpsCount() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff) and HL.CombatTime() < 10 then
         return S.Implosion:Cast()
     end
 	-- build up to 5 shards
     -- grimoire_felguard
-    if S.GrimoireFelguard:IsCastableP() and FutureShard() >= 1 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
+    if S.GrimoireFelguard:IsCastableP() and FutureShard() >= 5 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
         return S.GrimoireFelguard:Cast()
     end
 	-- summon_vilefiend
-    if S.SummonVilefiend:IsCastableP() and FutureShard() >= 1 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
+    if S.SummonVilefiend:IsCastableP() and FutureShard() >= 4 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
         return S.SummonVilefiend:Cast()
     end
 	-- call_dreadstalkers,if=prev_gcd.1.hand_of_guldan
-    if S.CallDreadStalkers:IsCastableP() and FutureShard() > 1 and Player:BuffRemainsP(S.ExplosivePotentialBuff) > 1 then
+    if S.CallDreadStalkers:IsCastableP() and (FutureShard() > 4 or Player:PrevGCDP(1, S.SummonVilefiend) or Player:PrevGCDP(1, S.GrimoireFelguard)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) > 1 then
         return S.CallDreadStalkers:Cast()
     end
 	-- build to 5shards
@@ -574,7 +576,7 @@ local function DconEpOpener()
     end
 	-- build to 3shards
     -- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
-    if S.HandOfGuldan:IsCastableP() and Player:SoulShardsP() > 2 and DreadStalkersTime() > 1 and WildImpsCount() > 1 then
+    if S.HandOfGuldan:IsCastableP() and FutureShard() > 2 and DreadStalkersTime() > 1 and WildImpsCount() > 1 then
         return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
