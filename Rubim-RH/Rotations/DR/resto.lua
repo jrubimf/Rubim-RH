@@ -137,13 +137,45 @@ local function APL()
 
         --Tank Emergency Ironbark
         if S.Ironbark:IsCastableP() then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and CanUse(HolyShock)
             if LowestAlly("TANK", "HP") <= 25 then
                 ForceHealingTarget("TANK")
             end
 
             if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
                 return S.Ironbark:Cast()
+            end
+        end
+		
+		--Tank Priority Lifebloom
+        if S.Lifebloom:IsCastableP() then
+            if LowestAlly("TANK", "HP") <= 95 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+                return S.Lifebloom:Cast()
+            end
+        end
+		
+		--Tank Priority Rejuvenation
+        if S.Rejuvenation:IsCastableP() then
+            if LowestAlly("TANK", "HP") <= 93 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 93 then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--Tank Priority CenarionWard
+        if S.CenarionWard:IsCastableP() then
+            if LowestAlly("TANK", "HP") <= 90 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 90 then
+                return S.CenarionWard:Cast()
             end
         end
 
@@ -159,10 +191,19 @@ local function APL()
             end
         end
 
+        --22Efflorescence
+        if S.Efflorescence:IsCastableP() and Player:BuffDownP(S.EfflorescenceBuff) and GroupedBelow(90) >= 3 then
+            if LowestAlly("ALL", "HP") <= 95 then
+                ForceHealingTarget("ALL")
+            end
 
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+                return S.Efflorescence:Cast()
+            end
+        end
+		
         --21WildGrowth
         if S.WildGrowth:IsCastableP() and GroupedBelow(90) >= 6 then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and CanUse(HolyShock)
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
@@ -172,59 +213,59 @@ local function APL()
             end
         end
 
-        --22Efflorescence
-        if S.Efflorescence:IsCastableP() and Player:BuffDownP(S.EfflorescenceBuff) and GroupedBelow(90) >= 3 then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and CanUse(HolyShock)
+
+
+        --23Rejuvenation
+        if S.Rejuvenation:IsCastableP() and not Target:Buff(S.Rejuvenation) then
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
-                return S.Efflorescence:Cast()
+                return S.Rejuvenation:Cast()
             end
         end
 
-        --23Flash of Light
-        if S.FlashofLight:IsCastableP() and S.HolyShock:IsCastableP() and not Target:Buff(S.BeaconofLight) and not Target:Buff(S.BeaconofVirtue) then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and AllyHealthPercent < 0.65 and CanUse(HolyShock)
+        --24Regrowth
+        if S.Regrowth:IsCastableP() and Target:Buff(S.Rejuvenation) then
             if LowestAlly("ALL", "HP") <= 65 then
                 ForceHealingTarget("ALL")
             end
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 65 then
-                return S.FlashofLight:Cast()
+                return S.Regrowth:Cast()
             end
         end
-
-        --24HolyLight
-        if S.HolyLight:IsCastableP() and Player:Buff(S.InfusionofLight) and S.HolyShock:IsCastableP() and not Target:Buff(S.BeaconofLight) and not Target:Buff(S.BeaconofVirtue) then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and CanUse(HolyShock)
-            if LowestAlly("ALL", "HP") <= 95 then
+		
+		--24CenarionWard
+        if S.CenarionWard:IsCastableP() and Target:Buff(S.Rejuvenation) then
+            if LowestAlly("ALL", "HP") <= 55 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
-                return S.HolyLight:Cast()
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 55 then
+                return S.CenarionWard:Cast()
             end
         end
 
-        --25HolyShock
-        if S.HolyShock:IsCastableP() and not Target:Buff(S.BeaconofLight) and not Target:Buff(S.BeaconofVirtue) then
-            --if not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith)
-            if LowestAlly("ALL", "HP") <= 95 then
-                ForceHealingTarget("ALL")
+        --25Tranquility
+        if S.Tranquility:IsCastableP() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
+            if GroupedBelow(50) >= 8 then
+                return S.Tranquility:Cast()
             end
-
-            if Target:Exists() and Target:HealthPercentage() < 95 then
-                return S.HolyShock:Cast()
+        end
+		
+		--25Tranquility
+        if S.Tranquility:IsCastableP() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
+            if GroupedBelow(50) >= 8 then
+                return S.Tranquility:Cast()
             end
-
         end
 
-        --26Light's Hammer
-        if S.LightsHammer:IsAvailable() and S.LightsHammer:IsCastableP() then
-            if GroupedBelow(75) >= 3 then
-                return S.LightsHammer:Cast()
+        --26Tree of Life
+        if S.TreeOfLife:IsAvailable() and RubimRH.CDsON() then
+            if GroupedBelow(35) >= 5 then
+                return S.TreeOfLife:Cast()
             end
         end
 
