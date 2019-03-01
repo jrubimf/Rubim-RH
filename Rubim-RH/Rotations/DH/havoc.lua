@@ -448,74 +448,76 @@ local function APL()
         return Precombat()
     end
 
-     -- variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
-     if (true) then
-     VarBladeDance = num(S.FirstBlood:IsAvailable() or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
-   end
-   -- variable,name=waiting_for_nemesis,value=!(!talent.nemesis.enabled|cooldown.nemesis.ready|cooldown.nemesis.remains>target.time_to_die|cooldown.nemesis.remains>60)
-   if (true) then
-     VarWaitingForNemesis = num(not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > Target:TimeToDie() or S.Nemesis:CooldownRemainsP() > 60))
-   end
-   -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)
-   if (true) then
-     VarPoolingForMeta = num(not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10))
-   end
-   -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
-   if (true) then
-     VarPoolingForBladeDance = num(bool(VarBladeDance) and (Player:Fury() < 75 - num(S.FirstBlood:IsAvailable()) * 20))
-   end
-   -- variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
-   if (true) then
-     VarPoolingForEyeBeam = num(S.Demonic:IsAvailable() and not S.BlindFury:IsAvailable() and S.EyeBeam:CooldownRemainsP() < (Player:GCD() * 2) and Player:FuryDeficit() > 20)
-   end
-   -- variable,name=waiting_for_dark_slash,value=talent.dark_slash.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.dark_slash.up
-   if (true) then
-     VarWaitingForDarkSlash = num(S.DarkSlash:IsAvailable() and not bool(VarPoolingForBladeDance) and not bool(VarPoolingForMeta) and S.DarkSlash:CooldownUpP())
-   end
-   -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
-   if (true) then
-     VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
-   end
+	if RubimRH.TargetIsValid() then
+        -- variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
+        if (true) then
+            VarBladeDance = num(S.FirstBlood:IsAvailable() or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
+        end
+        -- variable,name=waiting_for_nemesis,value=!(!talent.nemesis.enabled|cooldown.nemesis.ready|cooldown.nemesis.remains>target.time_to_die|cooldown.nemesis.remains>60)
+        if (true) then
+            VarWaitingForNemesis = num(not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > Target:TimeToDie() or S.Nemesis:CooldownRemainsP() > 60))
+        end
+        -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)
+        if (true) then
+            VarPoolingForMeta = num(not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10))
+        end
+        -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
+        if (true) then
+            VarPoolingForBladeDance = num(bool(VarBladeDance) and (Player:Fury() < 75 - num(S.FirstBlood:IsAvailable()) * 20))
+        end
+        -- variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
+        if (true) then
+            VarPoolingForEyeBeam = num(S.Demonic:IsAvailable() and not S.BlindFury:IsAvailable() and S.EyeBeam:CooldownRemainsP() < (Player:GCD() * 2) and Player:FuryDeficit() > 20)
+        end
+        -- variable,name=waiting_for_dark_slash,value=talent.dark_slash.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.dark_slash.up
+        if (true) then
+            VarWaitingForDarkSlash = num(S.DarkSlash:IsAvailable() and not bool(VarPoolingForBladeDance) and not bool(VarPoolingForMeta) and S.DarkSlash:CooldownUpP())
+        end
+        -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
+        if (true) then
+            VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
+        end
 
-    if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
-        return S.Darkness:Cast()
-    end
+        if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
+            return S.Darkness:Cast()
+        end
 
-    if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk1 then
-        return S.Blur:Cast()
-    end
+        if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk1 then
+            return S.Blur:Cast()
+        end
 
-    -- disrupt
-    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-        return S.Disrupt:Cast()
-    end
+        -- disrupt
+        if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.Disrupt:Cast()
+        end
 
-    if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
-        return S.ConsumeMagic:Cast()
-    end
+        if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
+            return S.ConsumeMagic:Cast()
+        end
 
-    -- call_action_list,name=cooldown,if=gcd.remains=0
-    if Cooldown() ~= nil then
-        return Cooldown()
-    end
-    -- pick_up_fragment,if=fury.deficit>=35
-    --if S.PickUpFragment:IsReady() and (Player:FuryDeficit() >= 35) then
-        --return S.PickUpFragment:Cast()
-    --end
-    -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
-    if DarkSlash() ~= nil and (S.DarkSlash:IsAvailable() and (bool(VarWaitingForDarkSlash) or Target:DebuffP(S.DarkSlashDebuff))) then
-        return DarkSlash()
-    end
-    -- run_action_list,name=demonic,if=talent.demonic.enabled
-    if (S.Demonic:IsAvailable()) then
-        return Demonic();
-    end
-    -- run_action_list,name=normal
-    if (true) then
-        return Normal();
-    end
+        -- call_action_list,name=cooldown,if=gcd.remains=0
+        if Cooldown() ~= nil then
+            return Cooldown()
+        end
+        -- pick_up_fragment,if=fury.deficit>=35
+        --if S.PickUpFragment:IsReady() and (Player:FuryDeficit() >= 35) then
+            --return S.PickUpFragment:Cast()
+        --end
+        -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
+        if DarkSlash() ~= nil and (S.DarkSlash:IsAvailable() and (bool(VarWaitingForDarkSlash) or Target:DebuffP(S.DarkSlashDebuff))) then
+            return DarkSlash()
+        end
+        -- run_action_list,name=demonic,if=talent.demonic.enabled
+        if (S.Demonic:IsAvailable()) then
+            return Demonic();
+        end
+        -- run_action_list,name=normal
+        if (true) then
+            return Normal();
+        end
 
-    return 0, 135328
+        return 0, 135328
+    end
 end
 
 RubimRH.Rotation.SetAPL(577, APL)
