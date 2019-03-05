@@ -74,6 +74,34 @@ local function UpdateRanges()
   end
 end
 
+local function FutureMaelstromPower()
+  local MaelstromPower = Player:Maelstrom()
+  local overloadChance = Player:MasteryPct()/100
+  local factor = 1 + 0.75 * overloadChance
+  local resonance = 0
+
+  if (Player:AffectingCombat()) then
+    if S.TotemMastery:IsCastableP() then
+      resonance = Player:CastRemains()
+    end
+    if not Player:IsCasting() then
+      return MaelstromPower
+    else
+      if Player:IsCasting(S.LightningBolt) then
+        return MaelstromPower + 8 + resonance
+      elseif Player:IsCasting(S.LavaBurst) then
+        return MaelstromPower + 10 + resonance
+      elseif Player:IsCasting(S.ChainLightning) then
+        local enemiesHit = min(Cache.EnemiesCount[40], 3)
+        return MaelstromPower + 4 * enemiesHit * factor + resonance
+      elseif Player:IsCasting(S.Icefury) then
+        return MaelstromPower + 25 * factor + resonance
+      else
+        return MaelstromPower
+      end
+    end
+  end
+end
 
 local function num(val)
   if val then return 1 else return 0 end
@@ -129,7 +157,7 @@ local function APL()
       return S.Stormkeeper:Cast()
     end
     -- flame_shock,target_if=refreshable&(spell_targets.chain_lightning<(5-!talent.totem_mastery.enabled)|!talent.storm_elemental.enabled&(cooldown.fire_elemental.remains>(120+14*spell_haste)|cooldown.fire_elemental.remains<(24-14*spell_haste)))&(!talent.storm_elemental.enabled|cooldown.storm_elemental.remains<120|spell_targets.chain_lightning=3&buff.wind_gust.stack<14)
-    if S.FlameShock:IsCastableP() and TargetUnit:DebuffRefreshableCP(S.FlameShockDebuff) and (Cache.EnemiesCount[40] < (5 - num(not S.TotemMastery:IsAvailable())) or not S.StormElemental:IsAvailable() and (S.FireElemental:CooldownRemainsP() > (120 + 14 * Player:SpellHaste()) or S.FireElemental:CooldownRemainsP() < (24 - 14 * Player:SpellHaste()))) and (not S.StormElemental:IsAvailable() or S.StormElemental:CooldownRemainsP() < 120 or Cache.EnemiesCount[40] == 3 and Player:BuffStackP(S.WindGustBuff) < 14) then
+    if S.FlameShock:IsCastableP() and Target:DebuffRefreshableCP(S.FlameShockDebuff) and (Cache.EnemiesCount[40] < (5 - num(not S.TotemMastery:IsAvailable())) or not S.StormElemental:IsAvailable() and (S.FireElemental:CooldownRemainsP() > (120 + 14 * Player:SpellHaste()) or S.FireElemental:CooldownRemainsP() < (24 - 14 * Player:SpellHaste()))) and (not S.StormElemental:IsAvailable() or S.StormElemental:CooldownRemainsP() < 120 or Cache.EnemiesCount[40] == 3 and Player:BuffStackP(S.WindGustBuff) < 14) then
         return S.FlameShock:Cast()
 	end
     -- ascendance,if=talent.ascendance.enabled&(talent.storm_elemental.enabled&cooldown.storm_elemental.remains<120&cooldown.storm_elemental.remains>15|!talent.storm_elemental.enabled)&(!talent.icefury.enabled|!buff.icefury.up&!cooldown.icefury.up)
@@ -137,13 +165,15 @@ local function APL()
       return S.Ascendance:Cast()
     end
     -- liquid_magma_totem,if=talent.liquid_magma_totem.enabled
-    if S.LiquidMagmaTotem:IsCastableP() and (S.LiquidMagmaTotem:IsAvailable()) then
+    if S.LiquidMagmaTotem:IsCastableP() and S.LiquidMagmaTotem:IsAvailable() then
       return S.LiquidMagmaTotem:Cast()
     end
     -- earthquake,if=!talent.master_of_the_elements.enabled|buff.stormkeeper.up|maelstrom>=(100-4*spell_targets.chain_lightning)|buff.master_of_the_elements.up|spell_targets.chain_lightning>3
-    if S.Earthquake:IsCastableP() and (not S.MasteroftheElements:IsAvailable() or Player:BuffP(S.StormkeeperBuff) or Player:Maelstrom() >= (100 - 4 * Cache.EnemiesCount[40]) or Player:BuffP(S.MasteroftheElementsBuff) or Cache.EnemiesCount[40] > 3) then
-      return S.Earthquake:Cast()
+  if (not S.MasteroftheElements:IsAvailable() or Player:Buff(S.StormkeeperBuff) or FutureMaelstromPower() >= (100-4* min(Cache.EnemiesCount[40], 3)) or Player:Buff(S.MasteroftheElementsBuff) or Cache.EnemiesCount[40] > 3) then
+    if (FutureMaelstromPower() >= 60) then
+      return S.EarthQuake:Cast()
     end
+  end
     -- chain_lightning,if=buff.stormkeeper.remains<3*gcd*buff.stormkeeper.stack
     if S.ChainLightning:IsCastableP() and (Player:BuffRemainsP(S.StormkeeperBuff) < 3 * Player:GCD() * Player:BuffStackP(S.StormkeeperBuff)) then
       return S.ChainLightning:Cast()
@@ -177,7 +207,7 @@ local function APL()
       return S.LavaBurst:Cast()
     end
     -- flame_shock,moving=1,target_if=refreshable
-    if S.FlameShock:IsCastableP() and Player:IsMoving() and TargetUnit:DebuffRefreshableCP(S.FlameShockDebuff) then
+    if S.FlameShock:IsCastableP() and Player:IsMoving() and Target:DebuffRefreshableCP(S.FlameShockDebuff) then
       return S.FlameShock:Cast()
     end
     -- frost_shock,moving=1
@@ -195,33 +225,42 @@ local function APL()
       return S.Ascendance:Cast()
     end
     -- elemental_blast,if=talent.elemental_blast.enabled&(talent.master_of_the_elements.enabled&buff.master_of_the_elements.up&maelstrom<60|!talent.master_of_the_elements.enabled)&(!(cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled)|azerite.natural_harmony.rank=3&buff.wind_gust.stack<14)
-    if S.ElementalBlast:IsCastableP() and (S.ElementalBlast:IsAvailable() and (S.MasteroftheElements:IsAvailable() and Player:BuffP(S.MasteroftheElementsBuff) and Player:Maelstrom() < 60 or not S.MasteroftheElements:IsAvailable()) and (not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) or S.NaturalHarmony:AzeriteRank() == 3 and Player:BuffStackP(S.WindGustBuff) < 14)) then
+    if S.ElementalBlast:IsCastableP() and (S.ElementalBlast:IsAvailable() and (S.MasteroftheElements:IsAvailable() and Player:BuffP(S.MasteroftheElementsBuff) and FutureMaelstromPower() < 60 or not S.MasteroftheElements:IsAvailable()) and (not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) or S.NaturalHarmony:AzeriteRank() == 3 and Player:BuffStackP(S.WindGustBuff) < 14)) then
       return S.ElementalBlast:Cast()
     end
     -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)&(!talent.surge_of_power.enabled|buff.surge_of_power.up|maelstrom>=44)
-    if S.Stormkeeper:IsCastableP() and (S.Stormkeeper:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50) and (not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff) or Player:Maelstrom() >= 44)) then
+    if S.Stormkeeper:IsCastableP() and (S.Stormkeeper:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50) and (not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff) or FutureMaelstromPower() >= 44)) then
       return S.Stormkeeper:Cast()
     end
     -- liquid_magma_totem,if=talent.liquid_magma_totem.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
-    if S.LiquidMagmaTotem:IsCastableP() and (S.LiquidMagmaTotem:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50)) then
+    if S.LiquidMagmaTotem:IsCastableP() and S.LiquidMagmaTotem:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50) then
       return S.LiquidMagmaTotem:Cast()
     end
     -- lightning_bolt,if=buff.stormkeeper.up&spell_targets.chain_lightning<2&(buff.master_of_the_elements.up&!talent.surge_of_power.enabled|buff.surge_of_power.up)
     if S.LightningBolt:IsCastableP() and (Player:BuffP(S.StormkeeperBuff) and Cache.EnemiesCount[40] < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff))) then
       return S.LightningBolt:Cast()
     end
-    -- earthquake,if=active_enemies>1&spell_targets.chain_lightning>1&(!talent.surge_of_power.enabled|!dot.flame_shock.refreshable|cooldown.storm_elemental.remains>120)&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up|maelstrom>=92)
-    if S.Earthquake:IsCastableP() and (Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] > 1 and (not S.SurgeofPower:IsAvailable() or not Target:DebuffRefreshableCP(S.FlameShockDebuff) or S.StormElemental:CooldownRemainsP() > 120) and (not S.MasteroftheElements:IsAvailable() or Player:BuffP(S.MasteroftheElementsBuff) or Player:Maelstrom() >= 92)) then
+  --# There might come an update for this line with some SoP logic.
+  --actions.single_target+=/earthquake,if=active_enemies>1&spell_targets.chain_lightning>1&(!talent.surge_of_power.enabled|!dot.flame_shock.refreshable|cooldown.storm_elemental.remains>120)&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up|maelstrom>=92)
+  if (Cache.EnemiesCount[40] > 1 and (not S.SurgeofPower:IsAvailable() or S.StormElemental:CooldownRemains() > 120) and (not S.MasteroftheElements:IsAvailable() or Player:Buff(S.MasteroftheElementsBuff) or FutureMaelstromPower() >= 92)) then
+    if (FutureMaelstromPower() >= 60) then
       return S.Earthquake:Cast()
     end
-    -- earth_shock,if=!buff.surge_of_power.up&talent.master_of_the_elements.enabled&(buff.master_of_the_elements.up|maelstrom>=92+30*talent.call_the_thunder.enabled|buff.stormkeeper.up&active_enemies<2)|!talent.master_of_the_elements.enabled&(buff.stormkeeper.up|maelstrom>=90+30*talent.call_the_thunder.enabled|!(cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled)&expected_combat_length-time-cooldown.storm_elemental.remains-150*floor((expected_combat_length-time-cooldown.storm_elemental.remains)%150)>=30*(1+(azerite.echo_of_the_elementals.rank>=2)))
-    if S.EarthShock:IsCastableP() and (not Player:BuffP(S.SurgeofPowerBuff) and S.MasteroftheElements:IsAvailable() and (Player:BuffP(S.MasteroftheElementsBuff) or Player:Maelstrom() >= 92 + 30 * num(S.CalltheThunder:IsAvailable()) or Player:BuffP(S.StormkeeperBuff) and Cache.EnemiesCount[40] < 2) or not S.MasteroftheElements:IsAvailable() and (Player:BuffP(S.StormkeeperBuff) or Player:Maelstrom() >= 90 + 30 * num(S.CalltheThunder:IsAvailable()) or not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) and expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP() - 150 * math.floor ((expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP()) / 150) >= 30 * (1 + num((S.EchooftheElementals:AzeriteRank() >= 2))))) then
+  end
+  --# Boy...what a condition. With Master of the Elements pool Maelstrom up to 8 Maelstrom below the cap to ensure it's used with Earth Shock. Without Master of the Elements, use Earth Shock either if Stormkeeper is up, Maelstrom is 10 Maelstrom below the cap or less, or either Storm Elemental isn't talented or it's not active and your last Storm Elemental of the fight will have only a partial duration.
+  --actions.single_target+=/earth_shock,if=!buff.surge_of_power.up&talent.master_of_the_elements.enabled&(buff.master_of_the_elements.up|maelstrom>=92+30*talent.call_the_thunder.enabled|buff.stormkeeper.up&active_enemies<2)|!talent.master_of_the_elements.enabled&(buff.stormkeeper.up|maelstrom>=90+30*talent.call_the_thunder.enabled|!(cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled)&expected_combat_length-time-cooldown.storm_elemental.remains-150*floor((expected_combat_length-time-cooldown.storm_elemental.remains)%150)>=30*(1+(azerite.echo_of_the_elementals.rank>=2)))
+  if (not Player:Buff(S.SurgeofPowerBuff) and S.MasteroftheElements:IsAvailable() and (Player:Buff(S.MasteroftheElementsBuff) or (FutureMaelstromPower()>= 122 and S.CallTheThunder:IsAvailable()) or Player:Buff(S.StormkeeperBuff) and spell_targets < 2) or not S.MasteroftheElements:IsAvailable() and (Player:Buff(S.StormkeeperBuff) or (FutureMaelstromPower()>= 120 and S.CallTheThunder:IsAvailable()) or not (S.StormElemental:CooldownRemains() >120 and S.StormElemental:IsAvailable()))) then
+    if (FutureMaelstromPower() >=60) then
       return S.EarthShock:Cast()
     end
-    -- earth_shock,if=talent.surge_of_power.enabled&!buff.surge_of_power.up&cooldown.lava_burst.remains<=gcd&(!talent.storm_elemental.enabled&!(cooldown.fire_elemental.remains>120)|talent.storm_elemental.enabled&!(cooldown.storm_elemental.remains>120))
-    if S.EarthShock:IsCastableP() and (S.SurgeofPower:IsAvailable() and not Player:BuffP(S.SurgeofPowerBuff) and S.LavaBurst:CooldownRemainsP() <= Player:GCD() and (not S.StormElemental:IsAvailable() and not (S.FireElemental:CooldownRemainsP() > 120) or S.StormElemental:IsAvailable() and not (S.StormElemental:CooldownRemainsP() > 120))) then
+  end
+  --# Use Earth Shock if Surge of Power is talented, but neither it nor a DPS Elemental is active at the moment, and Lava Burst is ready or will be within the next GCD.
+  --actions.single_target+=/earth_shock,if=talent.surge_of_power.enabled&!buff.surge_of_power.up&cooldown.lava_burst.remains<=gcd&(!talent.storm_elemental.enabled&!(cooldown.fire_elemental.remains>120)|talent.storm_elemental.enabled&!(cooldown.storm_elemental.remains>120))
+  if (S.SurgeofPower:IsAvailable() and not Player:Buff(S.SurgeofPowerBuff) and S.LavaBurst:CooldownRemains() <= Player:GCD() and (not S.StormElemental:IsAvailable() and not (S.FireElemental:CooldownRemains() > 120) or S.StormElemental:IsAvailable() and not (S.StormElemental:CooldownRemains() >120))) then
+    if (FutureMaelstromPower() >=60) then
       return S.EarthShock:Cast()
     end
+  end
     -- lightning_bolt,if=cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled
     if S.LightningBolt:IsCastableP() and (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) then
       return S.LightningBolt:Cast()
@@ -235,15 +274,15 @@ local function APL()
       return S.LavaBurst:Cast()
     end
     -- flame_shock,target_if=refreshable&active_enemies>1&buff.surge_of_power.up
-    if S.FlameShock:IsCastableP() and TargetUnit:DebuffRefreshableCP(S.FlameShockDebuff) and Cache.EnemiesCount[40] > 1 and Player:BuffP(S.SurgeofPowerBuff) then
+    if S.FlameShock:IsCastableP() and Target:DebuffRefreshableCP(S.FlameShockDebuff) and Cache.EnemiesCount[40] > 1 and Player:BuffP(S.SurgeofPowerBuff) then
       return S.FlameShock:Cast()
     end
     -- lava_burst,if=talent.storm_elemental.enabled&cooldown_react&buff.surge_of_power.up&(expected_combat_length-time-cooldown.storm_elemental.remains-150*floor((expected_combat_length-time-cooldown.storm_elemental.remains)%150)<30*(1+(azerite.echo_of_the_elementals.rank>=2))|(1.16*(expected_combat_length-time)-cooldown.storm_elemental.remains-150*floor((1.16*(expected_combat_length-time)-cooldown.storm_elemental.remains)%150))<(expected_combat_length-time-cooldown.storm_elemental.remains-150*floor((expected_combat_length-time-cooldown.storm_elemental.remains)%150)))
-    if S.LavaBurst:IsCastableP() and (S.StormElemental:IsAvailable() and S.LavaBurst:CooldownUpP() and Player:BuffP(S.SurgeofPowerBuff) and (expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP() - 150 * math.floor ((expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP()) / 150) < 30 * (1 + num((S.EchooftheElementals:AzeriteRank() >= 2))) or (1.16 * (expected_combat_length - HL.CombatTime()) - S.StormElemental:CooldownRemainsP() - 150 * math.floor ((1.16 * (expected_combat_length - HL.CombatTime()) - S.StormElemental:CooldownRemainsP()) / 150)) < (expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP() - 150 * math.floor ((expected_combat_length - HL.CombatTime() - S.StormElemental:CooldownRemainsP()) / 150)))) then
+    if S.LavaBurst:IsCastableP() and S.StormElemental:IsAvailable() and S.LavaBurst:CooldownUpP() and Player:BuffP(S.SurgeofPowerBuff) then
       return S.LavaBurst:Cast()
     end
     -- lava_burst,if=!talent.storm_elemental.enabled&cooldown_react&buff.surge_of_power.up&(expected_combat_length-time-cooldown.fire_elemental.remains-150*floor((expected_combat_length-time-cooldown.fire_elemental.remains)%150)<30*(1+(azerite.echo_of_the_elementals.rank>=2))|(1.16*(expected_combat_length-time)-cooldown.fire_elemental.remains-150*floor((1.16*(expected_combat_length-time)-cooldown.fire_elemental.remains)%150))<(expected_combat_length-time-cooldown.fire_elemental.remains-150*floor((expected_combat_length-time-cooldown.fire_elemental.remains)%150)))
-    if S.LavaBurst:IsCastableP() and (not S.StormElemental:IsAvailable() and S.LavaBurst:CooldownUpP() and Player:BuffP(S.SurgeofPowerBuff) and (expected_combat_length - HL.CombatTime() - S.FireElemental:CooldownRemainsP() - 150 * math.floor ((expected_combat_length - HL.CombatTime() - S.FireElemental:CooldownRemainsP()) / 150) < 30 * (1 + num((S.EchooftheElementals:AzeriteRank() >= 2))) or (1.16 * (expected_combat_length - HL.CombatTime()) - S.FireElemental:CooldownRemainsP() - 150 * math.floor ((1.16 * (expected_combat_length - HL.CombatTime()) - S.FireElemental:CooldownRemainsP()) / 150)) < (expected_combat_length - HL.CombatTime() - S.FireElemental:CooldownRemainsP() - 150 * math.floor ((expected_combat_length - HL.CombatTime() - S.FireElemental:CooldownRemainsP()) / 150)))) then
+    if S.LavaBurst:IsCastableP() and not S.StormElemental:IsAvailable() and S.LavaBurst:CooldownUpP() and Player:BuffP(S.SurgeofPowerBuff) then
       return S.LavaBurst:Cast()
     end
     -- lightning_bolt,if=buff.surge_of_power.up
@@ -255,7 +294,7 @@ local function APL()
       return S.LavaBurst:Cast()
     end
     -- flame_shock,target_if=refreshable&!buff.surge_of_power.up
-    if S.FlameShock:IsCastableP() and TargetUnit:DebuffRefreshableCP(S.FlameShockDebuff) and not Player:BuffP(S.SurgeofPowerBuff) then
+    if S.FlameShock:IsCastableP() and Target:DebuffRefreshableCP(S.FlameShockDebuff) and not Player:BuffP(S.SurgeofPowerBuff) then
       return S.FlameShock:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&(buff.resonance_totem.remains<6|(buff.resonance_totem.remains<(buff.ascendance.duration+cooldown.ascendance.remains)&cooldown.ascendance.remains<15))
@@ -275,7 +314,7 @@ local function APL()
       return S.LightningBolt:Cast()
     end
     -- flame_shock,moving=1,target_if=refreshable
-    if S.FlameShock:IsCastableP() and Player:IsMoving() and TargetUnit:DebuffRefreshableCP(S.FlameShockDebuff) then
+    if S.FlameShock:IsCastableP() and Player:IsMoving() and Target:DebuffRefreshableCP(S.FlameShockDebuff) then
       return S.FlameShock:Cast()
     end
     -- flame_shock,moving=1,if=movement.distance>6
