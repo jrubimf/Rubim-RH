@@ -265,7 +265,7 @@ HL:RegisterForSelfCombatEvent(
     function (...)
 		--timestamp,Event,_,_,_,_,_,UnitPetGUID,petName,_,_,SpellID=select(1,...)
 		local timestamp,Event,_,_,_,_,_,UnitPetGUID,_,_,_,SpellID=select(1,...)
-        local _, _, _, _, _, _, _, UnitPetID = find(UnitPetGUID, "(%S+)-(%d+)-(%d+)-(%d+)-(%d+)-(%d+)-(%S+)")
+        local _, _, _, _, _, _, _, UnitPetID = string.find(UnitPetGUID, "(%S+)-(%d+)-(%d+)-(%d+)-(%d+)-(%d+)-(%S+)")
         UnitPetID = tonumber(UnitPetID)
         
 		-- Add pet
@@ -354,7 +354,7 @@ HL:RegisterForCombatEvent(
 );
 
 -- Keep track how many Soul Shards we have
-SoulShards = 0;
+local SoulShards = 0;
 function UpdateSoulShards()
     SoulShards = Player:SoulShards()
 end
@@ -363,11 +363,28 @@ end
 HL:RegisterForSelfCombatEvent(
     function(_, event, _, _, _, _, _, _, _, _, _, SpellID)
         if SpellID == 105174 then
-            HL.GuardiansTable.ImpsSpawnedFromHoG = HL.GuardiansTable.ImpsSpawnedFromHoG + (Warlock.SoulShards >= 3 and 3 or Warlock.SoulShards)
+            HL.GuardiansTable.ImpsSpawnedFromHoG = HL.GuardiansTable.ImpsSpawnedFromHoG + (SoulShards >= 3 and 3 or SoulShards)
         end
     end
     , "SPELL_CAST_SUCCESS"
 );
+
+local function ImpsSpawnedDuring(miliseconds)
+  local ImpSpawned = 0
+  local SpellCastTime = ( miliseconds / 1000 ) * Player:SpellHaste()
+
+  if HL.GetTime() <= HL.GuardiansTable.InnerDemonsNextCast and (HL.GetTime() + SpellCastTime) >= HL.GuardiansTable.InnerDemonsNextCast then
+    ImpSpawned = ImpSpawned + 1
+  end
+
+  if Player:IsCasting(S.HandofGuldan) then
+    ImpSpawned = ImpSpawned + (Player:SoulShards() >= 3 and 3 or Player:SoulShards())
+  end
+
+  ImpSpawned = ImpSpawned +  HL.GuardiansTable.ImpsSpawnedFromHoG
+
+  return ImpSpawned
+end
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
@@ -612,8 +629,8 @@ local function DconEpOpener()
         return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
-	if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
-    --if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (WildImpsCount() > 3 or (Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() <= 1 and HL.CombatTime() > 8)) then
+	--if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (WildImpsCount() + ImpsSpawnedDuring(2000) >= 6 or (Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() <= 1 and HL.CombatTime() > 8)) then
       return S.SummonDemonicTyrant:Cast()
     end
 	-- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
