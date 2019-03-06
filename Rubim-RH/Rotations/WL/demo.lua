@@ -336,7 +336,7 @@ HL:RegisterForCombatEvent(
         end
         
         -- Clear the imp table upon Implosion cast or Demonic Tyrant cast if Demonic Consumption is talented
-        if SourceGUID == Player:GUID() and (SpellID == 196277 or (SpellID == 265187 and Spell(267215):IsAvailable()))
+        if SourceGUID == Player:GUID() and (SpellID == 196277 or (SpellID == 265187 and Spell(267215):IsAvailable())) then
             for key, petTable in pairs(HL.GuardiansTable.Pets) do
                 if petTable.name == "Wild Imp" then
                     HL.GuardiansTable.Pets[key] = nil
@@ -353,33 +353,21 @@ HL:RegisterForCombatEvent(
     , "SPELL_CAST_SUCCESS"
 );
 
--- Snapshot how many Soul Shards we have at the start of HoG cast
+-- Keep track how many Soul Shards we have
+SoulShards = 0;
+function UpdateSoulShards()
+    SoulShards = Player:SoulShards()
+end
+
+-- On Successful HoG cast add how many Imps will spawn
 HL:RegisterForSelfCombatEvent(
-    function(_, _, _, _, _, _, _, _, _, _, _, SpellID)
+    function(_, event, _, _, _, _, _, _, _, _, _, SpellID)
         if SpellID == 105174 then
-            HL.GuardiansTable.ImpsSpawnedFromHoG = Player:SoulShardsP() >= 3 and 3 or Player:SoulShardsP()
+            HL.GuardiansTable.ImpsSpawnedFromHoG = HL.GuardiansTable.ImpsSpawnedFromHoG + (Warlock.SoulShards >= 3 and 3 or Warlock.SoulShards)
         end
     end
-    , "SPELL_CAST_START"
+    , "SPELL_CAST_SUCCESS"
 );
-
--- Improved imp prediction
-local function ImpsSpawnedDuring(miliseconds)
-  local ImpSpawned = 0
-  local SpellCastTime = ( miliseconds / 1000 ) * Player:SpellHaste()
-
-  if HL.GetTime() <= HL.GuardiansTable.InnerDemonsNextCast and (HL.GetTime() + SpellCastTime) >= HL.GuardiansTable.InnerDemonsNextCast then
-    ImpSpawned = ImpSpawned + 1
-  end
-
-  if Player:IsCasting(S.HandofGuldan) then
-    ImpSpawned = ImpSpawned + (Player:SoulShards() >= 3 and 3 or Player:SoulShards())
-  end
-
-  ImpSpawned = ImpSpawned +  HL.GuardiansTable.ImpsSpawnedFromHoG
-
-  return ImpSpawned
-end
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
@@ -529,7 +517,7 @@ end
 --end
 
 -- enemy in range
-S.HandofGuldan:RegisterInFlight()
+S.HandOfGuldan:RegisterInFlight()
 
 local EnemyRanges = { 40, 5 }
 
@@ -811,6 +799,7 @@ local function APL()
     --local Precombat, BuildAShard, DconEpOpener, Implosion, NetherPortal, NetherPortalActive, NetherPortalBuilding
     UpdateRanges()
 	UpdatePetTable()
+	UpdateSoulShards()
     --print(HL.GuardiansTable.ImpCount);
 	--print(HL.GuardiansTable.ImpTotalEnergy);
 	
