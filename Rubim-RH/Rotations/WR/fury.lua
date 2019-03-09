@@ -260,14 +260,6 @@ local function APL()
     if S.Recklessness:IsReady() and ((not S.Siegebreaker:IsAvailable()) or (S.Siegebreaker:CooldownRemainsP() < 1 or S.Siegebreaker:CooldownRemainsP() > 5)) then
         return S.Recklessness:Cast()
     end
-	-- bladestorm,if=prev_gcd.1.rampage&(debuff.siegebreaker.up|!talent.siegebreaker.enabled)
-    if S.Bladestorm:IsCastableP() and Cache.EnemiesCount[8] >= 1 and RubimRH.CDsON() and (Player:PrevGCDP(1, S.Rampage) and (Target:DebuffP(S.SiegebreakerDebuff) or not S.Siegebreaker:IsAvailable())) then
-        return S.Bladestorm:Cast()
-    end
-    -- dragon_roar,if=buff.enrage.up
-    if S.DragonRoar:IsCastableP() and Cache.EnemiesCount[8] >= 1 and RubimRH.CDsON() and (Player:BuffP(S.EnrageBuff)) then
-        return S.DragonRoar:Cast()
-    end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
     if S.Whirlwind:IsReady("Melee") and Cache.EnemiesCount[5] > 1 and not Player:BuffP(S.WhirlwindBuff) and S.WhirlwindPassive:IsAvailable() then
         return S.Whirlwind:Cast()
