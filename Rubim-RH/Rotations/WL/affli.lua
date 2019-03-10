@@ -53,6 +53,7 @@ RubimRH.Spell[265] = {
   PhantomSingularityDebuff              = Spell(205179),
   SpellLock 							= Spell(119898),
   Shadowfury							= Spell(30283),
+  PandemicInvocation                    = Spell(289364),
   -- Defensive
   UnendingResolve                       = Spell(104773),
   Berserking                            = Spell(26297)
@@ -137,6 +138,93 @@ local function Contagion()
   return MaximumDuration
 end
 
+-- Pet functions
+local PetType = {
+  [103673] = {"Darkglare", 20},
+};
+
+HL.AffliGuardiansTable = {
+    --{PetType,petID,dateEvent,UnitPetGUID,CastsLeft}
+    Pets = {
+    },
+    PetList={
+    [103673]="Darkglare",
+}
+};
+    
+HL:RegisterForSelfCombatEvent(
+function (...)
+    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+    local t={} ; i=1
+  
+    for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+        t[i] = str
+        i = i + 1
+    end
+    
+	local PetType=HL.AffliGuardiansTable.PetList[tonumber(t[6])]
+    if PetType then
+        table.insert(HL.AffliGuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+    end
+end
+    , "SPELL_SUMMON"
+);
+        
+-- Summoned pet duration
+local function PetDuration(PetType)
+    if not PetType then 
+        return 0 
+    end
+    local PetsInfo = {
+        [103673] = {"Darkglare", 20},
+    }
+    local maxduration = 0
+    for key, Value in pairs(HL.AffliGuardiansTable.Pets) do
+        if HL.AffliGuardiansTable.Pets[key][1] == PetType then
+            if (PetsInfo[HL.AffliGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.AffliGuardiansTable.Pets[key][3])) > maxduration then
+                maxduration = HL.OffsetRemains((PetsInfo[HL.AffliGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.AffliGuardiansTable.Pets[key][3])), "Auto" );
+            end
+        end
+    end
+    return maxduration
+end
+
+local function DarkglareIsActive()
+    if PetDuration("Darkglare") > 1 then
+        return true
+   else
+        return false
+    end
+end
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+
+    if trinketPosition == 1 then
+        inventoryPosition = 13
+    end
+    if trinketPosition == 2 then
+        inventoryPosition = 14
+    end
+
+    local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+
+    if enable == 0 then
+        return false
+    end
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+
+    return true
+end
+
 S.ShadowBolt:RegisterInFlight()
 S.SeedofCorruption:RegisterInFlight()
 
@@ -182,7 +270,14 @@ local function APL()
     --  return I.ProlongedPower:Cast()
     --end
     -- use_items,if=!cooldown.summon_darkglare.up,if=cooldown.summon_darkglare.remains>70|time_to_die<20|((buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains)&!cooldown.summon_darkglare.remains)
-    
+    -- trinket1,if=pet.Darkglare.active
+	if trinketReady(1) and DarkglareIsActive() then
+        return trinket1
+    end
+	-- trinket2,if=pet.Darkglare.active
+	if trinketReady(2) and DarkglareIsActive() then
+        return trinket2
+    end
 	-- fireblood,if=!cooldown.summon_darkglare.up
     if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (not S.SummonDarkglare:CooldownUpP()) then
       return S.Fireblood:Cast()
@@ -214,11 +309,13 @@ local function APL()
       return S.SeedofCorruption:Cast()
     end
     -- agony,target_if=min:remains,if=talent.creeping_death.enabled&active_dot.agony<6&target.time_to_die>10&(remains<=gcd|cooldown.summon_darkglare.remains>10&refreshable)
-    if S.Agony:IsCastableP() and S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 6 and Target:TimeToDie() > 10 and ((Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD()) or (S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.AgonyDebuff)))   then
+	if S.Agony:IsCastableP() and S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 6 and Target:TimeToDie() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD() or S.SummonDarkglare:CooldownRemainsP() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) < 5 or not S.PandemicInvocation:AzeriteEnabled() and Target:DebuffRefreshableCP(S.AgonyDebuff))) then
+    --if S.Agony:IsCastableP() and S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 6 and Target:TimeToDie() > 10 and ((Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD()) or (S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.AgonyDebuff)))   then
       return S.Agony:Cast()
     end
     -- agony,target_if=min:remains,if=!talent.creeping_death.enabled&active_dot.agony<8&target.time_to_die>10&(remains<=gcd|cooldown.summon_darkglare.remains>10&refreshable)
-    if S.Agony:IsCastableP() and (not S.CreepingDeath:IsAvailable()) and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and ((Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD()) or (S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.AgonyDebuff)))   then
+    if S.Agony:IsCastableP() and not S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD() or S.SummonDarkglare:CooldownRemainsP() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) < 5 or not S.PandemicInvocation:AzeriteEnabled() and TargetUnit:DebuffRefreshableCP(S.AgonyDebuff))) then
+	--if S.Agony:IsCastableP() and (not S.CreepingDeath:IsAvailable()) and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and ((Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD()) or (S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.AgonyDebuff)))   then
       return S.Agony:Cast()
     end
 	-- corruption,cycle_targets=1,if=!prevgcd.corruption&refreshable&target.time_to_die<=5
