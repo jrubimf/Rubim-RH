@@ -1,16 +1,17 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, addonTable = ...
+local addonName, addonTable = ...;
 -- HeroLib
-local HL     = HeroLib
-local Cache  = HeroCache
-local Unit   = HL.Unit
-local Player = Unit.Player
-local Target = Unit.Target
-local Pet    = Unit.Pet
-local Spell  = HL.Spell
-local Item   = HL.Item
+local HL     = HeroLib;
+local Cache  = HeroCache;
+local Unit   = HL.Unit;
+local Player = Unit.Player;
+local Target = Unit.Target;
+local Pet    = Unit.Pet;
+local Spell  = HL.Spell;
+local Item   = HL.Item;
+local MouseOver = Unit.MouseOver;
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -52,7 +53,9 @@ RubimRH.Spell[262] = {
   BloodFury                             = Spell(20572),
   Berserking                            = Spell(26297),
   Fireblood                             = Spell(265221),
-  AncestralCall                         = Spell(274738)
+  AncestralCall                         = Spell(274738),
+  Purge									= Spell(370),
+  CleanseSpirit							= Spell(51886),
 };
 local S = RubimRH.Spell[262]
 
@@ -115,6 +118,7 @@ end
 local function APL()
   local Precombat, Aoe, SingleTarget
   UpdateRanges()
+  
   Precombat = function()
     -- flask
     -- food
@@ -126,7 +130,7 @@ local function APL()
     end
     -- earth_elemental,if=!talent.primal_elementalist.enabled
     -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
-    if S.Stormkeeper:IsCastableP() and Player:BuffDownP(S.StormkeeperBuff) and (S.Stormkeeper:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50)) then
+    if S.Stormkeeper:IsCastableP() and RubimRH.CDsON() and Player:BuffDownP(S.StormkeeperBuff) and S.Stormkeeper:IsAvailable() then
       return S.Stormkeeper:Cast()
     end
     -- fire_elemental,if=!talent.storm_elemental.enabled
@@ -151,6 +155,7 @@ local function APL()
       return S.ChainLightning:Cast()
     end
   end
+ 
   Aoe = function()
     -- stormkeeper,if=talent.stormkeeper.enabled
     if S.Stormkeeper:IsCastableP() and (S.Stormkeeper:IsAvailable()) then
@@ -215,6 +220,7 @@ local function APL()
       return S.FrostShock:Cast()
     end
   end
+  
   SingleTarget = function()
     -- flame_shock,if=(!ticking|talent.storm_elemental.enabled&cooldown.storm_elemental.remains<2*gcd|dot.flame_shock.remains<=gcd|talent.ascendance.enabled&dot.flame_shock.remains<(cooldown.ascendance.remains+buff.ascendance.duration)&cooldown.ascendance.remains<4&(!talent.storm_elemental.enabled|talent.storm_elemental.enabled&cooldown.storm_elemental.remains<120))&buff.wind_gust.stack<14&!buff.surge_of_power.up
     if S.FlameShock:IsCastableP() and ((not Target:DebuffP(S.FlameShockDebuff) or S.StormElemental:IsAvailable() and S.StormElemental:CooldownRemainsP() < 2 * Player:GCD() or Target:DebuffRemainsP(S.FlameShockDebuff) <= Player:GCD() or S.Ascendance:IsAvailable() and Target:DebuffRemainsP(S.FlameShockDebuff) < (S.Ascendance:CooldownRemainsP() + S.AscendanceBuff:BaseDuration()) and S.Ascendance:CooldownRemainsP() < 4 and (not S.StormElemental:IsAvailable() or S.StormElemental:IsAvailable() and S.StormElemental:CooldownRemainsP() < 120)) and Player:BuffStackP(S.WindGustBuff) < 14 and not Player:BuffP(S.SurgeofPowerBuff)) then
@@ -326,10 +332,16 @@ local function APL()
       return S.FrostShock:Cast()
     end
   end
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-    local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
+  
+    -- call precombat
+    if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+    end
+  
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
+  
   -- combat start
   if RubimRH.TargetIsValid() then
     -- bloodlust,if=azerite.ancestral_resonance.enabled
@@ -337,6 +349,14 @@ local function APL()
     -- wind_shear
     if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
       return S.WindShear:Cast()
+    end
+	-- purge (offensive dispell)
+    if S.Purge:IsCastableP() and Target:HasStealableBuff() then
+      return S.Purge:Cast()
+    end
+	-- defensive dispell
+	if MouseOver:HasDispelableDebuff("Curse") then
+        return S.CleanseSpirit:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&buff.resonance_totem.remains<2
     if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and Player:BuffRemainsP(S.ResonanceTotemBuff) < 2) then
