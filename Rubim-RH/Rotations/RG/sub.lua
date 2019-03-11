@@ -11,7 +11,6 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 local CombatIcon = 135328
 local OutCombatIcon = 462338
-
 -- Lua
 local pairs = pairs;
 local tableinsert = table.insert;
@@ -73,6 +72,12 @@ RubimRH.Spell[261] = {
     Kick = Spell(1766),
     KidneyShot = Spell(408),
     Sprint = Spell(2983),
+	Sap = Spell(6770),
+	ColdBlood = Spell(213981),
+	Shiv = Spell(248744),
+	SmokeBomb = Spell (212182),
+	DFA = Spell (269513),
+	Duel = Spell (207736),
     -- Misc
     TheDreadlordsDeceit = Spell(228224),
     CloakofShadows = Spell(31224),
@@ -180,6 +185,22 @@ end
 local function Finish()
     local ShadowDanceBuff = Player:BuffP(S.ShadowDanceBuff)
 
+		 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
+					if Player:ComboPoints() >= 5 and Target:IsInRange(15) and ShadowDanceBuff then
+            if not Target:IsImmune() and S.DFA:IsReady()  then
+                return S.DFA:Cast()
+        end
+    end
+end
+
+		 	        if Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then 
+					if not Player:IsStealthed() and not Target:IsCC()  and IsInMeleeRange() and Player:ComboPoints() >= 4 then
+			       if not Target:IsImmune() and S.KidneyShot:IsReady() and (Target:HealthPercentage() <= 35 or Target:CastingCC()  or Target:IsBursting() or Target:IsTargeting(Player)) then
+                               return S.KidneyShot:Cast()
+         end
+			end
+			   end
+
     -- actions.finish=eviscerate,if=talent.shadow_focus.enabled&buff.nights_vengeance.up&spell_targets.shuriken_storm>=2+3*talent.secret_technique.enabled
     if S.Eviscerate:IsReady() and IsInMeleeRange() and S.ShadowFocus:IsAvailable() and Player:BuffP(S.NightsVengeanceBuff)
             and Cache.EnemiesCount[10] >= 2 + 3 * num(S.SecretTechnique:IsAvailable()) then
@@ -189,7 +210,7 @@ local function Finish()
     if S.Nightblade:IsReady() then
         local NightbladeThreshold = (6 + CPSpend() * 2) * 0.3;
         -- actions.finish=nightblade,if=(!talent.dark_shadow.enabled|!buff.shadow_dance.up)&target.time_to_die-remains>6&remains<tick_time*2&(spell_targets.shuriken_storm<4|!buff.symbols_of_death.up)
-        if IsInMeleeRange() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff)
+        if IsInMeleeRange() and  Player:AffectingCombat() and (not S.DarkShadow:IsAvailable() or not ShadowDanceBuff) 
                 and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid())
                 and CanDoTUnit(Target, S.Eviscerate:Damage() * 3)
                 and Target:DebuffRemainsP(S.Nightblade) < 4
@@ -197,11 +218,11 @@ local function Finish()
             return S.Nightblade:Cast()
         end
         -- actions.finish+=/nightblade,cycle_targets=1,if=spell_targets.shuriken_storm>=2&(talent.secret_technique.enabled|azerite.nights_vengeance.enabled|spell_targets.shuriken_storm<=5)&!buff.shadow_dance.up&target.time_to_die>=(5+(2*combo_points))&refreshable
-        if S.Nightblade:IsReady() and (Cache.EnemiesCount[10] >= 2 and (S.SecretTechnique:IsAvailable() or S.NightsVengeancePower:AzeriteEnabled() or Cache.EnemiesCount[10] <= 5) and not Player:BuffP(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.Nightblade)) then
+        if S.Nightblade:IsReady() and  Player:AffectingCombat() and (Cache.EnemiesCount[10] >= 2 and (S.SecretTechnique:IsAvailable() or S.NightsVengeancePower:AzeriteEnabled() or Cache.EnemiesCount[10] <= 5) and not Player:BuffP(S.ShadowDanceBuff) and Target:TimeToDie() >= (5 + (2 * Player:ComboPoints())) and Target:DebuffRefreshableC(S.Nightblade)) then
             return S.Nightblade:Cast()
         end
         -- actions.finish+=/nightblade,if=remains<cooldown.symbols_of_death.remains+10&cooldown.symbols_of_death.remains<=5&target.time_to_die-remains>cooldown.symbols_of_death.remains+5
-        if IsInMeleeRange() and Target:DebuffRemainsP(S.Nightblade) < S.SymbolsofDeath:CooldownRemainsP() + 10
+        if IsInMeleeRange() and  Player:AffectingCombat() and Target:DebuffRemainsP(S.Nightblade) < S.SymbolsofDeath:CooldownRemainsP() + 10
                 and S.SymbolsofDeath:CooldownRemainsP() <= 5
                 and CanDoTUnit(Target, S.Eviscerate:Damage() * 3)
                 and (Target:FilteredTimeToDie(">", 5 + S.SymbolsofDeath:CooldownRemainsP(), -Target:DebuffRemainsP(S.Nightblade)) or Target:TimeToDieIsNotValid()) then
@@ -233,7 +254,7 @@ local function Stealthed ()
     local StealthBuff = Player:Buff(Stealth)
     -- # If stealth is up, we really want to use Shadowstrike to benefits from the passive bonus, even if we are at max cp (from the precombat MfD).
     -- actions.stealthed=shadowstrike,if=buff.stealth.up
-    if StealthBuff and S.Shadowstrike:IsReady() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
+    if Player:AffectingCombat() and S.Shadowstrike:IsReady() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
         return S.Shadowstrike:Cast()
     end
     -- actions.stealthed+=/call_action_list,name=finish,if=combo_points.deficit<=1-(talent.deeper_stratagem.enabled&buff.vanish.up)
@@ -249,15 +270,15 @@ local function Stealthed ()
     -- actions.stealthed+=/shadowstrike,cycle_targets=1,if=talent.secret_technique.enabled&talent.find_weakness.enabled&debuff.find_weakness.remains<1&spell_targets.shuriken_storm=2&target.time_to_die-remains>6
     -- !!!NYI!!! (Is this worth it? How do we want to display it in an understandable way?)
     -- actions.stealthed+=/shadowstrike,if=!talent.deeper_stratagem.enabled&azerite.blade_in_the_shadows.rank=3&spell_targets.shuriken_storm=3
-    if S.Shadowstrike:IsReadyP() and not S.DeeperStratagem:IsAvailable() and S.BladeInTheShadows:AzeriteRank() == 3 and Cache.EnemiesCount[10] == 3 then
+    if S.Shadowstrike:IsReadyP() and Player:AffectingCombat() and not S.DeeperStratagem:IsAvailable() and S.BladeInTheShadows:AzeriteRank() == 3 and Cache.EnemiesCount[10] == 3 then
         return S.Shadowstrike:Cast()
     end
     -- actions.stealthed+=/shuriken_storm,if=spell_targets>=3
-    if RubimRH.AoEON() and S.ShurikenStorm:IsReady() and Cache.EnemiesCount[10] >= 3 then
+    if RubimRH.AoEON() and S.ShurikenStorm:IsReady() and Target:AffectingCombat() and Cache.EnemiesCount[10] >= 3 then
         return S.ShurikenStorm:Cast()
     end
     -- actions.stealthed+=/shadowstrike
-    if S.Shadowstrike:IsReady() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
+    if S.Shadowstrike:IsReady() and Target:AffectingCombat() and (Target:IsInRange(S.Shadowstrike) or IsInMeleeRange()) then
         return S.Shadowstrike:Cast()
     end
     return 0, CombatIcon
@@ -285,12 +306,21 @@ local function CDs ()
                 end
             end
         end
+		
+						if  S.Duel:IsAvailable() and S.Duel:CooldownUp() and Target:IsAPlayer()  and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and S.Duel:IsReady() and  Target:Exists() then
+				if not Target:IsCC() and not Player:IsStealthed() and not  ShadowDanceBuff then
+			 if not Target:IsImmune() and  IsInMeleeRange()  and Target:HealthPercentage() <= 35 then
+	       if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) then
+			       return S.Duel:Cast() 
+        end
+		end
+		end 
+		end
 
         -- actions.cds+=/symbols_of_death,if=dot.nightblade.ticking
-        if S.SymbolsofDeath:IsReady() and Target:DebuffP(S.Nightblade) then
+        if S.SymbolsofDeath:IsReady() and  Player:AffectingCombat() and Target:DebuffP(S.Nightblade) then
             return S.SymbolsofDeath:Cast()
         end
-        if RubimRH.CDsON() then
             -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit
             -- Note: Done at the start of the Rotation (Rogue Commmon)
             -- actions.cds+=/marked_for_death,if=raid_event.adds.in>30&!stealthed.all&combo_points.deficit>=cp_max_spend
@@ -301,13 +331,14 @@ local function CDs ()
                     return S.MarkedforDeath:Cast()
                 end
             end
+			if RubimRH.CDsON() then
             -- actions.cds+=/shadow_blades,if=combo_points.deficit>=2+stealthed.all
             if S.ShadowBlades:IsReady() and not Player:Buff(S.ShadowBlades)
                     and Player:ComboPointsDeficit() >= 2 + num(Player:IsStealthedP(true, true)) then
                 return S.ShadowBlades:Cast()
             end
             -- actions.cds+=/shuriken_tornado,if=spell_targets>=3&dot.nightblade.ticking&buff.symbols_of_death.up&buff.shadow_dance.up
-            if S.ShurikenTornado:IsReadyP() and Cache.EnemiesCount[10] >= 3 and Target:DebuffP(S.Nightblade) and Player:BuffP(S.SymbolsofDeath) and Player:BuffP(S.ShadowDanceBuff) then
+            if S.ShurikenTornado:IsReadyP() and  Player:AffectingCombat() and Cache.EnemiesCount[10] >= 3 and Target:DebuffP(S.Nightblade) and Player:BuffP(S.SymbolsofDeath) and Player:BuffP(S.ShadowDanceBuff) then
                 return S.ShurikenTornado:Cast()
             end
             -- actions.cds+=/shadow_dance,if=!buff.shadow_dance.up&target.time_to_die<=5+talent.subterfuge.enabled
@@ -347,6 +378,12 @@ end
 
 -- # Builders
 local function Build ()
+
+		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or ShadowDanceBuff) then
+			 if not Target:IsImmune() and  IsInMeleeRange()  and (Target:HealthPercentage() <= 40 or Target:CastingCC()  or Target:IsBursting()) then
+			       return S.CheapShot:Cast() 
+        end
+		end
     -- actions.build=shuriken_toss,if=!talent.nightstalker.enabled&(!talent.dark_shadow.enabled|cooldown.symbols_of_death.remains>10)&buff.sharpened_blades.stack>=29&spell_targets.shuriken_storm<=(3*azerite.sharpened_blades.rank)
     if S.ShurikenToss:IsReadyP() and not S.Nightstalker:IsAvailable()
             and (not S.DarkShadow:IsAvailable() or S.SymbolsofDeath:CooldownRemainsP() > 10)
@@ -355,7 +392,7 @@ local function Build ()
         return S.ShurikenToss:Cast()
     end
     -- actions.build=shuriken_storm,if=spell_targets>=2|buff.the_dreadlords_deceit.stack>=29
-    if RubimRH.AoEON() and S.ShurikenStorm:IsReadyP() and (Cache.EnemiesCount[10] >= 2 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
+    if RubimRH.AoEON() and S.ShurikenStorm:IsReadyP() and (Cache.EnemiesCount[10] >= 3 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
         return S.ShurikenStorm:Cast()
     end
     if IsInMeleeRange() then
@@ -368,6 +405,11 @@ local function Build ()
         end
     end
 end
+
+
+		
+
+
 
 local function Custom()
     -- Crimson Vial
@@ -409,7 +451,7 @@ local function APL ()
         return S.CrimsonVial:Cast()
     end
     --- Out of Combat
-    if not Player:AffectingCombat() then
+   if not Player:AffectingCombat() then
         -- Stealth
         -- Note: Since 7.2.5, Blizzard disallowed Stealth cast under ShD (workaround to prevent the Extended Stealth bug)
         -- Flask
@@ -418,14 +460,25 @@ local function APL ()
         -- PrePot w/ Bossmod Countdown
         -- Opener
         -- Precombat CDs
-        if RubimRH.CDsON() then
-            if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+          --  if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() then
+               -- return S.MarkedforDeath:Cast()
+         --   end
+		 if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) then
+			if Player:IsStealthed()  and  Target:IsInRange(10) and not Target:AffectingCombat() and (Target:IsTargeting(Player) or Target:CastingCC()  or Target:IsBursting()) then
+					 if not Target:IsImmune()  and S.Sap:IsReady() then
+			                      return S.Sap:Cast()
+								  
+								  end
+								  end
+								  end
+
+
+			            if S.MarkedforDeath:IsReadyP() and Player:ComboPointsDeficit() >= CPMaxSpend() and Target:AffectingCombat() then
                 return S.MarkedforDeath:Cast()
             end
-            if S.ShadowBlades:IsReady() and not Player:Buff(S.ShadowBlades) then
-                return S.ShadowBlades:Cast()
-            end
-        end
+            if S.ShadowBlades:IsReady() and Target:AffectingCombat() and not Player:Buff(S.ShadowBlades) then
+               return S.ShadowBlades:Cast()
+           end
         if Player:IsStealthedP(true, true) and S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack then
             if Stealthed() ~= nil then
                 return Stealthed()
@@ -447,6 +500,14 @@ local function APL ()
     if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Kick:Cast()
     end
+		
+		    if S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and Target:IsAPlayer() and Target:Exists() and IsInMeleeRange() and Target:AffectingCombat() then
+            if not Target:IsImmuneMagic() and Player:CanAttack(Target)then
+            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() and not Target:IsCC() then
+                return S.Shiv:Cast()
+        end
+    end
+end
 
     -- # Check CDs at first
     -- actions=call_action_list,name=cds
@@ -462,7 +523,7 @@ local function APL ()
 
     -- # Apply Nightblade at 2+ CP during the first 10 seconds, after that 4+ CP if it expires within the next GCD or is not up
     -- actions+=/nightblade,if=target.time_to_die>6&remains<gcd.max&combo_points>=4-(time<10)*2
-    if S.Nightblade:IsReadyP() and IsInMeleeRange()
+    if S.Nightblade:IsReadyP() and IsInMeleeRange() and Target:AffectingCombat()
             and (Target:FilteredTimeToDie(">", 6) or Target:TimeToDieIsNotValid())
             and CanDoTUnit(Target, S.Eviscerate:Damage() * 3)
             and Target:DebuffRemainsP(S.Nightblade) < Player:GCD() and Player:ComboPoints() >= 4 - (HL.CombatTime() < 10 and 2 or 0) then
@@ -499,7 +560,21 @@ local function APL ()
             return Build()
         end
     end
-
+		if S.ColdBlood:IsAvailable() and S.ColdBlood:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and S.ColdBlood:IsReady() then
+		if (Player:IsStealthed() or ShadowDanceBuff) then
+			 if  not Target:IsImmune() and (Target:HealthPercentage() <= 35 or RubimRH.CDsON()) then
+			       return S.ColdBlood:Cast()
+        end
+		end
+		end
+		
+							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+								if not Target:IsCC()  and IsInMeleeRange() and Target:AffectingCombat()  then
+			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+                               return S.SmokeBomb:Cast()
+         end
+			end
+			   end
     -- # Lowest priority in all of the APL because it causes a GCD
     -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
     if S.ArcaneTorrent:IsReadyP("Melee") and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
@@ -522,6 +597,12 @@ local function APL ()
     -- Trick to take in consideration the Recovery Setting
     return 0, 135328
 end
+			
+			       --if not Target:IsImmune() and Target:IsBursting() and Target:IsDisarmable() and WRArms.Disarm:IsReady("Melee") then
+           -- return Disarm:Cast()
+      -- end
+
+
 
 RubimRH.Rotation.SetAPL(261, APL);
 

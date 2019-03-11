@@ -57,7 +57,6 @@ RubimRH.Spell[259] = {
     SharpenedBladesBuff = Spell(272916),
     ShroudedSuffocation = Spell(278666),
     -- Poisons
-
     CripplingPoison = Spell(3408),
     DeadlyPoison = Spell(2823),
     DeadlyPoisonDebuff = Spell(2818),
@@ -70,7 +69,15 @@ RubimRH.Spell[259] = {
     CloakofShadows = Spell(31224),
     TheDreadlordsDeceit = Spell(208693),
     Kick = Spell(1766),
-
+	ShadowStep = Spell (36554),
+	-- PvP
+	Sap = Spell(6770),
+	Shiv = Spell(248744),
+	SmokeBomb = Spell (212182),
+	DFA = Spell (269513),
+	Neuro = Spell (206328),
+    CheapShot = Spell(1833)
+    
 };
 local S = RubimRH.Spell[259];
 
@@ -380,6 +387,14 @@ local function CDs ()
             --  return S.AncestralCall:Cast()
             --end
         end
+		
+						 	        if Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then 
+					if not Player:IsStealthed() and not Target:IsCC()  and Target:IsInRange("Melee") and Player:ComboPoints() >= 4 then
+			       if not Target:IsImmune() and S.KidneyShot:IsReady() and (Target:HealthPercentage() <= 35 or Target:CastingCC()  or Target:IsBursting() or Target:IsTargeting(Player)) then
+                               return S.KidneyShot:Cast()
+         end
+			end
+			   end
 
         -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
         if S.MarkedforDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
@@ -390,29 +405,29 @@ local function CDs ()
                 and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
             return S.Vendetta:Cast()
         end
-        if S.Vanish:IsReady() and not Player:IsTanking(Target) then
+        if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
-            if S.Subterfuge:IsAvailable() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
+            if S.Subterfuge:IsAvailable() and not Target:IsAPlayer() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier<=1)
-            if S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
+            if not Target:IsAPlayer() and S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
                     and ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1
                     and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) <= 1) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.nightstalker.enabled&!talent.exsanguinate.enabled&combo_points>=cp_max_spend&debuff.vendetta.up
-            if S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
+            if not Target:IsAPlayer() and S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&(!talent.exsanguinate.enabled|spell_targets.fan_of_knives>=2)&!stealthed.rogue&cooldown.garrote.up&dot.garrote.refreshable&(spell_targets.fan_of_knives<=3&combo_points.deficit>=1+spell_targets.fan_of_knives|spell_targets.fan_of_knives>=4&combo_points.deficit>=4)
-            if S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthedP(true, false)
+            if not Target:IsAPlayer() and S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthedP(true, false)
                     and S.Garrote:CooldownUp() and Target:DebuffRefreshableP(S.Garrote, 5.4)
                     and ((Cache.EnemiesCount[10] <= 3 and ComboPointsDeficit >= 1 + Cache.EnemiesCount[10]) or (Cache.EnemiesCount[10] >= 4 and ComboPointsDeficit >= 4)) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.master_assassin.enabled&!stealthed.all&master_assassin_remains<=0&!dot.rupture.refreshable
-            if S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
+            if not Target:IsAPlayer() and S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
                 return S.Vanish:Cast()
             end
         end
@@ -483,6 +498,14 @@ local function Stealthed ()
         end
     end
 end
+
+								  
+			if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or Stealth2) then
+			 if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+			       return S.CheapShot:Cast() 
+        end
+		end
+		
 -- # Damage over time abilities
 local function Dot ()
     -- actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
@@ -543,6 +566,33 @@ local function Direct ()
             and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
         return S.Envenom:Cast()
     end
+	
+		
+				if S.Neuro:IsAvailable() and S.Neuro:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and not Player:IsStealthed() and Player:AffectingCombat() then
+			 if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Player:HealthPercentage() <= 75 and Target:IsTargeting(Player) or Target:IsBursting()) then
+			       return S.Neuro:Cast() 
+        end
+		end
+		
+		
+
+				    if S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and Target:IsAPlayer() and Target:Exists() and Target:IsInRange("Melee") and Target:AffectingCombat() then
+            if not Target:IsImmuneMagic() and Player:CanAttack(Target) and not Target:IsTargeting(Player)then
+            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() and not Target:IsCC() then
+                return S.Shiv:Cast()
+        end
+    end
+end
+
+		 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
+					if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
+            if not Target:IsImmune() and S.DFA:IsReady()  then
+                return S.DFA:Cast()
+        end
+    end
+end
+
+	
 
     -------------------------------------------------------------------
     -------------------------------------------------------------------
@@ -558,7 +608,7 @@ local function Direct ()
             return S.PoisonedKnife:Cast()
         end
         -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
+        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 3 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
             return S.FanofKnives:Cast()
         end
         -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
@@ -601,7 +651,28 @@ local function APL ()
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
         return S.CrimsonVial:Cast()
     end
-
+							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+								if not Target:IsCC()  and Target:IsInRange("Melee") and Target:AffectingCombat()  then
+			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+                               return S.SmokeBomb:Cast()
+         end
+			end
+			   end
+			   	  if S.ShadowStep:IsReady() and Target:IsAPlayer() and not Player:CanAttack(Target) and not Target:IsDeadOrGhost() and Target:Exists()  then
+                 if Target:IsInRange(S.ShadowStep) and not Target:IsInRange(15) and Target:IsCC() then
+				if Player:IsSnared() or Target:IsCC() or Player:HealthPercentage() <= 55 or Target:HealthPercentage() <= 55 then
+               return S.ShadowStep:Cast()
+                end
+                end
+	            end
+						 if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() then
+			if Player:IsStealthed() and  Target:IsInRange(10) and not Target:AffectingCombat() and (Player:CanAttack(Target) or Target:IsTargeting(Player) or Target:CastingCC()  or Target:IsBursting()) then
+					 if not Target:IsImmune() and S.Sap:IsReady() then
+			                      return S.Sap:Cast()
+								  
+								  end
+								  end
+								  end
     --CUSTOM
     if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk2 then
         return S.CloakofShadows:Cast()
