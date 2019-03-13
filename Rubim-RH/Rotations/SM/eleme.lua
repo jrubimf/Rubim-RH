@@ -147,9 +147,9 @@ local function APL()
     -- augmentation
     -- snapshot_stats
     -- totem_mastery
-    --if S.TotemMastery:IsCastableP() then
-    --  return S.TotemMastery:Cast()
-    --end
+    if S.TotemMastery:IsCastableP() and TotemMastery() < 2 then
+      return S.TotemMastery:Cast()
+    end
     -- earth_elemental,if=!talent.primal_elementalist.enabled
     -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
     if S.Stormkeeper:IsCastableP() and RubimRH.CDsON() and Player:BuffDownP(S.StormkeeperBuff) and S.Stormkeeper:IsAvailable() then
