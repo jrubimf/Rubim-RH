@@ -114,6 +114,28 @@ local function bool(val)
   return val ~= 0
 end
 
+function TotemMastery()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and textureId == 511726 then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
+end
+
+--136024 - Earth
+--135790 - Fire
+function ElementalUp()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and (textureId == 135790 or textureId == 136024 or textureId == 1020304) then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
+end
+
 --- ======= ACTION LISTS =======
 local function APL()
   local Precombat, Aoe, SingleTarget
@@ -125,9 +147,9 @@ local function APL()
     -- augmentation
     -- snapshot_stats
     -- totem_mastery
-    if S.TotemMastery:IsCastableP() then
-      return S.TotemMastery:Cast()
-    end
+    --if S.TotemMastery:IsCastableP() then
+    --  return S.TotemMastery:Cast()
+    --end
     -- earth_elemental,if=!talent.primal_elementalist.enabled
     -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
     if S.Stormkeeper:IsCastableP() and RubimRH.CDsON() and Player:BuffDownP(S.StormkeeperBuff) and S.Stormkeeper:IsAvailable() then
@@ -304,11 +326,11 @@ local function APL()
       return S.FlameShock:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&(buff.resonance_totem.remains<6|(buff.resonance_totem.remains<(buff.ascendance.duration+cooldown.ascendance.remains)&cooldown.ascendance.remains<15))
-    if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and (Player:BuffRemainsP(S.ResonanceTotemBuff) < 6 or (Player:BuffRemainsP(S.ResonanceTotemBuff) < (S.AscendanceBuff:BaseDuration() + S.Ascendance:CooldownRemainsP()) and S.Ascendance:CooldownRemainsP() < 15))) then
+    if S.TotemMastery:IsCastableP() and S.TotemMastery:IsAvailable() and (TotemMastery() < 6 or TotemMastery() < (S.AscendanceBuff:BaseDuration() + S.Ascendance:CooldownRemainsP()) and S.Ascendance:CooldownRemainsP() < 15) then
       return S.TotemMastery:Cast()
     end
     -- frost_shock,if=talent.icefury.enabled&buff.icefury.up&(buff.icefury.remains<gcd*4*buff.icefury.stack|buff.stormkeeper.up|!talent.master_of_the_elements.enabled)
-    if S.FrostShock:IsCastableP() and (S.Icefury:IsAvailable() and Player:BuffP(S.IcefuryBuff) and (Player:BuffRemainsP(S.IcefuryBuff) < Player:GCD() * 4 * Player:BuffStackP(S.IcefuryBuff) or Player:BuffP(S.StormkeeperBuff) or not S.MasteroftheElements:IsAvailable())) then
+    if S.FrostShock:IsCastableP() and S.Icefury:IsAvailable() and Player:BuffP(S.IcefuryBuff) and (Player:BuffRemainsP(S.IcefuryBuff) < Player:GCD() * 4 * Player:BuffStackP(S.IcefuryBuff) or Player:BuffP(S.StormkeeperBuff) or not S.MasteroftheElements:IsAvailable()) then
       return S.FrostShock:Cast()
     end
     -- icefury,if=talent.icefury.enabled
@@ -359,7 +381,7 @@ local function APL()
         return S.CleanseSpirit:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&buff.resonance_totem.remains<2
-    if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and Player:BuffRemainsP(S.ResonanceTotemBuff) < 2) then
+    if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and TotemMastery() < 2) then
       return S.TotemMastery:Cast()
     end
     -- fire_elemental,if=!talent.storm_elemental.enabled
