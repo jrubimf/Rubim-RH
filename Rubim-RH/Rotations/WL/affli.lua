@@ -60,6 +60,10 @@ RubimRH.Spell[265] = {
 };
 local S = RubimRH.Spell[265]
 
+Item.Warlock = {
+  BattlePotionofIntellect               = Item(163222),
+};
+local I = Item.Warlock;
 -- Items
 --if not Item.Warlock then Item.Warlock = {} end
 --Item.Warlock.Affliction = {
@@ -246,8 +250,8 @@ local function APL()
     end
     -- snapshot_stats
     -- pre potion
-    --if I.ProlongedPower:IsReady() and RubimRH.UsePotions then
-    --  Return I.ProlongedPower:Cast()
+    --if I.BattlePotionofIntellect:IsReady() and RubimRH.UsePotions and RubimRH.CDsON() then
+    --  Return I.BattlePotionofIntellect:Cast()
     --end
     -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
     if S.SeedofCorruption:IsCastableP() and Player:SoulShardsP() >= 1 and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (Cache.EnemiesCount[5] >= 3) then
@@ -314,7 +318,7 @@ local function APL()
       return S.Agony:Cast()
     end
     -- agony,target_if=min:remains,if=!talent.creeping_death.enabled&active_dot.agony<8&target.time_to_die>10&(remains<=gcd|cooldown.summon_darkglare.remains>10&refreshable)
-    if S.Agony:IsCastableP() and not S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD() or S.SummonDarkglare:CooldownRemainsP() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) < 5 or not S.PandemicInvocation:AzeriteEnabled() and TargetUnit:DebuffRefreshableCP(S.AgonyDebuff))) then
+    if S.Agony:IsCastableP() and not S.CreepingDeath:IsAvailable() and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD() or S.SummonDarkglare:CooldownRemainsP() > 10 and (Target:DebuffRemainsP(S.AgonyDebuff) < 5 or not S.PandemicInvocation:AzeriteEnabled() and Target:DebuffRefreshableCP(S.AgonyDebuff))) then
 	--if S.Agony:IsCastableP() and (not S.CreepingDeath:IsAvailable()) and Target:DebuffRemainsP(S.AgonyDebuff) < 8 and Target:TimeToDie() > 10 and ((Target:DebuffRemainsP(S.AgonyDebuff) <= Player:GCD()) or (S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.AgonyDebuff)))   then
       return S.Agony:Cast()
     end
@@ -465,7 +469,7 @@ local function APL()
   end
   
   -- call precombat
-	if not Player:AffectingCombat() and RubimRH.TargetIsValid() and not Player:IsCasting() then
+	if not Player:AffectingCombat() and not Player:IsCasting()  then
 		local ShouldReturn = Precombat(); 
 		    if ShouldReturn then return ShouldReturn; 
         end
