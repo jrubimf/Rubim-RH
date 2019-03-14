@@ -444,59 +444,61 @@ local function CDs ()
     end
 end
 -- # Stealthed
-local function Stealthed ()
-    -- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
-    if S.Rupture:IsReady("Melee") and ComboPoints >= 4
-            and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
-            and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
-        return S.Rupture:Cast()
-    end
-    -- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
-    if S.Envenom:IsReady("Melee") and ComboPoints >= CPMaxSpend() then
-        return S.Envenom:Cast()
-    end
-    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
-        local function Evaluate_Garrote_Target_A(TargetUnit)
-            return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
-                    and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_A(Target)
-                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&pmultiplier<=1&target.time_to_die-remains>2
-        local function Evaluate_Garrote_Target_B(TargetUnit)
-            return TargetUnit:PMultiplier(S.Garrote) <= 1 and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_B(Target)
-                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-    end
-    -- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
-    if S.Rupture:IsReady("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
-        return S.Rupture:Cast()
-    end
-    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
-        local function Evaluate_Garrote_Target_C(TargetUnit)
-            return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
-                and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-        -- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
-        if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
-            -- actions.stealthed+=/pool_resource,for_next=1
-            if Player:EnergyPredicted() < 45 then
-                S.Garrote:QueueAuto()
-                return 0, 135328
-            end
-            return S.Garrote:Cast()
-        end
-    end
+local function Stealthed ()	
+	if IsStealthed() then 
+		-- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
+		if S.Rupture:IsReady("Melee") and ComboPoints >= 4
+				and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
+				and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
+			return S.Rupture:Cast()
+		end
+		-- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
+		if S.Envenom:IsReady("Melee") and ComboPoints >= CPMaxSpend() then
+			return S.Envenom:Cast()
+		end
+		if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
+			local function Evaluate_Garrote_Target_A(TargetUnit)
+				return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
+						and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_A(Target)
+					and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&pmultiplier<=1&target.time_to_die-remains>2
+			local function Evaluate_Garrote_Target_B(TargetUnit)
+				return TargetUnit:PMultiplier(S.Garrote) <= 1 and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_B(Target)
+					and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+		end
+		-- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
+		if S.Rupture:IsReady("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
+			return S.Rupture:Cast()
+		end
+		if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
+			local function Evaluate_Garrote_Target_C(TargetUnit)
+				return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
+					and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+			-- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
+			if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
+				-- actions.stealthed+=/pool_resource,for_next=1
+				if Player:EnergyPredicted() < 45 then
+					S.Garrote:QueueAuto()
+					return 0, 135328
+				end
+				return S.Garrote:Cast()
+			end
+		end
+	end
 end
 
 								  
@@ -706,9 +708,11 @@ local function APL ()
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
-
+		
         if RubimRH.TargetIsValid(true) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
-            if Stealthed() ~= nil then
+			if not IsStealthed() and (Stealth:IsReady() or Stealth:CooldownRemainsP() <= 0) then 
+				return S.Stealth:Cast()			
+            elseif Stealthed() ~= nil then
                 return Stealthed()
             end
         end
