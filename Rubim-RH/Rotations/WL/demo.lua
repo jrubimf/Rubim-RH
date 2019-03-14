@@ -604,11 +604,11 @@ local function Implosion()
         return S.BilescourgeBombers:Cast()
     end  
   	-- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk2+RubimRH.AoEON
-    if S.Implosion:IsCastableP() and not Player:PrevGCDP(1, S.Implosion) and WildImpsCount() > 1 and WildImpsCount() >= mainAddon.db.profile[266].sk2 and RubimRH.AoEON() and not Player:PrevGCDP(1, S.SummonDemonicTyrant) then
+    if S.Implosion:IsCastableP() and not Player:PrevGCDP(1, S.Implosion) and WildImpsCount() > 2 and WildImpsCount() >= mainAddon.db.profile[266].sk2 and RubimRH.AoEON() and not Player:PrevGCDP(1, S.SummonDemonicTyrant) then
         return S.Implosion:Cast()
     end  
     -- implosion,if=(buff.wild_imps.stack>=6&(soul_shard<3|prev_gcd.1.call_dreadstalkers|buff.wild_imps.stack>=9|prev_gcd.1.bilescourge_bombers|(!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan))&!prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&buff.demonic_power.down)|(time_to_die<3&buff.wild_imps.stack>0)|(prev_gcd.2.call_dreadstalkers&buff.wild_imps.stack>2&!talent.demonic_calling.enabled)
-    if S.Implosion:IsCastableP() and not Player:PrevGCDP(1, S.Implosion) and (WildImpsCount() >= 6 and (FutureShard() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or WildImpsCount() >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan))) and not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and Player:BuffDownP(S.DemonicPowerBuff)) or (Target:TimeToDie() < 3 and WildImpsCount() > 0) or (Player:PrevGCDP(2, S.CallDreadStalkers) and WildImpsCount() > 2 and not S.DemonicCalling:IsAvailable()) then
+    if S.Implosion:IsCastableP() and not Player:PrevGCDP(1, S.Implosion) and (WildImpsCount() >= 6 and (FutureShard() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or WildImpsCount() >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan))) and not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and Player:BuffDownP(S.DemonicPowerBuff)) or (Target:TimeToDie() < 3 and WildImpsCount() > 2) or (Player:PrevGCDP(2, S.CallDreadStalkers) and WildImpsCount() > 2 and not S.DemonicCalling:IsAvailable()) then
         return S.Implosion:Cast()
     end
     -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13|!equipped.132369
@@ -820,11 +820,11 @@ local function APL()
       return S.Demonbolt:Cast()
     end
     -- implosion,if=azerite.explosive_potential.rank&buff.wild_imps.stack>2&buff.explosive_potential.remains<action.shadow_bolt.execute_time
-    if S.Implosion:IsCastableP() and S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() then
+    if S.Implosion:IsCastableP() and S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() >= 4 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() then
       return S.Implosion:Cast()
     end
     -- implosion,if=azerite.explosive_potential.rank&buff.wild_imps.stack>2&buff.explosive_potential.remains<cooldown.summon_demonic_tyrant.remains&cooldown.summon_demonic_tyrant.remains<11&talent.demonic_consumption.enabled
-    if S.Implosion:IsCastableP() and S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.SummonDemonicTyrant:CooldownRemainsP() and S.SummonDemonicTyrant:CooldownRemainsP() < 11 and S.DemonicConsumption:IsAvailable() then
+    if S.Implosion:IsCastableP() and S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() >= 4 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.SummonDemonicTyrant:CooldownRemainsP() and S.SummonDemonicTyrant:CooldownRemainsP() < 11 and S.DemonicConsumption:IsAvailable() then
       return S.Implosion:Cast()
     end
     -- doom,if=!ticking&time_to_die>30&spell_targets.implosion<2
