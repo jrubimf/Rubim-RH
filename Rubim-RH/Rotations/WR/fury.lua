@@ -177,7 +177,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
         -- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
-        if S.Bloodthirst:IsReady("Melee") and (Player:BuffDownP(S.Enrage)) or S.AzeriteColdSteelHotBlood:AzeriteEnabled() then
+        if S.Bloodthirst:IsReady("Melee") and Player:BuffDownP(S.Enrage) then
             return S.Bloodthirst:Cast()
         end
         -- raging_blow,if=charges=2
