@@ -128,7 +128,10 @@ local function APL()
             and not S.BlackOxStatue:IsReady() then
         UseBlackOxStatue = false
     end
-
+	-- Panda racial kick 2
+	if S.QuackingPalm:IsCastableP() and not S.SpearHandStrike:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.QuackingPalm:Cast()
+    end
     -- Kick
     if S.SpearHandStrike:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.SpearHandStrike:Cast()
@@ -136,11 +139,6 @@ local function APL()
             and not S.SpearHandStrike:IsReady() then
         UseKick = false
     end
-	-- Panda racial kick 2
-	if S.QuackingPalm:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
-        return S.QuackingPalm:Cast()
-    end
-
     --- Defensive Rotation
     if S.ExpelHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk1 then
         return S.ExpelHarm:Cast()
