@@ -22,6 +22,11 @@ local function EnergyWillCap()
 end
 
 local function AoE()
+	-- Leg Sweep
+	if S.LegSweep:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.LegSweep:Cast()
+    end
+	
     if S.BreathOfFire:IsReady("Melee") then
         return S.BreathOfFire:Cast()
     end
@@ -57,7 +62,7 @@ local function AoE()
     if S.RushingJadeWind:IsReady(8) then
         return S.RushingJadeWind:Cast()
     end
-
+	
     return nil
 end
 
