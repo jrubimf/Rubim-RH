@@ -4,7 +4,8 @@ local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
-local Item = HL.Item
+local Item = HL.Item;
+local mainAddon = RubimRH;
 -- Lua
 local pairs = pairs;
 local tableconcat = table.concat;
