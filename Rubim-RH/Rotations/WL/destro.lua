@@ -58,7 +58,7 @@ RubimRH.Spell[267] = {
   Whiplash                              = Spell(119909),--Bitch
   ShadowLock                            = Spell(171140),--doomguard
   MeteorStrike                          = Spell(171152),--infernal
-  SingeMagic                            = Spell(89808),--imp
+  SingeMagic                            = Spell(119905),--imp
   SpellLock 							= Spell(119898),
   Shadowfury                            = Spell(30283),
   -- Defensive
@@ -468,7 +468,7 @@ local function APL()
         -- food
         -- augmentation
         -- summon_pet
-        if S.SummonPet:IsCastableP() then
+        if S.SummonPet:IsCastableP() and not IsPetInvoked() then
             return S.SummonPet:Cast()
         end
         -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
