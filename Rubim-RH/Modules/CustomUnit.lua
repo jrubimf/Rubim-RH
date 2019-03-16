@@ -639,26 +639,26 @@ function Unit:IsDispellable()
 end
 
 -- Round function
-function round(number, decimals)
-    return (("%%.%df"):format(decimals)):format(number)
+function round(num, numDecimalPlaces)
+    return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
 -- Range enemies count by Ayni
 local logUnits, activeUnits = {}, {}
 
-RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_ENABLED', function()
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_ENABLED', function()
         if not InCombatLockdown() and not Player:AffectingCombat() then
             wipe(logUnits)
             wipe(activeUnits)            
         end        
 end)
 
-RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_DISABLED', function()
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_DISABLED', function()
     wipe(logUnits)
 	wipe(activeUnits)
 end)
 
-RubimRH.Listener:Add('Active_Enemies', "COMBAT_LOG_EVENT_UNFILTERED", function(...)
+RubimRH.Listener:Add('Rubim_Events', "COMBAT_LOG_EVENT_UNFILTERED", function(...)
         local ts, event, _, SourceGUID, SourceName,_,_, DestGUID, DestName,_,_, spellID, spellName,_, auraType, Amount = CombatLogGetCurrentEventInfo()
         if 
         (
@@ -712,35 +712,42 @@ RubimRH.Listener:Add('Active_Enemies', "COMBAT_LOG_EVENT_UNFILTERED", function(.
         end                                       
 end)    
 
-function active_enemies(count)   
+function active_enemies()   
     local total = 1   
-	-- CombatLogs 
-	if next(logUnits) then 
-		wipe(activeUnits)
-		-- Check units  
-		for GUID in pairs(logUnits) do
-			-- Remove old units 
-			for UNIT, TIME in pairs(logUnits[GUID].Units) do 
-				if HL.GetTime() - TIME > 4.5 then 
-					logUnits[GUID].Count = logUnits[GUID].Count - 1
-					logUnits[GUID].Units[UNIT] = nil 					
-				end 
-			end 
-			-- Added actual active units count
-			table.insert(activeUnits, logUnits[GUID].Count)
-		end 
-		-- Sort my highest units count 
-		table.sort(activeUnits, function (a, b) return (a > b) end)
-		-- Result 
-		local sortedUnits = activeUnits[1] or 0
+    -- CombatLogs 
+    if next(logUnits) and UnitExists("target") then 
+        wipe(activeUnits)        
+        -- Check units  
+        local needRemove = true 
+        for GUID in pairs(logUnits) do                
+            for UNIT, TIME in pairs(logUnits[GUID].Units) do 
+                -- Remove old units 
+                if HL.GetTime() - TIME > 4.5 then 
+                    logUnits[GUID].Count = logUnits[GUID].Count - 1
+                    logUnits[GUID].Units[UNIT] = nil                     
+                end 
+                -- Check if Source caster has same target as your then we don't will delete 
+                if needRemove and UnitGUID("target") == UNIT then 
+                    needRemove = false  
+                end 
+            end 
+            if not needRemove then 
+                -- Added actual active units count
+                table.insert(activeUnits, logUnits[GUID].Count)
+                needRemove = true 
+            end 
+        end 
+        -- Sort my highest units count 
+        table.sort(activeUnits, function (a, b) return (a > b) end)
+        -- Result 
+        local sortedUnits = activeUnits[1] or 0
         total = (sortedUnits > 0 and sortedUnits) or 1
-	end 
+    end 
     
     -- If CombatLogs corrupted then query nameplates by units into combat
-	-- Note: Worn method since it can't keep in mind position 
+    -- Note: Worn method since it can't keep in mind position 
     if total == 1 then 
-       -- total = CombatUnits(nil, 40) -- this can be replaced by EnemyCount from Hero API    
-        total = Cache.EnemiesCount[40]		
+        total = CombatUnits(nil, 40)              
     end
     
     return total
@@ -768,7 +775,7 @@ end
  --   end
 --end
 
--- Range enemies count from pet range 
+-- Pet range 
 local pairs = pairs
 local oPetSlots = {
     -- Unholy 
