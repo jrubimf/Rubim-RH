@@ -136,6 +136,10 @@ local function APL()
             and not S.SpearHandStrike:IsReady() then
         UseKick = false
     end
+	-- Panda racial kick 2
+	if S.QuackingPalm:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.QuackingPalm:Cast()
+    end
 
     --- Defensive Rotation
     if S.ExpelHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk1 then
@@ -270,6 +274,11 @@ local function APL()
     if S.RushingJadeWind:IsReady() then
         return S.RushingJadeWind:Cast()
     end
+	
+	-- Vivify 10%
+    --if S.Vivify:IsReady() and Player:HealthPercentage() <= 10 then
+    --    return S.Vivify:Cast()
+    --end
 
     end
     return 0, 135328

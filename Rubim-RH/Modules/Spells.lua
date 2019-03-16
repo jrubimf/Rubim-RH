@@ -84,7 +84,9 @@ RubimRH.Spell[268] = {
     HealingElixir = Spell(122281),
     BlackOxStatue = Spell(115315),
     Guard = Spell(202162),
-    LegSweep = Spell(119381)
+    LegSweep = Spell(119381),
+	QuackingPalm = Spell(107079),
+	Vivify = Spell(116670)
 }
 
 --Windwalker
