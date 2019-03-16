@@ -2,9 +2,13 @@ local HL = HeroLib;
 local Cache = HeroCache;
 local Unit = HL.Unit;
 local Player = Unit.Player;
+local Pet = Unit.Pet;
 local Target = Unit.Target;
+local Arena = Unit.Arena;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local debug = RubimRH.DebugPrint;
+local mainAddon = RubimRH;
 
 do
     --  1      2     3      4            5           6             7           8           9                      10          11          12            13                14            15       16     17      18
@@ -498,3 +502,380 @@ local totalEnemies = 0
 function Unit:EnemiesAround(distance, ignoreCombat)
     return Cache.EnemiesCount[distance] or 0
 end
+
+-- Dispellables PvE Spells
+local DispellablesPvE = {
+        -- Venomfang Strike
+        [252687] = {dur = 0, stack = 0, dispelType = "Poison"},
+        -- Hidden Blade
+        [270865] = {dur = 0, stack = 0, dispelType = "Poison"},
+        -- Embalming Fluid 
+        [271563] = {dur = 0, stack = 3, dispelType = "Poison"},
+        -- Poison Barrage 
+        [270507] = {dur = 0, stack = 0, dispelType = "Poison"},
+        -- Stinging Venom Coating
+        [275835] = {dur = 0, stack = 4, dispelType = "Poison"},
+        -- Neurotoxin 
+        [273563] = {dur = 1.49, stack = 0, dispelType = "Poison"},
+        -- Cytotoxin 
+        [267027] = {dur = 0, stack = 2, dispelType = "Poison"},
+        -- Venomous Spit
+        [272699] = {dur = 0, stack = 0, dispelType = "Poison"},
+        -- Widowmaker Toxin
+        [269298] = {dur = 0, stack = 2, dispelType = "Poison"}, 
+        -- Stinging Venom
+        [275836] = {dur = 0, stack = 5, dispelType = "Poison"},  
+		
+        -- Infected Wound
+        [258323] = {dur = 0, stack = 1, dispelType = "Disease"},
+        -- Plague Step
+        [257775] = {dur = 0, stack = 0, dispelType = "Disease"},
+        -- Wretched Discharge
+        [267763] = {dur = 0, stack = 0, dispelType = "Disease"},
+        -- Plague 
+        [269686] = {dur = 0, stack = 0, dispelType = "Disease"},
+        -- Festering Bite
+        [263074] = {dur = 0, stack = 0, dispelType = "Disease"},
+        -- Decaying Mind
+        [278961] = {dur = 0, stack = 0, dispelType = "Disease"},
+        -- Decaying Spores
+        [259714] = {dur = 0, stack = 1, dispelType = "Disease"},
+        -- Festering Bite
+        [263074] = {dur = 0, stack = 0, dispelType = "Disease"},
+		
+        -- Wracking Pain
+        [250096] = {dur = 0, stack = 0, dispelType = "Curse"},
+        -- Pit of Despair
+        [276031] = {dur = 0, stack = 0, dispelType = "Curse"},
+        -- Hex 
+        [270492] = {dur = 0, stack = 0, dispelType = "Curse"},
+        -- Cursed Slash
+        [257168] = {dur = 0, stack = 2, dispelType = "Curse"},
+        -- Withering Curse
+        [252687] = {dur = 0, stack = 2, dispelType = "Curse"},
+		
+        -- Molten Gold
+        [255582] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Terrifying Screech
+        [255041] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Terrifying Visage
+        [255371] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Oiled Blade
+        [257908] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Choking Brine
+        [264560] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Electrifying Shock
+        [268233] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Touch of the Drowned (if no party member is afflicted by Mental Assault (268391))
+        [268322] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Mental Assault 
+        [268391] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Explosive Void
+        [269104] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Choking Waters
+        [272571] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Putrid Waters
+        [274991] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Flame Shock (if no party member is afflicted by Snake Charm (268008)))
+        [268013] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Snake Charm
+        [268008] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Brain Freeze
+        [280605] = {dur = 1.49, stack = 0, dispelType = "Magic"},
+        -- Transmute: Enemy to Goo
+        [268797] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Chemical Burn
+        [259856] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Debilitating Shout
+        [258128] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Torch Strike 
+        [265889] = {dur = 0, stack = 1, dispelType = "Magic"},
+        -- Fuselighter 
+        [257028] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Death Bolt 
+        [272180] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Putrid Blood
+        [269301] = {dur = 0, stack = 2, dispelType = "Magic"},
+        -- Grasping Thorns
+        [263891] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Fragment Soul
+        [264378] = {dur = 0, stack = 0, dispelType = "Magic"},
+        -- Reap Soul
+        [288388] = {dur = 0, stack = 20, dispelType = "Magic"},
+        -- Putrid Waters
+        [275014] = {dur = 0, stack = 0, dispelType = "Magic"},
+}
+-- Dispellables PvP Spells
+local DispellablesPvP = {
+ 
+}
+
+
+-- Dispell function
+function Unit:IsDispellable()
+	
+	-- checking target
+    if target == nil then
+        return false
+    end
+    
+	if target == "target" and not UnitExists("target") then
+        return false
+    end
+	
+	-- return boolean true if the player knows a spell to dispel the aura. &number The spell ID of the spell to dispel, or nil.
+    for p = 1, #DispellablesPvE do
+		-- if we can dispell our target and buff is matching Dispellables List and Dispell type to do is doable for the current specialisation
+	    if LibDispellable:CanDispel("target", false, DispellablesPvE[p].dispelType, Spell(DispellablesPvE[p])) then
+    --  if target:Buff(Spell(DispellablesPvE[p])) then
+            return true
+			--for index, spellID, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff in LibDispellable:IterateDispellableAuras("target", true) do
+            --    print("Can dispel", name, "on target using", GetSpellInfo(spellID))
+            --end
+        end
+    end
+    
+    return false
+end
+
+-- Round function
+function round(number, decimals)
+    return (("%%.%df"):format(decimals)):format(number)
+end
+
+-- Range enemies count by Ayni
+local logUnits, activeUnits = {}, {}
+
+RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_ENABLED', function()
+        if not InCombatLockdown() and not Player:AffectingCombat() then
+            wipe(logUnits)
+            wipe(activeUnits)            
+        end        
+end)
+
+RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_DISABLED', function()
+    wipe(logUnits)
+	wipe(activeUnits)
+end)
+
+RubimRH.Listener:Add('Active_Enemies', "COMBAT_LOG_EVENT_UNFILTERED", function(...)
+        local ts, event, _, SourceGUID, SourceName,_,_, DestGUID, DestName,_,_, spellID, spellName,_, auraType, Amount = CombatLogGetCurrentEventInfo()
+        if 
+        (
+            (
+                event == "SWING_DAMAGE" or
+                event == "RANGE_DAMAGE" or
+                event == "SPELL_DAMAGE" or
+                (
+                    (
+                        event == "SPELL_AURA_APPLIED" or
+                        event == "SPELL_AURA_REFRESH"
+                    ) and
+                    auraType == "DEBUFF" and
+                    UnitGUID("player") == SourceGUID                    
+                )
+            ) and                     
+            DestGUID and    
+            SourceGUID
+        ) then   
+            ts = round(ts, 0)  
+
+			if not logUnits[SourceGUID] then 
+				logUnits[SourceGUID] = {
+					TS = ts, 					
+					Count = 0,
+					Units = {},
+				}
+			end 
+			
+			if logUnits[SourceGUID] then 	
+				if not logUnits[SourceGUID].Units[DestGUID] then 
+					logUnits[SourceGUID].TS = ts
+					logUnits[SourceGUID].Count = logUnits[SourceGUID].Count + 1	
+					logUnits[SourceGUID].Units[DestGUID] = HL.GetTime()
+				end 
+				
+				if logUnits[SourceGUID].TS == ts then 
+					logUnits[SourceGUID].Units[DestGUID] = HL.GetTime()
+				end 
+			end         
+        end  
+        
+        -- Remove dead units
+        if event == "UNIT_DIED" and next(logUnits) then
+            for GUID in pairs(logUnits) do
+				if logUnits[GUID].Units[DestGUID] then 
+					logUnits[GUID].Count = logUnits[GUID].Count - 1
+					logUnits[GUID].Units[DestGUID] = nil
+				end 
+            end                    
+        end                                       
+end)    
+
+function active_enemies(count)   
+    local total = 1   
+	-- CombatLogs 
+	if next(logUnits) then 
+		wipe(activeUnits)
+		-- Check units  
+		for GUID in pairs(logUnits) do
+			-- Remove old units 
+			for UNIT, TIME in pairs(logUnits[GUID].Units) do 
+				if HL.GetTime() - TIME > 4.5 then 
+					logUnits[GUID].Count = logUnits[GUID].Count - 1
+					logUnits[GUID].Units[UNIT] = nil 					
+				end 
+			end 
+			-- Added actual active units count
+			table.insert(activeUnits, logUnits[GUID].Count)
+		end 
+		-- Sort my highest units count 
+		table.sort(activeUnits, function (a, b) return (a > b) end)
+		-- Result 
+		local sortedUnits = activeUnits[1] or 0
+        total = (sortedUnits > 0 and sortedUnits) or 1
+	end 
+    
+    -- If CombatLogs corrupted then query nameplates by units into combat
+	-- Note: Worn method since it can't keep in mind position 
+    if total == 1 then 
+       -- total = CombatUnits(nil, 40) -- this can be replaced by EnemyCount from Hero API    
+        total = Cache.EnemiesCount[40]		
+    end
+    
+    return total
+end
+
+
+-- Test 
+--PetBasicAttacks = {	
+--Hunter
+--17253, -- Bite
+--16827, -- Claw
+--49966, -- Smack
+
+-- Warlock
+--30213, --Legion Strike
+--}
+
+--function IsPetInRange(unit)
+ --   if UnitExists(unit) and UnitExists("pet") then
+  --      for i = 1, #PetBasicAttacks do 
+--		    if IsSpellInRange(GetSpellInfo(PetBasicAttacks[i]),unit) == 1 then 
+--			    return true 
+--			end 
+--		end
+ --   end
+--end
+
+-- Range enemies count from pet range 
+local pairs = pairs
+local oPetSlots = {
+    -- Unholy 
+    [252] = {
+        [47482] = 0, -- Jump
+        [47481] = 0, -- Gnaw
+    }, 
+	-- Demonology
+	[266] = {
+        [30213] = 0, -- Legion Strike
+    }, 
+}
+function RubimRH.PetSpellInRange(id, unit)
+    if not unit then 
+	    unit = "target" 
+	end 
+    local slot = oPetSlots[RubimRH.playerSpec] and oPetSlots[RubimRH.playerSpec][id]
+    return (slot and slot > 0 and IsActionInRange(slot, unit)) or false
+end 
+
+function RubimRH.PetAoE(spellID, stop)
+    local UnitPlates = GetActiveUnitPlates("enemy")
+    local total = 0 
+    if UnitPlates then 
+        for reference, unit in pairs(UnitPlates) do
+            if type(spellID) == "table" then
+                for k, v in pairs(spellID) do
+                    if RubimRH.PetSpellInRange(v, unit) then
+                        total = total + 1  
+                        break
+                    end
+                end
+            elseif RubimRH.PetSpellInRange(spellID, unit) then 
+                total = total + 1                                            
+            end  
+            
+            if stop and total >= stop then
+                break                        
+            end     
+        end
+    end 
+    return total 
+end 
+
+-- ================= CORE =================
+local PetEvent_timestamp = HL.GetTime() 
+
+local function UpdatePetSlots()
+    PetEvent_timestamp = HL.GetTime() 
+    local display_error = false    
+    for k, v in pairs(oPetSlots[RubimRH.playerSpec]) do            
+        if v == 0 then 
+            for i = 1, 120 do 
+                actionType, id, subType = GetActionInfo(i)
+                if subType == "pet" and k == id then 
+                    oPetSlots[RubimRH.playerSpec][k] = i 
+                    break 
+                end 
+                if i == 120 then 
+                    display_error = true
+                end 
+            end
+        end
+    end        
+    -- Display errors 
+    if display_error then 
+        print(HL.GetTime() .. ": The following spells missed on your action bars:")
+        print("Note: PetActionBar doesn't work, you need place following pet spells to normal any slot on any action bar")
+        for k, v in pairs(oPetSlots[RubimRH.playerSpec]) do
+            if v == 0 then
+                print(GetSpellInfo(k) .. " is not found on your action bar")
+            end                
+        end 
+    end       
+end 
+
+RubimRH.Listener:Add('PetSlots_Events', "UNIT_PET", function(...)
+        if oPetSlots[RubimRH.playerSpec] and  ... == "player" and (PetHasActionBar() or GetPetActionsUsable()) and HL.GetTime() ~= PetEvent_timestamp then     
+            for k, v in pairs(oPetSlots[RubimRH.playerSpec]) do
+                if v == 0 then 
+                    UpdatePetSlots()
+                    break
+                end
+            end                 
+        end 
+end)
+
+RubimRH.Listener:Add('PetSlots_Events', "ACTIONBAR_SLOT_CHANGED", function(...)
+        if oPetSlots[RubimRH.playerSpec] and (PetHasActionBar() or GetPetActionsUsable()) and HL.GetTime() ~= PetEvent_timestamp then
+            for k, v in pairs(oPetSlots[RubimRH.playerSpec]) do
+                if v == 0 or v == ... then 
+                    oPetSlots[RubimRH.playerSpec][k] = 0
+                    UseUpdate = true 
+                end
+            end         
+            if UseUpdate then 
+                UpdatePetSlots()
+            end
+        end 
+end)
+
+-- Enter game 
+if RubimRH.playerSpec and oPetSlots[RubimRH.playerSpec] then 
+    UpdatePetSlots()
+end 
+
+
+
+
+

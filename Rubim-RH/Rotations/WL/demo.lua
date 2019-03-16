@@ -901,7 +901,7 @@ local function APL()
         end
     end  
     -- call_action_list,name=implosion,if=spell_targets.implosion>1
-    if (Cache.EnemiesCount[40] > 1) and RubimRH.AoEON() then
+    if (active_enemies(3) and RubimRH.PetSpellInRange(30213, target)) and RubimRH.AoEON() then
         if Implosion() ~= nil then
             return Implosion()
         end
