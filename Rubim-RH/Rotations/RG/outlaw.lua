@@ -291,7 +291,7 @@ end
     end
 end
 local function Stealth ()
-    if Target:IsInRange(S.SinisterStrike) and ( not Target:IsAPlayer() or Target:IsCC()) then
+    if Target:IsInRange(S.SinisterStrike) and (not Target:IsAPlayer() or Target:IsCC()) then
         -- actions.stealth=ambush
         if S.Ambush:IsReady() then
             return S.Ambush:Cast()
@@ -299,19 +299,18 @@ local function Stealth ()
     end
 end
 
-		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
-			 if not Target:IsImmune() and  Target:IsInRange("Melee") and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
-			       return S.CheapShot:Cast() 
-        end
+if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
+	if not Target:IsImmune() and  Target:IsInRange("Melee") and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+		return S.CheapShot:Cast() 
+    end
+end
+if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) then
+	if Player:IsStealthed()  and  Target:IsInRange(10) and not Target:AffectingCombat() and (Target:IsTargeting(Player) or Target:CastingCC() or Target:IsBursting()) then
+		if not Target:IsImmune()  and S.Sap:IsReady() then
+			return S.Sap:Cast()								  
 		end
-				 if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) then
-			if Player:IsStealthed()  and  Target:IsInRange(10) and not Target:AffectingCombat() and (Target:IsTargeting(Player) or Target:CastingCC()  or Target:IsBursting()) then
-					 if not Target:IsImmune()  and S.Sap:IsReady() then
-			                      return S.Sap:Cast()
-								  
-								  end
-								  end
-								  end
+	end
+end
 		
 
 local function Finish ()

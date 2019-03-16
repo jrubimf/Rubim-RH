@@ -65,11 +65,42 @@ end
 -- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
 
-    --- Not in combat
-    if not Player:AffectingCombat() then
-        return 0, 462338
+	Precombat = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+    --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions then
+    --  if I.CastSuggested(I.ProlongedPower) then return "prolonged_power 4"; end
+    --end
+	    -- rushing_jade_wind
+        if S.RushingJadeWind:IsCastableP() then
+            return S.RushingJadeWind:Cast() 
+        end
+        -- chi_burst
+        if S.ChiBurst:IsCastableP() then
+            return S.ChiBurst:Cast()
+        end
+        -- chi_wave
+        if S.ChiWave:IsCastableP() then
+            return S.ChiWave:Cast() 
+        end
     end
-
+      --- Not in combat
+  --  if not Player:AffectingCombat() then
+  --      return 0, 462338
+ --   end
+    -- call precombat
+  	-- call precombat
+    if not Player:AffectingCombat() and not Player:IsCasting() then
+        if Precombat() ~= nil then
+            return Precombat()
+        end
+    end
+  
+    if RubimRH.TargetIsValid() then
+	
     -- Unit Update
     HL.GetEnemies(8, true);
     HL.GetEnemies(15, true);
@@ -240,6 +271,7 @@ local function APL()
         return S.RushingJadeWind:Cast()
     end
 
+    end
     return 0, 135328
 end
 RubimRH.Rotation.SetAPL(268, APL);
