@@ -10,6 +10,10 @@ local Item = HL.Item;
 local debug = RubimRH.DebugPrint;
 local mainAddon = RubimRH;
 
+local pairs, next = pairs, next
+
+local UnitIsPlayer, UnitExists, UnitGUID = UnitIsPlayer, UnitExists, UnitGUID
+
 do
     --  1      2     3      4            5           6             7           8           9                      10          11          12            13                14            15       16     17      18
     -- name, icon, count, dispelType, duration, expirationTime, caster, canStealOrPurge, nameplateShowPersonal, spellID, canApplyAura, isBossAura, casterIsPlayer, nameplateShowAll, timeMod, value1, value2, value3
@@ -636,6 +640,28 @@ function Unit:IsDispellable()
     end
     
     return false
+end
+
+-- Units 
+-- AutoTarget 
+function CombatUnits(stop, range, upttd)
+    local totalmobs = 0   
+    if activeUnitPlates then
+        for reference, unit in pairs(activeUnitPlates) do
+            if 
+            CombatTime(unit) > 0 and 
+            ( not range or SpellInteract(unit, range) ) and 
+            ( not upttd or TimeToDie(unit) >= upttd ) then 
+                totalmobs = totalmobs + 1            
+                
+                if stop and totalmobs >= stop then                  
+                    break
+                end    
+            end
+        end   
+    end    
+    -- True/False or Number
+    return (stop and totalmobs >= stop) or (not stop and totalmobs) 
 end
 
 -- Round function

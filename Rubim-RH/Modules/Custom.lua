@@ -101,6 +101,10 @@ local function RemoveNameplate(unitID)
     activeUnitPlates[unitframe] = nil
 end
 
+RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function()
+        wipe(activeUnitPlates)  
+end) 
+
 RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
     local unitID = ...
     --AddNameplate(unitID)
@@ -110,6 +114,11 @@ RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
     local unitID = ...
     --RemoveNameplate(unitID)
 end)
+
+-- For refference 
+function GetActiveUnitPlates(reaction)
+    return activeUnitPlates[reaction] or nil
+end 
 
 function DiyingIn()
     HL.GetEnemies(10, true); -- Blood Boil
@@ -583,6 +592,4 @@ function RubimRH.GetCurrentLatency()
 	return percentlatency or 0
 	
 end
-	
-
 
