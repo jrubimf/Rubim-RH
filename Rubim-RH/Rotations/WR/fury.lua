@@ -169,7 +169,7 @@ local function APL()
             return S.Rampage:Cast()
         end
         -- execute
-        if S.Execute:IsReadyMorph("Melee") then
+        if S.Execute:IsReady("Melee") then
             return S.Execute:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage
