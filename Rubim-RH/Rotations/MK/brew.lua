@@ -150,8 +150,7 @@ local function APL()
     end
 
     -- Fortifying Brew
-    if S.FortifyingBrew:IsReady()
-            and Player:NeedPanicHealing() then
+    if S.FortifyingBrew:IsReady() and Player:HealthPercentage() <= 20 then
         return S.FortifyingBrew:Cast()
     end
 
