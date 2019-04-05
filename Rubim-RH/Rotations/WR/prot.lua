@@ -166,6 +166,14 @@ local function APL()
         if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= 30 then
             return S.ShieldWall:Cast()
         end
+		-- Impending Victory -> Cast when < 85% HP
+        if S.ImpendingVictory:IsReady("Melee") and Player:HealthPercentage() <= 85 then
+            return S.VictoryRush:Cast()
+        end
+		-- Victory Rush -> Buff about to expire
+        if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady("Melee") then
+            return S.VictoryRush:Cast()
+        end
         -- auto_attack
         -- intercept
         -- use_item,name=ramping_amplitude_gigavolt_engine
