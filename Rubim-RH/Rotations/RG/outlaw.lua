@@ -4,8 +4,7 @@ local Unit = HL.Unit;
 local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
-local Item = HL.Item;
-local mainAddon = RubimRH;
+local Item = HL.Item
 -- Lua
 local pairs = pairs;
 local tableconcat = table.concat;
@@ -56,8 +55,7 @@ RubimRH.Spell[260] = {
 	DFA = Spell (269513),
 	Shiv = Spell (248744),
 	SmokeBomb = Spell (212182),
-	CheapShot = Spell(1833),
-	Sap = Spell (6770),
+	
     -- Roll the Bones
     Broadside = Spell(193356),
     BuriedTreasure = Spell(199600),
@@ -207,34 +205,6 @@ local function CDs ()
     -- TODO: Add Potion
     -- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
     -- TODO: Add Items
-			 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
-					if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
-            if not Target:IsImmune() and S.DFA:IsReady()  then
-                return S.DFA:Cast()
-        end
-    end
-end
-
-
-
-				    if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsInRange("Melee") and Target:AffectingCombat() then
-            if not Target:IsImmuneMagic() then
-            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() and not Target:IsCC() then
-                return S.Shiv:Cast()
-        end
-    end
-end
-
-
-
-							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
-								if not Target:IsCC()  and Target:IsInRange("Melee") and Player:AffectingCombat()  then
-			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
-                               return S.SmokeBomb:Cast()
-         end
-			end
-			   end
-	
     if Target:IsInRange(S.SinisterStrike) then
         if RubimRH.CDsON() then
             -- actions.cds+=/blood_fury
@@ -270,7 +240,7 @@ end
             return S.GhostlyStrike:Cast()
         end
         -- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
-        if S.KillingSpree:IsReady(10) and Blade_Flurry_Sync() and (EnergyTimeToMaxRounded() > 5 or RubimRH.CDsON() and Player:EnergyPredicted() < 15) then
+        if S.KillingSpree:IsReady(10) and Blade_Flurry_Sync() and (EnergyTimeToMaxRounded() > 5 or Player:EnergyPredicted() < 15) then
             return S.KillingSpree:Cast()
         end
         -- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
@@ -291,7 +261,7 @@ end
     end
 end
 local function Stealth ()
-    if Target:IsInRange(S.SinisterStrike) and (not Target:IsAPlayer() or Target:IsCC()) then
+    if Target:IsInRange(S.SinisterStrike) and ( not Target:IsAPlayer() or Target:IsCC()) then
         -- actions.stealth=ambush
         if S.Ambush:IsReady() then
             return S.Ambush:Cast()
@@ -299,18 +269,13 @@ local function Stealth ()
     end
 end
 
-if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
-	if not Target:IsImmune() and  Target:IsInRange("Melee") and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
-		return S.CheapShot:Cast() 
-    end
-end
-if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) then
-	if Player:IsStealthed()  and  Target:IsInRange(10) and not Target:AffectingCombat() and (Target:IsTargeting(Player) or Target:CastingCC() or Target:IsBursting()) then
-		if not Target:IsImmune()  and S.Sap:IsReady() then
-			return S.Sap:Cast()								  
+		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
+			 if not Target:IsImmune() and  IsInMeleeRange()  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+			       return S.CheapShot:Cast() 
+        end
 		end
-	end
-end
+		
+
 		
 
 local function Finish ()
@@ -342,7 +307,33 @@ local function Finish ()
         return S.BetweentheEyes:Cast()
     end
 end
+		 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
+					if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
+            if not Target:IsImmune() and S.DFA:IsReady()  then
+                return S.DFA:Cast()
+        end
+    end
+end
 
+
+
+				    if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and IsInMeleeRange() and Target:AffectingCombat() then
+            if not Target:IsImmuneMagic() then
+            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() then
+                return S.Shiv:Cast()
+        end
+    end
+end
+
+
+
+							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+								if not Target:IsCC()  and IsInMeleeRange() and Player:AffectingCombat()  then
+			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+                               return S.SmokeBomb:Cast()
+         end
+			end
+			   end
 
 
 local function Build ()
@@ -392,32 +383,38 @@ local function APL ()
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
     end
-
+	
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
         if IsStealthed() == false and S.Stealth:TimeSinceLastCast() >= 2 then
             return S.Stealth:Cast()
         end
+		
+	if RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 3 and not Player:BuffP(S.BladeFlurry) then
+            return S.BladeFlurry:Cast()
+		end
+		
         -- Flask
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
+					
         if RubimRH.TargetIsValid(true) and Target:IsInRange(S.SinisterStrike) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
             if Player:ComboPoints() >= 5 then
                 if S.Dispatch:IsReady() then
                     return S.Dispatch:Cast()
                 end
             else
-                if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
+			if Player:IsStealthed(true, true) and Player:BuffP(S.BladeFlurry) and S.Ambush:IsReady() or Player:IsStealthed(true, true) and S.Ambush:IsReady() and Blade_Flurry_Sync() then
                     return S.Ambush:Cast()
-                elseif S.SinisterStrike:IsReady() then
-                    return S.SinisterStrike:Cast()
+                elseif RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
+                    return S.BladeFlurry:Cast()
                 end
+			  end
             end
-        end
-        return 0, 462338
+       return 0, 462338
     end
 
     --Custom
