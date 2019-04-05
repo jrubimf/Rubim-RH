@@ -1,3 +1,4 @@
+-- 4/4/2019 rewrite
 local addonName, addonTable = ...;
 local HL = HeroLib;
 local Cache = HeroCache;
@@ -8,9 +9,6 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 RubimRH.Spell[254] = {
-    
-
-
     SummonPet = Spell(883),
     HuntersMarkDebuff = Spell(257284),
     HuntersMark = Spell(257284),
@@ -26,9 +24,7 @@ RubimRH.Spell[254] = {
     FocusedFire = Spell(278531),
     RapidFire = Spell(257044),
     Berserking = Spell(26297),
-    BerserkingBuff = Spell(26297),
     BloodFury = Spell(20572),
-    BloodFuryBuff = Spell(20572),
     AncestralCall = Spell(274738),
     Fireblood = Spell(265221),
     LightsJudgment = Spell(255647),
@@ -50,9 +46,8 @@ RubimRH.Spell[254] = {
 
     --CUSTOM
     Exhilaration = Spell(109304),
-    AspectoftheTurtle = Spell(186265),
+    AspectoftheTurtle = Spell(186256),
     CounterShot = Spell(147362),
-    
 }
 
 local S = RubimRH.Spell[254]
@@ -89,7 +84,6 @@ local function PetActive()
 end
 
 S.AimedShot:RegisterInFlight()
-S.SerpentSting:RegisterInFlight()
 
 local EnemyRanges = { 40 }
 local function UpdateRanges()
@@ -110,42 +104,10 @@ local function bool(val)
     return val ~= 0
 end
 
-local ShouldReturn; -- Used to get the return string
-
-local OffensiveCDs = {
-    S.Berserking,
-    S.BloodFury,
-    S.AncestralCall,
-    S.Fireblood,
-    S.LightsJudgment,
-    S.Trueshot,
-    S.DoubleTap,
-}
-
-local function UpdateCDs()
-    if RubimRH.CDsON() then
-        for i, spell in pairs(OffensiveCDs) do
-            if not spell:IsEnabledCD() then
-                RubimRH.delSpellDisabledCD(spell:ID())
-            end
-        end
-
-    end
-    if not RubimRH.CDsON() then
-        for i, spell in pairs(OffensiveCDs) do
-            if spell:IsEnabledCD() then
-                RubimRH.addSpellDisabledCD(spell:ID())
-            end
-        end
-    end
-end
-
+--- APL Main
 local function APL ()
     local Precombat, Cds, St, Trickshots
     UpdateRanges()
-    UpdateCDs()
-
-
 
     Precombat = function()
         if RubimRH.TargetIsValid() then
@@ -153,7 +115,7 @@ local function APL ()
             -- augmentation
             -- food
             -- summon_pet,if=active_enemies<3
-            if S.SummonPet:IsCastableP() and (Cache.EnemiesCount[40] < 3) then
+            if S.SummonPet:IsCastableP() and (not Player:IsMoving() and Cache.EnemiesCount[40] < 3) then
                 return S.SummonPet:Cast()
             end
             -- snapshot_stats
@@ -163,21 +125,21 @@ local function APL ()
                 return S.HuntersMark:Cast()
             end
             -- double_tap,precast_time=10
-            --if S.DoubleTap:IsCastableP() then
-                --return S.DoubleTap:Cast()
-            --end
+            if S.DoubleTap:IsCastableP() then
+                return S.DoubleTap:Cast()
+            end
             -- trueshot,precast_time=1.5,if=active_enemies>2
-            --if S.Trueshot:IsCastableP() and Player:BuffDownP(S.TrueshotBuff) and (Cache.EnemiesCount[40] > 2) then
-                --return S.Trueshot:Cast()
-            --end
+            if S.Trueshot:IsCastableP() and Player:BuffDownP(S.TrueshotBuff) and (Cache.EnemiesCount[40] > 2) then
+                return S.Trueshot:Cast()
+            end
             -- aimed_shot,if=active_enemies<3
-            --if S.AimedShot:IsReadyP() and (Cache.EnemiesCount[40] < 3) then
-                --return S.AimedShot:Cast()
-            --end
+            if S.AimedShot:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] < 3) then
+                return S.AimedShot:Cast()
+            end
         end
     end
 
-    if Player:IsChanneling() or Player:IsCasting() then
+    if Player:IsChanneling() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
@@ -208,29 +170,37 @@ local function APL ()
     --    end
 
     Cds = function()
-        -- hunters_mark,if=debuff.hunters_mark.down
-        if S.HuntersMark:IsCastableP() and (Target:DebuffDown(S.HuntersMarkDebuff)) then
+        -- hunters_mark,if=debuff.hunters_mark.down&!buff.trueshot.up
+        if S.HuntersMark:IsCastableP() and (Target:DebuffDown(S.HuntersMarkDebuff) and not Player:BuffP(S.TrueshotBuff)) then
             return S.HuntersMark:Cast()
         end
-        if S.DoubleTap:IsCastableP()  and (Target:TimeToDie() < 15 or S.AimedShot:CooldownRemainsP() < Player:GCD() and (Player:BuffP(S.TrueshotBuff) and (Player:BuffStackP(S.UnerringVisionBuff) > 6 or not S.UnerringVision:AzeriteEnabled()) or not S.CallingtheShots:IsAvailable()) and (not S.SurgingShots:AzeriteEnabled() and not S.Streamline:IsAvailable() and not S.FocusedFire:AzeriteEnabled())) then
+        -- double_tap,if=cooldown.rapid_fire.remains<gcd|cooldown.rapid_fire.remains<cooldown.aimed_shot.remains|target.time_to_die<20
+        if S.DoubleTap:IsCastableP() and (S.RapidFire:CooldownRemainsP() < Player:GCD() or S.RapidFire:CooldownRemainsP() < S.AimedShot:CooldownRemainsP() or Target:TimeToDie() < 20) then
             return S.DoubleTap:Cast()
         end
-        if S.Berserking:IsCastableP()  and (Player:BuffP(S.TrueshotBuff) and (Target:TimeToDie() > S.Berserking:BaseDuration() + S.BerserkingBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 13) then
+        -- berserking,if=cooldown.trueshot.remains>60
+        if S.Berserking:IsCastableP() and RubimRH.CDsON() and (S.Trueshot:CooldownRemainsP() > 60) then
             return S.Berserking:Cast()
         end
-        if S.BloodFury:IsCastableP()  and (Player:BuffP(S.TrueshotBuff) and (Target:TimeToDie() > S.BloodFury:BaseDuration() + S.BloodFuryBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 16) then
+        -- blood_fury,if=cooldown.trueshot.remains>30
+        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (S.Trueshot:CooldownRemainsP() > 30) then
             return S.BloodFury:Cast()
         end
-        if S.AncestralCall:IsCastableP()  and (Player:BuffP(S.TrueshotBuff) and (Target:TimeToDie() > S.AncestralCall:BaseDuration() + duration or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 16) then
+        -- ancestral_call,if=cooldown.trueshot.remains>30
+        if S.AncestralCall:IsCastableP() and RubimRH.CDsON() and (S.Trueshot:CooldownRemainsP() > 30) then
             return S.AncestralCall:Cast()
         end
-        if S.Fireblood:IsCastableP()  and (Player:BuffP(S.TrueshotBuff) and (Target:TimeToDie() > S.Fireblood:BaseDuration() + duration or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 9) then
+        -- fireblood,if=cooldown.trueshot.remains>30
+        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (S.Trueshot:CooldownRemainsP() > 30) then
             return S.Fireblood:Cast()
         end
-        if S.LightsJudgment:IsCastableP()  then
+        -- lights_judgment
+        if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() then
             return S.LightsJudgment:Cast()
         end
-        if S.Trueshot:IsCastableP() and (bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable()) or Target:TimeToDie() < 15) then
+        -- potion,if=buff.trueshot.react&buff.bloodlust.react|buff.trueshot.up&target.health.pct<20&talent.careful_aim.enabled|target.time_to_die<2
+        -- trueshot,if=focus>60&(buff.precise_shots.down&cooldown.rapid_fire.remains&target.time_to_die>cooldown.trueshot.duration_guess+duration|target.health.pct<20|!talent.careful_aim.enabled)|target.time_to_die<15
+        if S.Trueshot:IsCastableP() and (Player:Focus() > 60 and (Player:BuffDownP(S.PreciseShotsBuff) and bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 15) then
             return S.Trueshot:Cast()
         end
     end
@@ -241,7 +211,7 @@ local function APL ()
             return S.ExplosiveShot:Cast()
         end
         -- barrage,if=active_enemies>1
-        if S.Barrage:IsReadyP() and (Cache.EnemiesCount[40] > 1) then
+        if S.Barrage:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] > 1) then
             return S.Barrage:Cast()
         end
         -- a_murder_of_crows
@@ -252,51 +222,51 @@ local function APL ()
         if S.SerpentSting:IsCastableP() and (Target:DebuffRefreshableCP(S.SerpentStingDebuff) and not S.SerpentSting:InFlight()) then
             return S.SerpentSting:Cast()
         end
-        -- rapid_fire,if=focus<50&(buff.bloodlust.up&buff.trueshot.up|buff.trueshot.down)
-        if S.RapidFire:IsCastableP() and (Player:Focus() < 50 and (Player:HasHeroism() and Player:BuffP(S.TrueshotBuff) or Player:BuffDownP(S.TrueshotBuff))) then
+        -- rapid_fire,if=buff.trueshot.down|focus<70
+        if S.RapidFire:IsCastableP() and (Player:BuffDownP(S.TrueshotBuff) or Player:Focus() < 70) then
             return S.RapidFire:Cast()
         end
-        -- arcane_shot,if=buff.master_marksman.up&buff.trueshot.up&focus+cast_regen<focus.max
-        if S.ArcaneShot:IsCastableP() and (Player:BuffP(S.MasterMarksmanBuff) and Player:BuffP(S.TrueshotBuff) and Player:Focus() + Player:FocusCastRegen(S.ArcaneShot:ExecuteTime()) < Player:FocusMax()) then
+        -- arcane_shot,if=buff.trueshot.up&buff.master_marksman.up
+        if S.ArcaneShot:IsCastableP() and (Player:BuffP(S.MasterMarksmanBuff) and Player:BuffP(S.TrueshotBuff)) then
             return S.ArcaneShot:Cast()
         end
-        -- aimed_shot,if=buff.precise_shots.down|cooldown.aimed_shot.full_recharge_time<action.aimed_shot.cast_time|buff.trueshot.up
-        if S.AimedShot:IsReadyP() and (Player:BuffDownP(S.PreciseShotsBuff) or Player:Focus() < 70 or Player:BuffP(S.TrueshotBuff)) then
+        -- aimed_shot,if=buff.trueshot.up|(buff.double_tap.down|ca_execute)&buff.precise_shots.down|full_recharge_time<cast_time
+        if S.AimedShot:IsReadyP() and ((not Player:IsMoving() or Player:BuffP(S.DoubleTap)) and (Player:BuffP(S.TrueshotBuff) or (Player:BuffDownP(S.DoubleTap)) and Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTime() < S.AimedShot:CastTime())) then
             return S.AimedShot:Cast()
-        end
-        -- rapid_fire,if=focus+cast_regen<focus.max|azerite.focused_fire.enabled|azerite.in_the_rhythm.rank>1|azerite.surging_shots.enabled|talent.streamline.enabled
-        if S.RapidFire:IsCastableP() and (Player:Focus() + Player:FocusCastRegen(S.RapidFire:ExecuteTime()) <  Player:Focus() == 90 or S.FocusedFire:AzeriteEnabled() or S.IntheRhythm:AzeriteRank() > 1 or S.SurgingShots:AzeriteEnabled() or S.Streamline:IsAvailable()) then
-            return S.RapidFire:Cast()
         end
         -- piercing_shot
         if S.PiercingShot:IsCastableP() then
             return S.PiercingShot:Cast()
         end
-        -- arcane_shot,if=focus>85|(buff.precise_shots.up|focus>45&cooldown.trueshot.remains&target.time_to_die<25)&buff.trueshot.down|target.time_to_die<5
-        if S.ArcaneShot:IsCastableP() and (Player:Focus() > 70 or (Player:BuffP(S.PreciseShotsBuff) or Player:Focus() > 45 and bool(S.Trueshot:CooldownRemainsP()) and Target:TimeToDie() < 25) and Player:BuffDownP(S.TrueshotBuff) or Target:TimeToDie() < 5) then
-            return S.ArcaneShot:Cast()
+        -- arcane_shot,if=buff.trueshot.down&(buff.precise_shots.up&(focus>41|buff.master_marksman.up)|(focus>50&azerite.focused_fire.enabled|focus>75)&(cooldown.trueshot.remains>5|focus>80)|target.time_to_die<5)
+        if S.ArcaneShot:IsCastableP() and (Player:BuffDownP(S.TrueshotBuff) and (Player:BuffP(S.PreciseShotsBuff) and (Player:Focus() > 41 or Player:BuffP(S.MasterMarksmanBuff)) or (Player:Focus() > 50 and S.FocusedFire:AzeriteEnabled() or Player:Focus() > 75) and (S.Trueshot:CooldownRemainsP() > 5 or Player:Focus() > 80) or Target:TimeToDie() < 5)) then
+			return S.ArcaneShot:Cast()
         end
         -- steady_shot
-        if S.SteadyShot:IsCastableP() and Player:Focus() < 70  then
+        if S.SteadyShot:IsCastableP() then
             return S.SteadyShot:Cast()
         end
     end
 
     Trickshots = function()
         -- barrage
-        if S.Barrage:IsReadyP() then
+        if S.Barrage:IsReadyP() and (not Player:IsMoving()) then
             return S.Barrage:Cast()
         end
         -- explosive_shot
         if S.ExplosiveShot:IsCastableP() then
             return S.ExplosiveShot:Cast()
         end
+		-- aimed_shot,if=buff.trick_shots.up&ca_execute&buff.double_tap.up
+		if S.AimedShot:IsReadyP() and (Player:BuffP(S.TrickShotsBuff) and Player:BuffP(S.DoubleTap)) then
+			return S.AimedShot:Cast()
+		end
         -- rapid_fire,if=buff.trick_shots.up&(azerite.focused_fire.enabled|azerite.in_the_rhythm.rank>1|azerite.surging_shots.enabled|talent.streamline.enabled)
         if S.RapidFire:IsCastableP() and (Player:BuffP(S.TrickShotsBuff) and (S.FocusedFire:AzeriteEnabled() or S.IntheRhythm:AzeriteRank() > 1 or S.SurgingShots:AzeriteEnabled() or S.Streamline:IsAvailable())) then
             return S.RapidFire:Cast()
         end
         -- aimed_shot,if=buff.trick_shots.up&(buff.precise_shots.down|cooldown.aimed_shot.full_recharge_time<action.aimed_shot.cast_time)
-        if S.AimedShot:IsReadyP() and (Player:BuffP(S.TrickShotsBuff) and (Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime())) then
+        if S.AimedShot:IsReadyP() and (not Player:IsMoving() and (Player:BuffP(S.TrickShotsBuff) and (Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime()))) then
             return S.AimedShot:Cast()
         end
         -- rapid_fire,if=buff.trick_shots.up
@@ -304,7 +274,7 @@ local function APL ()
             return S.RapidFire:Cast()
         end
         -- multishot,if=buff.trick_shots.down|buff.precise_shots.up|focus>70
-        if S.Multishot:IsCastableP() and (Player:BuffDownP(S.TrickShotsBuff) or Player:BuffP(S.PreciseShotsBuff) or Player:Focus() > 70) then
+        if S.Multishot:IsCastableP() and (Player:BuffDownP(S.TrickShotsBuff) or Player:BuffP(S.PreciseShotsBuff) and not Player:BuffP(S.TrueshotBuff) or Player:Focus() > 70) then
             return S.Multishot:Cast()
         end
         -- piercing_shot
@@ -343,14 +313,14 @@ local function APL ()
             end
         end
         -- call_action_list,name=st,if=active_enemies<3
-        if (Cache.EnemiesCount[40] < 3) then
+        if (Cache.EnemiesCount[40] < 3 or not RubimRH.AoEON()) then
             local ShouldReturn = St();
             if ShouldReturn then
                 return ShouldReturn;
             end
         end
         -- call_action_list,name=trickshots,if=active_enemies>2
-        if (Cache.EnemiesCount[40] > 2) then
+        if (Cache.EnemiesCount[40] > 2 and RubimRH.AoEON()) then
             local ShouldReturn = Trickshots();
             if ShouldReturn then
                 return ShouldReturn;
@@ -370,4 +340,3 @@ local function PASSIVE()
 end
 
 RubimRH.Rotation.SetPASSIVE(254, PASSIVE)
-
