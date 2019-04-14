@@ -125,11 +125,11 @@ local function APL ()
                 return S.HuntersMark:Cast()
             end
             -- double_tap,precast_time=10
-            if S.DoubleTap:IsCastableP() then
+            if S.DoubleTap:IsCastableP() and RubimRH.CDsON then
                 return S.DoubleTap:Cast()
             end
             -- trueshot,precast_time=1.5,if=active_enemies>2
-            if S.Trueshot:IsCastableP() and Player:BuffDownP(S.TrueshotBuff) and (Cache.EnemiesCount[40] > 2) then
+            if S.Trueshot:IsCastableP() and RubimRH.CDsON and Player:BuffDownP(S.TrueshotBuff) and (Cache.EnemiesCount[40] > 2) then
                 return S.Trueshot:Cast()
             end
             -- aimed_shot,if=active_enemies<3
@@ -175,7 +175,7 @@ local function APL ()
             return S.HuntersMark:Cast()
         end
         -- double_tap,if=cooldown.rapid_fire.remains<gcd|cooldown.rapid_fire.remains<cooldown.aimed_shot.remains|target.time_to_die<20
-        if S.DoubleTap:IsCastableP() and (S.RapidFire:CooldownRemainsP() < Player:GCD() or S.RapidFire:CooldownRemainsP() < S.AimedShot:CooldownRemainsP() or Target:TimeToDie() < 20) then
+        if S.DoubleTap:IsCastableP() and RubimRH.CDsON and (S.RapidFire:CooldownRemainsP() < Player:GCD() or S.RapidFire:CooldownRemainsP() < S.AimedShot:CooldownRemainsP() or Target:TimeToDie() < 20) then
             return S.DoubleTap:Cast()
         end
         -- berserking,if=cooldown.trueshot.remains>60
@@ -200,7 +200,7 @@ local function APL ()
         end
         -- potion,if=buff.trueshot.react&buff.bloodlust.react|buff.trueshot.up&target.health.pct<20&talent.careful_aim.enabled|target.time_to_die<2
         -- trueshot,if=focus>60&(buff.precise_shots.down&cooldown.rapid_fire.remains&target.time_to_die>cooldown.trueshot.duration_guess+duration|target.health.pct<20|!talent.careful_aim.enabled)|target.time_to_die<15
-        if S.Trueshot:IsCastableP() and (Player:Focus() > 60 and (Player:BuffDownP(S.PreciseShotsBuff) and bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 15) then
+        if S.Trueshot:IsCastableP() and RubimRH.CDsON and (Player:Focus() > 60 and (Player:BuffDownP(S.PreciseShotsBuff) and bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 15) then
             return S.Trueshot:Cast()
         end
     end
@@ -231,7 +231,7 @@ local function APL ()
             return S.ArcaneShot:Cast()
         end
         -- aimed_shot,if=buff.trueshot.up|(buff.double_tap.down|ca_execute)&buff.precise_shots.down|full_recharge_time<cast_time
-        if S.AimedShot:IsReadyP() and ((not Player:IsMoving() or Player:BuffP(S.DoubleTap)) and (Player:BuffP(S.TrueshotBuff) or (Player:BuffDownP(S.DoubleTap)) and Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTime() < S.AimedShot:CastTime())) then
+        if S.AimedShot:IsReadyP() and not Player:IsMoving() and (Player:BuffP(S.TrueshotBuff) or (Player:BuffDownP(S.DoubleTap)) and Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTime() < S.AimedShot:CastTime()) then
             return S.AimedShot:Cast()
         end
         -- piercing_shot
@@ -258,7 +258,7 @@ local function APL ()
             return S.ExplosiveShot:Cast()
         end
 		-- aimed_shot,if=buff.trick_shots.up&ca_execute&buff.double_tap.up
-		if S.AimedShot:IsReadyP() and (Player:BuffP(S.TrickShotsBuff) and Player:BuffP(S.DoubleTap)) then
+		if S.AimedShot:IsReadyP() and not Player:IsMoving() and (Player:BuffP(S.TrickShotsBuff) and Player:BuffP(S.DoubleTap)) then
 			return S.AimedShot:Cast()
 		end
         -- rapid_fire,if=buff.trick_shots.up&(azerite.focused_fire.enabled|azerite.in_the_rhythm.rank>1|azerite.surging_shots.enabled|talent.streamline.enabled)
@@ -266,7 +266,7 @@ local function APL ()
             return S.RapidFire:Cast()
         end
         -- aimed_shot,if=buff.trick_shots.up&(buff.precise_shots.down|cooldown.aimed_shot.full_recharge_time<action.aimed_shot.cast_time)
-        if S.AimedShot:IsReadyP() and (not Player:IsMoving() and (Player:BuffP(S.TrickShotsBuff) and (Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime()))) then
+        if S.AimedShot:IsReadyP() and not Player:IsMoving() and (Player:BuffP(S.TrickShotsBuff) and (Player:BuffDownP(S.PreciseShotsBuff) or S.AimedShot:FullRechargeTimeP() < S.AimedShot:CastTime())) then
             return S.AimedShot:Cast()
         end
         -- rapid_fire,if=buff.trick_shots.up
