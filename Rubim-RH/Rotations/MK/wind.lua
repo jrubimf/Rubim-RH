@@ -41,7 +41,6 @@ RubimRH.Spell[269] = {
     InvokeXuentheWhiteTiger = Spell(123904),
     BloodFury = Spell(20572),
     Berserking = Spell(26297),
-    LightsJudgment = Spell(255647),
     TouchOfDeath = Spell(115080),
     StormEarthAndFire = Spell(137639),
     StormEarthAndFireBuff = Spell(137639),
@@ -180,7 +179,7 @@ if S.AncestralCall:IsReady() then
 return S.AncestralCall:Cast()
 end
 --actions.cd+=/touch_of_death,if=target.time_to_die>9
-if S.TouchOfDeath:IsReady() and Target:TimeToDie() > 9 then
+if S.TouchOfDeath:IsReadyP() and Target:TimeToDie() > 9 then
 return S.TouchOfDeath:Cast()
 end
 --actions.cd+=/storm_earth_and_fire,if=cooldown.storm_earth_and_fire.charges=2|(cooldown.fists_of_fury.remains<=6&chi>=3&cooldown.rising_sun_kick.remains<=1)|target.time_to_die<=15
