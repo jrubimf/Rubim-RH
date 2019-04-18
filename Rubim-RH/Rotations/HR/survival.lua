@@ -34,6 +34,7 @@ RubimRH.Spell[255] = {
     SerpentStingDebuff = Spell(259491),
     RaptorStrikeEagle = Spell(265189),
     RaptorStrike = Spell(186270),
+    CounterShot = Spell(147362),
     -- Pet
     CallPet = Spell(883),
     Intimidation = Spell(19577),
@@ -470,6 +471,11 @@ local function APL ()
     -- call precombat
     if not Player:AffectingCombat() then
         return Precombat()
+    end
+	
+    -- countershot in combat
+	if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.CounterShot:Cast()
     end
 
     if QueueSkill() ~= nil then

@@ -340,6 +340,10 @@ local function APL()
     end
 
     if RubimRH.TargetIsValid() then
+	-- countershot in combat
+	if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.CounterShot:Cast()
+    end
       -- auto_shot
       -- use_items
       -- call_action_list,name=cds
