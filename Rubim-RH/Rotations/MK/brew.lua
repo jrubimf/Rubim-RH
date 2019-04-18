@@ -218,6 +218,11 @@ local function APL()
             and S.InvokeNiuzaotheBlackOx:IsReady(40) then
         return S.InvokeNiuzaotheBlackOx:Cast()
     end
+	
+	-- Blackout Strike
+    if S.BlackoutStrike:IsReady("Melee") then
+        return S.BlackoutStrike:Cast()
+    end
 
     -- Keg Smash
     if S.KegSmash:IsReady(15) then
@@ -233,8 +238,7 @@ local function APL()
     --- Single-Target Priority
 
     -- Blackout Strike
-    if S.BlackoutStrike:IsReady("Melee")
-            and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
+    if S.BlackoutStrike:IsReady("Melee") and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
         return S.BlackoutStrike:Cast()
     end
 
