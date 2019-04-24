@@ -1,0 +1,11 @@
+## Interface: 80000
+## Title: Lib: Dispellable-1.0
+## Notes: Test whether the player can really dispell a buff or debuff, given its talents.
+## Author: Adirelle
+## X-Category: Library
+## X-License: BSD
+## Version: 1.1.1
+
+LibStub\LibStub.lua
+LibDispellable-1.0.lua
+LibDispellable-1.0.xml
