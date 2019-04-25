@@ -116,7 +116,7 @@ local function APL()
 
     --- Player Macro Options
     -- Paralysis
-    if S.Paralysis:IsReadyP() and MouseOver:IsInterruptible() then
+    if S.Paralysis:IsReadyP() and RubimRH.InterruptsON() and MouseOver:IsInterruptible() then
         return S.Paralysis
     end
     -- Leg Sweep
