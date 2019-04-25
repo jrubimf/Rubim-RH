@@ -810,7 +810,7 @@ function RubimRH.mainRotation(option)
 
     --endd
     if UnitInVehicle("Player") then
-        return 0, 975744
+        return 0, 236254
     end
 
     if Player:IsDeadOrGhost() then
