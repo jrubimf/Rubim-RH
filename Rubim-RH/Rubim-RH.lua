@@ -826,7 +826,7 @@ function RubimRH.mainRotation(option)
     end
 
     if ACTIVE_CHAT_EDIT_BOX ~= nil then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\chatting.tga"
+        return 0, 236254
     end
 
     if SpellIsTargeting() then
