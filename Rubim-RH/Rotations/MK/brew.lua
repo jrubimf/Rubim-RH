@@ -115,7 +115,10 @@ local function APL()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
     --- Player Macro Options
-
+    -- Paralysis
+    if S.Paralysis:IsReadyP() and MouseOver:IsInterruptible() then
+        return S.Paralysis
+    end
     -- Leg Sweep
     if S.LegSweep:IsReady()
             and UseLegSweep then
