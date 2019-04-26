@@ -58,5 +58,6 @@ Rotations\WL\destro.lua
 Rotations\MG\fire.lua
 Rotations\MG\frost.lua
 Rotations\MG\arcane.lua
+Rotations\PR\shadow.lua
 
 Modules\PVP.lua

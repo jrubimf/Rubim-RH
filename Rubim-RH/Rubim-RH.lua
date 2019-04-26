@@ -146,7 +146,7 @@ local EnabledRotation = {
     -- Priest
     [256] = false, -- Discipline
     [257] = false, -- Holy
-    [258] = false, -- Shadow
+    [258] = true, -- Shadow
     -- Rogue
     [259] = true, -- Assassination
     [260] = true, -- Outlaw
@@ -216,7 +216,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            version = 26092018,
+            version = 26042019,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -708,6 +708,26 @@ local defaults = {
             cooldowns = true
         },
         [64] = {
+            cooldowns = true,
+            sk1 = 10, -- IceBlock
+            sk1id = 45438, -- Iceblock
+            sk1tooltip = "Percent HP to use Ice Block",
+            sk2 = 90, -- IceBarrier
+            sk2id = 11426, -- IceBarrier
+            sk2tooltip = "Percent HP to use Ice Barrier",
+        }
+		
+		--Priest
+        [256] = {
+            cooldowns = true,
+            sk1 = 10, -- IceBlock
+            sk1id = 45438, -- Iceblock
+            sk1tooltip = "Percent HP to use Ice Block",
+        },
+        [257] = {
+            cooldowns = true
+        },
+        [258] = {
             cooldowns = true,
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
