@@ -86,6 +86,7 @@ RubimRH.Spell[268] = {
     Guard = Spell(202162),
     LegSweep = Spell(119381),
 	QuackingPalm = Spell(107079),
+	Paralysis = Spell(115078),
 	Vivify = Spell(116670)
 }
 
