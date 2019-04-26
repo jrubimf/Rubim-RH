@@ -193,7 +193,7 @@ local PetsData = {
 ----- Demonology ---------
 --------------------------
 -- Update the GuardiansTable
-local function UpdatePetTable()
+function UpdatePetTable()
     for key, petTable in pairs(HL.GuardiansTable.Pets) do
         if petTable then
             -- Remove expired pets
@@ -378,7 +378,7 @@ local function ImpsSpawnedDuring(miliseconds)
     ImpSpawned = ImpSpawned + 1
   end
 
-  if Player:IsCasting(S.HandOfGuldan) then
+  if Player:IsCasting(S.HandofGuldan) then
     ImpSpawned = ImpSpawned + (Player:SoulShards() >= 3 and 3 or Player:SoulShards())
   end
 
@@ -582,62 +582,63 @@ end
         
 		
 local function DconEpOpener()
-	-- hand_of_guldan,line_cd=30
-    if S.HandOfGuldan:IsCastableP() and not Player:IsCasting(S.HandOfGuldan) and (HL.CombatTime() < 2 and Player:SoulShardsP() > 2 and S.ExplosivePotential:AzeriteEnabled()) then
-        return S.HandOfGuldan:Cast()
+	-- demonic_strength
+    if S.DemonicStrength:IsCastableP() and IsPetInvoked() then
+        return S.DemonicStrength:Cast()
     end
-	-- implosion,if=buff.wild_imps.stack>2&buff.explosive_potential.down
-    if S.Implosion:IsCastableP() and (S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff)) and HL.CombatTime() < 8 then
-        return S.Implosion:Cast()
-    end
-	-- doom,line_cd=30
+    -- doom,line_cd=30
     if S.Doom:IsCastableP() and not Target:DebuffP(S.DoomDebuff) then
         return S.Doom:Cast()
-    end
-	-- hand_of_guldan,if=prev_gcd.1.hand_of_guldan&soul_shard>0&prev_gcd.2.soul_strike
-    if S.HandOfGuldan:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and FutureShard() > 0 and Player:PrevGCDP(2, S.SoulStrike)) then
-        return S.HandOfGuldan:Cast()
-    end
-	-- demonic_strength
-    if S.DemonicStrength:IsReadyP() and (Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight())) then
-        return S.DemonicStrength:Cast()
     end
 	-- bilescourge_bombers
     if S.BilescourgeBombers:IsCastableP() and FutureShard() > 1 then
         return S.BilescourgeBombers:Cast()
     end
-	-- build up to 5 shards
+	-- hand_of_guldan,line_cd=30
+    if S.HandOfGuldan:IsCastableP() and FutureShard() > 4 and HL.CombatTime() < 3 then
+        return S.HandOfGuldan:Cast()
+    end
+	-- hand_of_guldan,line_cd=30
+    if S.HandOfGuldan:IsCastableP() and WildImpsCount() >= 5 and FutureShard() > 0 then
+        return S.HandOfGuldan:Cast()
+    end
 	-- soul_strike,if=(soul_shard<3|soul_shard=4&buff.demonic_core.stack<=3)|buff.demonic_core.down&soul_shard<5
-    if S.SoulStrike:IsCastableP() and (not Player:HasHeroism() or HL.CombatTime() > 5 and Player:PrevGCDP(1, S.HandOfGuldan)) then
+    if S.SoulStrike:IsCastableP() and ((FutureShard() <= 2 or FutureShard() == 4 and Player:BuffStackP(S.DemonicCoreBuff) <= 3) or Player:BuffDownP(S.DemonicCoreBuff) and FutureShard() < 5) then
         return S.SoulStrike:Cast()
     end
+	-- implosion,if=buff.wild_imps.stack>2&buff.explosive_potential.down
+    if S.Implosion:IsCastableP() and WildImpsCount() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff) and HL.CombatTime() < 10 then
+        return S.Implosion:Cast()
+    end
+	-- build up to 5 shards
     -- grimoire_felguard
-    if S.GrimoireFelguard:IsCastableP() and (Player:SoulShardsP() == 5) then
+    if S.GrimoireFelguard:IsCastableP() and FutureShard() >= 5 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
         return S.GrimoireFelguardHack:Cast()
     end
 	-- summon_vilefiend
-    if S.SummonVilefiend:IsCastableP() and (Player:SoulShardsP() == 5) then
+    if S.SummonVilefiend:IsCastableP() and FutureShard() >= 4 and Player:BuffRemainsP(S.ExplosivePotentialBuff) >= 1 then
         return S.SummonVilefiend:Cast()
     end
 	-- call_dreadstalkers,if=prev_gcd.1.hand_of_guldan
-    if S.CallDreadStalkers:IsCastableP() and (Player:SoulShardsP() == 5)then
+    if S.CallDreadStalkers:IsCastableP() and (FutureShard() > 4 or Player:PrevGCDP(1, S.SummonVilefiend) or Player:PrevGCDP(1, S.GrimoireFelguard)) and Player:BuffRemainsP(S.ExplosivePotentialBuff) > 1 then
         return S.CallDreadStalkers:Cast()
     end
 	-- build to 5shards
-    -- hand_of_guldan,if=soul_shard=5
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() == 5) then
+	-- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
+    if S.HandOfGuldan:IsCastableP() and FutureShard() > 4 and DreadStalkersTime() > 1 and WildImpsCount() < 3 and (Player:PrevGCDP(1, S.ShadowBolt) or Player:PrevGCDP(1, S.Demonbolt) or Player:PrevGCDP(1, S.SoulStrike)) then
         return S.HandOfGuldan:Cast()
     end
-    -- hand_of_guldan,if=soul_shard>=3&prev_gcd.2.hand_of_guldan&time>5&(prev_gcd.1.soul_strike|!talent.soul_strike.enabled&prev_gcd.1.shadow_bolt)
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() >= 3 and Player:PrevGCDP(2, S.HandOfGuldan) and HL.CombatTime() > 5 and (Player:PrevGCDP(1, S.SoulStrike) or not S.SoulStrike:IsAvailable() and Player:PrevGCDP(1, S.ShadowBolt))) then
+	-- build to 3shards
+    -- hand_of_guldan,if=soul_shard=5|soul_shard=4&buff.demonic_calling.remains
+    if S.HandOfGuldan:IsCastableP() and FutureShard() > 2 and DreadStalkersTime() > 1 and WildImpsCount() > 1 then
         return S.HandOfGuldan:Cast()
     end
-	-- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-    if S.SummonDemonicTyrant:IsCastableP() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
-        return S.SummonDemonicTyrant:Cast()
+    -- summon_demonic_tyrant,if=prev_gcd.1.call_dreadstalkers
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (WildImpsCount() > 3 or (Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShards() <= 1 and HL.CombatTime() > 8)) then
+      return S.SummonDemonicTyrant:Cast()
     end
 	-- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and (FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff)) then
+    if S.Demonbolt:IsCastableP() and (FutureShard() <= 3 and Player:BuffRemainsP(S.DemonicCoreBuff) >= 1) then
         return S.Demonbolt:Cast()
     end
     -- call_action_list,name=build_a_shard
@@ -818,8 +819,6 @@ end
 local function APL()
     --local Precombat, BuildAShard, DconEpOpener, Implosion, NetherPortal, NetherPortalActive, NetherPortalBuilding
     UpdateRanges()
-	UpdatePetTable()
-	UpdateSoulShards()
     --print(HL.GuardiansTable.ImpCount);
 	--print(HL.GuardiansTable.ImpTotalEnergy);
 	
@@ -928,7 +927,7 @@ local function APL()
       return S.BilescourgeBombers:Cast()
     end
     -- summon_demonic_tyrant,if=soul_shard<3&(!talent.demonic_consumption.enabled|buff.wild_imps.stack>0)
-    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON()  and (Player:SoulShardsP() < 3 and (not S.DemonicConsumption:IsAvailable() or WildImpsCount() + ImpsSpawnedDuring(2000) >= 8) or Target:TimeToDie() < 20) then
+    if S.SummonDemonicTyrant:IsCastableP() and FutureShard() < 3 and RubimRH.CDsON() and (not S.DemonicConsumption:IsAvailable() or (Player:PrevGCDP(1, S.HandOfGuldan) and WildImpsCount() > 2 )) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
