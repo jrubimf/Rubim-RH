@@ -81,9 +81,9 @@ Restoration    | :x:   | :x:   |   8.0.1  |   |
 ### Warlock
 Spec  | PvE | PvP | patch | Notes
 :------: | :-----: | :---: | -----: | :------:
-Affliction    | :x:    |  :x:   |  8.0.1 |  | 
-Destruction    | :x:    |  :x:   |  8.0.1 |   | 
-Demonology    | :x:   | :x:   |   8.0.1  |   | 
+Affliction    | :heavy_check_mark:   |  :x:   |  8.0.1 |  | 
+Destruction    | :heavy_check_mark:    |  :x:   |  8.0.1 |   | 
+Demonology    | :heavy_check_mark:   | :x:   |   8.0.1  |   | 
 
 
 ### Warrior
