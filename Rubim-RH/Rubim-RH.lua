@@ -611,6 +611,9 @@ local defaults = {
             sk1 = 50,
             sk1id = 115072, -- ExpelHarm
             sk1tooltip = "Percent HP to use Expel Harm",
+			sk2 = 20,
+            sk2id = 115203, -- Fortifying brew
+            sk2tooltip = "Percent HP to use Fortifying Brew",
         },
         [Windwalker] = {
             cooldown = true,

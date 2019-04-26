@@ -153,7 +153,7 @@ local function APL()
     end
 
     -- Fortifying Brew
-    if S.FortifyingBrew:IsReady() and Player:HealthPercentage() <= 20 then
+    if S.FortifyingBrew:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk2 then
         return S.FortifyingBrew:Cast()
     end
 
