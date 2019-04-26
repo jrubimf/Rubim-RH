@@ -235,7 +235,10 @@ local function APL()
     if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk1 then
         return S.VictoryRush:Cast()
     end
-
+	-- Victory Rush -> Buff about to expire
+    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady("Melee") then
+        return S.VictoryRush:Cast()
+    end
     if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk2 then
         return S.VictoryRush:Cast()
     end
