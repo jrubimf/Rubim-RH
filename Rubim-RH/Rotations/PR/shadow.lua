@@ -170,7 +170,7 @@ local function APL()
       return S.MindSear:Cast() 
     end
     -- void_bolt
-    if S.VoidBolt:IsCastableP() then
+    if S.VoidBolt:IsReadyP() or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast() 
     end
     -- shadow_word_death,target_if=target.time_to_die<3|buff.voidform.down
@@ -222,7 +222,7 @@ local function APL()
       return S.MindSear:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and not (Player:BuffP(S.VoidformBuff)) then
+    if S.MindFlay:IsCastableP() then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
@@ -241,7 +241,7 @@ local function APL()
       return S.DarkAscension:Cast()
     end
     -- void_bolt
-    if S.VoidBolt:IsCastableP() then
+    if S.VoidBolt:IsReadyP() or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast()
     end
     -- mind_sear,if=buff.harvested_thoughts.up&cooldown.void_bolt.remains>=1.5&azerite.searing_dialogue.rank>=1
@@ -293,7 +293,7 @@ local function APL()
       return S.VampiricTouch:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and not (Player:BuffP(S.VoidformBuff))then
+    if S.MindFlay:IsCastableP() then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
@@ -317,7 +317,7 @@ local function APL()
     --  return I.BattlePotionofIntellect:Cast() "battle_potion_of_intellect 283"; end
     --end
 	-- void_bolt
-    if S.VoidBolt:IsCastableP() then
+    if S.VoidBolt:IsReadyP() then
       return S.VoidBolt:Cast()
     end
     -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking
@@ -337,6 +337,7 @@ local function APL()
       return Single();
     end
   end
+  return 0, 135328
 end   
 
 RubimRH.Rotation.SetAPL(258, APL)
