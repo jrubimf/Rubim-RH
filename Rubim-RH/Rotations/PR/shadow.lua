@@ -102,9 +102,10 @@ local function ExecuteRange ()
 end
 
 
+
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat, Cleave, Single
+  local Precombat, Cleave, Single, AutoDotCycle
   UpdateRanges()
   
   Precombat = function()
@@ -170,7 +171,7 @@ local function APL()
       return S.MindSear:Cast() 
     end
     -- void_bolt
-    if S.VoidBolt:IsReadyP() or Player:IsCasting(S.VoidEruption) then
+    if S.VoidBolt:IsCastable() or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast() 
     end
     -- shadow_word_death,target_if=target.time_to_die<3|buff.voidform.down
@@ -222,13 +223,22 @@ local function APL()
       return S.MindSear:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() then
+    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
     if S.ShadowWordPain:IsCastableP() then
       return S.ShadowWordPain:Cast()
     end
+  end
+  
+  -- Auto switch target function
+  AutoDotCycle = function()
+    if S.VampiricTouch:IsCastableP() and S.ShadowWordPain:IsCastableP() then
+        if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 17 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 13 then
+			return 0, CacheGetSpellTexture(153911)     
+		end		
+	end
   end
   
   Single = function()
@@ -241,11 +251,11 @@ local function APL()
       return S.DarkAscension:Cast()
     end
     -- void_bolt
-    if S.VoidBolt:IsReadyP() or Player:IsCasting(S.VoidEruption) then
+    if S.VoidBolt:IsCastable() or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast()
     end
     -- mind_sear,if=buff.harvested_thoughts.up&cooldown.void_bolt.remains>=1.5&azerite.searing_dialogue.rank>=1
-    if S.MindSear:IsCastableP() and (Player:BuffP(S.HarvestedThoughtsBuff) and S.VoidBolt:CooldownRemainsP() >= 1.5 and S.SearingDialogue:AzeriteRank() >= 1) then
+    if S.MindSear:IsCastableP() and Player:BuffP(S.HarvestedThoughtsBuff) and S.VoidBolt:CooldownRemainsP() >= 1.5 and S.SearingDialogue:AzeriteRank() >= 1 then
       return S.MindSear:Cast()
     end
     -- shadow_word_death,if=target.time_to_die<3|cooldown.shadow_word_death.charges=2|(cooldown.shadow_word_death.charges=1&cooldown.shadow_word_death.remains<gcd.max)
@@ -261,7 +271,7 @@ local function APL()
       return S.DarkVoid:Cast()
     end
     -- mindbender,if=talent.mindbender.enabled|(buff.voidform.stack>18|target.time_to_die<15)
-    if S.Mindbender:IsCastableP() and (S.MindbenderTalent:IsAvailable() or (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15)) then
+    if S.Mindbender:IsCastableP() and S.MindbenderTalent:IsAvailable() or (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15) then
       return S.Mindbender:Cast() 
     end
     -- shadow_word_death,if=!buff.voidform.up|(cooldown.shadow_word_death.charges=2&buff.voidform.stack<15)
@@ -281,19 +291,19 @@ local function APL()
       return S.ShadowWordVoid:Cast()
     end
     -- void_torrent,if=dot.shadow_word_pain.remains>4&dot.vampiric_touch.remains>4&buff.voidform.up
-    if S.VoidTorrent:IsCastableP() and (Target:DebuffRemainsP(S.ShadowWordPainDebuff) > 4 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > 4 and Player:BuffP(S.VoidformBuff)) then
+    if S.VoidTorrent:IsCastableP() and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > 4 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > 4 and Player:BuffP(S.VoidformBuff) then
       return S.VoidTorrent:Cast()
     end
     -- shadow_word_pain,if=refreshable&target.time_to_die>4&!talent.misery.enabled&!talent.dark_void.enabled
-    if S.ShadowWordPain:IsCastableP() and (Target:DebuffRefreshableCP(S.ShadowWordPainDebuff) and Target:TimeToDie() > 4 and not S.Misery:IsAvailable() and not S.DarkVoid:IsAvailable()) then
+    if S.ShadowWordPain:IsCastableP() and Target:DebuffRefreshableCP(S.ShadowWordPainDebuff) and Target:TimeToDie() > 4 and not S.Misery:IsAvailable() and not S.DarkVoid:IsAvailable() then
       return S.ShadowWordPain:Cast()
     end
     -- vampiric_touch,if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)
-    if S.VampiricTouch:IsCastableP() and (Target:DebuffRefreshableCP(S.VampiricTouchDebuff) and Target:TimeToDie() > 6 or (S.Misery:IsAvailable() and Target:DebuffRefreshableCP(S.ShadowWordPainDebuff))) and not Player:IsCasting(S.VampiricTouch) then
+    if S.VampiricTouch:IsCastableP() and Target:DebuffRefreshableCP(S.VampiricTouchDebuff) and Target:TimeToDie() > 6 or (S.Misery:IsAvailable() and Target:DebuffRefreshableCP(S.ShadowWordPainDebuff)) and not Player:IsCasting(S.VampiricTouch) then
       return S.VampiricTouch:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() then
+    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
@@ -317,23 +327,27 @@ local function APL()
     --  return I.BattlePotionofIntellect:Cast() "battle_potion_of_intellect 283"; end
     --end
 	-- void_bolt
-    if S.VoidBolt:IsReadyP() then
+    if S.VoidBolt:IsCastable() then
       return S.VoidBolt:Cast()
     end
     -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking
     if (true) then
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
+	-- auto switch to next target
+    if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 11 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 11 and RubimRH.AoEON() then
+		return 0, CacheGetSpellTexture(153911)     
+    end		
     -- berserking
     if S.Berserking:IsCastableP() and RubimRH.CDsON() then
       return S.Berserking:Cast()
     end
-	    -- run_action_list,name=cleave,if=active_enemies>1
-    if (Cache.EnemiesCount[40] > 1) then
+	-- run_action_list,name=cleave,if=active_enemies>1
+    if (Cache.EnemiesCount[40] > 1) and RubimRH.AoEON() then
       return Cleave();
     end
 	-- run_action_list,name=single,if=active_enemies=1
-    if (Cache.EnemiesCount[40] < 2) and not RubimRH.AoEON() then
+    if (Cache.EnemiesCount[40] < 2) then
       return Single();
     end
   end
