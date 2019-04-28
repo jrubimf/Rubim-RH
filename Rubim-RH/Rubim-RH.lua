@@ -749,11 +749,11 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
 
-    if RubimRH.db.profile.mainOption.version ~= (26092018) then
+    if RubimRH.db.profile.mainOption.version ~= (26042019) then
         self.db:ResetDB(defaultProfile)
         message("New version:\nResetting Profile")
         print("Reseting profile")
-        RubimRH.db.profile.mainOption.version = 26092018
+        RubimRH.db.profile.mainOption.version = 26042019
     end
 
 

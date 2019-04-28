@@ -568,3 +568,18 @@ end
 function RubimRH.UnitIsCycleValid (Unit, BestUnitTTD, TimeToDieOffset)
     return not Unit:IsFacingBlacklisted() and not Unit:IsUserCycleBlacklisted() and (not BestUnitTTD or Unit:FilteredTimeToDie(">", BestUnitTTD, TimeToDieOffset));
 end
+
+-- GetSpellTexture cached function
+local GetSpellTexture = GetSpellTexture -- remap default API, since if Blizzard change GetSpellTexture then you can just replace it in one space instead edit everything
+local spelltexture = setmetatable({}, { __index = function(t, v)
+            local pwr = GetSpellTexture(v)
+            if pwr then
+                t[v] = { 1, pwr }
+                return t[v]
+            end     
+            return 0
+end })
+
+function CacheGetSpellTexture(a)
+    return unpack(spelltexture[a]) 
+end

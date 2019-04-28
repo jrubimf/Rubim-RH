@@ -518,7 +518,7 @@ end
 -- New Doom multi dot test 
 local function DoomDoTCycle()
    if RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 and Target:DebuffRemainsP(S.Doom) >= 5 and not Target:DebuffRefreshableCP(S.Doom) then
-        return S.CreateHealthstone:Cast()
+        return CacheGetSpellTexture(S.TargetEnemy):Cast()
 	end
 end
 --local function DoomDoTCycle()
