@@ -378,6 +378,14 @@ local function APL()
 			if ShouldReturn then return ShouldReturn; 
 		end
     end
+	-- deathbolt,if=player.soulshards<=1&!phantomsingularity
+    if S.Deathbolt:IsCastableP() and Player:SoulShardsP() <= 1 and ActiveUAs() >= 1 and bool(Player:BuffRemainsP(S.WrackingBrillianceBuff)) and S.SummonDarkglare:CooldownRemainsP() >= 30 and HL.CombatTime() > 15 then
+        return S.Deathbolt:Cast()
+    end
+	-- drain_life,if=(buff.inevitable_demise.stack>=85&(cooldown.deathbolt.remains>execute_time|!talent.deathbolt.enabled)&(cooldown.phantom_singularity.remains>execute_time|!talent.phantom_singularity.enabled)&(cooldown.dark_soul.remains>execute_time|!talent.dark_soul_misery.enabled)&(cooldown.vile_taint.remains>execute_time|!talent.vile_taint.enabled)&cooldown.summon_darkglare.remains>execute_time+10|buff.inevitable_demise.stack>30&target.time_to_die<=10)
+    if S.DrainLife:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and bool(Player:BuffRemainsP(S.WrackingBrillianceBuff)) and Player:BuffStackP(S.InevitableDemiseBuff) >= 35 then
+      return S.DrainLife:Cast()
+    end
     -- deathbolt,if=player.soulshards<=1&!phantomsingularity
     if S.Deathbolt:IsCastableP() and (not RubimRH.CDsON()) and bool(S.PhantomSingularity:CooldownRemainsP()) and Player:SoulShardsP() <= 1 and ActiveUAs() >= 1 then
         return S.Deathbolt:Cast()
@@ -523,15 +531,6 @@ local function APL()
     -- summon_darkglare,if=dot.agony.ticking&dot.corruption.ticking&(buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains|spell_targets.seed_of_corruption_aoe>1+raid_event.invulnerable.up)
     if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5 or Player:SoulShardsP() == 0) and (not S.PhantomSingularity:IsAvailable() or bool(S.PhantomSingularity:CooldownRemainsP())) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or not bool(S.Deathbolt:CooldownRemainsP()) or Cache.EnemiesCount[5] > 1)) then
       return S.SummonDarkglare:Cast()
-    end
-	
-	-- deathbolt,if=player.soulshards<=1&!phantomsingularity
-    if S.Deathbolt:IsCastableP() and Player:SoulShardsP() <= 1 and ActiveUAs() >= 1 and bool(Player:BuffRemainsP(S.WrackingBrillianceBuff)) and S.SummonDarkglare:CooldownRemainsP() >= 30 and HL.CombatTime() > 15 then
-        return S.Deathbolt:Cast()
-    end
-	-- drain_life,if=(buff.inevitable_demise.stack>=85&(cooldown.deathbolt.remains>execute_time|!talent.deathbolt.enabled)&(cooldown.phantom_singularity.remains>execute_time|!talent.phantom_singularity.enabled)&(cooldown.dark_soul.remains>execute_time|!talent.dark_soul_misery.enabled)&(cooldown.vile_taint.remains>execute_time|!talent.vile_taint.enabled)&cooldown.summon_darkglare.remains>execute_time+10|buff.inevitable_demise.stack>30&target.time_to_die<=10)
-    if S.DrainLife:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and bool(Player:BuffRemainsP(S.WrackingBrillianceBuff)) and Player:BuffStackP(S.InevitableDemiseBuff) >= 35 then
-      return S.DrainLife:Cast()
     end
 	
     -- agony,target_if=min:dot.agony.remains,if=remains<=gcd+action.shadow_bolt.execute_time&target.time_to_die>8
