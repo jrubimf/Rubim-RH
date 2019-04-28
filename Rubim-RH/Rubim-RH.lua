@@ -715,7 +715,7 @@ local defaults = {
             sk2 = 90, -- IceBarrier
             sk2id = 11426, -- IceBarrier
             sk2tooltip = "Percent HP to use Ice Barrier",
-        }
+        },
 		
 		--Priest
         [256] = {
