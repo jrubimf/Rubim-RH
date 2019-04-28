@@ -515,24 +515,6 @@ local function FutureShard()
     end
 end
 
--- New Doom multi dot test 
-local function DoomDoTCycle()
-   if RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 and Target:DebuffRemainsP(S.Doom) >= 5 and not Target:DebuffRefreshableCP(S.Doom) then
-        return CacheGetSpellTexture(S.TargetEnemy):Cast()
-	end
-end
---local function DoomDoTCycle()
---    local TargetGUID = Target:GUID()
---    for _, CycleUnit in pairs(Cache.Enemies[40]) do
---        if CycleUnit:GUID() ~= TargetGUID and RubimRH.UnitIsCycleValid(CycleUnit, 30, -CycleUnit:DebuffRemainsP(S.Doom)) and CycleUnit:DebuffRefreshableCP(S.Doom) then
---	        BestUnit, BestUnitTTD = CycleUnit, CycleUnit:TimeToDie()
---	    end
---    end
---    if BestUnit then
-      --return S.TargetEnemy:Cast()	
---		return S.CreateHealthstone:Cast()
---    end
---end
 
 -- enemy in range
 S.HandOfGuldan:RegisterInFlight()
@@ -700,23 +682,27 @@ local function Implosion()
     if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff) and (Player:BuffStackP(S.DemonicCoreBuff) >= 3 or Player:BuffRemainsP(S.DemonicCoreBuff) <= Player:GCD() * 5.7) then
         return S.Demonbolt:Cast()
     end
-    -- New Doom multidotting test
-    -- actions.implosion+=/doom,cycle_targets=1,max_cycle_targets=7,if=refreshable		
-    if S.Doom:IsAvailable() and RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 then
-        if Target:DebuffRemainsP(S.Doom) <= 5 then
-            return S.Doom:Cast()
-	    elseif Target:DebuffRemainsP(S.Doom) >= 21 then
-		    return S.CreateHealthstone:Cast()
-		else
-		    return		
-		end		
-	end
+
     -- call_action_list,name=build_a_shard
     if (true) and FutureShard() <= 5 then
         if BuildAShard() ~= nil then
             return BuildAShard()
         end
     end
+end
+
+
+-- Auto switch target function
+local function DoomDotCycle()
+    if S.Doom:IsAvailable() and RubimRH.AoEON() and Cache.EnemiesCount[40] > 1 and Cache.EnemiesCount[40] <= 7 then
+        if Target:DebuffRemainsP(S.Doom) <= 5 then
+            return S.Doom:Cast()
+	    elseif Target:DebuffRemainsP(S.Doom) >= 22 then
+			return 0, CacheGetSpellTexture(153911)
+		else
+		    return Implosion()
+		end		
+	end
 end
   
   
@@ -904,6 +890,10 @@ local function APL()
             return NetherPortalActive()
         end
     end  
+	-- auto target
+	if DoomDotCycle() ~= nil then
+        return DoomDotCycle()
+	end	
     -- call_action_list,name=implosion,if=spell_targets.implosion>1
     if (active_enemies(3) and RubimRH.PetSpellInRange(30213, target)) and RubimRH.AoEON() then
         if Implosion() ~= nil then
