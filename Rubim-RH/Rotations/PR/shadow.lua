@@ -134,7 +134,7 @@ local function APL()
         VarVtMisSdCheck = 1 - 0.014 * S.SearingDialogue:AzeriteRank()
       end
       -- Mindbender management
-      S.Mindbender = S.MindbenderTalent:IsAvailable() and S.MindbenderTalent or S.Shadowfiend
+      --S.Mindbender = S.MindbenderTalent:IsAvailable() and S.MindbenderTalent or S.Shadowfiend
       -- shadowform,if=!buff.shadowform.up
       if S.Shadowform:IsCastableP() and Player:BuffDownP(S.ShadowformBuff) and (not Player:BuffP(S.ShadowformBuff)) then
         return S.Shadowform:Cast() 
@@ -187,8 +187,12 @@ local function APL()
       return S.DarkVoid:Cast() 
     end
     -- mindbender
-    if S.Mindbender:IsCastableP() then
+    if S.Mindbender:IsReadyP() and S.MindbenderTalent:IsAvailable() then
       return S.Mindbender:Cast()
+    end
+	-- shadowfiend
+    if S.Shadowfiend:IsReadyP() then
+      return S.Shadowfiend:Cast()
     end
     -- mind_blast,target_if=spell_targets.mind_sear<variable.mind_blast_targets
     if S.MindBlast:IsCastableP() and not Player:IsCasting(S.MindBlast) and Cache.EnemiesCount[40] < VarMindBlastTargets then
@@ -270,9 +274,13 @@ local function APL()
     if S.DarkVoid:IsCastableP() then
       return S.DarkVoid:Cast()
     end
-    -- mindbender,if=talent.mindbender.enabled|(buff.voidform.stack>18|target.time_to_die<15)
-    if S.Mindbender:IsCastableP() and S.MindbenderTalent:IsAvailable() or (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15) then
-      return S.Mindbender:Cast() 
+	-- mindbender,if=talent.mindbender.enabled|(buff.voidform.stack>18|target.time_to_die<15)
+    if S.Mindbender:IsReadyP() and S.MindbenderTalent:IsAvailable() or (S.Mindbender:IsReadyP() and (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15)) then
+      return S.Mindbender:Cast()
+    end
+	-- shadowfiend,if=!talent.mindbender.enabled|(buff.voidform.stack>18|target.time_to_die<15)
+    if S.Shadowfiend:IsReadyP() or (S.Shadowfiend:IsReadyP() and (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15))  then
+      return S.Shadowfiend:Cast()
     end
     -- shadow_word_death,if=!buff.voidform.up|(cooldown.shadow_word_death.charges=2&buff.voidform.stack<15)
     if S.ShadowWordDeath:IsCastableP() and (not Player:BuffP(S.VoidformBuff) or (S.ShadowWordDeath:ChargesP() == 2 and Player:BuffStackP(S.VoidformBuff) < 15)) and Target:HealthPercentage() < ExecuteRange () then
@@ -335,7 +343,7 @@ local function APL()
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
 	-- auto switch to next target
-    if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 11 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 11 and RubimRH.AoEON() then
+    if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 11 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 11 and RubimRH.AoEON() and active_enemies() > 2 then
 		return 0, CacheGetSpellTexture(153911)     
     end		
     -- berserking
@@ -343,11 +351,11 @@ local function APL()
       return S.Berserking:Cast()
     end
 	-- run_action_list,name=cleave,if=active_enemies>1
-    if (Cache.EnemiesCount[40] > 1) and RubimRH.AoEON() then
+    if active_enemies() > 1 and RubimRH.AoEON() then
       return Cleave();
     end
 	-- run_action_list,name=single,if=active_enemies=1
-    if (Cache.EnemiesCount[40] < 2) then
+    if active_enemies() < 2 or not RubimRH.AoEON() then
       return Single();
     end
   end
