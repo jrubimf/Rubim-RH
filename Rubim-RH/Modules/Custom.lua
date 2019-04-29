@@ -85,20 +85,39 @@ local function ttd(unit)
     end
 end
 
-local activeUnitPlates = {}
+--- Table functions 
+function dynamic_array(dimension)
+    local metatable = {}
+    for i=1, dimension do
+        metatable[i] = {__index = function(tbl, key)
+                if i < dimension then
+                    tbl[key] = setmetatable({}, metatable[i+1])
+                    return tbl[key]
+                end
+            end
+        }
+    end
+    return setmetatable({}, metatable[1]);
+end
+
+local activeUnitPlates = dynamic_array(2)
+
 local function AddNameplate(unitID)
     local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-
-    -- store nameplate and its unitID
-    activeUnitPlates[unitframe] = unitID
+    local unitframe = nameplate.UnitFrame  
+    local reaction = "enemy" or "friendly"
+    if unitframe and unitID then 
+        activeUnitPlates[reaction][unitframe] = unitID
+    end
 end
 
 local function RemoveNameplate(unitID)
     local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
     local unitframe = nameplate.UnitFrame
-    -- recycle the nameplate
-    activeUnitPlates[unitframe] = nil
+    if unitframe then
+        activeUnitPlates["enemy"][unitframe] = nil  
+        activeUnitPlates["friendly"][unitframe] = nil 
+    end     
 end
 
 RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function()

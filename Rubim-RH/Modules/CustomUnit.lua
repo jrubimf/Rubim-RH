@@ -647,7 +647,7 @@ end
 function CombatUnits(stop, range, upttd)
     local totalmobs = 0   
     if activeUnitPlates then
-        for reference, unit in pairs(activeUnitPlates) do
+        for reference, unit in pairs(activeUnitPlates["enemy"]) do
             if 
             CombatTime(unit) > 0 and 
             ( not range or SpellInteract(unit, range) ) and 
