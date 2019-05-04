@@ -46,7 +46,8 @@ RubimRH.Spell[258] = {
   ShadowWordVoid                        = Spell(205351),
   LegacyOfTheVoid                       = Spell(193225),
   FortressOfTheMind                     = Spell(193195),
-  ShadowWordVoid                        = Spell(205351)
+  ShadowWordVoid                        = Spell(205351),
+  Silence                               = Spell(15487)
 };
 local S = RubimRH.Spell[258]
 
@@ -345,7 +346,11 @@ local function APL()
 	-- auto switch to next target
     if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 11 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 11 and RubimRH.AoEON() and active_enemies() > 2 then
 		return 0, CacheGetSpellTexture(153911)     
-    end		
+    end	
+    -- Silence
+    if S.Silence:IsCastableP() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+      return S.Silence:Cast()
+    end	
     -- berserking
     if S.Berserking:IsCastableP() and RubimRH.CDsON() then
       return S.Berserking:Cast()
