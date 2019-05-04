@@ -257,8 +257,8 @@ local function APL()
       if S.AMurderofCrows:IsReady() then
         return S.AMurderofCrows:Cast()
       end
-      -- barrage
-      if S.Barrage:IsReadyP() then
+      -- barrage,if=active_enemies>1
+      if S.Barrage:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] > 1) then
         return S.Barrage:Cast()
       end
       -- kill_command
@@ -321,8 +321,8 @@ local function APL()
         return S.BarbedShot:Cast()
       end
       -- barrage
-      if S.Barrage:IsReadyP() then
-        return S.Barrage:Cast()
+      if S.Barrage:IsReadyP() and (not Player:IsMoving()) then
+          return S.Barrage:Cast()
       end
       -- cobra_shot,if=(focus-cost+focus.regen*(cooldown.kill_command.remains-1)>action.kill_command.cost|cooldown.kill_command.remains>1+gcd)&cooldown.kill_command.remains>1
       if S.CobraShot:IsReady() and ((Player:Focus() - S.CobraShot:Cost() + Player:FocusRegen() * (S.KillCommand:CooldownRemainsP() - 1) > S.KillCommand:Cost() or S.KillCommand:CooldownRemainsP() > 1 + Player:GCD()) and S.KillCommand:CooldownRemainsP() > 1) then
