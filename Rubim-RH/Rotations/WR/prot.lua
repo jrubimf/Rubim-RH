@@ -151,6 +151,10 @@ local function APL()
         if S.Devastate:IsReady() then
             return S.Devastate:Cast()
         end
+		-- Shockwave
+		if S.Shockwave:IsReady() and (Target:IsInterruptible() or Cache.EnemiesCount[5] > 1) then
+            return S.Shockwave:Cast()
+        end
 
     end
     -- call precombat
