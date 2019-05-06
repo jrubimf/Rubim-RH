@@ -697,8 +697,6 @@ local defaults = {
 			sk2 = 7,
             sk2id = 5740,
             sk2tooltip = "Number of units to use Rain of Fire",
-
-
 			
         },
         --Mage
