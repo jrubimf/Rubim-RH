@@ -167,7 +167,7 @@ local function APL()
             return S.Pummel:Cast()
         end
         -- Shield Wall
-        if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= 30 then
+        if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk4 then
             return S.ShieldWall:Cast()
         end
 		-- Impending Victory -> Cast when < 85% HP
@@ -215,9 +215,6 @@ end
 RubimRH.Rotation.SetAPL(73, APL);
 
 local function PASSIVE()
-    if S.ShieldWall:IsCastable() and Player:HealthPercentage() <= 30 then
-        return S.ShieldWall:Cast()
-    end
     return RubimRH.Shared()
 end
 

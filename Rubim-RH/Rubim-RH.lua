@@ -505,6 +505,10 @@ local defaults = {
             sk3 = 10, -- RallyingCry
             sk3id = "High Damage",
             sk3tooltip =  "How much DMG Taken is considered a High Damage intake.",
+			
+            sk4 = 30, -- ShieldWall
+            sk4id = 871,
+            sk4tooltip =  "Percent HP to use Shield Wall",
 
         },
         --ROGUE
