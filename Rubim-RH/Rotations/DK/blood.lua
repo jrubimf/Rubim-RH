@@ -388,7 +388,7 @@ local function APL()
         return S.DeathsAdvance:Cast()
     end
 
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
         if Precombat() ~= nil then
             return Precombat()
         end

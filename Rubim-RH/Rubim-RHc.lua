@@ -136,6 +136,17 @@ function RubimRH.PotionToggle()
     print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.usePotion))
 end
 
+function RubimRH.PrecombatToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.Precombat == false then
+        RubimRH.db.profile.mainOption.Precombat = true
+
+    else
+        RubimRH.db.profile.mainOption.Precombat = false
+    end
+    print("|cFF69CCF0Perfect Pull" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.Precombat))
+end
+
 function RubimRH.RacialToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.useRacial == false then
@@ -260,6 +271,17 @@ function RubimRH.PotionON()
         return false
     end
     if RubimRH.db.profile.mainOption.usePotion == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.PrecombatON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.Precombat == true then
         return true
     else
         return false

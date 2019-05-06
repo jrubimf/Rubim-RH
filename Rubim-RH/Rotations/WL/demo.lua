@@ -809,7 +809,7 @@ local function APL()
 	--print(HL.GuardiansTable.ImpTotalEnergy);
 	
   	-- call precombat
-    if not Player:AffectingCombat() and not Player:IsCasting() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
         if Precombat() ~= nil then
             return Precombat()
         end

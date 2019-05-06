@@ -327,7 +327,7 @@ local function APL()
         end
     end
     -- call precombat
-    if not Player:AffectingCombat() and (not Player:IsCasting() or Player:IsCasting(S.WaterElemental)) then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and (not Player:IsCasting() or Player:IsCasting(S.WaterElemental)) then
         if Precombat() ~= nil then
             return Precombat()
         end

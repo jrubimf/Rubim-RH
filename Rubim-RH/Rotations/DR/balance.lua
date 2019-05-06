@@ -500,7 +500,7 @@ local function APL()
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
         if Precombat() ~= nil then
             return Precombat()
         end

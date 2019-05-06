@@ -471,7 +471,7 @@ local function APL()
         return S.DeathsAdvance:Cast()
     end
 
-    if not Player:AffectingCombat() and not Target:IsQuestMob() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
         return 0, 462338
     end
 

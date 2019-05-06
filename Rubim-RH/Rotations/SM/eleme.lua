@@ -356,7 +356,7 @@ local function APL()
   end
   
     -- call precombat
-    if not Player:AffectingCombat() and not Player:IsCasting() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
         local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
     end
   

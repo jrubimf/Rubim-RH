@@ -444,7 +444,7 @@ local function APL()
         return 0, 135328
     end
 
-    if not Player:AffectingCombat() and not Target:IsQuestMob() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
         return Precombat()
     end
 

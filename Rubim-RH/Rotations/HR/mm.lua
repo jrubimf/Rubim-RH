@@ -295,7 +295,7 @@ local function APL ()
         end
     end
 
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
         local Precombat = Precombat();
         if Precombat then
             return Precombat;

@@ -224,7 +224,7 @@ local function APL ()
     --actions.precombat+=/elemental_blast
     -- Out of Combat
 
-    if not Player:AffectingCombat() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
         return 0, 462338
     end
 

@@ -93,12 +93,12 @@ local function APL()
         end
     end
       --- Not in combat
-  --  if not Player:AffectingCombat() then
+  --  if not Player:AffectingCombat() and RubimRH.PrecombatON() then
   --      return 0, 462338
  --   end
     -- call precombat
   	-- call precombat
-    if not Player:AffectingCombat() and not Player:IsCasting() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
         if Precombat() ~= nil then
             return Precombat()
         end

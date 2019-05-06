@@ -188,7 +188,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto Next Target');
             StdUi:FrameTooltip(gn_1_0, 'When you are in combat, it will suggest skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
             gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
-            StdUi:GlueBelow(gn_1_0, gn_separator, -100, -24, 'LEFT');
+            StdUi:GlueBelow(gn_1_0, gn_separator, -100, -8, 'LEFT');
             function gn_1_0:OnValueChanged(value)
                 RubimRH.AttackToggle()
             end
@@ -202,7 +202,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_1_1:SetPlaceholder(' -- Trinkets --');
             item1 = gn_1_1.optsFrame.scrollChild.items[1]
             item2 = gn_1_1.optsFrame.scrollChild.items[2]
-            StdUi:GlueBelow(gn_1_1, gn_separator, 100, -24, 'RIGHT');
+            StdUi:GlueBelow(gn_1_1, gn_separator, 100, -8, 'RIGHT');
             gn_1_1.OnValueChanged = function(self, value)
                 local option1, option2 = unpack(value)
 
@@ -229,11 +229,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_2_0 = StdUi:Checkbox(tab.frame, 'Use Potion');
             StdUi:FrameTooltip(gn_2_0, 'For now this is depreciated.', 'TOPLEFT', 'TOPRIGHT', true);
             gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion)
-            StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -24, 'LEFT');
+            StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -15, 'LEFT');
             function gn_2_0:OnValueChanged(value)
                 RubimRH.PotionToggle()
             end
-
+			
             local gn_2_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
             StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
             local gn_2_1Label = StdUi:FontString(tab.frame, 'Healthstone: |cff00ff00' .. RubimRH.db.profile.mainOption.healthstoneper);
@@ -252,8 +252,20 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             function gn_3_0:OnValueChanged(value)
                 RubimRH.burstCDToggle()
             end
-            StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -24, 'LEFT');
 
+			StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -15, 'LEFT');
+			
+            -- precombat toggle
+			local gn_4_0 = StdUi:Checkbox(tab.frame, 'Auto Precombat');
+            StdUi:FrameTooltip(gn_4_0, 'Auto prepots and prepull', 'TOPLEFT', 'TOPRIGHT', true);
+            gn_4_0:SetChecked(RubimRH.db.profile.mainOption.Precombat)
+            function gn_4_0:OnValueChanged(value)
+                RubimRH.PrecombatToggle()
+            end
+			
+			StdUi:GlueBelow(gn_4_0, gn_3_0, 0, -15, 'LEFT');
+
+			
             local cdOptions = {
                 { text = 'Everything', value = "Everything" },
                 { text = 'Boss Only', value = "Boss Only" },

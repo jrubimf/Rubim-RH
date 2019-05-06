@@ -218,7 +218,7 @@ end
 local function APL()
 	UpdateVars()
 
-	if not Player:AffectingCombat() then return 0, 462338 end
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() then return 0, 462338 end
 
 	-- TODO: Mighty Bash, Typhoon, Entanglement -> GGLoader textures not working
 
