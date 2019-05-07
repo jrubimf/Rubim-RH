@@ -612,3 +612,12 @@ function RubimRH.GetCurrentLatency()
 	
 end
 
+--	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
+--		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
+--		mod = DBM:GetModByName(mod or "")
+--		timeLeft = tonumber(timeLeft or 0)
+--		totalTime = tonumber(totalTime or 0)
+--		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
+--			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
+--		end
+--	end

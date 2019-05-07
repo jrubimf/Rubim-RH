@@ -359,6 +359,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         { text = 'Jolly Roger', value = 7 },
                         { text = 'Shark Infested Waters', value = 8 },
                         { text = 'Ture Bearing', value = 9 },
+                        { text = 'Mythic +', value = 10 },
                     };
 
                     local diceRoll = StdUi:Dropdown(tab.frame, 125, 24, dice, 1);
