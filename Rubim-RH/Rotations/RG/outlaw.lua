@@ -171,7 +171,7 @@ local function RtB_Reroll ()
 			
             -- Mythic+
         elseif RubimRH.db.profile[260].dice == "Mythic +" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision)) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:Buff(S.SkullandCrossbones)) or (Player:BuffP(S.TrueBearing) and Player:BuffP(S.BuriedTreasure))) and true or false;
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:Buff(S.SkullandCrossbones)) or (Player:BuffP(S.TrueBearing) and Player:BuffP(S.BuriedTreasure))) and true or false;
 			
             -- SimC Default
             -- # Reroll for 2+ buffs with Loaded Dice up. Otherwise reroll for 2+ or Grand Melee or Ruthless Precision.
