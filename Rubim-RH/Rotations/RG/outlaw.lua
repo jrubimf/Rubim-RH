@@ -386,8 +386,8 @@ local function APL ()
     HL.GetEnemies(S.Dispatch); -- Blade Flurry
     HL.GetEnemies(S.SinisterStrike); -- Melee
 	-- Acrobatic Strikes range
-    BuffedSpellRange = S.AcrobaticStrikes:IsAvailable() and 8 or 5;
-    HL.GetEnemies(BuffedSpellRange);
+    CheckTalentRange = S.AcrobaticStrikes:IsAvailable() and 8 or 5;
+    HL.GetEnemies(CheckTalentRange);
     HL.GetEnemies("Melee");
 
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
