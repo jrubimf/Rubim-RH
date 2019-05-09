@@ -908,52 +908,63 @@ if RubimRH.playerSpec and oPetSlots[RubimRH.playerSpec] then
     UpdatePetSlots()
 end 
 
+--- =========================== Listener ===========================
+Listener, listeners = {}, {}
+local frame = CreateFrame('Frame', 'Listener_Events')
+frame:SetScript('OnEvent', function(_, event, ...)
+        if not listeners[event] then return end
+        for k in pairs(listeners[event]) do
+            if k == "Stuff_Events" then 
+                listeners[event][k](event, ...)
+            else 
+                listeners[event][k](...)
+            end
+        end
+end)
+
+function Listener.Add(_, name, event, callback)
+    if not listeners[event] then
+        frame:RegisterEvent(event)
+        listeners[event] = {}
+    end
+    if not listeners[event][name] then 
+        listeners[event][name] = callback
+    end 
+end
+
+function Listener.Remove(_, name, event)
+    if listeners[event] then
+        listeners[event][name] = nil
+    end
+end
+
+function Listener.Trigger(_, event, ...)
+    onEvent(nil, event, ...)
+end
+RubimRH.Listener:Add('Rubim_Events', "CHAT_MSG_ADDON", RubimRH.CurrentPullTimer)
+
 C_ChatInfo.RegisterAddonMessagePrefix("BigWigs")
 C_ChatInfo.RegisterAddonMessagePrefix("D4") -- DBM
 
--- DBM
-function RubimRH.CurrentPullTimer(self, event, ...)
+-- DBM & BW Pull Timer
+local CurrentPullTimer = 0
+local f = CreateFrame("FRAME");
+    f:RegisterEvent("CHAT_MSG_ADDON");
+    f:SetScript("OnEvent", function(self, event, ...)
     if event == "CHAT_MSG_ADDON" then
-	    local prefix, message = ...
-        local CurrentPullTimer = 0
-		
+     -- Handling code here
+  	    local prefix, message = ...
 	    if prefix == "D4" and string.find(message, "PT") then
-	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 4, 5))
-			print(CurrentPullTimer);
+  	        CurrentPullTimer = GetTime() + tonumber(string.sub(message, 4, 5))
 	    elseif prefix == "BigWigs" and string.find(message, "Pull") then
 	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 8, 9))
-			print(CurrentPullTimer);
 	    end
     end
-	return CurrentPullTimer
-end
-
---local f = CreateFrame("FRAME");
---f:RegisterEvent("CHAT_MSG_ADDON");
---f:SetScript("OnEvent", function(self, event, ...)
---   if event == "CHAT_MSG_ADDON" then
- --     -- Handling code here
-	--  	local prefix, message = ...
-     --   local CurrentPullTimer = 0
-	  --	if prefix == "D4" and string.find(message, "PT") then
-	  --  	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 4, 5))
---			print(CurrentPullTimer);
---	    elseif prefix == "BigWigs" and string.find(message, "Pull") then
---	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 8, 9))
---			print(CurrentPullTimer);
---	    end
---   end
---end);
-
---f:GetScript("OnEvent")(f, "CHAT_MSG_ADDON", --[[ All the params here ]]);
-
-function hkEvent_CHAT_MSG_ADDON(noidea, prefix, message, channel)
-    if prefix == "D4" and string.sub(message,1,2) == "PT" then
-        timer = string.sub(message,4,5);
-    end
-	return timer
-end
-
+end)
+-- Returning result
 function RubimRH.GetCurrentPT()
-    return CurrentPullTimer
+    if CurrentPullTimer ~= nil then
+        return GetTime() - CurrentPullTimer
+    end
+    return 0
 end
