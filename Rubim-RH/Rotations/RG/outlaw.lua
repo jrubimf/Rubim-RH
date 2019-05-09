@@ -171,7 +171,7 @@ local function RtB_Reroll ()
 			
             -- Mythic+
         elseif RubimRH.db.profile[260].dice == "Mythic +" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:Buff(S.SkullandCrossbones)) or (Player:BuffP(S.TrueBearing) and Player:BuffP(S.BuriedTreasure))) and true or false;
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:Buff(S.SkullandCrossbones)) or (Player:BuffP(S.TrueBearing) and Player:BuffP(S.BuriedTreasure) and RtB_Buffs () <= 3)) and true or false;
 			
             -- SimC Default
             -- # Reroll for 2+ buffs with Loaded Dice up. Otherwise reroll for 2+ or Grand Melee or Ruthless Precision.
@@ -210,7 +210,7 @@ local function CDs ()
     -- TODO: Add Potion
     -- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
     -- TODO: Add Items
-    if Target:IsInRange(S.SinisterStrike) then
+    if Target:IsInRange(CheckTalentRange) then
         if RubimRH.CDsON() then
             -- actions.cds+=/blood_fury
             if S.BloodFury:IsReady() then
@@ -241,7 +241,7 @@ local function CDs ()
             return S.BladeFlurry:Cast()
         end
         -- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
-        if S.GhostlyStrike:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
+        if S.GhostlyStrike:IsReady(CheckTalentRange) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
             return S.GhostlyStrike:Cast()
         end
         -- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
@@ -249,7 +249,7 @@ local function CDs ()
             return S.KillingSpree:Cast()
         end
         -- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
-        if S.BladeRush:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
+        if S.BladeRush:IsReady(CheckTalentRange) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
             return S.BladeRush:Cast()
         end
         if not Player:IsStealthed(true, true) then
@@ -266,7 +266,7 @@ local function CDs ()
     end
 end
 local function Stealth ()
-    if Target:IsInRange(S.SinisterStrike) and ( not Target:IsAPlayer() or Target:IsCC()) then
+    if Target:IsInRange(CheckTalentRange) and ( not Target:IsAPlayer() or Target:IsCC()) then
         -- actions.stealth=ambush
         if S.Ambush:IsReady() then
             return S.Ambush:Cast()
@@ -312,33 +312,34 @@ local function Finish ()
         return S.BetweentheEyes:Cast()
     end
 end
-		 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
-					if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
-            if not Target:IsImmune() and S.DFA:IsReady()  then
-                return S.DFA:Cast()
+
+if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
+	if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
+        if not Target:IsImmune() and S.DFA:IsReady()  then
+            return S.DFA:Cast()
         end
     end
 end
 
 
 
-				    if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and IsInMeleeRange() and Target:AffectingCombat() then
-            if not Target:IsImmuneMagic() then
-            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() then
-                return S.Shiv:Cast()
+if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and IsInMeleeRange() and Target:AffectingCombat() then
+    if not Target:IsImmuneMagic() then
+        if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() then
+            return S.Shiv:Cast()
         end
     end
 end
 
 
 
-							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
-								if not Target:IsCC()  and IsInMeleeRange() and Player:AffectingCombat()  then
-			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
-                               return S.SmokeBomb:Cast()
+if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+	if not Target:IsCC()  and IsInMeleeRange() and Player:AffectingCombat()  then
+		if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+            return S.SmokeBomb:Cast()
          end
-			end
-			   end
+	end
+end
 
 
 local function Build ()
@@ -349,7 +350,7 @@ local function Build ()
         return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
-    if S.SinisterStrike:IsReady("Melee") then
+    if S.SinisterStrike:IsReady(CheckTalentRange) then
         return S.SinisterStrike:Cast()
     end
 end
@@ -384,6 +385,10 @@ local function APL ()
     HL.GetEnemies(8); -- Cannonball Barrage
     HL.GetEnemies(S.Dispatch); -- Blade Flurry
     HL.GetEnemies(S.SinisterStrike); -- Melee
+	-- Acrobatic Strikes range
+    BuffedSpellRange = S.AcrobaticStrikes:IsAvailable() and 8 or 5;
+    HL.GetEnemies(BuffedSpellRange);
+    HL.GetEnemies("Melee");
 
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
@@ -459,15 +464,15 @@ local function APL ()
         return Build()
     end
     -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-    if S.ArcaneTorrent:IsReady(S.SinisterStrike) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+    if S.ArcaneTorrent:IsReady("Melee") and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
         return S.ArcaneTorrent:Cast()
     end
     -- actions+=/arcane_pulse
-    if S.ArcanePulse:IsReady(S.SinisterStrike) then
+    if S.ArcanePulse:IsReady("Melee") then
         return S.ArcanePulse:Cast()
     end
     -- actions+=/lights_judgment
-    if S.LightsJudgment:IsReady(S.SinisterStrike) then
+    if S.LightsJudgment:IsReady("Melee") then
         return S.LightsJudgment:Cast()
     end
     -- OutofRange Pistol Shot
