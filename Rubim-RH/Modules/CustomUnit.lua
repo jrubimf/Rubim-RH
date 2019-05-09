@@ -500,7 +500,7 @@ function Unit:IsRanged(ID)
     return false
 end
 
-local timer = GetTime()
+local timer = HL.GetTime()
 local totalEnemies = 0
 
 function Unit:EnemiesAround(distance, ignoreCombat)
@@ -908,7 +908,52 @@ if RubimRH.playerSpec and oPetSlots[RubimRH.playerSpec] then
     UpdatePetSlots()
 end 
 
+C_ChatInfo.RegisterAddonMessagePrefix("BigWigs")
+C_ChatInfo.RegisterAddonMessagePrefix("D4") -- DBM
 
+-- DBM
+function RubimRH.CurrentPullTimer(self, event, ...)
+    if event == "CHAT_MSG_ADDON" then
+	    local prefix, message = ...
+        local CurrentPullTimer = 0
+		
+	    if prefix == "D4" and string.find(message, "PT") then
+	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 4, 5))
+			print(CurrentPullTimer);
+	    elseif prefix == "BigWigs" and string.find(message, "Pull") then
+	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 8, 9))
+			print(CurrentPullTimer);
+	    end
+    end
+	return CurrentPullTimer
+end
 
+--local f = CreateFrame("FRAME");
+--f:RegisterEvent("CHAT_MSG_ADDON");
+--f:SetScript("OnEvent", function(self, event, ...)
+--   if event == "CHAT_MSG_ADDON" then
+ --     -- Handling code here
+	--  	local prefix, message = ...
+     --   local CurrentPullTimer = 0
+	  --	if prefix == "D4" and string.find(message, "PT") then
+	  --  	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 4, 5))
+--			print(CurrentPullTimer);
+--	    elseif prefix == "BigWigs" and string.find(message, "Pull") then
+--	    	CurrentPullTimer = GetTime() + tonumber(string.sub(message, 8, 9))
+--			print(CurrentPullTimer);
+--	    end
+--   end
+--end);
 
+--f:GetScript("OnEvent")(f, "CHAT_MSG_ADDON", --[[ All the params here ]]);
 
+function hkEvent_CHAT_MSG_ADDON(noidea, prefix, message, channel)
+    if prefix == "D4" and string.sub(message,1,2) == "PT" then
+        timer = string.sub(message,4,5);
+    end
+	return timer
+end
+
+function RubimRH.GetCurrentPT()
+    return CurrentPullTimer
+end
