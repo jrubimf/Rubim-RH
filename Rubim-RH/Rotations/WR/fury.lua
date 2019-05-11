@@ -10,6 +10,8 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local mainAddon = RubimRH
+
 -- Spells
 RubimRH.Spell[72] = {
     -- Racials
@@ -143,6 +145,10 @@ local function UpdateCDs()
     end
 end
 
+local function ExecuteRange ()
+	return 20;
+end
+
 local function APL()
     local Precombat, Movement, SingleTarget, AoE
     UpdateRanges()
@@ -169,7 +175,7 @@ local function APL()
             return S.Rampage:Cast()
         end
         -- execute,if=buff.enrage.up
-        if S.Execute:IsCastableP() and (Player:BuffP(S.Enrage)) then
+        if S.Execute:IsCastableP() and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange ()) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage
