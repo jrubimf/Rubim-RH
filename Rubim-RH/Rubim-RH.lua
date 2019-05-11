@@ -736,12 +736,12 @@ local defaults = {
         },
         [258] = {
             cooldowns = true,
-            sk1 = 10, -- IceBlock
-            sk1id = 45438, -- Iceblock
-            sk1tooltip = "Percent HP to use Ice Block",
-            sk2 = 90, -- IceBarrier
-            sk2id = 11426, -- IceBarrier
-            sk2tooltip = "Percent HP to use Ice Barrier",
+            sk1 = 20, -- Dispersion
+            sk1id = 47585, -- Dispersion
+            sk1tooltip = "Percent HP to use Dispersion",
+            sk2 = 25, -- ShadowMend
+            sk2id = 186263, -- ShadowMend
+            sk2tooltip = "Percent HP to use ShadowMend",
         }
     }
 }
