@@ -240,7 +240,153 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
-            interruptList = {},
+            interruptList = {
+
+--temple of sethraliss
+
+[265968] = true,
+[263318] = true,
+[272659] = true,
+[261635] = true,
+[273995] = true, -- interrupt by CC
+[261624] = true,
+[267237] = true, -- interrupt by hard CC
+[265912] = true,
+[268061] = true,
+[268008] = true,
+
+--FreeHold
+
+[257397] = true,
+[256060] = true,
+[258777] = true,
+[257732] = true,
+[257899] = true, -- some groups leave this uninterrupted so enemies die faster 
+[257736] = true,
+
+--Shrine of the storm
+
+[267981] = true,
+[267977] = true,
+[267969] = true,
+[276266] = true, -- if we have a purge 
+[268030] = true, -- high prio
+[274438] = true,
+[268177] = true, -- low prio
+[267818] = true,
+[268309] = true,
+[268322] = true,
+[268375] = true,
+[276767] = true,
+[268347] = true,
+[267809] = true,
+
+--Siege of boralus
+
+[256957] = true,
+[256897] = true, -- interrupt by CC
+[274569] = true, -- high priority
+[272571] = true, --medium prio
+
+--Tol Dagor
+
+[258128] = true,
+[258153] = true,
+[257791] = true,
+[260067] = true, -- not sure if kickable
+[258313] = true,
+[258634] = true,
+[258869] = true,
+[258935] = true,
+
+--Waycrest manor
+
+[267824] = true, -- maybe 
+[265368] = true,
+[263891] = true,
+[266035] = true,
+[266036] = true,
+[260805] = true,
+[278551] = true,
+[278474] = true,
+[264520] = true,
+[278444] = true,
+[265407] = true,
+[265876] = true,
+[264105] = true,
+[264384] = true,
+[263959] = true,
+[268278] = true,
+[266225] = true,
+[266181] = true, -- -unsure if interruptable
+[268202] = true, -- interrupt by CC
+
+--Atal'Dazar
+
+[255824] = true,
+[253517] = true,
+[253548] = true,
+[253583] = true,
+[255041] = true,
+[256849] = true,
+[252781] = true,
+[250368] = true,
+[250096] = true,
+
+--Kings Rest
+
+[269972] = true,
+[269973] = true,
+[270923] = true,
+[270901] = true,
+[267763] = true,
+[270492] = true,
+[270493] = true, --- probably shouldnt add
+[267273] = true,
+
+--The MOTHERLODE!!
+
+[280604] = true,
+[268129] = true,
+[267354] = true, -- interrupt by CC
+[269302] = true,
+[262092] = true,
+[268709] = true,
+[268702] = true,
+[263215] = true,
+[263103] = true,
+[263066] = true,
+[268797] = true,
+[269090] = true,
+[281621] = true,
+[262540] = true,
+
+--Underrot
+
+[265089] = true,
+[265091] = true,
+[278755] = true,
+[260879] = true,
+[266106] = true,
+[265668] = true, -- Low prio
+[278961] = true, -- Highest prio
+[272183] = true,
+[266209] = true, -- high prio
+[272180] = true,
+[265433] = true,
+[265487] = true,
+
+--Battle for dazaralor
+
+[283628] = true,
+[284578] = true,
+[282243] = true,
+[285572] = true,
+[286779] = true,
+[287887] = true,
+[289861] = true,
+			
+			},
             whiteList = true,
             useTrinkets = {
                 [1] = false,
