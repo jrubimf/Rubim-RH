@@ -47,6 +47,7 @@ RubimRH.Spell[258] = {
   LegacyOfTheVoid                       = Spell(193225),
   FortressOfTheMind                     = Spell(193195),
   Dispersion                            = Spell(47585),
+  ShadowMend                            = Spell(186263),
   Silence                               = Spell(15487)
 };
 local S = RubimRH.Spell[258]
@@ -352,11 +353,11 @@ local function APL()
       return S.Silence:Cast()
     end	
 	-- Dispersion
-    if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[258].sk1 then
+    if S.Dispersion:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[258].sk1 then
         return S.Dispersion:Cast()
     end
     -- ShadowMend
-    if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[258].sk2 then
+    if S.ShadowMend:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[258].sk2 then
         return S.ShadowMend:Cast()
     end
     -- berserking
