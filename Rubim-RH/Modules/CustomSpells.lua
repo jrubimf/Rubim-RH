@@ -583,3 +583,22 @@ end })
 function CacheGetSpellTexture(a)
     return unpack(spelltexture[a]) 
 end
+
+function RubimRH.GetDescription(spellID)
+    local text = GetSpellDescription(spellID) 
+    if not text then 
+        return {0, 0} 
+    end
+    local deleted_space, numbers = string.gsub(text, "%s+", ''), {}
+    deleted_space = string.gsub(deleted_space, "%d+%%", "")
+    for num in string.gmatch(deleted_space, "%d+") do
+        table.insert(numbers, tonumber(num))
+    end
+    if #numbers == 1 then
+        return numbers
+    end
+    table.sort(numbers, function (x, y)
+            return x > y
+    end)
+    return numbers
+end
