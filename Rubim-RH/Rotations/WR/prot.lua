@@ -118,7 +118,7 @@ local function APL()
             return S.ShieldBlock:Cast()
         end
         -- last_stand,if=cooldown.shield_slam.ready&cooldown.shield_block.charges_fractional<1&buff.shield_block.down&talent.bolster.enabled
-        if S.LastStand:IsReady() and S.ShieldSlam:IsReady() and S.ShieldBlock:ChargesFractional() < 1 and Player:BuffDownP(S.ShieldBlockBuff) and S.Bolster:IsAvailable() then
+        if S.LastStand:IsReady() and S.ShieldSlam:IsReady() and S.ShieldBlock:ChargesFractional() < 1 and Player:BuffDownP(S.ShieldBlockBuff) and S.Bolster:IsAvailable() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk5 then
             return S.LastStand:Cast()
         end
         -- ignore_pain,if=rage.deficit<25+20*talent.booming_voice.enabled*cooldown.demoralizing_shout.ready
@@ -158,8 +158,16 @@ local function APL()
 
     end
     -- call precombat
+	--print(RubimRH.DBM_PullTimer());
     if not Player:AffectingCombat() and RubimRH.PrecombatON() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+        --if RubimRH.DBM_PullTimer() < 5 and RubimRH.DBM_PullTimer() > 0 then
+        --    return S.Berserking:Cast()
+        --end 
+		local ShouldReturn = Precombat(); 
+		if ShouldReturn then 
+		    return ShouldReturn; 
+		end
+
     end
     if RubimRH.TargetIsValid() then
         -- Pummel
