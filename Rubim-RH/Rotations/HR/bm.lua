@@ -351,7 +351,7 @@ local function APL()
         local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=st,if=active_enemies<2
-      if (active_enemies() < 2) or not and RubimRH.AoEON() then
+      if (active_enemies() < 2) or not RubimRH.AoEON() then
         local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=cleave,if=active_enemies>1
