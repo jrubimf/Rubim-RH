@@ -85,60 +85,6 @@ local function ttd(unit)
     end
 end
 
---- Table functions 
-function dynamic_array(dimension)
-    local metatable = {}
-    for i=1, dimension do
-        metatable[i] = {__index = function(tbl, key)
-                if i < dimension then
-                    tbl[key] = setmetatable({}, metatable[i+1])
-                    return tbl[key]
-                end
-            end
-        }
-    end
-    return setmetatable({}, metatable[1]);
-end
-
-local activeUnitPlates = dynamic_array(2)
-
-local function AddNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame  
-    local reaction = "enemy" or "friendly"
-    if unitframe and unitID then 
-        activeUnitPlates[reaction][unitframe] = unitID
-    end
-end
-
-local function RemoveNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-    if unitframe then
-        activeUnitPlates["enemy"][unitframe] = nil  
-        activeUnitPlates["friendly"][unitframe] = nil 
-    end     
-end
-
-RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function()
-        wipe(activeUnitPlates)  
-end) 
-
-RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
-    local unitID = ...
-    --AddNameplate(unitID)
-end)
-
-RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
-    local unitID = ...
-    --RemoveNameplate(unitID)
-end)
-
--- For refference 
-function GetActiveUnitPlates(reaction)
-    return activeUnitPlates[reaction] or nil
-end 
-
 function DiyingIn()
     HL.GetEnemies(10, true); -- Blood Boil
     totalmobs = 0
@@ -612,12 +558,3 @@ function RubimRH.GetCurrentLatency()
 	
 end
 
---	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
---		if not DBM:GetRaidUnitId(sender) then return end--This can't be checked fast enough on timer recovery, so it causes it to fail
---		mod = DBM:GetModByName(mod or "")
---		timeLeft = tonumber(timeLeft or 0)
---		totalTime = tonumber(totalTime or 0)
---		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
---			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
---		end
---	end
