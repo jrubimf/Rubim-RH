@@ -493,13 +493,13 @@ local function APL()
         return S.SweepingStrikes:Cast()
     end
     -- run_action_list,name=five_target,if=spell_targets.whirlwind>4
-    if (Cache.EnemiesCount[8] > 4) then
+    if (active_enemies() > 4) then
         return FiveTarget();
     end
 
     --TODO: WHATS IS THIS??
     -- run_action_list,name=hac,if=raid_event.adds.exists
-    if ((Cache.EnemiesCount[8] > 1)) then
+    if ((active_enemies() > 1)) then
       return Hac();
     end
     -- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20

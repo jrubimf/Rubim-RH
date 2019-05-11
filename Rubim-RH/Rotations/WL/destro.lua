@@ -329,7 +329,7 @@ local function Cata()
             end
         end
         -- rain_of_fire,if=soul_shard>=4.5
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (Player:SoulShardsP() >= 4.5) then
+        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (Player:SoulShardsP() >= 4.5) then
             return S.RainofFire:Cast()
         end
         -- immolate,if=talent.channel_demonfire.enabled&!remains&cooldown.channel_demonfire.remains<=action.chaos_bolt.execute_time
@@ -341,39 +341,39 @@ local function Cata()
             return S.ChannelDemonfire:Cast()
         end
         -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and Target:DebuffRemainsP(S.HavocDebuff) <= 10 then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and Target:DebuffRemainsP(S.HavocDebuff) <= 10 then
             return S.Havoc:Cast()
         end
         -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Cache.EnemiesCount[35] <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
             return S.Havoc:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&active_enemies<=4+raid_event.invulnerable.up&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%3)<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[40] <= 4  and ((108 * (Cache.EnemiesCount[35] ) / 3) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
+        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  and ((108 * (Cache.EnemiesCount[35] ) / 3) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
             return S.ChaosBolt:Cast()
         end
         -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4 then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4 then
             return S.Havoc:Cast()
         end
         -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Cache.EnemiesCount[35] <= 4 ) then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (active_enemies() <= 4 ) then
             return S.Havoc:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&buff.active_havoc.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[35] <= 4  then
+        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  then
             return S.ChaosBolt:Cast()
         end
         -- immolate,if=!debuff.havoc.remains&refreshable&spell_targets.incinerate<=8+raid_event.invulnerable.up
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and  not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Target:DebuffRefreshableCP(S.ImmolateDebuff) and Cache.EnemiesCount[5] <= 8  then
+        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and  not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Target:DebuffRefreshableCP(S.ImmolateDebuff) and active_enemies() <= 8  then
             return S.Immolate:Cast()
         end
         -- rain_of_fire
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (FutureShard() > 3) then
+        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 3) then
             return S.RainofFire:Cast()
         end
         -- soul_fire,if=!debuff.havoc.remains&spell_targets.incinerate<=3+raid_event.invulnerable.up
-        if S.SoulFire:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Cache.EnemiesCount[5] <= 3 then
+        if S.SoulFire:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and active_enemies() <= 3 then
             return S.SoulFire:Cast()
         end
         -- conflagrate,if=!debuff.havoc.remains&(talent.flashover.enabled&buff.backdraft.stack<=2|spell_targets.incinerate<=7+raid_event.invulnerable.up|talent.roaring_blaze.enabled&spell_targets.incinerate<=9+raid_event.invulnerable.up)
@@ -394,7 +394,7 @@ local function Cata()
             end
         end
         -- rain_of_fire,if=soul_shard>=4.5
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (FutureShard() > 4) then
+        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 4) then
             return S.RainofFire:Cast()
         end
         -- cataclysm
@@ -410,27 +410,27 @@ local function Cata()
             return S.ChannelDemonfire:Cast()
         end
         -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
             return S.Havoc:Cast()
         end
         -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
             return S.Havoc:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%(3-0.16*(spell_targets.rain_of_fire+raid_event.invulnerable.up)))<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[35] <= 4  + num(S.InternalCombustion:IsAvailable()) and ((108 * (Cache.EnemiesCount[35] ) / (3 - 0.16 * (Cache.EnemiesCount[35] ))) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
+        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and ((108 * (Cache.EnemiesCount[35] ) / (3 - 0.16 * (Cache.EnemiesCount[35] ))) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
             return S.ChaosBolt:Cast()
         end
         -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
             return S.Havoc:Cast()
         end
         -- havoc,if=spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Cache.EnemiesCount[35] <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
             return S.Havoc:Cast()
         end
         -- chaos_bolt,if=!debuff.havoc.remains&buff.active_havoc.remains>execute_time&spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[35] <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
+        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
             return S.ChaosBolt:Cast()
         end
         -- immolate,if=!debuff.havoc.remains&refreshable
@@ -438,7 +438,7 @@ local function Cata()
             return S.Immolate:Cast()
         end
         -- rain_of_fire
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (FutureShard() > 3) then
+        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 3) then
             return S.RainofFire:Cast()
         end
         -- soul_fire,if=!debuff.havoc.remains
@@ -504,19 +504,19 @@ local function APL()
     -- combat
     if RubimRH.TargetIsValid() then
         -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
-        if Cache.EnemiesCount[5] >= 3 and S.Cataclysm:IsAvailable() then
+        if active_enemies() >= 3 and S.Cataclysm:IsAvailable() then
             if Cata() ~= nil then
                 return Cata()
             end
         end
         -- run_action_list,name=fnb,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.fire_and_brimstone.enabled
-        if Cache.EnemiesCount[5] >= 3 and S.FireandBrimstone:IsAvailable() then
+        if active_enemies() >= 3 and S.FireandBrimstone:IsAvailable() then
             if Fnb() ~= nil then
                 return Fnb()
             end
         end
         -- run_action_list,name=inf,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.inferno.enabled
-        if Cache.EnemiesCount[5] >= 3 and S.Inferno:IsAvailable() then
+        if active_enemies() >= 3 and S.Inferno:IsAvailable() then
             if Inf() ~= nil then
                 return Inf()
             end
@@ -530,7 +530,7 @@ local function APL()
 		return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
 	end
 	-- Mythic+ - Shadowfury aoe stun test
-    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and Cache.EnemiesCount[40] >= 3 and Target:IsInterruptible() then
+    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
 		return S.Shadowfury:Cast()
     end	
         -- cataclysm
@@ -552,11 +552,11 @@ local function APL()
             return S.ChannelDemonfire:Cast()
         end
         -- havoc,if=!(target=sim.target)&target.time_to_die>10&active_enemies>1+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[40] > 1 ) then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Target:TimeToDie() > 10 and active_enemies() > 1 ) then
             return S.Havoc:Cast()
         end
         -- havoc,if=active_enemies>1+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Cache.EnemiesCount[40] > 1 ) then
+        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (active_enemies() > 1 ) then
             return S.Havoc:Cast()
         end
         -- soul_fire,if=!debuff.havoc.remains

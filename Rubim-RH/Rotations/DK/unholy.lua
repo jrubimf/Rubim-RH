@@ -386,7 +386,7 @@ local function APL()
         end
     end
     -- run_action_list,name=aoe,if=active_enemies>=2
-    if (Cache.EnemiesCount[8] >= 2) then
+    if (active_enemies() >= 2) then
         return Aoe();
     end
     -- call_action_list,name=generic

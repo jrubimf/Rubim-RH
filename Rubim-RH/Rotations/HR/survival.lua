@@ -507,13 +507,13 @@ local function APL ()
         end
     end
     -- call_action_list,name=st,if=active_enemies<2&!talent.wildfire_infusion.enabled
-    if (Cache.EnemiesCount[8] < 2 and not S.WildfireInfusion:IsAvailable()) then
+    if (active_enemies() < 2 and not S.WildfireInfusion:IsAvailable()) then
         if St() ~= nil then
             return St()
         end
     end
     -- call_action_list,name=cleave,if=active_enemies>1
-    if (Cache.EnemiesCount[8] > 1) then
+    if (active_enemies() > 1) then
         if Cleave() ~= nil then
             return Cleave()
         end

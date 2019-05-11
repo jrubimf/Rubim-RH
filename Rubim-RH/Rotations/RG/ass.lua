@@ -538,7 +538,7 @@ local function Dot ()
         end
     end
     -- actions.dot+=/crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
-    if RubimRH.AoEON() and S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
+    if RubimRH.AoEON() and S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and active_enemies() >= 2
             and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
         return S.CrimsonTempest:Cast()
     end
@@ -610,7 +610,7 @@ end
             return S.PoisonedKnife:Cast()
         end
         -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 3 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
+        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or active_enemies() >= 3 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
             return S.FanofKnives:Cast()
         end
         -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)

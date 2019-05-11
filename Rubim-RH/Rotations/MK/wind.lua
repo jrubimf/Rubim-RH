@@ -374,14 +374,14 @@ end
     end
 --# Call the ST action list if there are 2 or less enemies
 --actions+=/call_action_list,name=st,if=active_enemies<3
-    if Cache.EnemiesCount[8] < 3 then
+    if active_enemies() < 3 then
         if St() ~= nil then
             return St()
         end
     end
 --# Call the AoE action list if there are 3 or more enemies
 --actions+=/call_action_list,name=aoe,if=active_enemies>=3
-    if Cache.EnemiesCount[8] >= 3 then
+    if active_enemies() >= 3 then
         if Aoe() ~= nil then
             return Aoe()
         end

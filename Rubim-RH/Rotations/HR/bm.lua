@@ -351,11 +351,11 @@ local function APL()
         local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=st,if=active_enemies<2
-      if (Cache.EnemiesCount[40] < 2) then
+      if (active_enemies() < 2) then
         local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=cleave,if=active_enemies>1
-      if (Cache.EnemiesCount[40] > 1) then
+      if (active_enemies() > 1) then
         local ShouldReturn = Cleave(); if ShouldReturn then return ShouldReturn; end
       end
     end

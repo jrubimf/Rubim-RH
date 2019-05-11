@@ -547,7 +547,7 @@ local function APL()
         return Obliteration();
     end
     -- run_action_list,name=aoe,if=active_enemies>=2
-    if mainAddon.AoEON() and Cache.EnemiesCount[10] >= 2 then
+    if mainAddon.AoEON() and active_enemies() >= 2 then
         return Aoe();
     end
     -- call_action_list,name=standard

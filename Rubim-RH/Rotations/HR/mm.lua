@@ -313,14 +313,14 @@ local function APL ()
             end
         end
         -- call_action_list,name=st,if=active_enemies<3
-        if (Cache.EnemiesCount[40] < 3 or not RubimRH.AoEON()) then
+        if (active_enemies() < 3 or not RubimRH.AoEON()) then
             local ShouldReturn = St();
             if ShouldReturn then
                 return ShouldReturn;
             end
         end
         -- call_action_list,name=trickshots,if=active_enemies>2
-        if (Cache.EnemiesCount[40] > 2 and RubimRH.AoEON()) then
+        if (active_enemies() > 2 and RubimRH.AoEON()) then
             local ShouldReturn = Trickshots();
             if ShouldReturn then
                 return ShouldReturn;
