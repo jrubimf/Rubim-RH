@@ -56,6 +56,9 @@ RubimRH.Spell[262] = {
   AncestralCall                         = Spell(274738),
   Purge									= Spell(370),
   CleanseSpirit							= Spell(51886),
+  PrimalElementalist                    = Spell(117013),
+  EyeOfTheStorm                         = Spell(157375), 
+  CallLightning                         = Spell(157348),    
 };
 local S = RubimRH.Spell[262]
 
@@ -122,6 +125,65 @@ function TotemMastery()
         end
     end
     return 0
+end
+
+-- Pet functions
+local PetType = {
+  [77942] = {"Primal Storm Elemental", 30},
+};
+
+HL.ElementalGuardiansTable = {
+    --{PetType,petID,dateEvent,UnitPetGUID,CastsLeft}
+    Pets = {
+    },
+    PetList={
+    [77942]="Primal Storm Elemental",
+}
+};
+    
+HL:RegisterForSelfCombatEvent(
+function (...)
+    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+    local t={} ; i=1
+  
+    for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+        t[i] = str
+        i = i + 1
+    end
+    
+	local PetType=HL.ElementalGuardiansTable.PetList[tonumber(t[6])]
+    if PetType then
+        table.insert(HL.ElementalGuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+    end
+end
+    , "SPELL_SUMMON"
+);
+        
+-- Summoned pet duration
+local function PetDuration(PetType)
+    if not PetType then 
+        return 0 
+    end
+    local PetsInfo = {
+        [77942] = {"Primal Storm Elemental", 30},
+    }
+    local maxduration = 0
+    for key, Value in pairs(HL.ElementalGuardiansTable.Pets) do
+        if HL.ElementalGuardiansTable.Pets[key][1] == PetType then
+            if (PetsInfo[HL.ElementalGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.ElementalGuardiansTable.Pets[key][3])) > maxduration then
+                maxduration = HL.OffsetRemains((PetsInfo[HL.ElementalGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.ElementalGuardiansTable.Pets[key][3])), "Auto" );
+            end
+        end
+    end
+    return maxduration
+end
+
+local function StormElementalIsActive()
+    if PetDuration("Primal Storm Elemental") > 1 then
+        return true
+   else
+        return false
+    end
 end
 
 --136024 - Earth
@@ -338,7 +400,7 @@ local function APL()
       return S.Icefury:Cast()
     end
     -- lightning_bolt
-    if S.LightningBolt:IsCastableP() then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 60 then
       return S.LightningBolt:Cast()
     end
     -- flame_shock,moving=1,target_if=refreshable
@@ -360,9 +422,9 @@ local function APL()
         local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
     end
   
-    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end
+  --  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
+  --      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  --  end
   
   -- combat start
   if RubimRH.TargetIsValid() then
@@ -377,9 +439,9 @@ local function APL()
       return S.Purge:Cast()
     end
 	-- defensive dispell
-	if MouseOver:HasDispelableDebuff("Curse") then
-        return S.CleanseSpirit:Cast()
-    end
+	--if MouseOver:HasDispelableDebuff("Curse") then
+    --    return S.CleanseSpirit:Cast()
+    --end
     -- totem_mastery,if=talent.totem_mastery.enabled&buff.resonance_totem.remains<2
     if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and TotemMastery() < 2) then
       return S.TotemMastery:Cast()
@@ -391,6 +453,10 @@ local function APL()
     -- storm_elemental,if=talent.storm_elemental.enabled&(!talent.icefury.enabled|!buff.icefury.up&!cooldown.icefury.up)
     if S.StormElemental:IsCastableP() and RubimRH.CDsON() and (S.StormElemental:IsAvailable() and (not S.Icefury:IsAvailable() or not Player:BuffP(S.IcefuryBuff) and not S.Icefury:CooldownUpP())) then
       return S.StormElemental:Cast()
+    end
+	-- Eye of the Storm if Storm Elemental is up and we got Primal Elementalists
+	if S.EyeOfTheStorm:CooldownRemainsP() < 0.1 and S.PrimalElementalist:IsAvailable() and RubimRH.CDsON() and StormElementalIsActive() then
+        return S.EyeOfTheStorm:Cast()
     end
     -- earth_elemental,if=!talent.primal_elementalist.enabled|talent.primal_elementalist.enabled&(cooldown.fire_elemental.remains<120&!talent.storm_elemental.enabled|cooldown.storm_elemental.remains<120&talent.storm_elemental.enabled)
     -- use_items
@@ -411,11 +477,11 @@ local function APL()
       return S.AncestralCall:Cast()
     end
     -- run_action_list,name=aoe,if=active_enemies>2&(Cache.EnemiesCount[40].chain_lightning>2|Cache.EnemiesCount[40].lava_beam>2)
-    if (Cache.EnemiesCount[40] > 2) then
+    if (active_enemies() > 1) then
       return Aoe();
     end
     -- run_action_list,name=single_target
-    if (true) then
+    if (active_enemies() < 2) then
       return SingleTarget();
     end
   return 0, 135328
