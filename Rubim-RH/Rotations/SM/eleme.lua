@@ -455,7 +455,7 @@ local function APL()
       return S.StormElemental:Cast()
     end
 	-- Eye of the Storm if Storm Elemental is up and we got Primal Elementalists
-	if S.EyeOfTheStorm:CooldownRemainsP() < 0.1 and S.PrimalElementalist:IsAvailable() and RubimRH.CDsON() and StormElementalIsActive() then
+	if S.EyeOfTheStorm:CooldownRemainsP() < 0.1 and S.PrimalElementalist:IsAvailable() and RubimRH.CDsON() and StormElementalIsActive() and S.CallLightning:CooldownRemainsP() > 1 then
         return S.EyeOfTheStorm:Cast()
     end
     -- earth_elemental,if=!talent.primal_elementalist.enabled|talent.primal_elementalist.enabled&(cooldown.fire_elemental.remains<120&!talent.storm_elemental.enabled|cooldown.storm_elemental.remains<120&talent.storm_elemental.enabled)
@@ -490,6 +490,7 @@ end
 RubimRH.Rotation.SetAPL(262, APL);
 
 local function PASSIVE()
+    --print(active_enemies());
     return RubimRH.Shared()
 end
 
