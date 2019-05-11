@@ -510,6 +510,10 @@ local defaults = {
             sk4 = 30, -- ShieldWall
             sk4id = 871,
             sk4tooltip =  "Percent HP to use Shield Wall",
+			
+            sk5 = 20, -- Last Stand
+            sk5id = 12975,
+            sk5tooltip =  "Percent HP to use Last Stand",
 
         },
         --ROGUE
