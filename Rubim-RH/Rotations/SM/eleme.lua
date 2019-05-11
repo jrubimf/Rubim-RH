@@ -315,15 +315,15 @@ local function APL()
       return S.Ascendance:Cast()
     end
     -- elemental_blast,if=talent.elemental_blast.enabled&(talent.master_of_the_elements.enabled&buff.master_of_the_elements.up&maelstrom<60|!talent.master_of_the_elements.enabled)&(!(cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled)|azerite.natural_harmony.rank=3&buff.wind_gust.stack<14)
-    if S.ElementalBlast:IsCastableP() and (S.ElementalBlast:IsAvailable() and (S.MasteroftheElements:IsAvailable() and Player:BuffP(S.MasteroftheElementsBuff) and FutureMaelstromPower() < 60 or not S.MasteroftheElements:IsAvailable()) and (not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) or S.NaturalHarmony:AzeriteRank() == 3 and Player:BuffStackP(S.WindGustBuff) < 14)) then
+    if S.ElementalBlast:IsCastableP() and S.ElementalBlast:IsAvailable() and (S.MasteroftheElements:IsAvailable() and Player:BuffP(S.MasteroftheElementsBuff) and FutureMaelstromPower() < 60 or not S.MasteroftheElements:IsAvailable()) and (not (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) or S.NaturalHarmony:AzeriteEnabled() and Player:BuffStackP(S.WindGustBuff) < 14) then
       return S.ElementalBlast:Cast()
     end
     -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)&(!talent.surge_of_power.enabled|buff.surge_of_power.up|maelstrom>=44)
-    if S.Stormkeeper:IsCastableP() and (S.Stormkeeper:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50) and (not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff) or FutureMaelstromPower() >= 44)) then
+    if S.Stormkeeper:IsCastableP() and (S.Stormkeeper:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3) and (not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff) or FutureMaelstromPower() >= 44)) then
       return S.Stormkeeper:Cast()
     end
     -- liquid_magma_totem,if=talent.liquid_magma_totem.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
-    if S.LiquidMagmaTotem:IsCastableP() and S.LiquidMagmaTotem:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3 or 10000000000 > 50) then
+    if S.LiquidMagmaTotem:IsCastableP() and S.LiquidMagmaTotem:IsAvailable() and ((Cache.EnemiesCount[40] - 1) < 3) then
       return S.LiquidMagmaTotem:Cast()
     end
     -- lightning_bolt,if=buff.stormkeeper.up&Cache.EnemiesCount[40].chain_lightning<2&(buff.master_of_the_elements.up&!talent.surge_of_power.enabled|buff.surge_of_power.up)
@@ -477,11 +477,11 @@ local function APL()
       return S.AncestralCall:Cast()
     end
     -- run_action_list,name=aoe,if=active_enemies>2&(Cache.EnemiesCount[40].chain_lightning>2|Cache.EnemiesCount[40].lava_beam>2)
-    if (active_enemies() > 1) then
+    if (active_enemies() > 1) and RubimRH.AoEON() then
       return Aoe();
     end
     -- run_action_list,name=single_target
-    if (active_enemies() < 2) then
+    if (active_enemies() < 2) or not RubimRH.AoEON() then
       return SingleTarget();
     end
   return 0, 135328
