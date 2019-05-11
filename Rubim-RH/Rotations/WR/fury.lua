@@ -25,7 +25,7 @@ RubimRH.Spell[72] = {
     BerserkerRage = Spell(18499),
     Bloodthirst = Spell(23881),
     Charge = Spell(100),
-    Execute = Spell(5308),
+    --Execute = Spell(5308),
     HeroicLeap = Spell(6544),
     HeroicThrow = Spell(57755),
     RagingBlow = Spell(85288),
@@ -168,8 +168,8 @@ local function APL()
         if S.Rampage:IsReady("Melee") and (Player:BuffP(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
             return S.Rampage:Cast()
         end
-        -- execute
-        if S.Execute:IsReady("Melee") then
+        -- execute,if=buff.enrage.up
+        if S.Execute:IsCastableP() and (Player:BuffP(S.Enrage)) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage
