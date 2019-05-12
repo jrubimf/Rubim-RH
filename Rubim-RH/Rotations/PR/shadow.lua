@@ -353,9 +353,9 @@ local function APL()
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
 	-- auto switch to next target
-    if (MultiDots(40, 34914, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() > 2 then
-		return 0, CacheGetSpellTexture(153911)     
-    end
+--    if (MultiDots(40, 34914, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() > 2 then
+	--	return 0, CacheGetSpellTexture(153911)     
+  --  end
     -- SwitchTarget()
     -- Silence
     if S.Silence:IsCastableP() and RubimRH.InterruptsON() and Target:IsInterruptible() then
