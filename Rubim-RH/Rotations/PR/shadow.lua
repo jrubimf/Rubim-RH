@@ -99,9 +99,17 @@ end
 local function InsanityThreshold()
 	return S.LegacyOfTheVoid:IsAvailable() and 60 or 90;
 end
+
 local function ExecuteRange ()
 	return 20;
 end
+
+-- SPvE AoE MultiDots as 2-10
+local function SwitchTarget()
+    if active_enemies() < 10 and CombatTime("player") > 0 and (not IsSpellInRange("target", 589) or (CombatTime("target") == 0)) and (MultiDots(40, 34914, 10, 1) >= 1) then
+	    return 0, CacheGetSpellTexture(153911)
+    end
+end	
 
 
 
@@ -229,9 +237,9 @@ local function APL()
       return S.MindSear:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() then
-      return S.MindFlay:Cast()
-    end
+   -- if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() then
+   --   return S.MindFlay:Cast()
+  --  end
     -- shadow_word_pain
     if S.ShadowWordPain:IsCastableP() then
       return S.ShadowWordPain:Cast()
@@ -313,7 +321,7 @@ local function APL()
       return S.VampiricTouch:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() then
+    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() and active_enemies() < 2 then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
@@ -345,9 +353,10 @@ local function APL()
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
 	-- auto switch to next target
-    if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 11 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 11 and RubimRH.AoEON() and active_enemies() > 2 then
+    if (MultiDots(40, 34914, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() > 2 then
 		return 0, CacheGetSpellTexture(153911)     
-    end	
+    end
+    -- SwitchTarget()
     -- Silence
     if S.Silence:IsCastableP() and RubimRH.InterruptsON() and Target:IsInterruptible() then
       return S.Silence:Cast()
@@ -379,6 +388,7 @@ end
 RubimRH.Rotation.SetAPL(258, APL)
 
 local function PASSIVE()
+	print(MultiDots(40, 34914, 10, 1));
     return RubimRH.Shared()
 end
 
