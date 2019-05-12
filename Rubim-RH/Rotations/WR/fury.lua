@@ -300,7 +300,7 @@ local function APL()
     end
 
     -- run_action_list,name=single_target
-    if active_enemies() < 2 then
+    if (true) then
         return SingleTarget();
     end
     return 0, 135328
@@ -310,6 +310,7 @@ end
 RubimRH.Rotation.SetAPL(72, APL);
 
 local function PASSIVE()
+    print(active_enemies());
     return RubimRH.Shared()
 end
 
