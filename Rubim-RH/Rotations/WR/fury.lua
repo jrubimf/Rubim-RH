@@ -154,7 +154,8 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
     UpdateExecuteID()
-    Precombat = function()
+    
+	Precombat = function()
         -- flask
         -- food
         -- augmentation
@@ -218,7 +219,7 @@ local function APL()
     end
 
 
-    if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
+    if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and not Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
         return S.Charge:Cast()
     end
 
@@ -230,6 +231,9 @@ local function APL()
         return 0, 462338
     end
 
+  -- combat
+  if RubimRH.TargetIsValid() then
+	
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
@@ -303,7 +307,9 @@ local function APL()
     if (true) then
         return SingleTarget();
     end
-    return 0, 135328
+	
+  end
+  return 0, 135328
 end
 
 
