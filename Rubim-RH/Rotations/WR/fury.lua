@@ -196,13 +196,13 @@ local function APL()
             return S.Bloodthirst:Cast()
         end
 		-- dragon_roar,if=buff.enrage.up - fix
-	  --  if S.DragonRoar:IsAvailable() and Player:BuffP(S.Enrage) and S.DragonRoar:CooldownRemainsP() < 1 then
-      --      return S.DragonRoar:Cast()
-       -- end
-        -- dragon_roar,if=buff.enrage.up
-        if S.DragonRoar:IsCastableP() and S.DragonRoar:IsAvailable() and Player:BuffRemainsP(S.Enrage) > Player:GCD() then
+	    if S.DragonRoar:IsReady("Melee") and S.DragonRoar:IsAvailable() and Player:BuffP(S.Enrage) and S.DragonRoar:CooldownRemainsP() < 1 then
             return S.DragonRoar:Cast()
         end
+        -- dragon_roar,if=buff.enrage.up
+      --  if S.DragonRoar:IsCastableP() and S.DragonRoar:IsAvailable() and Player:BuffRemainsP(S.Enrage) > Player:GCD() then
+      --      return S.DragonRoar:Cast()
+      --  end
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
         if S.RagingBlow:IsReady("Melee") and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
             return S.RagingBlow:Cast()
