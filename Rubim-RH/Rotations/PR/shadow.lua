@@ -388,7 +388,7 @@ end
 RubimRH.Rotation.SetAPL(258, APL)
 
 local function PASSIVE()
-	print(MultiDots(40, 34914, 10, 1));
+	--print(MultiDots(40, 34914, 10, 1));
     return RubimRH.Shared()
 end
 
