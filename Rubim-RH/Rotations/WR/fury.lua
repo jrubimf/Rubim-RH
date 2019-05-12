@@ -175,7 +175,7 @@ local function APL()
         if S.Rampage:IsReady("Melee") and (Player:BuffP(S.Recklessness) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.Enrage) < Player:GCD() or Player:Rage() > 90))) then
             return S.Rampage:Cast()
         end
-        -- execute,if=buff.enrage.up
+        -- execute,if=buff.enrage.upSuddenDeathBuff
         if S.Execute:IsCastableP() and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange ()) then
             return S.Execute:Cast()
         end
@@ -196,9 +196,9 @@ local function APL()
             return S.Bloodthirst:Cast()
         end
 		-- dragon_roar,if=buff.enrage.up - fix
-	    if S.DragonRoar:IsAvailable() and Player:BuffP(S.Enrage) and S.DragonRoar:CooldownRemainsP() < 1 then
-            return S.DragonRoar:Cast()
-        end
+	  --  if S.DragonRoar:IsAvailable() and Player:BuffP(S.Enrage) and S.DragonRoar:CooldownRemainsP() < 1 then
+      --      return S.DragonRoar:Cast()
+       -- end
         -- dragon_roar,if=buff.enrage.up
         if S.DragonRoar:IsCastableP() and S.DragonRoar:IsAvailable() and Player:BuffRemainsP(S.Enrage) > Player:GCD() then
             return S.DragonRoar:Cast()
@@ -264,7 +264,10 @@ local function APL()
     if S.Bloodthirst:IsReady("Melee") and Player:HealthPercentage() <= 80 and Player:Buff(S.EnragedRegeneration) then
         return S.Bloodthirst:Cast()
     end
-
+    -- execute,if=buff.enrage.up
+    if S.Execute:IsCastableP() and Player:BuffP(S.SuddenDeathBuff) then
+        return S.Execute:Cast()
+    end
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
     if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
         return S.FuriousSlash:Cast()
