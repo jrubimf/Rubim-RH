@@ -180,6 +180,59 @@ function RubimRH.SpellExists(spell)
     return GetSpellBookItemInfo(id) or IsPlayerSpell(spell)    
 end
 
+function RubimRH.AuraDur(unit, name, filter)
+	local buffName, _, duration, expirationTime, id 
+	for i = 1, huge do
+		buffName, _, _, _, duration, expirationTime, _, _, _, id = UnitAura(unit, i, filter)
+		if not id or id == name or strlowerCache[buffName] == name then
+			break
+		end
+	end
+	
+	if not buffName then
+		return 0, 0, 0
+	else
+		return expirationTime == 0 and huge or expirationTime - HL.GetTime(), duration, expirationTime
+	end
+end
+
+function RubimRH.SortDeBuffs(unitID, spell, source, byID)
+    local dur, duration
+    local filter = "HARMFUL" .. (source and " PLAYER" or "")    
+    
+    if type(spell) == "table" then
+        local SortTable = {} 
+        
+        for i = 1, #spell do            
+            dur, duration = RubimRH.AuraDur(unitID, not byID and not IDexception[i] and strlowerCache[GetSpellInfo(spell[i])] or spell[i], filter)                       
+            if dur > 0 then
+                table.insert(SortTable, {dur, duration})
+            end
+        end    
+        
+        if #SortTable > 0 then 
+            ArraySortByColl(SortTable, 1)   
+            return SortTable[1][1], SortTable[1][2]   
+        end 
+    else
+        dur, duration = RubimRH.AuraDur(unitID, not byID and not IDexception[spell] and strlowerCache[GetSpellInfo(spell)] or spell, filter)
+    end   
+    
+    return dur, duration       
+end
+
+-- return nil, need to fix, using DebuffRemains instead
+function RubimRH.HasDeBuffs(self, key, caster)
+    local value, duration = 0, 0
+     -- Cyclone behavior
+	-- if Env.Unit(self.UnitID):DeBuffCyclone() > 0 then 
+    --     value, duration = -1, -1
+    -- else
+        value, duration = RubimRH.SortDeBuffs(self.UnitID, ((type(key) == "string" and AuraList[key]) or key), caster) 
+   
+    return value, duration   
+end
+
 -- Multi DoTs
 -- Missed dots on valid targets (only NUMERIC returns!!)
 function MultiDots(range, dots, ttd, stop)
@@ -192,7 +245,8 @@ function MultiDots(range, dots, ttd, stop)
             --( not RubimRH.InPvP() or UnitIsPlayer(unit)) and
             ( not ttd or Target:TimeToDie() >= ttd ) and 
             ( not range or RubimRH.SpellInteract(unit, range)) and 
-            Unit(unit):HasDeBuffs(dots, "player") == 0 then               
+            --Unit(unit):HasDeBuffs(dots, "player") == 0 then  
+            Unit(unit):DebuffRemains(dots) < 1 then  			
                 totalmobs = totalmobs + 1            
                 
                 if stop and totalmobs >= stop then
