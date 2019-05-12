@@ -386,7 +386,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (Cache.EnemiesCount[10] >= 1 and not bool(VarWaitingForMomentum)) then
+        if S.EyeBeam:IsReady() and active_enemies() >= 1 and (active_enemies() >= 1 and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
         -- blade_dance,if=variable.blade_dance
