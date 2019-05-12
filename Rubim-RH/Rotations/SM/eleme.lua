@@ -327,14 +327,14 @@ local function APL()
       return S.LiquidMagmaTotem:Cast()
     end
     -- lightning_bolt,if=buff.stormkeeper.up&Cache.EnemiesCount[40].chain_lightning<2&(buff.master_of_the_elements.up&!talent.surge_of_power.enabled|buff.surge_of_power.up)
-    if S.LightningBolt:IsCastableP() and (Player:BuffP(S.StormkeeperBuff) and Cache.EnemiesCount[40] < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff))) then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and (Player:BuffP(S.StormkeeperBuff) and active_enemies() < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff))) then
       return S.LightningBolt:Cast()
     end
     --# There might come an update for this line with some SoP logic.
     --actions.single_target+=/earthquake,if=active_enemies>1&Cache.EnemiesCount[40].chain_lightning>1&(!talent.surge_of_power.enabled|!dot.flame_shock.refreshable|cooldown.storm_elemental.remains>120)&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up|maelstrom>=92)
-    if S.Earthquake:IsCastableP() and (Cache.EnemiesCount[40] > 1 and (not S.SurgeofPower:IsAvailable() or S.StormElemental:CooldownRemains() > 120) and (not S.MasteroftheElements:IsAvailable() or Player:Buff(S.MasteroftheElementsBuff) or FutureMaelstromPower() >= 92)) then
+    if S.Earthquake:IsCastableP() and (active_enemies >= 1 and (not S.SurgeofPower:IsAvailable() or S.StormElemental:CooldownRemains() > 120) and (not S.MasteroftheElements:IsAvailable() or Player:Buff(S.MasteroftheElementsBuff) or FutureMaelstromPower() >= 92)) then
         if FutureMaelstromPower() >= 60 then
-            return S.Earthquake:Cast()
+            return S.EarthShock:Cast()
         end
     end
     --# Boy...what a condition. With Master of the Elements pool Maelstrom up to 8 Maelstrom below the cap to ensure it's used with Earth Shock. Without Master of the Elements, use Earth Shock either if Stormkeeper is up, Maelstrom is 10 Maelstrom below the cap or less, or either Storm Elemental isn't talented or it's not active and your last Storm Elemental of the fight will have only a partial duration.
@@ -346,13 +346,13 @@ local function APL()
     end
     --# Use Earth Shock if Surge of Power is talented, but neither it nor a DPS Elemental is active at the moment, and Lava Burst is ready or will be within the next GCD.
     --actions.single_target+=/earth_shock,if=talent.surge_of_power.enabled&!buff.surge_of_power.up&cooldown.lava_burst.remains<=gcd&(!talent.storm_elemental.enabled&!(cooldown.fire_elemental.remains>120)|talent.storm_elemental.enabled&!(cooldown.storm_elemental.remains>120))
-    if (S.SurgeofPower:IsAvailable() and not Player:Buff(S.SurgeofPowerBuff) and S.LavaBurst:CooldownRemains() <= Player:GCD() and (not S.StormElemental:IsAvailable() and not (S.FireElemental:CooldownRemains() > 120) or S.StormElemental:IsAvailable() and not (S.StormElemental:CooldownRemains() >120))) then
+    if S.SurgeofPower:IsAvailable() and not Player:Buff(S.SurgeofPowerBuff) and S.LavaBurst:CooldownRemains() <= Player:GCD() and (not S.StormElemental:IsAvailable() and not (S.FireElemental:CooldownRemains() > 120) or S.StormElemental:IsAvailable() and not (S.StormElemental:CooldownRemains() >120)) then
         if (FutureMaelstromPower() >=60) then
           return S.EarthShock:Cast()
         end
     end
     -- lightning_bolt,if=cooldown.storm_elemental.remains>120&talent.storm_elemental.enabled
-    if S.LightningBolt:IsCastableP() and (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and (S.StormElemental:CooldownRemainsP() > 120 and S.StormElemental:IsAvailable()) then
       return S.LightningBolt:Cast()
     end
     -- frost_shock,if=talent.icefury.enabled&talent.master_of_the_elements.enabled&buff.icefury.up&buff.master_of_the_elements.up
@@ -376,7 +376,7 @@ local function APL()
       return S.LavaBurst:Cast()
     end
     -- lightning_bolt,if=buff.surge_of_power.up
-    if S.LightningBolt:IsCastableP() and (Player:BuffP(S.SurgeofPowerBuff)) then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and (Player:BuffP(S.SurgeofPowerBuff)) then
       return S.LightningBolt:Cast()
     end
     -- lava_burst,if=cooldown_react
@@ -490,7 +490,7 @@ end
 RubimRH.Rotation.SetAPL(262, APL);
 
 local function PASSIVE()
-    --print(active_enemies());
+   -- print(active_enemies());
     return RubimRH.Shared()
 end
 
