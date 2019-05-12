@@ -310,7 +310,7 @@ end
 RubimRH.Rotation.SetAPL(72, APL);
 
 local function PASSIVE()
-    print(active_enemies());
+   -- print(active_enemies());
     return RubimRH.Shared()
 end
 
