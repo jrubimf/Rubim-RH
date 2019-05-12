@@ -93,7 +93,7 @@ function MassTaunt(stop, range, ttd)
         for reference, unit in pairs(activeUnitPlates["enemy"]) do
             if 
             CombatTime(unit) > 0 and 
-            TimeToDie(unit) >= ttd and 
+            Target:TimeToDie() >= ttd and 
             RubimRH.UNITLevel(unit) ~= -1 and 
             RubimRH.SpellInteract(unit, range) and 
             UnitExists(unit .. "target") and
@@ -189,9 +189,9 @@ function MultiDots(range, dots, ttd, stop)
             if 
             CombatTime(unit) > 0 and 
             UnitLevel(unit) ~= -1 and 
-            ( not RubimRH.InPvP() or UnitIsPlayer(unit)) and
-            ( not ttd or TimeToDie(unit) >= ttd ) and 
-            ( not range or RubimRH.SpellInteract(unit, range) ) and 
+            --( not RubimRH.InPvP() or UnitIsPlayer(unit)) and
+            ( not ttd or Target:TimeToDie() >= ttd ) and 
+            ( not range or RubimRH.SpellInteract(unit, range)) and 
             Unit(unit):HasDeBuffs(dots, "player") == 0 then               
                 totalmobs = totalmobs + 1            
                 
@@ -211,7 +211,7 @@ function UnitsDots(stop, dots, range, ttd)
         for reference, unit in pairs(activeUnitPlates["enemy"]) do
             if 
             CombatTime(unit) > 0 and 
-            ( not ttd or TimeToDie(unit) >= ttd ) and 
+            ( not ttd or Target:TimeToDie() >= ttd ) and 
             UnitLevel(unit) ~= -1 and 
             Unit(unit):HasDeBuffs(dots, "player") > 0 and 
             ( not range or RubimRH.SpellInteract(unit, range) ) then                 
@@ -236,7 +236,7 @@ function CombatUnits(stop, range, upttd)
             if 
             CombatTime(unit) > 0 and 
             ( not range or RubimRH.SpellInteract(unit, range) ) and 
-            ( not upttd or TimeToDie(unit) >= upttd ) then 
+            ( not upttd or Target:TimeToDie() >= upttd ) then 
                 totalmobs = totalmobs + 1            
                 
                 if stop and totalmobs >= stop then                  
