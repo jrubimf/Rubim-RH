@@ -169,7 +169,7 @@ local function APL()
       return S.VampiricTouch:Cast() 
     end
     -- mind_sear,if=buff.harvested_thoughts.up
-    if S.MindSear:IsCastableP() and (Player:BuffP(S.HarvestedThoughtsBuff)) then
+    if S.MindSear:IsCastableP() and Player:BuffP(S.HarvestedThoughtsBuff) then
       return S.MindSear:Cast() 
     end
     -- void_bolt
@@ -225,7 +225,7 @@ local function APL()
       return S.VoidTorrent:Cast()
     end
     -- mind_sear,target_if=spell_targets.mind_sear>1,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2
-    if S.MindSear:IsCastableP() and Cache.EnemiesCount[40] > 1 then
+    if S.MindSear:IsCastableP() and not S.VoidBolt:IsCastable() and active_enemies() > 1 then
       return S.MindSear:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
@@ -261,9 +261,9 @@ local function APL()
       return S.VoidBolt:Cast()
     end
     -- mind_sear,if=buff.harvested_thoughts.up&cooldown.void_bolt.remains>=1.5&azerite.searing_dialogue.rank>=1
-    if S.MindSear:IsCastableP() and Player:BuffP(S.HarvestedThoughtsBuff) and S.VoidBolt:CooldownRemainsP() >= 1.5 and S.SearingDialogue:AzeriteRank() >= 1 then
-      return S.MindSear:Cast()
-    end
+   -- if S.MindSear:IsCastableP() and Player:BuffP(S.HarvestedThoughtsBuff) and S.VoidBolt:CooldownRemainsP() >= 1.5 and S.SearingDialogue:AzeriteRank() >= 1 then
+   --   return S.MindSear:Cast()
+   -- end
     -- shadow_word_death,if=target.time_to_die<3|cooldown.shadow_word_death.charges=2|(cooldown.shadow_word_death.charges=1&cooldown.shadow_word_death.remains<gcd.max)
     if S.ShadowWordDeath:IsCastableP() and (Target:TimeToDie() < 3 or S.ShadowWordDeath:ChargesP() == 2 or (S.ShadowWordDeath:ChargesP() == 1 and S.ShadowWordDeath:CooldownRemainsP() < Player:GCD())) and Target:HealthPercentage() < ExecuteRange () then
       return S.ShadowWordDeath:Cast()
