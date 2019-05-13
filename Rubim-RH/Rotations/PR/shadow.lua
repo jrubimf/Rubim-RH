@@ -201,7 +201,7 @@ local function APL()
       return S.Mindbender:Cast()
     end
 	-- shadowfiend
-    if S.Shadowfiend:IsReadyP() then
+    if S.Shadowfiend:IsReadyP() and RubimRH.CDsON() then
       return S.Shadowfiend:Cast()
     end
     -- mind_blast,target_if=spell_targets.mind_sear<variable.mind_blast_targets
@@ -241,19 +241,19 @@ local function APL()
    --   return S.MindFlay:Cast()
   --  end
     -- shadow_word_pain
-    if S.ShadowWordPain:IsCastableP() then
-      return S.ShadowWordPain:Cast()
-    end
+    --if S.ShadowWordPain:IsCastableP() then
+    --  return S.ShadowWordPain:Cast()
+    --end
   end
   
   -- Auto switch target function
-  AutoDotCycle = function()
-    if S.VampiricTouch:IsCastableP() and S.ShadowWordPain:IsCastableP() then
-        if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 17 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 13 then
-			return 0, CacheGetSpellTexture(153911)     
-		end		
-	end
-  end
+  --AutoDotCycle = function()
+  --  if S.VampiricTouch:IsCastableP() and S.ShadowWordPain:IsCastableP() then
+  --      if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 17 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 13 then
+--			return 0, CacheGetSpellTexture(153911)     
+--		end		
+--	end
+ --- end
   
   Single = function()
     -- void_eruption
@@ -289,7 +289,7 @@ local function APL()
       return S.Mindbender:Cast()
     end
 	-- shadowfiend,if=!talent.mindbender.enabled|(buff.voidform.stack>18|target.time_to_die<15)
-    if S.Shadowfiend:IsReadyP() or (S.Shadowfiend:IsReadyP() and (Player:BuffStackP(S.VoidformBuff) > 18 or Target:TimeToDie() < 15))  then
+    if S.Shadowfiend:IsReadyP() and RubimRH.CDsON() or (RubimRH.CDsON() and S.Shadowfiend:IsReadyP() and (Player:BuffStackP(S.VoidformBuff) > 18))  then
       return S.Shadowfiend:Cast()
     end
     -- shadow_word_death,if=!buff.voidform.up|(cooldown.shadow_word_death.charges=2&buff.voidform.stack<15)
@@ -325,9 +325,9 @@ local function APL()
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
-    if S.ShadowWordPain:IsCastableP() then
-      return S.ShadowWordPain:Cast()
-    end
+    --if S.ShadowWordPain:IsCastableP() then
+    --  return S.ShadowWordPain:Cast()
+    --end
   end
   -- call precombat
   if not Player:AffectingCombat() and RubimRH.PrecombatON() then
@@ -353,7 +353,7 @@ local function APL()
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
 	-- auto switch to next target
-    if (MultiDots(40, S.VampiricTouch, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() > 2 then
+    if (MultiDots(40, S.VampiricTouch, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() > 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
 		return 0, CacheGetSpellTexture(153911)     
     end
     -- SwitchTarget()
