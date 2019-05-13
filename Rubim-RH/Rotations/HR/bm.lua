@@ -344,6 +344,9 @@ local function APL()
 	if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.CounterShot:Cast()
     end
+	  if QueueSkill() ~= nil then
+        return QueueSkill()
+      end
       -- auto_shot
       -- use_items
 	  if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
