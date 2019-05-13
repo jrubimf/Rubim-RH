@@ -384,7 +384,7 @@ local defaults = {
 [285572] = true,
 [286779] = true,
 [287887] = true,
-[289861] = true,
+[289861] = true
 			
 			},
             whiteList = true,

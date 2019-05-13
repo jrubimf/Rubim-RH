@@ -4,13 +4,14 @@
 --- DateTime: 12/07/2018 07:01
 ---
 
-local HL = HeroLib;
-local Cache = HeroCache;
-local Unit = HL.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-local Spell = HL.Spell;
-local Item = HL.Item;
+local HL = HeroLib
+local Cache = HeroCache
+local Unit = HL.Unit
+local Player = Unit.Player
+local Target = Unit.Target
+local Spell = HL.Spell
+local Item = HL.Item
+local mainAddon = RubimRH
 
 local ProlongedPower = Item(142117)
 local Healthstone = 5512
@@ -79,13 +80,15 @@ function QueueSkill()
     end
 end
 --#TODO FIX THIS
+-- 13.05.19 - Should now work as intended
 function RubimRH.Shared()
     if Player:AffectingCombat() then
 
-        if Player:AffectingCombat() and not Target:Exists() then
-            HL.GetEnemies(8)
-            if Cache.EnemiesCount[8] >= 1 then
-                return 153911
+        if not Target:Exists() then
+			--print("It works");  
+			--active combat check
+			if active_enemies() >= 1 then
+		        return 133015   
             end
         end
 
