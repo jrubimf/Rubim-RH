@@ -12,7 +12,7 @@ local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
 
-mainAddon.Spell[251] = {
+RubimRH.Spell[251] = {
     -- Racials
     ArcaneTorrent = Spell(50613),
     Berserking = Spell(26297),
@@ -76,7 +76,7 @@ mainAddon.Spell[251] = {
     IcyCitadelBuff                        = Spell(272719),
 }
 
-local S = mainAddon.Spell[251]
+local S = RubimRH.Spell[251]
 
 if not Item.DeathKnight then
     Item.DeathKnight = { }
@@ -476,7 +476,7 @@ local function APL()
     end
 
     if QueueSkill() ~= nil then
-        if mainAddon.QueuedSpell():ID() == S.BreathofSindragosa:ID() then
+        if RubimRH.QueuedSpell():ID() == S.BreathofSindragosa:ID() then
             if Player:Buff(S.EmpowerRuneWeapon) and Player:Buff(S.PillarofFrost) then
                 return QueueSkill()
             end
@@ -488,9 +488,13 @@ local function APL()
     if Target:MinDistanceToPlayer(true) >= 15 and Target:MinDistanceToPlayer(true) <= 40 and S.DeathGrip:IsReady() and Target:IsQuestMob() then
         return S.DeathGrip:Cast()
     end
+	
+	if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].sk2 then
+        return S.IceboundFortitude:Cast()
+    end
 
     --CUSTOM
-    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= mainAddon.db.profile[251].sk1 then
+    if Player:Buff(S.DarkSuccor) and S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].sk1 then
         return S.DeathStrike:Cast()
     end
 
@@ -498,7 +502,7 @@ local function APL()
         return S.DeathStrike:Cast()
     end
 
-    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= mainAddon.db.profile[251].sk2 then
+    if S.DeathStrike:IsReady("Melee") and Player:HealthPercentage() <= RubimRH.db.profile[251].sk2 then
         if S.DeathStrike:IsUsable() then
             return S.DeathStrike:Cast()
         else
@@ -507,12 +511,12 @@ local function APL()
         end
     end
 
-    if S.DeathPact:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[251].sk4 then
+    if S.DeathPact:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[251].sk4 then
         return S.DeathPact:Cast()
     end
 
     --END OF CUSTOM
-    if S.MindFreeze:IsReady() and mainAddon.InterruptsON() and Target:IsInterruptible() then
+    if S.MindFreeze:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.MindFreeze:Cast()
     end
 
@@ -529,13 +533,13 @@ local function APL()
         return S.FrostStrike:Cast()
     end
     -- call_action_list,name=cooldowns
-    if (mainAddon.CDsON()) then
+    if (RubimRH.CDsON()) then
         if Cooldowns() ~= nil then
             return Cooldowns()
         end
     end
     -- run_action_list,name=bos_pooling,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains<5
-    if (mainAddon.CDsON() and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemainsP() < 5) then
+    if (RubimRH.CDsON() and S.BreathofSindragosa:IsAvailable() and S.BreathofSindragosa:CooldownRemainsP() < 5) then
         return BosPooling()
     end
     -- run_action_list,name=bos_ticking,if=dot.breath_of_sindragosa.ticking
@@ -547,7 +551,7 @@ local function APL()
         return Obliteration();
     end
     -- run_action_list,name=aoe,if=active_enemies>=2
-    if mainAddon.AoEON() and active_enemies() >= 2 then
+    if RubimRH.AoEON() and active_enemies() >= 2 then
         return Aoe();
     end
     -- call_action_list,name=standard
@@ -559,12 +563,9 @@ local function APL()
     return 0, 135328
 end
 
-mainAddon.Rotation.SetAPL(251, APL)
+RubimRH.Rotation.SetAPL(251, APL)
 local function PASSIVE()
-    if S.IceboundFortitude:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[251].sk2 then
-        return S.IceboundFortitude:Cast()
-    end
-    return mainAddon.Shared()
+    return RubimRH.Shared()
 end
 
-mainAddon.Rotation.SetPASSIVE(251, PASSIVE)
+RubimRH.Rotation.SetPASSIVE(251, PASSIVE)
