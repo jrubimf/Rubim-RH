@@ -14,7 +14,7 @@ local Item = HL.Item;
 local mainAddon = RubimRH
 
 -- Spells
-mainAddon.Spell[253] = {
+RubimRH.Spell[253] = {
 
     -- Racials
     ArcaneTorrent = Spell(80483),
@@ -82,7 +82,7 @@ mainAddon.Spell[253] = {
 
 }
 
-local S = mainAddon.Spell[253]
+local S = RubimRH.Spell[253]
 
 S.CallPet.TextureSpellID = { S.MendPet:ID() }
 S.RevivePet.TextureSpellID = { S.MendPet:ID() }
@@ -183,7 +183,7 @@ local function APL()
     end
     Precombat = function()
         -- mendpet
-        if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= mainAddon.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
+        if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
         end
       
@@ -346,6 +346,13 @@ local function APL()
     end
       -- auto_shot
       -- use_items
+	  if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
+        return S.AspectoftheTurtle:Cast()
+      end
+
+      if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk3 then
+        return S.Exhilaration:Cast()
+      end
       -- call_action_list,name=cds
       if (true) then
         local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
@@ -362,18 +369,10 @@ local function APL()
     return 0, 135328
 end
 
-mainAddon.Rotation.SetAPL(253, APL);
+RubimRH.Rotation.SetAPL(253, APL);
 
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk2 then
-        return S.AspectoftheTurtle:Cast()
-    end
-
-    if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= mainAddon.db.profile[253].sk3 then
-        return S.Exhilaration:Cast()
-    end
-
-    return mainAddon.Shared()
+    return RubimRH.Shared()
 end
 
-mainAddon.Rotation.SetPASSIVE(253, PASSIVE);
+RubimRH.Rotation.SetPASSIVE(253, PASSIVE);
