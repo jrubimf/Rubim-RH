@@ -506,6 +506,10 @@ local function APL()
         end
         return 0, 462338
     end
+	
+	if QueueSkill() ~= nil then
+       return QueueSkill()
+    end
 
     if RubimRH.CDsON() then
         if CDs() ~= nil then

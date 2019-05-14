@@ -506,6 +506,10 @@ local function APL ()
     end
 
     -- In Combat
+	if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+	  
     if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Kick:Cast()
     end

@@ -383,6 +383,10 @@ local function APL()
   end
  -- combat
  if RubimRH.TargetIsValid() then
+ 
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     -- wind_shear
     if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
       return S.WindShear:Cast()

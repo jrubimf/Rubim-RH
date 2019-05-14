@@ -503,6 +503,9 @@ local function APL()
 	
     -- combat
     if RubimRH.TargetIsValid() then
+		if QueueSkill() ~= nil then
+            return QueueSkill()
+        end
         -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
         if active_enemies() >= 3 and S.Cataclysm:IsAvailable() then
             if Cata() ~= nil then

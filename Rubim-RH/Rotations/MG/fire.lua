@@ -13,6 +13,9 @@ local Spell  = HL.Spell
 local Item   = HL.Item
 local mainAddon = RubimRH
 
+-- 14.05.19 
+-- Still in work, should expect bugs with fireball or pyro 
+
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
@@ -459,6 +462,9 @@ local function APL()
   end
  
  if RubimRH.TargetIsValid() then
+   	  if QueueSkill() ~= nil then
+        return QueueSkill()
+      end
     -- counterspell
     -- mirror_image,if=buff.combustion.down
     if S.MirrorImage:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then

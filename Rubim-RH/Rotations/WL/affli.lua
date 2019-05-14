@@ -487,7 +487,11 @@ local function APL()
         return 0, 236353
 	end
 	
-	if RubimRH.TargetIsValid() then
+  if RubimRH.TargetIsValid() then
+    
+	if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     -- variable,name=use_seed,value=talent.sow_the_seeds.enabled&spell_targets.seed_of_corruption_aoe>=3+raid_event.invulnerable.up|talent.siphon_life.enabled&spell_targets.seed_of_corruption>=5+raid_event.invulnerable.up|spell_targets.seed_of_corruption>=8+raid_event.invulnerable.up
     if (true) then
       VarUseSeed = num(S.SowtheSeeds:IsAvailable() and active_enemies() >= 3 or S.SiphonLife:IsAvailable() and Cache.EnemiesCount[40] >= 5 or Cache.EnemiesCount[40] >= 8)

@@ -428,6 +428,10 @@ local function APL()
   
   -- combat start
   if RubimRH.TargetIsValid() then
+  
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear

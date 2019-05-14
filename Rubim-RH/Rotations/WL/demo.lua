@@ -815,7 +815,10 @@ local function APL()
         end
     end
 
-    if RubimRH.TargetIsValid() then
+  if RubimRH.TargetIsValid() then
+	if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     -- berserking,if=pet.demonic_tyrant.active|target.time_to_die<=15
     if S.Berserking:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
       return S.Berserking:Cast()
