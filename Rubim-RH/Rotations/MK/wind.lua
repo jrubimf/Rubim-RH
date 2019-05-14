@@ -337,6 +337,8 @@ end
     if Player:IsChanneling() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
+	
+if RubimRH.TargetIsValid() then
 
     -- spear_hand_strike,if=target.debuff.casting.react
     if S.SpearHandStrike:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and (Target:IsCasting()) then
@@ -387,7 +389,7 @@ end
         end
     end
 
-
+    end
     return 0, 135328
 end
 
