@@ -146,7 +146,7 @@ local function UpdateCDs()
 end
 
 local function ExecuteRange ()
-	return 20;
+	return S.Massacre:IsAvailable() and 35 or 20;
 end
 
 local function APL()
@@ -176,7 +176,7 @@ local function APL()
             return S.Rampage:Cast()
         end
         -- execute,if=buff.enrage.upSuddenDeathBuff
-        if S.Execute:IsCastableP() and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange ()) then
+        if S.Execute:CooldownRemainsP() < 0.1 and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange ()) then
             return S.Execute:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage
@@ -237,7 +237,11 @@ local function APL()
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
-
+	-- execute,if=buff.enrage.up
+    if S.Execute:CooldownRemainsP() < 0.1 and Player:BuffRemainsP(S.SuddenDeathBuff) > 1 then
+        return S.Execute:Cast()
+    end
+	
     if S.Pummel:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Pummel:Cast()
     end
@@ -263,10 +267,6 @@ local function APL()
 
     if S.Bloodthirst:IsReady("Melee") and Player:HealthPercentage() <= 80 and Player:Buff(S.EnragedRegeneration) then
         return S.Bloodthirst:Cast()
-    end
-    -- execute,if=buff.enrage.up
-    if S.Execute:IsCastableP() and Player:BuffP(S.SuddenDeathBuff) then
-        return S.Execute:Cast()
     end
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
     if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
