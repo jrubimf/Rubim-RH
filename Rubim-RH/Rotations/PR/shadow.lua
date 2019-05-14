@@ -345,7 +345,7 @@ local function APL()
     --  return I.BattlePotionofIntellect:Cast() "battle_potion_of_intellect 283"; end
     --end
 	-- void_bolt
-	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 1 then
+	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2 then
       return S.VoidBolt:Cast()
     end
     -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking
