@@ -394,6 +394,10 @@ local function APL ()
         return S.CrimsonVial:Cast()
     end
 	
+	if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+	
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
@@ -442,9 +446,7 @@ local function APL ()
 
 
     -- In Combat
-	if QueueSkill() ~= nil then
-        return QueueSkill()
-    end
+
     -- actions+=/call_action_list,name=stealth,if=stealthed.all
     if IsStealthed() == true then
         if Stealth() ~= nil then
