@@ -46,7 +46,7 @@ RubimRH.Spell[254] = {
 
     --CUSTOM
     Exhilaration = Spell(109304),
-    AspectoftheTurtle = Spell(186256),
+    AspectoftheTurtle = Spell(186265),
     CounterShot = Spell(147362),
 }
 
@@ -147,16 +147,14 @@ local function APL ()
         return QueueSkill()
     end
 
-    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
-        return S.Exhilaration:Cast()
-    end
-
     -- auto_shot
     -- counter_shot,if=equipped.sephuzs_secret&target.debuff.casting.react&cooldown.buff_sephuzs_secret.up&!buff.sephuzs_secret.up
     -- Counter Shot -> User request
     if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.CounterShot:Cast()
     end
+    
+    
 
 
     --    if S.MendPet:IsCastable() and Pet:IsActive() and (Cache.EnemiesCount[40] < 3)  and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= 95 and not Pet:Buff(S.MendPet) then
@@ -332,9 +330,14 @@ local function APL ()
 end
 RubimRH.Rotation.SetAPL(254, APL)
 local function PASSIVE()
-    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk2 then
+
+        if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
+        return S.Exhilaration:Cast()
+    end
+        if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
         return S.AspectoftheTurtle:Cast()
     end
+    
 
     return RubimRH.Shared()
 end
