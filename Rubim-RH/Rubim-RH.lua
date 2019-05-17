@@ -727,6 +727,10 @@ local defaults = {
             sk2 = 30,
             sk2id = 186265,
             sk2tooltip = "Percent HP to use Aspect of the Turtle",
+			
+            sk3 = 20,
+            sk3id = 264735,
+            sk3tooltip = "Percent HP to use Survival of the Fittest",
 
         },
         [BeastMastery] = {

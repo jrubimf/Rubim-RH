@@ -43,6 +43,7 @@ RubimRH.Spell[254] = {
     SteadyShot = Spell(56641),
     TrickShotsBuff = Spell(257622),
     Multishot = Spell(257620),
+    SurvivalOfTheFittest = Spell(264735),
 
     --CUSTOM
     Exhilaration = Spell(109304),
@@ -331,13 +332,15 @@ end
 RubimRH.Rotation.SetAPL(254, APL)
 local function PASSIVE()
 
-        if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
+    if S.Exhilaration:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
         return S.Exhilaration:Cast()
     end
-        if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk1 then
+    if S.AspectoftheTurtle:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk2 then
         return S.AspectoftheTurtle:Cast()
     end
-    
+	if S.SurvivalOfTheFittest:IsReady() and S.SurvivalOfTheFittest:IsAvailable() and Player:HealthPercentage() <= RubimRH.db.profile[254].sk3 then
+        return S.SurvivalOfTheFittest:Cast()
+    end
 
     return RubimRH.Shared()
 end
