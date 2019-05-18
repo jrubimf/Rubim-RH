@@ -349,13 +349,7 @@ local function APL()
       end
       -- auto_shot
       -- use_items
-	  if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
-        return S.AspectoftheTurtle:Cast()
-      end
 
-      if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk3 then
-        return S.Exhilaration:Cast()
-      end
       -- call_action_list,name=cds
       if (true) then
         local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
@@ -375,6 +369,13 @@ end
 RubimRH.Rotation.SetAPL(253, APL);
 
 local function PASSIVE()
+	  if S.AspectoftheTurtle:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk2 then
+        return S.AspectoftheTurtle:Cast()
+      end
+
+      if S.Exhilaration:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[253].sk3 then
+        return S.Exhilaration:Cast()
+      end
     return RubimRH.Shared()
 end
 
