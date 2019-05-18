@@ -181,8 +181,8 @@ local function APL()
       return S.MindSear:Cast() 
     end
     -- void_bolt
-    if S.VoidBolt:IsCastable() or Player:IsCasting(S.VoidEruption) then
-      return S.VoidBolt:Cast() 
+    if (Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2) or Player:IsCasting(S.VoidEruption) then
+      return S.VoidBolt:Cast()
     end
     -- shadow_word_death,target_if=target.time_to_die<3|buff.voidform.down
     if S.ShadowWordDeath:IsCastableP() and (Target:TimeToDie() < 3 or Player:BuffDownP(S.VoidformBuff)) and (Target:HealthPercentage() < ExecuteRange ()) then
@@ -221,11 +221,11 @@ local function APL()
       return S.ShadowWordPain:Cast() 
     end
     -- vampiric_touch,target_if=refreshable,if=target.time_to_die>((1+3.3*spell_targets.mind_sear)*variable.vt_trait_ranks_check*(1+0.10*azerite.searing_dialogue.rank*spell_targets.mind_sear))
-    if S.VampiricTouch:IsCastableP() and (Target:DebuffRefreshableCP(S.VampiricTouchDebuff)) and (Target:TimeToDie() > ((1 + 3.3 * Cache.EnemiesCount[40]) * VarVtTraitRanksCheck * (1 + 0.10 * S.SearingDialogue:AzeriteRank() * Cache.EnemiesCount[40]))) then
+    if S.VampiricTouch:IsCastableP() and not Player:IsCasting(S.VampiricTouch) and (Target:DebuffRefreshableCP(S.VampiricTouchDebuff)) and (Target:TimeToDie() > ((1 + 3.3 * Cache.EnemiesCount[40]) * VarVtTraitRanksCheck * (1 + 0.10 * S.SearingDialogue:AzeriteRank() * Cache.EnemiesCount[40]))) then
       return S.VampiricTouch:Cast() 
     end
     -- vampiric_touch,target_if=dot.shadow_word_pain.refreshable,if=(talent.misery.enabled&target.time_to_die>((1.0+2.0*spell_targets.mind_sear)*variable.vt_mis_trait_ranks_check*(variable.vt_mis_sd_check*spell_targets.mind_sear)))
-    if S.VampiricTouch:IsCastableP() and (Target:DebuffRefreshableCP(S.ShadowWordPainDebuff)) and ((S.Misery:IsAvailable() and Target:TimeToDie() > ((1.0 + 2.0 * Cache.EnemiesCount[40]) * VarVtMisTraitRanksCheck * (VarVtMisSdCheck * Cache.EnemiesCount[40])))) then
+    if S.VampiricTouch:IsCastableP() and not Player:IsCasting(S.VampiricTouch) and (Target:DebuffRefreshableCP(S.ShadowWordPainDebuff)) and ((S.Misery:IsAvailable() and Target:TimeToDie() > ((1.0 + 2.0 * Cache.EnemiesCount[40]) * VarVtMisTraitRanksCheck * (VarVtMisSdCheck * Cache.EnemiesCount[40])))) then
       return S.VampiricTouch:Cast()
     end
     -- void_torrent,if=buff.voidform.up
@@ -233,7 +233,7 @@ local function APL()
       return S.VoidTorrent:Cast()
     end
     -- mind_sear,target_if=spell_targets.mind_sear>1,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2
-    if S.MindSear:IsCastableP() and not S.VoidBolt:IsCastable() and active_enemies() > 1 then
+    if S.MindSear:IsCastableP() and active_enemies() > 1 then
       return S.MindSear:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
@@ -265,7 +265,7 @@ local function APL()
       return S.DarkAscension:Cast()
     end
     -- void_bolt
-    if S.VoidBolt:IsCastable() or Player:IsCasting(S.VoidEruption) then
+    if (Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2) or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast()
     end
     -- mind_sear,if=buff.harvested_thoughts.up&cooldown.void_bolt.remains>=1.5&azerite.searing_dialogue.rank>=1
@@ -317,11 +317,11 @@ local function APL()
       return S.ShadowWordPain:Cast()
     end
     -- vampiric_touch,if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)
-    if S.VampiricTouch:IsCastableP() and Target:DebuffRefreshableCP(S.VampiricTouchDebuff) and Target:TimeToDie() > 6 or (S.Misery:IsAvailable() and Target:DebuffRefreshableCP(S.ShadowWordPainDebuff)) and not Player:IsCasting(S.VampiricTouch) then
+    if S.VampiricTouch:IsCastableP() and not Player:IsCasting(S.VampiricTouch) and Target:DebuffRefreshableCP(S.VampiricTouchDebuff) and Target:TimeToDie() > 6 or (S.Misery:IsAvailable() and Target:DebuffRefreshableCP(S.ShadowWordPainDebuff)) and not Player:IsCasting(S.VampiricTouch) then
       return S.VampiricTouch:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and not S.VoidBolt:IsCastable() and active_enemies() < 2 then
+    if S.MindFlay:IsCastableP() and active_enemies() < 2 then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
