@@ -2,6 +2,7 @@
 --- ======= LOCALIZE =======
 -- Addon
 local addonName, addonTable = ...
+local mainAddon = RubimRH
 -- HeroLib
 local HL     = HeroLib
 local Cache  = HeroCache
@@ -125,6 +126,15 @@ local function UpdateRanges()
   end
 end
 
+function TotemMastery()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and textureId == 511726 then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
+end
 
 local function num(val)
   if val then return 1 else return 0 end
@@ -134,6 +144,62 @@ local function bool(val)
   return val ~= 0
 end
 
+local PetType = {
+  [29264] = {"Spirit Wolf", 15},
+};
+
+HL.EnhancementGuardiansTable = {
+    --{PetType,petID,dateEvent,UnitPetGUID,CastsLeft}
+    Pets = {
+    },
+    PetList={
+    [29264]="Spirit Wolf",
+}
+};
+    
+HL:RegisterForSelfCombatEvent(
+function (...)
+    local dateEvent,_,_,_,_,_,_,UnitPetGUID=select(1,...)
+    local t={} ; i=1
+  
+    for str in string.gmatch(UnitPetGUID, "([^-]+)") do
+        t[i] = str
+        i = i + 1
+    end
+    local PetType=HL.EnhancementGuardiansTable.PetList[tonumber(t[6])]
+    if PetType then
+        table.insert(HL.EnhancementGuardiansTable.Pets,{PetType,tonumber(t[6]),GetTime(),UnitPetGUID,5})
+    end
+end
+    , "SPELL_SUMMON"
+);
+        
+-- Summoned pet duration
+local function PetDuration(PetType)
+    if not PetType then 
+        return 0 
+    end
+    local PetsInfo = {
+        [29264] = {"Spirit Wolf", 15},
+    }
+    local maxduration = 0
+    for key, Value in pairs(HL.EnhancementGuardiansTable.Pets) do
+        if HL.EnhancementGuardiansTable.Pets[key][1] == PetType then
+            if (PetsInfo[HL.EnhancementGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.EnhancementGuardiansTable.Pets[key][3])) > maxduration then
+                maxduration = HL.OffsetRemains((PetsInfo[HL.EnhancementGuardiansTable.Pets[key][2]][2] - (GetTime() - HL.EnhancementGuardiansTable.Pets[key][3])), "Auto" );
+            end
+        end
+    end
+    return maxduration
+end
+
+local function SpiritWolfIsActive()
+    if PetDuration("Spirit Wolf") > 0.1 then
+        return true
+   else
+        return false
+    end
+end
 
 --- ======= ACTION LISTS =======
 local function APL()
@@ -148,14 +214,14 @@ local function APL()
     -- potion
 
     -- lightning_shield
-    if S.LightningShield:IsCastableP() then
+    if S.LightningShield:IsCastableP() and not Player:BuffP(S.LightningShield) then
       return S.LightningShield:Cast()
     end
   end
   
   Asc = function()
     -- crash_lightning,if=!buff.crash_lightning.up&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and Cache.EnemiesCount[8] > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
@@ -163,7 +229,7 @@ local function APL()
       return S.Rockbiter:Cast()
     end
     -- windstrike
-    if S.Windstrike:IsCastableP() then
+    if S.Windstrike:CooldownRemainsP() < 0.1 then
       return S.Windstrike:Cast()
     end
   end
@@ -193,7 +259,7 @@ local function APL()
       return S.FeralSpirit:Cast()
     end
     -- ascendance,if=cooldown.strike.remains>0
-    if S.Ascendance:IsCastableP() and (S.Strike:CooldownRemainsP() > 0) then
+    if S.Ascendance:IsCastableP() then
       return S.Ascendance:Cast()
     end
     -- earth_elemental
@@ -205,19 +271,19 @@ local function APL()
       return S.EarthenSpike:Cast()
     end
     -- stormstrike,cycle_targets=1,if=active_enemies>1&azerite.lightning_conduit.enabled&!debuff.lightning_conduit.up&variable.furyCheck_SS
-    if S.Stormstrike:IsCastableP() and Cache.EnemiesCount[8] > 1 and S.LightningConduit:AzeriteEnabled() and not TargetUnit:DebuffP(S.LightningConduitDebuff) and bool(VarFurycheckSs) then
+    if S.Stormstrike:IsCastableP() and active_enemies() > 1 and S.LightningConduit:AzeriteEnabled() and not TargetUnit:DebuffP(S.LightningConduitDebuff) and bool(VarFurycheckSs) then
       return Stormstrike:Cast()
     end
     -- stormstrike,if=buff.stormbringer.up|(active_enemies>1&buff.gathering_storms.up&variable.furyCheck_SS)
-    if S.Stormstrike:IsCastableP() and (Player:BuffP(S.StormbringerBuff) or (Cache.EnemiesCount[8] > 1 and Player:BuffP(S.GatheringStormsBuff) and bool(VarFurycheckSs))) then
+    if S.Stormstrike:IsCastableP() and (Player:BuffP(S.StormbringerBuff) or (active_enemies() > 1 and Player:BuffP(S.GatheringStormsBuff) and bool(VarFurycheckSs))) then
       return S.Stormstrike:Cast()
     end
     -- crash_lightning,if=active_enemies>=3&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (Cache.EnemiesCount[8] >= 3 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (active_enemies() >= 3 and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- lightning_bolt,if=talent.overcharge.enabled&active_enemies=1&variable.furyCheck_LB&maelstrom>=40
-    if S.LightningBolt:IsCastableP() and (S.Overcharge:IsAvailable() and Cache.EnemiesCount[8] == 1 and bool(VarFurycheckLb) and Player:Maelstrom() >= 40) then
+    if S.LightningBolt:IsCastableP() and (S.Overcharge:IsAvailable() and active_enemies() == 1 and bool(VarFurycheckLb) and Player:Maelstrom() >= 40) then
       return S.LightningBolt:Cast()
     end
     -- stormstrike,if=variable.OCPool_SS&variable.furyCheck_SS
@@ -232,7 +298,7 @@ local function APL()
       return S.Sundering:Cast()
     end
     -- crash_lightning,if=talent.forceful_winds.enabled&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (S.ForcefulWinds:IsAvailable() and Cache.EnemiesCount[8] > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (S.ForcefulWinds:IsAvailable() and active_enemies() > 1 and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- flametongue,if=talent.searing_assault.enabled
@@ -244,7 +310,7 @@ local function APL()
       return S.LavaLash:Cast()
     end
     -- crash_lightning,if=active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (Cache.EnemiesCount[8] > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (active_enemies() > 1 and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- rockbiter,if=maelstrom<70&!buff.strength_of_earth.up
@@ -283,7 +349,7 @@ local function APL()
       return S.EarthenSpike:Cast()
     end
     -- stormstrike,cycle_targets=1,if=active_enemies>1&azerite.lightning_conduit.enabled&!debuff.lightning_conduit.up&variable.furyCheck_SS
-    if S.Stormstrike:IsCastableP() and  Cache.EnemiesCount[8] > 1 and S.LightningConduit:AzeriteEnabled() and not TargetUnit:DebuffP(S.LightningConduitDebuff) and bool(VarFurycheckSs) then
+    if S.Stormstrike:IsCastableP() and active_enemies() > 1 and S.LightningConduit:AzeriteEnabled() and not TargetUnit:DebuffP(S.LightningConduitDebuff) and bool(VarFurycheckSs) then
       return S.Stormstrike:Cast()
     end
     -- stormstrike,if=buff.stormbringer.up|(active_enemies>1&buff.gathering_storms.up&variable.furyCheck_SS)
@@ -295,7 +361,7 @@ local function APL()
       return S.CrashLightning:Cast()
     end
     -- lightning_bolt,if=talent.overcharge.enabled&active_enemies=1&variable.furyCheck_LB&maelstrom>=40
-    if S.LightningBolt:IsCastableP() and (S.Overcharge:IsAvailable() and Cache.EnemiesCount[8] == 1 and bool(VarFurycheckLb) and Player:Maelstrom() >= 40) then
+    if S.LightningBolt:IsCastableP() and (S.Overcharge:IsAvailable() and active_enemies() == 1 and bool(VarFurycheckLb) and Player:Maelstrom() >= 40) then
       return S.LightningBolt:Cast()
     end
     -- lava_lash,if=azerite.primal_primer.rank>=2&debuff.primal_primer.stack>7&variable.furyCheck_LL&variable.CLPool_LL
@@ -332,15 +398,15 @@ local function APL()
   
   Priority = function()
     -- crash_lightning,if=active_enemies>=(8-(talent.forceful_winds.enabled*3))&variable.freezerburn_enabled&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (Cache.EnemiesCount[8] >= (8 - (num(S.ForcefulWinds:IsAvailable()) * 3)) and bool(VarFreezerburnEnabled) and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (active_enemies() >= (8 - (num(S.ForcefulWinds:IsAvailable()) * 3)) and bool(VarFreezerburnEnabled) and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- lava_lash,if=azerite.primal_primer.rank>=2&debuff.primal_primer.stack=10&active_enemies=1&variable.freezerburn_enabled&variable.furyCheck_LL
-    if S.LavaLash:IsCastableP() and (S.PrimalPrimer:AzeriteRank() >= 2 and Target:DebuffStackP(S.PrimalPrimerDebuff) == 10 and Cache.EnemiesCount[8] == 1 and bool(VarFreezerburnEnabled) and bool(VarFurycheckLl)) then
+    if S.LavaLash:IsCastableP() and (S.PrimalPrimer:AzeriteRank() >= 2 and Target:DebuffStackP(S.PrimalPrimerDebuff) == 10 and active_enemies() == 1 and bool(VarFreezerburnEnabled) and bool(VarFurycheckLl)) then
       return S.LavaLash:Cast()
     end
     -- crash_lightning,if=!buff.crash_lightning.up&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and Cache.EnemiesCount[8] > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl)) then
       return S.CrashLightning:Cast()
     end
     -- fury_of_air,if=!buff.fury_of_air.up&maelstrom>=20&spell_targets.fury_of_air_damage>=(1+variable.freezerburn_enabled)
@@ -351,12 +417,11 @@ local function APL()
     if S.FuryofAir:IsCastableP() and (Player:BuffP(S.FuryofAirBuff) and true and Cache.EnemiesCount[5] < (1 + VarFreezerburnEnabled)) then
       return S.FuryofAir:Cast()
     end
-    -- totem_mastery,if=buff.resonance_totem.remains<=2*gcd
-    if S.TotemMastery:IsCastableP() and (Player:BuffRemainsP(S.ResonanceTotemBuff) <= 2 * Player:GCD()) then
+    if S.TotemMastery:IsCastableP() and TotemMastery() < 2 then
       return S.TotemMastery:Cast()
     end
     -- sundering,if=active_enemies>=3
-    if S.Sundering:IsCastableP() and (Cache.EnemiesCount[8] >= 3) then
+    if S.Sundering:IsCastableP() and (active_enemies() >= 3) then
       return S.Sundering:Cast()
     end
     -- rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
@@ -393,7 +458,7 @@ local function APL()
     end
     -- variable,name=cooldown_sync,value=(talent.ascendance.enabled&(buff.ascendance.up|cooldown.ascendance.remains>50))|(!talent.ascendance.enabled&(feral_spirit.remains>5|cooldown.feral_spirit.remains>50))
     if (true) then
-      VarCooldownSync = num((S.Ascendance:IsAvailable() and (Player:BuffP(S.AscendanceBuff) or S.Ascendance:CooldownRemainsP() > 50)) or (not S.Ascendance:IsAvailable() and (feral_spirit.remains > 5 or S.FeralSpirit:CooldownRemainsP() > 50)))
+      VarCooldownSync = num((S.Ascendance:IsAvailable() and (Player:BuffP(S.AscendanceBuff) or S.Ascendance:CooldownRemainsP() > 50)) or (not S.Ascendance:IsAvailable() and (PetDuration("Spirit Wolf") > 5 or S.FeralSpirit:CooldownRemainsP() > 50)))
     end
     -- variable,name=furyCheck_SS,value=maelstrom>=(talent.fury_of_air.enabled*(6+action.stormstrike.cost))
     if (true) then
@@ -470,7 +535,7 @@ local function APL()
       local ShouldReturn = Priority(); if ShouldReturn then return ShouldReturn; end
     end
     -- call_action_list,name=maintenance,if=active_enemies<3
-    if (Cache.EnemiesCount[8] < 3) then
+    if (active_enemies() < 3) then
       local ShouldReturn = Maintenance(); if ShouldReturn then return ShouldReturn; end
     end
     -- call_action_list,name=cds
@@ -486,7 +551,7 @@ local function APL()
       local ShouldReturn = DefaultCore(); if ShouldReturn then return ShouldReturn; end
     end
     -- call_action_list,name=maintenance,if=active_enemies>=3
-    if (Cache.EnemiesCount[8] >= 3) then
+    if (active_enemies() >= 3) then
       local ShouldReturn = Maintenance(); if ShouldReturn then return ShouldReturn; end
     end
     -- call_action_list,name=filler
