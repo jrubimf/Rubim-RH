@@ -375,7 +375,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			--DESTRUCTION LOCK
 
-
                 if RubimRH.playerSpec == Destruction then
                     local color = {
                         { text = 'Auto', value = 1 },
@@ -391,7 +390,24 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         print("Flames Color set on: " .. RubimRH.db.profile[RubimRH.playerSpec].color)
                     end
                 end
+				
+				-- SHAMAN ELEMENTAL
 
+                if RubimRH.playerSpec == Elemental then
+                    local useSplashData = {
+                        { text = 'Enabled', value = 1 },
+                        { text = 'Disabled', value = 2 },
+                    };
+
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, 1);
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+                    StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);
+                    function choosedata:OnValueChanged(value)
+                        RubimRH.db.profile[RubimRH.playerSpec].useSplashData = self:GetText()
+                        print("Experimental Aoe Detection set on: " .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData)
+                    end
+                end
             
 
             local sk_2_1

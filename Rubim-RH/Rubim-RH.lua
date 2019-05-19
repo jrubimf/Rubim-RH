@@ -786,6 +786,7 @@ local defaults = {
             sk2tooltip = "Percent HP to use Dampem Harm",
         },
         --SHAMAN
+		--Enh
         [263] = {
             sk1 = 70,
             sk1id = HealingSurge,
@@ -797,8 +798,13 @@ local defaults = {
                 { spellID = EarthElemental, isActive = true }
             }
         },
+		--Elem
         [262] = {
-            healingsurge = 80,
+            sk1 = 80,
+			sk1id = HealingSurge,
+            sk1tooltip = "Percent HP to use Healing Surge",
+            cooldown = true,
+			useSplashData = "Enabled",
         },
         --DRUID
         [102] = {
