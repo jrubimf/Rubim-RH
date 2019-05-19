@@ -61,7 +61,7 @@ Guardian = 104
 Restoration = 105
 
 BeastMastery = 253
-Marmanship = 254
+Marksmanship = 254
 Survival = 255
 
 Arcane = 62
@@ -715,7 +715,7 @@ local defaults = {
             sk3tooltip = "Percent HP to use Evasion",
         },
         --HUNTER
-        [Marmanship] = {
+        [Marksmanship] = {
             cooldown = true,
             exhilaration = 65,
             aspectoftheturtle = 30,
