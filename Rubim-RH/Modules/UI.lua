@@ -185,7 +185,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_separator = StdUi:FontString(tab.frame, '===================');
             StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-            local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto Next Target');
+            local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto Suggest W/O Target');
             StdUi:FrameTooltip(gn_1_0, 'When you are in combat, it will suggest skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
             gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
             StdUi:GlueBelow(gn_1_0, gn_separator, -100, -8, 'LEFT');
@@ -227,7 +227,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 
             local gn_2_0 = StdUi:Checkbox(tab.frame, 'Perfect Pull');
-            StdUi:FrameTooltip(gn_2_0, 'Auto prepots & prepull from DBM Pull Timer', 'TOPLEFT', 'TOPRIGHT', true);
+            StdUi:FrameTooltip(gn_2_0, 'WIP Auto prepots & prepull from DBM Pull Timer', 'TOPLEFT', 'TOPRIGHT', true);
             gn_2_0:SetChecked(RubimRH.db.profile.mainOption.PerfectPull)
             StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -15, 'LEFT');
             function gn_2_0:OnValueChanged(value)
@@ -257,7 +257,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
             -- precombat toggle
 			local gn_4_0 = StdUi:Checkbox(tab.frame, 'Auto Precombat');
-            StdUi:FrameTooltip(gn_4_0, 'Auto prepots and prepull', 'TOPLEFT', 'TOPRIGHT', true);
+            StdUi:FrameTooltip(gn_4_0, 'Activate prepull functions', 'TOPLEFT', 'TOPRIGHT', true);
             gn_4_0:SetChecked(RubimRH.db.profile.mainOption.Precombat)
             function gn_4_0:OnValueChanged(value)
                 RubimRH.PrecombatToggle()
