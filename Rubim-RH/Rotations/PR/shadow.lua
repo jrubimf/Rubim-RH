@@ -321,7 +321,7 @@ local function APL()
       return S.VampiricTouch:Cast()
     end
     -- mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&(cooldown.void_bolt.up|cooldown.mind_blast.up)
-    if S.MindFlay:IsCastableP() and active_enemies() < 2 then
+    if S.MindFlay:IsCastableP() then
       return S.MindFlay:Cast()
     end
     -- shadow_word_pain
