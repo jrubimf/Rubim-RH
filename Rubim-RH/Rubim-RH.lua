@@ -719,6 +719,7 @@ local defaults = {
             cooldown = true,
             exhilaration = 65,
             aspectoftheturtle = 30,
+			useSplashData = "Enabled",
 
             sk1 = 65,
             sk1id = 109304,
@@ -735,6 +736,7 @@ local defaults = {
         },
         [BeastMastery] = {
             cooldown = true,
+			useSplashData = "Enabled",
 
             sk1 = 70,
             sk1id = 136,

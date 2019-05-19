@@ -172,6 +172,21 @@ local function cacheOverwrite()
     Cache.Persistent.SpellLearned.Player[S.MendPet.SpellID] = true
 end
 
+local function GetEnemiesCount()
+  if RubimRH.AoEON() then
+    if RubimRH.db.profile[253].useSplashData == "Enabled" then
+      RubimRH.UpdateSplashCount(Target, 10)
+      return RubimRH.GetSplashCount(Target, 10)
+    else
+      UpdateRanges()
+      --return GetEnemiesCount()
+	  return active_enemies()
+    end
+  else
+    return 1
+  end
+end
+
 --- APL Main
 local function APL()
     local Precombat, Cds, Cleave, St
@@ -258,7 +273,7 @@ local function APL()
         return S.AMurderofCrows:Cast()
       end
       -- barrage,if=active_enemies>1
-      if S.Barrage:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] > 1) then
+      if S.Barrage:IsReadyP() and (not Player:IsMoving() and GetEnemiesCount() > 1) then
         return S.Barrage:Cast()
       end
       -- kill_command
@@ -355,11 +370,11 @@ local function APL()
         local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=st,if=active_enemies<2
-      if (active_enemies() < 2) or not RubimRH.AoEON() then
+      if (GetEnemiesCount() < 2) or not RubimRH.AoEON() then
         local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
       end
       -- call_action_list,name=cleave,if=active_enemies>1
-      if (active_enemies() > 1 and RubimRH.AoEON()) then
+      if (GetEnemiesCount() > 1 and RubimRH.AoEON()) then
         local ShouldReturn = Cleave(); if ShouldReturn then return ShouldReturn; end
       end
     end

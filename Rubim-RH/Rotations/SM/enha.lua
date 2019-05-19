@@ -196,7 +196,7 @@ end
 local function SpiritWolfIsActive()
     if PetDuration("Spirit Wolf") > 0.1 then
         return true
-   else
+    else
         return false
     end
 end

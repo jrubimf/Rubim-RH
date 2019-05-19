@@ -8,6 +8,7 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+
 RubimRH.Spell[254] = {
     SummonPet = Spell(883),
     HuntersMarkDebuff = Spell(257284),
@@ -105,6 +106,21 @@ local function bool(val)
     return val ~= 0
 end
 
+local function GetEnemiesCount()
+  if RubimRH.AoEON() then
+    if RubimRH.db.profile[254].useSplashData == "Enabled" then
+      RubimRH.UpdateSplashCount(Target, 10)
+      return RubimRH.GetSplashCount(Target, 10)
+    else
+      UpdateRanges()
+      --return GetEnemiesCount()
+	  return active_enemies()
+    end
+  else
+    return 1
+  end
+end
+
 --- APL Main
 local function APL ()
     local Precombat, Cds, St, Trickshots
@@ -116,7 +132,7 @@ local function APL ()
             -- augmentation
             -- food
             -- summon_pet,if=active_enemies<3
-            if S.SummonPet:IsCastableP() and (not Player:IsMoving() and Cache.EnemiesCount[40] < 3) then
+            if S.SummonPet:IsCastableP() and (not Player:IsMoving() and GetEnemiesCount() < 3) then
                 return S.SummonPet:Cast()
             end
             -- snapshot_stats
@@ -130,11 +146,11 @@ local function APL ()
                 return S.DoubleTap:Cast()
             end
             -- trueshot,precast_time=1.5,if=active_enemies>2
-            if S.Trueshot:IsCastableP() and RubimRH.CDsON and Player:BuffDownP(S.TrueshotBuff) and (Cache.EnemiesCount[40] > 2) then
+            if S.Trueshot:IsCastableP() and RubimRH.CDsON and Player:BuffDownP(S.TrueshotBuff) and (GetEnemiesCount() > 2) then
                 return S.Trueshot:Cast()
             end
             -- aimed_shot,if=active_enemies<3
-            if S.AimedShot:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] < 3) then
+            if S.AimedShot:IsReadyP() and (not Player:IsMoving() and GetEnemiesCount() < 3) then
                 return S.AimedShot:Cast()
             end
         end
@@ -158,13 +174,13 @@ local function APL ()
     
 
 
-    --    if S.MendPet:IsCastable() and Pet:IsActive() and (Cache.EnemiesCount[40] < 3)  and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= 95 and not Pet:Buff(S.MendPet) then
+    --    if S.MendPet:IsCastable() and Pet:IsActive() and (GetEnemiesCount() < 3)  and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= 95 and not Pet:Buff(S.MendPet) then
     --        return S.MendPet:Cast()
     --    end
 
-    --    if Pet:IsDeadOrGhost() and (Cache.EnemiesCount[40] < 3) then
+    --    if Pet:IsDeadOrGhost() and (GetEnemiesCount() < 3) then
     --        return S.MendPet:Cast()
-    --    elseif not Pet:IsActive() and (Cache.EnemiesCount[40] < 3) then
+    --    elseif not Pet:IsActive() and (GetEnemiesCount() < 3) then
     --        return S.MendPet:Cast()
     --    end
 
@@ -210,7 +226,7 @@ local function APL ()
             return S.ExplosiveShot:Cast()
         end
         -- barrage,if=active_enemies>1
-        if S.Barrage:IsReadyP() and (not Player:IsMoving() and Cache.EnemiesCount[40] > 1) then
+        if S.Barrage:IsReadyP() and (not Player:IsMoving() and GetEnemiesCount() > 1) then
             return S.Barrage:Cast()
         end
         -- a_murder_of_crows
@@ -312,14 +328,14 @@ local function APL ()
             end
         end
         -- call_action_list,name=st,if=active_enemies<3
-        if (active_enemies() < 3 or not RubimRH.AoEON()) then
+        if (GetEnemiesCount() < 3 or not RubimRH.AoEON()) then
             local ShouldReturn = St();
             if ShouldReturn then
                 return ShouldReturn;
             end
         end
         -- call_action_list,name=trickshots,if=active_enemies>2
-        if (active_enemies() > 2 and RubimRH.AoEON()) then
+        if (GetEnemiesCount() > 2 and RubimRH.AoEON()) then
             local ShouldReturn = Trickshots();
             if ShouldReturn then
                 return ShouldReturn;
