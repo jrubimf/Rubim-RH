@@ -235,10 +235,40 @@ S.SeedofCorruption:RegisterInFlight()
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat, Cooldowns, DbRefresh, Dots, Fillers, Spenders
+  local Precombat, Precombat_DBM, Cooldowns, DbRefresh, Dots, Fillers, Spenders
   UpdateRanges()
   time_to_shard = TimeToShard()
   contagion = Contagion()
+  
+    
+  Precombat_DBM = function()
+    -- summon_pet
+    if S.SummonPet:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not Pet:IsActive() and (not bool(Player:BuffRemainsP(S.GrimoireofSacrificeBuff)))  then
+      return S.SummonPet:Cast()
+    end
+    -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
+    if S.GrimoireofSacrifice:IsCastableP() and Player:BuffDownP(S.GrimoireofSacrificeBuff) and (S.GrimoireofSacrifice:IsAvailable()) then
+      return S.GrimoireofSacrifice:Cast()
+    end
+    -- snapshot_stats
+    -- pre potion
+    --if I.BattlePotionofIntellect:IsReady() and RubimRH.UsePotions and RubimRH.CDsON() then
+    --  Return I.BattlePotionofIntellect:Cast()
+    --end
+    -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
+    if S.SeedofCorruption:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.SeedofCorruption:CastTime() and Player:SoulShardsP() >= 1 and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (active_enemies() >= 3) then
+      return S.SeedofCorruption:Cast()
+    end
+    -- haunt
+    if S.Haunt:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
+      return S.Haunt:Cast()
+    end
+    -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
+    if S.ShadowBolt:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and (not S.Haunt:IsAvailable() and active_enemies() < 3) then
+      return S.ShadowBolt:Cast()
+    end
+	return 0, 462338
+  end
   
   Precombat = function()
     -- summon_pet
@@ -281,6 +311,14 @@ local function APL()
     end
 	-- trinket2,if=pet.Darkglare.active
 	if trinketReady(2) and DarkglareIsActive() then
+        return trinket2
+    end
+	-- trinket1,if=pet.Darkglare.active
+	if trinketReady(1) and HL.CombatTime() >= 15 and (S.Deathbolt:CooldownRemainsP() < 1 or Player:BuffStackP(S.InevitableDemiseBuff) >= 40) then
+        return trinket1
+    end
+	-- trinket2,if=pet.Darkglare.active
+	if trinketReady(2) and HL.CombatTime() >= 15 and (S.Deathbolt:CooldownRemainsP() < 1 or Player:BuffStackP(S.InevitableDemiseBuff) >= 40) then
         return trinket2
     end
 	-- fireblood,if=!cooldown.summon_darkglare.up
@@ -477,11 +515,21 @@ local function APL()
     end
   end
   
-  -- call precombat
-	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting()  then
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+
+		local ShouldReturn = Precombat_DBM(); 
+		    if ShouldReturn then return ShouldReturn; 
+        end
+	
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
+		
 		local ShouldReturn = Precombat(); 
 		    if ShouldReturn then return ShouldReturn; 
         end
+	
 	end
 	if Player:IsChanneling() then
         return 0, 236353
@@ -494,7 +542,7 @@ local function APL()
     end
     -- variable,name=use_seed,value=talent.sow_the_seeds.enabled&spell_targets.seed_of_corruption_aoe>=3+raid_event.invulnerable.up|talent.siphon_life.enabled&spell_targets.seed_of_corruption>=5+raid_event.invulnerable.up|spell_targets.seed_of_corruption>=8+raid_event.invulnerable.up
     if (true) then
-      VarUseSeed = num(S.SowtheSeeds:IsAvailable() and active_enemies() >= 3 or S.SiphonLife:IsAvailable() and Cache.EnemiesCount[40] >= 5 or Cache.EnemiesCount[40] >= 8)
+      VarUseSeed = num(S.SowtheSeeds:IsAvailable() and active_enemies() >= 3 or S.SiphonLife:IsAvailable() and active_enemies() >= 5 or active_enemies() >= 8)
     end
     -- variable,name=padding,op=set,value=action.shadow_bolt.execute_time*azerite.cascading_calamity.enabled
     if (true) then
@@ -533,7 +581,7 @@ local function APL()
       return S.Haunt:Cast()
     end
     -- summon_darkglare,if=dot.agony.ticking&dot.corruption.ticking&(buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains|spell_targets.seed_of_corruption_aoe>1+raid_event.invulnerable.up)
-    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5 or Player:SoulShardsP() == 0) and (not S.PhantomSingularity:IsAvailable() or bool(S.PhantomSingularity:CooldownRemainsP())) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or not bool(S.Deathbolt:CooldownRemainsP()) or active_enemies() > 1)) then
+    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5) and (not S.PhantomSingularity:IsAvailable() or bool(S.PhantomSingularity:CooldownRemainsP())) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or not bool(S.Deathbolt:CooldownRemainsP()) or active_enemies() > 1)) then
       return S.SummonDarkglare:Cast()
     end
 	
@@ -588,11 +636,11 @@ local function APL()
       return S.DarkSoulMisery:Cast()
     end
 	-- dark_soul,opener
-    if S.DarkSoulMisery:IsCastableP() and RubimRH.CDsON() and HL.CombatTime() < 10 then
+    if S.DarkSoulMisery:IsCastableP() and RubimRH.CDsON() and HL.CombatTime() >= 3 and HL.CombatTime() < 10 then
       return S.DarkSoulMisery:Cast()
     end
     -- berserking
-    if S.Berserking:IsCastableP() and RubimRH.CDsON() then
+    if S.Berserking:IsCastableP() and RubimRH.CDsON() and HL.CombatTime() >= 3 and HL.CombatTime() < 10 then
       return S.Berserking:Cast()
     end
     -- call_action_list,name=spenders
@@ -614,6 +662,7 @@ end
 RubimRH.Rotation.SetAPL(265, APL)
 
 local function PASSIVE()
+    print(RubimRH.DBM_PullTimer());
     return RubimRH.Shared()
 end
 
