@@ -246,6 +246,10 @@ function Unit:IsInterruptible()
             if RubimRH.db.profile.mainOption.interruptList[spellId] then
                 if self:CastPercentage() >= randomGenerator("Interrupt") then
                     return true
+                else
+				    if self:CastPercentage() >= randomGenerator("Channel") then
+                        return true
+					end
                 end
             end
         else
