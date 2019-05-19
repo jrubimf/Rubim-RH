@@ -581,7 +581,7 @@ local function APL()
       return S.Haunt:Cast()
     end
     -- summon_darkglare,if=dot.agony.ticking&dot.corruption.ticking&(buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains|spell_targets.seed_of_corruption_aoe>1+raid_event.invulnerable.up)
-    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5) and (not S.PhantomSingularity:IsAvailable() or bool(S.PhantomSingularity:CooldownRemainsP())) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or not bool(S.Deathbolt:CooldownRemainsP()) or active_enemies() > 1)) then
+    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5 or (Player:SoulShardsP() < 1 and ActiveUAs() >= 4)) and (not S.PhantomSingularity:IsAvailable() or bool(S.PhantomSingularity:CooldownRemainsP())) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or not bool(S.Deathbolt:CooldownRemainsP()) or active_enemies() > 1)) then
       return S.SummonDarkglare:Cast()
     end
 	
