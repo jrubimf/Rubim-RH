@@ -226,12 +226,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 gn_1_1.optsFrame.scrollChild.items[2]:SetChecked(true)
             end
 
-            local gn_2_0 = StdUi:Checkbox(tab.frame, 'Use Potion');
-            StdUi:FrameTooltip(gn_2_0, 'For now this is depreciated.', 'TOPLEFT', 'TOPRIGHT', true);
-            gn_2_0:SetChecked(RubimRH.db.profile.mainOption.usePotion)
+            local gn_2_0 = StdUi:Checkbox(tab.frame, 'Perfect Pull');
+            StdUi:FrameTooltip(gn_2_0, 'Auto prepots & prepull from DBM Pull Timer', 'TOPLEFT', 'TOPRIGHT', true);
+            gn_2_0:SetChecked(RubimRH.db.profile.mainOption.PerfectPull)
             StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -15, 'LEFT');
             function gn_2_0:OnValueChanged(value)
-                RubimRH.PotionToggle()
+                RubimRH.PerfectPull()
             end
 			
             local gn_2_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)

@@ -125,15 +125,15 @@ function RubimRH.CCToggle()
     print("|cFF69CCF0CC Break" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.ccbreak))
 end
 
-function RubimRH.PotionToggle()
+function RubimRH.PerfectPull()
     RubimRH.playSoundR(891);
-    if RubimRH.db.profile.mainOption.usePotion == false then
-        RubimRH.db.profile.mainOption.usePotion = true
+    if RubimRH.db.profile.mainOption.PerfectPull == false then
+        RubimRH.db.profile.mainOption.PerfectPull = true
 
     else
-        RubimRH.db.profile.mainOption.usePotion = false
+        RubimRH.db.profile.mainOption.PerfectPull = false
     end
-    print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.usePotion))
+    print("|cFF69CCF0Perfect Pull" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.PerfectPull))
 end
 
 function RubimRH.PrecombatToggle()
@@ -144,7 +144,7 @@ function RubimRH.PrecombatToggle()
     else
         RubimRH.db.profile.mainOption.Precombat = false
     end
-    print("|cFF69CCF0Perfect Pull" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.Precombat))
+    print("|cFF69CCF0Precombat" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.Precombat))
 end
 
 function RubimRH.RacialToggle()
@@ -266,11 +266,11 @@ function RubimRH.ccbreak()
     end
 end
 
-function RubimRH.PotionON()
+function RubimRH.PerfectPullON()
     if RubimRH.db == nil then
         return false
     end
-    if RubimRH.db.profile.mainOption.usePotion == true then
+    if RubimRH.db.profile.mainOption.PerfectPull == true then
         return true
     else
         return false
