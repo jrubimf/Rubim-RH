@@ -180,7 +180,7 @@ local function Aoe()
         return S.FrostStrike:Cast()
     end
     -- horn_of_winter
-    if S.HornofWinter:IsReady() then
+    if S.HornofWinter:CooldownRemainsP() < 0.1 and S.HornofWinter:IsAvailable() then
         return S.HornofWinter:Cast()
     end
     -- arcane_torrent
@@ -276,7 +276,7 @@ local function BosTicking()
         return S.Frostscythe:Cast()
     end
     -- horn_of_winter,if=runic_power.deficit>=30&rune.time_to_3>gcd
-    if S.HornofWinter:IsReady() and (Player:RunicPowerDeficit() >= 30 and Player:RuneTimeToX(3) > Player:GCD()) then
+    if S.HornofWinter:CooldownRemainsP() < 0.1 and S.HornofWinter:IsAvailable() and (Player:RunicPowerDeficit() >= 30 and Player:RuneTimeToX(3) > Player:GCD()) then
         return S.HornofWinter:Cast()
     end
     -- remorseless_winter
@@ -455,7 +455,7 @@ local function Standard()
         return S.FrostStrike:Cast()
     end
     -- horn_of_winter
-    if S.HornofWinter:IsReady() then
+    if S.HornofWinter:CooldownRemainsP() < 0.1 and S.HornofWinter:IsAvailable() then
         return S.HornofWinter:Cast()
     end
     -- arcane_torrent
