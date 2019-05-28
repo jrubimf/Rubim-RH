@@ -3,6 +3,7 @@ local Cache = HeroCache;
 local StdUi = LibStub('StdUi')
 local AceGUI = LibStub("AceGUI-3.0")
 
+
 function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Class Config', 450, 500);
 
@@ -347,34 +348,61 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         RubimRH.db.profile[RubimRH.playerSpec].vanishattack = true
                     end
                 end
-
+                
+				-- Dice
                 if RubimRH.playerSpec == Outlaw then
-                    local dice = {
-                        { text = 'Simcraft', value = 1 },
-                        { text = 'SoloMode', value = 2 },
-                        { text = '1+ Buff', value = 3 },
-                        { text = 'Broadsides', value = 4 },
-                        { text = 'Buried Treasure', value = 5 },
-                        { text = 'Grand Melee', value = 6 },
-                        { text = 'Jolly Roger', value = 7 },
-                        { text = 'Shark Infested Waters', value = 8 },
-                        { text = 'Ture Bearing', value = 9 },
-                        { text = 'Mythic +', value = 10 },
-                    };
+                local dice = {
+                        { text = 'Simcraft', value = "Simcraft" },
+                        { text = 'SoloMode', value = "SoloMode" },
+                        { text = '1+ Buff', value = "1+ Buff" },
+                        { text = 'Broadsides', value = "Broadsides" },
+                        { text = 'Buried Treasure', value = "Buried Treasure" },
+                        { text = 'Grand Melee', value = "Grand Melee" },
+                        { text = 'Jolly Roger', value = "Jolly Roger" },
+                        { text = 'Shark Infested Waters', value = "Shark Infested Waters" },
+                        { text = 'Ture Bearing', value = "Ture Bearing" },
+                        { text = 'Mythic +', value = "Mythic +" },
+                    }
+                    local diceRoll = StdUi:Dropdown(tab.frame, 125, 24, dice, nil, nil);
+                    --StdUi:FrameTooltip(diceRoll, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
+                    diceRoll:SetPlaceholder("|cfff0f8ffCD: |r" .. RubimRH.db.profile[RubimRH.playerSpec].dice);
+                    diceRoll.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].dice = val
 
-                    local diceRoll = StdUi:Dropdown(tab.frame, 125, 24, dice, 1);
-                    StdUi:GlueBelow(diceRoll, sk_1_0, 0, -64, 'LEFT');
-                    StdUi:AddLabel(tab.frame, diceRoll, 'Roll the Bones', 'TOP');
-                    function diceRoll:OnValueChanged(value)
-                        RubimRH.db.profile[RubimRH.playerSpec].dice = self:GetText()
-                        print("Roll the Bones: " .. RubimRH.db.profile[RubimRH.playerSpec].dice)
+                    if val == "SoloMode" then
+                         print("Dice profil set on SoloMode")
+                    elseif val == "1+ Buff" then
+                         print("Dice profil set on 1+ Buff")
+                    elseif val == "Broadsides" then
+                         print("Dice profil set on Broadsides")
+                    elseif val == "Buried Treasure" then
+                         print("Dice profil set on Buried Treasure")
+                    elseif val == "Grand Melee" then
+                         print("Dice profil set on Grand Melee")
+                    elseif val == "Jolly Roger" then
+                         print("Dice profil set on Jolly Roger")
+                    elseif val == "Shark Infested Waters" then
+                         print("Dice profil set on Shark Infested Waters")
+                    elseif val == "Ture Bearing" then
+                         print("Dice profil set on Ture Bearing")
+                    elseif val == "Mythic +" then
+                         print("Dice profil set on Mythic +")
+                    else
+                        print("Dice profil set on Simcraft")
+                        diceRoll:SetText("|cfff0f8ffDice: |r" .. RubimRH.db.profile[RubimRH.playerSpec].dice);
                     end
+					end
+                    StdUi:GlueBelow(diceRoll, sk_1_0, 0, -64, 'LEFT');
                 end
-
+            
             end
 			
-			--DESTRUCTION LOCK
+			
+			
 
+			
+			
+			--DESTRUCTION LOCK
                 if RubimRH.playerSpec == Destruction then
                     local color = {
                         { text = 'Auto', value = 1 },
@@ -391,59 +419,83 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                 end
 				
+				
+				
+				
 				-- SHAMAN ELEMENTAL
-
                 if RubimRH.playerSpec == Elemental then
                     local useSplashData = {
-                        { text = 'Enabled', value = 1 },
-                        { text = 'Disabled', value = 2 },
-                    };
-
-                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, 1);
-                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+                        { text = 'Enabled', value = "Enabled" },
+                        { text = 'Disabled', value = "Disabled" },
+                    }
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, nil, nil);
+                    choosedata:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
-                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);
-                    function choosedata:OnValueChanged(value)
-                        RubimRH.db.profile[RubimRH.playerSpec].useSplashData = self:GetText()
-                        print("Experimental Aoe Detection set on: " .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData)
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);				
+                    
+					choosedata.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].useSplashData = val
+
+                    if val == "Enabled" then
+                        print("Experimental Aoe Detection Enabled")
+                    else
+                        print("Experimental Aoe Detection Disabled")
+                        choosedata:SetText("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     end
-                end
+					end
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+			    end
+
 				
 				-- HUNTER MARKMANSHIP
 
                 if RubimRH.playerSpec == Marksmanship then
                     local useSplashData = {
-                        { text = 'Enabled', value = 1 },
-                        { text = 'Disabled', value = 2 },
-                    };
-
-                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, 1);
-                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+                        { text = 'Enabled', value = "Enabled" },
+                        { text = 'Disabled', value = "Disabled" },
+                    }
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, nil, nil);
+                    choosedata:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
-                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);
-                    function choosedata:OnValueChanged(value)
-                        RubimRH.db.profile[RubimRH.playerSpec].useSplashData = self:GetText()
-                        print("Experimental Aoe Detection set on: " .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData)
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);				
+                    
+					choosedata.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].useSplashData = val
+
+                    if val == "Enabled" then
+                        print("Experimental Aoe Detection Enabled")
+                    else
+                        print("Experimental Aoe Detection Disabled")
+                        choosedata:SetText("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     end
-                end
+					end
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+			    end
 				
 				-- HUNTER BEAST MASTER
 
                 if RubimRH.playerSpec == BeastMastery then
                     local useSplashData = {
-                        { text = 'Enabled', value = 1 },
-                        { text = 'Disabled', value = 2 },
-                    };
-
-                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, 1);
-                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+                        { text = 'Enabled', value = "Enabled" },
+                        { text = 'Disabled', value = "Disabled" },
+                    }
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, nil, nil);
+                    choosedata:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
-                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);
-                    function choosedata:OnValueChanged(value)
-                        RubimRH.db.profile[RubimRH.playerSpec].useSplashData = self:GetText()
-                        print("Experimental Aoe Detection set on: " .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData)
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);				
+                    
+					choosedata.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].useSplashData = val
+
+                    if val == "Enabled" then
+                        print("Experimental Aoe Detection Enabled")
+                    else
+                        print("Experimental Aoe Detection Disabled")
+                        choosedata:SetText("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
                     end
-                end
+					end
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+			    end
             
 
             local sk_2_1
