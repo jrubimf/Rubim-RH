@@ -230,7 +230,11 @@ local function APL()
 	elseif Form == 4 and Moonkin() ~= nil then 
 		return Moonkin() 
 	end
-
+    -- interrupt
+    if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.SkullBash:Cast()
+    end
+	
 	return 0, 135328
 end
 
