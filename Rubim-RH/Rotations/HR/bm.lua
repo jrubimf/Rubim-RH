@@ -223,7 +223,7 @@ local function APL()
       end
       -- fireblood,if=cooldown.bestial_wrath.remains>30
       if S.Fireblood:IsReady() and (S.BestialWrath:CooldownRemainsP() > 30) then
-       return S.Fireblood:Cas()
+       return S.Fireblood:Cast()
       end
       -- berserking,if=buff.aspect_of_the_wild.up&(target.time_to_die>cooldown.berserking.duration+duration|(target.health.pct<35|!talent.killer_instinct.enabled))|target.time_to_die<13
       if S.Berserking:IsReady()  and (Player:BuffP(S.AspectoftheWildBuff) and (Target:TimeToDie() > S.Berserking:BaseDuration() + S.BerserkingBuff:BaseDuration() or (Target:HealthPercentage() < 35 or not S.KillerInstinct:IsAvailable())) or Target:TimeToDie() < 13) then
