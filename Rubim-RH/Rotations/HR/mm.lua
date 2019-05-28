@@ -215,7 +215,7 @@ local function APL ()
         end
         -- potion,if=buff.trueshot.react&buff.bloodlust.react|buff.trueshot.up&target.health.pct<20&talent.careful_aim.enabled|target.time_to_die<2
         -- trueshot,if=focus>60&(buff.precise_shots.down&cooldown.rapid_fire.remains&target.time_to_die>cooldown.trueshot.duration_guess+duration|target.health.pct<20|!talent.careful_aim.enabled)|target.time_to_die<15
-        if S.Trueshot:IsCastableP() and RubimRH.CDsON and (Player:Focus() > 60 and (Player:BuffDownP(S.PreciseShotsBuff) and bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) or Target:TimeToDie() < 15) then
+        if S.Trueshot:IsCastableP() and RubimRH.CDsON and Player:Focus() > 60 and (Player:BuffDownP(S.PreciseShotsBuff) and bool(S.RapidFire:CooldownRemainsP()) and Target:TimeToDie() > S.Trueshot:CooldownRemainsP() + S.TrueshotBuff:BaseDuration() or (Target:HealthPercentage() < 20 or not S.CarefulAim:IsAvailable())) then
             return S.Trueshot:Cast()
         end
     end
