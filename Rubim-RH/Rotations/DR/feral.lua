@@ -58,6 +58,7 @@ RubimRH.Spell[103] = {
     MoonfireCatDebuff = Spell(155625),
     Sabertooth = Spell(202031),
     PoweroftheMoon = Spell(273389),
+    PrimalWrath = Spell(285381),
 };
 local S = RubimRH.Spell[103];
 
@@ -78,7 +79,7 @@ local VarUseThrash = 0;
 local VarDelayedTfOpener = 0;
 local VarOpenerDone = 0;
 
-local EnemyRanges = { 8 }
+local EnemyRanges = { 5, 8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
@@ -293,7 +294,7 @@ local function APL()
         if (true) then
             return StGenerators();
         end
-        return 0, 135328
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
     StFinishers = function()
         -- pool_resource,for_next=1
@@ -303,8 +304,18 @@ local function APL()
                 return S.SavageRoar:Cast()
             else
                 S.SavageRoar:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
+        end
+        -- pool_resource,for_next=1
+        -- primal_wrath,target_if=spell_targets.primal_wrath>1&dot.rip.remains<4
+        if S.PrimalWrath:IsCastableP() and Cache.EnemiesCount[5] > 1 and Target:DebuffRemainsP(S.RipDebuff) < 4 then
+            return S.PrimalWrath:Cast()
+        end
+        -- pool_resource,for_next=1
+        -- primal_wrath,target_if=spell_targets.primal_wrath>=2
+        if S.PrimalWrath:IsCastableP() and Cache.EnemiesCount[5] >= 2 then
+            return S.PrimalWrath:Cast()
         end
         -- pool_resource,for_next=1
         -- rip,target_if=!ticking|(remains<=duration*0.3)&(target.health.pct>25&!talent.sabertooth.enabled)|(remains<=duration*0.8&persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die>8
@@ -313,7 +324,7 @@ local function APL()
                 return S.Rip:Cast()
             else
                 S.Rip:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- pool_resource,for_next=1
@@ -323,14 +334,14 @@ local function APL()
                 return S.SavageRoar:Cast()
             else
                 S.SavageRoar:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- ferocious_bite,max_energy=1
         if S.FerociousBiteMaxEnergy:IsReady() and S.FerociousBiteMaxEnergy:IsUsableP() then
             return S.FerociousBiteMaxEnergy:Cast()
         end
-        return 0, 135328
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
     StGenerators = function()
         -- regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
@@ -352,7 +363,7 @@ local function APL()
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- pool_resource,for_next=1
@@ -362,7 +373,7 @@ local function APL()
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- pool_resource,for_next=1
@@ -372,7 +383,7 @@ local function APL()
                 return S.Rake:Cast()
             else
                 S.Rake:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- pool_resource,for_next=1
@@ -382,7 +393,7 @@ local function APL()
                 return S.Rake:Cast()
             else
                 S.Rake:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))
@@ -400,7 +411,7 @@ local function APL()
                 return S.ThrashCat:Cast()
             else
                 S.ThrashCat:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- thrash_cat,if=refreshable&variable.use_thrash=1&buff.clearcasting.react
@@ -414,14 +425,14 @@ local function APL()
                 return S.SwipeCat:Cast()
             else
                 S.Swipe:QueueAuto()
-                return 0, 135328
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
         -- shred,if=dot.rake.remains>(action.shred.cost+action.rake.cost-energy)%energy.regen|buff.clearcasting.react
         if S.Shred:IsReady() and (Target:DebuffRemainsP(S.RakeDebuff) > (S.Shred:Cost() + S.Rake:Cost() - Player:EnergyPredicted()) / Player:EnergyRegen() or bool(Player:BuffStackP(S.ClearcastingBuff))) then
             return S.Shred:Cast()
         end
-        return 0, 135328
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
     -- stuff
     if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
