@@ -106,11 +106,11 @@ local function APL()
     Prot = function()
         -- potion,if=buff.avatar.up|target.time_to_die<25
         -- avatar
-        if S.Avatar:IsReady() and RubimRH.CDsON() and ((S.DemoralizingShout:CooldownUpP() or S.DemoralizingShout:CooldownRemainsP() > 2)) then
+        if S.Avatar:IsReady("Melee") and RubimRH.CDsON() and ((S.DemoralizingShout:CooldownUpP() or S.DemoralizingShout:CooldownRemainsP() > 2)) then
             return S.Avatar:Cast()
         end
         -- thunder_clap,if=(talent.unstoppable_force.enabled&buff.avatar.up)
-        if S.ThunderClap:IsReady() and (S.UnstoppableForce:IsAvailable() and Player:BuffP(S.Avatar)) then
+        if S.ThunderClap:IsReady(8) and (S.UnstoppableForce:IsAvailable() and Player:BuffP(S.Avatar)) then
             return S.ThunderClap:Cast()
         end
         -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down&buff.last_stand.down&talent.bolster.enabled
@@ -129,7 +129,7 @@ local function APL()
         if S.ShieldSlam:IsReady() then
             return S.ShieldSlam:Cast()
         end
-        if S.ThunderClap:IsReady() then
+        if S.ThunderClap:IsReady(8) then
             return S.ThunderClap:Cast()
         end
         -- demoralizing_shout,if=talent.booming_voice.enabled
