@@ -295,7 +295,7 @@ local function APL()
         end
         -- snapshot_stats
 	    -- potion
-        if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() > S.SolarWrath:CastTime() and RubimRH.DBM_PullTimer() <= S.SolarWrath:CastTime() + 1 then
+        if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() > (S.SolarWrath:CastTime() + S.SolarWrath:TravelTime()) and RubimRH.DBM_PullTimer() <= (S.SolarWrath:CastTime() + S.SolarWrath:TravelTime() + 1) then
             return 967532
         end
         -- solar_wrath
