@@ -239,11 +239,23 @@ function Unit:IsInterruptible()
     end
 
     local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
+	-- Custom profils interrupts part 2
+	--
+			
+	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
+	    currentList = RubimRH.db.profile.mainOption.mythicList
+	elseif RubimRH.db.profile.mainOption.activeList == "PvP" then
+	    currentList = RubimRH.db.profile.mainOption.pvpList
+	elseif RubimRH.db.profile.mainOption.activeList == "Mixed PvE PvP" then
+		currentList = RubimRH.db.profile.mainOption.mixedList
+	else 
+	    currentList = RubimRH.db.profile.mainOption.customList
+	end
 
     if spellId ~= nil then
 
         if RubimRH.db.profile.mainOption.whitelist then
-            if RubimRH.db.profile.mainOption.interruptList[spellId] then
+            if currentList[spellId] then
                 if self:CastPercentage() >= randomGenerator("Interrupt") then
                     return true
                 else
@@ -253,7 +265,7 @@ function Unit:IsInterruptible()
                 end
             end
         else
-            if RubimRH.db.profile.mainOption.interruptList[spellId] then
+            if currentList[spellId] then
                 return false
             end
         end
@@ -263,7 +275,7 @@ function Unit:IsInterruptible()
         return false
     end
 
-    for i, v in pairs(RubimRH.db.profile.mainOption.interruptList) do
+    for i, v in pairs(currentList) do
         if RubimRH.db.profile.mainOption.whitelist then
             return false
         end

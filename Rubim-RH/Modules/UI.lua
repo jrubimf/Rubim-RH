@@ -787,12 +787,86 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     },
                 },
             }
+			
+			
+
 
             local st = StdUi:ScrollTable(tab.frame, cols, 12, 20);
             st:EnableSelection(true);
-            StdUi:GlueTop(st, tab.frame, 0, -60);
+            StdUi:GlueTop(st, tab.frame, 40, -60);
 
-            local function addSpell(spellID)
+			
+			
+						
+			
+            --  Custom profils interrupts v2 part 1               
+            local interruptProfilschoice = {
+                { text = 'Mythic+', value = "Mythic+" },
+                { text = 'PvP', value = "PvP" },
+                { text = 'Mixed PvE PvP', value = "Mixed PvE PvP" },
+                { text = 'Custom', value = "Custom" },
+            }
+            local chooseprofil = StdUi:Dropdown(tab.frame, 100, 20, interruptProfilschoice, nil, nil);
+                chooseprofil:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeList);
+                StdUi:AddLabel(tab.frame, chooseprofil, 'Selected Profil', 'TOP');
+                StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);				
+                --st:SetData(data);  
+				--currentList = RubimRH.db.profile.mainOption.mythicList
+		     	chooseprofil.OnValueChanged = function(self, val)
+                --RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice = val
+                --local currentprofil = "Mythic+"
+				--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
+				--RubimRH.RefreshList()
+                
+				if val == "Mythic+" then
+                    print("Interrupt profil set on Mythic+")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeList = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
+					currentList = RubimRH.db.profile.mainOption.mythicList
+					RubimRH.RefreshList()
+
+					
+                elseif val == "PvP" then
+                    print("Interrupt profil set on PvP")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeList = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.pvpList
+					currentList = RubimRH.db.profile.mainOption.pvpList
+					RubimRH.RefreshList()
+
+					
+                elseif val == "Mixed PvE PvP" then
+                    print("Interrupt profil set on Mixed PvE PvP")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeList = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
+					currentList = RubimRH.db.profile.mainOption.mixedList
+					RubimRH.RefreshList()
+               
+			   elseif val == "Custom" then
+                    print("Interrupt profil set on Custom")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeList = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
+					currentList = RubimRH.db.profile.mainOption.customList
+					RubimRH.RefreshList()
+                else
+                    print("An error as occured, no data :(")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.RefreshList()
+
+                end
+				return currentList
+			end
+			StdUi:GlueTop(chooseprofil, tab.frame, 0, -60, 'LEFT');	
+			
+			
+			-- Custom profils interrupts part 2
+			-- = ""
+
+			
+			local function addSpell(spellID)
                 local name = nil;
                 local icon, castTime, minRange, maxRange, spellId;
 
@@ -810,7 +884,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local data = {};
 
-            for i, spell in pairs(RubimRH.db.profile.mainOption.interruptList) do
+            for i, spell in pairs(currentList) do
                 table.insert(data, addSpell(i));
             end
 
@@ -824,12 +898,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     return
                 end
 
-                if tempAddSpell ~= 0 and RubimRH.db.profile.mainOption.interruptList[tempAddSpell] == nil then
-                    RubimRH.db.profile.mainOption.interruptList[tempAddSpell] = true
+                if tempAddSpell ~= 0 and currentList[tempAddSpell] == nil then
+                    currentList[tempAddSpell] = true
                 end
 
                 local data = {};
-                for i, spell in pairs(RubimRH.db.profile.mainOption.interruptList) do
+                for i, spell in pairs(currentList) do
                     table.insert(data, addSpell(i));
                 end
                 st:SetData(data);
@@ -837,7 +911,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             function RubimRH.RefreshList()
                 local data = {};
-                for i, spell in pairs(RubimRH.db.profile.mainOption.interruptList) do
+                for i, spell in pairs(currentList) do
                     table.insert(data, addSpell(i));
                 end
                 st:SetData(data);
@@ -846,11 +920,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local function btn_delSpell()
                 if selectedSpell ~= nil then
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
-                    RubimRH.db.profile.mainOption.interruptList[selectedSpell] = nil
+                    currentList[selectedSpell] = nil
                     selectedSpell = nil
 
                     local data = {};
-                    for i, spell in pairs(RubimRH.db.profile.mainOption.interruptList) do
+                    for i, spell in pairs(currentList) do
                         table.insert(data, addSpell(i));
                     end
                     st:SetData(data);

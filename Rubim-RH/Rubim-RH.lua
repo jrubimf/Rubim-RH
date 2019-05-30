@@ -216,7 +216,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            version = 26042019,
+            version = 30052019,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -240,10 +240,16 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
-            interruptList = {
+
+            
+			whiteList = true,
+			
+			-- Profils list
+			activeList = "Mythic+",
+			--currentList = "RubimRH.db.profile.mainOption.mythicList",
+			mythicList = {
 
 --temple of sethraliss
-
 [265968] = true,
 [263318] = true,
 [272659] = true,
@@ -384,11 +390,261 @@ local defaults = {
 [285572] = true,
 [286779] = true,
 [287887] = true,
-[289861] = true
+[289861] = true	},
+			
+			pvpList = {
+-- PvP Part
+
+		[118] = true, -- Polymorph
+        [20066] = true, -- Repentance
+        [51514] = true, -- Hex
+        [19386] = true, -- Wyvern Sting
+        [5782] = true, -- Fear
+        [33786] = true, -- Cyclone
+        [605] = true, -- Mind Control 
+        [982] = true, -- Revive Pet 
+        [32375] = true, -- Mass Dispel 
+        [203286] = true, -- Greatest Pyroblast
+        [116858] = true, -- Chaos Bolt 
+        [20484] = true, -- Rebirth
+        [203155] = true, -- Sniper Shot 
+        [47540] = true, -- Penance
+        [596] = true, -- Prayer of Healing
+        [2060] = true, -- Heal
+        [2061] = true, -- Flash Heal
+        [32546] = true, -- Binding Heal                        (priest, holy)
+        [33076] = true, -- Prayer of Mending
+        [64843] = true, -- Divine Hymn
+        [120517] = true, -- Halo                                (priest, holy/disc)
+        [186263] = true, -- Shadow Mend
+        [194509] = true, -- Power Word: Radiance
+        [265202] = true, -- Holy Word: Salvation                (priest, holy)
+        [289666] = true, -- Greater Heal                        (priest, holy)
+        [740] = true, -- Tranquility
+        [8936] = true, -- Regrowth
+        [48438] = true, -- Wild Growth
+        [289022] = true, -- Nourish                             (druid, restoration)
+        [1064] = true, -- Chain Heal
+        [8004] = true, -- Healing Surge
+        [73920] = true, -- Healing Rain
+        [77472] = true, -- Healing Wave
+        [197995] = true, -- Wellspring                          (shaman, restoration)
+        [207778] = true, -- Downpour                            (shaman, restoration)
+        [19750] = true, -- Flash of Light
+        [82326] = true, -- Holy Light
+        [116670] = true, -- Vivify
+        [124682] = true, -- Enveloping Mist
+        [191837] = true, -- Essence Font
+        [209525] = true, -- Soothing Mist
+        [227344] = true, -- Surging Mist                        (monk, mistweaver)				
+			
+			
+			
+			
+			
 			
 			},
-            whiteList = true,
-            useTrinkets = {
+			
+			-- Mixed list pvp & pve
+			mixedList = {
+
+--temple of sethraliss
+[265968] = true,
+[263318] = true,
+[272659] = true,
+[261635] = true,
+[273995] = true, -- interrupt by CC
+[261624] = true,
+[267237] = true, -- interrupt by hard CC
+[265912] = true,
+[268061] = true,
+[268008] = true,
+
+--FreeHold
+
+[257397] = true,
+[256060] = true,
+[258777] = true,
+[257732] = true,
+[257899] = true, -- some groups leave this uninterrupted so enemies die faster 
+[257736] = true,
+
+--Shrine of the storm
+
+[267981] = true,
+[267977] = true,
+[267969] = true,
+[276266] = true, -- if we have a purge 
+[268030] = true, -- high prio
+[274438] = true,
+[268177] = true, -- low prio
+[267818] = true,
+[268309] = true,
+[268322] = true,
+[268375] = true,
+[276767] = true,
+[268347] = true,
+[267809] = true,
+
+--Siege of boralus
+
+[256957] = true,
+[256897] = true, -- interrupt by CC
+[274569] = true, -- high priority
+[272571] = true, --medium prio
+
+--Tol Dagor
+
+[258128] = true,
+[258153] = true,
+[257791] = true,
+[260067] = true, -- not sure if kickable
+[258313] = true,
+[258634] = true,
+[258869] = true,
+[258935] = true,
+
+--Waycrest manor
+
+[267824] = true, -- maybe 
+[265368] = true,
+[263891] = true,
+[266035] = true,
+[266036] = true,
+[260805] = true,
+[278551] = true,
+[278474] = true,
+[264520] = true,
+[278444] = true,
+[265407] = true,
+[265876] = true,
+[264105] = true,
+[264384] = true,
+[263959] = true,
+[268278] = true,
+[266225] = true,
+[266181] = true, -- -unsure if interruptable
+[268202] = true, -- interrupt by CC
+
+--Atal'Dazar
+
+[255824] = true,
+[253517] = true,
+[253548] = true,
+[253583] = true,
+[255041] = true,
+[256849] = true,
+[252781] = true,
+[250368] = true,
+[250096] = true,
+
+--Kings Rest
+
+[269972] = true,
+[269973] = true,
+[270923] = true,
+[270901] = true,
+[267763] = true,
+[270492] = true,
+[270493] = true, --- probably shouldnt add
+[267273] = true,
+
+--The MOTHERLODE!!
+
+[280604] = true,
+[268129] = true,
+[267354] = true, -- interrupt by CC
+[269302] = true,
+[262092] = true,
+[268709] = true,
+[268702] = true,
+[263215] = true,
+[263103] = true,
+[263066] = true,
+[268797] = true,
+[269090] = true,
+[281621] = true,
+[262540] = true,
+
+--Underrot
+
+[265089] = true,
+[265091] = true,
+[278755] = true,
+[260879] = true,
+[266106] = true,
+[265668] = true, -- Low prio
+[278961] = true, -- Highest prio
+[272183] = true,
+[266209] = true, -- high prio
+[272180] = true,
+[265433] = true,
+[265487] = true,
+
+--Battle for dazaralor
+
+[283628] = true,
+[284578] = true,
+[282243] = true,
+[285572] = true,
+[286779] = true,
+[287887] = true,
+[289861] = true,
+
+
+-- PvP Part
+
+		[118] = true, -- Polymorph
+        [20066] = true, -- Repentance
+        [51514] = true, -- Hex
+        [19386] = true, -- Wyvern Sting
+        [5782] = true, -- Fear
+        [33786] = true, -- Cyclone
+        [605] = true, -- Mind Control 
+        [982] = true, -- Revive Pet 
+        [32375] = true, -- Mass Dispel 
+        [203286] = true, -- Greatest Pyroblast
+        [116858] = true, -- Chaos Bolt 
+        [20484] = true, -- Rebirth
+        [203155] = true, -- Sniper Shot 
+        [47540] = true, -- Penance
+        [596] = true, -- Prayer of Healing
+        [2060] = true, -- Heal
+        [2061] = true, -- Flash Heal
+        [32546] = true, -- Binding Heal                        (priest, holy)
+        [33076] = true, -- Prayer of Mending
+        [64843] = true, -- Divine Hymn
+        [120517] = true, -- Halo                                (priest, holy/disc)
+        [186263] = true, -- Shadow Mend
+        [194509] = true, -- Power Word: Radiance
+        [265202] = true, -- Holy Word: Salvation                (priest, holy)
+        [289666] = true, -- Greater Heal                        (priest, holy)
+        [740] = true, -- Tranquility
+        [8936] = true, -- Regrowth
+        [48438] = true, -- Wild Growth
+        [289022] = true, -- Nourish                             (druid, restoration)
+        [1064] = true, -- Chain Heal
+        [8004] = true, -- Healing Surge
+        [73920] = true, -- Healing Rain
+        [77472] = true, -- Healing Wave
+        [197995] = true, -- Wellspring                          (shaman, restoration)
+        [207778] = true, -- Downpour                            (shaman, restoration)
+        [19750] = true, -- Flash of Light
+        [82326] = true, -- Holy Light
+        [116670] = true, -- Vivify
+        [124682] = true, -- Enveloping Mist
+        [191837] = true, -- Essence Font
+        [209525] = true, -- Soothing Mist
+        [227344] = true, -- Surging Mist                        (monk, mistweaver)			
+			
+			
+			},
+			
+			customList = {},
+			
+           --interruptList = {},
+
+		   useTrinkets = {
                 [1] = false,
                 [2] = false
             },
@@ -401,7 +657,7 @@ local defaults = {
         --DEMONHUTER
         [Havoc] = {
             cooldown = true,
-
+			
             sk1 = 75,
             sk1id = 198589, --Blur
             sk1tooltip = "Percent HP to use Blur",
@@ -417,7 +673,7 @@ local defaults = {
         },
         [Vengeance] = {
             cooldown = true,
-
+			
 
             sk1 = 50,
             sk1id = 187827, --Metamorphosis
@@ -435,7 +691,7 @@ local defaults = {
         --DK
         [Blood] = {
             cooldown = true,
-
+			
             sk1 = 60,
             sk1id = 48792,
             sk1tooltip = "Percent HP to use Icebound",
@@ -472,7 +728,7 @@ local defaults = {
         },
         [Frost] = {
             cooldown = true,
-
+			
             sk1 = 85,
             sk1id = 101568,
             sk1tooltip = "Percent HP to use Death Strike (Dark Succur Proc)",
@@ -505,7 +761,7 @@ local defaults = {
             sk1 = 85,
             sk1id = 101568,
             sk1tooltip = "Percent HP to use Death Strike (Dark Succur Proc)",
-
+			
             sk2 = 60,
             sk2id = 48792,
             sk2tooltip = "Percent HP to use Ice Bound",
@@ -526,7 +782,7 @@ local defaults = {
         --PALADIN
         [Retribution] = {
             cooldown = true,
-
+			
             sk1 = 85,
             sk1id = ShieldofVengeance,
             sk1tooltip = "Percent HP to use Shield of Vengeance",
@@ -559,7 +815,7 @@ local defaults = {
             sk1 = 50,
             sk1id = 498,
             sk1tooltip = "Percent HP to use Divine Protection",
-
+			
             sk2 = 30,
             sk2id = 642,
             sk2tooltip = "Percent HP to use Divine Shield",
@@ -576,7 +832,7 @@ local defaults = {
             sk1 = 85,
             sk1id = 184092,
             sk1tooltip = "Percent HP to use Light of the Protector",
-
+			
             sk2 = 15,
             sk2id = 31850,
             sk2tooltip = "Percent HP to use Ardent Defender",
@@ -601,7 +857,7 @@ local defaults = {
             sk1 = 80, -- VictoryRush
             sk1id = VictoryRush,
             sk1tooltip = "Percent HP to use Victory Rush",
-
+			
             sk2 = 70, -- ImpendingVictory
             sk2id = ImpendingVictory,
             sk2tooltip = "Percent HP to use Impending Victory",
@@ -625,7 +881,7 @@ local defaults = {
             sk1 = 80, -- VictoryRush
             sk1id = VictoryRush,
             sk1tooltip = "Percent HP to use Victory Rush",
-
+			
             sk2 = 70, -- ImpendingVictory
             sk2id = ImpendingVictory,
             sk2tooltip = "Percent HP to use Impending Victory",
@@ -644,7 +900,7 @@ local defaults = {
             sk1 = 2.5,
             sk1id = "Light Damage",
             sk1tooltip = "How much DMG Taken is considered a Light Damage intake.",
-
+			
             sk2 = 5, -- ImpendingVictory
             sk2id = "Moderate Damage",
             sk2tooltip =  "How much DMG Taken is considered a Moderate Damage intake.",
@@ -670,7 +926,7 @@ local defaults = {
             sk1 = 65,
             sk1id = 185311,
             sk1tooltip = "Percent HP to use Crimson Vial",
-
+			
             sk2 = 15,
             sk2id = 31224,
             sk2tooltip = "Percent HP to use Cloak of Shadows",
@@ -684,7 +940,7 @@ local defaults = {
             cooldown = true,
             stealthOOC = true,
             vanishattack = true,
-
+			
             sk1 = 65,
             sk1id = 185311,
             sk1tooltip = "Percent HP to use Crimson Vial",
@@ -701,7 +957,7 @@ local defaults = {
             cooldown = true,
             stealthOOC = true,
             vanishattack = true,
-
+			
             sk1 = 65,
             sk1id = 185311,
             sk1tooltip = "Percent HP to use Crimson Vial",
@@ -720,7 +976,7 @@ local defaults = {
             exhilaration = 65,
             aspectoftheturtle = 30,
 			useSplashData = "Enabled",
-
+			
             sk1 = 65,
             sk1id = 109304,
             sk1tooltip = "Percent HP to use Exhilaration",
@@ -737,7 +993,7 @@ local defaults = {
         [BeastMastery] = {
             cooldown = true,
 			useSplashData = "Enabled",
-
+			
             sk1 = 70,
             sk1id = 136,
             sk1tooltip = "Percent HP to use Mend Pet",
@@ -756,7 +1012,7 @@ local defaults = {
             sk1 = 70,
             sk1id = 136,
             sk1tooltip = "Percent HP to use Victory Rush",
-
+			
             sk2 = 30,
             sk2id = 186265,
             sk2tooltip = "Percent HP to use Aspect of the Turtle",
@@ -768,7 +1024,7 @@ local defaults = {
         --MONK
         [Brewmaster] = {
             cooldown = true,
-
+			
             sk1 = 50,
             sk1id = 115072, -- ExpelHarm
             sk1tooltip = "Percent HP to use Expel Harm",
@@ -782,7 +1038,7 @@ local defaults = {
             sk1 = 50,
             sk1id = 122470, -- TouchofKarma
             sk1tooltip = "Percent HP to use Touch of Karma",
-
+			
             sk2 = 35,
             sk2id = 122278, -- DampemHarm
             sk2tooltip = "Percent HP to use Dampem Harm",
@@ -794,7 +1050,7 @@ local defaults = {
             sk1id = HealingSurge,
             sk1tooltip = "Percent HP to use Healing Surge",
             cooldown = true,
-
+			
             Spells = {
                 { spellID = FeralSpirit, isActive = true },
                 { spellID = EarthElemental, isActive = true }
@@ -807,14 +1063,16 @@ local defaults = {
             sk1tooltip = "Percent HP to use Healing Surge",
             cooldown = true,
 			useSplashData = "Enabled",
+			
         },
         --DRUID
         [102] = {
             cooldowns = true,
+			
         },
         [Feral] = {
             cooldowns = true,
-
+			
             sk1 = 50, -- Renewal
             sk1id = Renewal, -- Renewall
             sk1tooltip = "Percent HP to use Renewal",
@@ -830,18 +1088,19 @@ local defaults = {
         },
         [Guardian] = {
             cooldowns = true,
+			
         },
         -- WARLOCK
         [265] = {
             cooldowns = true,
-			
+						
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
         },
         [266] = {
             cooldowns = true,
-			
+						
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
@@ -853,7 +1112,7 @@ local defaults = {
         [267] = {
             cooldowns = true,
 			flamecolor = "Auto",
-			
+						
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
@@ -865,15 +1124,18 @@ local defaults = {
         --Mage
         [62] = {
             cooldowns = true,
+			
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
         },
         [63] = {
-            cooldowns = true
+            cooldowns = true,
+			
         },
         [64] = {
             cooldowns = true,
+			
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
@@ -885,15 +1147,18 @@ local defaults = {
 		--Priest
         [256] = {
             cooldowns = true,
+			
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
         },
         [257] = {
-            cooldowns = true
+            cooldowns = true,
+			
         },
         [258] = {
             cooldowns = true,
+			
             sk1 = 20, -- Dispersion
             sk1id = 47585, -- Dispersion
             sk1tooltip = "Percent HP to use Dispersion",
@@ -914,11 +1179,11 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
 
-    if RubimRH.db.profile.mainOption.version ~= (26042019) then
+    if RubimRH.db.profile.mainOption.version ~= (30052019) then
         self.db:ResetDB(defaultProfile)
         message("New version:\nResetting Profile")
         print("Reseting profile")
-        RubimRH.db.profile.mainOption.version = 26042019
+        RubimRH.db.profile.mainOption.version = 30052019
     end
 
 
