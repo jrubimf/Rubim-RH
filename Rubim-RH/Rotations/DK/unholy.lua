@@ -309,7 +309,7 @@ local function APL()
    
    
     -- Antimagic Shell
-	if S.AntiMagicShell:CooldownRemainsP() < 0.1 and Player:HealthPercentage() <= RubimRH.db.profile[252].sk5 then
+	if S.AntiMagicShell:IsAvailable() and S.AntiMagicShell:CooldownRemainsP() < 0.1 and Player:HealthPercentage() <= RubimRH.db.profile[252].sk5 then
         return S.AntiMagicShell:Cast()
     end
 	
