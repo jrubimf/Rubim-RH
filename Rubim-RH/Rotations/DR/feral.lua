@@ -59,6 +59,11 @@ RubimRH.Spell[103] = {
     Sabertooth = Spell(202031),
     PoweroftheMoon = Spell(273389),
     PrimalWrath = Spell(285381),
+	Typhoon = Spell(132469),
+	MightyBash = Spell(5211),
+	Maim = Spell(22570),	
+	SkullBash = Spell(106839),
+    IronJawsBuff = Spell(276026),
 };
 local S = RubimRH.Spell[103];
 
@@ -148,7 +153,8 @@ local function APL()
     local Precombat, Cooldowns, Opener, SingleTarget, StFinishers, StGenerators
     UpdateRanges()
     UpdateCDs()
-    Precombat = function()
+    
+	Precombat = function()
         -- flask
         -- food
         -- augmentation
@@ -187,7 +193,8 @@ local function APL()
             return S.Berserk:Cast()
         end
     end
-    Cooldowns = function()
+    
+	Cooldowns = function()
         -- dash,if=!buff.cat_form.up
         -- prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
         if S.Prowl:IsReady() and (Player:BuffRemainsP(S.IncarnationBuff) < 0.5 and Player:BuffP(S.JungleStalkerBuff)) then
@@ -217,7 +224,8 @@ local function APL()
         -- shadowmeld,if=combo_points<5&energy>=action.rake.cost&dot.rake.pmultiplier<2.1&buff.tigers_fury.up&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(!talent.incarnation.enabled|cooldown.incarnation.remains>18)&!buff.incarnation.up
         -- use_items
     end
-    Opener = function()
+    
+	Opener = function()
         -- tigers_fury,if=variable.delayed_tf_opener=0
         if S.TigersFury:IsReady() and (VarDelayedTfOpener == 0) then
             return S.TigersFury:Cast()
@@ -256,7 +264,8 @@ local function APL()
             return S.Rip:Cast()
         end
     end
-    SingleTarget = function()
+    
+	SingleTarget = function()
         -- cat_form,if=!buff.cat_form.up
         if S.CatForm:IsReady() and (not Player:BuffP(S.CatFormBuff)) then
             return S.CatForm:Cast()
@@ -296,7 +305,8 @@ local function APL()
         end
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
-    StFinishers = function()
+    
+	StFinishers = function()
         -- pool_resource,for_next=1
         -- savage_roar,if=buff.savage_roar.down
         if S.SavageRoar:IsCastable() and (Player:BuffDownP(S.SavageRoarBuff)) then
@@ -337,13 +347,24 @@ local function APL()
                 return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
+        -- pool_resource,for_next=1
+        -- maim,if=buff.iron_jaws.up
+        if S.Maim:IsCastable() and (Player:BuffP(S.IronJawsBuff)) then
+            if S.Maim:IsUsablePPool() then
+                return S.Maim:Cast()
+            else
+			    S.Maim:QueueAuto()
+                return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
+            end
+        end
         -- ferocious_bite,max_energy=1
         if S.FerociousBiteMaxEnergy:IsReady() and S.FerociousBiteMaxEnergy:IsUsableP() then
             return S.FerociousBiteMaxEnergy:Cast()
         end
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
-    StGenerators = function()
+    
+	StGenerators = function()
         -- regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
         if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffDownP(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4) then
             return S.Regrowth:Cast()
@@ -455,6 +476,22 @@ local function APL()
         return QueueSkill()
     end
 
+	-- interrupt.SkullBash
+    if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.SkullBash:Cast()
+    end
+    -- interrupt.Maim
+    if S.Maim:IsCastable() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Maim:Cast()
+    end
+	-- interrupt.talent.typhoon
+    if S.Typhoon:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Typhoon:Cast()
+    end
+    -- interrupt.talent.mightybash
+    if S.MightyBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.MightyBash:Cast()
+    end
     -- run_action_list,name=opener,if=variable.opener_done=0
     --if (VarOpenerDone == 0) then
         --return Opener();
