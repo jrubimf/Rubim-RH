@@ -64,6 +64,7 @@ RubimRH.Spell[103] = {
 	Maim = Spell(22570),	
 	SkullBash = Spell(106839),
     IronJawsBuff = Spell(276026),
+	WildChargeCat = Spell(102401),
 };
 local S = RubimRH.Spell[103];
 
@@ -445,7 +446,7 @@ local function APL()
             if S.SwipeCat:IsUsablePPool() then
                 return S.SwipeCat:Cast()
             else
-                S.Swipe:QueueAuto()
+                S.SwipeCat:QueueAuto()
                 return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
             end
         end
@@ -471,7 +472,13 @@ local function APL()
         end
         return 0, 462338
     end
+	
+	-- WildChargeCat
+	if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
+        return S.WildChargeCat:Cast()
+    end
 
+	-- QueueSkill
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
