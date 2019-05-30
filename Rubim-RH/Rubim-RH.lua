@@ -778,6 +778,10 @@ local defaults = {
             sk4id = 48743,
             sk4tooltip = "Percent HP to use Death Pact",
 
+            sk5 = 50,
+            sk5id = 48707,
+            sk5tooltip = "Percent HP to use AntiMagic Shell",
+			
             Spells = {
                 { spellID = DeathStrike, isActive = true },
                 { spellID = RuneTap, isActive = true }

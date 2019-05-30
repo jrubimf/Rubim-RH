@@ -57,6 +57,7 @@ RubimRH.Spell[252] = {
     RaiseAlly = Spell(61999),
     DarkSimulacrum = Spell(77606),
     Asphyxiate = Spell(108194),
+    AntiMagicShell = Spell(48707),
 
 };
 local S = RubimRH.Spell[252]
@@ -305,7 +306,13 @@ local function APL()
         end
     end
     -- call precombat
-
+   
+   
+    -- Antimagic Shell
+	if S.AntiMagicShell:CooldownRemainsP() < 0.1 and Player:HealthPercentage() <= RubimRH.db.profile[252].sk5 then
+        return S.AntiMagicShell:Cast()
+    end
+	
 
     --Mov Speed
     if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
