@@ -57,20 +57,19 @@ RubimRH.Spell[265] = {
   PandemicInvocation                    = Spell(289364),
   -- Defensive
   UnendingResolve                       = Spell(104773),
-  Berserking                            = Spell(26297)
+  Berserking                            = Spell(26297),
+
 };
 local S = RubimRH.Spell[265]
 
-Item.Warlock = {
-  BattlePotionofIntellect               = Item(163222),
-};
-local I = Item.Warlock;
 -- Items
---if not Item.Warlock then Item.Warlock = {} end
---Item.Warlock.Affliction = {
---  ProlongedPower = Item(142117)
---};
---local I = Item.Warlock.Affliction;
+if not Item.Warlock then
+    Item.Warlock = {}
+end
+Item.Warlock.Affliction = {
+  BattlePotionOfIntellect               = Item(163222)
+};
+local I = Item.Warlock.Affliction
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
@@ -251,20 +250,20 @@ local function APL()
       return S.GrimoireofSacrifice:Cast()
     end
     -- snapshot_stats
-    -- pre potion
-    --if I.BattlePotionofIntellect:IsReady() and RubimRH.UsePotions and RubimRH.CDsON() then
-    --  Return I.BattlePotionofIntellect:Cast()
-    --end
-    -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
-    if S.SeedofCorruption:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.SeedofCorruption:CastTime() and Player:SoulShardsP() >= 1 and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (active_enemies() >= 3) then
-      return S.SeedofCorruption:Cast()
+    -- pre potion haunt
+    if I.BattlePotionOfIntellect:IsReady() and S.Haunt:IsAvailable() and RubimRH.DBM_PullTimer() > S.Haunt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() + 2 then
+        return 176108
+    end
+	-- pre potion no haunt
+    if I.BattlePotionOfIntellect:IsReady() and not S.Haunt:IsAvailable() and RubimRH.DBM_PullTimer() > S.Haunt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() + 2 then
+        return 176108
     end
     -- haunt
-    if S.Haunt:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
+    if S.Haunt:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
       return S.Haunt:Cast()
     end
     -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
-    if S.ShadowBolt:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and (not S.Haunt:IsAvailable() and active_enemies() < 3) then
+    if S.ShadowBolt:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and (not S.Haunt:IsAvailable() and active_enemies() < 3) then
       return S.ShadowBolt:Cast()
     end
 	return 0, 462338
@@ -517,19 +516,15 @@ local function APL()
   
     -- call DBM precombat
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
-
 		local ShouldReturn = Precombat_DBM(); 
 		    if ShouldReturn then return ShouldReturn; 
-        end
-	
+        end	
 	end
     -- call non DBM precombat
-	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
-		
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then		
 		local ShouldReturn = Precombat(); 
 		    if ShouldReturn then return ShouldReturn; 
-        end
-	
+        end	
 	end
 	if Player:IsChanneling() then
         return 0, 236353

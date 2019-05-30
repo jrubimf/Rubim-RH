@@ -94,6 +94,15 @@ RubimRH.Spell[266] = {
 
 local S = RubimRH.Spell[266]
 
+-- Items
+if not Item.Warlock then
+    Item.Warlock = {}
+end
+Item.Warlock.Demonology = {
+  BattlePotionOfIntellect               = Item(163222)
+};
+local I = Item.Warlock.Demonology
+
 -- Demono pets function start
 HL.GuardiansTable = {
     --{ID, name, spawnTime, ImpCasts, Duration, despawnTime}
@@ -526,6 +535,29 @@ local function UpdateRanges()
         HL.GetEnemies(i);
     end
 end
+local function Precombat_DBM()
+    -- flask
+    -- food
+    -- augmentation
+    -- actions.precombat+=/summon_pet
+    if (not IsPetInvoked() or not S.PetStun:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
+        return S.SummonFelguard:Cast()
+    end
+	-- potion
+    if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() >= S.Demonbolt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Demonbolt:CastTime() + 2 then
+        return 967532
+    end
+    -- inner_demons,if=talent.inner_demons.enabled
+    if S.InnerDemons:IsCastableP() and (S.InnerDemons:IsAvailable()) then
+      return S.InnerDemons:Cast()
+    end
+    -- snapshot_stats
+	-- potion
+    -- demonbolt
+    if S.Demonbolt:IsCastableP() and not Player:IsCasting(S.Demonbolt) and not Player:PrevGCDP(1, S.Demonbolt) and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Demonbolt:CastTime() + S.Demonbolt:TravelTime() then
+      return S.Demonbolt:Cast()
+    end
+end
 
 local function Precombat()
     -- flask
@@ -807,9 +839,14 @@ local function APL()
     UpdateRanges()
     --print(HL.GuardiansTable.ImpCount);
 	--print(HL.GuardiansTable.ImpTotalEnergy);
-	
+	-- call precombat DBM
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        if Precombat_DBM() ~= nil then
+            return Precombat_DBM()
+        end
+    end
   	-- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
         if Precombat() ~= nil then
             return Precombat()
         end

@@ -74,11 +74,13 @@ RubimRH.Spell[267] = {
 local S = RubimRH.Spell[267]
 
 -- Items
---if not Item.Warlock then Item.Warlock = {} end
---Item.Warlock.Destruction = {
---  ProlongedPower                   = Item(142117)
---};
---local I = Item.Warlock.Destruction;
+if not Item.Warlock then
+    Item.Warlock = {}
+end
+Item.Warlock.Destruction = {
+  BattlePotionOfIntellect               = Item(163222)
+};
+local I = Item.Warlock.Destruction;
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
@@ -463,7 +465,35 @@ local function Cata()
 local function APL()
     --local Precombat, Cata, Cds, Fnb, Inf
     UpdateRanges()
-    Precombat = function()
+    
+	Precombat_DBM = function()
+        -- flask
+        -- food
+        -- augmentation
+        -- summon_pet
+        if S.SummonPet:IsCastableP() and not IsPetInvoked() then
+            return S.SummonPet:Cast()
+        end
+        -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
+        if S.GrimoireofSacrifice:IsCastableP() and (S.GrimoireofSacrifice:IsAvailable()) then
+            return S.GrimoireofSacrifice:Cast()
+        end
+        -- snapshot_stats
+	    -- potion
+        if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() >= S.Incinerate:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Incinerate:CastTime() + 2 then
+            return 967532
+        end
+        -- soul_fire
+        --if S.SoulFire:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.SoulFire:CastTime() then
+        --    return S.SoulFire:Cast()
+        --end
+        -- incinerate,if=!talent.soul_fire.enabled
+        if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5 and (not S.SoulFire:IsAvailable()) and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Incinerate:CastTime() + S.Incinerate:TravelTime() then
+            return S.Incinerate:Cast()
+        end
+    end
+	
+	Precombat = function()
         -- flask
         -- food
         -- augmentation
@@ -489,9 +519,15 @@ local function APL()
             return S.Incinerate:Cast()
         end
     end
- 
-    -- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
+
+    -- call precombat DBM
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+            if Precombat_DBM() ~= nil then
+                return Precombat_DBM()
+            end
+    end
+	-- call precombat
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
             if Precombat() ~= nil then
                 return Precombat()
             end
