@@ -160,7 +160,7 @@ local function APL()
         -- food
         -- augmentation
         -- regrowth,if=talent.bloodtalons.enabled
-        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable()) and Player:BuffDown(S.BloodtalonsBuff) then
+        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable()) and Player:BuffDown(S.BloodtalonsBuff) and not Player:PrevGCDP(1, S.Regrowth) then
             return S.Regrowth:Cast()
         end
         -- variable,name=use_thrash,value=2
@@ -253,7 +253,7 @@ local function APL()
             return S.Shred:Cast()
         end
         -- regrowth,if=combo_points=5&talent.bloodtalons.enabled&(talent.sabertooth.enabled&buff.bloodtalons.down|buff.predatory_swiftness.up)
-        if S.Regrowth:IsReady() and (Player:ComboPoints() == 5 and S.Bloodtalons:IsAvailable() and (S.Sabertooth:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) or Player:BuffP(S.PredatorySwiftnessBuff))) then
+        if S.Regrowth:IsReady() and not Player:PrevGCDP(1, S.Regrowth) and (Player:ComboPoints() == 5 and S.Bloodtalons:IsAvailable() and (S.Sabertooth:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) or Player:BuffP(S.PredatorySwiftnessBuff))) then
             return S.Regrowth:Cast()
         end
         -- tigers_fury
@@ -285,11 +285,11 @@ local function APL()
             return S.FerociousBite:Cast()
         end
         -- regrowth,if=combo_points=5&buff.predatory_swiftness.up&talent.bloodtalons.enabled&buff.bloodtalons.down&(!buff.incarnation.up|dot.rip.remains<8)
-        if S.Regrowth:IsReady() and (Player:ComboPoints() == 5 and Player:BuffP(S.PredatorySwiftnessBuff) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and (not Player:BuffP(S.IncarnationBuff) or Target:DebuffRemainsP(S.RipDebuff) < 8)) then
+        if S.Regrowth:IsReady() and not Player:PrevGCDP(1, S.Regrowth) and (Player:ComboPoints() == 5 and Player:BuffP(S.PredatorySwiftnessBuff) and S.Bloodtalons:IsAvailable() and Player:BuffDownP(S.BloodtalonsBuff) and (not Player:BuffP(S.IncarnationBuff) or Target:DebuffRemainsP(S.RipDebuff) < 8)) then
             return S.Regrowth:Cast()
         end
         -- regrowth,if=combo_points>3&talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.apex_predator.up&buff.incarnation.down
-        if S.Regrowth:IsReady() and (Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffP(S.ApexPredatorBuff) and Player:BuffDownP(S.IncarnationBuff)) then
+        if S.Regrowth:IsReady() and not Player:PrevGCDP(1, S.Regrowth) and (Player:ComboPoints() > 3 and S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffP(S.ApexPredatorBuff) and Player:BuffDownP(S.IncarnationBuff)) then
             return S.Regrowth:Cast()
         end
         -- ferocious_bite,if=buff.apex_predator.up&((combo_points>4&(buff.incarnation.up|talent.moment_of_clarity.enabled))|(talent.bloodtalons.enabled&buff.bloodtalons.up&combo_points>3))
@@ -367,11 +367,11 @@ local function APL()
     
 	StGenerators = function()
         -- regrowth,if=talent.bloodtalons.enabled&buff.predatory_swiftness.up&buff.bloodtalons.down&combo_points=4&dot.rake.remains<4
-        if S.Regrowth:IsReady() and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffDownP(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4) then
+        if S.Regrowth:IsReady() and not Player:PrevGCDP(1, S.Regrowth) and (S.Bloodtalons:IsAvailable() and Player:BuffP(S.PredatorySwiftnessBuff) and Player:BuffDownP(S.BloodtalonsBuff) and Player:ComboPoints() == 4 and Target:DebuffRemainsP(S.RakeDebuff) < 4) then
             return S.Regrowth:Cast()
         end
         -- regrowth,if=equipped.ailuro_pouncers&talent.bloodtalons.enabled&(buff.predatory_swiftness.stack>2|(buff.predatory_swiftness.stack>1&dot.rake.remains<3))&buff.bloodtalons.down
-        if S.Regrowth:IsReady() and (I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStackP(S.PredatorySwiftnessBuff) > 2 or (Player:BuffStackP(S.PredatorySwiftnessBuff) > 1 and Target:DebuffRemainsP(S.RakeDebuff) < 3)) and Player:BuffDownP(S.BloodtalonsBuff)) then
+        if S.Regrowth:IsReady() and not Player:PrevGCDP(1, S.Regrowth) and (I.AiluroPouncers:IsEquipped() and S.Bloodtalons:IsAvailable() and (Player:BuffStackP(S.PredatorySwiftnessBuff) > 2 or (Player:BuffStackP(S.PredatorySwiftnessBuff) > 1 and Target:DebuffRemainsP(S.RakeDebuff) < 3)) and Player:BuffDownP(S.BloodtalonsBuff)) then
             return S.Regrowth:Cast()
         end
         -- brutal_slash,if=spell_targets.brutal_slash>desired_targets
