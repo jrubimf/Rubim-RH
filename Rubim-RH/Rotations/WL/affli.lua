@@ -252,11 +252,11 @@ local function APL()
     -- snapshot_stats
     -- pre potion haunt
     if I.BattlePotionOfIntellect:IsReady() and S.Haunt:IsAvailable() and RubimRH.DBM_PullTimer() > S.Haunt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() + 2 then
-        return 176108
+        return 967532
     end
 	-- pre potion no haunt
     if I.BattlePotionOfIntellect:IsReady() and not S.Haunt:IsAvailable() and RubimRH.DBM_PullTimer() > S.Haunt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() + 2 then
-        return 176108
+         return 967532
     end
     -- haunt
     if S.Haunt:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
