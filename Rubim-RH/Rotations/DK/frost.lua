@@ -470,7 +470,11 @@ local function APL()
     if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()
     end
-
+    -- Antimagic Shell
+	if S.AntiMagicShell:CooldownRemainsP() < 0.1 and Player:HealthPercentage() <= RubimRH.db.profile[251].sk5 then
+        return S.AntiMagicShell:Cast()
+    end
+	
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
         return 0, 462338
     end

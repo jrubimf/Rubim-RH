@@ -744,6 +744,10 @@ local defaults = {
             sk4 = 75,
             sk4id = 48743,
             sk4tooltip = "Percent HP to use Death Pact",
+			
+            sk5 = 50,
+            sk5id = 48707,
+            sk5tooltip = "Percent HP to use AntiMagic Shell",
 
             deathstrike = 85,
             icebound = 60,
