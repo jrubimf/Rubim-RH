@@ -475,7 +475,7 @@ local function APL()
 	
 	-- WildChargeCat
 	if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
-        return S.WildChargeCat:Cast()
+        return 538771
     end
 
 	-- QueueSkill
