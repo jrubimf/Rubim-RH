@@ -58,8 +58,7 @@ if not Item.Druid then
     Item.Druid = {}
 end
 Item.Druid.Balance = {
-    ProlongedPower = Item(142117),
-    TheEmeraldDreamcatcher = Item(137062)
+  BattlePotionOfIntellect               = Item(163222)
 };
 local I = Item.Druid.Balance;
 
@@ -285,6 +284,26 @@ end
 local function APL()
     local Precombat, Aoe, Ed, St
     UpdateRanges()
+	
+	Precombat_DBM = function()
+        -- flask
+        -- food
+        -- augmentation
+        -- moonkin_form
+        if GetShapeshiftForm() ~= 4 then
+            return S.MoonkinForm:Cast()
+        end
+        -- snapshot_stats
+	    -- potion
+        if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() > S.SolarWrath:CastTime() and RubimRH.DBM_PullTimer() <= S.SolarWrath:CastTime() + 1 then
+            return 967532
+        end
+        -- solar_wrath
+        if S.SolarWrath:IsReady() and not Player:IsCasting(S.SolarWrath) and RubimRH.DBM_PullTimer() <= (S.SolarWrath:CastTime() + S.SolarWrath:TravelTime()) and RubimRH.DBM_PullTimer() >= 0.1 then
+            return S.SolarWrath:Cast()
+        end
+    end
+	
     Precombat = function()
         -- flask
         -- food
@@ -499,8 +518,15 @@ local function APL()
     if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
-
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
+    -- precombat DBM
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        if Precombat_DBM() ~= nil then
+            return Precombat_DBM()
+        end
+        return 0, 462338
+    end
+	-- precombat no dbm
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
         if Precombat() ~= nil then
             return Precombat()
         end
