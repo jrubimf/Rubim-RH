@@ -480,7 +480,7 @@ local function APL()
     end
 	
 		-- interrupt.SkullBash
-    if S.SurvivalInstincts:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[103].sk1 then
+    if S.SurvivalInstincts:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[103].sk3 then
         return S.SurvivalInstincts:Cast()
     end
 
