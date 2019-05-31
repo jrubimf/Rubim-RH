@@ -1089,10 +1089,14 @@ local defaults = {
             sk1id = Renewal, -- Renewall
             sk1tooltip = "Percent HP to use Renewal",
 
-            sk2 = 85, -- Renewal
-            sk2id = Regrowth, -- Renewall
+            sk2 = 85, -- Regrowth
+            sk2id = Regrowth, -- Regrowth
             sk2tooltip = "Percent HP to use Regrowth",
 
+            sk3 = 20, -- Survival Instincts
+            sk3id = 61336, -- Survival Instincts
+            sk3tooltip = "Percent HP to use Survival Instincts",
+			
             Spells = {
                 { spellID = Renewal, isActive = true },
                 { spellID = Regrowth, isActive = true },

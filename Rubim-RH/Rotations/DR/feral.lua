@@ -65,6 +65,7 @@ RubimRH.Spell[103] = {
 	SkullBash = Spell(106839),
     IronJawsBuff = Spell(276026),
 	WildChargeCat = Spell(102401),
+	SurvivalInstincts = Spell(61336),
 };
 local S = RubimRH.Spell[103];
 
@@ -476,6 +477,11 @@ local function APL()
 	-- WildChargeCat
 	if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
         return 538771
+    end
+	
+		-- interrupt.SkullBash
+    if S.SurvivalInstincts:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[103].sk1 then
+        return S.SurvivalInstincts:Cast()
     end
 
 	-- QueueSkill
