@@ -24,6 +24,7 @@ RubimRH.Spell[105] = {
 
     -- Spells
     Rejuvenation     = Spell(774),
+    RejuvenationGerm = Spell(155777),
 	WildGrowth       = Spell(48438),
 	Swiftmend        = Spell(18562),
 	Lifebloom        = Spell(33763),
@@ -55,6 +56,9 @@ RubimRH.Spell[105] = {
     -- Talent
 	CenarionWard     = Spell(102351),
 	TreeOfLife       = Spell(33891),
+	SunfireDebuff     = Spell(164815),
+	MoonfireDebuff    = Spell(164812),
+	Germination       = Spell(155675),
 	
 	
 };
@@ -75,6 +79,16 @@ local I = Item.Druid.Resto;
 -- Rotation Var
 
 -- APL Action Lists (and Variables)
+
+local function Efflorescence()
+    for i = 1, 5 do
+        local active, totemName, startTime, duration, textureId  = GetTotemInfo(i)
+        if active == true and textureId == 134222 then
+            return startTime + duration - GetTime()
+        end
+    end
+    return 0
+end
 
 -- APL Main
 local function ShouldDispell()
@@ -120,15 +134,15 @@ local function APL()
 
 	-- Dps rotation
     DPS = function()
-        if S.Sunfire:IsReady() then
+        if S.Sunfire:IsReady() and Target:DebuffRemainsP(S.SunfireDebuff) < 4 then
             return S.Sunfire:Cast()
         end
 
-        if S.Moonfire:IsReady() then
+        if S.Moonfire:IsReady() and Target:DebuffRemainsP(S.MoonfireDebuff) < 4 then
             return S.Moonfire:Cast()
         end
 
-        if S.SolarWrath:IsReady() then
+        if S.SolarWrath:IsReady() and Target:DebuffRemainsP(S.MoonfireDebuff) >= 4 and Target:DebuffRemainsP(S.SunfireDebuff) >= 4 then
             return S.SolarWrath:Cast()
         end
 
@@ -139,7 +153,7 @@ local function APL()
     Healing = function()
 
         --Tank Emergency Ironbark
-        if S.Ironbark:IsCastableP() then
+        if S.Ironbark:IsReady() then
             if LowestAlly("TANK", "HP") <= 25 then
                 ForceHealingTarget("TANK")
             end
@@ -150,7 +164,7 @@ local function APL()
         end
 		
 		--Tank Priority Lifebloom
-        if S.Lifebloom:IsCastableP() then
+        if S.Lifebloom:IsReady() and Target:BuffDownP(S.Lifebloom) then
             if LowestAlly("TANK", "HP") <= 95 then
                 ForceHealingTarget("TANK")
             end
@@ -161,7 +175,7 @@ local function APL()
         end
 		
 		--Tank Priority Rejuvenation
-        if S.Rejuvenation:IsCastableP() then
+        if S.Rejuvenation:IsReady() and Target:BuffDownP(S.Rejuvenation) then
             if LowestAlly("TANK", "HP") <= 93 then
                 ForceHealingTarget("TANK")
             end
@@ -172,7 +186,7 @@ local function APL()
         end
 		
 		--Tank Priority CenarionWard
-        if S.CenarionWard:IsCastableP() then
+        if S.CenarionWard:IsReady() then
             if LowestAlly("TANK", "HP") <= 90 then
                 ForceHealingTarget("TANK")
             end
@@ -183,30 +197,30 @@ local function APL()
         end
 
         --16Swiftmend on low allies
-        if S.Swiftmend:IsCastableP() then
+        if S.Swiftmend:IsReady() then
             --if InjuredAlliesInExplicitRadius(30, true, 0.75) >= 3
-            if LowestAlly("ALL", "HP") <= 25 then
+            if LowestAlly("ALL", "HP") <= 40 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 40 then
                 return S.Swiftmend:Cast()
             end
         end
 
         --22Efflorescence
-        if S.Efflorescence:IsCastableP() and Player:BuffDownP(S.EfflorescenceBuff) and GroupedBelow(90) >= 3 then
-            if LowestAlly("ALL", "HP") <= 95 then
+        if S.Efflorescence:IsReady() and RubimRH.AoEON() and Player:BuffDownP(S.EfflorescenceBuff) and GroupedBelow(90) >= 5 and Efflorescence() <= 3 then
+           if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 75 then
                 return S.Efflorescence:Cast()
             end
         end
 		
         --21WildGrowth
-        if S.WildGrowth:IsCastableP() and GroupedBelow(90) >= 6 then
+        if S.WildGrowth:IsReady() and GroupedBelow(90) >= 5 then
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
@@ -219,7 +233,18 @@ local function APL()
 
 
         --23Rejuvenation
-        if S.Rejuvenation:IsCastableP() and not Target:Buff(S.Rejuvenation) then
+        if S.Rejuvenation:IsReady() and Target:BuffDownP(S.Rejuvenation) then
+            if LowestAlly("ALL", "HP") <= 95 then
+                ForceHealingTarget("ALL")
+            end
+
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--23.2Rejuvenation With Germination
+        if S.Rejuvenation:IsReady() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() then
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
@@ -230,8 +255,8 @@ local function APL()
         end
 
         --24Regrowth
-        if S.Regrowth:IsCastableP() and Target:Buff(S.Rejuvenation) then
-            if LowestAlly("ALL", "HP") <= 65 then
+        if S.Regrowth:IsReady() and Target:Buff(S.Rejuvenation) then
+            if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
 
@@ -241,7 +266,7 @@ local function APL()
         end
 		
 		--25CenarionWard
-        if S.CenarionWard:IsCastableP() and Target:Buff(S.Rejuvenation) then
+        if S.CenarionWard:IsReady() and Target:Buff(S.Rejuvenation) then
             if LowestAlly("ALL", "HP") <= 55 then
                 ForceHealingTarget("ALL")
             end
@@ -252,7 +277,7 @@ local function APL()
         end
 
         --26Tranquility
-        if S.Tranquility:IsCastableP() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
+        if S.Tranquility:IsReady() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
             if GroupedBelow(50) >= 8 then
                 return S.Tranquility:Cast()
             end
