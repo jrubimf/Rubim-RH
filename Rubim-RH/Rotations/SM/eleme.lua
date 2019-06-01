@@ -65,7 +65,7 @@ local S = RubimRH.Spell[262]
 -- Items
 if not Item.Shaman then Item.Shaman = {} end
 Item.Shaman.Elemental = {
-  BattlePotionofIntellect          = Item(163222)
+  BattlePotionOfIntellect          = Item(163222)
 };
 local I = Item.Shaman.Elemental;
 
@@ -215,8 +215,40 @@ end
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat, Aoe, SingleTarget
+  local Precombat_DBM, Precombat, Aoe, SingleTarget
   UpdateRanges()
+  
+   Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- totem_mastery
+    if S.TotemMastery:IsCastableP() and TotemMastery() < 2 then
+      return S.TotemMastery:Cast()
+    end
+    -- earth_elemental,if=!talent.primal_elementalist.enabled
+    -- stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
+    if S.Stormkeeper:IsCastableP() and RubimRH.CDsON() and Player:BuffDownP(S.StormkeeperBuff) and S.Stormkeeper:IsAvailable() and RubimRH.DBM_PullTimer() >= 0.1 then
+      return S.Stormkeeper:Cast()
+    end
+    -- potion
+    if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() > (S.LavaBurst:CastTime() + S.LavaBurst:TravelTime()) and RubimRH.DBM_PullTimer() <= (S.LavaBurst:CastTime() + S.LavaBurst:TravelTime() + 1) then
+        return 967532
+    end
+    -- elemental_blast,if=talent.elemental_blast.enabled&Cache.EnemiesCount[40].chain_lightning<3
+    if S.ElementalBlast:IsCastableP() and (S.ElementalBlast:IsAvailable() and GetEnemiesCount() < 3) and RubimRH.DBM_PullTimer() <= (S.ElementalBlast:CastTime() + S.ElementalBlast:TravelTime()) and RubimRH.DBM_PullTimer() >= 0.1 then
+      return S.ElementalBlast:Cast()
+    end
+    -- lava_burst,if=!talent.elemental_blast.enabled&Cache.EnemiesCount[40].chain_lightning<3
+    if S.LavaBurst:IsCastableP() and (not S.ElementalBlast:IsAvailable() and GetEnemiesCount() < 3) and RubimRH.DBM_PullTimer() <= (S.LavaBurst:CastTime() + S.LavaBurst:TravelTime()) and RubimRH.DBM_PullTimer() >= 0.1 then
+      return S.LavaBurst:Cast()
+    end
+    -- chain_lightning,if=Cache.EnemiesCount[40].chain_lightning>2
+    if S.ChainLightning:IsCastableP() and (GetEnemiesCount() > 2) then
+      return S.ChainLightning:Cast()
+    end
+  end
   
   Precombat = function()
     -- flask
@@ -325,6 +357,14 @@ local function APL()
     if S.FlameShock:IsCastableP() and ((not Target:DebuffP(S.FlameShockDebuff) or S.StormElemental:IsAvailable() and S.StormElemental:CooldownRemainsP() < 2 * Player:GCD() or Target:DebuffRemainsP(S.FlameShockDebuff) <= Player:GCD() or S.Ascendance:IsAvailable() and Target:DebuffRemainsP(S.FlameShockDebuff) < (S.Ascendance:CooldownRemainsP() + S.AscendanceBuff:BaseDuration()) and S.Ascendance:CooldownRemainsP() < 4 and (not S.StormElemental:IsAvailable() or S.StormElemental:IsAvailable() and S.StormElemental:CooldownRemainsP() < 120)) and Player:BuffStackP(S.WindGustBuff) < 14 and not Player:BuffP(S.SurgeofPowerBuff)) then
       return S.FlameShock:Cast()
     end
+    -- flame_shock,moving=1,target_if=duration<6
+    if S.FlameShock:IsCastableP() and Player:IsMoving() and Target:DebuffRemainsP(S.FlameShockDebuff) <= 6 then
+      return S.FlameShock:Cast()
+    end
+    --actions.single_target+=/earth_shock
+    if S.LavaBurst:CooldownRemains() >= 1 and FutureMaelstromPower() >= 60  then        
+          return S.EarthShock:Cast()
+    end
     -- ascendance,if=talent.ascendance.enabled&(time>=60|buff.bloodlust.up)&cooldown.lava_burst.remains>0&(!talent.storm_elemental.enabled|cooldown.storm_elemental.remains>120)&(!talent.icefury.enabled|!buff.icefury.up&!cooldown.icefury.up)
     if S.Ascendance:IsCastableP() and RubimRH.CDsON() and (S.Ascendance:IsAvailable() and (HL.CombatTime() >= 60 or Player:HasHeroism()) and S.LavaBurst:CooldownRemainsP() > 0 and (not S.StormElemental:IsAvailable() or S.StormElemental:CooldownRemainsP() > 120) and (not S.Icefury:IsAvailable() or not Player:BuffP(S.IcefuryBuff) and not S.Icefury:CooldownUpP())) then
       return S.Ascendance:Cast()
@@ -431,12 +471,16 @@ local function APL()
       return S.FrostShock:Cast()
     end
   end
-  
+    
+	-- call precombat_dbm
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        local ShouldReturn = Precombat_DBM(); if ShouldReturn then return ShouldReturn; end
+    end 
     -- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
         local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-    end
-  
+    end  
+
   --  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
   --      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
   --  end
