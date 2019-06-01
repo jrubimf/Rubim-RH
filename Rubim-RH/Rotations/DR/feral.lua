@@ -11,6 +11,7 @@ local Target = Unit.Target
 local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
+local mainAddon = RubimRH
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
