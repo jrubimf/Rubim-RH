@@ -221,7 +221,7 @@ local function APL()
   
   Asc = function()
     -- crash_lightning,if=!buff.crash_lightning.up&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
@@ -279,7 +279,7 @@ local function APL()
       return S.Stormstrike:Cast()
     end
     -- crash_lightning,if=active_enemies>=3&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (active_enemies() >= 3 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and active_enemies() >= 3 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- lightning_bolt,if=talent.overcharge.enabled&active_enemies=1&variable.furyCheck_LB&maelstrom>=40
@@ -298,7 +298,7 @@ local function APL()
       return S.Sundering:Cast()
     end
     -- crash_lightning,if=talent.forceful_winds.enabled&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (S.ForcefulWinds:IsAvailable() and active_enemies() > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and S.ForcefulWinds:IsAvailable() and active_enemies() > 1 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- flametongue,if=talent.searing_assault.enabled
@@ -310,7 +310,7 @@ local function APL()
       return S.LavaLash:Cast()
     end
     -- crash_lightning,if=active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (active_enemies() > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and active_enemies() > 1 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- rockbiter,if=maelstrom<70&!buff.strength_of_earth.up
@@ -318,7 +318,7 @@ local function APL()
       return S.Rockbiter:Cast()
     end
     -- crash_lightning,if=talent.crashing_storm.enabled&variable.OCPool_CL
-    if S.CrashLightning:IsCastableP() and (S.CrashingStorm:IsAvailable() and bool(VarOcpoolCl)) then
+    if S.CrashLightning:IsCastableP() and S.CrashingStorm:IsAvailable() and bool(VarOcpoolCl) then
       return S.CrashLightning:Cast()
     end
     -- lava_lash,if=variable.OCPool_LL&variable.furyCheck_LL
@@ -357,7 +357,7 @@ local function APL()
       return S.Stormstrike:Cast()
     end
     -- crash_lightning,if=active_enemies>=3&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (Cache.EnemiesCount[8] >= 3 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and Cache.EnemiesCount[8] >= 3 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- lightning_bolt,if=talent.overcharge.enabled&active_enemies=1&variable.furyCheck_LB&maelstrom>=40
@@ -398,7 +398,7 @@ local function APL()
   
   Priority = function()
     -- crash_lightning,if=active_enemies>=(8-(talent.forceful_winds.enabled*3))&variable.freezerburn_enabled&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (active_enemies() >= (8 - (num(S.ForcefulWinds:IsAvailable()) * 3)) and bool(VarFreezerburnEnabled) and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and active_enemies() >= (8 - (num(S.ForcefulWinds:IsAvailable()) * 3)) and bool(VarFreezerburnEnabled) and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- lava_lash,if=azerite.primal_primer.rank>=2&debuff.primal_primer.stack=10&active_enemies=1&variable.freezerburn_enabled&variable.furyCheck_LL
@@ -406,7 +406,7 @@ local function APL()
       return S.LavaLash:Cast()
     end
     -- crash_lightning,if=!buff.crash_lightning.up&active_enemies>1&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and (not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl)) then
+    if S.CrashLightning:IsCastableP() and not Player:BuffP(S.CrashLightningBuff) and active_enemies() > 1 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- fury_of_air,if=!buff.fury_of_air.up&maelstrom>=20&spell_targets.fury_of_air_damage>=(1+variable.freezerburn_enabled)
