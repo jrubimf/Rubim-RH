@@ -23,7 +23,7 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     local variation = (VARIATION and (VARIATION / 100)) or 1    
     
     local total = 0
-    local DMG, HPS = incdmg(UNIT), getHEAL(UNIT)      
+    local DMG, HPS = RubimRH.incdmg(UNIT), getHEAL(UNIT)      
     local DifficultHP = UnitHealthMax(UNIT) - UnitHealth(UNIT)  
     
     -- Spells
@@ -228,7 +228,7 @@ end
 -- Prediction Heal Rubim Part
 function predictHeal(SPELLID, UNIT, VARIATION)
     local variation = VARIATION or 1
-    local dmgpersec, total = incdmg(UNIT), 0
+    local dmgpersec, total = RubimRH.incdmg(UNIT), 0
     -- Exception penalty for low level units (beta)     
     if UnitLevel(UNIT) < UnitLevel("player") or CombatTime("player") == 0 then
         return 0
@@ -290,7 +290,7 @@ function predictHeal(SPELLID, UNIT, VARIATION)
     end
 
     if SPELLID == "BestowFaith" then
-        total = (UnitStat("player", 4) * 6 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)) + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (incdmg(UNIT) * 5)
+        total = (UnitStat("player", 4) * 6 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)) + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (RubimRH.incdmg(UNIT) * 5)
     end
 
     -- AW +35%
@@ -304,7 +304,7 @@ function predictHeal(SPELLID, UNIT, VARIATION)
     end
 
     if SPELLID == "GiftofNaaru" then
-        total = UnitHealthMax("player") * 0.2 + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (incdmg(UNIT) * 5)
+        total = UnitHealthMax("player") * 0.2 + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (RubimRH.incdmg(UNIT) * 5)
     end
 
     return total + (total * variation) / 100 or 0

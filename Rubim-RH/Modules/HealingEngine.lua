@@ -6,7 +6,23 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
-members = {}
+local TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
+TargetColor:SetBackdrop(nil)
+TargetColor:SetFrameStrata("TOOLTIP")
+TargetColor:SetToplevel(true)
+TargetColor:SetSize(1, 1)
+TargetColor:SetScale(1);
+TargetColor:SetPoint("TOPLEFT", 442, 0)
+TargetColor.texture = TargetColor:CreateTexture(nil, "TOOLTIP")
+TargetColor.texture:SetAllPoints(true)
+TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
+local members, incDMG_members, R_CustomT = {}, {}, {}
+local R_Tanks, R_DPS, R_Heal, R_Stacked = {}, {}, {}, {}
+local Frequency, FrequencyPairs = {}, {}
+
+local pairs, tableexist = pairs, tableexist
+local UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer =
+UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer
 
 local function CalculateHP(t)
     incomingheals = UnitGetIncomingHeals(t) and UnitGetIncomingHeals(t) or 0
@@ -15,20 +31,32 @@ local function CalculateHP(t)
     return PercentWithIncoming, ActualWithIncoming
 end
 
-local function CanHeal(t)
-    if UnitInRange(t)
+--local function CanHeal(t)
+ --   if UnitInRange(t)
             --Missing LOS Check
-            and UnitCanCooperate("player", t)
-            and not UnitIsCharmed(t)
-            and not UnitIsDeadOrGhost(t)
-            and UnitIsConnected(t)
+ --           and UnitCanCooperate("player", t)
+ --           and not UnitIsCharmed(t)
+ --           and not UnitIsDeadOrGhost(t)
+ --           and UnitIsConnected(t)
     --          and UnitDebuffID(t,104451) == nil -- Ice Tomb
     --          and UnitDebuffID(t,76577) == nil -- Smoke Bomb
-    then
-        return true
-    else
-        return false
-    end
+ --   then
+ --       return true
+ --   else
+--        return false
+ --   end
+--end
+
+local function CanHeal(t)
+    return UnitInRange(t)
+    --and not RubimRH.InLOS(UnitGUID(t)) -- LOS System (target)
+    --and not RubimRH.InLOS(t)           -- LOS System (another such as party)
+    --and UnitCanCooperate("player", t)
+    and not UnitIsCharmed(t)
+	and not UnitIsDeadOrGhost(t)
+    and UnitIsConnected(t)
+    --and Unit(t):DebuffRemains(CycloneId) == 0 -- Cyclone
+   
 end
 
 local function Grouped(t)
@@ -63,15 +91,16 @@ function GroupedBelow(HP)
 end
 
 
-local function HealingEngine(MO, ACTUALHP)
-    R_Tanks = {}
-    R_DPS = {}
-    R_Heal = {}
-    R_Stacked = {}
-
-    local MouseoverCheck = MO or false
+local function HealingEngine(ACTUALHP)
     local ActualHP = ACTUALHP or false
-    members = { { Unit = "player", HP = CalculateHP("player"), GUID = UnitGUID("player"), AHP = select(2, CalculateHP("player")) } }
+    wipe(members)
+    wipe(incDMG_members)
+    wipe(R_Tanks)
+    wipe(R_DPS)
+    wipe(R_Heal)
+    incDMG_members = {}
+    R_Tanks, R_DPS, R_Heal = {}, {}, {}
+    members = { { Unit = "player", HP = CalculateHP("player"), GUID = UnitGUID("player"), AHP = select(2, CalculateHP("player")), incDMG = RubimRH.incdmg("player") } }
 
     -- Check if the Player is apart of the Custom Table
     for i = 1, #R_CustomT do
@@ -89,13 +118,30 @@ local function HealingEngine(MO, ACTUALHP)
     end
 
     for i = 1, GetNumGroupMembers() do
-        local member, memberhp = group .. i, CalculateHP(group .. i)
+        local member = group .. i        
+        local memberhp, memberahp = CalculateHP(member)
+        local memberGUID = UnitGUID(member)
+        -- Frequency (Record By Each Member)
+        -- Note: We can't use CanHeal here because it will take not all units results could be wrong
+        FrequencyPairs["MAXHP"] = (FrequencyPairs["MAXHP"] or 0) + UnitHealthMax(member)
+        FrequencyPairs["AHP"] = (FrequencyPairs["AHP"] or 0) + memberahp
 
         -- Checking all Party/Raid Members for Range/Health
         if CanHeal(member) then
 
+            local DMG = getRealTimeDMG(member) -- RubimRH.incdmgmember)
+            local Actual_DMG = DMG
+            --local HPS = getHEAL(member)  
+		   
+     	    -- Stop decrease predict HP if offset for DMG more than 15% of member's HP
+            local DMG_offset = UnitHealthMax(member) * 0.15
+            if DMG > DMG_offset then 
+                DMG = DMG_offset
+            end
+		    
+			-- Checking if members are packed
             if Grouped(member) then
-                table.insert(R_Stacked, { Unit = member, HP = memberhp, AHP = select(2, CalculateHP(member)) })
+                table.insert(R_Stacked, { Unit = member, HP = memberhp, GUID = memberGUID, AHP = memberahp, incDMG = Actual_DMG })  
             end
 
             -- Checking if Member has threat
@@ -108,31 +154,35 @@ local function HealingEngine(MO, ACTUALHP)
             --end
             -- Searing Plasma Check
             --          if UnitDebuffID(member, 109379) then memberhp = memberhp - 9 end
-            -- Checking if Member isa tank
+           
+		    -- Checking if Member is a tank
             if UnitGroupRolesAssigned(member) == "TANK" then
                 memberhp = memberhp - 2
-                table.insert(R_Tanks, { Unit = member, HP = memberhp, AHP = select(2, CalculateHP(member)) })
+                table.insert(R_Tanks, { Unit = member, HP = memberhp, GUID = memberGUID, AHP = memberahp, incDMG = Actual_DMG })  
             end
-
+            
+			-- Checking if Member is a dps
             if UnitGroupRolesAssigned(member) == "DPS" then
                 memberhp = memberhp - 1
-                table.insert(R_DPS, { Unit = member, HP = memberhp, AHP = select(2, CalculateHP(member)) })
+                table.insert(R_DPS, { Unit = member, HP = memberhp, GUID = memberGUID, AHP = memberahp, incDMG = Actual_DMG })  
             end
-
+           
+		   -- Checking if Member is a healer
             if UnitGroupRolesAssigned(member) == "HEAL" then
                 memberhp = memberhp - 1
-                table.insert(R_DPS, { Unit = member, HP = memberhp, AHP = select(2, CalculateHP(member)) })
+                table.insert(R_DPS, { Unit = member, HP = memberhp, GUID = memberGUID, AHP = memberahp, incDMG = Actual_DMG })  
             end
-            -- If they are in the Custom Table add their info in
+            
+			-- Misc: If they are in the Custom Table add their info in
             for i = 1, #R_CustomT do
                 if UnitGUID(member) == R_CustomT[i].GUID then
                     R_CustomT[i].Unit = member
                     R_CustomT[i].HP = memberhp
-                    R_CustomT[i].AHP = select(2, CalculateHP(member))
+                    R_CustomT[i].AHP = memberahp
                 end
             end
-            table.insert(members, { Unit = group .. i, HP = memberhp, GUID = UnitGUID(group .. i), AHP = select(2, CalculateHP(group .. i)) })
-        end
+            table.insert(members, { Unit = member, HP = memberhp, GUID = memberGUID, AHP = memberahp, incDMG = Actual_DMG } )
+        end     
 
         -- Checking Pets in the group
         if CanHeal(group .. i .. "pet") then
@@ -153,28 +203,78 @@ local function HealingEngine(MO, ACTUALHP)
                     R_CustomT[i].AHP = select(2, CalculateHP(memberpet))
                 end
             end
-            table.insert(members, { Unit = memberpet, HP = memberpethp, GUID = UnitGUID(memberpet), AHP = select(2, CalculateHP(memberpet)) })
+            table.insert(members, { Unit = memberpet, HP = memberpethp, GUID = UnitGUID(memberpet), AHP = select(2, CalculateHP(memberpet)), incDMG = getRealTimeDMG(memberpet) }) -- RubimRH.incdmgmemberpet)
         end
     end
 
+	
+	-- Frequency (Summary)
+    if FrequencyPairs["MAXHP"] and FrequencyPairs["MAXHP"] > 0 then 
+        table.insert(Frequency, { 
+                TIME = GetTime(), 
+                -- Max Members Actual HP
+                MAXHP = FrequencyPairs["MAXHP"], 
+                -- Current Members Actual HP
+                AHP = FrequencyPairs["AHP"],
+        })
+        wipe(FrequencyPairs)
+        for i = #Frequency, 1, -1 do             
+            -- Remove data longer than 5 seconds 
+            if GetTime() - Frequency[i].TIME > 5 then 
+                table.remove(Frequency, i)                
+            end 
+        end 
+    end 
+    
     -- So if we pass that ActualHP is true, then we will sort by most health missing. If not, we sort by lowest % of health.
-    if not ActualHP then
-        table.sort(members, function(x, y)
-            return x.HP < y.HP
-        end)
-        if #R_Tanks > 0 then
-            table.sort(R_Tanks, function(x, y)
-                return x.HP < y.HP
-            end)
+    if #members > 1 then 
+        -- Sort by most damage receive
+        for k, v in pairs(members) do
+            table.insert(incDMG_members, v)
         end
-    elseif ActualHP then
-        table.sort(members, function(x, y)
-            return x.AHP > y.AHP
-        end)
-        if #R_Tanks > 0 then
-            table.sort(R_Tanks, function(x, y)
-                return x.AHP > y.AHP
+        table.sort(incDMG_members, function(x, y)
+        return x.incDMG > y.incDMG
+    end) 
+	
+        -- Sort by HP or AHP
+        if not ActualHP then                
+            table.sort(members, function(x, y)
+                    return x.HP < y.HP
             end)
+            if #R_Tanks > 1 then
+                table.sort(R_Tanks, function(x, y)
+                        return x.HP < y.HP
+                end)
+            end
+            if #R_DPS > 1 then
+                table.sort(R_DPS, function(x, y)
+                        return x.HP < y.HP
+                end)
+            end
+            if #R_Heal > 1 then
+                table.sort(R_Heal, function(x, y)
+                        return x.HP < y.HP
+                end)
+            end
+        elseif ActualHP then
+            table.sort(members, function(x, y)
+                    return x.AHP > y.AHP
+            end)
+            if #R_Tanks > 1 then
+                table.sort(R_Tanks, function(x, y)
+                        return x.AHP > y.AHP
+                end)
+            end
+            if #R_DPS > 1 then
+                table.sort(R_DPS, function(x, y)
+                        return x.AHP > y.AHP
+                end)
+            end
+            if #R_Heal > 1 then
+                table.sort(R_Heal, function(x, y)
+                        return x.AHP > y.AHP
+                end)
+            end
         end
     end
 end
@@ -1247,8 +1347,9 @@ local function refreshColor()
         return
     else
         HealingEngine() -- Updates Arrays/Table
-        --setHealingTarget() -- Who to heal?
-        --setColorTarget() -- Show Pixels
+        setHealingTarget(HE_Toggle) -- Who to heal?
+        setColorTarget() -- Show Pixels    
+      --  UpdateLOS() -- Update LOS status for target 
     end
 end
 
