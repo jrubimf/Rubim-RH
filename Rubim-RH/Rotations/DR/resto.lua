@@ -29,6 +29,7 @@ RubimRH.Spell[105] = {
 	Lifebloom        = Spell(33763),
 	Regrowth         = Spell(8936),
 	Efflorescence    = Spell(145205),
+	EfflorescenceBuff = Spell(145205),
 	Innervate        = Spell(29166),
 	Tranquility      = Spell(740),
 	Flourish         = Spell(197721),
@@ -53,9 +54,11 @@ RubimRH.Spell[105] = {
    
     -- Talent
 	CenarionWard     = Spell(102351),
-
+	TreeOfLife       = Spell(33891),
+	
+	
 };
-local S = RubimRH.Spell[105]
+local S = RubimRH.Spell[105];
 
 -- Items
 if not Item.Druid then
@@ -74,7 +77,7 @@ local I = Item.Druid.Resto;
 -- APL Action Lists (and Variables)
 
 -- APL Main
-function ShouldDispell()
+local function ShouldDispell()
     -- Do not dispel these spells
     local blacklist = {
         33786,
@@ -116,16 +119,16 @@ local function APL()
     LeftAlt = IsLeftAltKeyDown();
 
 	-- Dps rotation
-    local DPS = function()
-        if S.Sunfire:IsReady(40) then
+    DPS = function()
+        if S.Sunfire:IsReady() then
             return S.Sunfire:Cast()
         end
 
-        if S.Moonfire:IsReady(40) then
+        if S.Moonfire:IsReady() then
             return S.Moonfire:Cast()
         end
 
-        if S.SolarWrath:IsReady(40) then
+        if S.SolarWrath:IsReady() then
             return S.SolarWrath:Cast()
         end
 
@@ -133,7 +136,7 @@ local function APL()
     end
 
 	-- Healing rotation
-    local Healing = function()
+    Healing = function()
 
         --Tank Emergency Ironbark
         if S.Ironbark:IsCastableP() then
@@ -237,7 +240,7 @@ local function APL()
             end
         end
 		
-		--24CenarionWard
+		--25CenarionWard
         if S.CenarionWard:IsCastableP() and Target:Buff(S.Rejuvenation) then
             if LowestAlly("ALL", "HP") <= 55 then
                 ForceHealingTarget("ALL")
@@ -248,104 +251,19 @@ local function APL()
             end
         end
 
-        --25Tranquility
-        if S.Tranquility:IsCastableP() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
-            if GroupedBelow(50) >= 8 then
-                return S.Tranquility:Cast()
-            end
-        end
-		
-		--25Tranquility
+        --26Tranquility
         if S.Tranquility:IsCastableP() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
             if GroupedBelow(50) >= 8 then
                 return S.Tranquility:Cast()
             end
         end
 
-        --26Tree of Life
+        --27Tree of Life
         if S.TreeOfLife:IsAvailable() and RubimRH.CDsON() then
             if GroupedBelow(35) >= 5 then
                 return S.TreeOfLife:Cast()
             end
         end
-
-        --27Holy Prism
-        if S.HolyPrism:IsAvailable() and S.HolyPrism:IsCastableP() then
-            if GroupedBelow(75) >= 3 then
-                return S.HolyPrism:Cast()
-            end
-        end
-
-        --28Bestow Faith
-        if S.BestowFaith:IsAvailable() and S.BestowFaith:IsCastableP() then
-            if LowestAlly("TANK", "HP") <= 99 then
-                ForceHealingTarget("TANK")
-            end
-            if Target:GUID() == LowestAlly("TANK", "GUID") then
-                return S.BestowFaith:Cast()
-            end
-        end
-
-        --29Holy Light
-        if S.HolyLight:IsCastableP() and Player:Buff(S.InfusionofLight) and not Target:Buff(S.BeaconofLight) and not Target:Buff(S.BeaconofVirtue) then
-            --if HasBuff(InfusionOfLight) and not HasBuff(BeaconOfLight) and not HasBuff(BeaconOfFaith) and AllyHealthPercent < 0.9
-            if LowestAlly("ALL", "HP") <= 90 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() < 90 then
-                return S.HolyLight:Cast()
-            end
-        end
-
-        --30Light of the Martyr
-        if S.LightoftheMartyr:IsCastableP() and Player:HealthPercentage() > 75 then
-            if LowestAlly("ALL", "HP") <= 65 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() < 65 then
-                return S.LightoftheMartyr:Cast()
-            end
-        end
-
-        --31Flash of Light
-        if S.FlashofLight:IsCastableP() then
-            if LowestAlly("ALL", "HP") <= 65 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 65 then
-                return S.FlashofLight:Cast()
-            end
-        end
-
-        --32Judgment
-        if Player:CanAttack(Target) and S.Judgement:IsReady() and S.JudgementofLight:IsAvailable() then
-            return S.Judgement:Cast()
-        end
-
-        --33Judgment
-        if Player:CanAttack(Target) and S.Judgement:IsReady() and S.GraveofJusticar:AzeriteEnabled() then
-            return S.Judgement:Cast()
-        end
-
-        --34Crusader Strike
-        if Player:CanAttack(Target) and S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() then
-            return S.CrusaderStrike:Cast()
-        end
-
-        --35 Holy Light
-        if S.HolyLight:IsCastableP() then
-            if LowestAlly("ALL", "HP") <= 85 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 85 then
-                return S.HolyLight:Cast()
-            end
-        end
-
     end
 
     if MouseOver:HasDispelableDebuff("Magic", "Poison", "Curse") then
@@ -366,22 +284,11 @@ local function APL()
 
     return 0, 135328
 end
-RubimRH.Rotation.SetAPL(65, APL);
+
+RubimRH.Rotation.SetAPL(105, APL)
 
 local function PASSIVE()
-    if S.DivineProtection:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk1 then
-        return S.DivineProtection:Cast()
-    end
-
-    if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
-        return S.DivineShield:Cast()
-    end
-
-    if S.LayOnHands:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk3 and not Player:Debuff(S.Forbearance) then
-        return S.LayOnHands:Cast()
-    end
-
     return RubimRH.Shared()
 end
 
-RubimRH.Rotation.SetPASSIVE(65, PASSIVE);
+RubimRH.Rotation.SetPASSIVE(105, PASSIVE)

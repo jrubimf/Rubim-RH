@@ -126,7 +126,7 @@ local EnabledRotation = {
     [102] = true, -- Balance
     [103] = true, -- Feral
     [104] = true, -- Guardian
-    [105] = false, -- Restoration
+    [105] = true, -- Restoration
     -- Hunter
     [253] = true, -- Beast Mastery
     [254] = true, -- Marksmanship
@@ -1103,6 +1103,10 @@ local defaults = {
             }
         },
         [Guardian] = {
+            cooldowns = true,
+			
+        },
+		[105] = {
             cooldowns = true,
 			
         },
