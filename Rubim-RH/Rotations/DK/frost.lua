@@ -136,7 +136,7 @@ local function Aoe()
         return S.HowlingBlast:Cast()
     end
     -- frostscythe,if=buff.killing_machine.up
-    if S.Frostscythe:IsReady() and Cache.EnemiesCount[8] >= 1 and (Player:BuffP(S.KillingMachineBuff)) then
+    if S.Frostscythe:IsReady() and Cache.EnemiesCount[8] >= 2 and (Player:BuffP(S.KillingMachineBuff)) then
         return S.Frostscythe:Cast()
     end
     -- glacial_advance,if=runic_power.deficit<(15+talent.runic_attenuation.enabled*3)
@@ -156,7 +156,7 @@ local function Aoe()
         return S.RemorselessWinter:Cast()
     end
     -- frostscythe
-    if S.Frostscythe:IsReady() and Cache.EnemiesCount[8] >= 1 then
+    if S.Frostscythe:IsReady() and Cache.EnemiesCount[8] >= 2 then
         return S.Frostscythe:Cast()
     end
     -- obliterate,target_if=(debuff.razorice.stack<5|debuff.razorice.remains<10)&runic_power.deficit>(25+talent.runic_attenuation.enabled*3)&!talent.frostscythe.enabled
