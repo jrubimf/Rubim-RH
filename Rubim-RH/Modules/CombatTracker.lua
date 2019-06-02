@@ -89,6 +89,7 @@ local function addToData(GUID)
             -- Shared 
             combat_time = GetTime(),
             spell_value = {},
+			lastSwing = GetTime(),
             spell_lastcast_time = {},
             spell_counter = {},
         }
