@@ -31,8 +31,16 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             title = 'Interrupt',
         },
         {
-            name = 'fiftyTab',
-            title = 'Extra Info',
+            name = 'fifthTab',
+            title = 'System',
+        },
+        {
+            name = 'sixthTab',
+            title = 'Healer',
+        },
+       {
+            name = 'seventhTab',
+            title = 'MSG Actions',
         },
     }
     local tabFrame = StdUi:TabPanel(window, nil, nil, tabs);
@@ -199,7 +207,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Trinket 2', value = 2 },
             }
 
-            local gn_1_1 = StdUi:Dropdown(tab.frame, 125, 20, trinketOptions, nil, true);
+            local gn_1_1 = StdUi:Dropdown(tab.frame, 125, 24, trinketOptions, nil, true);
             gn_1_1:SetPlaceholder(' -- Trinkets --');
             item1 = gn_1_1.optsFrame.scrollChild.items[1]
             item2 = gn_1_1.optsFrame.scrollChild.items[2]
@@ -271,7 +279,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Everything', value = "Everything" },
                 { text = 'Boss Only', value = "Boss Only" },
             }
-            local gn_3_1 = StdUi:Dropdown(tab.frame, 125, 20, cdOptions, nil, nil);
+            local gn_3_1 = StdUi:Dropdown(tab.frame, 125, 24, cdOptions, nil, nil);
             StdUi:FrameTooltip(gn_3_1, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
             gn_3_1:SetPlaceholder("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.cooldownsUsage);
             gn_3_1.OnValueChanged = function(self, val)
@@ -716,7 +724,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             --local blockingTip = StdUi:FontString(tab.frame, 'You can macro the spell blocker by using:\n/run RubimRH.SpellBlocker(spellID)');
             --StdUi:GlueTop(blockingTip, btn, 0, -30);
         end
-        if tab.title == "Interrupt" then
+        
+		if tab.title == "Interrupt" then
             local interruptList_title = StdUi:FontString(tab.frame, 'Custom Interrupt');
             StdUi:GlueTop(interruptList_title, tab.frame, 0, -10, 'CENTER');
 
@@ -734,38 +743,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local data = {};
             local cols = {
 
-                {
-                    name = 'Spell ID',
-                    width = 60,
-                    align = 'LEFT',
-                    index = 'spellId',
-                    format = 'number',
-                    color = function(table, value)
-                        --local x = value / 200000;
-                        --return { r = x, g = 1 - x, b = 0, a = 1 };
-                    end,
-                    events = {
-                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
-                            selectedSpell = rowData.spellId
-                        end,
-                    }
-                },
-                {
-                    name = 'Spell Name',
-                    width = 160,
-                    align = 'LEFT',
-                    index = 'name',
-                    format = 'string',
-                    events = {
-                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
-                            selectedSpell = rowData.spellId
-                        end,
-                    }
-                },
-
-                {
+			{
                     name = 'Icon',
-                    width = 35,
+                    width = 40,
                     align = 'LEFT',
                     index = 'icon',
                     format = 'icon',
@@ -786,17 +766,55 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         end,
                     },
                 },
-            }
 			
-			
+                {
+                    name = 'Spell ID',
+                    width = 60,
+                    align = 'LEFT',
+                    index = 'spellId',
+                    format = 'number',
+                    color = function(table, value)
+                        --local x = value / 200000;
+                        --return { r = x, g = 1 - x, b = 0, a = 1 };
+                    end,
+                    events = {
+                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                            selectedSpell = rowData.spellId
+                        end,
+                    }
+                },
+                {
+                    name = 'Spell Name',
+                    width = 180,
+                    align = 'LEFT',
+                    index = 'name',
+                    format = 'string',
+                    events = {
+                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                            selectedSpell = rowData.spellId
+                        end,
+                    }
+                },
+				
+                {
+                    name = 'Zone',
+                    width = 100,
+                    align = 'LEFT',
+                    index = 'zone',
+                    format = 'string',
+                    events = {
+                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                            selectedSpell = rowData.spellId
+                        end,
+                    }
+                },
 
 
-            local st = StdUi:ScrollTable(tab.frame, cols, 12, 20);
+            }	
+
+            local st = StdUi:ScrollTable(tab.frame, cols, 5, 35);
             st:EnableSelection(true);
-            StdUi:GlueTop(st, tab.frame, 40, -60);
-
-			
-			
+            StdUi:GlueTop(st, tab.frame, 2, -130);				
 						
 			
             --  Custom profils interrupts v2 part 1               
@@ -806,7 +824,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Mixed PvE PvP', value = "Mixed PvE PvP" },
                 { text = 'Custom', value = "Custom" },
             }
-            local chooseprofil = StdUi:Dropdown(tab.frame, 100, 20, interruptProfilschoice, nil, nil);
+            local chooseprofil = StdUi:Dropdown(tab.frame, 100, 24, interruptProfilschoice, nil, nil);
                 chooseprofil:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeList);
                 StdUi:AddLabel(tab.frame, chooseprofil, 'Selected Profil', 'TOP');
                 StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);				
@@ -859,7 +877,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
 				return currentList
 			end
-			StdUi:GlueTop(chooseprofil, tab.frame, 0, -60, 'LEFT');	
+			StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');	
 			
 			
 			-- Custom profils interrupts part 2
@@ -987,7 +1005,129 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
             end
         end
+        
+		if tab.title == "System" then
+            local system_title = StdUi:FontString(tab.frame, 'System Configuration');
+            StdUi:GlueTop(system_title, tab.frame, 0, -10);
+            local gn_separator = StdUi:FontString(tab.frame, '===================');
+            StdUi:GlueTop(gn_separator, system_title, 0, -12);
 
+            local system1_0 = StdUi:Checkbox(tab.frame, 'FPS Optimization');
+            StdUi:GlueTop(system1_0, gn_separator, -100, -24, 'LEFT');
+            system1_0:SetChecked(RubimRH.db.profile.mainOption.fps)
+			StdUi:FrameTooltip(system1_0, 'Optimize your game settings for better FPS', 'TOPLEFT', 'TOPRIGHT', true);
+            function system1_0:OnValueChanged(self, state, value)
+                if RubimRH.db.profile.mainOption.fps then
+                    RubimRH.db.profile.mainOption.fps = false
+                else
+                    RubimRH.db.profile.mainOption.fps = true
+                end
+            end
+
+            local system1_1 = StdUi:Checkbox(tab.frame, 'LOS System');
+            StdUi:GlueTop(system1_1, gn_separator, -100, -48, 'LEFT');
+            system1_1:SetChecked(RubimRH.db.profile.mainOption.los)
+			StdUi:FrameTooltip(system1_1, 'Activate LOS check System', 'TOPLEFT', 'TOPRIGHT', true);
+            function system1_1:OnValueChanged(self, state, value)
+                if RubimRH.db.profile.mainOption.los then
+                    RubimRH.db.profile.mainOption.los = false
+                else
+                    RubimRH.db.profile.mainOption.los = true
+                end
+            end
+			
+            local system1_2 = StdUi:Checkbox(tab.frame, 'DBM System');
+            StdUi:GlueTop(system1_2, gn_separator, -100, -72, 'LEFT');
+            system1_2:SetChecked(RubimRH.db.profile.mainOption.dbm)
+			StdUi:FrameTooltip(system1_2, 'Activate DBM Timers synchronization with your CD\'s', 'TOPLEFT', 'TOPRIGHT', true);
+            function system1_2:OnValueChanged(self, state, value)
+                if RubimRH.db.profile.mainOption.dbm then
+                    RubimRH.db.profile.mainOption.dbm = false
+                else
+                    RubimRH.db.profile.mainOption.dbm = true
+                end
+            end
+
+
+            --  Custom language switcher               
+            local localesOptions = {
+                { text = 'Français', value = "Français" },
+                { text = 'English', value = "English" },
+                { text = 'Pусский', value = "Pусский" },
+            }
+            local sys_lang = StdUi:Dropdown(tab.frame, 80, -24, localesOptions, nil, nil);
+                sys_lang:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeLanguage);
+                StdUi:AddLabel(tab.frame, sys_lang, 'Selected Language', 'TOP');
+                StdUi:FrameTooltip(sys_lang, 'Choose between languages', 'TOPLEFT', 'TOPRIGHT', true);				
+		     	sys_lang.OnValueChanged = function(self, val)
+
+                
+				if val == "Français" then
+                    print("Langue définie sur Français")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeLanguage = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
+					--currentLanguage = RubimRH.db.profile.mainOption.french
+					--RubimRH.RefreshUI()
+
+					
+                elseif val == "English" then
+                    print("Language set on English")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeLanguage = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.pvpList
+					--currentLanguage = RubimRH.db.profile.mainOption.english
+					--RubimRH.RefreshUI()
+
+					
+                elseif val == "Pусский" then
+                    print("Язык установлен на русский")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					RubimRH.db.profile.mainOption.activeLanguage = val
+					--RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
+					--currentLanguage = RubimRH.db.profile.mainOption.russian
+					--RubimRH.RefreshUI()
+                else
+                    print("An error as occured, no data :(")
+					--currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+					--RubimRH.RefreshUI()
+
+                end
+				--return currentLanguage
+			end
+			--StdUi:GlueTop(sys_lang, tab.frame, -100, -24, 'RIGHT');
+            StdUi:GlueTop(sys_lang, gn_separator, 50, -68, 'RIGHT');
+			
+           -- local ic_title = StdUi:FontString(tab.frame, 'Icon');
+           -- StdUi:GlueTop(ic_title, tab.frame, 0, -110);
+            --local ic_separator = StdUi:FontString(tab.frame, '===================');
+            --StdUi:GlueTop(ic_separator, ic_title, 0, -12);
+            local system1_3 = StdUi:Button(tab.frame, 80, 40, 'Load Defaults Settings');
+            --local system1_3 = StdUi:Checkbox(tab.frame, 'Load Defaults Settings');
+            StdUi:GlueTop(system1_3, system1_2, 0, -40, 'LEFT');
+
+
+        end
+		
+		if tab.title == "Healer" then
+            local heal_title = StdUi:FontString(tab.frame, 'Healer Options');
+            StdUi:GlueTop(heal_title, tab.frame, 0, -10);
+            local gn_separator = StdUi:FontString(tab.frame, '===================');
+            StdUi:GlueTop(heal_title, gn_separator, 0, -12);
+
+			-- content here
+
+        end
+		
+		if tab.title == "MSG Actions" then
+            local msg_title = StdUi:FontString(tab.frame, 'Action Messages');
+            StdUi:GlueTop(msg_title, tab.frame, 0, -10);
+            local gn_separator = StdUi:FontString(tab.frame, '===================');
+            StdUi:GlueTop(msg_title, gn_separator, -100, -72, 'LEFT');
+
+           -- content here
+		   
+        end
 
     end);
 end

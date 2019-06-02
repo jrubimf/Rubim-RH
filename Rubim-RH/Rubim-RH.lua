@@ -240,9 +240,17 @@ local defaults = {
             disabledSpells = {},
             disabledSpellsCD = {},
             disabledSpellsCleave = {},
-
             
 			whiteList = true,
+			-- System options
+			dbm = true,
+			
+			los = true,
+			
+			fps = true,
+			
+			-- Languages
+			activeLanguage = "English",
 			
 			-- Profils list
 			activeList = "Mythic+",
