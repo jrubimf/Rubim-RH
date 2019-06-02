@@ -241,7 +241,7 @@ function Unit:IsInterruptible()
     local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
 	-- Custom profils interrupts part 2
 	--
-			
+    --local currentList = 			
 	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
 	    currentList = RubimRH.db.profile.mainOption.mythicList
 	elseif RubimRH.db.profile.mainOption.activeList == "PvP" then
@@ -253,7 +253,6 @@ function Unit:IsInterruptible()
 	end
 
     if spellId ~= nil then
-
         if RubimRH.db.profile.mainOption.whitelist then
             if currentList[spellId] then
                 if self:CastPercentage() >= randomGenerator("Interrupt") then
@@ -277,13 +276,17 @@ function Unit:IsInterruptible()
 
     for i, v in pairs(currentList) do
         if RubimRH.db.profile.mainOption.whitelist then
-            return false
+            return true
         end
     end
 
     if self:CastPercentage() >= randomGenerator("Interrupt") then
         return true
     end
+	if self:CastPercentage() >= randomGenerator("Channel") then
+        return true
+    end
+	
     return false
 end
 
@@ -828,6 +831,7 @@ local function dynamic_array(dimension)
     end
     return setmetatable({}, metatable[1]);
 end
+
 --- When GCD is ready only
 local InLOS, LOSUnit, InLOSCache = dynamic_array(2), nil, {}
 RubimRH.Listener:Add('PvP_Events_Logs', "COMBAT_LOG_EVENT_UNFILTERED", function()
