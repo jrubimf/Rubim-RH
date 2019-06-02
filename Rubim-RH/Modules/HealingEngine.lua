@@ -1573,7 +1573,7 @@ function ValidMembers(IsPlayer)
 end
 
 -- Refference for members in range as counter which usefully to check how much units should be done for AoE heal
-function AoEMembers(IsPlayer, SubStract, Limit)
+function RubimRH.AoEMembers(IsPlayer, SubStract, Limit)
     if not SubStract then SubStract = 1 end 
     if not Limit then Limit = 4 end
     local ValidUnits = ValidMembers(IsPlayer)
@@ -1596,24 +1596,16 @@ function AoEMembers(IsPlayer, SubStract, Limit)
     )
 end
 
---
-function AoETTD(seconds)
-    local totalMembersDying = 0
-    if RubimRH.tableexist(members) then 
-        for i = 1, #members do
-            if UnitIsPlayer(members[i].Unit) and TimeToDie(members[i].Unit) <= seconds then
-                totalMembersDying = totalMembersDying + 1
-            end
-        end
-    end
-    return totalMembersDying or 0   
+function RubimRH.UNITHP(unitID)
+    return UnitHealth(unitID) * 100 / UnitHealthMax(unitID)
 end
 
-function AoEHP(hp)
+
+function RubimRH.AoEHP(hp)
     local totalhp = 0
     if RubimRH.tableexist(members) then 
         for i = 1, #members do
-            if UnitIsPlayer(members[i].Unit) and UnitHP(members[i].Unit) <= hp then
+            if UnitIsPlayer(members[i].Unit) and RubimRH.UnitHP(members[i].Unit) <= hp then
                 totalhp = totalhp + 1
             end
         end

@@ -429,6 +429,32 @@ local PvEImmunity = {
     260189, -- Config Drill
 }
 
+function Unit:InCombatWithParty()
+    local group
+    local groupID
+
+    if IsInRaid() then
+        group = "Raid"
+        groupID = Raid
+    end
+    if IsInGroup() then
+        group = "Party"
+        groupID = Party
+    end
+
+    if not group then
+        return false
+    end
+
+    if self:Exists() then
+        for i, cycleUnit in pairs(groupID) do
+            if UnitDetailedThreatSituation(cycleUnit:ID(), self:ID()) then
+                return true
+            end
+        end
+    end
+end
+
 function Unit:IsPvEImmunity()
     if not self:Exists() then
         return false
