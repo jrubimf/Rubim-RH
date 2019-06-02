@@ -1290,7 +1290,7 @@ function RubimRH.mainRotation(option)
         return 0, 236399
     end
 
-    if Player:IsMounted() or (select(3, UnitClass("player")) == 11 and (GetShapeshiftForm() == 3 or GetShapeshiftForm() == 5)) then
+    if Player:IsMounted() then
         return 0, 975744
     end
 

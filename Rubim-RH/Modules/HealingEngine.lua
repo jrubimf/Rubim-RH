@@ -20,7 +20,7 @@ local members, incDMG_members, R_CustomT = {}, {}, {}
 local R_Tanks, R_DPS, R_Heal, R_Stacked = {}, {}, {}, {}
 local Frequency, FrequencyPairs = {}, {}
 
-local pairs, tableexist = pairs, tableexist
+local pairs = pairs
 local UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer =
 UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer
 
@@ -29,6 +29,11 @@ local function CalculateHP(t)
     local PercentWithIncoming = 100 * (UnitHealth(t) + incomingheals) / UnitHealthMax(t)
     local ActualWithIncoming = (UnitHealthMax(t) - (UnitHealth(t) + incomingheals))
     return PercentWithIncoming, ActualWithIncoming
+end
+
+--- Table functions 
+function RubimRH.tableexist(self)  
+    return (type(self) == "table" and next(self)) or false
 end
 
 --local function CanHeal(t)
@@ -98,8 +103,9 @@ local function HealingEngine(ACTUALHP)
     wipe(R_Tanks)
     wipe(R_DPS)
     wipe(R_Heal)
+    wipe(R_Stacked)
     incDMG_members = {}
-    R_Tanks, R_DPS, R_Heal = {}, {}, {}
+    R_Tanks, R_DPS, R_Heal, R_Stacked = {}, {}, {}, {}
     members = { { Unit = "player", HP = CalculateHP("player"), GUID = UnitGUID("player"), AHP = select(2, CalculateHP("player")), incDMG = RubimRH.incdmg("player") } }
 
     -- Check if the Player is apart of the Custom Table
@@ -129,9 +135,9 @@ local function HealingEngine(ACTUALHP)
         -- Checking all Party/Raid Members for Range/Health
         if CanHeal(member) then
 
-            local DMG = getRealTimeDMG(member) -- RubimRH.incdmgmember)
+            local DMG = RubimRH.getRealTimeDMG(member) -- RubimRH.incdmgmember)
             local Actual_DMG = DMG
-            --local HPS = getHEAL(member)  
+            --local HPS = RubimRH.getHEAL(member)  
 		   
      	    -- Stop decrease predict HP if offset for DMG more than 15% of member's HP
             local DMG_offset = UnitHealthMax(member) * 0.15
@@ -203,7 +209,7 @@ local function HealingEngine(ACTUALHP)
                     R_CustomT[i].AHP = select(2, CalculateHP(memberpet))
                 end
             end
-            table.insert(members, { Unit = memberpet, HP = memberpethp, GUID = UnitGUID(memberpet), AHP = select(2, CalculateHP(memberpet)), incDMG = getRealTimeDMG(memberpet) }) -- RubimRH.incdmgmemberpet)
+            table.insert(members, { Unit = memberpet, HP = memberpethp, GUID = UnitGUID(memberpet), AHP = select(2, CalculateHP(memberpet)), incDMG = RubimRH.getRealTimeDMG(memberpet) }) -- RubimRH.incdmgmemberpet)
         end
     end
 
@@ -416,37 +422,38 @@ function LowestAlly(target, option)
 end
 
 healingTarget = "None"
-healingTargetG = "None"
+healingTargetGUID = "None"
+
 function ForceHealingTarget(TARGET)
     local target = TARGET or nil
     healingTarget = "None"
-    healingTargetG = "None"
+    healingTargetGUID = "None"
     showHealingColor(healingTarget)
 
     if TARGET == "TANK" then
         healingTarget = R_Tanks[1].Unit
-        healingTargetG = R_Tanks[1].GUID
+        healingTargetGUID = R_Tanks[1].GUID
         showHealingColor(healingTarget)
         return
     end
 
     if TARGET == "DPS" and R_DPS[1].HP < hp then
         healingTarget = R_DPS[1].Unit
-        healingTargetG = R_DPS[1].GUID
+        healingTargetGUID = R_DPS[1].GUID
         showHealingColor(healingTarget)
         return
     end
 
     if TARGET == "HEAL" and R_HEAL[1].HP < hp then
         healingTarget = R_HEAL[1].Unit
-        healingTargetG = R_HEAL[1].GUID
+        healingTargetGUID = R_HEAL[1].GUID
         showHealingColor(healingTarget)
         return
     end
 
     if TARGET == "ALL" and members[1].HP < 99 then
         healingTarget = members[1].Unit
-        healingTargetG = members[1].GUID
+        healingTargetGUID = members[1].GUID
         showHealingColor(healingTarget)
         return
     end
@@ -454,32 +461,45 @@ end
 
 function setHealingTarget(TARGET, HP)
     local target = TARGET or nil
-
-    if TARGET == "TANK" then
+    local hp = HP or 99
+    
+    if TARGET == "TANK" and #R_Tanks > 0 then
         healingTarget = R_Tanks[1].Unit
-        healingTargetG = R_Tanks[1].GUID
-        return
+        healingTargetGUID = R_Tanks[1].GUID
+        return R_Tanks[1].HP
     end
-
-    if TARGET == "DPS" and R_DPS[1].HP < hp then
+    
+    if TARGET == "DAMAGER" and #R_DPS > 0 and R_DPS[1].HP < hp then
         healingTarget = R_DPS[1].Unit
-        healingTargetG = R_DPS[1].GUID
-        return
+        healingTargetGUID = R_DPS[1].GUID
+        return R_DPS[1].HP
     end
-
-    if TARGET == "HEAL" and R_HEAL[1].HP < hp then
-        healingTarget = R_HEAL[1].Unit
-        healingTargetG = R_HEAL[1].GUID
-        return
+    
+    if TARGET == "HEALER" and #R_Heal > 0 and R_Heal[1].HP < hp then
+        healingTarget = R_Heal[1].Unit
+        healingTargetGUID = R_Heal[1].GUID
+        return R_Heal[1].HP
     end
-
-    if TARGET == nil and members[1].HP < 99 then
+    
+    if TARGET == "RAID" then -- No Tanks
+        if #R_DPS > 0 and #R_Heal > 0 and R_DPS[1].HP <= R_Heal[1].HP then 
+            healingTarget = R_DPS[1].Unit
+            healingTargetGUID = R_DPS[1].GUID
+            return R_DPS[1].HP 
+        elseif #R_Heal > 0 then 
+            healingTarget = R_Heal[1].Unit
+            healingTargetGUID = R_Heal[1].GUID
+            return R_Heal[1].HP
+        end
+    end
+    
+    if TARGET == nil and #members > 0 and members[1].HP < 99 then
         healingTarget = members[1].Unit
-        healingTargetG = members[1].GUID
-        return
+        healingTargetGUID = members[1].GUID
+        return members[1].HP
     end
     healingTarget = "None"
-    healingTargetG = "None"
+    healingTargetGUID = "None"
 end
 
 function showHealingColor(healingTarget)
@@ -919,14 +939,14 @@ function setColorTarget()
     end
 
     --If we have a target do nothing.
-    if UnitExists("target") and healingTargetG == UnitGUID("target") then
+    if UnitExists("target") and healingTargetGUID == UnitGUID("target") then
         TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
 
     --If we have no one to heal then do nothing.
     healing_toggle = true
-    if healingTarget == nil or healingTargetG == nil or not healing_toggle then
+    if healingTarget == nil or healingTargetGUID == nil or not healing_toggle then
         return
     end
 
@@ -1342,12 +1362,48 @@ function setColorTarget()
     end
 end
 
+-- Update LOS status for target 
+local function UpdateLOS()
+    MouseOver_Toggle = true
+    if UnitExists("target") and (not MouseOver_Toggle or Unit("mouseover"):IsEnemy() or not MouseHasFrame()) then 
+        GetLOS(UnitGUID("target"))
+    end
+end
+
+-- Wipe everything 
+local function WipeAll()
+    wipe(members)
+    wipe(incDMG_members)
+    wipe(R_Tanks)
+    wipe(R_DPS)
+    wipe(R_Heal)
+    wipe(Frequency)
+    wipe(FrequencyPairs)
+end 
+
+local function HealingEngineLaunch()
+    if RubimRH.IamHealer then 
+        RubimRH.Listener:Add('Rubim_Events', "PLAYER_TARGET_CHANGED", UpdateLOS)
+        RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_ENABLED', function() wipe(Frequency) end)
+        RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_DISABLED', function() wipe(Frequency) end)
+    elseif #members > 0 then 
+        WipeAll()
+        RubimRH.Listener:Remove('Rubim_Events', "PLAYER_TARGET_CHANGED")
+        RubimRH.Listener:Remove('Rubim_Events', 'PLAYER_REGEN_ENABLED')
+        RubimRH.Listener:Remove('Rubim_Events', 'PLAYER_REGEN_DISABLED')
+    end 
+end 
+
+RubimRH.Listener:Add('Rubim_Events', "PLAYER_ENTERING_WORLD", HealingEngineLaunch)
+RubimRH.Listener:Add('Rubim_Events', "UPDATE_INSTANCE_INFO", HealingEngineLaunch)
+RubimRH.Listener:Add('Rubim_Events', "PLAYER_SPECIALIZATION_CHANGED", HealingEngineLaunch)
+
 local function refreshColor()
     if TargetColor == nil then
         return
     else
         HealingEngine() -- Updates Arrays/Table
-        setHealingTarget(HE_Toggle) -- Who to heal?
+        setHealingTarget() -- Who to heal?
         setColorTarget() -- Show Pixels    
       --  UpdateLOS() -- Update LOS status for target 
     end
@@ -1362,7 +1418,7 @@ local function checkTarget()
     if castName ~= nil then
         return false
     end
-    if UnitGUID("target") == healingTargetG then
+    if UnitGUID("target") == healingTargetGUID then
         return true
     end
     return false
@@ -1377,6 +1433,11 @@ local function targetOverride()
         print("Auto-Target OFF")
     end
 end
+
+-- For refference
+function GetMembers()
+    return members
+end 
 
 local healingEnable = false
 local total = 0
@@ -1410,14 +1471,16 @@ purgeTable:SetScript("OnEvent", function(self,event, ...)
         end
 end) ]]
 
-function AoETTD(range, seconds)
+function AoETTD(seconds)
     local totalMembersDying = 0
-    for i = 1, #members do
-        if not UnitIsDeadOrGhost(members[i].Unit) and TimeToDie(members[i].Unit) <= seconds and RangeUnit(unit) <= range and DeBuffs(members[i].Unit, 33786) == 0 then
-            totalMembersDying = totalMembersDying + 1
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) and TimeToDie(members[i].Unit) <= seconds then
+                totalMembersDying = totalMembersDying + 1
+            end
         end
     end
-    return totalMembersDying or 0
+    return totalMembersDying or 0   
 end
 
 -- Setting Low HP Members variable for AoE Healing
@@ -1431,3 +1494,467 @@ function AoEHealing(HP, range, predictName)
     end
     return lowhpmembers or 0
 end
+
+-- Other functions to use for spells 
+function MostlyIncDMG(unit)
+    -- true if current unit is unit, return value of incoming damage
+    if RubimRH.tableexist(incDMG_members) and incDMG_members[1] and incDMG_members[1].incDMG then 
+        return UnitIsUnit(unit, incDMG_members[1].Unit), incDMG_members[1].incDMG 
+    end 
+    return false, 0
+end 
+
+-- Group 
+function Group_incDMG()
+    -- return averange raid/party incoming dmg
+    local total, tick = 0, 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do           
+            if UnitIsPlayer(members[i].Unit) then
+                total = total + members[i].incDMG
+                tick = tick + 1
+            end
+        end
+    end
+    if total > 0 and tick > 0 then 
+        return total / tick
+    end 
+    return total or 0
+end
+
+function Group_getHEAL()
+    -- return averange raid/party incoming heal
+    local total, tick = 0, 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) then
+                total = total + RubimRH.getHEAL(members[i].Unit)
+                tick = tick + 1
+            end
+        end
+    end
+    if total > 0 and tick > 0 then 
+        return total / tick
+    end 
+    return total or 0
+end
+
+-- Dynamic Reaction on changed AHP by members in persistent lasts TIMER 
+function FrequencyAHP(TIMER)    
+    local total, counter = 0, 0
+    if #Frequency > 1 then 
+        for i = 1, #Frequency - 1 do 
+            -- Getting history during that time rate
+            if TMW.time - Frequency[i].TIME <= TIMER then 
+                counter = counter + 1
+                total = total + Frequency[i].AHP
+            end 
+        end 
+        if total > 0 then 
+            --total = (total / counter * 100 / Frequency[#Frequency].MAXHP) - (Frequency[#Frequency].AHP * 100 / Frequency[#Frequency].MAXHP)
+            total = (Frequency[#Frequency].AHP * 100 / Frequency[#Frequency].MAXHP) - (total / counter * 100 / Frequency[#Frequency].MAXHP)
+        end         
+    end 
+    return total 
+end 
+
+function ValidMembers(IsPlayer)
+    local total = 0 
+    if IsPlayer and RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) then
+                total = total + 1
+            end
+        end
+    else 
+        total = #members
+    end
+    return total 
+end
+
+-- Refference for members in range as counter which usefully to check how much units should be done for AoE heal
+function AoEMembers(IsPlayer, SubStract, Limit)
+    if not SubStract then SubStract = 1 end 
+    if not Limit then Limit = 4 end
+    local ValidUnits = ValidMembers(IsPlayer)
+    return 
+    ( ValidUnits <= 1 and 1 ) or    
+    ( ValidUnits <= 3 and 2 ) or 
+    ( ValidUnits <= 5 and ValidUnits - SubStract ) or 
+    ( 
+        ValidUnits > 5 and 
+        (
+            (
+                Limit <= ValidUnits and 
+                Limit 
+            ) or 
+            (
+                Limit > ValidUnits and 
+                ValidUnits
+            )
+        )
+    )
+end
+
+--
+function AoETTD(seconds)
+    local totalMembersDying = 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) and TimeToDie(members[i].Unit) <= seconds then
+                totalMembersDying = totalMembersDying + 1
+            end
+        end
+    end
+    return totalMembersDying or 0   
+end
+
+function AoEHP(hp)
+    local totalhp = 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) and UnitHP(members[i].Unit) <= hp then
+                totalhp = totalhp + 1
+            end
+        end
+    end
+    return totalhp or 0   
+end
+
+-- Setting Low HP Members variable for AoE Healing By Range
+function RubimRH.AoEHealingByRange(range, predictName, isMelee)
+    local lowhpmembers = 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            local unit = members[i].Unit
+            if (not isMelee or Unit(unit):IsMelee())
+            and unit ~= "player"
+            and RubimRH.SpellInteract(unit, range) 
+            and (not predictName or RubimRH.PredictHeal(predictName, unit)) then
+                lowhpmembers = lowhpmembers + 1
+            end
+        end
+    end
+    return lowhpmembers or 0
+end
+
+function RubimRH.SpellInRange(unit, id)
+    return IsSpellInRange(GetSpellInfo(id), unit) == 1
+end
+
+-- Setting Low HP Members variable for AoE Healing By Spell
+function RubimRH.AoEHealingBySpell(spell, predictName, isMelee) 
+    local lowhpmembers = 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            local unit = members[i].Unit
+            if (not isMelee or Unit(unit):IsMelee())
+            and unit ~= "player"
+            and RubimRH.SpellInRange(unit, spell) 
+            and (not predictName or RubimRH.PredictHeal(predictName, unit)) then
+                lowhpmembers = lowhpmembers + 1
+            end
+        end
+    end
+    return lowhpmembers or 0
+end
+
+function RubimRH.AoEBuffsExist(id, dur)
+    local total = 0
+    if not dur then dur = 0 end
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if Unit(members[i].Unit):HasBuffs(id, "player") > dur then
+                total = total + 1
+            end
+        end
+    end 
+    return total 
+end
+
+function RubimRH.AoEHPAvg(isPlayer, minCount)
+    local total, maxhp, counter = 0, 0, 0
+    if RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if (not isPlayer or UnitIsPlayer(members[i].Unit)) then                
+                total = total + UnitHealth(members[i].Unit)
+                maxhp = maxhp + UnitHealthMax(members[i].Unit)
+                counter = counter + 1
+            end
+        end
+        if total > 0 and (not minCount or counter >= minCount) then 
+            total = total * 100 / maxhp
+        end 
+    end
+    return total  
+end
+
+-- Restor Druid 
+function RubimRH.AoEFlourish(pHP)    
+    if RubimRH.tableexist(members) then 
+        local total = 0
+        for i = 1, #members do
+            if UNITHP(members[i].Unit) <= pHP and
+            -- Rejuvenation
+            Unit(members[i].Unit):BuffRemainsP(774) > 0 and 
+            (
+                -- Wild Growth
+                Unit(members[i].Unit):BuffRemainsP(48438) > 0 or 
+                -- Lifebloom  
+                Unit(members[i].Unit):BuffRemainsP(33763) > 0 or 
+				-- or Regrowth
+				Unit(members[i].Unit):BuffRemainsP(8936) > 0 or 
+				-- or Germination
+				Unit(members[i].Unit):BuffRemainsP(155777) > 0  
+            )
+            then
+                total = total + 1
+            end
+        end
+        return total >= #members * 0.3
+    end 
+    return false
+end
+
+-- PVE Dispels
+local types = {
+    Poison = {
+        -- Venomfang Strike
+        { id = 252687, dur = 0, stack = 0},
+        -- Hidden Blade
+        { id = 270865, dur = 0, stack = 0},
+        -- Embalming Fluid 
+        { id = 271563, dur = 0, stack = 3},
+        -- Poison Barrage 
+        { id = 270507, dur = 0, stack = 0},
+        -- Stinging Venom Coating
+        { id = 275835, dur = 0, stack = 4},
+        -- Neurotoxin 
+        { id = 273563, dur = 1.49, stack = 0},
+        -- Cytotoxin 
+        { id = 267027, dur = 0, stack = 2},
+        -- Venomous Spit
+        { id = 272699, dur = 0, stack = 0},
+        -- Widowmaker Toxin
+        { id = 269298, dur = 0, stack = 2}, 
+        -- Stinging Venom
+        { id = 275836, dur = 0, stack = 5},        
+    },
+    Disease = {
+        -- Infected Wound
+        { id = 258323, dur = 0, stack = 1},
+        -- Plague Step
+        { id = 257775, dur = 0, stack = 0},
+        -- Wretched Discharge
+        { id = 267763, dur = 0, stack = 0},
+        -- Plague 
+        { id = 269686, dur = 0, stack = 0},
+        -- Festering Bite
+        { id = 263074, dur = 0, stack = 0},
+        -- Decaying Mind
+        { id = 278961, dur = 0, stack = 0},
+        -- Decaying Spores
+        { id = 259714, dur = 0, stack = 1},
+        -- Festering Bite
+        { id = 263074, dur = 0, stack = 0},
+    }, 
+    Curse = {
+        -- Wracking Pain
+        { id = 250096, dur = 0, stack = 0},
+        -- Pit of Despair
+        { id = 276031, dur = 0, stack = 0},
+        -- Hex 
+        { id = 270492, dur = 0, stack = 0},
+        -- Cursed Slash
+        { id = 257168, dur = 0, stack = 2},
+        -- Withering Curse
+        { id = 252687, dur = 0, stack = 2},
+    },
+    Magic = {
+        -- Molten Gold
+        { id = 255582, dur = 0, stack = 0},
+        -- Terrifying Screech
+        { id = 255041, dur = 0, stack = 0},
+        -- Terrifying Visage
+        { id = 255371, dur = 0, stack = 0},
+        -- Oiled Blade
+        { id = 257908, dur = 0, stack = 0},
+        -- Choking Brine
+        { id = 264560, dur = 0, stack = 0},
+        -- Electrifying Shock
+        { id = 268233, dur = 0, stack = 0},
+        -- Touch of the Drowned (if no party member is afflicted by Mental Assault (268391))
+        { id = 268322, dur = 0, stack = 0},
+        -- Mental Assault 
+        { id = 268391, dur = 0, stack = 0},
+        -- Explosive Void
+        { id = 269104, dur = 0, stack = 0},
+        -- Choking Waters
+        { id = 272571, dur = 0, stack = 0},
+        -- Putrid Waters
+        { id = 274991, dur = 0, stack = 0},
+        -- Flame Shock (if no party member is afflicted by Snake Charm (268008)))
+        { id = 268013, dur = 0, stack = 0},
+        -- Snake Charm
+        { id = 268008, dur = 0, stack = 0},
+        -- Brain Freeze
+        { id = 280605, dur = 1.49, stack = 0},
+        -- Transmute: Enemy to Goo
+        { id = 268797, dur = 0, stack = 0},
+        -- Chemical Burn
+        { id = 259856, dur = 0, stack = 0},
+        -- Debilitating Shout
+        { id = 258128, dur = 0, stack = 0},
+        -- Torch Strike 
+        { id = 265889, dur = 0, stack = 1},
+        -- Fuselighter 
+        { id = 257028, dur = 0, stack = 0},
+        -- Death Bolt 
+        { id = 272180, dur = 0, stack = 0},
+        -- Putrid Blood
+        { id = 269301, dur = 0, stack = 2},
+        -- Grasping Thorns
+        { id = 263891, dur = 0, stack = 0},
+        -- Fragment Soul
+        { id = 264378, dur = 0, stack = 0},
+        -- Reap Soul
+        { id = 288388, dur = 0, stack = 20},
+        -- Putrid Waters
+        { id = 275014, dur = 0, stack = 0},
+    }, 
+}
+local UnitAuras = {
+    -- Restor Druid 
+    [105] = {
+        types.Poison,
+        types.Curse,
+        types.Magic,
+    },
+    -- Balance
+    [102] = {
+        types.Curse,
+    },
+    -- Feral
+    [103] = {
+        types.Curse,
+    },
+    -- Guardian
+    [104] = {
+        types.Curse,
+    },
+    -- Arcane
+    [62] = {
+        types.Curse,
+    },
+    -- Fire
+    [63] = {
+        types.Curse,
+    },
+    -- Frost
+    [64] = {
+        types.Curse,
+    },
+    -- Mistweaver
+    [270] = {
+        types.Poison,
+        types.Disease,
+        types.Magic,
+    },
+    -- Windwalker
+    [269] = {
+        types.Poison,
+        types.Disease,
+    },
+    -- Brewmaster
+    [268] = {
+        types.Poison,
+        types.Disease,
+    },
+    -- Holy Paladin
+    [65] = {
+        types.Poison,
+        types.Disease,
+        types.Magic,
+    },
+    -- Protection Paladin
+    [66] = {
+        types.Poison,
+        types.Disease,
+    },
+    -- Retirbution Paladin
+    [70] = {
+        types.Poison,
+        types.Disease,
+    },
+    -- Discipline Priest 
+    [256] = {
+        types.Disease,
+        types.Magic,
+    }, 
+    -- Holy Priest 
+    [257] = {
+        types.Disease,
+        types.Magic,
+    }, 
+    -- Shadow Priest 
+    [258] = {
+        types.Disease,
+    },
+    -- Elemental
+    [262] = {
+        types.Curse,
+    },
+    -- Enhancement
+    [263] = {
+        types.Curse,
+    },
+    -- Restoration
+    [264] = {
+        types.Curse,
+        types.Magic,
+    },
+    -- Affliction
+    [265] = {
+        types.Magic,
+    },
+    -- Demonology
+    [266] = {
+        types.Magic,
+    },
+    -- Destruction
+    [267] = {
+        types.Magic,
+    },
+}
+function RubimRH.PvEDispel(unit)
+    if not RubimRH.InPvP() and UnitAuras[RubimRH.PlayerSpec] then 
+        for k, v in pairs(UnitAuras[RubimRH.PlayerSpec]) do 
+            for _, Spell in pairs(v) do 
+                duration = (Spell.dur == 0 and Player:GCD() + RubimRH.CurrentTimeGCD()) or Spell.dur
+                -- Exception 
+                -- Touch of the Drowned (268322, if no party member is afflicted by Mental Assault (268391))
+                -- Flame Shock (268013, if no party member is afflicted by Snake Charm (268008))
+                -- Putrid Waters (275014, don't dispel self)
+                if Spell.stack == 0 then 
+                    if Unit(unit):DebuffRemainsP(Spell.id) > duration then 
+                        if (Spell.id ~= 268322 or not RubimRH.FriendlyTeam():GetDeBuffs(268391)) and 
+                        (Spell.id ~= 268013 or not RubimRH.FriendlyTeam():GetDeBuffs(268008)) and 
+                        (Spell.id ~= 275014 or not UnitIsUnit("player", unit)) then 
+                            return true 
+                        end
+                    end 
+                else
+                    if Unit(unit):DebuffRemainsP(Spell.id) > duration and RubimRH.DeBuffStack(unit, Spell.id, nil, true) > Spell.stack then 
+                        if (Spell.id ~= 268322 or not RubimRH.FriendlyTeam():GetDeBuffs(268391)) and 
+                        (Spell.id ~= 268013 or not RubimRH.FriendlyTeam():GetDeBuffs(268008)) and 
+                        (Spell.id ~= 275014 or not UnitIsUnit("player", unit)) then 
+                            return true 
+                        end
+                    end 
+                end                 
+            end 
+        end 
+    end 
+    return false 
+end 
+

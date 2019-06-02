@@ -14,16 +14,16 @@ local Party, Raid = Unit.Party, Unit.Raid;
 --- ============================= CORE ==============================
 function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)   
     -- Exception penalty for low level units / friendly boss
-    local UnitLvL = RubimRH.UNITLevel(UNIT)
-    if UnitLvL > 0 and UnitLvL < RubimRH.UNITLevel("player") - 10 then
-        return true, 0
-    end         
+    --local UnitLvL = RubimRH.UNITLevel(UNIT)
+    --if UnitLvL > 0 and UnitLvL < RubimRH.UNITLevel("player") - 10 then
+    --    return true, 0
+    --end         
     
     -- Header
     local variation = (VARIATION and (VARIATION / 100)) or 1    
     
     local total = 0
-    local DMG, HPS = RubimRH.incdmg(UNIT), getHEAL(UNIT)      
+    local DMG, HPS = RubimRH.incdmg(UNIT), RubimRH.getHEAL(UNIT)      
     local DifficultHP = UnitHealthMax(UNIT) - UnitHealth(UNIT)  
     
     -- Spells
@@ -223,89 +223,4 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     end    
     
     return DifficultHP >= total, total
-end
-
--- Prediction Heal Rubim Part
-function predictHeal(SPELLID, UNIT, VARIATION)
-    local variation = VARIATION or 1
-    local dmgpersec, total = RubimRH.incdmg(UNIT), 0
-    -- Exception penalty for low level units (beta)     
-    if UnitLevel(UNIT) < UnitLevel("player") or CombatTime("player") == 0 then
-        return 0
-    end
-    if SPELLID == "HolyShock" then
-        total = UnitStat("player", 4) * 4 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() * 2 / 100))) / 100)
-        -- Talent 5/2 +30% Karatel
-        if Buffs("player", 105809, "player") > 0 then
-            total = total * 1.30
-        end
-    end
-
-    if SPELLID == "FlashofLight" then
-        local castTime = select(4, GetSpellInfo(19750)) / 1000
-        total = UnitStat("player", 4) * 4.5 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)
-        -- Infusion of Light Buff +50% by HolyShock
-        if Buffs("player", 54149, "player") > 0 then
-            total = total * 1.50
-        end
-        -- PvP talent Buff +100%
-        if Buffs("player", 210294, "player") > 0 then
-            total = total * 2
-        end
-        -- Artefact Buff +20%
-        if (not Mouseover("friendly") and Buffs("target", 200654, "player") > castTime) or (Mouseover("friendly") and Buffs("mouseover", 200654, "player") > castTime) then
-            total = total * 1.2
-        end
-        if dmgpersec > 0 and castTime ~= nil then
-            total = total - (dmgpersec * castTime)
-        end
-    end
-
-    if SPELLID == "HolyLight" then
-        local castTime = select(4, GetSpellInfo(82326)) / 1000
-        total = UnitStat("player", 4) * 4.25 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)
-        -- PvP talent Buff +100%
-        if Buffs("player", 210294, "player") > 0 then
-            total = total * 2
-        end
-        -- Artefact Buff +20%
-        if (not Mouseover("friendly") and Buffs("target", 200654, "player") > castTime) or (Mouseover("friendly") and Buffs("mouseover", 200654, "player") > castTime) then
-            total = total * 1.2
-        end
-        if dmgpersec > 0 and castTime ~= nil then
-            total = total - (dmgpersec * castTime)
-        end
-    end
-
-    if SPELLID == "LightofMartyr" then
-        total = UnitStat("player", 4) * 5 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)
-    end
-
-    if SPELLID == "LightofDawn" then
-        total = UnitStat("player", 4) * 1.8 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)
-    end
-
-    if SPELLID == "HolyPrism" then
-        total = UnitStat("player", 4) * 4 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)
-    end
-
-    if SPELLID == "BestowFaith" then
-        total = (UnitStat("player", 4) * 6 * ((100 + GetMasteryEffect()) / 100) * ((100 + GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)) / 100) * ((100 + (at_probably / (GetCritChance() / 100))) / 100)) + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (RubimRH.incdmg(UNIT) * 5)
-    end
-
-    -- AW +35%
-    if Buffs("player", 31842, "player") > 0 and total > 0 then
-        total = total * 1.35
-    end
-
-    -- These spells doesn't relative for increasing heal buffs
-    if SPELLID == "LayonHands" then
-        total = UnitHealthMax("player")
-    end
-
-    if SPELLID == "GiftofNaaru" then
-        total = UnitHealthMax("player") * 0.2 + (getHEAL(UNIT) * 5) + UnitGetIncomingHeals(UNIT) - (RubimRH.incdmg(UNIT) * 5)
-    end
-
-    return total + (total * variation) / 100 or 0
 end
