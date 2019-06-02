@@ -307,6 +307,7 @@ local function APL()
         if S.DeathCoil:IsReady() and (not bool(VarPoolingForGargoyle)) then
             return S.DeathCoil:Cast()
         end
+		return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
     -- call precombat
    
@@ -405,7 +406,7 @@ local function APL()
             return Generic()
         end
     end
-    return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
+   return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(252, APL)
