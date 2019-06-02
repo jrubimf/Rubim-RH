@@ -811,3 +811,76 @@ end)
 if RubimRH.playerSpec and oPetSlots[RubimRH.playerSpec] then 
     UpdatePetSlots()
 end 
+
+--- ========================== LOS SYSTEM ===========================
+--- By Ayni
+
+local function dynamic_array(dimension)
+    local metatable = {}
+    for i=1, dimension do
+        metatable[i] = {__index = function(tbl, key)
+                if i < dimension then
+                    tbl[key] = setmetatable({}, metatable[i+1])
+                    return tbl[key]
+                end
+            end
+        }
+    end
+    return setmetatable({}, metatable[1]);
+end
+--- When GCD is ready only
+local InLOS, LOSUnit, InLOSCache = dynamic_array(2), nil, {}
+RubimRH.Listener:Add('PvP_Events_Logs', "COMBAT_LOG_EVENT_UNFILTERED", function()
+        -- Reset LOS for unit if spell has been casted on him        
+        if LOSCheck then
+            local _, event, _, SourceGUID, _,_,_, DestGUID = CombatLogGetCurrentEventInfo()
+            if event == "SPELL_CAST_SUCCESS" and SourceGUID == UnitGUID("player") and next(InLOSCache) then 
+                for k, v in pairs(InLOSCache) do
+                    if v and (DestGUID == UnitGUID(v) or DestGUID == v) then
+                        InLOS[v]["unit_time"] = nil
+                        InLOS[v]["unit_LOS"] = nil
+                        InLOSCache[v] = nil -- Remove from query cache already lost units
+                        if LOSUnit == v then 
+                            LOSUnit = nil
+                        end
+                    end 
+                end                 
+            end            
+        end
+end)
+
+RubimRH.Listener:Add('PvP_Events_UI', "UI_ERROR_MESSAGE", function(...)
+        if LOSCheck and ... == 50 and LOSUnit and not InLOS[LOSUnit]["unit_LOS"] and InLOS[LOSUnit]["unit_time"] and HL.GetTime() >= InLOS[LOSUnit]["unit_time"] then
+            local skip_timer = 3.5
+            -- Fix for HealingEngine on targets by GUID 
+            if not string.find(LOSUnit, "party") 
+            and not string.find(LOSUnit, "raid") 
+            and not string.find(LOSUnit, "arena") then
+                -- Check that current target is still same unit which should be checked for los 
+                if UnitGUID("target") ~= LOSUnit then 
+                    return -- skip
+                end
+                if select(2, IsInInstance()) == "arena" then 
+                    skip_timer = 2 
+                else 
+                    skip_timer = 8.5
+                end 
+            end
+            InLOS[LOSUnit]["unit_LOS"] = HL.GetTime() + skip_timer -- Skip
+            InLOSCache[LOSUnit] = LOSUnit  
+            LOSUnit = nil -- Now we can check another unit 
+        end
+end)
+
+function GetLOS(unit) -- Physical button call   
+    if LOSCheck and (not InLOS[unit]["unit_LOS"] or HL.GetTime() >= InLOS[unit]["unit_LOS"]) and (not InLOS[unit]["unit_time"] or HL.GetTime() >= InLOS[unit]["unit_time"]) then 
+        LOSUnit = unit
+        InLOS[unit]["unit_time"] = HL.GetTime() + 0.3 --start time (0.3 delay added to skip wrong event from another key)
+        InLOS[unit]["unit_LOS"] = nil --reset skip time since now we need again check if he's in los
+        InLOSCache[unit] = nil -- Remove from query cache already lost units
+    end
+end
+
+function RubimRH.InLOS(unit)
+    return LOSCheck and InLOS[unit]["unit_LOS"] and HL.GetTime() < InLOS[unit]["unit_LOS"]
+end

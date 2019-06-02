@@ -547,6 +547,7 @@ function RubimRH.lastDmg5()
     return 0
 end
 
+
 --- ========================== LOS OF CONTROL ============================
 local GetEventInfo = C_LossOfControl.GetEventInfo
 local GetNumEvents = C_LossOfControl.GetNumEvents

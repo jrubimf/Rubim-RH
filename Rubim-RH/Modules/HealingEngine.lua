@@ -21,6 +21,8 @@ local R_Tanks, R_DPS, R_Heal, R_Stacked = {}, {}, {}, {}
 local Frequency, FrequencyPairs = {}, {}
 
 local pairs = pairs
+local UnitAffectingCombat, UnitGetTotalAbsorbs = 
+ UnitAffectingCombat, UnitGetTotalAbsorbs
 local UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer =
 UnitGetIncomingHeals, UnitHealth, UnitHealthMax, UnitInRange, UnitGUID, UnitIsCharmed, UnitIsDeadOrGhost, UnitIsConnected, UnitThreatSituation, UnitIsUnit, UnitExists, UnitIsPlayer
 
@@ -54,8 +56,8 @@ end
 
 local function CanHeal(t)
     return UnitInRange(t)
-    --and not RubimRH.InLOS(UnitGUID(t)) -- LOS System (target)
-    --and not RubimRH.InLOS(t)           -- LOS System (another such as party)
+    and not RubimRH.InLOS(UnitGUID(t)) -- LOS System (target)
+    and not RubimRH.InLOS(t)           -- LOS System (another such as party)
     --and UnitCanCooperate("player", t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
@@ -1600,12 +1602,11 @@ function RubimRH.UNITHP(unitID)
     return UnitHealth(unitID) * 100 / UnitHealthMax(unitID)
 end
 
-
 function RubimRH.AoEHP(hp)
     local totalhp = 0
     if RubimRH.tableexist(members) then 
         for i = 1, #members do
-            if UnitIsPlayer(members[i].Unit) and RubimRH.UnitHP(members[i].Unit) <= hp then
+            if UnitIsPlayer(members[i].Unit) and RubimRH.UNITHP(members[i].Unit) <= hp then
                 totalhp = totalhp + 1
             end
         end
