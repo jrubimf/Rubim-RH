@@ -167,7 +167,8 @@ local function APL()
             return S.ArmyoftheDead:Cast()
         end
     end
-    Aoe = function()
+    
+	Aoe = function()
         if S.DeathAndDecay:IsReady() and Cache.EnemiesCount[8] >= 1 and S.Apocalypse:CooldownDown() then
             return S.DeathAndDecay:Cast()
         end
@@ -231,8 +232,9 @@ local function APL()
         if S.DeathCoil:IsReady() and not bool(VarPoolingForGargoyle) then
             return S.DeathCoil:Cast()
         end
-        return 0, 135328
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
+	
     Cooldowns = function()
         -- army_of_the_dead
         if S.ArmyoftheDead:IsCastable() and (true) then
@@ -267,6 +269,7 @@ local function APL()
             return S.UnholyBlight:Cast()
         end
     end
+	
     Generic = function()
         -- death_coil,if=buff.sudden_doom.react&!variable.pooling_for_gargoyle|pet.gargoyle.active
         if S.DeathCoil:IsReady() and (Player:BuffP(S.SuddenDoomBuff) and not bool(VarPoolingForGargoyle) or Player:GargoyleActive()) then
@@ -348,7 +351,7 @@ local function APL()
             return S.DeathStrike:Cast()
         else
             S.DeathStrike:Queue()
-            return 0, 135328
+            return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
         end
     end
 
@@ -402,7 +405,7 @@ local function APL()
             return Generic()
         end
     end
-    return 0, 135328
+    return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
 end
 
 RubimRH.Rotation.SetAPL(252, APL)
