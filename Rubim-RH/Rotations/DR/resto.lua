@@ -194,7 +194,7 @@ end
 
 -- Main Rotation start here
 local function APL()
-    local DPS, Healing
+    local DPS, CDs, Healing
     
 	--- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
     HL.GetEnemies("Melee"); -- Melee
@@ -219,11 +219,48 @@ local function APL()
 
         return 0, 135328
     end
+	
+	-- Cds rotation
+    CDs = function()
+	-- CDs Priorities
+	    --26Tranquility
+        if S.Tranquility:IsReady() and S.WildGrowth:CooldownRemainsP() > 1 then
+            if GroupedBelow(60) >= 8 then
+                return S.Tranquility:Cast()
+            end
+        end
+		
+		--28Flourish
+		-- Combo Tranquility + Wild Growth 
+        if S.Flourish:CooldownRemainsP() < 0.1 and S.Tranquility:CooldownRemainsP() >= 161 and Player:PrevGCDP(1, S.WildGrowth) and (RubimRH.incdmg5secs() > AVG_DMG + AVG_HPS) and AoEFlourish(60) then
+            if S.Flourish:IsAvailable() then
+                if GroupedBelow(50) >= 5 then
+                    return S.Flourish:Cast()
+                end
+            end
+		end
+
+        --27Tree of Life
+        if S.TreeOfLife:IsAvailable() then
+            if GroupedBelow(35) >= 5 then
+                return S.TreeOfLife:Cast()
+            end
+        end
+		
+        --27Innervate
+        if S.Innervate:IsReady() and RubimRH.TimeToDie("target") > Player:GCD() * 5 then
+		     -- if 67% of total members have <50% hp in 40yards
+            if Player:ManaPercentage() <= 90 and RubimRH.AoEHP(50) > RubimRH.AoEMembers(true, 3, 4) then
+                return S.Innervate:Cast()
+            end
+        end
+    end
 
 	-- Healing rotation
+	-- Todo : make a separate tank, heal, dps function and add a toggle in UI
     Healing = function()
-
-	-- Tank Priority Spells
+	
+	-- Tank Priority Spells	
         --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
             if LowestAlly("TANK", "HP") <= 25 then
@@ -291,8 +328,7 @@ local function APL()
             end
         end
 
-	-- Normal raid priority spells
-	
+	-- Normal raid priority spells	
         --16Swiftmend on low allies
         if S.Swiftmend:IsReady() and RubimRH.PredictHeal("Swiftmend", "target") then
             --if InjuredAlliesInExplicitRadius(30, true, 0.75) >= 3
@@ -305,59 +341,57 @@ local function APL()
             end
         end
 		
-		--17Priority Lifebloom on low allies
-        if S.Lifebloom:IsReady() and Target:BuffDownP(S.Lifebloom) then
-            if LowestAlly("ALL", "HP") <= 55 then
+		--21WildGrowth
+        if S.WildGrowth:IsReady() and RubimRH.AoEON() and GroupedBelow(95) >= 4 then
+            if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 55 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+                return S.WildGrowth:Cast()
+            end
+        end
+		
+		--17Priority Lifebloom on low allies
+        if S.Lifebloom:IsReady() and Target:BuffDownP(S.Lifebloom) then
+            if LowestAlly("ALL", "HP") <= 35 then
+                ForceHealingTarget("ALL")
+            end
+
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 35 then
                 return S.Lifebloom:Cast()
             end
         end
 
         --22Efflorescence
-        if S.Efflorescence:IsReady() and RubimRH.AoEON() and GroupedBelow(95) >= 5 and Efflorescence() <= 3 then
-           if LowestAlly("ALL", "HP") <= 95 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
-                return S.Efflorescence:Cast()
-            end
-        end
-		
-        --21WildGrowth
-        if S.WildGrowth:IsReady() and GroupedBelow(96) >= 4 then
-            if LowestAlly("ALL", "HP") <= 96 then
+        if S.Efflorescence:IsReady() and RubimRH.AoEON() and GroupedBelow(96) >= 5 and Efflorescence() <= 3 then
+           if LowestAlly("ALL", "HP") <= 96 then
                 ForceHealingTarget("ALL")
             end
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 96 then
-                return S.WildGrowth:Cast()
+                return S.Efflorescence:Cast()
             end
         end
-
-
-
+		
         --23Rejuvenation
         if S.Rejuvenation:IsReady() and Target:BuffDownP(S.Rejuvenation) then
-            if LowestAlly("ALL", "HP") <= 92 then
+            if LowestAlly("ALL", "HP") <= 93 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 92 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 93 then
                 return S.Rejuvenation:Cast()
             end
         end
 		
 		--23.2Rejuvenation With Germination
         if S.Rejuvenation:IsReady() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() then
-            if LowestAlly("ALL", "HP") <= 89 then
+            if LowestAlly("ALL", "HP") <= 91 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 89 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 91 then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -383,49 +417,36 @@ local function APL()
                 return S.CenarionWard:Cast()
             end
         end
-
-        --26Tranquility
-        if S.Tranquility:IsReady() and RubimRH.CDsON() and S.WildGrowth:CooldownRemainsP() > 1 then
-            if GroupedBelow(60) >= 8 then
-                return S.Tranquility:Cast()
-            end
+    end
+	
+	-- if we are in combat
+    if UnitAffectingCombat("player") then
+  
+        if QueueSkill() ~= nil then
+            return QueueSkill()
         end
 
-        --27Tree of Life
-        if S.TreeOfLife:IsAvailable() and RubimRH.CDsON() then
-            if GroupedBelow(35) >= 5 then
-                return S.TreeOfLife:Cast()
-            end
+        if MouseOver:HasDispelableDebuff("Magic", "Poison", "Curse") then
+            return S.NaturesCure:Cast()
+        end
+
+        if Player:IsChanneling() or Player:IsCasting() then
+            return 0, 236353
+        end
+
+        if Player:CanAttack(Target) then
+            return DPS()
         end
 		
-        --28Flourish
-		-- Combo Tranquility + Wild Growth 
-        if S.Flourish:CooldownRemainsP() < 0.1 and S.Tranquility:CooldownRemainsP() >= 161 and Player:PrevGCDP(1, S.WildGrowth) and (RubimRH.incdmg5secs() > AVG_DMG + AVG_HPS) and AoEFlourish(60) then
-            if S.Flourish:IsAvailable() and RubimRH.CDsON() then
-                if GroupedBelow(50) >= 5 then
-                    return S.Flourish:Cast()
-                end
-            end
-		end
-    end
+		if CDs() ~= nil and RubimRH.CDsON() then
+            return CDs()
+        end
 
-    if MouseOver:HasDispelableDebuff("Magic", "Poison", "Curse") and ShouldDispell() then
-        return S.NaturesCure:Cast()
-    end
-
-    if Player:IsChanneling() or Player:IsCasting() then
-        return 0, 236353
-    end
-
-    if Player:CanAttack(Target) then
-        return DPS()
-    end
-
-    if Healing() ~= nil then
-        return Healing()
-    end
-
+        if Healing() ~= nil then
+            return Healing()
+        end
     return 0, 135328
+	end
 end
 
 RubimRH.Rotation.SetAPL(105, APL)
