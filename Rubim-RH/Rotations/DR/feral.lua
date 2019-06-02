@@ -480,7 +480,7 @@ local function APL()
         return 538771
     end
 	
-		-- interrupt.SkullBash
+	-- SurvivalInstincts
     if S.SurvivalInstincts:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[103].sk3 then
         return S.SurvivalInstincts:Cast()
     end
@@ -491,19 +491,19 @@ local function APL()
     end
 
 	-- interrupt.SkullBash
-    if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.SkullBash:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.SkullBash:Cast()
     end
     -- interrupt.Maim
-    if S.Maim:IsCastable() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.Maim:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Maim:Cast()
     end
 	-- interrupt.talent.typhoon
-    if S.Typhoon:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.Typhoon:IsAvailable() and S.Typhoon:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Typhoon:Cast()
     end
     -- interrupt.talent.mightybash
-    if S.MightyBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.MightyBash:IsAvailable() and S.MightyBash:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.MightyBash:Cast()
     end
     -- run_action_list,name=opener,if=variable.opener_done=0
