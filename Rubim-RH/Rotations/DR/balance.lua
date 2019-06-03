@@ -482,9 +482,9 @@ local function APL()
             return S.LunarStrike:Cast()
         end
         -- starfall,if=buff.oneths_overconfidence.react
-        if S.Starfall:IsReady() and (bool(Player:BuffStack(S.OnethsOverconfidenceBuff))) then
-            return S.Starfall:Cast()
-        end
+        --if S.Starfall:IsReady() and (bool(Player:BuffStack(S.OnethsOverconfidenceBuff))) then
+        --    return S.Starfall:Cast()
+        --end
         -- starsurge,if=!buff.starlord.up|buff.starlord.remains>=4|(gcd.max*(astral_power%40))>target.time_to_die
         if S.Starsurge:IsReady() and (not Player:Buff(S.StarlordBuff) or Player:BuffRemains(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) then
             return S.Starsurge:Cast()
