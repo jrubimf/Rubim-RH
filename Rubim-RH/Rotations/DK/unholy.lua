@@ -378,7 +378,6 @@ local function APL()
         return S.ArcaneTorrent:Cast()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.BloodFury:CooldownRemainsP() < 0.1 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
     if S.BloodFury:CooldownRemainsP() < 0.1 and RubimRH.CDsON() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return S.BloodFury:Cast()
     end
