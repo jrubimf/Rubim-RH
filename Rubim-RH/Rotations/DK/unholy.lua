@@ -379,10 +379,11 @@ local function APL()
     end
     -- blood_fury,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
     if S.BloodFury:CooldownRemainsP() < 0.1 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
+    if S.BloodFury:CooldownRemainsP() < 0.1 and RubimRH.CDsON() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return S.BloodFury:Cast()
     end
     -- berserking,if=pet.gargoyle.active|!talent.summon_gargoyle.enabled
-    if S.Berserking:CooldownRemainsP() < 0.1 and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
+    if S.Berserking:CooldownRemainsP() < 0.1 and RubimRH.CDsON() and (Player:GargoyleActive() or not S.SummonGargoyle:IsAvailable()) then
         return S.Berserking:Cast()
     end
     -- use_items
