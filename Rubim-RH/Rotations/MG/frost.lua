@@ -14,6 +14,8 @@ local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
 
+local mainAddon = RubimRH
+
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
@@ -146,6 +148,13 @@ local function APL()
             return S.Frostbolt:Cast()
         end
     end
+	Movement = function()
+        -- blink,if=movement.distance>10
+        -- ice_floes,if=buff.ice_floes.down
+        if S.IceFloes:IsReadyP() and (Player:BuffDownP(S.IceFloesBuff)) then
+            return S.IceFloes:Cast()
+        end
+    end
     Aoe = function()
         -- frozen_orb
         if S.FrozenOrb:IsReadyP() and Target:TimeToDie() > 15 then
@@ -241,13 +250,6 @@ local function APL()
         -- ancestral_call
         if S.AncestralCall:IsReadyP() and RubimRH.CDsON() then
             return S.AncestralCall:Cast()
-        end
-    end
-    Movement = function()
-        -- blink,if=movement.distance>10
-        -- ice_floes,if=buff.ice_floes.down
-        if S.IceFloes:IsReadyP() and (Player:BuffDownP(S.IceFloesBuff)) then
-            return S.IceFloes:Cast()
         end
     end
     Single = function()
@@ -354,7 +356,7 @@ local function APL()
             end
         end
         -- call_action_list,name=aoe,if=active_enemies>3&talent.freezing_rain.enabled|active_enemies>4
-        if (Player:EnemiesAround(35) > 3 and S.FreezingRain:IsAvailable() or Player:EnemiesAround(35) > 4) then
+        if (active_enemies() > 3 and S.FreezingRain:IsAvailable() or active_enemies() > 4) then
             if Aoe() ~= nil then
                 return Aoe()
             end
