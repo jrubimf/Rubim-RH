@@ -249,6 +249,19 @@ local defaults = {
 			
 			fps = true,
 			
+			-- UI color
+			-- Main frame
+			-- default 0.06, 0.05, 0.03, 0.75
+			mainframeColor_r = 0.06,
+			mainframeColor_g = 0.05,
+			mainframeColor_b = 0.03,
+			mainframeColor_a = 0.75,
+			-- Text Color
+			--textColor_r = {0.95},
+			--textColor_g = {0.95},
+			--textColor_b = {0.96},
+			--textColor_a = {0.85},		
+			
 			-- Languages
 			activeLanguage = "English",
 			
