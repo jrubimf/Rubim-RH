@@ -364,6 +364,12 @@ local function APL()
       end
       -- auto_shot
       -- use_items
+	  -- summon_pet
+      if Pet:IsDeadOrGhost() then
+          return S.MendPet:Cast()
+      elseif not Pet:IsActive() then
+          return S.CallPet:Cast()
+      end
 
       -- call_action_list,name=cds
       if (true) then
