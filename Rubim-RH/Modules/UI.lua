@@ -1110,8 +1110,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local colortitle = StdUi:FontString(tab.frame, 'Main UI color :')
             StdUi:GlueTop(colortitle, system1_2, 0, -100, 'LEFT');			
             
-            local r,g,b,a = RubimRH.db.profile.mainOption.mainframeColor_r,    RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a                         
-            window:SetBackdropColor(r, g, b, a)    
+            local r, g, b, a = RubimRH.db.profile.mainOption.mainframeColor_r, RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a                         
+            			
+			window:SetBackdropColor(r, g, b, a)    
             local colorInput = StdUi:ColorInput(tab.frame, '', 40, 40, r, g, b, a);
             StdUi:FrameTooltip(colorInput, 'Click to open the color picker', 'TOPLEFT', 'TOPRIGHT', true);        
             --colorInput:GetColor('rgba')            
@@ -1189,14 +1190,29 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
         end
         
+		-- MSG Addon things
         if tab.title == "MSG Actions" then
-            local msg_title = StdUi:FontString(tab.frame, 'Action Messages');
+		
+            local msg_title = StdUi:FontString(tab.frame, 'Action Message Macro');
             StdUi:GlueTop(msg_title, tab.frame, 0, -10);
             local gn_separator = StdUi:FontString(tab.frame, '===================');
-            StdUi:GlueTop(msg_title, gn_separator, -100, -72, 'LEFT');
+            StdUi:GlueTop(gn_separator, msg_title, 0, -12);
 
-           -- content here
-           
+			-- Leap of Faith macro
+            local function btn_creategrip()
+                RubimRH.print("Macro for Leap of Faith was created. Check your Character Macros and give the macro to your mate")
+				CreateMacro("Leap of Faith","priest_spell_leapoffaith_a", "/script C_ChatInfo.SendAddonMessage(\"grip\", UnitName(\"player\"), \"RAID\")", 1)
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                --print("Macro creation worked")
+            end     
+            local btngrip = StdUi:Button(tab.frame, 85, 24, 'Create Grip Macro');
+            --StdUi:GlueBelow(btngrip, tab.frame, 0, -24, "RIGHT");
+			StdUi:GlueTop(btngrip, tab.frame, 10, -40, 'LEFT');
+            btngrip:SetScript('OnClick', btn_creategrip);
+            StdUi:FrameTooltip(btngrip, 'This will create a Leap of Faith macro to give to your mate :).', 'TOPLEFT', 'TOPRIGHT', true);		
+			
+
+           -- end           
         end
 
     end);

@@ -606,3 +606,70 @@ while object do
 
     object = EnumerateFrames(object)
 end
+
+--------------------------------------
+-- MSG Addon
+--------------------------------------
+-- UPDATED 8.0.1 Macro
+--/script C_ChatInfo.SendAddonMessage("grip", UnitName("player"), "RAID")
+
+-- handle chat message
+function HandleChatMsgAddon(self, event, ...)
+    local response = false
+	
+	if event == "CHAT_MSG_ADDON" then
+	    local prefix, message = ...
+		    -- leap
+	        if prefix == "grip"  then	    	        
+                response = true
+				print("Grip")
+			-- iron bark
+			elseif prefix == "bark"  then
+			    response = true
+				print("bark")
+			-- priest life swap
+			elseif prefix == "swap"  then
+			    response = true
+				print("swap")
+			-- paladin bop
+			elseif prefix == "bop"  then
+			    response = true
+				print("bop")
+			else 
+			    return false
+            end
+	    return response
+    end
+end
+
+function RubimRH.AskedForGrip()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false
+    end		
+end
+
+function RubimRH.AskedForBark()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false	
+    end		
+end
+
+function RubimRH.AskedForSwap()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false
+    end		
+end
+
+function RubimRH.AskedForBop()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false
+    end		
+end
