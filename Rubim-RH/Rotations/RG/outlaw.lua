@@ -43,8 +43,12 @@ RubimRH.Spell[260] = {
     QuickDraw = Spell(196938),
     SliceandDice = Spell(5171),
     -- Azerite Traits
-    AceUpYourSleeve = Spell(278676),
-    Deadshot = Spell(272935),
+    AceUpYourSleeve                = Spell(278676),
+  Deadshot                        = Spell(272935),
+  DeadshotBuff                    = Spell(272940),
+  SnakeEyesPower                  = Spell(275846),
+  SnakeEyesBuff                   = Spell(275863),
+  KeepYourWitsBuff                = Spell(288988),
     -- Defensive
     Riposte = Spell(199754),
     CloakofShadows = Spell(31224),
@@ -55,7 +59,9 @@ RubimRH.Spell[260] = {
 	DFA = Spell (269513),
 	Shiv = Spell (248744),
 	SmokeBomb = Spell (212182),
-	
+	CheapShot = Spell(1833),
+    Sap = Spell (6770),
+    Dismantle = Spell (207777),
     -- Roll the Bones
     Broadside = Spell(193356),
     BuriedTreasure = Spell(199600),
@@ -66,6 +72,8 @@ RubimRH.Spell[260] = {
 };
 
 local S = RubimRH.Spell[260]
+
+local BladeFlurryRange = 6;
 
 local function num(val)
     if val then
@@ -85,62 +93,58 @@ local RtB_BuffsList = {
     S.TrueBearing
 };
 local function RtB_List (Type, List)
-    if not Cache.APLVar.RtB_List then
-        Cache.APLVar.RtB_List = {};
-    end
-    if not Cache.APLVar.RtB_List[Type] then
-        Cache.APLVar.RtB_List[Type] = {};
-    end
+    if not Cache.APLVar.RtB_List then Cache.APLVar.RtB_List = {}; end
+    if not Cache.APLVar.RtB_List[Type] then Cache.APLVar.RtB_List[Type] = {}; end
     local Sequence = table.concat(List);
     -- All
     if Type == "All" then
-        if not Cache.APLVar.RtB_List[Type][Sequence] then
-            local Count = 0;
-            for i = 1, #List do
-                if Player:Buff(RtB_BuffsList[List[i]]) then
-                    Count = Count + 1;
-                end
-            end
-            Cache.APLVar.RtB_List[Type][Sequence] = Count == #List and true or false;
+      if not Cache.APLVar.RtB_List[Type][Sequence] then
+        local Count = 0;
+        for i = 1, #List do
+          if Player:Buff(RtB_BuffsList[List[i]]) then
+            Count = Count + 1;
+          end
         end
-        -- Any
+        Cache.APLVar.RtB_List[Type][Sequence] = Count == #List and true or false;
+      end
+    -- Any
     else
-        if not Cache.APLVar.RtB_List[Type][Sequence] then
-            Cache.APLVar.RtB_List[Type][Sequence] = false;
-            for i = 1, #List do
-                if Player:Buff(RtB_BuffsList[List[i]]) then
-                    Cache.APLVar.RtB_List[Type][Sequence] = true;
-                    break ;
-                end
-            end
+      if not Cache.APLVar.RtB_List[Type][Sequence] then
+        Cache.APLVar.RtB_List[Type][Sequence] = false;
+        for i = 1, #List do
+          if Player:Buff(RtB_BuffsList[List[i]]) then
+            Cache.APLVar.RtB_List[Type][Sequence] = true;
+            break;
+          end
         end
+      end
     end
     return Cache.APLVar.RtB_List[Type][Sequence];
-end
-local function RtB_BuffRemains ()
+  end
+  local function RtB_BuffRemains ()
     if not Cache.APLVar.RtB_BuffRemains then
-        Cache.APLVar.RtB_BuffRemains = 0;
-        for i = 1, #RtB_BuffsList do
-            if Player:Buff(RtB_BuffsList[i]) then
-                Cache.APLVar.RtB_BuffRemains = Player:BuffRemainsP(RtB_BuffsList[i]);
-                break ;
-            end
+      Cache.APLVar.RtB_BuffRemains = 0;
+      for i = 1, #RtB_BuffsList do
+        if Player:Buff(RtB_BuffsList[i]) then
+          Cache.APLVar.RtB_BuffRemains = Player:BuffRemainsP(RtB_BuffsList[i]);
+          break;
         end
+      end
     end
     return Cache.APLVar.RtB_BuffRemains;
-end
--- Get the number of Roll the Bones buffs currently on
-local function RtB_Buffs ()
+  end
+  -- Get the number of Roll the Bones buffs currently on
+  local function RtB_Buffs ()
     if not Cache.APLVar.RtB_Buffs then
-        Cache.APLVar.RtB_Buffs = 0;
-        for i = 1, #RtB_BuffsList do
-            if Player:BuffP(RtB_BuffsList[i]) then
-                Cache.APLVar.RtB_Buffs = Cache.APLVar.RtB_Buffs + 1;
-            end
+      Cache.APLVar.RtB_Buffs = 0;
+      for i = 1, #RtB_BuffsList do
+        if Player:BuffP(RtB_BuffsList[i]) then
+          Cache.APLVar.RtB_Buffs = Cache.APLVar.RtB_Buffs + 1;
         end
+      end
     end
     return Cache.APLVar.RtB_Buffs;
-end
+  end
 -- RtB rerolling strategy, return true if we should reroll
 local function RtB_Reroll ()
     if not Cache.APLVar.RtB_Reroll then
@@ -150,6 +154,9 @@ local function RtB_Reroll ()
             -- 1+ Buff
         elseif RubimRH.db.profile[260].dice == "1+ Buff" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
+         -- Mythic+
+        elseif RubimRH.db.profile[260].dice == "Mythic +" then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:BuffP(S.SkullandCrossbones)) and not (RtB_Buffs () >= 2)) and true or false;
             -- Broadside
         elseif RubimRH.db.profile[260].dice == "Broadside" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.Broadside)) and true or false;
@@ -168,17 +175,28 @@ local function RtB_Reroll ()
             -- True Bearing
         elseif RubimRH.db.profile[260].dice == "True Bearing" then
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and not Player:BuffP(S.TrueBearing)) and true or false;
-			
-            -- Mythic+
-        elseif RubimRH.db.profile[260].dice == "Mythic +" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside) and not Player:Buff(S.SkullandCrossbones)) or (Player:BuffP(S.TrueBearing) and Player:BuffP(S.BuriedTreasure) and RtB_Buffs () <= 3)) and true or false;
-			
             -- SimC Default
+        else
             -- # Reroll for 2+ buffs with Loaded Dice up. Otherwise reroll for 2+ or Grand Melee or Ruthless Precision.
             -- actions=variable,name=rtb_reroll,value=rtb_buffs<2&(buff.loaded_dice.up|!buff.grand_melee.up&!buff.ruthless_precision.up)
-        else
-            Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2 and (Player:BuffP(S.LoadedDiceBuff) or
-                    (not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.RuthlessPrecision)))) and true or false;
+            -- # Reroll for 2+ buffs or Ruthless Precision with Deadshot or Ace up your Sleeve.
+            -- actions+=/variable,name=rtb_reroll,op=set,if=azerite.deadshot.enabled|azerite.ace_up_your_sleeve.enabled,value=rtb_buffs<2&(buff.loaded_dice.up|buff.ruthless_precision.remains<=cooldown.between_the_eyes.remains)
+            -- # Always reroll for 2+ buffs with Snake Eyes.
+            -- actions+=/variable,name=rtb_reroll,op=set,if=azerite.snake_eyes.rank>=2,value=rtb_buffs<2
+            if S.SnakeEyesPower:AzeriteRank() >= 2 then
+              Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2) and true or false;
+              -- # Do not reroll if Snake Eyes is at 2+ stacks of the buff (1+ stack with Broadside up)
+              -- actions+=/variable,name=rtb_reroll,op=reset,if=azerite.snake_eyes.rank>=2&buff.snake_eyes.stack>=2-buff.broadside.up
+              if Player:BuffStackP(S.SnakeEyesBuff) >= 2 - num(Player:BuffP(S.Broadside)) then
+                Cache.APLVar.RtB_Reroll = false;
+              end
+            elseif S.Deadshot:AzeriteEnabled() or S.AceUpYourSleeve:AzeriteEnabled() then
+              Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2 and (Player:BuffP(S.LoadedDiceBuff) or
+                Player:BuffRemainsP(S.RuthlessPrecision) <= S.BetweentheEyes:CooldownRemainsP())) and true or false;
+            else
+              Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2 and (Player:BuffP(S.LoadedDiceBuff) or
+                (not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.RuthlessPrecision)))) and true or false;
+            end
         end
     end
     return Cache.APLVar.RtB_Reroll;
@@ -192,8 +210,8 @@ end
 -- # With multiple targets, this variable is checked to decide whether some CDs should be synced with Blade Flurry
 -- actions+=/variable,name=blade_flurry_sync,value=spell_targets.blade_flurry<2&raid_event.adds.in>20|buff.blade_flurry.up
 local function Blade_Flurry_Sync ()
-    return Cache.EnemiesCount[tostring(S.Dispatch:ID())] < 2 or Player:BuffP(S.BladeFlurry)
-end
+    return not RubimRH.AoEON() or Cache.EnemiesCount[BladeFlurryRange] < 2 or Player:BuffP(S.BladeFlurry)
+  end
 
 local function EnergyTimeToMaxRounded ()
     -- Round to the nearesth 10th to reduce prediction instability on very high regen rates
@@ -206,11 +224,43 @@ local function CPMaxSpend ()
 end
 
 local function CDs ()
+
+    
+    if S.Dismantle:IsAvailable() and S.Dismantle:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsBursting() then
+        if Target:IsInRange(15) and not Player:IsStealthed() then
+    if not Target:IsImmune() and S.Dismantle:IsReady()  then
+    return S.Dismantle:Cast()
+    end
+    end
+    end
+
+    
+
+
     -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|buff.adrenaline_rush.up
     -- TODO: Add Potion
     -- actions.cds+=/use_item,if=buff.bloodlust.react|target.time_to_die<=20|combo_points.deficit<=2
     -- TODO: Add Items
-    if Target:IsInRange(CheckTalentRange) then
+
+        if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsInRange("Melee") and Target:AffectingCombat() then
+if not Target:IsImmuneMagic() then
+if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() and not Target:IsCC() then
+    return S.Shiv:Cast()
+end
+end
+end
+
+
+
+                             if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+                    if not Target:IsCC()  and Target:IsInRange("Melee") and Player:AffectingCombat()  then
+       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+                   return S.SmokeBomb:Cast()
+end
+end
+   end
+
+    if Target:IsInRange(S.SinisterStrike) then
         if RubimRH.CDsON() then
             -- actions.cds+=/blood_fury
             if S.BloodFury:IsReady() then
@@ -225,23 +275,26 @@ local function CDs ()
                 return S.AdrenalineRush:Cast()
             end
         end
-        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit|((raid_event.adds.in>40|buff.true_bearing.remains>15-buff.adrenaline_rush.up*5)&!stealthed.rogue&combo_points.deficit>=cp_max_spend-1)
+        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=raid_event.adds.up&(target.time_to_die<combo_points.deficit|!stealthed.rogue&combo_points.deficit>=cp_max_spend-1)
         if S.MarkedforDeath:IsReady() then
             -- Note: Increased the SimC condition by 50% since we are slower.
-            if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit() * 1.5) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0)
-                    or (((Cache.EnemiesCount[30] == 1 and Player:BuffRemainsP(S.TrueBearing) > 15 - (Player:BuffP(S.AdrenalineRush) and 5 or 0))
-                    or Target:IsDummy()) and not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1) then
+            if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit() * 1.5) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0) then
                 return S.MarkedforDeath:Cast()
             elseif not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1 then
                 return S.MarkedforDeath:Cast()
             end
         end
         -- actions.cds+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
-        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
+        if RubimRH.AoEON() and RubimRH.CDsON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
             return S.BladeFlurry:Cast()
         end
+
+        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.85 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
+            return S.BladeFlurry:Cast()
+        end
+       
         -- actions.cds+=/ghostly_strike,if=variable.blade_flurry_sync&combo_points.deficit>=1+buff.broadside.up
-        if S.GhostlyStrike:IsReady(CheckTalentRange) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
+        if S.GhostlyStrike:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0)) then
             return S.GhostlyStrike:Cast()
         end
         -- actions.cds+=/killing_spree,if=variable.blade_flurry_sync&(energy.time_to_max>5|energy<15)
@@ -249,14 +302,14 @@ local function CDs ()
             return S.KillingSpree:Cast()
         end
         -- actions.cds+=/blade_rush,if=variable.blade_flurry_sync&energy.time_to_max>1
-        if S.BladeRush:IsReady(CheckTalentRange) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
+        if S.BladeRush:IsReady(S.SinisterStrike) and Blade_Flurry_Sync() and EnergyTimeToMaxRounded() > 1 then
             return S.BladeRush:Cast()
         end
         if not Player:IsStealthed(true, true) then
             -- # Using Vanish/Ambush is only a very tiny increase, so in reality, you're absolutely fine to use it as a utility spell.
             -- actions.cds+=/vanish,if=!stealthed.all&variable.ambush_condition
             if S.Vanish:IsReady() and Ambush_Condition() then
-             --   return S.Vanish:Cast()
+                return S.Vanish:Cast()
             end
             -- actions.cds+=/shadowmeld,if=!stealthed.all&variable.ambush_condition
             if S.Shadowmeld:IsReady() and Ambush_Condition() then
@@ -266,81 +319,72 @@ local function CDs ()
     end
 end
 local function Stealth ()
-    if Target:IsInRange(CheckTalentRange) and ( not Target:IsAPlayer() or Target:IsCC()) then
+    
+    
+    
+    if Target:IsInRange(S.SinisterStrike) then
         -- actions.stealth=ambush
         if S.Ambush:IsReady() then
             return S.Ambush:Cast()
         end
     end
 end
-
-		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
-			 if not Target:IsImmune() and  IsInMeleeRange()  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
-			       return S.CheapShot:Cast() 
-        end
+if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and Player:IsStealthed() and not Target:IsDeadOrGhost() and Player:CanAttack(Target)  then
+	if not Target:IsImmune() and  Target:IsInRange("Melee") and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+		return S.CheapShot:Cast() 
+    end
+end
+if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) then
+	if Player:IsStealthed()  and  Target:IsInRange(10) and not Target:AffectingCombat() and (Target:IsTargeting(Player) or Target:CastingCC() or Target:IsBursting()) then
+		if not Target:IsImmune()  and S.Sap:IsReady() then
+			return S.Sap:Cast()								  
 		end
-		
-
-		
-
-local function Finish ()
-    -- actions.finish=slice_and_dice,if=buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8
-    -- Note: Added Player:BuffRemainsP(S.SliceandDice) == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
-    if S.SliceandDice:IsAvailable() and S.SliceandDice:IsReady()
-            and (Target:FilteredTimeToDie(">", Player:BuffRemainsP(S.SliceandDice)) or Player:BuffRemainsP(S.SliceandDice) == 0)
-            and Player:BuffRemainsP(S.SliceandDice) < (1 + Player:ComboPoints()) * 1.8 then
-        return S.SliceandDice:Cast()
-    end
-    -- actions.finish+=/roll_the_bones,if=(buff.roll_the_bones.remains<=3|variable.rtb_reroll)&(target.time_to_die>20|buff.roll_the_bones.remains<target.time_to_die)
-    -- Note: Added RtB_BuffRemains() == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
-    if S.RolltheBones:IsReady() and (RtB_BuffRemains() <= 3 or RtB_Reroll())
-            and (Target:FilteredTimeToDie(">", 20)
-            or Target:FilteredTimeToDie(">", RtB_BuffRemains()) or RtB_BuffRemains() == 0) then
-        return S.RolltheBones:Cast()
-    end
-    -- # BTE worth being used with the boosted crit chance from Ruthless Precision
-    -- actions.finish+=/between_the_eyes,if=buff.ruthless_precision.up|azerite.ace_up_your_sleeve.enabled|azerite.deadshot.enabled
-    if S.BetweentheEyes:IsReady(20) and (Player:BuffP(S.RuthlessPrecision) or S.AceUpYourSleeve:AzeriteEnabled() or S.Deadshot:AzeriteEnabled()) then
-        return S.BetweentheEyes:Cast()
-    end
-    -- actions.finish+=/dispatch
-    if S.Dispatch:IsReady() then
-        return S.Dispatch:Cast()
-    end
-    -- OutofRange BtE
-    if S.BetweentheEyes:IsReady(20) and not Target:IsInRange(10) then
-        return S.BetweentheEyes:Cast()
-    end
-end
-
-if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
-	if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
-        if not Target:IsImmune() and S.DFA:IsReady()  then
-            return S.DFA:Cast()
-        end
-    end
-end
-
-
-
-if Target:IsAPlayer() and S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and IsInMeleeRange() and Target:AffectingCombat() then
-    if not Target:IsImmuneMagic() then
-        if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() then
-            return S.Shiv:Cast()
-        end
-    end
-end
-
-
-
-if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
-	if not Target:IsCC()  and IsInMeleeRange() and Player:AffectingCombat()  then
-		if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
-            return S.SmokeBomb:Cast()
-         end
 	end
 end
 
+local function Finish ()
+    
+    
+    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and RtB_Buffs() >= 1 then
+        if Target:IsInRange(15) and not Player:IsStealthed() then
+    if not Target:IsImmune() and S.DFA:IsReady()  then
+    return S.DFA:Cast()
+    end
+    end
+    end
+    
+    
+    
+    -- # BtE over RtB rerolls with 2+ Deadshot traits or Ruthless Precision.
+    -- actions.finish=between_the_eyes,if=buff.ruthless_precision.up|(azerite.deadshot.enabled|azerite.ace_up_your_sleeve.enabled)&buff.roll_the_bones.up
+    if S.BetweentheEyes:IsReady(20) and (Player:BuffP(S.RuthlessPrecision) or (S.Deadshot:AzeriteEnabled() or S.AceUpYourSleeve:AzeriteEnabled()) and RtB_Buffs() >= 1) then
+      return S.BetweentheEyes:Cast()
+    end
+    -- actions.finish=slice_and_dice,if=buff.slice_and_dice.remains<target.time_to_die&buff.slice_and_dice.remains<(1+combo_points)*1.8
+    -- Note: Added Player:BuffRemainsP(S.SliceandDice) == 0 to maintain the buff while TTD is invalid (it's mainly for Solo, not an issue in raids)
+    if S.SliceandDice:IsAvailable() and S.SliceandDice:IsCastableP()
+      and (Target:FilteredTimeToDie(">", Player:BuffRemainsP(S.SliceandDice)) or Target:TimeToDieIsNotValid() or Player:BuffRemainsP(S.SliceandDice) == 0)
+      and Player:BuffRemainsP(S.SliceandDice) < (1 + Player:ComboPoints()) * 1.8 then
+      return S.SliceandDice:Cast()
+    end
+    -- actions.finish+=/roll_the_bones,if=buff.roll_the_bones.remains<=3|variable.rtb_reroll
+    if S.RolltheBones:IsCastable() and (RtB_BuffRemains() <= 3 or RtB_Reroll()) then
+      return S.RolltheBones:Cast()
+    end
+    -- # BtE with the Ace Up Your Sleeve or Deadshot traits.
+    -- actions.finish+=/between_the_eyes,if=azerite.ace_up_your_sleeve.enabled|azerite.deadshot.enabled
+    if S.BetweentheEyes:IsCastableP(20) and (S.AceUpYourSleeve:AzeriteEnabled() or S.Deadshot:AzeriteEnabled()) then
+      return S.BetweentheEyes:Cast()
+    end
+    -- actions.finish+=/dispatch
+    if S.Dispatch:IsCastable(BladeFlurryRange) then
+      return S.Dispatch:Cast()
+    end
+    -- OutofRange BtE
+    if S.BetweentheEyes:IsCastableP(20) and not Target:IsInRange(10) then
+      return S.BetweentheEyes:Cast()
+    end
+  end
 
 local function Build ()
     -- actions.build=pistol_shot,if=combo_points.deficit>=1+buff.broadside.up+talent.quick_draw.enabled&buff.opportunity.up
@@ -350,13 +394,14 @@ local function Build ()
         return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
-    if S.SinisterStrike:IsReady(CheckTalentRange) then
+    if S.SinisterStrike:IsReady(BladeFlurryRange) then
         return S.SinisterStrike:Cast()
     end
 end
 
 local OffensiveCDs = {
     S.AdrenalineRush,
+    S.Vanish,
 }
 
 local function UpdateCDs()
@@ -382,57 +427,46 @@ end
 local function APL ()
     UpdateCDs()
     -- Unit Update
+    BladeFlurryRange = S.AcrobaticStrikes:IsAvailable() and 9 or 6;
     HL.GetEnemies(8); -- Cannonball Barrage
-    HL.GetEnemies(S.Dispatch); -- Blade Flurry
+    HL.GetEnemies(BladeFlurryRange); -- Blade Flurry
     HL.GetEnemies(S.SinisterStrike); -- Melee
-	-- Acrobatic Strikes range
-    CheckTalentRange = S.AcrobaticStrikes:IsAvailable() and 8 or 5;
-    HL.GetEnemies(CheckTalentRange);
-    HL.GetEnemies("Melee");
 
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
     end
-	
-	if QueueSkill() ~= nil then
+    if QueueSkill() ~= nil then
         return QueueSkill()
     end
-	
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
         if IsStealthed() == false and S.Stealth:TimeSinceLastCast() >= 2 then
             return S.Stealth:Cast()
         end
-		
-	if RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 3 and not Player:BuffP(S.BladeFlurry) then
-            return S.BladeFlurry:Cast()
-		end
-		
         -- Flask
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
         -- Opener
-					
         if RubimRH.TargetIsValid(true) and Target:IsInRange(S.SinisterStrike) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
             if Player:ComboPoints() >= 5 then
                 if S.Dispatch:IsReady() then
                     return S.Dispatch:Cast()
                 end
             else
-			if Player:IsStealthed(true, true) and Player:BuffP(S.BladeFlurry) and S.Ambush:IsReady() or Player:IsStealthed(true, true) and S.Ambush:IsReady() and Blade_Flurry_Sync() then
+                if Player:IsStealthed(true, true) and S.Ambush:IsReady() then
                     return S.Ambush:Cast()
-                elseif RubimRH.AoEON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[tostring(S.Dispatch:ID())] >= 2 and not Player:BuffP(S.BladeFlurry) then
-                    return S.BladeFlurry:Cast()
+                elseif S.SinisterStrike:IsReady() then
+                    return S.SinisterStrike:Cast()
                 end
-			  end
             end
-       return 0, 462338
+        end
+        return 0, 462338
     end
 
     --Custom
-    if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    if S.Kick:IsReady() and Target:IsInterruptible() then
         return S.Kick:Cast()
     end
 
@@ -446,7 +480,6 @@ local function APL ()
 
 
     -- In Combat
-
     -- actions+=/call_action_list,name=stealth,if=stealthed.all
     if IsStealthed() == true then
         if Stealth() ~= nil then
@@ -458,7 +491,7 @@ local function APL ()
     if CDs() ~= nil then
         return CDs()
     end
-    -- actions+=/call_action_list,name=finish,if=combo_points>=cp_max_spend-(buff.broadside.up+buff.opportunity.up)*(talent.quick_draw.enabled&(!talent.marked_for_death.enabled|cooldown.marked_for_death.remains>1))
+    -- actions+=/run_action_list,name=finish,if=combo_points>=cp_max_spend-(buff.broadside.up+buff.opportunity.up)*(talent.quick_draw.enabled&(!talent.marked_for_death.enabled|cooldown.marked_for_death.remains>1))
     if Player:ComboPoints() >= CPMaxSpend() - (num(Player:BuffP(S.Broadside)) + num(Player:BuffP(S.Opportunity))) * num(S.QuickDraw:IsAvailable() and (not S.MarkedforDeath:IsAvailable() or S.MarkedforDeath:CooldownRemainsP() > 1)) then
         if Finish() ~= nil then
             return Finish()
@@ -469,15 +502,15 @@ local function APL ()
         return Build()
     end
     -- actions+=/arcane_torrent,if=energy.deficit>=15+energy.regen
-    if S.ArcaneTorrent:IsReady("Melee") and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
+    if S.ArcaneTorrent:IsReady(S.SinisterStrike) and Player:EnergyDeficitPredicted() > 15 + Player:EnergyRegen() then
         return S.ArcaneTorrent:Cast()
     end
     -- actions+=/arcane_pulse
-    if S.ArcanePulse:IsReady("Melee") then
+    if S.ArcanePulse:IsReady(BladeFlurryRange) then
         return S.ArcanePulse:Cast()
     end
     -- actions+=/lights_judgment
-    if S.LightsJudgment:IsReady("Melee") then
+    if S.LightsJudgment:IsReady(BladeFlurryRange) then
         return S.LightsJudgment:Cast()
     end
     -- OutofRange Pistol Shot
