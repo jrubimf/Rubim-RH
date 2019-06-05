@@ -62,7 +62,8 @@ RubimRH.Spell[MFrost] = {
     Counterspell = Spell(2139),
     IceBarrier = Spell(11426),
     Invisibility = Spell(66),
-
+    Freeze = Spell(33395),
+    Spellsteal = Spell(30449),
 };
 HL.Spell[MFrost] = RubimRH.Spell[MFrost]
 --Remove Watersomething
@@ -339,12 +340,20 @@ local function APL()
     if Player:Buff(S.BrainFreezeBuff) then
         brainFreezewasActive = GetTime()
     end
-    if RubimRH.TargetIsValid() then
-	  
-	  if QueueSkill() ~= nil then
-        return QueueSkill()
-      end
+   
+   if RubimRH.TargetIsValid() then
+	    -- Queue sys
+	    if QueueSkill() ~= nil then
+            return QueueSkill()
+        end
         -- counterspell
+	    if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.Counterspell:Cast()
+        end
+	    -- spell steal
+		if S.Spellsteal:IsReady() and RubimRH.InterruptsON() and Target:HasStealableBuff() then
+            return S.Spellsteal:Cast()
+        end
         -- ice_lance,if=prev_gcd.1.flurry&brain_freeze_active&!buff.fingers_of_frost.react
         if S.IceLance:IsReadyP() and (Player:PrevGCDP(1, S.Flurry) and GetTime() - brainFreezewasActive <= S.Flurry:CastTime() and not (Player:Buff(S.FingersofFrostBuff))) then
             return S.IceLance:Cast()
@@ -355,6 +364,10 @@ local function APL()
                 return Cooldowns()
             end
         end
+		-- Freeze test aoe
+		if S.Freeze:IsReady() and active_enemies() >= 2 and Pet:Exists() then
+		    return S.Freeze:Cast()
+		end
         -- call_action_list,name=aoe,if=active_enemies>3&talent.freezing_rain.enabled|active_enemies>4
         if (active_enemies() > 3 and S.FreezingRain:IsAvailable() or active_enemies() > 4) then
             if Aoe() ~= nil then
