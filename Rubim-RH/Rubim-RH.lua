@@ -1169,6 +1169,7 @@ local defaults = {
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
+			useSplashData = "Enabled",
         },
         [63] = {
             cooldowns = true,

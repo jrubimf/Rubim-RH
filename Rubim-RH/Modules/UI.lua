@@ -427,7 +427,29 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                 end
                 
-                
+				-- ARCANE MAGE
+                if RubimRH.playerSpec == Arcane then
+                    local useSplashData = {
+                        { text = 'Enabled', value = "Enabled" },
+                        { text = 'Disabled', value = "Disabled" },
+                    }
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, nil, nil);
+                    choosedata:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
+                    StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);                
+                    
+                    choosedata.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].useSplashData = val
+
+                    if val == "Enabled" then
+                        print("Experimental Aoe Detection Enabled")
+                    else
+                        print("Experimental Aoe Detection Disabled")
+                        choosedata:SetText("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
+                    end
+                    end
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+                end
                 
                 
                 -- SHAMAN ELEMENTAL
@@ -1205,11 +1227,50 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
                 --print("Macro creation worked")
             end     
-            local btngrip = StdUi:Button(tab.frame, 85, 24, 'Create Grip Macro');
+            local btngrip = StdUi:Button(tab.frame, 120, 24, 'Create Grip Macro');
             --StdUi:GlueBelow(btngrip, tab.frame, 0, -24, "RIGHT");
 			StdUi:GlueTop(btngrip, tab.frame, 10, -40, 'LEFT');
             btngrip:SetScript('OnClick', btn_creategrip);
-            StdUi:FrameTooltip(btngrip, 'This will create a Leap of Faith macro to give to your mate :).', 'TOPLEFT', 'TOPRIGHT', true);		
+            StdUi:FrameTooltip(btngrip, 'This will create a Leap of Faith macro to give to your mate :)', 'TOPLEFT', 'TOPRIGHT', true);
+
+			-- Ironbark macro todo
+            local function btn_createbark()
+                RubimRH.print("Macro for Ironbark  was created. Check your Character Macros and give the macro to your mate")
+				CreateMacro("Ironbark ","spell_druid_ironbark", "/script C_ChatInfo.SendAddonMessage(\"bark\", UnitName(\"player\"), \"RAID\")", 1)
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                --print("Macro creation worked")
+            end     
+            local btnbark = StdUi:Button(tab.frame, 120, 24, 'Create Bark Macro');
+            --StdUi:GlueBelow(btngrip, tab.frame, 0, -24, "RIGHT");
+			StdUi:GlueTop(btnbark, tab.frame, 10, -70, 'LEFT');
+            btnbark:SetScript('OnClick', btn_createbark);
+            StdUi:FrameTooltip(btnbark, 'This will create an Ironbark macro to give to your mate :)', 'TOPLEFT', 'TOPRIGHT', true);
+
+			-- Priestt life swap macro todo
+            local function btn_createswap()
+                RubimRH.print("Macro for Void Shift was created. Check your Character Macros and give the macro to your mate")
+				CreateMacro("Void Shift","spell_priest_voidshift", "/script C_ChatInfo.SendAddonMessage(\"swap\", UnitName(\"player\"), \"RAID\")", 1)
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                --print("Macro creation worked")
+            end     
+            local btnswap = StdUi:Button(tab.frame, 120, 24, 'Create Void Shift Macro');
+            --StdUi:GlueBelow(btngrip, tab.frame, 0, -24, "RIGHT");
+			StdUi:GlueTop(btnswap, tab.frame, 10, -100, 'LEFT');
+            btnswap:SetScript('OnClick', btn_createswap);
+            StdUi:FrameTooltip(btnswap, 'This will create a Void Shift macro to give to your mate :)', 'TOPLEFT', 'TOPRIGHT', true);
+
+			-- Paladin bop macro todo
+            local function btn_createbop()
+                RubimRH.print("Macro for Blessing of Protection was created. Check your Character Macros and give the macro to your mate")
+				CreateMacro("Blessing of Protection","spell_holy_sealofprotection", "/script C_ChatInfo.SendAddonMessage(\"bop\", UnitName(\"player\"), \"RAID\")", 1)
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
+                --print("Macro creation worked")
+            end     
+            local btnbop = StdUi:Button(tab.frame, 120, 24, 'Create Bop Macro');
+            --StdUi:GlueBelow(btngrip, tab.frame, 0, -24, "RIGHT");
+			StdUi:GlueTop(btnbop, tab.frame, 10, -130, 'LEFT');
+            btnbop:SetScript('OnClick', btn_createbop);
+            StdUi:FrameTooltip(btnbop, 'This will create a Blessing of Protection macro to give to your mate :)', 'TOPLEFT', 'TOPRIGHT', true);			
 			
 
            -- end           
