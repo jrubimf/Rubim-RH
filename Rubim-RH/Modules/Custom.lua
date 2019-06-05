@@ -612,38 +612,163 @@ end
 --------------------------------------
 -- UPDATED 8.0.1 Macro
 --/script C_ChatInfo.SendAddonMessage("grip", UnitName("player"), "RAID")
+C_ChatInfo.RegisterAddonMessagePrefix("grip") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("bark") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("swap") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("bop") --Fix BFA 8.0.1
 
--- handle chat message
-function HandleChatMsgAddon(self, event, ...)
-    local response = false
-	
-	if event == "CHAT_MSG_ADDON" then
-	    local prefix, message = ...
-		    -- leap
-	        if prefix == "grip"  then	    	        
-                response = true
-				print("Grip")
-			-- iron bark
-			elseif prefix == "bark"  then
-			    response = true
-				print("bark")
-			-- priest life swap
-			elseif prefix == "swap"  then
-			    response = true
-				print("swap")
-			-- paladin bop
-			elseif prefix == "bop"  then
-			    response = true
-				print("bop")
-			else 
-			    return false
+-- Leap handler
+local spellId = 73325
+local debuffDuration = 5
+
+-- create the spell icon to show on raid frame
+RubimRH.addLeapIcon = function(parentFrame)
+    local frame = CreateFrame("Frame",nil,parentFrame)
+    frame:SetFrameStrata("HIGH")
+    frame:SetWidth(RubimRH.iconWidth)
+    frame:SetHeight(RubimRH.iconHeight)
+    frame:SetAlpha(RubimRH.iconAlpha)
+    
+    local texture = frame:CreateTexture(nil,"HIGH")
+    texture:SetTexture(select(3, GetSpellInfo(spellId)))
+    texture:SetAllPoints(frame)
+    frame.texture = texture
+    
+    frame:SetPoint(RubimRH.position,0,0)
+    
+    local cooldown = CreateFrame("COOLDOWN", nil, frame, "CooldownFrameTemplate")
+    cooldown:SetCooldown(GetTime(), debuffDuration)
+    cooldown:SetAllPoints(frame)
+    cooldown:SetDrawEdge(false)
+    cooldown:SetHideCountdownNumbers(IsAddOnLoaded("OmniCC") or false)
+    
+    frame:Show()
+    C_Timer.After(debuffDuration, function()
+            frame:Hide()
+    end)
+end
+
+-- Leap Highlight on raid frame depending on the current asker name and if our spell cd is ready
+RubimRH.Leaphighlight = function(target)
+    local hasGrid2 = IsAddOnLoaded("Grid2")
+    local hasElvUIParty = _G["ElvUF_Party"] and _G["ElvUF_Party"]:IsVisible()
+    local hasElvUIRaid = _G["ElvUF_Raid"] and _G["ElvUF_Raid"]:IsVisible()
+    --local isOnCD = GetSpellCooldown(73325)
+    
+    
+    -- Check Spell Cooldown and show custom status
+    local IsOnCD = false;
+    local name = GetSpellInfo(73325);
+    local start, duration, enabled = GetSpellCooldown(name);
+    -- msg when grip up
+	local msg1 = "Grip pas up, sorry"
+	-- msg if grip down
+    local msg2 = "Grip up, no stress"    
+    
+    -- spell on cd
+    if ( start > 0 and duration > 1.5) then
+        print("DEMANDE DE GRIP DE "..target.."MAIS CD PAS UP") -- TO DO CUSTOMIZE A BIT BETTER
+        
+        -- if spell is not available, whisp our target to tell the spell is on cd
+        SendChatMessage(msg1, "WHISPER", nil, target)
+        
+        IsOnCD = true;
+    else
+        print("GRIP URGENT SUR "..target.." !!") -- TO DO CUSTOMIZE A BIT BETTER
+        SendChatMessage(msg2, "WHISPER", nil, target)
+        IsOnCD = false;
+    end    
+    
+    
+    -- Fix Raid Group 8.0.1 + cooldown verification
+    if hasElvUIRaid and IsOnCD == false  then
+        for i=1, 8 do
+            for j=1, 5 do
+                local f = _G["ElvUF_RaidGroup"..i.."UnitButton"..j]
+                if f and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
             end
-	    return response
+        end
+        
+        -- Fix Party Group 8.0.1 + cooldown verification
+    elseif hasElvUIParty and IsOnCD == false then
+        for i=1, 8 do
+            for j=1, 5 do
+                local f = _G["ElvUF_PartyGroup"..i.."UnitButton"..j]
+                if f and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
+            end
+        end
+        
+    elseif hasGrid2 and IsOnCD == false then
+        local layout = Grid2LayoutFrame
+        
+        if layout then
+            local children = {layout:GetChildren()}
+            for _, child in ipairs(children) do
+                if child:IsVisible() then
+                    local frames = {child:GetChildren()}
+                    for _, f in ipairs(frames) do
+                        if f.unit and UnitName(f.unit) == target then
+                            RubimRH.addLeapIcon(f)
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    else
+        if IsOnCD == false then
+            for i=1, 40 do
+                local f = _G["CompactRaidFrame"..i]
+                if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
+            end
+        end
+        -- Fix party group
+        -- for i=1, 5 do
+        --   local f = _G["CompactPartyFrameMember"..i]
+        -- if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+        --   RubimRH.addLeapIcon(f)
+        --  return
+        -- end
+        -- end
+        
+        
+        if IsOnCD == false then
+            for i=1, 4 do
+                for j=1, 5 do
+                    local f = _G["CompactRaidGroup"..i.."Member"..j]
+                    if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+                        RubimRH.addLeapIcon(f)
+                        return
+                    end
+                end
+                
+            end
+        end
     end
 end
 
-function RubimRH.AskedForGrip()
-    if HandleChatMsgAddon() == true then
+-- Leap message handler return player name
+function LeapMessage(e, prefix, message)    
+    local actionasked = prefix
+	if prefix == "grip" then
+        --message contains the players name
+        RubimRH.Leaphighlight(message)
+    end	
+	return actionasked
+end
+
+
+function RubimRH.AskedForLeap()
+    if actionasked == "grip" then
 	    return true
 	else
 	    return false
