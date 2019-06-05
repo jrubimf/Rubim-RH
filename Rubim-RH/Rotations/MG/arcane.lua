@@ -276,7 +276,7 @@ local function APL()
       return S.ArcaneOrb:Cast()
     end
     -- arcane_barrage,if=active_enemies>=3&(buff.arcane_charge.stack=buff.arcane_charge.max_stack)
-    if S.ArcaneBarrage:IsCastableP() and (Cache.EnemiesCount(40) >= 3 and (Player:ArcaneChargesP() == Player:ArcaneChargesMax())) then
+    if S.ArcaneBarrage:IsCastableP() and (active_enemies() >= 3 and (Player:ArcaneChargesP() == Player:ArcaneChargesMax())) then
       return S.ArcaneBarrage:Cast()
     end
     -- arcane_explosion,if=active_enemies>=3
