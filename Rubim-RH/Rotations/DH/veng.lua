@@ -73,6 +73,13 @@ RubimRH.Listener:Add('Vengeance', 'UNIT_SPELLCAST_SUCCEEDED', function(...)
         end
     end
 
+    if unit == "player" then
+        if spellID == 228477 then
+            S.SoulCleave.LastCastTime = GetTime()
+        end
+    end
+    
+
 end)
 
 local function APL()
@@ -109,7 +116,7 @@ local function APL()
             return S.InfernalStrike:Cast()
         end
 
-        --actions.brand+=/fiery_brand
+        --actions.brand+=/fiery_brandF
         if S.FieryBrand:IsReady("Melee") then
             return S.FieryBrand:Cast()
         end
@@ -167,7 +174,7 @@ local function APL()
         end
 
         --actions.normal+=/soul_cleave,if=talent.spirit_bomb.enabled&soul_fragments=0
-        if S.SoulCleave:IsReady("Melee") and S.SpiritBomb:IsAvailable() and SoulFragments == 0 and S.SoulCleave:LastCastTime() > Player:GCD() * 0.8  then
+        if S.SoulCleave:IsReady("Melee") and S.SpiritBomb:IsAvailable() and SoulFragments == 0 and S.SoulCleave:TimeSinceLastCast() > Player:GCD() * 0.8  then
             return S.SoulCleave:Cast()
         end
 
