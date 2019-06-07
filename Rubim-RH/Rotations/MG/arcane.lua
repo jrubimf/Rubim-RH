@@ -388,7 +388,7 @@ local function APL()
     local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
   end
   -- protect against channeling interrupt
-  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
+  if Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
   end
   
