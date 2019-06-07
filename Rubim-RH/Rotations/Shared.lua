@@ -86,8 +86,8 @@ function RubimRH.Shared()
 
         if not Target:Exists() then
 			--print("It works");  
-			--active combat check
-			if active_enemies() >= 1 then
+			HL.GetEnemies(30)
+			if Cache.EnemiesCount[30] >= 1 then
 		        return 133015   
             end
         end
