@@ -10,11 +10,15 @@ local pairs = pairs;
 local tableconcat = table.concat;
 local tostring = tostring;
 
+
+
 --Outlaw
 RubimRH.Spell[260] = {
     -- Racials
+    AncestralCall  = Spell(274738),
     ArcanePulse = Spell(260364),
     ArcaneTorrent = Spell(25046),
+    Fireblood = Spell(265221),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     LightsJudgment = Spell(255647),
@@ -270,19 +274,29 @@ end
             if S.Berserking:IsReady() then
                 return S.Berserking:Cast()
             end
+            -- actions.cds+=/fireblood
+            if S.Fireblood:IsReady() then
+                return S.Fireblood:Cast()
+            end
+            -- actions.cds+=/ancestral_call
+            if S.AncestralCall:IsCastable() then
+                return S.AncestralCall:Cast()
+            end
             -- actions.cds+=/adrenaline_rush,if=!buff.adrenaline_rush.up&energy.time_to_max>1
             if S.AdrenalineRush:IsReady() and not Player:BuffP(S.AdrenalineRush) and EnergyTimeToMaxRounded() > 1 then
                 return S.AdrenalineRush:Cast()
             end
         end
-        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=raid_event.adds.up&(target.time_to_die<combo_points.deficit|!stealthed.rogue&combo_points.deficit>=cp_max_spend-1)
+        -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit|((raid_event.adds.in>40|buff.true_bearing.remains>15-buff.adrenaline_rush.up*5)&!stealthed.rogue&combo_points.deficit>=cp_max_spend-1)
         if S.MarkedforDeath:IsReady() then
             -- Note: Increased the SimC condition by 50% since we are slower.
-            if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit() * 1.5) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0) then
-                return S.MarkedforDeath:Cast()
-            elseif not Player:IsStealthed(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1 then
-                return S.MarkedforDeath:Cast()
-            end
+            if Target:FilteredTimeToDie("<", Player:ComboPointsDeficit()*1) or (Target:FilteredTimeToDie("<", 2) and Player:ComboPointsDeficit() > 0)
+            or (((Player:BuffRemainsP(S.TrueBearing) > 15 - (Player:BuffP(S.AdrenalineRush) and 5 or 0)) or Target:IsDummy())
+              and not Player:IsStealthedP(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1) then
+            return S.MarkedforDeath:Cast()
+          elseif not Player:IsStealthedP(true, true) and Player:ComboPointsDeficit() >= CPMaxSpend() - 1 then
+            S.MarkedforDeath:Cast()
+          end
         end
         -- actions.cds+=/blade_flurry,if=spell_targets.blade_flurry>=2&!buff.blade_flurry.up
         if RubimRH.AoEON() and RubimRH.CDsON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
@@ -355,7 +369,7 @@ local function Finish ()
     
     
     
-    -- # BtE over RtB rerolls with 2+ Deadshot traits or Ruthless Precision.
+    -- # BtE over RtB rerolls with Deadshot/Ace traits or Ruthless Precision.
     -- actions.finish=between_the_eyes,if=buff.ruthless_precision.up|(azerite.deadshot.enabled|azerite.ace_up_your_sleeve.enabled)&buff.roll_the_bones.up
     if S.BetweentheEyes:IsReady(20) and (Player:BuffP(S.RuthlessPrecision) or (S.Deadshot:AzeriteEnabled() or S.AceUpYourSleeve:AzeriteEnabled()) and RtB_Buffs() >= 1) then
       return S.BetweentheEyes:Cast()
@@ -381,16 +395,14 @@ local function Finish ()
       return S.Dispatch:Cast()
     end
     -- OutofRange BtE
-    if S.BetweentheEyes:IsCastableP(20) and not Target:IsInRange(10) then
+    if S.BetweentheEyes:IsReady(20) and not Target:IsInRange(10) then
       return S.BetweentheEyes:Cast()
     end
   end
 
 local function Build ()
-    -- actions.build=pistol_shot,if=combo_points.deficit>=1+buff.broadside.up+talent.quick_draw.enabled&buff.opportunity.up
-    if S.PistolShot:IsReady(20)
-            and Player:ComboPointsDeficit() >= (1 + (Player:BuffP(S.Broadside) and 1 or 0) + (S.QuickDraw:IsAvailable() and 1 or 0))
-            and Player:BuffP(S.Opportunity) then
+    -- actions.build=pistol_shot,if=buff.opportunity.up&(buff.keep_your_wits_about_you.stack<25|buff.deadshot.up|energy<45)
+    if S.PistolShot:IsReady(20) and Player:BuffP(S.Opportunity) and (Player:BuffStackP(S.KeepYourWitsBuff) < 25 or Player:BuffP(S.DeadshotBuff) or Player:EnergyPredicted() < 45) then
         return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
@@ -431,7 +443,9 @@ local function APL ()
     HL.GetEnemies(8); -- Cannonball Barrage
     HL.GetEnemies(BladeFlurryRange); -- Blade Flurry
     HL.GetEnemies(S.SinisterStrike); -- Melee
-
+    if S.Kick:IsReady(BladeFlurryRange) and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Kick:Cast()
+    end
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
     end
@@ -466,9 +480,6 @@ local function APL ()
     end
 
     --Custom
-    if S.Kick:IsReady() and Target:IsInterruptible() then
-        return S.Kick:Cast()
-    end
 
     if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk2 then
         return S.CloakofShadows:Cast()
