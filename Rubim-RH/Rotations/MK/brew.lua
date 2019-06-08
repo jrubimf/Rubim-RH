@@ -103,6 +103,14 @@ local function APL()
             return Precombat()
         end
     end
+	
+    if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
+
+    if Player:IsChanneling() or Player:IsCasting() then
+        return 0, 236353
+    end
   
     if RubimRH.TargetIsValid() then
 	
