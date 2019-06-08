@@ -67,8 +67,8 @@ local function CanHeal(t)
 end
 
 local function Grouped(t)
-    -- if we are in 3yrds
-    if  CheckInteractDistance(t, 28)
+    -- if we are in 5yrds
+    if  CheckInteractDistance(t, 5)
     then
         return true
     else
