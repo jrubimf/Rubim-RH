@@ -1300,7 +1300,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
 
             end
-            RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] --RubimRH.db.profile[RubimRH.playerSpec] 
+			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]
+           -- RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] --RubimRH.db.profile[RubimRH.playerSpec] 
             
 			-- Profil settings button - OK
             local profileSettingsButton = StdUi:Button(tab.frame, 80, 30, 'Profile Settings' );
