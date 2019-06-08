@@ -1255,7 +1255,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
 			-- Raid rejuvenation slider
             local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-            
+			-- Raid cenarion slider
+            local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			-- Raid efflroescence slider
+            local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			-- Raid regrowth slider
+            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );
 			
 			
 			
@@ -1283,6 +1288,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				raid_germi_slider.editBox:SetValue(datavalue["raid_germi"]["value"])
 				raid_wildg_slider.label:SetText("Wild Growth : " .. datavalue["raid_wildg"]["value"])
 				raid_wildg_slider.editBox:SetValue(datavalue["raid_wildg"]["value"])
+				raid_cenar_slider.label:SetText("Cenarion Wild : " .. datavalue["raid_cenar"]["value"])
+				raid_cenar_slider.editBox:SetValue(datavalue["raid_cenar"]["value"])
+				raid_efflo_slider.label:SetText("Efflorescence : " .. datavalue["raid_efflo"]["value"])
+				raid_efflo_slider.editBox:SetValue(datavalue["raid_efflo"]["value"])
+				raid_regro_slider.label:SetText("Regrowth : " .. datavalue["raid_regro"]["value"])
+				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
 
             end
             RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec] 
@@ -1428,7 +1439,62 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_wildg_slider)
-    
+        	
+			-------------------
+			-- Cenarion Raid             
+            StdUi:GlueTop(raid_cenar_slider, tab.frame, 50, -200);
+            raid_cenar_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_cenar_slider, "Cenarion : " .. datavalue["raid_wildg"]["value"], "TOP" );
+            raid_cenar_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_cenar_slider.label:SetFont( raid_cenar_slider.label:GetFont( ), 10 )
+            raid_cenar_slider.label:SetWidth( 0 )
+            raid_cenar_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_cenar"]["value"] = value
+				print(datavalue["raid_cenar"]["value"])
+                raid_cenar_slider.label:SetText("Cenarion : " .. datavalue["raid_cenar"]["value"])
+				raid_cenar_slider.editBox:SetValue(datavalue["raid_cenar"]["value"])
+				
+            end;
+            table.insert(sliders, raid_wildg_slider)
+	    	
+			-------------------
+			-- Efflorescence Raid             
+            StdUi:GlueTop(raid_efflo_slider, tab.frame, 50, -250);
+            raid_efflo_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_efflo_slider, "Efflorescence : " .. datavalue["raid_efflo"]["value"], "TOP" );
+            raid_efflo_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_efflo_slider.label:SetFont( raid_efflo_slider.label:GetFont( ), 10 )
+            raid_efflo_slider.label:SetWidth( 0 )
+            raid_efflo_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_efflo"]["value"] = value
+				print(datavalue["raid_efflo"]["value"])
+                raid_efflo_slider.label:SetText("Efflorescence : " .. datavalue["raid_efflo"]["value"])
+				raid_efflo_slider.editBox:SetValue(datavalue["raid_efflo"]["value"])
+				
+            end;
+            table.insert(sliders, raid_efflo_slider)
+			
+			-------------------
+			-- Regrowth Raid             
+            StdUi:GlueTop(raid_regro_slider, tab.frame, 50, -300);
+            raid_regro_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_regro_slider, "Regrowth : " .. datavalue["raid_regro"]["value"], "TOP" );
+            raid_regro_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_regro_slider.label:SetFont( raid_regro_slider.label:GetFont( ), 10 )
+            raid_regro_slider.label:SetWidth( 0 )
+            raid_regro_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_regro"]["value"] = value
+				print(datavalue["raid_regro"]["value"])
+                raid_regro_slider.label:SetText("Regrowth : " .. datavalue["raid_regro"]["value"])
+				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
+				
+            end;
+            table.insert(sliders, raid_regro_slider)
+	
+	
 	
 	-- The end of Healer tab --
 	end 

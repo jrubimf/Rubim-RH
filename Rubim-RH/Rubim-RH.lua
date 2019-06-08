@@ -255,8 +255,16 @@ local defaults = {
 			-- resto druid defaut
 			    [105] = {	
 						["Default"] = {
-						              ["raid_rejuv"] = {value = 70},
 						
+						              ["raid_rejuv"] = {value = 70},
+						              ["raid_germi"] = {value = 60},
+						              ["raid_wildg"] = {value = 85},
+						              ["raid_cenar"] = {value = 40},
+						              ["raid_efflo"] = {value = 50},
+						              ["raid_regro"] = {value = 40},
+						              ["raid_swift"] = {value = 50},
+						              ["cd_flourish"] = {value = 5},									  
+									  
 						              },							
 						
 						},
