@@ -59,6 +59,7 @@ mainAddon.Spell[62] = {
               Blink                       = Spell(1953),
               Shimmer                     = Spell(212653),
               IceBlock                    = Spell(45438),
+              PrismaticBarrier            = Spell(235450),			
 
 };
 local S = mainAddon.Spell[62];
@@ -420,6 +421,9 @@ mainAddon.Rotation.SetAPL(62, APL)
 local function PASSIVE()
     if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[62].sk1 then
         return S.IceBlock:Cast()
+    end
+    if S.PrismaticBarrier:IsReady() and not Player:Buff(S.PrismaticBarrier) and  Player:HealthPercentage() <= RubimRH.db.profile[62].sk2 then
+        return S.PrismaticBarrier:Cast()
     end
     return mainAddon.Shared()
 end
