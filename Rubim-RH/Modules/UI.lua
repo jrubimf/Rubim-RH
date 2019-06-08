@@ -1215,7 +1215,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			------------------
 			-- Profil system
 			------------------
-			
+			if RubimRH.playerSpec == 105 then
 			
 			local profileList = { }
 			
@@ -1248,7 +1248,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
 			
 			
-			if RubimRH.playerSpec == 105 then
+			
 			----------------------------
 			-- HEALER SLIDERS 
 			----------------------------
@@ -1300,14 +1300,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
 
             end
-            RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec] 
+            RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] --RubimRH.db.profile[RubimRH.playerSpec] 
             
 			-- Profil settings button - OK
             local profileSettingsButton = StdUi:Button(tab.frame, 80, 30, 'Profile Settings' );
 			StdUi:GlueTop(profileSettingsButton, tab.frame, 0, -80, 'LEFT');
             profileSettingsButton:SetScript( 'OnClick', function( )
-                StdUi.config.backdrop.panel = { r = 0.2, g = 0.2, b = 0.2, a = 1 }
+                local rr, gg, bb, aa = RubimRH.db.profile.mainOption.mainframeColor_r, RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a			   
+                StdUi.config.backdrop.panel = {r = rr, g = gg, b = bb, a = aa}
                 local window = StdUi:Window(tab.frame, 'Profile Settings', 300, 150 );
+				--window:SetPoint('TOPLEFT', window, 'BOTTOMRIGHT', -10, 10);
+				--StdUi:GlueTop(window, tab.frame, 0, 0, 'LEFT');
                 --local pRI = StdUi:PanelWithLabel(window, 80, 40, nil, 'GlueRight, Inside');
                 local SelectedProfileText = StdUi:FontString( window, "Selected Profile: " .. RubimRH.db.profile.mainOption.selectedProfile );
                 local createButton = StdUi:Button( window, 200, 20, 'Create Profile' );
@@ -1367,7 +1370,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                 end
                 
-                --window:SetPoint('CENTER', classMenu_WINDOW, 'CENTER', 524, 0);
+                --window:SetPoint('CENTER', tab.frame, 'LEFT', 24, 0);
                 
                 StdUi:EasyLayout( window, { padding = { top = 40 }});
                 window:AddRow( ):AddElement( SelectedProfileText );
@@ -1379,12 +1382,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     of:DoLayout( );
                 end );
                 window:Show( )
-                
-                window:SetPoint( 'TOPRIGHT', classMenu_WINDOW, 'TOPRIGHT', 310, 0 );
+                -- Popup positionning
+                window:SetPoint( 'TOPRIGHT', tab.frame, 'TOPRIGHT', 310, 65 );
             end )
 			
 			------------------
-			-- Healers UI
+			--- Healers UI ---
 			------------------
             local sliders = { }
 			local Name = RubimRH.db.profile.mainOption.selectedProfile
@@ -1393,7 +1396,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			--------------------
 			------ DRUID -------
 			--------------------
-			--if RubimRH.playerSpec == 105 then
+			
 			--------------------
 			-- Rejuvenation Raid             
             StdUi:GlueTop(raid_rejuv_slider, tab.frame, 50, -50);

@@ -103,6 +103,7 @@ RubimRH.Rotation.PASSIVEs = {}
 RubimRH.Rotation.PvP = {}
 RubimRH.CreateConfig = {}
 
+
 function RubimRH.SetConfig (Spec, APL)
     RubimRH.CreateConfig[Spec] = APL;
 end
@@ -221,7 +222,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            version = 30052019,
+            version = 08062019,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -1263,11 +1264,11 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
 
-    if RubimRH.db.profile.mainOption.version ~= (30052019) then
+    if RubimRH.db.profile.mainOption.version ~= (08062019) then
         self.db:ResetDB(defaultProfile)
         message("New version:\nResetting Profile")
         print("Reseting profile")
-        RubimRH.db.profile.mainOption.version = 30052019
+        RubimRH.db.profile.mainOption.version = 08062019
     end
 
 
@@ -1350,16 +1351,19 @@ function RubimRH.mainRotation(option)
     end
 	
     --RubimRH.CreateConfig[RubimRH.playerSpec]()
+	-- check only for healing specs
+	if RubimRH.playerSpec == 105 then
     if RubimRH.db.profile[RubimRH.playerSpec] and not RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] then
 		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] = {}
 		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]["Default"] = RubimRH.db.profile[RubimRH.playerSpec]
 		RubimRH.db.profile.mainOption.selectedProfile = 'Default'
 	end
+	
 
 	if RubimRH.db.profile[RubimRH.playerSpec] and RubimRH.db.profile.mainOption.selectedProfile then
         RubimRH.db.profile[RubimRH.playerSpec] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
 	end
-
+end
     --endd
     if UnitInVehicle("Player") then
         return 0, 236254

@@ -19,7 +19,7 @@ local mainAddon = RubimRH
 -- luacheck: max_line_length 9999
 
 -- Spells
-mainAddon.Spell[62] = {
+RubimRH.Spell[62] = {
               ArcaneIntellectBuff         = Spell(1459),
               ArcaneIntellect             = Spell(1459),
               ArcaneFamiliarBuff          = Spell(210126),
@@ -62,7 +62,7 @@ mainAddon.Spell[62] = {
               PrismaticBarrier            = Spell(235450),			
 
 };
-local S = mainAddon.Spell[62];
+local S = RubimRH.Spell[62];
 
 -- Items
 if not Item.Mage then
@@ -416,15 +416,15 @@ local function APL()
   return 0, 135328
 end
 
-mainAddon.Rotation.SetAPL(62, APL)
+RubimRH.Rotation.SetAPL(62, APL)
 
 local function PASSIVE()
-    if S.IceBlock:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[62].sk1 then
+    if S.IceBlock:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[62].sk1 then
         return S.IceBlock:Cast()
     end
-    if S.PrismaticBarrier:IsReady() and not Player:Buff(S.PrismaticBarrier) and Player:HealthPercentage() <= mainAddon.db.profile[62].sk2 then
+    if S.PrismaticBarrier:IsCastableP() and not Player:Buff(S.PrismaticBarrier) and Player:HealthPercentage() <= RubimRH.db.profile[62].sk2 then
         return S.PrismaticBarrier:Cast()
     end
-    return mainAddon.Shared()
+    return RubimRH.Shared()
 end
-mainAddon.Rotation.SetPASSIVE(62, PASSIVE)
+RubimRH.Rotation.SetPASSIVE(62, PASSIVE)
