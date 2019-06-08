@@ -1215,6 +1215,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			------------------
 			-- Profil system
 			------------------
+			
+			
 			local profileList = { }
 			
 			-- Dropdown choice list
@@ -1245,6 +1247,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			end
 			local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
 			
+			
+			if RubimRH.playerSpec == 105 then
 			----------------------------
 			-- HEALER SLIDERS 
 			----------------------------
@@ -1387,6 +1391,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 			
 			--------------------
+			------ DRUID -------
+			--------------------
+			--if RubimRH.playerSpec == 105 then
+			--------------------
 			-- Rejuvenation Raid             
             StdUi:GlueTop(raid_rejuv_slider, tab.frame, 50, -50);
             raid_rejuv_slider:SetPrecision( 0 );
@@ -1493,8 +1501,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_regro_slider)
-	
-	
+	      
+		  end
+	      -- The end of spec = resto druid
 	
 	-- The end of Healer tab --
 	end 
