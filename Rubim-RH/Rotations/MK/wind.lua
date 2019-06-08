@@ -338,6 +338,14 @@ end
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
 	
+    if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
+
+    if Player:IsChanneling() or Player:IsCasting() then
+        return 0, 236353
+    end
+	
 if RubimRH.TargetIsValid() then
 
     -- spear_hand_strike,if=target.debuff.casting.react
