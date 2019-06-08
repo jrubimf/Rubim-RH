@@ -257,7 +257,7 @@ local function APL()
         end
 
         --Crusader Strike
-        if Player:CanAttack(Target) and S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() then
+        if S.CrusaderStrike:IsReady("Melee") and S.CrusadersMight:IsAvailable() then
             return S.CrusaderStrike:Cast()
         end
 
