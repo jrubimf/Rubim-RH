@@ -19,6 +19,7 @@ Modules\CustomSpells.lua
 Modules\CustomUnit.lua
 Modules\BossMods.lua
 Modules\MultiUnits.lua
+Modules\AzeriteEssences.lua
 Modules\Enemies.lua
 Modules\Debug.lua
 Modules\Icons.lua

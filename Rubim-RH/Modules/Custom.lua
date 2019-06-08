@@ -798,3 +798,40 @@ function RubimRH.AskedForBop()
 	    return false
     end		
 end
+
+--- Core DB Saved Var
+-- @usage Automata.GetDB('core', 'icon')
+function RubimRH.GetDB( option, key )
+    local tempStr = "return RubimRH.db.profile." .. option .. "." .. key
+    local temp = loadstring( tempStr )( )
+    
+    if not temp then
+        RubimRH.Print( "Error: " .. tempStr )
+        return
+    end
+    
+    return temp
+end
+
+--- Class DB Saved Var
+-- @usage RubimRH.GetClassDB(250, 'VP').Value
+function RubimRH.GetClassDB( class, key )
+    if type( key ) == "string" then
+        key = [[']] .. key .. [[']]
+    end
+    
+    --[[
+        if RubimRH.db.profile.selectedProfile then
+        local tempStr = "return RubimRH.db.profile.classprofile[".. RubimRH.db.profile.selectedProfile .. "]" .. "[" .. class .. "][" .. key .. "]"
+    end--]]
+    
+    local tempStr = "return RubimRH.db.profile[" .. class .. "][" .. key .. "]"
+    local temp = loadstring( tempStr )( )
+    
+    if not temp then
+        RubimRH.Print( "Error: " .. tempStr )
+        return
+    end
+    
+    return temp
+end

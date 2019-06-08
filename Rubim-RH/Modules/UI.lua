@@ -839,7 +839,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueTop(st, tab.frame, 2, -130);                
                         
             
-            --  Custom profils interrupts v2 part 1               
+			------------------
+			-- Interrupts Profils
+			------------------               
             local interruptProfilschoice = {
                 { text = 'Mythic+', value = "Mythic+" },
                 { text = 'PvP', value = "PvP" },
@@ -901,11 +903,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
             StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');    
             
-            
-            -- Custom profils interrupts part 2
-            -- = ""
-
-            
+                       
             local function addSpell(spellID)
                 local name = nil;
                 local icon, castTime, minRange, maxRange, spellId;
@@ -1203,15 +1201,196 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
         end
         
         if tab.title == "Healer" then
-            local heal_title = StdUi:FontString(tab.frame, 'Healer Options');
+            
+            local heal_title = StdUi:FontString(tab.frame, 'Healer Configuration');
             StdUi:GlueTop(heal_title, tab.frame, 0, -10);
-            local gn_separator = StdUi:FontString(tab.frame, '===================');
-            StdUi:GlueTop(heal_title, gn_separator, 0, -12);
+            local heal_separator = StdUi:FontString(tab.frame, '===================');
+            StdUi:GlueTop(heal_separator, heal_title, 0, -12);
+			
+			
+			
 
-            -- content here
+			
+			
+			------------------
+			-- Profil system
+			------------------
+			local profileList = { }
+			
+			-- Dropdown choice list
+            local profileDropdown = StdUi:Dropdown(tab.frame, 100, 20, profileList);
+            profileDropdown:SetPlaceholder('Selected Profil');
+            StdUi:GlueTop(profileDropdown, tab.frame, 0, -40, 'LEFT');
+            local function update_profileList( )
+                profileList = { }
+                for k, v in pairs(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]) do
+                    table.insert( profileList, { text = k, value = k })
+                end
+                profileDropdown:SetOptions( profileList )
+            end
+            update_profileList( )
+			
+			
+			--[[function RubimRH.RefreshSettingsList()
+                local data = {};
+				for i = 1, #sliders, 2 do
+                    table.insert(data, sliders(i));
+					currentslider = sliders(i);
+					currentslider:SetData(data);
+					currentslider:ClearSelection();
+                end
+            end]]--
+			if RubimRH.db.profile.mainOption.selectedProfile == nil then
+			   RubimRH.db.profile.mainOption.selectedProfile = "Default"			
+			end
+			local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
+			-- raid rejuv
+            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			
+            profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
+            function profileDropdown:OnValueChanged( value, text )
+			    
+                --Saving the current profile to another table.
+                RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]
+                
+                --Setting the select profile.
+                RubimRH.db.profile[RubimRH.playerSpec] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][value]
+                RubimRH.db.profile.mainOption.selectedProfile = value
+                RubimRH.Print( 'Profile Changed to: ' .. value )
+				local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				--refresh the current sliders
+				raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
+				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
+               --local point, _, _, xOfs, yOfs = classMenu_WINDOW:GetPoint( )
+                --classMenu_WINDOW:Hide( )
+                --RubimRH.ClassMenu( 'secondTab', point, xOfs, yOfs )
+            end
+            RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec] 
+            
+			-- Profil settings button - OK
+            local profileSettingsButton = StdUi:Button(tab.frame, 80, 30, 'Profile Settings' );
+			StdUi:GlueTop(profileSettingsButton, tab.frame, 0, -80, 'LEFT');
+            profileSettingsButton:SetScript( 'OnClick', function( )
+                StdUi.config.backdrop.panel = { r = 0.2, g = 0.2, b = 0.2, a = 1 }
+                local window = StdUi:Window(tab.frame, 'Profile Settings', 300, 150 );
+                --local pRI = StdUi:PanelWithLabel(window, 80, 40, nil, 'GlueRight, Inside');
+                local SelectedProfileText = StdUi:FontString( window, "Selected Profile: " .. RubimRH.db.profile.mainOption.selectedProfile );
+                local createButton = StdUi:Button( window, 200, 20, 'Create Profile' );
+                local createButtonTT = StdUi:FrameTooltip( createButton, 'Create a new profile using the name on the EditBox below.', 'tooltipDropDown', 'TOPRIGHT', true );
+                local deleteButton = StdUi:Button( window, 200, 20, 'Delete Profile' );
+                local createButtonTT = StdUi:FrameTooltip( deleteButton, 'Delete a profile using the name on the EditBox below.', 'tooltipDropDown', 'TOPRIGHT', true );
+                local createNameEditbox = StdUi:EditBox( window, 150, 24, '-- Profile Name --', stringValidator );
+                local createNameEditboxTT = StdUi:FrameTooltip( createNameEditbox, 'Sets an profile to create or delete. Only Alphanumeric.', 'tooltipDropDown', 'TOPRIGHT', true );
+                
+                createButton:SetScript( 'OnClick', function( )
+                    local Name = createNameEditbox.value
+                    if Name and not Name:match( "%W" ) and Name ~= 'Default' and not RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] then
+                        function deepcopy( orig )
+                            local orig_type = type( orig )
+                            local copy
+                            if orig_type == 'table' then
+                                copy = { }
+                                for orig_key, orig_value in next, orig, nil do
+                                    copy[ deepcopy( orig_key )] = deepcopy( orig_value )
+                                end
+                                setmetatable( copy, deepcopy( getmetatable( orig )))
+                            else -- number, string, boolean, etc
+                                copy = orig
+                            end
+                            return copy
+                        end
+                        RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] = deepcopy(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]['Default'])
+                        RubimRH.Print("Created Profile: " .. Name)
+                        update_profileList( )
+                    end
+                end );
+                
+                deleteButton:SetScript( "OnClick", function( )
+                    local Name = createNameEditbox.value
+                    if Name and not Name:match( "%W" ) and Name ~= 'Default' and RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] then
+                        RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] = nil
+                        RubimRH.Print("Deleted Profile: " .. Name)
+                        
+                        if Name == RubimRH.db.profile.mainOption.selectedProfile then
+                            profileDropdown:SetValue('Default', 'Default')
+                        end
+                        update_profileList( )
+                    end
+                end );
+                
+                local function stringValidator( self )
+                    local text = self:GetText( );
+                    
+                    if text:match( "%W" ) then
+                        StdUi:MarkAsValid( self, false ); -- red edge
+                        RubimRH.Print( "Only Characters and Numbers." )
+                        return false;
+                    else
+                        self.value = text;
+                        StdUi:MarkAsValid( self, true );
+                        return true;
+                    end
+                end
+                
+                --window:SetPoint('CENTER', classMenu_WINDOW, 'CENTER', 524, 0);
+                
+                StdUi:EasyLayout( window, { padding = { top = 40 }});
+                window:AddRow( ):AddElement( SelectedProfileText );
+                window:AddRow( ):AddElements( createButton, deleteButton, { margin = { top = 0 }, column = '6' });
+                window:AddRow( ):AddElement( createNameEditbox );
+                
+                window:Hide( )
+                window:SetScript( 'OnShow', function( of )
+                    of:DoLayout( );
+                end );
+                window:Show( )
+                
+                window:SetPoint( 'TOPRIGHT', classMenu_WINDOW, 'TOPRIGHT', 310, 0 );
+            end )
+			
+			------------------
+			-- Healers UI
+			------------------
+			local sliders = { }
+			--local dbARG1, dbARG2, dbARG3 = 'mainOption', k
+			--local config = RubimRH.GetDB( dbARG1)[ dbARG3 ]
+	
+	    --for i, config in pairs( RubimRH.db.profile[ RubimRH.playerSpec ]) do
+			
+            --local key = i
+            --local dbValue = RubimRH.GetClassDB( RubimRH.playerSpec, key ).Value
+			local Name = RubimRH.db.profile.mainOption.selectedProfile
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+            
+            StdUi:GlueTop(raid_rejuv_slider, tab.frame, 0, -100);
+            raid_rejuv_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_rejuv_slider, "Rejuvenation : " .. datavalue["raid_rejuv"]["value"], "TOP" );
+            --if Tooltip then
+            --    StdUi:FrameTooltip( raid_rejuv_slider, Tooltip, 'TOPLEFT', 'TOPRIGHT', true );
+            --end
+            raid_rejuv_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_rejuv_slider.label:SetFont( raid_rejuv_slider.label:GetFont( ), 10 )
+            raid_rejuv_slider.label:SetWidth( 0 )
+            --if config.Tooltip then
+            --    StdUi:FrameTooltip( raid_rejuv_slider, config.Tooltip, 'TOPLEFT', 'TOPRIGHT', true );
+            --end
 
-        end
-        
+            raid_rejuv_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+                --RubimRH.GetClassDB( RubimRH.playerSpec, key ).Value = value
+				datavalue["raid_rejuv"]["value"] = value
+				print(datavalue["raid_rejuv"]["value"])
+				--RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name].raid_rejuv = value
+                --dbValue = value
+                raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
+				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
+				
+            end;
+            table.insert(sliders, raid_rejuv_slider)						
+        --end
+			
+		
+     end   
 		-- MSG Addon things
         if tab.title == "MSG Actions" then
 		

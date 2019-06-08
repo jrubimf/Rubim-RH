@@ -7,6 +7,7 @@
 	<Script file="StdUiUtil.lua"/>
 	<Script file="StdUiLayout.lua"/>
 	<Script file="StdUiGrid.lua"/>
+	<Script file="StdUiBuilder.lua"/>
 	<!--Widgets-->
 	<Script file="widgets\Basic.lua"/>
 	<Script file="widgets\Window.lua"/>
@@ -23,5 +24,6 @@
 	<Script file="widgets\ProgressBar.lua"/>
 	<Script file="widgets\ColorPicker.lua"/>
 	<Script file="widgets\Tab.lua"/>
+	<Script file="widgets\Spell.lua"/>
 	<Script file="widgets\ContextMenu.lua"/>
 </Ui>

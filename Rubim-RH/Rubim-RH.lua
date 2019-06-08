@@ -101,6 +101,11 @@ RubimRH.Rotation = {}
 RubimRH.Rotation.APLs = {}
 RubimRH.Rotation.PASSIVEs = {}
 RubimRH.Rotation.PvP = {}
+RubimRH.CreateConfig = {}
+
+function RubimRH.SetConfig (Spec, APL)
+    RubimRH.CreateConfig[Spec] = APL;
+end
 
 function RubimRH.Rotation.SetAPL (Spec, APL)
     RubimRH.Rotation.APLs[Spec] = APL;
@@ -242,6 +247,27 @@ local defaults = {
             disabledSpellsCleave = {},
             
 			whiteList = true,
+		
+	        selectedProfile = "Default",
+			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider
+			
+			classprofiles = {
+			-- resto druid defaut
+			    [105] = {	
+						["Default"] = {
+						              ["raid_rejuv"] = {value = 70},
+						
+						              },							
+						
+						},
+			},
+			
+			
+			--raid_rejuv = 70,
+			-- Restoration Druid 
+			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider = 70,
+			
+			
 			-- System options
 			dbm = true,
 			
@@ -1292,16 +1318,31 @@ end
 --return true
 --end
 
+
+
 --- ============================   MAIN_ROT   ============================
 function RubimRH.mainRotation(option)
     local Rotation = option or "SingleTarget"
-    if foundError == true then
+  
+	
+	if foundError == true then
         return "ERROR"
     end
 
     if EnabledRotation[RubimRH.playerSpec] ~= true then
         return "ERROR"
     end
+	
+    --RubimRH.CreateConfig[RubimRH.playerSpec]()
+    if RubimRH.db.profile[RubimRH.playerSpec] and not RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] then
+		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] = {}
+		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]["Default"] = RubimRH.db.profile[RubimRH.playerSpec]
+		RubimRH.db.profile.mainOption.selectedProfile = 'Default'
+	end
+
+	if RubimRH.db.profile[RubimRH.playerSpec] and RubimRH.db.profile.mainOption.selectedProfile then
+        RubimRH.db.profile[RubimRH.playerSpec] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
+	end
 
     --endd
     if UnitInVehicle("Player") then
