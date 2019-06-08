@@ -212,6 +212,17 @@ local function APL()
             end
 
         end
+
+        --Judgment Of Light
+        if RubimRH.AoEON() and S.Judgement:IsCastableP() and S.JudgementofLight:IsAvailable() then
+            if LowestAlly("ALL", "HP") <= 95 then
+                ForceHealingTarget("ALL")
+            end
+			
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 95 then
+                return S.Judgement:Cast()
+            end
+        end
 		
         --Bestow Faith
         if S.BestowFaith:IsAvailable() and S.BestowFaith:IsCastableP() then
@@ -242,17 +253,6 @@ local function APL()
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
                 return S.FlashofLight:Cast()
-            end
-        end
-
-        --Judgment Of Light
-        if RubimRH.AoEON() and S.Judgement:IsCastableP() and S.JudgementofLight:IsAvailable() then
-            if LowestAlly("ALL", "HP") <= 95 then
-                ForceHealingTarget("ALL")
-            end
-			
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 95 then
-                return S.Judgement:Cast()
             end
         end
 
