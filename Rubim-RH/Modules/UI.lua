@@ -1244,10 +1244,25 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			   RubimRH.db.profile.mainOption.selectedProfile = "Default"			
 			end
 			local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
-			-- raid rejuv
-            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
 			
-            profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
+			----------------------------
+			-- HEALER SLIDERS 
+			----------------------------
+			
+			-- Raid rejuvenation slider
+            local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			-- Raid rejuvenation slider
+            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			-- Raid rejuvenation slider
+            local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+            
+			
+			
+			
+			
+			
+			
+			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
             function profileDropdown:OnValueChanged( value, text )
 			    
                 --Saving the current profile to another table.
@@ -1258,12 +1273,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.db.profile.mainOption.selectedProfile = value
                 RubimRH.Print( 'Profile Changed to: ' .. value )
 				local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				--refresh the current sliders
+				
+				-------------------
+				-- Sliders Refresh
+				-------------------
 				raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
 				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
-               --local point, _, _, xOfs, yOfs = classMenu_WINDOW:GetPoint( )
-                --classMenu_WINDOW:Hide( )
-                --RubimRH.ClassMenu( 'secondTab', point, xOfs, yOfs )
+				raid_germi_slider.label:SetText("Germination : " .. datavalue["raid_germi"]["value"])
+				raid_germi_slider.editBox:SetValue(datavalue["raid_germi"]["value"])
+				raid_wildg_slider.label:SetText("Wild Growth : " .. datavalue["raid_wildg"]["value"])
+				raid_wildg_slider.editBox:SetValue(datavalue["raid_wildg"]["value"])
+
             end
             RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec] 
             
@@ -1351,47 +1371,73 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			------------------
 			-- Healers UI
 			------------------
-			local sliders = { }
-			--local dbARG1, dbARG2, dbARG3 = 'mainOption', k
-			--local config = RubimRH.GetDB( dbARG1)[ dbARG3 ]
-	
-	    --for i, config in pairs( RubimRH.db.profile[ RubimRH.playerSpec ]) do
-			
-            --local key = i
-            --local dbValue = RubimRH.GetClassDB( RubimRH.playerSpec, key ).Value
+            local sliders = { }
 			local Name = RubimRH.db.profile.mainOption.selectedProfile
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-            
-            StdUi:GlueTop(raid_rejuv_slider, tab.frame, 0, -100);
+			
+			--------------------
+			-- Rejuvenation Raid             
+            StdUi:GlueTop(raid_rejuv_slider, tab.frame, 50, -50);
             raid_rejuv_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_rejuv_slider, "Rejuvenation : " .. datavalue["raid_rejuv"]["value"], "TOP" );
-            --if Tooltip then
-            --    StdUi:FrameTooltip( raid_rejuv_slider, Tooltip, 'TOPLEFT', 'TOPRIGHT', true );
-            --end
             raid_rejuv_slider.label:SetFontObject( GameFontNormalLarge )
             raid_rejuv_slider.label:SetFont( raid_rejuv_slider.label:GetFont( ), 10 )
             raid_rejuv_slider.label:SetWidth( 0 )
-            --if config.Tooltip then
-            --    StdUi:FrameTooltip( raid_rejuv_slider, config.Tooltip, 'TOPLEFT', 'TOPRIGHT', true );
-            --end
-
             raid_rejuv_slider.OnValueChanged = function( _, value)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-                --RubimRH.GetClassDB( RubimRH.playerSpec, key ).Value = value
 				datavalue["raid_rejuv"]["value"] = value
 				print(datavalue["raid_rejuv"]["value"])
-				--RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name].raid_rejuv = value
-                --dbValue = value
                 raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
 				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
 				
             end;
-            table.insert(sliders, raid_rejuv_slider)						
-        --end
+            table.insert(sliders, raid_rejuv_slider)	
+            
+			-------------------
+			-- Germination Raid             
+            StdUi:GlueTop(raid_germi_slider, tab.frame, 50, -100);
+            raid_germi_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_germi_slider, "Germination : " .. datavalue["raid_germi"]["value"], "TOP" );
+            raid_germi_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_germi_slider.label:SetFont( raid_germi_slider.label:GetFont( ), 10 )
+            raid_germi_slider.label:SetWidth( 0 )
+            raid_germi_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_germi"]["value"] = value
+				print(datavalue["raid_germi"]["value"])
+                raid_germi_slider.label:SetText("Germination : " .. datavalue["raid_germi"]["value"])
+				raid_germi_slider.editBox:SetValue(datavalue["raid_germi"]["value"])
+				
+            end;
+            table.insert(sliders, raid_germi_slider)			
 			
-		
-     end   
+    		-------------------
+			-- Wild Growth Raid             
+            StdUi:GlueTop(raid_wildg_slider, tab.frame, 50, -150);
+            raid_wildg_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_wildg_slider, "Wild Growth : " .. datavalue["raid_wildg"]["value"], "TOP" );
+            raid_wildg_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_wildg_slider.label:SetFont( raid_wildg_slider.label:GetFont( ), 10 )
+            raid_wildg_slider.label:SetWidth( 0 )
+            raid_wildg_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_wildg"]["value"] = value
+				print(datavalue["raid_wildg"]["value"])
+                raid_wildg_slider.label:SetText("Wild Growth : " .. datavalue["raid_wildg"]["value"])
+				raid_wildg_slider.editBox:SetValue(datavalue["raid_wildg"]["value"])
+				
+            end;
+            table.insert(sliders, raid_wildg_slider)
+    
+	
+	-- The end of Healer tab --
+	end 
+	 
+	 
+	 
+        -------------------	 
 		-- MSG Addon things
+		-------------------
         if tab.title == "MSG Actions" then
 		
             local msg_title = StdUi:FontString(tab.frame, 'Action Message Macro');
