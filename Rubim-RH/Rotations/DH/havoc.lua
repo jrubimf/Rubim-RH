@@ -124,7 +124,7 @@ S.Metamorphosis.TextureSpellID = { 187827 }
 -- Rotation Var
 local CleaveRangeID = tostring(S.ConsumeMagic:ID()); -- 20y range
 
-local EnemyRanges = {40, 30, 20, 8}
+local EnemyRanges = {40, 30, 20, 10, 8}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
