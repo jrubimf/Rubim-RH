@@ -117,7 +117,7 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     end
     
     if SPELLID == "Cenarion Ward" then 
-        if (CombatTime("player") == 0 or getRealTimeDMG(UNIT) == 0) and
+        if (CombatTime("player") == 0 or RubimRH.getRealTimeDMG(UNIT) == 0) and
         RubimRH.Zone ~= "arena" then -- exception, for arena always pre buff
             total = 88888888888888
         else
