@@ -449,9 +449,7 @@ local function APL ()
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[260].sk1 then
         return S.CrimsonVial:Cast()
     end
-    if QueueSkill() ~= nil then
-        return QueueSkill()
-    end
+
     -- Out of Combat
     if not Player:AffectingCombat() then
         -- Stealth
@@ -497,7 +495,9 @@ local function APL ()
             return Stealth()
         end
     end
-
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     -- actions+=/call_action_list,name=cds
     if CDs() ~= nil then
         return CDs()
