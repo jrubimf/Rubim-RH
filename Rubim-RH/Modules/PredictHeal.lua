@@ -8,8 +8,33 @@ local Item = HL.Item;
 local Focus, MouseOver = Unit.Focus, Unit.MouseOver;
 local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Party, Raid = Unit.Party, Unit.Raid;
-
+local UnitClass, UnitRace, UnitAura, UnitCastingInfo, UnitChannelInfo, UnitName, UnitIsDeadOrGhost, UnitIsFeignDeath, UnitHealth, UnitHealthMax, UnitExists,
+UnitGroupRolesAssigned, UnitEffectiveLevel, UnitIsQuestBoss, UnitLevel, UnitCanAttack, UnitIsEnemy, UnitIsUnit, UnitDetailedThreatSituation, GetUnitSpeed, UnitIsPlayer,
+UnitPower, UnitPowerMax = 
+UnitClass, UnitRace, UnitAura, UnitCastingInfo, UnitChannelInfo, UnitName, UnitIsDeadOrGhost, UnitIsFeignDeath, UnitHealth, UnitHealthMax, UnitExists,
+UnitGroupRolesAssigned, UnitEffectiveLevel, UnitIsQuestBoss, UnitLevel, UnitCanAttack, UnitIsEnemy, UnitIsUnit, UnitDetailedThreatSituation, GetUnitSpeed, UnitIsPlayer,
+UnitPower, UnitPowerMax 
 --- 11.05.2019
+-- Stuff
+-- Buffs TMW
+function RubimRH.Buffs(unitID, spell, source, byID)
+    local dur, duration
+    local filter = "HELPFUL" .. (source and " PLAYER" or "")
+    
+    if type(spell) == "table" then         
+        for i = 1, #spell do            
+            dur, duration = RubimRH.AuraDur(unitID, not byID and strlowerCache[GetSpellInfo(spell[i])] or spell[i], filter)                       
+            if dur > 0 then
+                break
+            end
+        end
+    else
+        dur, duration = RubimRH.AuraDur(unitID, not byID and strlowerCache[GetSpellInfo(spell)] or spell, filter)
+    end   
+    
+    return dur, duration
+end
+
 --- Prediction Healing
 --- ============================= CORE ==============================
 function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)   
@@ -56,7 +81,8 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     end    
     
     if SPELLID == "Regrowth" then
-        if CombatTime("player") == 0 and RubimRH.PvP.Unit(UNIT):HasBuffs(8936, "player") <= RubimRH.CastTime(8936) then
+	    --local Regrowth = 8936
+        if CombatTime("player") == 0 then
             total = 0
         else
             local pre_heal = UnitGetIncomingHeals(UNIT) or 0
@@ -64,9 +90,9 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
             local crit, hot = 1, 1
             if 
             RubimRH.UNITSpec("player", 102) and -- Balance
-            RubimRH.InPvP() and 
+            --RubimRH.InPvP() and 
             -- Protector of the Grove
-            RubimRH.PvPTalentLearn(209730) and
+            --RubimRH.PvPTalentLearn(209730) and
             not UnitIsUnit("player", UNIT) then
                 crit = 2
             end
@@ -91,7 +117,8 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     end
     
     if SPELLID == "Wild Growth" then
-        if CombatTime("player") == 0 and RubimRH.PvP.Unit(UNIT):HasBuffs(48438, "player") <= RubimRH.CastTime(48438) then
+	    --local WildGrowth = 48438
+        if CombatTime("player") == 0 then
             total = 0
         else
             local pre_heal = UnitGetIncomingHeals(UNIT) or 0
@@ -118,7 +145,7 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     
     if SPELLID == "Cenarion Ward" then 
         if (CombatTime("player") == 0 or RubimRH.getRealTimeDMG(UNIT) == 0) and
-        RubimRH.Zone ~= "arena" then -- exception, for arena always pre buff
+        select(2, IsInInstance()) == "arena" then -- exception, for arena always pre buff
             total = 88888888888888
         else
             local pre_heal = UnitGetIncomingHeals(UNIT) or 0
@@ -137,7 +164,7 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
         else
             local pre_heal = UnitGetIncomingHeals(UNIT) or 0
             local raid_hot = 1
-            if RubimRH.Zone ~= "raid" then
+            if Player:IsInRaid() then
                 raid_hot = 2
             end
             total = RubimRH.GetDescription(740)[1] + (RubimRH.GetDescription(740)[2] * 5 * raid_hot) + pre_heal + (HPS*15.1) - (DMG*15.1)
@@ -147,9 +174,10 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
     if SPELLID == "Efflorescence" then 
         local pre_heal = UnitGetIncomingHeals(UNIT) or 0
         local flowers = 0
-        if RubimRH.TalentLearn(207385) then
-            flowers = RubimRH.GetDescription(207385)[1] * variation
-        end
+		--local Efflorescence = 207385
+        --if Efflorescence:IsAvailable() then
+        --    flowers = RubimRH.GetDescription(207385)[1] * variation
+        --end
         total = RubimRH.GetDescription(145205)[1] / 1.8 * 30 + flowers + pre_heal -- + (HPS*30) - (DMG*30)
     end    
     
@@ -158,7 +186,7 @@ function RubimRH.PredictHeal(SPELLID, UNIT, VARIATION)
             total = 88888888888888 -- don't use out of combat
         else
             -- REFRESH ABLE: Wild growth and Lifebloom
-            if RubimRH.PT(UNIT, 48438) and RubimRH.PT(UNIT, 33763) then 
+            if UNIT:DebuffRefreshableCP(48438) and UNIT:DebuffRefreshableCP(33763) then 
                 local SoulOfForest = RubimRH.Buffs("player", 114108, "player") > 0
                 local pre_heal = UnitGetIncomingHeals(UNIT) or 0
                 -- LifeBloom 15sec
