@@ -59,6 +59,8 @@ RubimRH.Spell[262] = {
   PrimalElementalist                    = Spell(117013),
   EyeOfTheStorm                         = Spell(157375), 
   CallLightning                         = Spell(157348),    
+  AstralShift                           = Spell(108271),    
+  
 };
 local S = RubimRH.Spell[262]
 
@@ -500,6 +502,10 @@ local function APL()
 	-- purge (offensive dispell)
     if S.Purge:IsCastableP() and Target:HasStealableBuff() then
       return S.Purge:Cast()
+    end
+	-- Astral Shift
+    if S.AstralShift:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[262].sk2 then
+        return S.AstralShift:Cast()
     end
 	-- defensive dispell
 	--if MouseOver:HasDispelableDebuff("Curse") then

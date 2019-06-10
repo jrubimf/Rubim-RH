@@ -1129,6 +1129,9 @@ local defaults = {
             sk1 = 80,
 			sk1id = HealingSurge,
             sk1tooltip = "Percent HP to use Healing Surge",
+            sk2 = 40,
+			sk2id = 108271,
+            sk2tooltip = "Percent HP to use Astral Shift",
             cooldown = true,
 			useSplashData = "Enabled",
 			
