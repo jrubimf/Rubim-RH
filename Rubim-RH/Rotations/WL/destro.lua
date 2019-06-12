@@ -560,18 +560,22 @@ local function APL()
                 return Inf()
             end
         end
-	-- unending resolve,defensive,player.health<=40
-    if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
-        return S.UnendingResolve:Cast()
-    end  
-	-- Mythic+ - interrupt2 (command demon)
-	if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-		return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
-	end
-	-- Mythic+ - Shadowfury aoe stun test
-    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
-		return S.Shadowfury:Cast()
-    end	
+        -- auto switch target on havoc cast and not player tabbing
+        if S.Havoc:CooldownRemainsP() > 1 and bool(Target:DebuffRemainsP(S.HavocDebuff)) and RubimRH.AoEON() then
+            return 133015
+        end
+    	-- unending resolve,defensive,player.health<=40
+       if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
+            return S.UnendingResolve:Cast()
+        end  
+	    -- Mythic+ - interrupt2 (command demon)
+	    if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+	    	return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+	    end
+	    -- Mythic+ - Shadowfury aoe stun test
+        if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
+	    	return S.Shadowfury:Cast()
+        end	
         -- cataclysm
         if S.Cataclysm:IsCastableP() then
             return S.Cataclysm:Cast()
