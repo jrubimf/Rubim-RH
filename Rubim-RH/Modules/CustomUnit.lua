@@ -223,7 +223,7 @@ local randomSeconds = math.random(0.3, 0.5)
 local randomTimer = GetTime()
 function randomGenerator(option)
     if GetTime() - randomTimer >= 1 then
-        randomInterrupt = math.random(40, 90)
+        randomInterrupt = math.random(RubimRH.db.profile.mainOption.minInterruptValue, RubimRH.db.profile.mainOption.maxInterruptValue)
         randomChannel = math.random(20, 30)
         randomReflect = math.random(75, 90)
         randomSeconds = math.random(0.25, 0.75)

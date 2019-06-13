@@ -253,15 +253,15 @@ local defaults = {
 			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider
 			
 			classprofiles = {
-			-- resto druid defaut
+			    -- resto druid defaut
 			    [105] = {	
 						["Default"] = {
 						
-						              ["raid_rejuv"] = {value = 70},
-						              ["raid_germi"] = {value = 60},
-						              ["raid_wildg"] = {value = 85},
+						              ["raid_rejuv"] = {value = 97},
+						              ["raid_germi"] = {value = 95},
+						              ["raid_wildg"] = {value = 96},
 						              ["raid_cenar"] = {value = 40},
-						              ["raid_efflo"] = {value = 50},
+						              ["raid_efflo"] = {value = 80},
 						              ["raid_regro"] = {value = 40},
 						              ["raid_swift"] = {value = 50},
 						              ["cd_flourish"] = {value = 5},									  
@@ -270,23 +270,19 @@ local defaults = {
 						
 						},
 			},
+
 			
-			
-			--raid_rejuv = 70,
-			-- Restoration Druid 
-			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider = 70,
-			
+			-- Interrupt UI values
+			minInterruptValue = 40,
+			maxInterruptValue = 90,
 			
 			-- System options
-			dbm = true,
-			
-			los = true,
-			
+			dbm = true,			
+			los = true,			
 			fps = true,
 			
 			-- UI color
 			-- Main frame
-			-- default 0.06, 0.05, 0.03, 0.75
 			mainframeColor_r = 0.06,
 			mainframeColor_g = 0.05,
 			mainframeColor_b = 0.03,
