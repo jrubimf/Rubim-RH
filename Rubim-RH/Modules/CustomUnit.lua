@@ -215,13 +215,18 @@ function Unit:MaxSpeed()
     return math.floor(select(2, GetUnitSpeed(self.UnitID)) / 7 * 100)
 end
 
-local randomChannel = math.random(20, 30)
-local randomInterrupt = math.random(40, 70)
+local randomChannel = math.random(5, 15)
+local randomInterrupt = math.random(40, 90)
+local randomReflect = math.random(75, 90)
+local randomSeconds = math.random(0.3, 0.5)
+
 local randomTimer = GetTime()
-local function randomGenerator(option)
+function randomGenerator(option)
     if GetTime() - randomTimer >= 1 then
-        randomInterrupt = math.random(40, 70)
+        randomInterrupt = math.random(40, 90)
         randomChannel = math.random(20, 30)
+        randomReflect = math.random(75, 90)
+        randomSeconds = math.random(0.25, 0.75)
         randomTimer = GetTime()
     end
 
@@ -231,9 +236,77 @@ local function randomGenerator(option)
     if option == "Channel" then
         return randomChannel
     end
+
+    if option == "Seconds" then
+        return randomSeconds
+    end
+
+    if option == "Reflect" then
+        return randomReflect
+    end
 end
 
+--@return int
+function Player:Ping()
+    return select(4, GetNetStats()) or 0
+end
+
+---
+-- @return boolean
+function Unit:CastSeconds()
+    if self:IsCasting() or self:IsChanneling() then
+        return self:CastDuration() * ((HL.GetTime() - self:CastStart()) / (self:CastEnd() - self:CastStart()))
+    end
+    return 0
+end
+---
+-- @return boolean
+function Unit:CastSecondsRemaining()
+    if self:IsCasting() or self:IsChanneling() then
+        return self:CastDuration() - (self:CastDuration() * ((HL.GetTime() - self:CastStart()) / (self:CastEnd() - self:CastStart())))
+    end
+    return 0
+end
+
+--- Interruptible with random generator
 function Unit:IsInterruptible()
+    -- Profils interrupts			
+	local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
+	
+	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
+	    currentList = RubimRH.db.profile.mainOption.mythicList
+	elseif RubimRH.db.profile.mainOption.activeList == "PvP" then
+	    currentList = RubimRH.db.profile.mainOption.pvpList
+	elseif RubimRH.db.profile.mainOption.activeList == "Mixed PvE PvP" then
+		currentList = RubimRH.db.profile.mainOption.mixedList
+	else 
+	    currentList = RubimRH.db.profile.mainOption.customList
+	end	
+	
+	if not self:IsCasting() and not self:IsChanneling() then
+        return false
+    end
+
+    if self:CastingInfo(8) == true or self:ChannelingInfo(7) == true then
+        return false
+    end
+	
+	if currentList[spellId] then
+
+        if self:IsCasting() and self:CastSecondsRemaining() <= 0.500 + Player:Ping() / 1000 then
+            return true
+        end
+
+        if self:IsChanneling() and self:CastSeconds() >= randomGenerator("Seconds") then
+            return true
+        end
+	
+	end
+
+    return false
+end
+
+--[[function Unit:IsInterruptible()
     if self:CastingInfo(8) == true or self:ChannelingInfo(7) == true then
         return false
     end
@@ -288,7 +361,7 @@ function Unit:IsInterruptible()
     end
 	
     return false
-end
+end]]--
 
 local otherTank = Player
 function Unit:IsTank()
