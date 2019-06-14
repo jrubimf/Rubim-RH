@@ -5,7 +5,7 @@ local AceGUI = LibStub("AceGUI-3.0")
 
 
 function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
-    local window = StdUi:Window(UIParent, 'Class Config', 550, 500);
+    local window = StdUi:Window(UIParent, 'Class Config', 450, 500);
 
     window:SetPoint('CENTER');
     
@@ -361,14 +361,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 if RubimRH.playerSpec == Outlaw then
                 local dice = {
                         { text = 'Simcraft', value = "Simcraft" },
-                        { text = 'SoloMode', value = "SoloMode" },
                         { text = '1+ Buff', value = "1+ Buff" },
-                        { text = 'Broadsides', value = "Broadsides" },
-                        { text = 'Buried Treasure', value = "Buried Treasure" },
-                        { text = 'Grand Melee', value = "Grand Melee" },
-                        { text = 'Jolly Roger', value = "Jolly Roger" },
-                        { text = 'Shark Infested Waters', value = "Shark Infested Waters" },
-                        { text = 'Ture Bearing', value = "Ture Bearing" },
+                        { text = 'AoE Strat', value = "AoE Strat" },
                         { text = 'Mythic +', value = "Mythic +" },
                     }
                     local diceRoll = StdUi:Dropdown(tab.frame, 125, 24, dice, nil, nil);
@@ -377,22 +371,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     diceRoll.OnValueChanged = function(self, val)
                     RubimRH.db.profile[RubimRH.playerSpec].dice = val
 
-                    if val == "SoloMode" then
-                         print("Dice profil set on SoloMode")
+                    if val == "AoE Strat" then
+                         print("Dice profil set on AoE Strat")
                     elseif val == "1+ Buff" then
                          print("Dice profil set on 1+ Buff")
-                    elseif val == "Broadsides" then
-                         print("Dice profil set on Broadsides")
-                    elseif val == "Buried Treasure" then
-                         print("Dice profil set on Buried Treasure")
-                    elseif val == "Grand Melee" then
-                         print("Dice profil set on Grand Melee")
-                    elseif val == "Jolly Roger" then
-                         print("Dice profil set on Jolly Roger")
-                    elseif val == "Shark Infested Waters" then
-                         print("Dice profil set on Shark Infested Waters")
-                    elseif val == "Ture Bearing" then
-                         print("Dice profil set on Ture Bearing")
                     elseif val == "Mythic +" then
                          print("Dice profil set on Mythic +")
                     else
@@ -751,33 +733,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local interruptList_title = StdUi:FontString(tab.frame, 'Custom Interrupt');
             StdUi:GlueTop(interruptList_title, tab.frame, 0, -10, 'CENTER');
 
-            -- MIN Interrupt randomizer settings
-            local interruptslider1 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.minInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider1, interruptList_title, -40, -40, 'LEFT');
-            local sliderlabel = StdUi:FontString(tab.frame, "Interrupt min: " .. RubimRH.db.profile.mainOption.minInterruptValue)
-            StdUi:GlueTop(sliderlabel, interruptslider1, 0, 16);
-            StdUi:FrameTooltip(interruptslider1, "What the lowest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
-            function interruptslider1:OnValueChanged(value)
-                value = (math.floor((value * ((100) + 0.5)) / (100)))
-                RubimRH.db.profile.mainOption.minInterruptValue = value
-                interruptslider1 = value
-                sliderlabel:SetText("Interrupt min: " .. RubimRH.db.profile.mainOption.minInterruptValue)
-            end
-			
-            -- MAX Interrupt randomizer settings
-            local interruptslider2 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.maxInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider2, interruptList_title, 90, -40, 'LEFT');
-            local sliderlabel = StdUi:FontString(tab.frame, "Interrupt max: " .. RubimRH.db.profile.mainOption.maxInterruptValue)
-            StdUi:GlueTop(sliderlabel, interruptslider2, 0, 16);
-            StdUi:FrameTooltip(interruptslider2, "What the highest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
-            function interruptslider2:OnValueChanged(value)
-                value = (math.floor((value * ((100) + 0.5)) / (100)))
-                RubimRH.db.profile.mainOption.maxInterruptValue = value
-                interruptslider2 = value
-                sliderlabel:SetText("Interrupt max: " .. RubimRH.db.profile.mainOption.maxInterruptValue)
-            end
-
-		    local function showTooltip(frame, show, spellId)
+            local function showTooltip(frame, show, spellId)
                 if show then
                     GameTooltip:SetOwner(frame);
                     GameTooltip:SetPoint('RIGHT');
@@ -860,10 +816,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             }    
 
-            local st = StdUi:ScrollTable(tab.frame, cols, 5, 38);
+            local st = StdUi:ScrollTable(tab.frame, cols, 5, 35);
             st:EnableSelection(true);
-            StdUi:GlueTop(st, tab.frame, 2, -120);                
-                                    
+            StdUi:GlueTop(st, tab.frame, 2, -130);                
+                        
+            
 			------------------
 			-- Interrupts Profils
 			------------------               
@@ -873,44 +830,61 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Mixed PvE PvP', value = "Mixed PvE PvP" },
                 { text = 'Custom', value = "Custom" },
             }
-            local chooseprofil = StdUi:Dropdown(tab.frame, 120, 24, interruptProfilschoice, nil, nil);
+            local chooseprofil = StdUi:Dropdown(tab.frame, 100, 24, interruptProfilschoice, nil, nil);
                 chooseprofil:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeList);
                 StdUi:AddLabel(tab.frame, chooseprofil, 'Selected Profil', 'TOP');
                 StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);                
-                chooseprofil.OnValueChanged = function(self, val)
+                --st:SetData(data);  
+                --currentList = RubimRH.db.profile.mainOption.mythicList
+                 chooseprofil.OnValueChanged = function(self, val)
+                --RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice = val
+                --local currentprofil = "Mythic+"
+                --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
+                --RubimRH.RefreshList()
                 
                 if val == "Mythic+" then
                     print("Interrupt profil set on Mythic+")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.db.profile.mainOption.activeList = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
                     currentList = RubimRH.db.profile.mainOption.mythicList
                     RubimRH.RefreshList()
 
                     
                 elseif val == "PvP" then
                     print("Interrupt profil set on PvP")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.db.profile.mainOption.activeList = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.pvpList
                     currentList = RubimRH.db.profile.mainOption.pvpList
                     RubimRH.RefreshList()
 
                     
                 elseif val == "Mixed PvE PvP" then
                     print("Interrupt profil set on Mixed PvE PvP")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.db.profile.mainOption.activeList = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
                     currentList = RubimRH.db.profile.mainOption.mixedList
                     RubimRH.RefreshList()
                
-                elseif val == "Custom" then
+               elseif val == "Custom" then
                     print("Interrupt profil set on Custom")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.db.profile.mainOption.activeList = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
                     currentList = RubimRH.db.profile.mainOption.customList
                     RubimRH.RefreshList()
                 else
-                    print("An error as occured, no data :( Try to delete Rubim.lua in your WTF folder")
+                    print("An error as occured, no data :(")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.RefreshList()
+
                 end
                 return currentList
             end
-            StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');               
+            StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');    
+            
                        
             local function addSpell(spellID)
                 local name = nil;
@@ -931,7 +905,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local data = {};
             -- Checking for current list not nil
             if currentList ~= nil then 
-                -- insert currentList values
+                -- If currentList not nil insert currentList values
                 for i, spell in pairs(currentList) do
                     table.insert(data, addSpell(i));
                 end
@@ -1040,7 +1014,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
         if tab.title == "System" then
             local system_title = StdUi:FontString(tab.frame, 'System Configuration');
             StdUi:GlueTop(system_title, tab.frame, 0, -10);
-            local gn_separator = StdUi:FontString(tab.frame, '====== WORK IN PROGRESS =======');
+            local gn_separator = StdUi:FontString(tab.frame, '===================');
             StdUi:GlueTop(gn_separator, system_title, 0, -12);
 
             local system1_0 = StdUi:Checkbox(tab.frame, 'FPS Optimization');
@@ -1091,18 +1065,38 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 StdUi:AddLabel(tab.frame, sys_lang, 'Selected Language', 'TOP');
                 StdUi:FrameTooltip(sys_lang, 'Choose between languages', 'TOPLEFT', 'TOPRIGHT', true);                
                  sys_lang.OnValueChanged = function(self, val)
+
                 
                 if val == "Français" then
                     print("Langue définie sur Français")
-                    RubimRH.db.profile.mainOption.activeLanguage = val                    
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+                    RubimRH.db.profile.mainOption.activeLanguage = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mythicList
+                    --currentLanguage = RubimRH.db.profile.mainOption.french
+                    --RubimRH.RefreshUI()
+
+                    
                 elseif val == "English" then
                     print("Language set on English")
-                    RubimRH.db.profile.mainOption.activeLanguage = val                    
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+                    RubimRH.db.profile.mainOption.activeLanguage = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.pvpList
+                    --currentLanguage = RubimRH.db.profile.mainOption.english
+                    --RubimRH.RefreshUI()
+
+                    
                 elseif val == "Pусский" then
                     print("Язык установлен на русский")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
                     RubimRH.db.profile.mainOption.activeLanguage = val
+                    --RubimRH.db.profile.mainOption.currentList = RubimRH.db.profile.mainOption.mixedList
+                    --currentLanguage = RubimRH.db.profile.mainOption.russian
+                    --RubimRH.RefreshUI()
                 else
                     print("An error as occured, no data :(")
+                    --currentprofil = RubimRH.db.profile[RubimRH.playerSpec].interruptProfilschoice
+                    --RubimRH.RefreshUI()
+
                 end
                 --return currentLanguage
             end
@@ -1122,15 +1116,46 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             			
 			window:SetBackdropColor(r, g, b, a)    
             local colorInput = StdUi:ColorInput(tab.frame, '', 40, 40, r, g, b, a);
-            StdUi:FrameTooltip(colorInput, 'Click to open the color picker', 'TOPLEFT', 'TOPRIGHT', true);                
-            StdUi:GlueTop(colorInput, system1_2, 100, -85, 'LEFT');
+            StdUi:FrameTooltip(colorInput, 'Click to open the color picker', 'TOPLEFT', 'TOPRIGHT', true);        
+            --colorInput:GetColor('rgba')            
+            StdUi:GlueTop(colorInput, system1_2, 72, -85, 'LEFT');
+            --colorInput:SetColor(r, g, b, a)
             function colorInput:OnValueChanged(r, g, b, a)
                 window:SetBackdropColor(r, g, b, a)                
                 RubimRH.db.profile.mainOption.mainframeColor_r = r 
                 RubimRH.db.profile.mainOption.mainframeColor_g = g 
                 RubimRH.db.profile.mainOption.mainframeColor_b = b 
                 RubimRH.db.profile.mainOption.mainframeColor_a = a 
-            end			
+            end
+			
+            --[[-- Color Picker text
+            local colortitle2 = StdUi:FontString(tab.frame, 'Main UI color :')
+            StdUi:GlueTop(colortitle2, system1_2, 0, -120, 'LEFT');
+            
+            local rr,gg,bb,aa = RubimRH.db.profile.mainOption.textColor_r,    RubimRH.db.profile.mainOption.textColor_g, RubimRH.db.profile.mainOption.textColor_b, RubimRH.db.profile.mainOption.textColor_a                         
+            -- replace by text 
+			--tabFrame:SetTextColor(rr, gg, bb, aa)
+			tab.title:SetTextColor(rr, gg, bb, aa)
+				window:SetTextColor(rr, gg, bb, aa)
+			--window:SetBackdropColor(r, g, b, a)    
+            local colorInputtext = StdUi:ColorInput(tab.frame, '', 40, 40, rr, gg, bb, aa);
+            StdUi:FrameTooltip(colorInputtext, 'Click me to change the main UI color', 'TOPLEFT', 'TOPRIGHT', true);        
+            --colorInput:GetColor('rgba')            
+            StdUi:GlueTop(colorInputtext, system1_2, 72, -105, 'LEFT');
+            --colorInput:SetColor(r, g, b, a)
+            function colorInputtext:OnValueChanged(rr, gg, bb, aa)
+                --replace by text
+				tab.title:SetTextColor(rr, gg, bb, aa)
+				--tabFrame:SetTextColor(rr, gg, bb, aa)
+				window:SetTextColor(rr, gg, bb, aa)
+				--SetTextColor
+				--window:SetBackdropColor(r, g, b, a)                
+                RubimRH.db.profile.mainOption.textColor_r = rr 
+                RubimRH.db.profile.mainOption.textColor_g = gg 
+                RubimRH.db.profile.mainOption.textColor_b = bb 
+                RubimRH.db.profile.mainOption.textColor_a = aa 
+            end]]--
+			
 
 			-- Load defaults settings
             local function Loaddefaults()
@@ -1165,6 +1190,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueTop(heal_separator, heal_title, 0, -12);
 			
 			
+			
+
+			
+			
 			------------------
 			-- Profil system
 			------------------
@@ -1185,7 +1214,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
             update_profileList( )
 			
-			-- Need to implement a function to refresh all sliders 
+			
 			--[[function RubimRH.RefreshSettingsList()
                 local data = {};
 				for i = 1, #sliders, 2 do
@@ -1206,18 +1235,23 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- HEALER SLIDERS 
 			----------------------------
 			
-			-- Raid germination slider
+			-- Raid rejuvenation slider
             local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_germi"]["value"], 1, 100 );
 			-- Raid rejuvenation slider
             local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			-- Raid wild growth slider
+			-- Raid rejuvenation slider
             local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_wildg"]["value"], 1, 100 );
 			-- Raid cenarion slider
             local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			-- Raid efflorescence slider
+			-- Raid efflroescence slider
             local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_efflo"]["value"], 1, 100 );
 			-- Raid regrowth slider
-            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );			
+            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );
+			
+			
+			
+			
+			
 			
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
             function profileDropdown:OnValueChanged( value, text )
@@ -1248,8 +1282,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
 
             end
-			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]      
-			
+			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]
+           -- RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] --RubimRH.db.profile[RubimRH.playerSpec] 
+            
 			-- Profil settings button - OK
             local profileSettingsButton = StdUi:Button(tab.frame, 80, 30, 'Profile Settings' );
 			StdUi:GlueTop(profileSettingsButton, tab.frame, 0, -80, 'LEFT');
