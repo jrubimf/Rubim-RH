@@ -391,13 +391,13 @@ local function APL()
         return S.Outbreak:Cast()
     end
     -- call_action_list,name=cooldowns
-    if (true) then
+    if (true) and RubimRH.CDsON() then
         if Cooldowns() ~= nil then
             return Cooldowns()
         end
     end
     -- run_action_list,name=aoe,if=active_enemies>=2
-    if (active_enemies() >= 2) then
+    if (active_enemies() >= 2) and RubimRH.AoEON() then
         return Aoe();
     end
     -- call_action_list,name=generic
