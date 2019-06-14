@@ -305,6 +305,18 @@ function Unit:IsInterruptible()
 
     return false
 end
+-- Is the current unit a boss ?
+local function UnitIsBoss(unitID)
+    for i = 1, MAX_BOSS_FRAMES do 
+        if UnitIsUnit(unitID, "boss" .. i) then 
+            return true 
+        end 
+    end 
+    return false 
+end 
+function RubimRH.UNITBoss(unitID)
+    return RubimRH.UNITLevel(unitID) == -1 or UnitEffectiveLevel(unitID) == -1 or UnitIsQuestBoss(unitID) or UnitIsBoss(unitID) or false 
+end 
 
 --[[function Unit:IsInterruptible()
     if self:CastingInfo(8) == true or self:ChannelingInfo(7) == true then
