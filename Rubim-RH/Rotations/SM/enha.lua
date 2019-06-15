@@ -318,7 +318,7 @@ local function APL()
       return S.Rockbiter:Cast()
     end
     -- crash_lightning,if=talent.crashing_storm.enabled&variable.OCPool_CL
-    if S.CrashLightning:IsCastableP() and S.CrashingStorm:IsAvailable() and bool(VarOcpoolCl) then
+    if S.CrashLightning:IsCastableP() and active_enemies() > 1 and S.CrashingStorm:IsAvailable() and bool(VarOcpoolCl) then
       return S.CrashLightning:Cast()
     end
     -- lava_lash,if=variable.OCPool_LL&variable.furyCheck_LL
@@ -357,7 +357,7 @@ local function APL()
       return S.Stormstrike:Cast()
     end
     -- crash_lightning,if=active_enemies>=3&variable.furyCheck_CL
-    if S.CrashLightning:IsCastableP() and Cache.EnemiesCount[8] >= 3 and bool(VarFurycheckCl) then
+    if S.CrashLightning:IsCastableP() and active_enemies() > 1 and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
     -- lightning_bolt,if=talent.overcharge.enabled&active_enemies=1&variable.furyCheck_LB&maelstrom>=40
