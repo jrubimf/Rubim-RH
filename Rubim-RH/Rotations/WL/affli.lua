@@ -657,7 +657,7 @@ end
 RubimRH.Rotation.SetAPL(265, APL)
 
 local function PASSIVE()
-    print(RubimRH.DBM_PullTimer());
+    --print(RubimRH.DBM_PullTimer());
     return RubimRH.Shared()
 end
 
