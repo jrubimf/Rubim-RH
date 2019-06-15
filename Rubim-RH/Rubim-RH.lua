@@ -890,8 +890,11 @@ local defaults = {
 
 
         },
+		-- Protection Paladin
         [66] = {
             cooldown = true,
+			-- Avenger Shield defaut value
+			ASInterrupt = true,
 
             sk1 = 85,
             sk1id = 184092,

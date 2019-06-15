@@ -136,6 +136,18 @@ function RubimRH.PerfectPull()
     print("|cFF69CCF0Perfect Pull" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.PerfectPull))
 end
 
+-- Prot Paladin checkbox value change handler
+function RubimRH.ASInterrupt()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[66].ASInterrupt == false then
+        RubimRH.db.profile[66].ASInterrupt = true
+
+    else
+        RubimRH.db.profile[66].ASInterrupt = false
+    end
+    print("|cFF69CCF0Avenger's Shield interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].ASInterrupt))
+end
+
 function RubimRH.PrecombatToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.Precombat == false then
@@ -271,6 +283,18 @@ function RubimRH.PerfectPullON()
         return false
     end
     if RubimRH.db.profile.mainOption.PerfectPull == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Prot Paladin Avenger Shield UI function
+function RubimRH.ASInterruptON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[66].ASInterrupt == true then
         return true
     else
         return false

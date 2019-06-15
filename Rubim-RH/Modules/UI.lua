@@ -343,6 +343,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     sk_2_0Label:SetText(sk3id .. sk3)
                 end
             end
+			
+            -----------------------
+			--- CLASS SPECIFICS ---
+            -----------------------
 
             --ROGUE Sub
             if RubimRH.playerSpec == Subtlety or RubimRH.playerSpec == Assassination or RubimRH.playerSpec == Outlaw then
@@ -407,13 +411,26 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
             
             end
-            
-            
-            
 
-            
-            
-            --DESTRUCTION LOCK
+
+			    --PROT PALADIN
+                if RubimRH.playerSpec == PProtection then
+				    -- Create the checkbox for Avenger Shield interrupt
+                    local ASInterruptbutton = StdUi:Checkbox(tab.frame, 'Avenger\'s Shield interrupt only');                    
+					-- Set this checkbox a tooltip
+					StdUi:FrameTooltip(ASInterruptbutton, 'This will force Avenger\s Shield to be used as interrupt', 'TOPLEFT', 'TOPRIGHT', true);                    
+					-- Set default value (checked, unchecked)and save it to db 
+					ASInterruptbutton:SetChecked(RubimRH.db.profile[66].ASInterrupt)                    
+					-- Set positionning
+					StdUi:GlueBelow(ASInterruptbutton, gn_4_0, 0, -150, 'LEFT');
+                    -- What to do on value change                    
+					function ASInterruptbutton:OnValueChanged(value)
+					    -- See Rubim-RHc.lua 
+                        RubimRH.ASInterrupt()
+                    end
+                end
+				
+                --DESTRUCTION LOCK
                 if RubimRH.playerSpec == Destruction then
                     local color = {
                         { text = 'Auto', value = 1 },
