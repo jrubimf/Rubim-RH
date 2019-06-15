@@ -162,7 +162,7 @@ local function APL()
             return S.FrozenOrb:Cast()
         end
         -- blizzard
-        if S.Blizzard:IsReadyP() then
+        if S.Blizzard:IsReadyP() and active_enemies() > 2 then
             return S.Blizzard:Cast()
         end
         -- comet_storm
@@ -271,7 +271,7 @@ local function APL()
             return S.FrozenOrb:Cast()
         end
         -- blizzard,if=active_enemies>2|active_enemies>1&cast_time=0&buff.fingers_of_frost.react<2
-        if S.Blizzard:IsReadyP() and (Player:EnemiesAround(35) > 2 or Player:EnemiesAround(35) > 1 and S.Blizzard:CastTime() == 0 and Player:BuffStackP(S.FingersofFrostBuff) < 2) then
+        if S.Blizzard:IsReadyP() and active_enemies() > 2 and (Player:EnemiesAround(35) > 2 or Player:EnemiesAround(35) > 1 and S.Blizzard:CastTime() == 0 and Player:BuffStackP(S.FingersofFrostBuff) < 2) then
             return S.Blizzard:Cast()
         end
         -- ice_lance,if=buff.fingers_of_frost.react
@@ -291,7 +291,7 @@ local function APL()
             return S.RayofFrost:Cast()
         end
         -- blizzard,if=cast_time=0|active_enemies>1
-        if S.Blizzard:IsReadyP() and (S.Blizzard:CastTime() == 0 or Player:EnemiesAround(35) > 1) then
+        if S.Blizzard:IsReadyP() and active_enemies() > 2 and (S.Blizzard:CastTime() == 0 or Player:EnemiesAround(35) > 1) then
             return S.Blizzard:Cast()
         end
         -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
