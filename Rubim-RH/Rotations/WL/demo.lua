@@ -487,49 +487,49 @@ local function FutureShard()
         if not Player:IsCasting() then
                 return Shard
         else
-                if Player:IsCasting(S.NetherPortal) then
-                        return Shard - 1
-                elseif Player:IsCasting(S.CallDreadStalkers) and not Player:BuffP(S.DemonicCallingBuff) then
-                        return Shard - 2
+            if Player:IsCasting(S.NetherPortal) then
+                return Shard - 1
+            elseif Player:IsCasting(S.CallDreadStalkers) and not Player:BuffP(S.DemonicCallingBuff) then
+                return Shard - 2
 	        elseif Player:IsCasting(S.BilescourgeBombers) then
-                        return Shard - 2
-                elseif Player:IsCasting(S.SummonVilefiend) then
-                        return Shard - 1
-                elseif Player:IsCasting(S.SummonFelguard) then
-                        return Shard - 1
-		elseif Player:IsCasting(S.GrimoireFelguard) then
-                        return Shard - 1
-		elseif Player:IsCasting(S.CallDreadStalkers) and Player:BuffP(S.DemonicCallingBuff) then
-                        return Shard - 1
-                elseif Player:IsCasting(S.SummonDemonicTyrant) and S.BalefulInvocation:AzeriteEnabled() then
-                        return 5
-                elseif Player:IsCasting(S.HandOfGuldan) then
-                        if Shard > 3 then
-                                return Shard - 3
-                        else
-                                return 0
-                        end
-                elseif Player:IsCasting(S.Demonbolt) then
-                        if Shard >= 4 then
-                                return 5
-                        else
-                                return Shard + 2
-                        end
-                elseif Player:IsCasting(S.ShadowBolt) then
-                        if Shard == 5 then
-                                return Shard
-                        else
-                                return Shard + 1
-                        end
-		elseif Player:IsCasting(S.SoulStrike) then
-                        if Shard == 5 then
-                                return Shard
-                        else
-                                return Shard + 1
-                        end
+                return Shard - 2
+            elseif Player:IsCasting(S.SummonVilefiend) then
+                return Shard - 1
+            elseif Player:IsCasting(S.SummonFelguard) then
+                return Shard - 1
+		    elseif Player:IsCasting(S.GrimoireFelguard) then
+                return Shard - 1
+		    elseif Player:IsCasting(S.CallDreadStalkers) and Player:BuffP(S.DemonicCallingBuff) then
+                return Shard - 1
+            elseif Player:IsCasting(S.SummonDemonicTyrant) and S.BalefulInvocation:AzeriteEnabled() then
+                return 5
+            elseif Player:IsCasting(S.HandOfGuldan) then
+                if Shard > 3 then
+                    return Shard - 3
                 else
-                        return Shard
+                    return 0
                 end
+            elseif Player:IsCasting(S.Demonbolt) then
+                if Shard >= 4 then
+                    return 5
+                else
+                    return Shard + 2
+                end
+            elseif Player:IsCasting(S.ShadowBolt) then
+                if Shard == 5 then
+                    return Shard
+                else
+                    return Shard + 1
+                end
+		    elseif Player:IsCasting(S.SoulStrike) then
+                if Shard == 5 then
+                    return Shard
+                else
+                    return Shard + 1
+                end
+            else
+                return Shard
+            end
         end
 end
 
@@ -601,11 +601,11 @@ local function APL()
   -- Shard generator
   BuildAShard = function()
         -- soul_strike,if=!talent.demonic_consumption.enabled|time>15|prev_gcd.1.hand_of_guldan&!buff.bloodlust.remains
-        if S.SoulStrike:IsCastableP() and FutureShard() < 5  and (not S.DemonicConsumption:IsAvailable() or HL.CombatTime() > 15 or Player:PrevGCDP(1, S.HandOfGuldan) and not Player:HasHeroism()) then
+        if S.SoulStrike:IsCastableP() and FutureShard() < 5 and (not S.DemonicConsumption:IsAvailable() or HL.CombatTime() > 15 or Player:PrevGCDP(1, S.HandOfGuldan) and not Player:HasHeroism()) then
           return S.SoulStrike:Cast()
         end
         -- shadow_bolt
-        if S.ShadowBolt:IsCastableP() and FutureShard() < 5 then
+        if S.ShadowBolt:IsCastableP() and not Player:IsCasting(S.ShadowBolt) and FutureShard() < 5 then
           return S.ShadowBolt:Cast()
         end
   end
@@ -661,7 +661,7 @@ local function APL()
           return S.HandOfGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-        if S.SummonDemonicTyrant:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
+        if S.SummonDemonicTyrant:IsCastableP() and ((Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) and WildImpsCount() >= 2 and Player:SoulShardsP() <= 1) or WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
           return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
