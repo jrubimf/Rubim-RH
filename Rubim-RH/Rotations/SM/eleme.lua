@@ -226,7 +226,7 @@ local function APL()
     -- augmentation
     -- snapshot_stats
     -- totem_mastery
-    if S.TotemMastery:IsCastableP() and TotemMastery() < 2 then
+    if S.TotemMastery:IsCastableP() and not Player:PrevGCDP(1, S.TotemMastery) and TotemMastery() < 2 then
       return S.TotemMastery:Cast()
     end
     -- earth_elemental,if=!talent.primal_elementalist.enabled
@@ -258,7 +258,7 @@ local function APL()
     -- augmentation
     -- snapshot_stats
     -- totem_mastery
-    if S.TotemMastery:IsCastableP() and TotemMastery() < 2 then
+    if S.TotemMastery:IsCastableP() and not Player:PrevGCDP(1, S.TotemMastery) and TotemMastery() < 2 then
       return S.TotemMastery:Cast()
     end
     -- earth_elemental,if=!talent.primal_elementalist.enabled
@@ -321,11 +321,11 @@ local function APL()
       return S.LavaBurst:Cast()
     end
     -- icefury,if=Cache.EnemiesCount[40].chain_lightning<4&!buff.ascendance.up
-    if S.Icefury:IsCastableP() and (GetEnemiesCount() < 4 and not Player:BuffP(S.AscendanceBuff)) then
+    if S.Icefury:IsCastableP() and GetEnemiesCount() < 4 and not Player:BuffP(S.AscendanceBuff) then
       return S.Icefury:Cast()
     end
     -- frost_shock,if=Cache.EnemiesCount[40].chain_lightning<4&buff.icefury.up&!buff.ascendance.up
-    if S.FrostShock:IsCastableP() and (GetEnemiesCount() < 4 and Player:BuffP(S.IcefuryBuff) and not Player:BuffP(S.AscendanceBuff)) then
+    if S.FrostShock:IsCastableP() and GetEnemiesCount() < 4 and Player:BuffP(S.IcefuryBuff) and not Player:BuffP(S.AscendanceBuff) then
       return S.FrostShock:Cast()
     end
     -- elemental_blast,if=talent.elemental_blast.enabled&Cache.EnemiesCount[40].chain_lightning<4&(!talent.storm_elemental.enabled|cooldown.storm_elemental.remains<120)
@@ -360,7 +360,7 @@ local function APL()
       return S.FlameShock:Cast()
     end
     -- flame_shock,moving=1,target_if=duration<6
-    if S.FlameShock:IsCastableP() and Player:IsMoving() and Target:DebuffRemainsP(S.FlameShockDebuff) <= 6 then
+    if S.FlameShock:IsCastableP() and Target:DebuffRemainsP(S.FlameShockDebuff) <= 6 then
       return S.FlameShock:Cast()
     end
     --actions.single_target+=/earth_shock
@@ -413,7 +413,7 @@ local function APL()
       return S.LightningBolt:Cast()
     end
     -- frost_shock,if=talent.icefury.enabled&talent.master_of_the_elements.enabled&buff.icefury.up&buff.master_of_the_elements.up
-    if S.FrostShock:IsCastableP() and (S.Icefury:IsAvailable() and S.MasteroftheElements:IsAvailable() and Player:BuffP(S.IcefuryBuff) and Player:BuffP(S.MasteroftheElementsBuff)) then
+    if S.FrostShock:IsCastableP() and S.Icefury:IsAvailable() and S.MasteroftheElements:IsAvailable() and Player:BuffP(S.IcefuryBuff) and Player:BuffP(S.MasteroftheElementsBuff) then
       return S.FrostShock:Cast()
     end
     -- lava_burst,if=buff.ascendance.up
@@ -445,7 +445,7 @@ local function APL()
       return S.FlameShock:Cast()
     end
     -- totem_mastery,if=talent.totem_mastery.enabled&(buff.resonance_totem.remains<6|(buff.resonance_totem.remains<(buff.ascendance.duration+cooldown.ascendance.remains)&cooldown.ascendance.remains<15))
-    if S.TotemMastery:IsCastableP() and S.TotemMastery:IsAvailable() and (TotemMastery() < 6 or TotemMastery() < (S.AscendanceBuff:BaseDuration() + S.Ascendance:CooldownRemainsP()) and S.Ascendance:CooldownRemainsP() < 15) then
+    if S.TotemMastery:IsCastableP() and not Player:PrevGCDP(1, S.TotemMastery) and S.TotemMastery:IsAvailable() and (TotemMastery() < 6 or TotemMastery() < (S.AscendanceBuff:BaseDuration() + S.Ascendance:CooldownRemainsP()) and S.Ascendance:CooldownRemainsP() < 15) then
       return S.TotemMastery:Cast()
     end
     -- frost_shock,if=talent.icefury.enabled&buff.icefury.up&(buff.icefury.remains<gcd*4*buff.icefury.stack|buff.stormkeeper.up|!talent.master_of_the_elements.enabled)
@@ -453,7 +453,7 @@ local function APL()
       return S.FrostShock:Cast()
     end
     -- icefury,if=talent.icefury.enabled
-    if S.Icefury:IsCastableP() and (S.Icefury:IsAvailable()) then
+    if S.Icefury:IsCastableP() and S.Icefury:IsAvailable() then
       return S.Icefury:Cast()
     end
     -- lightning_bolt
@@ -465,7 +465,7 @@ local function APL()
       return S.FlameShock:Cast()
     end
     -- flame_shock,moving=1,if=movement.distance>6
-    if S.FlameShock:IsCastableP() and Player:IsMoving() and (movement.distance > 6) then
+    if S.FlameShock:IsCastableP() and Player:IsMoving() then
       return S.FlameShock:Cast()
     end
     -- frost_shock,moving=1
@@ -512,7 +512,7 @@ local function APL()
     --    return S.CleanseSpirit:Cast()
     --end
     -- totem_mastery,if=talent.totem_mastery.enabled&buff.resonance_totem.remains<2
-    if S.TotemMastery:IsCastableP() and (S.TotemMastery:IsAvailable() and TotemMastery() < 2) then
+    if S.TotemMastery:IsCastableP() and not Player:PrevGCDP(1, S.TotemMastery) and (S.TotemMastery:IsAvailable() and TotemMastery() < 2) then
       return S.TotemMastery:Cast()
     end
     -- fire_elemental,if=!talent.storm_elemental.enabled
