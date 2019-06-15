@@ -89,10 +89,11 @@ S.RevivePet.TextureSpellID = { S.MendPet:ID() }
 
 
 -- Items
-if not Item.Hunter then
-    Item.Hunter = { };
-    
-end
+if not Item.Hunter then Item.Hunter = {} end
+Item.Hunter.BeastMastery = {
+  BattlePotionofAgility            = Item(163223)
+};
+local I = Item.Hunter.BeastMastery;
 
 local function PetActive()
     local petActive = false
@@ -110,9 +111,6 @@ local function PetActive()
 
     return petActive
 end
-
-Item.Hunter.BeastMastery = {};
-local I = Item.Hunter.BeastMastery;
 
 -- Rotation Var
 local ShouldReturn;
@@ -213,8 +211,22 @@ local function APL()
         end
       -- snapshot_stats
       -- potion
+	  	-- pre potion no haunt
+        --if I.BattlePotionOfIntellect:IsReady() and not S.Haunt:IsAvailable() and RubimRH.DBM_PullTimer() > S.Haunt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.ShadowBolt:CastTime() + 2 then
+        --    return 967532
+       --end
+      -- cobra_shot,if=cooldown.kill_command.remains>focus.time_to_max
+      if S.CobraShot:IsReady() and Target:Exists() then
+        return S.CobraShot:Cast()
+      end
       -- aspect_of_the_wild,precast_time=1.1,if=!azerite.primal_instincts.enabled
+      --if S.AspectoftheWild:IsCastableP() and Player:BuffDownP(S.AspectoftheWildBuff) and (not S.PrimalInstincts:AzeriteEnabled()) then
+      --  return S.AspectoftheWild:Cast()
+      --end
       -- bestial_wrath,precast_time=1.5,if=azerite.primal_instincts.enabled
+      --if S.BestialWrath:IsCastableP() and Player:BuffDownP(S.BestialWrathBuff) and (S.PrimalInstincts:AzeriteEnabled()) then
+      --  return S.BestialWrath:Cast()
+      --end
     end
     Cds = function()
       -- ancestral_call,if=cooldown.bestial_wrath.remains>30
@@ -253,7 +265,7 @@ local function APL()
         return S.BarbedShot:Cast()
       end
       -- aspect_of_the_wild
-      if S.AspectoftheWild:IsReady() then
+      if S.AspectoftheWild:IsReady() and RubimRH.CDsON() then
         return S.AspectoftheWild:Cast()
       end
       -- stampede,if=buff.aspect_of_the_wild.up&buff.bestial_wrath.up|target.time_to_die<15
@@ -304,7 +316,7 @@ local function APL()
         return S.BarbedShot:Cast()
       end
       -- aspect_of_the_wild
-      if S.AspectoftheWild:IsReady() then
+      if S.AspectoftheWild:IsReady() and RubimRH.CDsON() then
         return S.AspectoftheWild:Cast()
       end
       -- a_murder_of_crows
@@ -316,7 +328,7 @@ local function APL()
         return S.Stampede:Cast()
       end
       -- bestial_wrath,if=cooldown.aspect_of_the_wild.remains>20|target.time_to_die<15
-      if S.BestialWrath:IsReady() and (S.AspectoftheWild:CooldownRemainsP() > 20 or Target:TimeToDie() < 15) then
+      if S.BestialWrath:IsReady() and RubimRH.CDsON() and (S.AspectoftheWild:CooldownRemainsP() > 20 or Target:TimeToDie() < 15) then
         return S.BestialWrath:Cast()
       end
       -- kill_command
@@ -364,6 +376,10 @@ local function APL()
       end
       -- auto_shot
       -- use_items
+        -- mendpet
+        if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
+            return S.MendPet:Cast()
+        end
 	  -- summon_pet
       if Pet:IsDeadOrGhost() then
           return S.MendPet:Cast()
