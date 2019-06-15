@@ -667,7 +667,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 },
             }
 
-            local st = StdUi:ScrollTable(tab.frame, cols, 12, 20);
+            local st = StdUi:ScrollTable(tab.frame, cols, 7, 40);
             st:EnableSelection(true);
             StdUi:GlueTop(st, tab.frame, 0, -60);
 
