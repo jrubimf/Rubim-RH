@@ -29,6 +29,7 @@ RubimRH.Spell[102] = {
     Sunfire = Spell(93402),
     SunfireDebuff = Spell(164815),
     Moonfire = Spell(8921),
+    Regrowth = Spell(8936),
     MoonfireDebuff = Spell(164812),
     StellarFlare = Spell(202347),
     LunarStrike = Spell(194153),
@@ -533,33 +534,45 @@ local function APL()
         return 0, 462338
     end
 	
-	if QueueSkill() ~= nil then
-       return QueueSkill()
-    end
+	-- combat
+    if RubimRH.TargetIsValid() then
+	    -- moonkin_form
+        if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) then
+           return S.MoonkinForm:Cast()
+        end
+	
+	    if QueueSkill() ~= nil then
+           return QueueSkill()
+        end
 
-    if RubimRH.CDsON() then
-        if CDs() ~= nil then
-            return CDs()
+        if RubimRH.CDsON() then
+            if CDs() ~= nil then
+                return CDs()
+            end
+        end
+
+        if Dot() ~= nil then
+            return Dot()
+        end
+
+        if EmpowermentCapCheck() ~= nil then
+            return EmpowermentCapCheck()
+        end
+
+        if CoreRotation() ~= nil then
+            return CoreRotation()
         end
     end
-
-    if Dot() ~= nil then
-        return Dot()
-    end
-
-    if EmpowermentCapCheck() ~= nil then
-        return EmpowermentCapCheck()
-    end
-
-    if CoreRotation() ~= nil then
-        return CoreRotation()
-    end
-    return 0, 135328
+	return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(102, APL)
 
 local function PASSIVE()
+	-- heal on 40%
+	if S.Regrowth:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk1 then
+        return S.Regrowth:Cast()
+    end
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(102, PASSIVE)

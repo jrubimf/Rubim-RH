@@ -1133,6 +1133,9 @@ mythicList = {
         --DRUID
         [102] = {
             cooldowns = true,
+			sk1 = 50, -- Regrowth
+            sk1id = 8936, -- Renewall
+            sk1tooltip = "Percent HP to self heal with Regrowth",
 			
         },
         [Feral] = {
