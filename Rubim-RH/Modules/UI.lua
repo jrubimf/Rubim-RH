@@ -934,8 +934,13 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                        
             local function addSpell(spellID)
                 local name = nil;
-                local icon, castTime, minRange, maxRange, spellId;
+                local icon, castTime, minRange, maxRange, spellId;				
+				local zone = currentList[spellID].Zone
 
+				if currentList[spellID].Zone == nil then
+				   zone = "Custom"
+				end
+				
                 name, _, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID);
 
                 return {
@@ -945,6 +950,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     minRange = minRange,
                     maxRange = maxRange,
                     spellId = spellId;
+					zone = zone,
                 };
             end
 
@@ -968,7 +974,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
 
                 if tempAddSpell ~= 0 and currentList[tempAddSpell] == nil then
-                    currentList[tempAddSpell] = true
+                    currentList[tempAddSpell] = {true, Zone = "Custom"}
                 end
 
                 local data = {};

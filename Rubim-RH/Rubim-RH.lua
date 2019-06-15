@@ -222,7 +222,7 @@ local Renewal = 108238
 local defaults = {
     profile = {
         mainOption = {
-            version = 08062019,
+            version = 15062019,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -299,399 +299,394 @@ local defaults = {
 			-- Profils list
 			activeList = "Mythic+",
 			--currentList = "RubimRH.db.profile.mainOption.mythicList",
-			mythicList = {
+mythicList = {
 
 --temple of sethraliss
-[265968] = true,
-[263318] = true,
-[272659] = true,
-[261635] = true,
-[273995] = true, -- interrupt by CC
-[261624] = true,
-[267237] = true, -- interrupt by hard CC
-[265912] = true,
-[268061] = true,
-[268008] = true,
+[265968] = {true, Zone = "Temple of Selthralis"},
+[263318] = {true, Zone = "Temple of Selthralis"},
+[272659] = {true, Zone = "Temple of Selthralis"},
+[261635] = {true, Zone = "Temple of Selthralis"},
+[273995] = {true, Zone = "Temple of Selthralis"}, -- interrupt by CC
+[261624] = {true, Zone = "Temple of Selthralis"},
+[267237] = {true, Zone = "Temple of Selthralis"}, -- interrupt by hard CC
+[265912] = {true, Zone = "Temple of Selthralis"},
+[268061] = {true, Zone = "Temple of Selthralis"},
+[268008] = {true, Zone = "Temple of Selthralis"},
 
 --FreeHold
 
-[257397] = true,
-[256060] = true,
-[258777] = true,
-[257732] = true,
-[257899] = true, -- some groups leave this uninterrupted so enemies die faster 
-[257736] = true,
+[257397] = {true, Zone = "Freehold"},
+[256060] = {true, Zone = "Freehold"},
+[258777] = {true, Zone = "Freehold"},
+[257732] = {true, Zone = "Freehold"},
+[257899] = {true, Zone = "Freehold"}, -- some groups leave this uninterrupted so enemies die faster 
+[257736] = {true, Zone = "Freehold"},
 
 --Shrine of the storm
 
-[267981] = true,
-[267977] = true,
-[267969] = true,
-[276266] = true, -- if we have a purge 
-[268030] = true, -- high prio
-[274438] = true,
-[268177] = true, -- low prio
-[267818] = true,
-[268309] = true,
-[268322] = true,
-[268375] = true,
-[276767] = true,
-[268347] = true,
-[267809] = true,
+[267981] = {true, Zone = "Shrine of the Storm"},
+[267977] = {true, Zone = "Shrine of the Storm"},
+[267969] = {true, Zone = "Shrine of the Storm"},
+[276266] = {true, Zone = "Shrine of the Storm"}, -- if we have a purge 
+[268030] = {true, Zone = "Shrine of the Storm"}, -- high prio
+[274438] = {true, Zone = "Shrine of the Storm"},
+[268177] = {true, Zone = "Shrine of the Storm"}, -- low prio
+[267818] = {true, Zone = "Shrine of the Storm"},
+[268309] = {true, Zone = "Shrine of the Storm"},
+[268322] = {true, Zone = "Shrine of the Storm"},
+[268375] = {true, Zone = "Shrine of the Storm"},
+[276767] = {true, Zone = "Shrine of the Storm"},
+[268347] = {true, Zone = "Shrine of the Storm"},
+[267809] = {true, Zone = "Shrine of the Storm"},
 
 --Siege of boralus
 
-[256957] = true,
-[256897] = true, -- interrupt by CC
-[274569] = true, -- high priority
-[272571] = true, --medium prio
+[256957] = {true, Zone = "Siege of Boralus"},
+[256897] = {true, Zone = "Siege of Boralus"}, -- interrupt by CC
+[274569] = {true, Zone = "Siege of Boralus"}, -- high priority
+[272571] = {true, Zone = "Siege of Boralus"}, --medium prio
 
 --Tol Dagor
 
-[258128] = true,
-[258153] = true,
-[257791] = true,
-[260067] = true, -- not sure if kickable
-[258313] = true,
-[258634] = true,
-[258869] = true,
-[258935] = true,
+[258128] = {true, Zone = "TolDagor"},
+[258153] = {true, Zone = "TolDagor"},
+[257791] = {true, Zone = "TolDagor"},
+[260067] = {true, Zone = "TolDagor"}, -- not sure if kickable
+[258313] = {true, Zone = "TolDagor"},
+[258634] = {true, Zone = "TolDagor"},
+[258869] = {true, Zone = "TolDagor"},
+[258935] = {true, Zone = "TolDagor"},
 
 --Waycrest manor
 
-[267824] = true, -- maybe 
-[265368] = true,
-[263891] = true,
-[266035] = true,
-[266036] = true,
-[260805] = true,
-[278551] = true,
-[278474] = true,
-[264520] = true,
-[278444] = true,
-[265407] = true,
-[265876] = true,
-[264105] = true,
-[264384] = true,
-[263959] = true,
-[268278] = true,
-[266225] = true,
-[266181] = true, -- -unsure if interruptable
-[268202] = true, -- interrupt by CC
+[267824] = {true, Zone = "Waycrest Manor"}, -- maybe 
+[265368] = {true, Zone = "Waycrest Manor"},
+[263891] = {true, Zone = "Waycrest Manor"},
+[266035] = {true, Zone = "Waycrest Manor"},
+[266036] = {true, Zone = "Waycrest Manor"},
+[260805] = {true, Zone = "Waycrest Manor"},
+[278551] = {true, Zone = "Waycrest Manor"},
+[278474] = {true, Zone = "Waycrest Manor"},
+[264520] = {true, Zone = "Waycrest Manor"},
+[278444] = {true, Zone = "Waycrest Manor"},
+[265407] = {true, Zone = "Waycrest Manor"},
+[265876] = {true, Zone = "Waycrest Manor"},
+[264105] = {true, Zone = "Waycrest Manor"},
+[264384] = {true, Zone = "Waycrest Manor"},
+[263959] = {true, Zone = "Waycrest Manor"},
+[268278] = {true, Zone = "Waycrest Manor"},
+[266225] = {true, Zone = "Waycrest Manor"},
+[266181] = {true, Zone = "Waycrest Manor"}, -- -unsure if interruptable
+[268202] = {true, Zone = "Waycrest Manor"}, -- interrupt by CC
 
 --Atal'Dazar
 
-[255824] = true,
-[253517] = true,
-[253548] = true,
-[253583] = true,
-[255041] = true,
-[256849] = true,
-[252781] = true,
-[250368] = true,
-[250096] = true,
+[255824] = {true, Zone = "Atal'Dazar"},
+[253517] = {true, Zone = "Atal'Dazar"},
+[253548] = {true, Zone = "Atal'Dazar"},
+[253583] = {true, Zone = "Atal'Dazar"},
+[255041] = {true, Zone = "Atal'Dazar"},
+[256849] = {true, Zone = "Atal'Dazar"},
+[252781] = {true, Zone = "Atal'Dazar"},
+[250368] = {true, Zone = "Atal'Dazar"},
+[250096] = {true, Zone = "Atal'Dazar"},
 
 --Kings Rest
 
-[269972] = true,
-[269973] = true,
-[270923] = true,
-[270901] = true,
-[267763] = true,
-[270492] = true,
-[270493] = true, --- probably shouldnt add
-[267273] = true,
+[269972] = {true, Zone = "King's Rest"},
+[269973] = {true, Zone = "King's Rest"},
+[270923] = {true, Zone = "King's Rest"},
+[270901] = {true, Zone = "King's Rest"},
+[267763] = {true, Zone = "King's Rest"},
+[270492] = {true, Zone = "King's Rest"},
+[270493] = {true, Zone = "King's Rest"}, --- probably shouldnt add
+[267273] = {true, Zone = "King's Rest"},
 
 --The MOTHERLODE!!
 
-[280604] = true,
-[268129] = true,
-[267354] = true, -- interrupt by CC
-[269302] = true,
-[262092] = true,
-[268709] = true,
-[268702] = true,
-[263215] = true,
-[263103] = true,
-[263066] = true,
-[268797] = true,
-[269090] = true,
-[281621] = true,
-[262540] = true,
+[280604] = {true, Zone = "Motherlode"},
+[268129] = {true, Zone = "Motherlode"},
+[267354] = {true, Zone = "Motherlode"}, -- interrupt by CC
+[269302] = {true, Zone = "Motherlode"},
+[262092] = {true, Zone = "Motherlode"},
+[268709] = {true, Zone = "Motherlode"},
+[268702] = {true, Zone = "Motherlode"},
+[263215] = {true, Zone = "Motherlode"},
+[263103] = {true, Zone = "Motherlode"},
+[263066] = {true, Zone = "Motherlode"},
+[268797] = {true, Zone = "Motherlode"},
+[269090] = {true, Zone = "Motherlode"},
+[281621] = {true, Zone = "Motherlode"},
+[262540] = {true, Zone = "Motherlode"},
 
 --Underrot
 
-[265089] = true,
-[265091] = true,
-[278755] = true,
-[260879] = true,
-[266106] = true,
-[265668] = true, -- Low prio
-[278961] = true, -- Highest prio
-[272183] = true,
-[266209] = true, -- high prio
-[272180] = true,
-[265433] = true,
-[265487] = true,
+[265089] = {true, Zone = "The Underrot"},
+[265091] = {true, Zone = "The Underrot"},
+[278755] = {true, Zone = "The Underrot"},
+[260879] = {true, Zone = "The Underrot"},
+[266106] = {true, Zone = "The Underrot"},
+[265668] = {true, Zone = "The Underrot"}, -- Low prio
+[278961] = {true, Zone = "The Underrot"}, -- Highest prio
+[272183] = {true, Zone = "The Underrot"},
+[266209] = {true, Zone = "The Underrot"}, -- high prio
+[272180] = {true, Zone = "The Underrot"},
+[265433] = {true, Zone = "The Underrot"},
+[265487] = {true, Zone = "The Underrot"},
 
 --Battle for dazaralor
 
-[283628] = true,
-[284578] = true,
-[282243] = true,
-[285572] = true,
-[286779] = true,
-[287887] = true,
-[289861] = true,
-[289596] = true,
+[283628] = {true, Zone = "Dazar'alor"},
+[284578] = {true, Zone = "Dazar'alor"},
+[282243] = {true, Zone = "Dazar'alor"},
+[285572] = {true, Zone = "Dazar'alor"},
+[286779] = {true, Zone = "Dazar'alor"},
+[287887] = {true, Zone = "Dazar'alor"},
+[289861] = {true, Zone = "Dazar'alor"},
+[289596] = {true, Zone = "Dazar'alor"},
+
 
 	},
 			
-			pvpList = {
+		pvpList = {
 -- PvP Part
 
-		[118] = true, -- Polymorph
-        [20066] = true, -- Repentance
-        [51514] = true, -- Hex
-        [19386] = true, -- Wyvern Sting
-        [5782] = true, -- Fear
-        [33786] = true, -- Cyclone
-        [605] = true, -- Mind Control 
-        [982] = true, -- Revive Pet 
-        [32375] = true, -- Mass Dispel 
-        [203286] = true, -- Greatest Pyroblast
-        [116858] = true, -- Chaos Bolt 
-        [20484] = true, -- Rebirth
-        [203155] = true, -- Sniper Shot 
-        [47540] = true, -- Penance
-        [596] = true, -- Prayer of Healing
-        [2060] = true, -- Heal
-        [2061] = true, -- Flash Heal
-        [32546] = true, -- Binding Heal                        (priest, holy)
-        [33076] = true, -- Prayer of Mending
-        [64843] = true, -- Divine Hymn
-        [120517] = true, -- Halo                                (priest, holy/disc)
-        [186263] = true, -- Shadow Mend
-        [194509] = true, -- Power Word: Radiance
-        [265202] = true, -- Holy Word: Salvation                (priest, holy)
-        [289666] = true, -- Greater Heal                        (priest, holy)
-        [740] = true, -- Tranquility
-        [8936] = true, -- Regrowth
-        [48438] = true, -- Wild Growth
-        [289022] = true, -- Nourish                             (druid, restoration)
-        [1064] = true, -- Chain Heal
-        [8004] = true, -- Healing Surge
-        [73920] = true, -- Healing Rain
-        [77472] = true, -- Healing Wave
-        [197995] = true, -- Wellspring                          (shaman, restoration)
-        [207778] = true, -- Downpour                            (shaman, restoration)
-        [19750] = true, -- Flash of Light
-        [82326] = true, -- Holy Light
-        [116670] = true, -- Vivify
-        [124682] = true, -- Enveloping Mist
-        [191837] = true, -- Essence Font
-        [209525] = true, -- Soothing Mist
-        [227344] = true, -- Surging Mist                        (monk, mistweaver)				
+		[118] = {true, Zone = "PvP"}, -- Polymorph
+        [20066] = {true, Zone = "PvP"}, -- Repentance
+        [51514] = {true, Zone = "PvP"}, -- Hex
+        [19386] = {true, Zone = "PvP"}, -- Wyvern Sting
+        [5782] = {true, Zone = "PvP"}, -- Fear
+        [33786] = {true, Zone = "PvP"}, -- Cyclone
+        [605] = {true, Zone = "PvP"}, -- Mind Control 
+        [982] = {true, Zone = "PvP"}, -- Revive Pet 
+        [32375] = {true, Zone = "PvP"}, -- Mass Dispel 
+        [203286] = {true, Zone = "PvP"}, -- Greatest Pyroblast
+        [116858] = {true, Zone = "PvP"}, -- Chaos Bolt 
+        [20484] = {true, Zone = "PvP"}, -- Rebirth
+        [203155] = {true, Zone = "PvP"}, -- Sniper Shot 
+        [47540] = {true, Zone = "PvP"}, -- Penance
+        [596] = {true, Zone = "PvP"}, -- Prayer of Healing
+        [2060] = {true, Zone = "PvP"}, -- Heal
+        [2061] = {true, Zone = "PvP"}, -- Flash Heal
+        [32546] = {true, Zone = "PvP"}, -- Binding Heal                        (priest, holy)
+        [33076] = {true, Zone = "PvP"}, -- Prayer of Mending
+        [64843] = {true, Zone = "PvP"}, -- Divine Hymn
+        [120517] = {true, Zone = "PvP"}, -- Halo                                (priest, holy/disc)
+        [186263] = {true, Zone = "PvP"}, -- Shadow Mend
+        [194509] = {true, Zone = "PvP"}, -- Power Word: Radiance
+        [265202] = {true, Zone = "PvP"}, -- Holy Word: Salvation                (priest, holy)
+        [289666] = {true, Zone = "PvP"}, -- Greater Heal                        (priest, holy)
+        [740] = {true, Zone = "PvP"}, -- Tranquility
+        [8936] = {true, Zone = "PvP"}, -- Regrowth
+        [48438] = {true, Zone = "PvP"}, -- Wild Growth
+        [289022] = {true, Zone = "PvP"}, -- Nourish                             (druid, restoration)
+        [1064] = {true, Zone = "PvP"}, -- Chain Heal
+        [8004] = {true, Zone = "PvP"}, -- Healing Surge
+        [73920] = {true, Zone = "PvP"}, -- Healing Rain
+        [77472] = {true, Zone = "PvP"}, -- Healing Wave
+        [197995] = {true, Zone = "PvP"}, -- Wellspring                          (shaman, restoration)
+        [207778] = {true, Zone = "PvP"}, -- Downpour                            (shaman, restoration)
+        [19750] = {true, Zone = "PvP"}, -- Flash of Light
+        [82326] = {true, Zone = "PvP"}, -- Holy Light
+        [116670] = {true, Zone = "PvP"}, -- Vivify
+        [124682] = {true, Zone = "PvP"}, -- Enveloping Mist
+        [191837] = {true, Zone = "PvP"}, -- Essence Font
+        [209525] = {true, Zone = "PvP"}, -- Soothing Mist
+        [227344] = {true, Zone = "PvP"}, -- Surging Mist                        (monk, mistweaver)				
 			
-			
-			
-			
-			
-			
-			},
+		},
 			
 			-- Mixed list pvp & pve
 			mixedList = {
 
 --temple of sethraliss
-[265968] = true,
-[263318] = true,
-[272659] = true,
-[261635] = true,
-[273995] = true, -- interrupt by CC
-[261624] = true,
-[267237] = true, -- interrupt by hard CC
-[265912] = true,
-[268061] = true,
-[268008] = true,
+[265968] = {true, Zone = "Temple of Selthralis"},
+[263318] = {true, Zone = "Temple of Selthralis"},
+[272659] = {true, Zone = "Temple of Selthralis"},
+[261635] = {true, Zone = "Temple of Selthralis"},
+[273995] = {true, Zone = "Temple of Selthralis"}, -- interrupt by CC
+[261624] = {true, Zone = "Temple of Selthralis"},
+[267237] = {true, Zone = "Temple of Selthralis"}, -- interrupt by hard CC
+[265912] = {true, Zone = "Temple of Selthralis"},
+[268061] = {true, Zone = "Temple of Selthralis"},
+[268008] = {true, Zone = "Temple of Selthralis"},
 
 --FreeHold
 
-[257397] = true,
-[256060] = true,
-[258777] = true,
-[257732] = true,
-[257899] = true, -- some groups leave this uninterrupted so enemies die faster 
-[257736] = true,
+[257397] = {true, Zone = "Freehold"},
+[256060] = {true, Zone = "Freehold"},
+[258777] = {true, Zone = "Freehold"},
+[257732] = {true, Zone = "Freehold"},
+[257899] = {true, Zone = "Freehold"}, -- some groups leave this uninterrupted so enemies die faster 
+[257736] = {true, Zone = "Freehold"},
 
 --Shrine of the storm
 
-[267981] = true,
-[267977] = true,
-[267969] = true,
-[276266] = true, -- if we have a purge 
-[268030] = true, -- high prio
-[274438] = true,
-[268177] = true, -- low prio
-[267818] = true,
-[268309] = true,
-[268322] = true,
-[268375] = true,
-[276767] = true,
-[268347] = true,
-[267809] = true,
+[267981] = {true, Zone = "Shrine of the Storm"},
+[267977] = {true, Zone = "Shrine of the Storm"},
+[267969] = {true, Zone = "Shrine of the Storm"},
+[276266] = {true, Zone = "Shrine of the Storm"}, -- if we have a purge 
+[268030] = {true, Zone = "Shrine of the Storm"}, -- high prio
+[274438] = {true, Zone = "Shrine of the Storm"},
+[268177] = {true, Zone = "Shrine of the Storm"}, -- low prio
+[267818] = {true, Zone = "Shrine of the Storm"},
+[268309] = {true, Zone = "Shrine of the Storm"},
+[268322] = {true, Zone = "Shrine of the Storm"},
+[268375] = {true, Zone = "Shrine of the Storm"},
+[276767] = {true, Zone = "Shrine of the Storm"},
+[268347] = {true, Zone = "Shrine of the Storm"},
+[267809] = {true, Zone = "Shrine of the Storm"},
 
 --Siege of boralus
 
-[256957] = true,
-[256897] = true, -- interrupt by CC
-[274569] = true, -- high priority
-[272571] = true, --medium prio
+[256957] = {true, Zone = "Siege of Boralus"},
+[256897] = {true, Zone = "Siege of Boralus"}, -- interrupt by CC
+[274569] = {true, Zone = "Siege of Boralus"}, -- high priority
+[272571] = {true, Zone = "Siege of Boralus"}, --medium prio
 
 --Tol Dagor
 
-[258128] = true,
-[258153] = true,
-[257791] = true,
-[260067] = true, -- not sure if kickable
-[258313] = true,
-[258634] = true,
-[258869] = true,
-[258935] = true,
+[258128] = {true, Zone = "TolDagor"},
+[258153] = {true, Zone = "TolDagor"},
+[257791] = {true, Zone = "TolDagor"},
+[260067] = {true, Zone = "TolDagor"}, -- not sure if kickable
+[258313] = {true, Zone = "TolDagor"},
+[258634] = {true, Zone = "TolDagor"},
+[258869] = {true, Zone = "TolDagor"},
+[258935] = {true, Zone = "TolDagor"},
 
 --Waycrest manor
 
-[267824] = true, -- maybe 
-[265368] = true,
-[263891] = true,
-[266035] = true,
-[266036] = true,
-[260805] = true,
-[278551] = true,
-[278474] = true,
-[264520] = true,
-[278444] = true,
-[265407] = true,
-[265876] = true,
-[264105] = true,
-[264384] = true,
-[263959] = true,
-[268278] = true,
-[266225] = true,
-[266181] = true, -- -unsure if interruptable
-[268202] = true, -- interrupt by CC
+[267824] = {true, Zone = "Waycrest Manor"}, -- maybe 
+[265368] = {true, Zone = "Waycrest Manor"},
+[263891] = {true, Zone = "Waycrest Manor"},
+[266035] = {true, Zone = "Waycrest Manor"},
+[266036] = {true, Zone = "Waycrest Manor"},
+[260805] = {true, Zone = "Waycrest Manor"},
+[278551] = {true, Zone = "Waycrest Manor"},
+[278474] = {true, Zone = "Waycrest Manor"},
+[264520] = {true, Zone = "Waycrest Manor"},
+[278444] = {true, Zone = "Waycrest Manor"},
+[265407] = {true, Zone = "Waycrest Manor"},
+[265876] = {true, Zone = "Waycrest Manor"},
+[264105] = {true, Zone = "Waycrest Manor"},
+[264384] = {true, Zone = "Waycrest Manor"},
+[263959] = {true, Zone = "Waycrest Manor"},
+[268278] = {true, Zone = "Waycrest Manor"},
+[266225] = {true, Zone = "Waycrest Manor"},
+[266181] = {true, Zone = "Waycrest Manor"}, -- -unsure if interruptable
+[268202] = {true, Zone = "Waycrest Manor"}, -- interrupt by CC
 
 --Atal'Dazar
 
-[255824] = true,
-[253517] = true,
-[253548] = true,
-[253583] = true,
-[255041] = true,
-[256849] = true,
-[252781] = true,
-[250368] = true,
-[250096] = true,
+[255824] = {true, Zone = "Atal'Dazar"},
+[253517] = {true, Zone = "Atal'Dazar"},
+[253548] = {true, Zone = "Atal'Dazar"},
+[253583] = {true, Zone = "Atal'Dazar"},
+[255041] = {true, Zone = "Atal'Dazar"},
+[256849] = {true, Zone = "Atal'Dazar"},
+[252781] = {true, Zone = "Atal'Dazar"},
+[250368] = {true, Zone = "Atal'Dazar"},
+[250096] = {true, Zone = "Atal'Dazar"},
 
 --Kings Rest
 
-[269972] = true,
-[269973] = true,
-[270923] = true,
-[270901] = true,
-[267763] = true,
-[270492] = true,
-[270493] = true, --- probably shouldnt add
-[267273] = true,
+[269972] = {true, Zone = "King's Rest"},
+[269973] = {true, Zone = "King's Rest"},
+[270923] = {true, Zone = "King's Rest"},
+[270901] = {true, Zone = "King's Rest"},
+[267763] = {true, Zone = "King's Rest"},
+[270492] = {true, Zone = "King's Rest"},
+[270493] = {true, Zone = "King's Rest"}, --- probably shouldnt add
+[267273] = {true, Zone = "King's Rest"},
 
 --The MOTHERLODE!!
 
-[280604] = true,
-[268129] = true,
-[267354] = true, -- interrupt by CC
-[269302] = true,
-[262092] = true,
-[268709] = true,
-[268702] = true,
-[263215] = true,
-[263103] = true,
-[263066] = true,
-[268797] = true,
-[269090] = true,
-[281621] = true,
-[262540] = true,
+[280604] = {true, Zone = "Motherlode"},
+[268129] = {true, Zone = "Motherlode"},
+[267354] = {true, Zone = "Motherlode"}, -- interrupt by CC
+[269302] = {true, Zone = "Motherlode"},
+[262092] = {true, Zone = "Motherlode"},
+[268709] = {true, Zone = "Motherlode"},
+[268702] = {true, Zone = "Motherlode"},
+[263215] = {true, Zone = "Motherlode"},
+[263103] = {true, Zone = "Motherlode"},
+[263066] = {true, Zone = "Motherlode"},
+[268797] = {true, Zone = "Motherlode"},
+[269090] = {true, Zone = "Motherlode"},
+[281621] = {true, Zone = "Motherlode"},
+[262540] = {true, Zone = "Motherlode"},
 
 --Underrot
 
-[265089] = true,
-[265091] = true,
-[278755] = true,
-[260879] = true,
-[266106] = true,
-[265668] = true, -- Low prio
-[278961] = true, -- Highest prio
-[272183] = true,
-[266209] = true, -- high prio
-[272180] = true,
-[265433] = true,
-[265487] = true,
+[265089] = {true, Zone = "The Underrot"},
+[265091] = {true, Zone = "The Underrot"},
+[278755] = {true, Zone = "The Underrot"},
+[260879] = {true, Zone = "The Underrot"},
+[266106] = {true, Zone = "The Underrot"},
+[265668] = {true, Zone = "The Underrot"}, -- Low prio
+[278961] = {true, Zone = "The Underrot"}, -- Highest prio
+[272183] = {true, Zone = "The Underrot"},
+[266209] = {true, Zone = "The Underrot"}, -- high prio
+[272180] = {true, Zone = "The Underrot"},
+[265433] = {true, Zone = "The Underrot"},
+[265487] = {true, Zone = "The Underrot"},
 
 --Battle for dazaralor
 
-[283628] = true,
-[284578] = true,
-[282243] = true,
-[285572] = true,
-[286779] = true,
-[287887] = true,
-[289861] = true,
-[289596] = true,
+[283628] = {true, Zone = "Dazar'alor"},
+[284578] = {true, Zone = "Dazar'alor"},
+[282243] = {true, Zone = "Dazar'alor"},
+[285572] = {true, Zone = "Dazar'alor"},
+[286779] = {true, Zone = "Dazar'alor"},
+[287887] = {true, Zone = "Dazar'alor"},
+[289861] = {true, Zone = "Dazar'alor"},
+[289596] = {true, Zone = "Dazar'alor"},
 
 
--- PvP Part
 
-		[118] = true, -- Polymorph
-        [20066] = true, -- Repentance
-        [51514] = true, -- Hex
-        [19386] = true, -- Wyvern Sting
-        [5782] = true, -- Fear
-        [33786] = true, -- Cyclone
-        [605] = true, -- Mind Control 
-        [982] = true, -- Revive Pet 
-        [32375] = true, -- Mass Dispel 
-        [203286] = true, -- Greatest Pyroblast
-        [116858] = true, -- Chaos Bolt 
-        [20484] = true, -- Rebirth
-        [203155] = true, -- Sniper Shot 
-        [47540] = true, -- Penance
-        [596] = true, -- Prayer of Healing
-        [2060] = true, -- Heal
-        [2061] = true, -- Flash Heal
-        [32546] = true, -- Binding Heal                        (priest, holy)
-        [33076] = true, -- Prayer of Mending
-        [64843] = true, -- Divine Hymn
-        [120517] = true, -- Halo                                (priest, holy/disc)
-        [186263] = true, -- Shadow Mend
-        [194509] = true, -- Power Word: Radiance
-        [265202] = true, -- Holy Word: Salvation                (priest, holy)
-        [289666] = true, -- Greater Heal                        (priest, holy)
-        [740] = true, -- Tranquility
-        [8936] = true, -- Regrowth
-        [48438] = true, -- Wild Growth
-        [289022] = true, -- Nourish                             (druid, restoration)
-        [1064] = true, -- Chain Heal
-        [8004] = true, -- Healing Surge
-        [73920] = true, -- Healing Rain
-        [77472] = true, -- Healing Wave
-        [197995] = true, -- Wellspring                          (shaman, restoration)
-        [207778] = true, -- Downpour                            (shaman, restoration)
-        [19750] = true, -- Flash of Light
-        [82326] = true, -- Holy Light
-        [116670] = true, -- Vivify
-        [124682] = true, -- Enveloping Mist
-        [191837] = true, -- Essence Font
-        [209525] = true, -- Soothing Mist
-        [227344] = true, -- Surging Mist                        (monk, mistweaver)			
+		[118] = {true, Zone = "PvP"}, -- Polymorph
+        [20066] = {true, Zone = "PvP"}, -- Repentance
+        [51514] = {true, Zone = "PvP"}, -- Hex
+        [19386] = {true, Zone = "PvP"}, -- Wyvern Sting
+        [5782] = {true, Zone = "PvP"}, -- Fear
+        [33786] = {true, Zone = "PvP"}, -- Cyclone
+        [605] = {true, Zone = "PvP"}, -- Mind Control 
+        [982] = {true, Zone = "PvP"}, -- Revive Pet 
+        [32375] = {true, Zone = "PvP"}, -- Mass Dispel 
+        [203286] = {true, Zone = "PvP"}, -- Greatest Pyroblast
+        [116858] = {true, Zone = "PvP"}, -- Chaos Bolt 
+        [20484] = {true, Zone = "PvP"}, -- Rebirth
+        [203155] = {true, Zone = "PvP"}, -- Sniper Shot 
+        [47540] = {true, Zone = "PvP"}, -- Penance
+        [596] = {true, Zone = "PvP"}, -- Prayer of Healing
+        [2060] = {true, Zone = "PvP"}, -- Heal
+        [2061] = {true, Zone = "PvP"}, -- Flash Heal
+        [32546] = {true, Zone = "PvP"}, -- Binding Heal                        (priest, holy)
+        [33076] = {true, Zone = "PvP"}, -- Prayer of Mending
+        [64843] = {true, Zone = "PvP"}, -- Divine Hymn
+        [120517] = {true, Zone = "PvP"}, -- Halo                                (priest, holy/disc)
+        [186263] = {true, Zone = "PvP"}, -- Shadow Mend
+        [194509] = {true, Zone = "PvP"}, -- Power Word: Radiance
+        [265202] = {true, Zone = "PvP"}, -- Holy Word: Salvation                (priest, holy)
+        [289666] = {true, Zone = "PvP"}, -- Greater Heal                        (priest, holy)
+        [740] = {true, Zone = "PvP"}, -- Tranquility
+        [8936] = {true, Zone = "PvP"}, -- Regrowth
+        [48438] = {true, Zone = "PvP"}, -- Wild Growth
+        [289022] = {true, Zone = "PvP"}, -- Nourish                             (druid, restoration)
+        [1064] = {true, Zone = "PvP"}, -- Chain Heal
+        [8004] = {true, Zone = "PvP"}, -- Healing Surge
+        [73920] = {true, Zone = "PvP"}, -- Healing Rain
+        [77472] = {true, Zone = "PvP"}, -- Healing Wave
+        [197995] = {true, Zone = "PvP"}, -- Wellspring                          (shaman, restoration)
+        [207778] = {true, Zone = "PvP"}, -- Downpour                            (shaman, restoration)
+        [19750] = {true, Zone = "PvP"}, -- Flash of Light
+        [82326] = {true, Zone = "PvP"}, -- Holy Light
+        [116670] = {true, Zone = "PvP"}, -- Vivify
+        [124682] = {true, Zone = "PvP"}, -- Enveloping Mist
+        [191837] = {true, Zone = "PvP"}, -- Essence Font
+        [209525] = {true, Zone = "PvP"}, -- Soothing Mist
+        [227344] = {true, Zone = "PvP"}, -- Surging Mist                        (monk, mistweaver)		
 			
 			
 			},
@@ -1266,11 +1261,12 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
 
-    if RubimRH.db.profile.mainOption.version ~= (08062019) then
+    if RubimRH.db.profile.mainOption.version ~= (15062019) then
         self.db:ResetDB(defaultProfile)
         message("New version:\nResetting Profile")
-        print("Reseting profile")
-        RubimRH.db.profile.mainOption.version = 08062019
+        print("Reseting profile to avoid bugs")
+        print("If you still have issues, delete your Rubim.lua in WTF folder")
+        RubimRH.db.profile.mainOption.version = 15062019
     end
 
 
