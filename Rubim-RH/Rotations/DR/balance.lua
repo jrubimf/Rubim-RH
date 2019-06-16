@@ -515,6 +515,12 @@ local function APL()
             return S.Moonfire:Cast()
         end
     end
+	
+	-- heal on 40%
+	if S.Regrowth:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk1 then
+        return S.Regrowth:Cast()
+    end
+	
     -- call precombat
     if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
@@ -540,7 +546,7 @@ local function APL()
         if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) and RubimRH.AutoMorphON() then
            return S.MoonkinForm:Cast()
         end
-	
+
 	    if QueueSkill() ~= nil then
            return QueueSkill()
         end
@@ -569,10 +575,6 @@ end
 RubimRH.Rotation.SetAPL(102, APL)
 
 local function PASSIVE()
-	-- heal on 40%
-	if S.Regrowth:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk1 then
-        return S.Regrowth:Cast()
-    end
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(102, PASSIVE)
