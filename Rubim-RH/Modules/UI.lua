@@ -5,7 +5,7 @@ local AceGUI = LibStub("AceGUI-3.0")
 
 
 function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
-    local window = StdUi:Window(UIParent, 'Class Config', 550, 500);
+    local window = StdUi:Window(UIParent, 'Class Config', 650, 500);
 
     window:SetPoint('CENTER');
     
@@ -215,14 +215,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_1_1.OnValueChanged = function(self, value)
                 local option1, option2 = unpack(value)
 
-                if option1 == 1 or option2 == 1 then
+                if option1 == 1 then
                     RubimRH.db.profile.mainOption.useTrinkets[1] = true
+				else
+				    RubimRH.db.profile.mainOption.useTrinkets[1] = false
                 end
 
-                if option1 == 2 or option2 == 2 then
+                if option1 == 2 then
                     RubimRH.db.profile.mainOption.useTrinkets[2] = true
+				else
+				    RubimRH.db.profile.mainOption.useTrinkets[2] = false
                 end
-
             end;
 
             if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
@@ -234,7 +237,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 gn_1_1:ToggleValue(2, true)
                 gn_1_1.optsFrame.scrollChild.items[2]:SetChecked(true)
             end
-
+          
             local gn_2_0 = StdUi:Checkbox(tab.frame, 'Perfect Pull');
             StdUi:FrameTooltip(gn_2_0, 'WIP Auto prepots & prepull from DBM Pull Timer', 'TOPLEFT', 'TOPRIGHT', true);
             gn_2_0:SetChecked(RubimRH.db.profile.mainOption.PerfectPull)
@@ -242,7 +245,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             function gn_2_0:OnValueChanged(value)
                 RubimRH.PerfectPull()
             end
-            
+            -- Healthstone
             local gn_2_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
             StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
             local gn_2_1Label = StdUi:FontString(tab.frame, 'Healthstone: |cff00ff00' .. RubimRH.db.profile.mainOption.healthstoneper);
@@ -274,7 +277,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             
             StdUi:GlueBelow(gn_4_0, gn_3_0, 0, -15, 'LEFT');
 
-            
+            -- Cds usage options
             local cdOptions = {
                 { text = 'Everything', value = "Everything" },
                 { text = 'Boss Only', value = "Boss Only" },
@@ -1212,19 +1215,27 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			-- Raid settings title
             local raid_setting_title = StdUi:FontString(tab.frame, 'Raid settings');
-            StdUi:GlueTop(raid_setting_title, tab.frame, -200, -10);
+            StdUi:GlueTop(raid_setting_title, tab.frame, -270, -10);
+			local raid_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(raid_setting_title_separator, raid_setting_title, 0, -10);
 			
 			-- Tank settings title
             local tank_setting_title = StdUi:FontString(tab.frame, 'Tank settings');
-            StdUi:GlueTop(tank_setting_title, tab.frame, -30, -10);
-
+            StdUi:GlueTop(tank_setting_title, tab.frame, -140, -10);
+			local tank_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(tank_setting_title_separator, tank_setting_title, 0, -10);
+			
 			-- Profils settings title
             local profils_setting_title = StdUi:FontString(tab.frame, 'Profils settings');
-            StdUi:GlueTop(profils_setting_title, tab.frame, 170, -10);
+            StdUi:GlueTop(profils_setting_title, tab.frame, 200, -10);
+			local profils_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(profils_setting_title_separator, profils_setting_title, 0, -10);
 			
 			-- Misc settings title
             local misc_setting_title = StdUi:FontString(tab.frame, 'Cooldowns settings');
-            StdUi:GlueTop(misc_setting_title, tab.frame, 170, -140);
+            StdUi:GlueTop(misc_setting_title, tab.frame, 10, -10);
+			local misc_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(misc_setting_title_separator, misc_setting_title, 0, -10);
 			
 			------------------
 			-- Profil system
@@ -1236,7 +1247,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- Dropdown choice list
             local profileDropdown = StdUi:Dropdown(tab.frame, 90, 25, profileList);
             profileDropdown:SetPlaceholder('Selected Profil');
-            StdUi:GlueTop(profileDropdown, profils_setting_title, 0, -90, 'CENTER');
+            StdUi:GlueTop(profileDropdown, profils_setting_title, -40, -50, 'CENTER');
             local function update_profileList( )
                 profileList = { }
                 for k, v in pairs(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]) do
@@ -1268,39 +1279,39 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			----------------------------
 			-- RAID PART
 			-- Raid germination slider
-            local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_germi"]["value"], 1, 100 );
+            local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
 			-- Raid rejuvenation slider
-            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
 			-- Raid wild growth slider
-            local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+            local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
 			-- Raid cenarion slider
-            local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+            local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
 			-- Raid efflorescence slider
-            local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+            local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
 			-- Raid regrowth slider
-            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
             -- TANK PART
 			-- Tank germination slider
-            local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_germi"]["value"], 1, 100 );
+            local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
 			-- Tank rejuvenation slider
-            local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+            local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
 			-- Tank cenarion slider
-            local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+            local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
 			-- Tank regrowth slider
-            local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_regro"]["value"], 1, 100 );
+            local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
 			-- Tank ironbark slider
-            local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+            local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
 			-- Tank Lifebloom slider
-            local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+            local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
             -- MISC SETTINGS Part
 			-- Number of party member injured before using flourish...
-            local flourish_number = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["nb_flourish"]["value"], 1, 20 );					
+            local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 20 );					
 			-- ....and how much hp should these number of party member have before using flourish
-            local flourish_health = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["health_flourish"]["value"], 1, 100 );
+            local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
 			-- Number of party member injured before using tranquility....
-            local tranqui_number = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["nb_tranqui"]["value"], 1, 20 );
+            local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 20 );
 			-- ....and how much hp should these number of party member have before using Tranquility
-            local tranqui_health = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+            local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
 			
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
 			-- Current profil label
@@ -1357,12 +1368,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			-- Profil settings button - OK
             local profileSettingsButton = StdUi:Button(tab.frame, 90, 25, 'Profile Settings' );
-			StdUi:GlueTop(profileSettingsButton, profils_setting_title, 0, -40, 'CENTER');
+			StdUi:GlueTop(profileSettingsButton, profils_setting_title, 60, -50, 'CENTER');
 			-- Profil button label
-			StdUi:AddLabel( tab.frame, profileSettingsButton, "Manage my profils", "TOP" );
-            profileSettingsButton.label:SetFontObject( GameFontNormalLarge )
-            profileSettingsButton.label:SetFont( profileSettingsButton.label:GetFont( ), 10 )
-            profileSettingsButton.label:SetWidth( 0 )
+			--StdUi:AddLabel( tab.frame, profileSettingsButton, "Manage my profils", "TOP" );
+           -- profileSettingsButton.label:SetFontObject( GameFontNormalLarge )
+           -- profileSettingsButton.label:SetFont( profileSettingsButton.label:GetFont( ), 10 )
+           -- profileSettingsButton.label:SetWidth( 0 )
 			
             profileSettingsButton:SetScript( 'OnClick', function( )
                 local rr, gg, bb, aa = RubimRH.db.profile.mainOption.mainframeColor_r, RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a			   
@@ -1681,7 +1692,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			-------------------
 			-- Flourish Number            
-            StdUi:GlueTop(flourish_number, misc_setting_title, 0, -40);
+            StdUi:GlueTop(flourish_number, misc_setting_title, 0, -50);
             flourish_number:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, flourish_number, "Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people...", "TOP" );
             flourish_number.label:SetFontObject( GameFontNormalLarge )
@@ -1700,7 +1711,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			-------------------
 			-- Flourish Health           
-            StdUi:GlueTop(flourish_health, misc_setting_title, 0, -100);
+            StdUi:GlueTop(flourish_health, misc_setting_title, 0, -110);
             flourish_health:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, flourish_health, "... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"], "TOP" );
             flourish_health.label:SetFontObject( GameFontNormalLarge )
@@ -1719,7 +1730,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		  
  			-------------------
 			-- Tranquility Number            
-            StdUi:GlueTop(tranqui_number, misc_setting_title, 0, -160);
+            StdUi:GlueTop(tranqui_number, misc_setting_title, 0, -170);
             tranqui_number:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, tranqui_number, "Use Tranqui on at least " .. datavalue["nb_tranqui"]["value"] .. " people...", "TOP" );
             tranqui_number.label:SetFontObject( GameFontNormalLarge )
@@ -1738,7 +1749,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			-------------------
 			-- Tranquility Health           
-            StdUi:GlueTop(tranqui_health, misc_setting_title, 0, -220);
+            StdUi:GlueTop(tranqui_health, misc_setting_title, 0, -230);
             tranqui_health:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, tranqui_health, "... and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"], "TOP" );
             tranqui_health.label:SetFontObject( GameFontNormalLarge )
