@@ -65,8 +65,7 @@ RubimRH.Spell[266] = {
 
   InnerDemons                   = Spell(267216),
   SoulConduit                   = Spell(215941),
-  GrimoireFelguard              = Spell(111898),
-  GrimoireFelguardHack          = Spell(108503),
+  GrimoireFelguard              = Spell(108503), -- Hack id for proper pixel Original SpellID = 111898
 
   SacrificedSouls               = Spell(267214),
   DemonicConsumption            = Spell(267215),
@@ -685,7 +684,7 @@ local function APL()
           return S.Implosion:Cast()
         end
         -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13|!equipped.132369
-        if S.GrimoireFelguard:IsReadyP() and (S.SummonDemonicTyrant:CooldownRemainsP() < 13) then
+        if S.GrimoireFelguard:IsReadyP() and (S.SummonDemonicTyrant:CooldownRemainsP() < 13) and RubimRH.CDsON() then
           return S.GrimoireFelguard:Cast()
         end
         -- call_dreadstalkers,if=(cooldown.summon_demonic_tyrant.remains<9&buff.demonic_calling.remains)|(cooldown.summon_demonic_tyrant.remains<11&!buff.demonic_calling.remains)|cooldown.summon_demonic_tyrant.remains>14
@@ -891,7 +890,7 @@ local function APL()
           local ShouldReturn = Implosion(); if ShouldReturn then return ShouldReturn; end
         end
         -- grimoire_felguard,if=(target.time_to_die>120|target.time_to_die<cooldown.summon_demonic_tyrant.remains+15|cooldown.summon_demonic_tyrant.remains<13)
-        if S.GrimoireFelguard:IsReadyP() and ((Target:TimeToDie() > 120 or Target:TimeToDie() < S.SummonDemonicTyrant:CooldownRemainsP() + 15 or S.SummonDemonicTyrant:CooldownRemainsP() < 13)) then
+        if S.GrimoireFelguard:IsReadyP() and RubimRH.CDsON() and ((Target:TimeToDie() > 120 or Target:TimeToDie() < S.SummonDemonicTyrant:CooldownRemainsP() + 15 or S.SummonDemonicTyrant:CooldownRemainsP() < 13)) then
           return S.GrimoireFelguard:Cast()
         end
         -- summon_vilefiend,if=cooldown.summon_demonic_tyrant.remains>40|cooldown.summon_demonic_tyrant.remains<12
