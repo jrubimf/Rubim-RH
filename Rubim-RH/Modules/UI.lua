@@ -430,6 +430,20 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                 end
 				
+			    --BALANCE DRUID
+                if RubimRH.playerSpec == Balance then				    
+                    local AutoMorphbutton = StdUi:Checkbox(tab.frame, 'Auto morph in Moonkin form');                    
+					StdUi:FrameTooltip(AutoMorphbutton, 'This will force Moonkin form everytime', 'TOPLEFT', 'TOPRIGHT', true);                    
+					AutoMorphbutton:SetChecked(RubimRH.db.profile[102].AutoMorph)                    
+					-- Set positionning
+					StdUi:GlueBelow(AutoMorphbutton, gn_4_0, 0, -150, 'LEFT');
+                    -- What to do on value change                    
+					function AutoMorphbutton:OnValueChanged(value)
+					    -- See Rubim-RHc.lua 
+                        RubimRH.AutoMorph()
+                    end
+                end
+				
                 --DESTRUCTION LOCK
                 if RubimRH.playerSpec == Destruction then
                     local color = {

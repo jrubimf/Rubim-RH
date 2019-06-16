@@ -291,7 +291,7 @@ local function APL()
         -- food
         -- augmentation
         -- moonkin_form
-        if GetShapeshiftForm() ~= 4 then
+        if GetShapeshiftForm() ~= 4 and RubimRH.AutoMorphON() then
             return S.MoonkinForm:Cast()
         end
         -- snapshot_stats
@@ -310,7 +310,7 @@ local function APL()
         -- food
         -- augmentation
         -- moonkin_form
-        if GetShapeshiftForm() ~= 4 then
+        if GetShapeshiftForm() ~= 4 and RubimRH.AutoMorphON() then
             return S.MoonkinForm:Cast()
         end
         -- snapshot_stats
@@ -537,7 +537,7 @@ local function APL()
 	-- combat
     if RubimRH.TargetIsValid() then
 	    -- moonkin_form
-        if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) then
+        if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) and RubimRH.AutoMorphON() then
            return S.MoonkinForm:Cast()
         end
 	

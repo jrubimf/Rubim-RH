@@ -148,6 +148,18 @@ function RubimRH.ASInterrupt()
     print("|cFF69CCF0Avenger's Shield interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].ASInterrupt))
 end
 
+-- Balance Druid auto morph checkbox handler
+function RubimRH.AutoMorph()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].AutoMorph == false then
+        RubimRH.db.profile[102].AutoMorph = true
+
+    else
+        RubimRH.db.profile[102].AutoMorph = false
+    end
+    print("|cFF69CCF0Auto morph to Moonkin form" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[102].AutoMorph))
+end
+
 function RubimRH.PrecombatToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.Precombat == false then
@@ -295,6 +307,18 @@ function RubimRH.ASInterruptON()
         return false
     end
     if RubimRH.db.profile[66].ASInterrupt == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Druid Auto Morph UI
+function RubimRH.AutoMorphON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[102].AutoMorph == true then
         return true
     else
         return false
