@@ -661,7 +661,7 @@ local function APL()
           return S.HandOfGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-        if S.SummonDemonicTyrant:IsCastableP() and ((Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) and WildImpsCount() >= 2 and Player:SoulShardsP() <= 1) or WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
+        if S.SummonDemonicTyrant:IsCastableP() and ( (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) ) then
           return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
@@ -826,30 +826,34 @@ local function APL()
         if QueueSkill() ~= nil then
             return QueueSkill()
         end        
-    	-- trinket1,if=pet.demonic_tyrant.active
+        -- berserking,if=pet.demonic_tyrant.active|target.time_to_die<=15
+        if S.Berserking:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+            return S.Berserking:Cast()
+        end
+        -- blood_fury,if=pet.demonic_tyrant.active|target.time_to_die<=15
+        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+            return S.BloodFury:Cast()
+        end
+        -- fireblood,if=pet.demonic_tyrant.active|target.time_to_die<=15
+        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+            return S.Fireblood:Cast()
+        end
+	    -- trinket1,if=pet.demonic_tyrant.active
 	    if trinketReady(1) and TyranIsActive() then
             return trinket1
         end
 	    -- trinket2,if=pet.demonic_tyrant.active
-	    if trinketReady(2) and TyranIsActive() then
+    	if trinketReady(2) and TyranIsActive() then
             return trinket2
         end
 	    -- Mythic+ - interrupt2 (command demon)
-	    if S.PetStun:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-	    	return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
-	    end		
-        -- berserking,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.Berserking:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
-          return S.Berserking:Cast()
-        end
-        -- blood_fury,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
-          return S.BloodFury:Cast()
-        end
-        -- fireblood,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
-          return S.Fireblood:Cast()
-        end
+    	if S.PetStun:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+    		return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+    	end
+     	-- unending resolve,defensive,player.health<=40
+        if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
+            return S.UnendingResolve:Cast()
+        end  
         -- call_action_list,name=dcon_opener,if=talent.demonic_consumption.enabled&time<30&!cooldown.summon_demonic_tyrant.remains
         if (S.DemonicConsumption:IsAvailable() and HL.CombatTime() < 30 and not bool(S.SummonDemonicTyrant:CooldownRemainsP())) and RubimRH.CDsON() then
           local ShouldReturn = DconOpener(); if ShouldReturn then return ShouldReturn; end
@@ -863,7 +867,7 @@ local function APL()
           return S.Demonbolt:Cast()
         end
         -- implosion,if=azerite.explosive_potential.rank&buff.wild_imps.stack>2&buff.explosive_potential.remains<action.shadow_bolt.execute_time&(!talent.demonic_consumption.enabled|cooldown.summon_demonic_tyrant.remains>12)
-        if S.Implosion:IsCastableP() and (bool(S.ExplosivePotential:AzeriteRank()) and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() and (not S.DemonicConsumption:IsAvailable() or S.SummonDemonicTyrant:CooldownRemainsP() > 12)) then
+        if S.Implosion:IsCastableP() and (bool(S.ExplosivePotential:AzeriteRank()) and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() and (not S.DemonicConsumption:IsAvailable() or S.SummonDemonicTyrant:CooldownRemainsP() > 10)) then
           return S.Implosion:Cast()
         end
         -- doom,if=!ticking&time_to_die>30&spell_targets.implosion<2
