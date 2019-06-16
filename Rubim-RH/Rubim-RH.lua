@@ -264,7 +264,17 @@ local defaults = {
 						              ["raid_efflo"] = {value = 80},
 						              ["raid_regro"] = {value = 40},
 						              ["raid_swift"] = {value = 50},
-						              ["cd_flourish"] = {value = 5},									  
+ 						              
+									  ["tank_rejuv"] = {value = 97},
+						              ["tank_germi"] = {value = 95},
+						              ["tank_cenar"] = {value = 40},
+						              ["tank_regro"] = {value = 40},
+						              ["tank_swift"] = {value = 50},
+ 						              ["tank_bark"] = {value = 30},
+   						              ["tank_lifebloom"] = {value = 95},									  
+									  ["nb_flourish"] = {value = 5},
+									  ["health_flourish"] = {value = 60},
+						              --["cd_flourish"] = {value = 5},									  
 									  
 						              },							
 						

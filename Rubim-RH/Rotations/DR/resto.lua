@@ -266,8 +266,8 @@ local function APL()
         end
     end
 	
-	-- Tank Priority Spells
-    Healing_Tank = function()
+	-- Arena Rotation
+    Healing_Arena = function()
 	
         --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
@@ -337,17 +337,122 @@ local function APL()
         end
     end
 	
+	-- Tank Priority Spells
+    Healing_Mythic = function()
+	
+        --Tank Emergency Ironbark
+        if S.Ironbark:IsReady() then
+            if LowestAlly("TANK", "HP") <= 25 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
+                return S.Ironbark:Cast()
+            end
+        end		
+		
+		--Tank Priority Rejuvenation
+        if S.Rejuvenation:IsReady() and Target:BuffDownP(S.Rejuvenation) then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--Tank Priority Rejuvenation With Germination
+        if S.Rejuvenation:IsReady() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--Tank Priority CenarionWard
+        if S.CenarionWard:IsReady() and RubimRH.SpellInRange("target", 102351) and RubimRH.PredictHeal("Cenarion Ward", "target") then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
+                return S.CenarionWard:Cast()
+            end
+        end
+		
+        --Tank Priority Swiftmend
+        if S.Swiftmend:IsReady() then
+            --if InjuredAlliesInExplicitRadius(30, true, 0.75) >= 3
+            if LowestAlly("TANK", "HP") <= 70 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 50 then
+                return S.Swiftmend:Cast()
+            end
+        end
+    end
+	
 
 	-- Raid Healing rotation
     Healing_Raid = function()
-	    --Tank Emergency Ironbark
+	   
+	   --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
-            if LowestAlly("ALL", "HP") <= 30 then
-                ForceHealingTarget("ALL")
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_bark"]["value"] then
+                ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= 30 then
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_bark"]["value"] then
                 return S.Ironbark:Cast()
+            end
+        end
+		
+		--Tank Priority Lifebloom
+        if S.Lifebloom:IsReady() and Target:BuffDownP(S.Lifebloom) then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
+                return S.Lifebloom:Cast()
+            end
+        end
+		
+		--Tank Priority Rejuvenation
+        if S.Rejuvenation:IsReady() and Target:BuffDownP(S.Rejuvenation) then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--Tank Priority Rejuvenation With Germination
+        if S.Rejuvenation:IsReady() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
+                return S.Rejuvenation:Cast()
+            end
+        end
+		
+		--Tank Priority CenarionWard
+        if S.CenarionWard:IsReady() and RubimRH.SpellInRange("target", 102351) and RubimRH.PredictHeal("Cenarion Ward", "target") then
+            if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
+                return S.CenarionWard:Cast()
             end
         end
 	
@@ -406,16 +511,6 @@ local function APL()
             end
         end
 		
-		--Tank Priority Lifebloom
-        if S.Lifebloom:IsReady() then
-            if LowestAlly("ALL", "HP") <= 85 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:BuffDownP(S.Lifebloom) and Target:Exists() and Target:HealthPercentage() <= 85 then
-                return S.Lifebloom:Cast()
-            end
-        end
 
         --24Regrowth
         if S.Regrowth:IsReady() and Target:Buff(S.Rejuvenation) and RubimRH.PredictHeal("Regrowth", "target") then
@@ -499,11 +594,24 @@ local function APL()
             return CDs()
         end
 		-- Healing tank
-		
-       -- if Healing_Tank() ~= nil then
-       --     return Healing_Tank()
+		--if IsInRaid() then 
+        --    if Healing_Tank() ~= nil then
+       --         return Healing_Tank()
+		--	end
        -- end
-        -- Healing raid
+	   	-- Arena Rotation
+	    --if select(2, IsInInstance()) == "arena" then 
+        --    if Healing_Arena() ~= nil then
+        --        return Healing_Arena()
+		--	end
+        --end
+	   -- Mythic + Rotation
+	    --if select(2, IsInInstance()) == "party" then 
+        --    if Healing_Mythic() ~= nil then
+        --        return Healing_Mythic()
+		--	end
+       -- end
+		-- Healing raid
 		if (true) then
             if Healing_Raid() ~= nil then
                 return Healing_Raid()

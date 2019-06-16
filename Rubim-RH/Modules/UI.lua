@@ -782,12 +782,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
         end
         
         if tab.title == "Interrupt" then
-            local interruptList_title = StdUi:FontString(tab.frame, 'Custom Interrupt');
-            StdUi:GlueTop(interruptList_title, tab.frame, 0, -10, 'CENTER');
+            local interruptList_title = StdUi:FontString(tab.frame, '');
+            StdUi:GlueTop(interruptList_title, tab.frame, 0, 0, 'CENTER');
 
             -- MIN Interrupt randomizer settings
             local interruptslider1 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.minInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider1, interruptList_title, -40, -40, 'LEFT');
+            StdUi:GlueBelow(interruptslider1, interruptList_title, -40, -30, 'LEFT');
             local sliderlabel = StdUi:FontString(tab.frame, "Interrupt min: " .. RubimRH.db.profile.mainOption.minInterruptValue)
             StdUi:GlueTop(sliderlabel, interruptslider1, 0, 16);
             StdUi:FrameTooltip(interruptslider1, "What the lowest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
@@ -800,7 +800,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
             -- MAX Interrupt randomizer settings
             local interruptslider2 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.maxInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider2, interruptList_title, 90, -40, 'LEFT');
+            StdUi:GlueBelow(interruptslider2, interruptList_title, 90, -30, 'LEFT');
             local sliderlabel = StdUi:FontString(tab.frame, "Interrupt max: " .. RubimRH.db.profile.mainOption.maxInterruptValue)
             StdUi:GlueTop(sliderlabel, interruptslider2, 0, 16);
             StdUi:FrameTooltip(interruptslider2, "What the highest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
@@ -894,9 +894,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             }    
 
-            local st = StdUi:ScrollTable(tab.frame, cols, 5, 38);
+            local st = StdUi:ScrollTable(tab.frame, cols, 6, 40);
             st:EnableSelection(true);
-            StdUi:GlueTop(st, tab.frame, 2, -120);                
+            StdUi:GlueTop(st, tab.frame, 2, -100);                
                                     
 			------------------
 			-- Interrupts Profils
@@ -907,10 +907,15 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'Mixed PvE PvP', value = "Mixed PvE PvP" },
                 { text = 'Custom', value = "Custom" },
             }
-            local chooseprofil = StdUi:Dropdown(tab.frame, 120, 24, interruptProfilschoice, nil, nil);
+			
+			
+			
+            local chooseprofil = StdUi:Dropdown(tab.frame, 100, 20, interruptProfilschoice, nil, nil);
                 chooseprofil:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeList);
-                StdUi:AddLabel(tab.frame, chooseprofil, 'Selected Profil', 'TOP');
-                StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);                
+                --StdUi:AddLabel(tab.frame, chooseprofil, 'Selected Profil', 'TOP');
+                local chooseprofillabel = StdUi:FontString(tab.frame, "Selected Profil: ")
+                StdUi:GlueTop(chooseprofillabel, chooseprofil, 0, 16);
+			 	StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);                
                 chooseprofil.OnValueChanged = function(self, val)
                 
                 if val == "Mythic+" then
@@ -944,7 +949,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
                 return currentList
             end
-            StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');               
+            --StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');    
+            StdUi:GlueBelow(chooseprofil, interruptList_title, -180, -30, 'LEFT');
                        
             local function addSpell(spellID)
                 local name = nil;
@@ -1024,14 +1030,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 
             local btn = StdUi:Button(tab.frame, 125, 24, 'Add Spell');
-            StdUi:GlueBelow(btn, st, 0, -24, "LEFT");
+            StdUi:GlueBelow(btn, st, 0, -5, "LEFT");
             btn:SetScript('OnClick', btn_addSpell);
             StdUi:FrameTooltip(btn, 'Add spell to the White or Black list.', 'TOPLEFT', 'TOPRIGHT', true);
 
             local btn_num = StdUi:NumericBox(tab.frame, 125, 24, 1);
             btn_num:SetMaxValue(9999999);
             btn_num:SetMinValue(0);
-            StdUi:GlueBelow(btn_num, btn, 0, -20, 'LEFT');
+            StdUi:GlueBelow(btn_num, btn, 0, -5, 'LEFT');
             btn_num:SetScript("OnTextChanged", function(self, bool, value)
                 showTooltip(self, true, self:GetNumber())
                 tempAddSpell = self:GetNumber()
@@ -1044,7 +1050,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end)
 
             local btn2 = StdUi:Button(tab.frame, 125, 24, 'Delete Spell');
-            StdUi:GlueBelow(btn2, st, 0, -24, "RIGHT");
+            StdUi:GlueBelow(btn2, st, 0, -5, "RIGHT");
             btn2:SetScript('OnClick', btn_delSpell);
             StdUi:FrameTooltip(btn2, 'Delete a Spell.', 'TOPLEFT', 'TOPRIGHT', true);
 
@@ -1055,26 +1061,26 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
             local whiteListText = (RubimRH.db.profile.mainOption.whiteList == true and 'Whitelist' or 'Blacklist')
 
-            local gn_2_1 = StdUi:Dropdown(tab.frame, 125, 20, whiteListOptions, nil, nil);
+            local gn_2_1 = StdUi:Dropdown(tab.frame, 125, 24, whiteListOptions, nil, nil);
             gn_2_1:SetPlaceholder(whiteListText);
             gn_2_1.OnValueChanged = function(self, val)
                 RubimRH.db.profile.mainOption.whiteList = (val == "Whitelist" and true or false)
                 whiteListText = (RubimRH.db.profile.mainOption.whiteList == true and 'Whitelist' or 'Blacklist')
                 gn_2_1:SetText(whiteListText);
             end
-            StdUi:GlueBelow(gn_2_1, btn2, 0, -24, 'RIGHT');
+            StdUi:GlueBelow(gn_2_1, btn2, 0, -5, 'RIGHT');
 
 
-            local ic_2_1 = StdUi:Checkbox(tab.frame, 'Whitelist');
-            StdUi:GlueBelow(ic_2_1, btn2, 0, -24, 'RIGHT');
-            ic_2_1:SetChecked(RubimRH.db.profile.mainOption.whiteList)
-            function ic_2_1:OnValueChanged(self, state, value)
-                if RubimRH.db.profile.mainOption.whiteList then
-                    RubimRH.db.profile.mainOption.whiteList = false
-                else
-                    RubimRH.db.profile.mainOption.whiteList = true
-                end
-            end
+            --local ic_2_1 = StdUi:Checkbox(tab.frame, 'Whitelist');
+            --StdUi:GlueBelow(ic_2_1, btn2, 0, -24, 'RIGHT');
+            --ic_2_1:SetChecked(RubimRH.db.profile.mainOption.whiteList)
+            --function ic_2_1:OnValueChanged(self, state, value)
+            --    if RubimRH.db.profile.mainOption.whiteList then
+            --        RubimRH.db.profile.mainOption.whiteList = false
+            --    else
+            --        RubimRH.db.profile.mainOption.whiteList = true
+            --    end
+            --end
         end
         
         if tab.title == "System" then
@@ -1199,11 +1205,26 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
         
         if tab.title == "Healer" then
             
-            local heal_title = StdUi:FontString(tab.frame, 'Healer Configuration');
-            StdUi:GlueTop(heal_title, tab.frame, 0, -10);
-            local heal_separator = StdUi:FontString(tab.frame, '===================');
-            StdUi:GlueTop(heal_separator, heal_title, 0, -12);
+            --local heal_title = StdUi:FontString(tab.frame, 'Healer Configuration');
+            --StdUi:GlueTop(heal_title, tab.frame, 0, -10);
+            --local heal_separator = StdUi:FontString(tab.frame, '===================');
+            --StdUi:GlueTop(heal_separator, heal_title, 0, -12);
 			
+			-- Raid settings title
+            local raid_setting_title = StdUi:FontString(tab.frame, 'Raid settings');
+            StdUi:GlueTop(raid_setting_title, tab.frame, -200, -10);
+			
+			-- Tank settings title
+            local tank_setting_title = StdUi:FontString(tab.frame, 'Tank settings');
+            StdUi:GlueTop(tank_setting_title, tab.frame, -30, -10);
+
+			-- Profils settings title
+            local profils_setting_title = StdUi:FontString(tab.frame, 'Profils settings');
+            StdUi:GlueTop(profils_setting_title, tab.frame, 170, -10);
+			
+			-- Misc settings title
+            local misc_setting_title = StdUi:FontString(tab.frame, 'General settings');
+            StdUi:GlueTop(misc_setting_title, tab.frame, 170, -150);
 			
 			------------------
 			-- Profil system
@@ -1213,9 +1234,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local profileList = { }
 			
 			-- Dropdown choice list
-            local profileDropdown = StdUi:Dropdown(tab.frame, 100, 20, profileList);
+            local profileDropdown = StdUi:Dropdown(tab.frame, 90, 25, profileList);
             profileDropdown:SetPlaceholder('Selected Profil');
-            StdUi:GlueTop(profileDropdown, tab.frame, 0, -40, 'LEFT');
+            StdUi:GlueTop(profileDropdown, profils_setting_title, 0, -100, 'CENTER');
             local function update_profileList( )
                 profileList = { }
                 for k, v in pairs(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]) do
@@ -1245,7 +1266,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			----------------------------
 			-- HEALER SLIDERS 
 			----------------------------
-			
+			-- RAID PART
 			-- Raid germination slider
             local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_germi"]["value"], 1, 100 );
 			-- Raid rejuvenation slider
@@ -1257,9 +1278,34 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- Raid efflorescence slider
             local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_efflo"]["value"], 1, 100 );
 			-- Raid regrowth slider
-            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );			
+            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+            -- TANK PART
+			-- Tank germination slider
+            local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			-- Tank rejuvenation slider
+            local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			-- Tank cenarion slider
+            local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			-- Tank regrowth slider
+            local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			-- Tank ironbark slider
+            local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			-- Tank Lifebloom slider
+            local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+            -- MISC SETTINGS Part
+			-- Number of party member injured before using flourish...
+            local flourish_number = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["nb_flourish"]["value"], 1, 15 );					
+			-- ....and how much hp should these number of party member have before using flourish
+            local flourish_health = StdUi:SliderWithBox(tab.frame, 140, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			
 			
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
+			-- Current profil label
+			StdUi:AddLabel( tab.frame, profileDropdown, "Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile, "TOP" );
+            profileDropdown.label:SetFontObject( GameFontNormalLarge )
+            profileDropdown.label:SetFont( profileDropdown.label:GetFont( ), 10 )
+            profileDropdown.label:SetWidth( 0 )
+
             function profileDropdown:OnValueChanged( value, text )
 			    
                 --Saving the current profile to another table.
@@ -1274,6 +1320,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				-------------------
 				-- Sliders Refresh
 				-------------------
+				-- Profils label refresh
+				profileDropdown.label:SetText("Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile)
+				-- RAID PART
 				raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
 				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
 				raid_germi_slider.label:SetText("Germination : " .. datavalue["raid_germi"]["value"])
@@ -1286,13 +1335,32 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				raid_efflo_slider.editBox:SetValue(datavalue["raid_efflo"]["value"])
 				raid_regro_slider.label:SetText("Regrowth : " .. datavalue["raid_regro"]["value"])
 				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
+                -- TANK PART
+				tank_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["tank_rejuv"]["value"])
+				tank_rejuv_slider.editBox:SetValue(datavalue["tank_rejuv"]["value"])
+				tank_germi_slider.label:SetText("Germination : " .. datavalue["tank_germi"]["value"])
+				tank_germi_slider.editBox:SetValue(datavalue["tank_germi"]["value"])
+				tank_cenar_slider.label:SetText("Cenarion Wild : " .. datavalue["tank_cenar"]["value"])
+				tank_cenar_slider.editBox:SetValue(datavalue["tank_cenar"]["value"])
+				tank_regro_slider.label:SetText("Regrowth : " .. datavalue["tank_regro"]["value"])
+				tank_regro_slider.editBox:SetValue(datavalue["tank_regro"]["value"])
+				tank_bark_slider.label:SetText("IronBark : " .. datavalue["tank_bark"]["value"])
+				tank_bark_slider.editBox:SetValue(datavalue["tank_bark"]["value"])
+				tank_lifebloom_slider.label:SetText("Lifebloom : " .. datavalue["tank_lifebloom"]["value"])
+				tank_lifebloom_slider.editBox:SetValue(datavalue["tank_lifebloom"]["value"])
 
             end
 			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]      
 			
 			-- Profil settings button - OK
-            local profileSettingsButton = StdUi:Button(tab.frame, 80, 30, 'Profile Settings' );
-			StdUi:GlueTop(profileSettingsButton, tab.frame, 0, -80, 'LEFT');
+            local profileSettingsButton = StdUi:Button(tab.frame, 90, 25, 'Profile Settings' );
+			StdUi:GlueTop(profileSettingsButton, profils_setting_title, 0, -40, 'CENTER');
+			-- Profil button label
+			StdUi:AddLabel( tab.frame, profileSettingsButton, "Manage my profils", "TOP" );
+            profileSettingsButton.label:SetFontObject( GameFontNormalLarge )
+            profileSettingsButton.label:SetFont( profileSettingsButton.label:GetFont( ), 10 )
+            profileSettingsButton.label:SetWidth( 0 )
+			
             profileSettingsButton:SetScript( 'OnClick', function( )
                 local rr, gg, bb, aa = RubimRH.db.profile.mainOption.mainframeColor_r, RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a			   
                 StdUi.config.backdrop.panel = {r = rr, g = gg, b = bb, a = aa}
@@ -1383,11 +1451,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			--------------------
 			------ DRUID -------
-			--------------------
-			
+			--------------------			
 			--------------------
 			-- Rejuvenation Raid             
-            StdUi:GlueTop(raid_rejuv_slider, tab.frame, 50, -50);
+            StdUi:GlueTop(raid_rejuv_slider, raid_setting_title, 20, -50);
             raid_rejuv_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_rejuv_slider, "Rejuvenation : " .. datavalue["raid_rejuv"]["value"], "TOP" );
             raid_rejuv_slider.label:SetFontObject( GameFontNormalLarge )
@@ -1403,9 +1470,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end;
             table.insert(sliders, raid_rejuv_slider)	
             
+			--local rejuv_separator = StdUi:FontString(tab.frame, '--------------------');
+            --StdUi:GlueTop(rejuv_separator, raid_rejuv_slider, 0, -5);
+			
 			-------------------
 			-- Germination Raid             
-            StdUi:GlueTop(raid_germi_slider, tab.frame, 50, -100);
+            StdUi:GlueTop(raid_germi_slider, raid_setting_title, 20, -110);
             raid_germi_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_germi_slider, "Germination : " .. datavalue["raid_germi"]["value"], "TOP" );
             raid_germi_slider.label:SetFontObject( GameFontNormalLarge )
@@ -1420,10 +1490,46 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_germi_slider)			
+			        	
+			-------------------
+			-- Cenarion Raid             
+            StdUi:GlueTop(raid_cenar_slider, raid_setting_title, 20, -170);
+            raid_cenar_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_cenar_slider, "Cenarion : " .. datavalue["raid_cenar"]["value"], "TOP" );
+            raid_cenar_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_cenar_slider.label:SetFont( raid_cenar_slider.label:GetFont( ), 10 )
+            raid_cenar_slider.label:SetWidth( 0 )
+            raid_cenar_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_cenar"]["value"] = value
+				print(datavalue["raid_cenar"]["value"])
+                raid_cenar_slider.label:SetText("Cenarion : " .. datavalue["raid_cenar"]["value"])
+				raid_cenar_slider.editBox:SetValue(datavalue["raid_cenar"]["value"])
+				
+            end;
+            table.insert(sliders, raid_wildg_slider)
 			
-    		-------------------
+			-------------------
+			-- Regrowth Raid             
+            StdUi:GlueTop(raid_regro_slider, raid_setting_title, 20, -230);
+            raid_regro_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_regro_slider, "Regrowth : " .. datavalue["raid_regro"]["value"], "TOP" );
+            raid_regro_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_regro_slider.label:SetFont( raid_regro_slider.label:GetFont( ), 10 )
+            raid_regro_slider.label:SetWidth( 0 )
+            raid_regro_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_regro"]["value"] = value
+				print(datavalue["raid_regro"]["value"])
+                raid_regro_slider.label:SetText("Regrowth : " .. datavalue["raid_regro"]["value"])
+				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
+				
+            end;
+            table.insert(sliders, raid_regro_slider)
+			
+			    		-------------------
 			-- Wild Growth Raid             
-            StdUi:GlueTop(raid_wildg_slider, tab.frame, 50, -150);
+            StdUi:GlueTop(raid_wildg_slider, raid_setting_title, 20, -290);
             raid_wildg_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_wildg_slider, "Wild Growth : " .. datavalue["raid_wildg"]["value"], "TOP" );
             raid_wildg_slider.label:SetFontObject( GameFontNormalLarge )
@@ -1438,28 +1544,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_wildg_slider)
-        	
-			-------------------
-			-- Cenarion Raid             
-            StdUi:GlueTop(raid_cenar_slider, tab.frame, 50, -200);
-            raid_cenar_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_cenar_slider, "Cenarion : " .. datavalue["raid_wildg"]["value"], "TOP" );
-            raid_cenar_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_cenar_slider.label:SetFont( raid_cenar_slider.label:GetFont( ), 10 )
-            raid_cenar_slider.label:SetWidth( 0 )
-            raid_cenar_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_cenar"]["value"] = value
-				print(datavalue["raid_cenar"]["value"])
-                raid_cenar_slider.label:SetText("Cenarion : " .. datavalue["raid_cenar"]["value"])
-				raid_cenar_slider.editBox:SetValue(datavalue["raid_cenar"]["value"])
-				
-            end;
-            table.insert(sliders, raid_wildg_slider)
 	    	
 			-------------------
 			-- Efflorescence Raid             
-            StdUi:GlueTop(raid_efflo_slider, tab.frame, 50, -250);
+            StdUi:GlueTop(raid_efflo_slider, raid_setting_title, 20, -350);
             raid_efflo_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_efflo_slider, "Efflorescence : " .. datavalue["raid_efflo"]["value"], "TOP" );
             raid_efflo_slider.label:SetFontObject( GameFontNormalLarge )
@@ -1475,23 +1563,155 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end;
             table.insert(sliders, raid_efflo_slider)
 			
+
+			
 			-------------------
-			-- Regrowth Raid             
-            StdUi:GlueTop(raid_regro_slider, tab.frame, 50, -300);
-            raid_regro_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_regro_slider, "Regrowth : " .. datavalue["raid_regro"]["value"], "TOP" );
-            raid_regro_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_regro_slider.label:SetFont( raid_regro_slider.label:GetFont( ), 10 )
-            raid_regro_slider.label:SetWidth( 0 )
-            raid_regro_slider.OnValueChanged = function( _, value)
+			-- Tank Part ----
+            --------------------
+			-- Rejuvenation Tank             
+            StdUi:GlueTop(tank_rejuv_slider, tank_setting_title, 20, -50);
+            tank_rejuv_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_rejuv_slider, "Rejuvenation : " .. datavalue["tank_rejuv"]["value"], "TOP" );
+            tank_rejuv_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_rejuv_slider.label:SetFont( tank_rejuv_slider.label:GetFont( ), 10 )
+            tank_rejuv_slider.label:SetWidth( 0 )
+            tank_rejuv_slider.OnValueChanged = function( _, value)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_regro"]["value"] = value
-				print(datavalue["raid_regro"]["value"])
-                raid_regro_slider.label:SetText("Regrowth : " .. datavalue["raid_regro"]["value"])
-				raid_regro_slider.editBox:SetValue(datavalue["raid_regro"]["value"])
+				datavalue["tank_rejuv"]["value"] = value
+				print(datavalue["tank_rejuv"]["value"])
+                tank_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["tank_rejuv"]["value"])
+				tank_rejuv_slider.editBox:SetValue(datavalue["tank_rejuv"]["value"])
 				
             end;
-            table.insert(sliders, raid_regro_slider)
+            table.insert(sliders, tank_rejuv_slider)	
+            
+			-------------------
+			-- Germination Tank             
+            StdUi:GlueTop(tank_germi_slider, tank_setting_title, 20, -110);
+            tank_germi_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_germi_slider, "Germination : " .. datavalue["tank_germi"]["value"], "TOP" );
+            tank_germi_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_germi_slider.label:SetFont( tank_germi_slider.label:GetFont( ), 10 )
+            tank_germi_slider.label:SetWidth( 0 )
+            tank_germi_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_germi"]["value"] = value
+				print(datavalue["tank_germi"]["value"])
+                tank_germi_slider.label:SetText("Germination : " .. datavalue["tank_germi"]["value"])
+				tank_germi_slider.editBox:SetValue(datavalue["tank_germi"]["value"])
+				
+            end;
+            table.insert(sliders, tank_germi_slider)			
+        	
+			-------------------
+			-- Cenarion Tank             
+            StdUi:GlueTop(tank_cenar_slider, tank_setting_title, 20, -170);
+            tank_cenar_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_cenar_slider, "Cenarion : " .. datavalue["tank_cenar"]["value"], "TOP" );
+            tank_cenar_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_cenar_slider.label:SetFont( tank_cenar_slider.label:GetFont( ), 10 )
+            tank_cenar_slider.label:SetWidth( 0 )
+            tank_cenar_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_cenar"]["value"] = value
+				print(datavalue["tank_cenar"]["value"])
+                tank_cenar_slider.label:SetText("Cenarion : " .. datavalue["tank_cenar"]["value"])
+				tank_cenar_slider.editBox:SetValue(datavalue["tank_cenar"]["value"])
+				
+            end;
+            table.insert(sliders, tank_cenar_slider)	    	
+			
+			-------------------
+			-- Regrowth Tank             
+            StdUi:GlueTop(tank_regro_slider, tank_setting_title, 20, -230);
+            tank_regro_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_regro_slider, "Regrowth : " .. datavalue["tank_regro"]["value"], "TOP" );
+            tank_regro_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_regro_slider.label:SetFont( tank_regro_slider.label:GetFont( ), 10 )
+            tank_regro_slider.label:SetWidth( 0 )
+            tank_regro_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_regro"]["value"] = value
+				print(datavalue["tank_regro"]["value"])
+                tank_regro_slider.label:SetText("Regrowth : " .. datavalue["tank_regro"]["value"])
+				tank_regro_slider.editBox:SetValue(datavalue["tank_regro"]["value"])
+				
+            end;
+            table.insert(sliders, tank_regro_slider)
+			
+			-------------------
+			-- Ironbark Tank             
+            StdUi:GlueTop(tank_bark_slider, tank_setting_title, 20, -290);
+            tank_bark_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_bark_slider, "IronBark : " .. datavalue["tank_bark"]["value"], "TOP" );
+            tank_bark_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_bark_slider.label:SetFont( tank_bark_slider.label:GetFont( ), 10 )
+            tank_bark_slider.label:SetWidth( 0 )
+            tank_bark_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_bark"]["value"] = value
+				print(datavalue["tank_bark"]["value"])
+                tank_bark_slider.label:SetText("IronBark : " .. datavalue["tank_bark"]["value"])
+				tank_bark_slider.editBox:SetValue(datavalue["tank_bark"]["value"])
+				
+            end;
+            table.insert(sliders, tank_bark_slider)
+			
+						
+			-------------------
+			-- Lifebloom Tank             
+            StdUi:GlueTop(tank_lifebloom_slider, tank_setting_title, 20, -350);
+            tank_lifebloom_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_lifebloom_slider, "Lifebloom : " .. datavalue["tank_lifebloom"]["value"], "TOP" );
+            tank_lifebloom_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_lifebloom_slider.label:SetFont( tank_lifebloom_slider.label:GetFont( ), 10 )
+            tank_lifebloom_slider.label:SetWidth( 0 )
+            tank_lifebloom_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_lifebloom"]["value"] = value
+				print(datavalue["tank_lifebloom"]["value"])
+                tank_lifebloom_slider.label:SetText("Lifebloom : " .. datavalue["tank_lifebloom"]["value"])
+				tank_lifebloom_slider.editBox:SetValue(datavalue["tank_lifebloom"]["value"])
+				
+            end;
+            table.insert(sliders, tank_lifebloom_slider)
+			
+			-------------------
+			-- Flourish Number            
+            StdUi:GlueTop(flourish_number, misc_setting_title, 0, -40);
+            flourish_number:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, flourish_number, "Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people...", "TOP" );
+            flourish_number.label:SetFontObject( GameFontNormalLarge )
+            flourish_number.label:SetFont( flourish_number.label:GetFont( ), 10 )
+            flourish_number.label:SetWidth( 0 )
+            flourish_number.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["nb_flourish"]["value"] = value
+				print(datavalue["nb_flourish"]["value"])
+                flourish_number.label:SetText("Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people...")
+				flourish_number.editBox:SetValue(datavalue["nb_flourish"]["value"])
+				flourish_health.label:SetText("... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
+				
+            end;
+            table.insert(sliders, flourish_number)
+			
+			-------------------
+			-- Flourish Health           
+            StdUi:GlueTop(flourish_health, misc_setting_title, 0, -100);
+            flourish_health:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, flourish_health, "... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"], "TOP" );
+            flourish_health.label:SetFontObject( GameFontNormalLarge )
+            flourish_health.label:SetFont( flourish_health.label:GetFont( ), 10 )
+            flourish_health.label:SetWidth( 0 )
+            flourish_health.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["health_flourish"]["value"] = value
+				print(datavalue["health_flourish"]["value"])
+                flourish_health.label:SetText("... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
+				flourish_health.editBox:SetValue(datavalue["health_flourish"]["value"])
+				
+            end;
+            table.insert(sliders, flourish_health)
 	      
 		  end
 	      -- The end of spec = resto druid
