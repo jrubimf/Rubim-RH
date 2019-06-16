@@ -273,7 +273,9 @@ local defaults = {
  						              ["tank_bark"] = {value = 30},
    						              ["tank_lifebloom"] = {value = 95},									  
 									  ["nb_flourish"] = {value = 5},
-									  ["health_flourish"] = {value = 60},
+									  ["health_flourish"] = {value = 40},
+									  ["nb_tranqui"] = {value = 8},
+									  ["health_tranqui"] = {value = 35},
 						              --["cd_flourish"] = {value = 5},									  
 									  
 						              },							

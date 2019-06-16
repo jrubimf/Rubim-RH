@@ -212,7 +212,7 @@ local function APL()
     LeftAlt = IsLeftAltKeyDown();
 
 	-- Dps rotation
-    DPS = function()
+    local DPS = function()
         if S.Sunfire:IsReady() and Target:DebuffRemainsP(S.SunfireDebuff) < 4 then
             return S.Sunfire:Cast()
         end
@@ -225,17 +225,17 @@ local function APL()
             return S.SolarWrath:Cast()
         end
 
-        return 0, 135328
+        
     end
 	
 	-- CDs Priorities
-    CDs = function()
+    local CDs = function()
 	    
 		--26Flourish
 		-- Combo Tranquility + Wild Growth 
         if S.Flourish:CooldownRemainsP() < 0.1 and S.WildGrowth:CooldownRemainsP() > 4 and (RubimRH.incdmg5secs() > AVG_DMG + AVG_HPS) and AoEFlourish(60) then
             if S.Flourish:IsAvailable() then
-                if GroupedBelow(60) >= 3 then
+                if GroupedBelow(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["health_flourish"]["value"]) >= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["nb_flourish"]["value"] then
                     return S.Flourish:Cast()
                 end
             end
@@ -243,7 +243,7 @@ local function APL()
 		
 		--27Tranquility
         if S.Tranquility:IsReady() and S.WildGrowth:CooldownRemainsP() > 1 then
-            if GroupedBelow(60) >= 3 then
+            if GroupedBelow(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["health_tranqui"]["value"]) >= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["nb_tranqui"]["value"] then
                 return S.Tranquility:Cast()
             end
         end
@@ -267,7 +267,7 @@ local function APL()
     end
 	
 	-- Arena Rotation
-    Healing_Arena = function()
+    local Healing_Arena = function()
 	
         --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
@@ -338,7 +338,7 @@ local function APL()
     end
 	
 	-- Tank Priority Spells
-    Healing_Mythic = function()
+    local Healing_Mythic = function()
 	
         --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
@@ -399,8 +399,9 @@ local function APL()
 	
 
 	-- Raid Healing rotation
-    Healing_Raid = function()
-	   
+    local Healing_Raid = function()
+	
+   
 	   --Tank Emergency Ironbark
         if S.Ironbark:IsReady() then
             if LowestAlly("TANK", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_bark"]["value"] then
@@ -572,23 +573,30 @@ local function APL()
         if QueueSkill() ~= nil then
             return QueueSkill()
         end
-        -- Mouseover Functionality
+        -- Mouseover Dispell handler
         local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover") and Unit("mouseover") or nil
-            if MouseoverUnit then
+        if MouseoverUnit then
             -- Nature Cure
 		    if S.NaturesCure:IsReady() and MouseOver:HasDispelableDebuff("Magic", "Poison", "Curse") then
                 return S.NaturesCure:Cast()
             end
+        end
+		
+		-- Mouseover Attack handler
+        local MouseoverEnemyUnit = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover") and Unit("mouseover") or nil
+        if MouseoverUnit then
+            return DPS()
         end	
 
         -- Anti channeling interrupt
         if Player:IsChanneling() or Player:IsCasting() then
             return 0, 236353
         end
-        -- DPS Rotation
-        if Player:CanAttack(Target) then
+       
+	    if Player:CanAttack(Target) then
             return DPS()
         end
+		
 		-- CDs handler
 		if CDs() ~= nil and RubimRH.CDsON() then
             return CDs()
@@ -610,12 +618,11 @@ local function APL()
         --    if Healing_Mythic() ~= nil then
         --        return Healing_Mythic()
 		--	end
-       -- end
-		-- Healing raid
-		if (true) then
-            if Healing_Raid() ~= nil then
-                return Healing_Raid()
-			end
+     -- end
+
+	     -- Healing raid
+        if Healing_Raid() ~= nil then
+            return Healing_Raid()
         end
     return 0, 135328
 	--end

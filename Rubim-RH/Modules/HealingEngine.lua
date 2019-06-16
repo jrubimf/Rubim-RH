@@ -5,6 +5,7 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local mainAddon = RubimRH
 
 local TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
 TargetColor:SetBackdrop(nil)
@@ -928,28 +929,21 @@ function showHealingColor(healingTarget)
 end
 
 function setColorTarget()
-    if TargetColor == nil then
-        return
-    end
-
     --Default START COLOR
-    TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
-
-    --If we have a mouseover target, stop healing (kinda of dangerous)
-    if CanHeal("mouseover") and GetMouseFocus() ~= WorldFrame and MouseoverCheck then
-        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
+    TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)   
+    
+    --If we have a mouseover target, stop healing engine
+    if UnitExists("mouseover") and not UnitIsFriend("target", "mouseover") then       
         return
     end
-
-    --If we have a target do nothing.
+    
+    --If we have a current target or boss then do nothing.
     if UnitExists("target") and healingTargetGUID == UnitGUID("target") then
-        TargetColor.texture:SetColorTexture(0, 0, 0, 1.0)
         return
     end
-
+    
     --If we have no one to heal then do nothing.
-    healing_toggle = true
-    if healingTarget == nil or healingTargetGUID == nil or not healing_toggle then
+    if healingTarget == nil or healingTargetGUID == nil or (UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")) or RubimRH.TargetIsValid() then
         return
     end
 
@@ -1368,7 +1362,7 @@ end
 -- Update LOS status for target 
 local function UpdateLOS()
     MouseOver_Toggle = true
-    if UnitExists("target") and (not MouseOver_Toggle or Unit("mouseover"):IsEnemy() or not MouseHasFrame()) then 
+    if UnitExists("target") and (not MouseOver_Toggle or Player:CanAttack(Target)) then 
         GetLOS(UnitGUID("target"))
     end
 end
@@ -1380,6 +1374,7 @@ local function WipeAll()
     wipe(R_Tanks)
     wipe(R_DPS)
     wipe(R_Heal)
+    wipe(R_Stacked)
     wipe(Frequency)
     wipe(FrequencyPairs)
 end 
@@ -1408,7 +1403,7 @@ local function refreshColor()
         HealingEngine() -- Updates Arrays/Table
         setHealingTarget() -- Who to heal?
         setColorTarget() -- Show Pixels    
-      --  UpdateLOS() -- Update LOS status for target 
+        UpdateLOS() -- Update LOS status for target 
     end
 end
 
