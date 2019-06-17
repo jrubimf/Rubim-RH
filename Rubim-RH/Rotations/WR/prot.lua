@@ -41,6 +41,8 @@ RubimRH.Spell[73] = {
     LastStand = Spell(12975),
     Avatar = Spell(107574),
     BattleShout = Spell(6673),
+	  Intercept                             = Spell(198304),
+	  
     -- Talents
     BoomingVoice = Spell(202743),
     ImpendingVictory = Spell(202168),
