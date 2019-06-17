@@ -160,6 +160,29 @@ function RubimRH.AutoMorph()
     print("|cFF69CCF0Auto morph to Moonkin form" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[102].AutoMorph))
 end
 
+-- Prot Warrior 
+function RubimRH.UseShieldBlockDef()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].UseShieldBlockDef == false then
+        RubimRH.db.profile[102].UseShieldBlockDef = true
+
+    else
+        RubimRH.db.profile[102].UseShieldBlockDef = false
+    end
+    print("|cFF69CCF0Use Shield Block Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseShieldBlockDef))
+end
+
+function RubimRH.UseRageDef()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].UseRageDef == false then
+        RubimRH.db.profile[102].UseRageDef = true
+
+    else
+        RubimRH.db.profile[102].UseRageDef = false
+    end
+    print("|cFF69CCF0Use your Rage Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseRageDef))
+end
+
 function RubimRH.PrecombatToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.Precombat == false then
@@ -324,6 +347,30 @@ function RubimRH.AutoMorphON()
         return false
     end
 end
+
+-- Protection Warrior
+function RubimRH.UseShieldBlockDefON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[73].UseShieldBlockDefensively == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.UseRageDefON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[73].UseRageDefensively == true then
+        return true
+    else
+        return false
+    end
+end
+
 
 function RubimRH.PrecombatON()
     if RubimRH.db == nil then

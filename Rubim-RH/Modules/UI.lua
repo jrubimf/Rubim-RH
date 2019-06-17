@@ -433,6 +433,27 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                 end
 				
+			    --PROT Warrior 
+                if RubimRH.playerSpec == Protection then
+                    -- UseShieldBlockDefensively
+					local UseShieldBlockDef = StdUi:Checkbox(tab.frame, 'Use Shield Block Defensively');                    
+					StdUi:FrameTooltip(UseShieldBlockDef, 'This will force Shield Block te be auto used defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
+					UseShieldBlockDef:SetChecked(RubimRH.db.profile[73].UseShieldBlockDefensively)                    
+					StdUi:GlueBelow(UseShieldBlockDef, gn_4_0, 0, -150, 'LEFT');                  
+					function UseShieldBlockDef:OnValueChanged(value)
+                        RubimRH.UseShieldBlockDef()
+                    end
+					
+                    -- UseRageDefensively
+					local UseRageDef = StdUi:Checkbox(tab.frame, 'Use Rage Defensively');                    
+					StdUi:FrameTooltip(UseRageDef, 'This will force Rage usage defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
+					UseRageDef:SetChecked(RubimRH.db.profile[73].UseRageDefensively)                    
+					StdUi:GlueBelow(UseRageDef, gn_4_0, 0, -200, 'LEFT');                  
+					function UseRageDef:OnValueChanged(value)
+                        RubimRH.UseRageDef()
+                    end
+                end
+				
 			    --BALANCE DRUID
                 if RubimRH.playerSpec == Balance then				    
                     local AutoMorphbutton = StdUi:Checkbox(tab.frame, 'Auto morph in Moonkin form');                    
