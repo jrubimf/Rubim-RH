@@ -970,6 +970,8 @@ mythicList = {
         },
         [Protection] = {
             cooldown = true,
+			UseShieldBlockDefensively = true,
+			UseRageDefensively = true,
             victoryrush = 80,
             sk1 = 2.5,
             sk1id = "Light Damage",
