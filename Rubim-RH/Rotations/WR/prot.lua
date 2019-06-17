@@ -181,7 +181,7 @@ local function APL()
   -- Defensives CDs
   Defensive = function()
     -- Shield Wall
-    if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk4 then
+    if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk1 then
         return S.ShieldWall:Cast()
     end
 	-- Shield Block
@@ -190,7 +190,7 @@ local function APL()
         return S.ShieldBlock:Cast()
     end
 	-- Last Stand
-    if S.LastStand:IsCastableP() and ((not Player:Buff(S.ShieldBlockBuff)) and Player:HealthPercentage() <= RubimRH.db.profile[73].sk5 and S.ShieldBlock:RechargeP() > (gcdTime * 2)) then
+    if S.LastStand:IsCastableP() and ((not Player:Buff(S.ShieldBlockBuff)) and Player:HealthPercentage() <= RubimRH.db.profile[73].sk2 and S.ShieldBlock:RechargeP() > (gcdTime * 2)) then
         return S.LastStand:Cast()
     end
   end
@@ -335,13 +335,19 @@ local function APL()
     --if I.BattlePotionofStrength:IsReady() and RubimRH.PerfectPullON() and (Player:BuffP(S.AvatarBuff) or Target:TimeToDie() < 25) then
     --  return I.BattlePotionofStrength:Cast()
     --end
-    if Player:HealthPercentage() < 30 and S.VictoryRush:IsReady() then
-      return S.VictoryRush:Cast()
+ -- Impending Victory -> Cast when < 85% HP
+    if S.ImpendingVictory:IsReady()
+            and Player:HealthPercentage() <= 85 then
+        return S.VictoryRush:Cast()
     end
-    if Player:HealthPercentage() < 30 and S.ImpendingVictory:IsReadyP() then
-      return S.ImpendingVictory:Cast()
+    -- Victory Rush -> Cast when < 85% HP
+    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= 85 then
+        return S.VictoryRush:Cast()
     end
-	
+    -- Victory Rush -> Buff about to expire
+    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
+        return S.VictoryRush:Cast()
+    end	
     -- ignore_pain,if=rage.deficit<25+20*talent.booming_voice.enabled*cooldown.demoralizing_shout.ready
     if S.IgnorePain:IsReadyP() and (Player:RageDeficit() < 25 + 20 * num(S.BoomingVoice:IsAvailable()) * num(S.DemoralizingShout:CooldownUpP()) and shouldCastIp() and isCurrentlyTanking()) then
       return S.IgnorePain:Cast()

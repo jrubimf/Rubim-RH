@@ -439,7 +439,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					local UseShieldBlockDef = StdUi:Checkbox(tab.frame, 'Use Shield Block Defensively');                    
 					StdUi:FrameTooltip(UseShieldBlockDef, 'This will force Shield Block te be auto used defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
 					UseShieldBlockDef:SetChecked(RubimRH.db.profile[73].UseShieldBlockDefensively)                    
-					StdUi:GlueBelow(UseShieldBlockDef, gn_4_0, 0, -150, 'LEFT');                  
+					StdUi:GlueBelow(UseShieldBlockDef, gn_4_0, 0, -100, 'LEFT');                  
 					function UseShieldBlockDef:OnValueChanged(value)
                         RubimRH.UseShieldBlockDef()
                     end
@@ -448,7 +448,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					local UseRageDef = StdUi:Checkbox(tab.frame, 'Use Rage Defensively');                    
 					StdUi:FrameTooltip(UseRageDef, 'This will force Rage usage defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
 					UseRageDef:SetChecked(RubimRH.db.profile[73].UseRageDefensively)                    
-					StdUi:GlueBelow(UseRageDef, gn_4_0, 0, -200, 'LEFT');                  
+					StdUi:GlueBelow(UseRageDef, gn_4_0, 0, -130, 'LEFT');                  
 					function UseRageDef:OnValueChanged(value)
                         RubimRH.UseRageDef()
                     end
