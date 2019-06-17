@@ -183,6 +183,30 @@ function RubimRH.UseRageDef()
     print("|cFF69CCF0Use your Rage Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseRageDef))
 end
 
+-- Resto druid Force Rejuv handler
+function RubimRH.ForceRejuv()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[105].force_rejuv == false then
+        RubimRH.db.profile[105].force_rejuv = true
+
+    else
+        RubimRH.db.profile[105].force_rejuv = false
+    end
+    print("|cFF69CCF0Force Rejuvenation on everyone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[105].force_rejuv))
+end
+
+-- Resto Druid Sync DBM Cds
+function RubimRH.DBMSync()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[105].dbm_sync == false then
+        RubimRH.db.profile[105].dbm_sync = true
+
+    else
+        RubimRH.db.profile[105].dbm_sync = false
+    end
+    print("|cFF69CCF0CDs Synchronization with DBM events " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[105].dbm_sync))
+end
+
 function RubimRH.PrecombatToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.Precombat == false then
@@ -371,6 +395,27 @@ function RubimRH.UseRageDefON()
     end
 end
 
+function RubimRH.ForceRejuvON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[105].force_rejuv == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.DBMSyncON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[105].dbm_sync == true then
+        return true
+    else
+        return false
+    end
+end
 
 function RubimRH.PrecombatON()
     if RubimRH.db == nil then

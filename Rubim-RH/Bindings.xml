@@ -8,4 +8,7 @@
 <Binding category="Rubim RH" name="AoE Toggle">
   RubimRH.AoEToggle()
 </Binding>
+<Binding category="Rubim RH" name="HEAL Force Rejuvenation">
+  RubimRH.ForceRejuv()
+</Binding>
 </Bindings>

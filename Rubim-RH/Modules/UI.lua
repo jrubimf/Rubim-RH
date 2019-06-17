@@ -1253,8 +1253,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueTop(profils_setting_title_separator, profils_setting_title, 0, -10);
 			
 			-- Misc settings title
+            local general_setting_title = StdUi:FontString(tab.frame, 'General settings');
+            StdUi:GlueTop(general_setting_title, tab.frame, 20, -10);
+			local general_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(general_setting_title_separator, general_setting_title, 0, -10);
+			
+			-- Cooldowns settings title
             local misc_setting_title = StdUi:FontString(tab.frame, 'Cooldowns settings');
-            StdUi:GlueTop(misc_setting_title, tab.frame, 10, -10);
+            StdUi:GlueTop(misc_setting_title, tab.frame, 20, -110);
 			local misc_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
             StdUi:GlueTop(misc_setting_title_separator, misc_setting_title, 0, -10);
 			
@@ -1326,11 +1332,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
             -- MISC SETTINGS Part
 			-- Number of party member injured before using flourish...
-            local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 20 );					
+            local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
 			-- ....and how much hp should these number of party member have before using flourish
             local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
 			-- Number of party member injured before using tranquility....
-            local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 20 );
+            local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
 			-- ....and how much hp should these number of party member have before using Tranquility
             local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
 			
@@ -1715,7 +1721,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- Flourish Number            
             StdUi:GlueTop(flourish_number, misc_setting_title, 0, -50);
             flourish_number:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, flourish_number, "Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people...", "TOP" );
+            StdUi:AddLabel( tab.frame, flourish_number, "Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people", "TOP" );
             flourish_number.label:SetFontObject( GameFontNormalLarge )
             flourish_number.label:SetFont( flourish_number.label:GetFont( ), 10 )
             flourish_number.label:SetWidth( 0 )
@@ -1723,18 +1729,18 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				datavalue["nb_flourish"]["value"] = value
 				print(datavalue["nb_flourish"]["value"])
-                flourish_number.label:SetText("Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people...")
+                flourish_number.label:SetText("Use Flourish on at least " .. datavalue["nb_flourish"]["value"] .. " people")
 				flourish_number.editBox:SetValue(datavalue["nb_flourish"]["value"])
-				flourish_health.label:SetText("... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
+				flourish_health.label:SetText("and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
 				
             end;
             table.insert(sliders, flourish_number)
 			
 			-------------------
 			-- Flourish Health           
-            StdUi:GlueTop(flourish_health, misc_setting_title, 0, -110);
+            StdUi:GlueTop(flourish_health, misc_setting_title, 140, -50);
             flourish_health:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, flourish_health, "... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"], "TOP" );
+            StdUi:AddLabel( tab.frame, flourish_health, "and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"], "TOP" );
             flourish_health.label:SetFontObject( GameFontNormalLarge )
             flourish_health.label:SetFont( flourish_health.label:GetFont( ), 10 )
             flourish_health.label:SetWidth( 0 )
@@ -1742,7 +1748,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				datavalue["health_flourish"]["value"] = value
 				print(datavalue["health_flourish"]["value"])
-                flourish_health.label:SetText("... and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
+                flourish_health.label:SetText("and if those " .. datavalue["nb_flourish"]["value"] .. " people HP <= " .. datavalue["health_flourish"]["value"])
 				flourish_health.editBox:SetValue(datavalue["health_flourish"]["value"])
 				
             end;
@@ -1751,9 +1757,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		  
  			-------------------
 			-- Tranquility Number            
-            StdUi:GlueTop(tranqui_number, misc_setting_title, 0, -170);
+            StdUi:GlueTop(tranqui_number, misc_setting_title, 0, -110);
             tranqui_number:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tranqui_number, "Use Tranqui on at least " .. datavalue["nb_tranqui"]["value"] .. " people...", "TOP" );
+            StdUi:AddLabel( tab.frame, tranqui_number, "Use Tranqui on at least " .. datavalue["nb_tranqui"]["value"] .. " people", "TOP" );
             tranqui_number.label:SetFontObject( GameFontNormalLarge )
             tranqui_number.label:SetFont( tranqui_number.label:GetFont( ), 10 )
             tranqui_number.label:SetWidth( 0 )
@@ -1761,18 +1767,18 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				datavalue["nb_tranqui"]["value"] = value
 				print(datavalue["nb_tranqui"]["value"])
-                tranqui_number.label:SetText("Use Tranqui on at least " .. datavalue["nb_tranqui"]["value"] .. " people...")
+                tranqui_number.label:SetText("Use Tranqui on at least " .. datavalue["nb_tranqui"]["value"] .. " people")
 				tranqui_number.editBox:SetValue(datavalue["nb_tranqui"]["value"])
-				tranqui_health.label:SetText("... and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"])
+				tranqui_health.label:SetText("and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"])
 				
             end;
             table.insert(sliders, tranqui_number)
 			
 			-------------------
 			-- Tranquility Health           
-            StdUi:GlueTop(tranqui_health, misc_setting_title, 0, -230);
+            StdUi:GlueTop(tranqui_health, misc_setting_title, 140, -110);
             tranqui_health:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tranqui_health, "... and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"], "TOP" );
+            StdUi:AddLabel( tab.frame, tranqui_health, "and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"], "TOP" );
             tranqui_health.label:SetFontObject( GameFontNormalLarge )
             tranqui_health.label:SetFont( tranqui_health.label:GetFont( ), 10 )
             tranqui_health.label:SetWidth( 0 )
@@ -1780,11 +1786,32 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				datavalue["health_tranqui"]["value"] = value
 				print(datavalue["health_tranqui"]["value"])
-                tranqui_health.label:SetText("... and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"])
+                tranqui_health.label:SetText("and if those " .. datavalue["nb_tranqui"]["value"] .. " people HP <= " .. datavalue["health_tranqui"]["value"])
 				tranqui_health.editBox:SetValue(datavalue["health_tranqui"]["value"])
 				
             end;
             table.insert(sliders, tranqui_health)
+		  
+		    ----------------------------
+			-- Force Rejuv on ALL button
+		    local rejuv_all = StdUi:Checkbox(tab.frame, 'Force Rejuvenation');
+            StdUi:GlueTop(rejuv_all, general_setting_title, -15, -30, 'LEFT');
+            rejuv_all:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].force_rejuv)
+			StdUi:FrameTooltip(rejuv_all, 'This will force Rejuvenation cast on everyone until you disable it. Look in WoW Rubim keybind', 'TOPLEFT', 'TOPRIGHT', true);
+            function rejuv_all:OnValueChanged(self, state, value)			    
+                RubimRH.ForceRejuv()
+            end
+			
+		    ----------------------------
+			-- Sync CDs with DBM
+		    local dbm_sync = StdUi:Checkbox(tab.frame, 'Sync CDs with DBM');
+            StdUi:GlueTop(dbm_sync, general_setting_title, -15, -50, 'LEFT');
+            dbm_sync:SetChecked(RubimRH.db.profile[RubimRH.playerSpec].dbm_sync)
+			StdUi:FrameTooltip(dbm_sync, 'This will sync your healing CDs with DBM events like big damage inc', 'TOPLEFT', 'TOPRIGHT', true);
+            function dbm_sync:OnValueChanged(self, state, value)			    
+                RubimRH.DBMSync()
+            end
+		  
 		  
 		  end
 	      -- The end of spec = resto druid

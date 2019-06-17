@@ -973,25 +973,14 @@ mythicList = {
 			UseShieldBlockDefensively = true,
 			UseRageDefensively = true,
             victoryrush = 80,
-            sk1 = 2.5,
-            sk1id = "Light Damage",
-            sk1tooltip = "How much DMG Taken is considered a Light Damage intake.",
 			
-            sk2 = 5, -- ImpendingVictory
-            sk2id = "Moderate Damage",
-            sk2tooltip =  "How much DMG Taken is considered a Moderate Damage intake.",
-
-            sk3 = 10, -- RallyingCry
-            sk3id = "High Damage",
-            sk3tooltip =  "How much DMG Taken is considered a High Damage intake.",
+            sk1 = 30, -- ShieldWall
+            sk1id = 871,
+            sk1tooltip =  "Percent HP to use Shield Wall",
 			
-            sk4 = 30, -- ShieldWall
-            sk4id = 871,
-            sk4tooltip =  "Percent HP to use Shield Wall",
-			
-            sk5 = 20, -- Last Stand
-            sk5id = 12975,
-            sk5tooltip =  "Percent HP to use Last Stand",
+            sk2 = 20, -- Last Stand
+            sk2id = 12975,
+            sk2tooltip =  "Percent HP to use Last Stand",
 
         },
         --ROGUE
@@ -1180,6 +1169,8 @@ mythicList = {
         },
 		[105] = {
             cooldowns = true,
+			force_rejuv = false,
+			dbm_sync = false,
 			
         },
         -- WARLOCK

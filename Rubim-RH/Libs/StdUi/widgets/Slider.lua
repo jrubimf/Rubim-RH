@@ -149,7 +149,7 @@ function StdUi:SliderWithBox(parent, width, height, value, min, max)
 	self:SetObjSize(widget, width, height);
 
 	widget.slider = self:Slider(widget, 100, 12, value, false);
-	widget.editBox = self:NumericBox(widget, 80, 16, value);
+	widget.editBox = self:NumericBox(widget, 45, 16, value);
 	widget.value = value;
 	widget.editBox:SetNumeric(false);
 	widget.leftLabel = self:Label(widget, '');
