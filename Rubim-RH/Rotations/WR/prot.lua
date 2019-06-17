@@ -41,8 +41,7 @@ RubimRH.Spell[73] = {
     LastStand = Spell(12975),
     Avatar = Spell(107574),
     BattleShout = Spell(6673),
-	  Intercept                             = Spell(198304),
-	  
+	Intercept = Spell(198304),	  
     -- Talents
     BoomingVoice = Spell(202743),
     ImpendingVictory = Spell(202168),
@@ -69,6 +68,11 @@ RubimRH.Spell[73] = {
 	-- Azerite
 	DeafeningCrash = Spell(272824),
 	BraceForImpact = Spell(277636),
+    FreeRevenge = Spell(5302),
+    AvatarBuff = Spell(107574),
+    LastStandBuff = Spell(12975),
+    IntimidatingShout = Spell(5246)
+	
 }
 
 local S = RubimRH.Spell[73]
