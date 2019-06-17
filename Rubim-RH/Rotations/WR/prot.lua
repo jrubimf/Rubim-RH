@@ -64,6 +64,9 @@ RubimRH.Spell[73] = {
     Taunt = Spell(355),
     Opressor = Spell(205800),
     Intimidated = Spell(206891),
+	-- Azerite
+	DeafeningCrash = Spell(272824),
+	BraceForImpact = Spell(277636),
 }
 
 
@@ -89,137 +92,259 @@ local function bool(val)
   return val ~= 0
 end
 
-local function APL()
-    local Precombat, Prot
-    UpdateRanges()
-    Precombat = function()
-        -- flask
-        -- food
-        -- augmentation
-        -- snapshot_stats
-        -- potion
-        -- Battleshout
-        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
-            return S.BattleShout:Cast()
-        end
-    end
-    Prot = function()
-        -- potion,if=buff.avatar.up|target.time_to_die<25
-        -- avatar
-        if S.Avatar:IsReady("Melee") and RubimRH.CDsON() and ((S.DemoralizingShout:CooldownUpP() or S.DemoralizingShout:CooldownRemainsP() > 2)) then
-            return S.Avatar:Cast()
-        end
-        -- thunder_clap,if=(talent.unstoppable_force.enabled&buff.avatar.up)
-        if S.ThunderClap:IsReady(8) and (S.UnstoppableForce:IsAvailable() and Player:BuffP(S.Avatar)) then
-            return S.ThunderClap:Cast()
-        end
-        -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down&buff.last_stand.down&talent.bolster.enabled
-        if S.ShieldBlock:IsReady() and S.ShieldSlam:IsReady() and Player:BuffDownP(S.ShieldBlockBuff) and Player:BuffDownP(S.LastStand) and S.Bolster:IsAvailable() then
-            return S.ShieldBlock:Cast()
-        end
-        -- last_stand,if=cooldown.shield_slam.ready&cooldown.shield_block.charges_fractional<1&buff.shield_block.down&talent.bolster.enabled
-        if S.LastStand:IsReady() and S.ShieldSlam:IsReady() and S.ShieldBlock:ChargesFractional() < 1 and Player:BuffDownP(S.ShieldBlockBuff) and S.Bolster:IsAvailable() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk5 then
-            return S.LastStand:Cast()
-        end
-        -- ignore_pain,if=rage.deficit<25+20*talent.booming_voice.enabled*cooldown.demoralizing_shout.ready
-        if S.IgnorePain:IsReady() and Player:RageDeficit() < 25 + 20 and S.BoomingVoice:IsAvailable() and S.DemoralizingShout:IsReady() then
-            return S.IgnorePain:Cast()
-        end
-        -- shield_slam
-        if S.ShieldSlam:IsReady() then
-            return S.ShieldSlam:Cast()
-        end
-        if S.ThunderClap:IsReady(8) then
-            return S.ThunderClap:Cast()
-        end
-        -- demoralizing_shout,if=talent.booming_voice.enabled
-        if S.DemoralizingShout:IsReady() and S.BoomingVoice:IsAvailable() then
-            return S.DemoralizingShout:Cast()
-        end
-        -- ravager
-        if S.Ravager:IsReady() then
-            return S.Ravager:Cast()
-        end
-        -- dragon_roar
-        if S.DragonRoar:IsReady() then
-            return S.DragonRoar:Cast()
-        end
-        -- revenge
-        if S.Revenge:IsReady() then
-            return S.Revenge:Cast()
-        end
-        if S.Devastate:IsReady() then
-            return S.Devastate:Cast()
-        end
-		-- Shockwave
-		if S.Shockwave:IsReady() and (Target:IsInterruptible() or Cache.EnemiesCount[5] > 1) then
-            return S.Shockwave:Cast()
-        end
+-- Custom Warrior Protection functions
 
-    end
-    -- call precombat
-	--print(RubimRH.DBM_PullTimer());
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
-        --if RubimRH.DBM_PullTimer() < 5 and RubimRH.DBM_PullTimer() > 0 then
-        --    return S.Berserking:Cast()
-        --end 
-		local ShouldReturn = Precombat(); 
-		if ShouldReturn then 
-		    return ShouldReturn; 
-		end
-
-    end
-    if RubimRH.TargetIsValid() then
-        -- Pummel
-        if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
-            return S.Pummel:Cast()
-        end
-        -- Shield Wall
-        if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk4 then
-            return S.ShieldWall:Cast()
-        end
-		-- Impending Victory -> Cast when < 85% HP
-        if S.ImpendingVictory:IsReady("Melee") and Player:HealthPercentage() <= 85 then
-            return S.VictoryRush:Cast()
-        end
-		-- Victory Rush -> Buff about to expire
-        if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady("Melee") then
-            return S.VictoryRush:Cast()
-        end
-        -- auto_attack
-        -- intercept
-        -- use_item,name=ramping_amplitude_gigavolt_engine
-        -- blood_fury
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
-            return S.BloodFury:Cast()
-        end
-        -- berserking
-        if S.Berserking:IsCastableP() and RubimRH.CDsON() then
-            return S.Berserking:Cast()
-        end
-        -- arcane_torrent
-        if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() then
-            return S.ArcaneTorrent:Cast()
-        end
-        -- lights_judgment
-        if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() then
-            return S.LightsJudgment:Cast()
-        end
-        -- fireblood
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() then
-            return S.Fireblood:Cast()
-        end
-        -- ancestral_call
-        if S.AncestralCall:IsCastableP() and RubimRH.CDsON() then
-            return S.AncestralCall:Cast()
-        end
-        -- call_action_list,name=prot
-        if (true) then
-            local ShouldReturn = Prot(); if ShouldReturn then return ShouldReturn; end
-        end
-    end
-    return 0, 135328
+local function isCurrentlyTanking()
+  -- is player currently tanking any enemies within 16 yard radius
+  local IsTanking = Player:IsTankingAoE(16) or Player:IsTanking(Target);
+  return IsTanking;
 end
+
+local function shouldCastIp()
+  if Player:Buff(S.IgnorePain) then 
+    local castIP = tonumber((GetSpellDescription(190456):match("%d+%S+%d"):gsub("%D","")))
+    local IPCap = math.floor(castIP * 1.3);
+    local currentIp = Player:Buff(S.IgnorePain, 16, true)
+
+    -- Dont cast IP if we are currently at 50% of IP Cap remaining
+    if currentIp  < (0.5 * IPCap) then
+      return true
+    else
+      return false
+    end
+  else
+    -- No IP buff currently
+    return true
+  end
+end
+
+local function offensiveShieldBlock()
+  if RubimRH.db.profile[73].UseShieldBlockDefensively == false then  
+    return true
+  else
+    return false
+  end
+end
+
+local function offensiveRage()
+  if RubimRH.db.profile[73].UseRageDefensively == false then  
+    return true
+  else
+    return false
+  end
+end
+
+--- ======= ACTION LISTS =======
+local function APL()
+  local Precombat_DBM, Precombat, Aoe, St, Defensive
+  local gcdTime = Player:GCD()
+  UpdateRanges()
+  
+  -- Precombat DBM function
+  Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+      -- potion
+      if I.BattlePotionofStrength:IsReady() and RubimRH.PerfectPullON() then
+          return I.BattlePotionofStrength:Cast()
+      end
+  end
+  
+  -- Precombat function
+  Precombat = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+  end
+  -- Interrupt
+
+  -- Defensives CDs
+  Defensive = function()
+    -- Shield Wall
+    if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk4 then
+        return S.ShieldWall:Cast()
+    end
+	-- Shield Block
+    if S.ShieldBlock:IsReadyP() and (((not Player:Buff(S.ShieldBlockBuff)) or Player:BuffRemains(S.ShieldBlockBuff) <= gcdTime + (gcdTime * 0.5)) and 
+      (not Player:Buff(S.LastStandBuff)) and Player:Rage() >= 30) then
+        return S.ShieldBlock:Cast()
+    end
+	-- Last Stand
+    if S.LastStand:IsCastableP() and ((not Player:Buff(S.ShieldBlockBuff)) and Player:HealthPercentage() <= RubimRH.db.profile[73].sk5 and S.ShieldBlock:RechargeP() > (gcdTime * 2)) then
+        return S.LastStand:Cast()
+    end
+  end
+  
+  -- Multi target
+  Aoe = function()
+    -- thunder_clap
+    if S.ThunderClap:IsCastableP() then
+      return S.ThunderClap:Cast()
+    end
+    -- demoralizing_shout,if=talent.booming_voice.enabled
+    if S.DemoralizingShout:IsCastableP() and (S.BoomingVoice:IsAvailable() and Player:RageDeficit() >= 40) then
+      return S.DemoralizingShout:Cast()
+    end
+    -- dragon_roar
+    if S.DragonRoar:IsCastableP() and RubimRH.CDsON() then
+      return S.DragonRoar:Cast()
+    end
+    -- revenge
+    if S.Revenge:IsReadyP() and (Player:Buff(S.FreeRevenge) or offensiveRage() or Player:Rage() >= 75 or ((not isCurrentlyTanking()) and Player:Rage() >= 50)) then
+      return S.Revenge:Cast()
+    end
+    -- ravager
+    if S.Ravager:IsCastableP() then
+      return S.Ravager:Cast()
+    end
+    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down
+    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and offensiveShieldBlock()) then
+      return S.ShieldBlock:Cast()
+    end
+    -- shield_slam
+    if S.ShieldSlam:IsCastableP() then
+      return S.ShieldSlam:Cast()
+    end
+	-- devastate
+    if S.Devastate:IsCastableP() then
+      return S.Devastate:Cast()
+    end
+  end
+  -- Single Target
+  St = function()
+    -- thunder_clap,if=spell_targets.thunder_clap=2&talent.unstoppable_force.enabled&buff.avatar.up
+    if S.ThunderClap:IsCastableP() and (Cache.EnemiesCount[5] == 2 and S.UnstoppableForce:IsAvailable() and Player:BuffP(S.AvatarBuff)) then
+      return S.ThunderClap:Cast()
+    end
+    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down&azerite.brace_for_impact.rank>azerite.deafening_crash.rank&buff.avatar.up
+    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and S.BraceForImpact:AzeriteRank() > S.DeafeningCrash:AzeriteRank() and Player:BuffP(S.AvatarBuff) and offensiveShieldBlock()) then
+      return S.ShieldBlock:Cast()
+    end
+    -- shield_slam,if=azerite.brace_for_impact.rank>azerite.deafening_crash.rank&buff.avatar.up&buff.shield_block.up
+    if S.ShieldSlam:IsCastableP() and (S.BraceForImpact:AzeriteRank() > S.DeafeningCrash:AzeriteRank() and Player:BuffP(S.AvatarBuff) and Player:BuffP(S.ShieldBlockBuff)) then
+      return S.ShieldSlam:Cast()
+    end
+    -- thunder_clap,if=(talent.unstoppable_force.enabled&buff.avatar.up)
+    if S.ThunderClap:IsCastableP() and ((S.UnstoppableForce:IsAvailable() and Player:BuffP(S.AvatarBuff))) then
+      return S.ThunderClap:Cast()
+    end
+    -- demoralizing_shout,if=talent.booming_voice.enabled
+    if S.DemoralizingShout:IsCastableP() and (S.BoomingVoice:IsAvailable() and Player:RageDeficit() >= 40) then
+      return S.DemoralizingShout:Cast()
+    end
+    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down
+    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and offensiveShieldBlock()) then
+      return S.ShieldBlock:Cast()
+    end
+    -- shield_slam
+    if S.ShieldSlam:IsCastableP() then
+      return S.ShieldSlam:Cast()
+    end
+    -- dragon_roar
+    if S.DragonRoar:IsCastableP() and RubimRH.CDsON() then
+      return S.DragonRoar:Cast()
+    end
+    -- thunder_clap
+    if S.ThunderClap:IsCastableP() then
+      return S.ThunderClap:Cast()
+    end
+    -- revenge
+    if S.Revenge:IsReadyP() and (Player:Buff(S.FreeRevenge) or offensiveRage() or Player:Rage() >= 75 or ((not isCurrentlyTanking()) and Player:Rage() >= 50)) then
+      return S.Revenge:Cast()
+    end
+    -- ravager
+    if S.Ravager:IsCastableP() then
+      return S.Ravager:Cast()
+    end
+    -- devastate
+    if S.Devastate:IsCastableP() then
+      return S.Devastate:Cast()
+    end
+  end
+  
+  -- call precombat
+  if not Player:AffectingCombat() then
+    local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
+  -- combat
+  if RubimRH.TargetIsValid() then
+    -- Pummel
+    if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.Pummel:Cast()
+    end
+    -- Check defensives if tanking
+    if isCurrentlyTanking() then
+      local ShouldReturn = Defensive(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- auto_attack
+    -- intercept,if=time=0
+    if S.Intercept:IsCastableP() and (HL.CombatTime() == 0 and not Target:IsInRange(8)) then
+      return S.Intercept:Cast()
+    end
+    -- use_items,if=cooldown.avatar.remains>20
+    -- use_item,name=grongs_primal_rage,if=buff.avatar.down
+    if I.GrongsPrimalRage:IsReady() and (Player:BuffDownP(S.AvatarBuff)) then
+      return I.GrongsPrimalRage:Cast()
+    end
+    -- blood_fury
+    if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
+      return S.BloodFury:Cast()
+    end
+    -- berserking
+    if S.Berserking:IsCastableP() and RubimRH.CDsON() then
+      return S.Berserking:Cast()
+    end
+    -- arcane_torrent
+    if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() then
+      return S.ArcaneTorrent:Cast()
+    end
+    -- lights_judgment
+    if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() then
+      return S.LightsJudgment:Cast()
+    end
+    -- fireblood
+    if S.Fireblood:IsCastableP() and RubimRH.CDsON() then
+      return S.Fireblood:Cast()
+    end
+    -- ancestral_call
+    if S.AncestralCall:IsCastableP() and RubimRH.CDsON() then
+      return S.AncestralCall:Cast()
+    end
+    -- potion,if=buff.avatar.up|target.time_to_die<25
+    --if I.BattlePotionofStrength:IsReady() and RubimRH.PerfectPullON() and (Player:BuffP(S.AvatarBuff) or Target:TimeToDie() < 25) then
+    --  return I.BattlePotionofStrength:Cast()
+    --end
+    if Player:HealthPercentage() < 30 and S.VictoryRush:IsReady() then
+      return S.VictoryRush:Cast()
+    end
+    if Player:HealthPercentage() < 30 and S.ImpendingVictory:IsReadyP() then
+      return S.ImpendingVictory:Cast()
+    end
+	
+    -- ignore_pain,if=rage.deficit<25+20*talent.booming_voice.enabled*cooldown.demoralizing_shout.ready
+    if S.IgnorePain:IsReadyP() and (Player:RageDeficit() < 25 + 20 * num(S.BoomingVoice:IsAvailable()) * num(S.DemoralizingShout:CooldownUpP()) and shouldCastIp() and isCurrentlyTanking()) then
+      return S.IgnorePain:Cast()
+    end
+    -- avatar
+    if S.Avatar:IsCastableP() and RubimRH.CDsON() then
+      return S.Avatar:Cast()
+    end
+    -- run_action_list,name=aoe,if=spell_targets.thunder_clap>=3
+    if (Cache.EnemiesCount[5] >= 3) and RubimRH.AoEON() then
+      return Aoe();
+    end
+    -- call_action_list,name=st
+    if (true) then
+      local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
+    end
+  end
+  return 0, 135328
+end
+
 RubimRH.Rotation.SetAPL(73, APL);
 
 local function PASSIVE()
