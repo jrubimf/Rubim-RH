@@ -103,6 +103,12 @@ local function bool(val)
   return val ~= 0
 end
 
+local EnemyRanges = {5}
+local function UpdateRanges()
+  for _, i in ipairs(EnemyRanges) do
+    HL.GetEnemies(i);
+  end
+end
 -- Custom Warrior Protection functions
 
 local function isCurrentlyTanking()
