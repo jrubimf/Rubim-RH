@@ -69,12 +69,17 @@ RubimRH.Spell[73] = {
 	BraceForImpact = Spell(277636),
 }
 
-
 local S = RubimRH.Spell[73]
 
+-- Items
+if not Item.Warrior then Item.Warrior = {} end
+Item.Warrior.Protection = {
+  BattlePotionofStrength           = Item(163224),
+  GrongsPrimalRage                 = Item(165574)
+};
+local I = Item.Warrior.Protection;
 
 local ShouldReturn;
-
 
 local EnemyRanges = {}
 local function UpdateRanges()
@@ -287,9 +292,9 @@ local function APL()
     end
     -- use_items,if=cooldown.avatar.remains>20
     -- use_item,name=grongs_primal_rage,if=buff.avatar.down
-    if I.GrongsPrimalRage:IsReady() and (Player:BuffDownP(S.AvatarBuff)) then
-      return I.GrongsPrimalRage:Cast()
-    end
+    --if I.GrongsPrimalRage:IsReady() and (Player:BuffDownP(S.AvatarBuff)) then
+    --  return I.GrongsPrimalRage:Cast()
+    --end
     -- blood_fury
     if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
       return S.BloodFury:Cast()
