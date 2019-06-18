@@ -307,7 +307,6 @@ local function APL()
         if S.DeathCoil:IsReady() and (not bool(VarPoolingForGargoyle)) then
             return S.DeathCoil:Cast()
         end
-		return 0, "Interface\\Addons\\Rubim-RH\\Media\\pool.tga"
     end
     -- call precombat
    
