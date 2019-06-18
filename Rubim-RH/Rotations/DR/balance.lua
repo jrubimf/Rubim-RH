@@ -551,6 +551,11 @@ local function APL()
            return QueueSkill()
         end
 
+	     -- Solar Beam
+        if S.SolarBeam:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+            return S.SolarBeam:Cast()
+        end
+		
         if RubimRH.CDsON() then
             if CDs() ~= nil then
                 return CDs()
