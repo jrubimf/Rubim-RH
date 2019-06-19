@@ -390,7 +390,7 @@ local function APL()
         return S.Outbreak:Cast()
     end
     -- call_action_list,name=cooldowns
-    if (true) and RubimRH.CDsON() then
+    if (true) then
         if Cooldowns() ~= nil then
             return Cooldowns()
         end
