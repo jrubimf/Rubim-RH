@@ -59,6 +59,8 @@ RubimRH.Spell[260] = {
     CrimsonVial = Spell(185311),
     Feint = Spell(1966),
     -- Utility
+    
+    Gouge = Spell(1776),
     Kick = Spell(1766),
 	DFA = Spell (269513),
 	Shiv = Spell (248744),
@@ -158,10 +160,10 @@ local function RtB_Reroll ()
             Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and RtB_Buffs() <= 0) and true or false;
          -- Mythic+
         elseif RubimRH.db.profile[260].dice == "Mythic +" then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside)) and not (RtB_Buffs () >= 3)) and true or false;
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside)) and not (RtB_Buffs () >= 2)) and true or false;
             -- Broadside
-        elseif RubimRH.db.profile[260].dice == "AoE Strat" and Cache.EnemiesCount[BladeFlurryRange] >= 2 then
-            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside)) and not (RtB_Buffs () >= 3)) and true or false;
+        elseif RubimRH.db.profile[260].dice == "AoE Strat" and Cache.EnemiesCount[BladeFlurryRange] >= 2 or (not Target:IsInBossList()) then
+            Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside)) and not (RtB_Buffs () >= 2)) and true or false;
             -- SimC Default
         else
             -- # Reroll for 2+ buffs with Loaded Dice up. Otherwise reroll for 2+ or Grand Melee or Ruthless Precision.
@@ -170,11 +172,8 @@ local function RtB_Reroll ()
             -- actions+=/variable,name=rtb_reroll,op=set,if=azerite.deadshot.enabled|azerite.ace_up_your_sleeve.enabled,value=rtb_buffs<2&(buff.loaded_dice.up|buff.ruthless_precision.remains<=cooldown.between_the_eyes.remains)
             -- # Always reroll for 2+ buffs with Snake Eyes.
             -- actions+=/variable,name=rtb_reroll,op=set,if=azerite.snake_eyes.rank>=2,value=rtb_buffs<2
-            
-            if RubimRH.db.profile[260].dice == "Ravenholdt RtB" and Cache.EnemiesCount[BladeFlurryRange] >= 2 then
-                Cache.APLVar.RtB_Reroll = (not S.SliceandDice:IsAvailable() and (not Player:BuffP(S.RuthlessPrecision) and not Player:BuffP(S.GrandMelee) and not Player:BuffP(S.Broadside)) and not (RtB_Buffs () >= 3)) and true or false;
-            elseif S.SnakeEyesPower:AzeriteRank() >= 2 then
-              Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2) and true or false;
+            if S.SnakeEyesPower:AzeriteRank() >= 2 then
+              Cache.APLVar.RtB_Reroll = (RtB_Buffs() < 2) and true or false; 
               -- # Do not reroll if Snake Eyes is at 2+ stacks of the buff (1+ stack with Broadside up)
               -- actions+=/variable,name=rtb_reroll,op=reset,if=azerite.snake_eyes.rank>=2&buff.snake_eyes.stack>=2-buff.broadside.up
               if Player:BuffStackP(S.SnakeEyesBuff) >= 2 - num(Player:BuffP(S.Broadside)) then
@@ -282,7 +281,7 @@ end
             return S.BladeFlurry:Cast()
         end
 
-        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.9 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
+        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.5 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
             return S.BladeFlurry:Cast()
         end
        
@@ -317,7 +316,7 @@ local function Stealth ()
         return S.BladeFlurry:Cast()
     end
 
-    if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.9 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
+    if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.5 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
         return S.BladeFlurry:Cast()
     end
 
@@ -429,9 +428,9 @@ local function APL ()
     end
     -- Out of Combat
     if not Player:AffectingCombat() then
-
+       
         -- Stealth
-        if IsStealthed() == false and S.Stealth:TimeSinceLastCast() >= 2 or Player:BuffP(S.Shadowmeld) then
+        if IsStealthed() == false and S.Stealth:TimeSinceLastCast() >= 2 and Player:IsMoving() then
             return S.Stealth:Cast()
         end
         -- Flask
@@ -450,7 +449,7 @@ local function APL ()
             return S.BladeFlurry:Cast()
         end
 
-        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.9 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
+        if RubimRH.AoEON() and S.BladeFlurry:IsReady() and S.BladeFlurry:ChargesFractional() >= 1.5 and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
             return S.BladeFlurry:Cast()
         end
        
