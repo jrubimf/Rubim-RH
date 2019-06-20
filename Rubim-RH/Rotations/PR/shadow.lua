@@ -115,8 +115,60 @@ end
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat, Cleave, Single, AutoDotCycle
+  local Precombat_DBM, Precombat, Cleave, Single, AutoDotCycle
   UpdateRanges()
+  
+    Precombat_DBM = function()
+      -- potion
+      --if I.BattlePotionofIntellect:IsReady() and RubimRH.UsePotions then
+      --  return I.BattlePotionofIntellect:Cast()
+      --end
+      -- variable,name=mind_blast_targets,op=set,value=floor((4.5+azerite.whispers_of_the_damned.rank)%(1+0.27*azerite.searing_dialogue.rank))
+      if (true) then
+        VarMindBlastTargets = math.floor((4.5 + S.WhispersoftheDamned:AzeriteRank()) / (1 + 0.27 * S.SearingDialogue:AzeriteRank()))
+      end
+      -- variable,name=swp_trait_ranks_check,op=set,value=(1-0.07*azerite.death_throes.rank+0.2*azerite.thought_harvester.rank)*(1-0.09*azerite.thought_harvester.rank*azerite.searing_dialogue.rank)
+      if (true) then
+        VarSwpTraitRanksCheck = (1 - 0.07 * S.DeathThroes:AzeriteRank() + 0.2 * S.ThoughtHarvester:AzeriteRank()) * (1 - 0.09 * S.ThoughtHarvester:AzeriteRank() * S.SearingDialogue:AzeriteRank())
+      end
+      -- variable,name=vt_trait_ranks_check,op=set,value=(1-0.04*azerite.thought_harvester.rank-0.05*azerite.spiteful_apparitions.rank)
+      if (true) then
+        VarVtTraitRanksCheck = (1 - 0.04 * S.ThoughtHarvester:AzeriteRank() - 0.05 * S.SpitefulApparitions:AzeriteRank())
+      end
+      -- variable,name=vt_mis_trait_ranks_check,op=set,value=(1-0.07*azerite.death_throes.rank-0.03*azerite.thought_harvester.rank-0.055*azerite.spiteful_apparitions.rank)*(1-0.027*azerite.thought_harvester.rank*azerite.searing_dialogue.rank)
+      if (true) then
+        VarVtMisTraitRanksCheck = (1 - 0.07 * S.DeathThroes:AzeriteRank() - 0.03 * S.ThoughtHarvester:AzeriteRank() - 0.055 * S.SpitefulApparitions:AzeriteRank()) * (1 - 0.027 * S.ThoughtHarvester:AzeriteRank() * S.SearingDialogue:AzeriteRank())
+      end
+      -- variable,name=vt_mis_sd_check,op=set,value=1-0.014*azerite.searing_dialogue.rank
+      if (true) then
+        VarVtMisSdCheck = 1 - 0.014 * S.SearingDialogue:AzeriteRank()
+      end
+      -- Mindbender management
+      --S.Mindbender = S.MindbenderTalent:IsAvailable() and S.MindbenderTalent or S.Shadowfiend
+      -- shadowform,if=!buff.shadowform.up
+	  
+      if S.Shadowform:IsCastableP() and Player:BuffDownP(S.ShadowformBuff) and (not Player:BuffP(S.ShadowformBuff)) then
+        return S.Shadowform:Cast() 
+      end
+	   -- pre potion mind blast
+      if I.BattlePotionOfIntellect:IsReady() and not S.ShadowWordVoid:IsAvailable() and RubimRH.DBM_PullTimer() > S.MindBlast:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.MindBlast:CastTime() + 2 then
+        return 967532
+      end
+	    -- pre potion shadow word void
+      if I.BattlePotionOfIntellect:IsReady() and S.ShadowWordVoid:IsAvailable() and RubimRH.DBM_PullTimer() > S.ShadowWordVoid:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.ShadowWordVoid:CastTime() + 2 then
+        return 967532
+      end
+      -- mind_blast,if=spell_targets.mind_sear<2|azerite.thought_harvester.rank=0
+      if S.MindBlast:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.MindBlast:CastTime() and (Cache.EnemiesCount[40] < 2 or S.ThoughtHarvester:AzeriteRank() == 0) and not Player:IsCasting(S.MindBlast)  then
+        return S.MindBlast:Cast() 
+      end
+      -- shadow_word_void (added)
+      if S.ShadowWordVoid:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.ShadowWordVoid:CastTime() and (Cache.EnemiesCount[40] < 2 or S.ThoughtHarvester:AzeriteRank() == 0) and not Player:IsCasting(S.ShadowWordVoid) then
+        return S.ShadowWordVoid:Cast() 
+      end
+
+  end
+  
   
   Precombat = function()
       -- potion
@@ -329,10 +381,15 @@ local function APL()
     --  return S.ShadowWordPain:Cast()
     --end
   end
-  -- call precombat
-  if not Player:AffectingCombat() and RubimRH.PrecombatON() then
-    return Precombat()
-  end
+  
+      -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then		
+        return Precombat()
+	end
   
   	--if Player:IsChanneling() then
     --    return 0, 236353
