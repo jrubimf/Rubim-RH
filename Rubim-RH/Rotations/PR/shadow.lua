@@ -427,6 +427,14 @@ local function APL()
     if S.DispelMagic:IsCastableP() and Target:HasStealableBuff() then
       return S.DispelMagic:Cast()
     end
+    -- Mouseover DispelMagic
+    local MouseoverEnemy = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")
+    if MouseoverEnemy then
+        -- DispelMagic
+	    if S.DispelMagic:IsReady() and Target:HasStealableBuff() then
+            return S.DispelMagic:Cast()
+        end
+    end
 	-- Mouseover Dispell handler
     local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
     if MouseoverUnit then
