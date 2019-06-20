@@ -378,26 +378,19 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     diceRoll.OnValueChanged = function(self, val)
                     RubimRH.db.profile[RubimRH.playerSpec].dice = val
 
-                    if val == "SoloMode" then
-                         print("Dice profil set on SoloMode")
+                    if val == "Mythic +" then
+                         print("Dice profil set on Mythic +")
                     elseif val == "1+ Buff" then
                          print("Dice profil set on 1+ Buff")
-                    elseif val == "Broadsides" then
-                         print("Dice profil set on Broadsides")
-                    elseif val == "Buried Treasure" then
-                         print("Dice profil set on Buried Treasure")
-                    elseif val == "Grand Melee" then
-                         print("Dice profil set on Grand Melee")
-                    elseif val == "Jolly Roger" then
-                         print("Dice profil set on Jolly Roger")
-                    elseif val == "Shark Infested Waters" then
-                         print("Dice profil set on Shark Infested Waters")
-                    elseif val == "Ture Bearing" then
-                         print("Dice profil set on Ture Bearing")
 				    elseif val == "AoE Strat" then
                          print("Dice profil set on AoE Strat")
-                    elseif val == "Mythic +" then
+                    else
+                        print("Dice profil set on Simcraft")if val == "Mythic +" then
                          print("Dice profil set on Mythic +")
+                    elseif val == "1+ Buff" then
+                         print("Dice profil set on 1+ Buff")
+				    elseif val == "AoE Strat" then
+                         print("Dice profil set on AoE Strat")
                     else
                         print("Dice profil set on Simcraft")
                         diceRoll:SetText("|cfff0f8ffDice: |r" .. RubimRH.db.profile[RubimRH.playerSpec].dice);
