@@ -384,9 +384,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                          print("Dice profil set on 1+ Buff")
 				    elseif val == "AoE Strat" then
                          print("Dice profil set on AoE Strat")
-                    else
-                        print("Dice profil set on Simcraft")if val == "Mythic +" then
-                         print("Dice profil set on Mythic +")
                     elseif val == "1+ Buff" then
                          print("Dice profil set on 1+ Buff")
 				    elseif val == "AoE Strat" then
