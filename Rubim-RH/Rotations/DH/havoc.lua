@@ -107,14 +107,16 @@ RubimRH.Spell[577] = {
     UnboundChaos = Spell(275144),
     ChaoticTransformation = Spell(288754),
 }
-
-
-if not Item.DemonHunter then
-    Item.DemonHunter = {};
-end
-Item.DemonHunter.Havoc = {};
-local I = Item.DemonHunter.Havoc;
 local S = RubimRH.Spell[577]
+
+-- Items
+if not Item.DemonHunter then Item.DemonHunter = {} end
+Item.DemonHunter.Havoc = {
+  BattlePotionofAgility                       = Item(163223),
+  VariableIntensityGigavoltOscillatingReactor = Item(165572)
+};
+local I = Item.DemonHunter.Havoc;
+
 
 S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }
@@ -229,7 +231,7 @@ end
 
 -- Main APL
 local function APL()
-    local Precombat, Cooldown, DarkSlash, Demonic, Normal
+    local Precombat, Precombat_DBM, Cooldown, DarkSlash, Demonic, Normal
     UpdateRanges()
     UpdateCDs()
 
@@ -256,6 +258,25 @@ local function APL()
         --end
         return 0, 462338
     end
+	
+	Precombat_DBM = function()
+        -- flask
+        -- augmentation
+        -- food
+        -- snapshot_stats
+        -- potion
+	    if I.BattlePotionofAgility:IsReady() and RubimRH.DBM_PullTimer() > Player:GCD() and RubimRH.DBM_PullTimer() <= 2 then
+            return 967532
+        end
+        -- metamorphosis
+        if S.Metamorphosis:IsCastable() and Player:BuffDownP(S.MetamorphosisBuff) and RubimRH.CDsON() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= 0.5 then
+            return S.Metamorphosis:Cast()
+        end
+		-- demons_bite
+        if S.DemonsBite:IsReady() and IsInMeleeRange() and (true) and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.DemonsBite:Cast()
+        end
+  end
 
     Cooldown = function()
         -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis)|target.time_to_die<25
@@ -444,9 +465,22 @@ local function APL()
         return 0, 135328
     end
 
+   if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
+        return Precombat()
+    end
+	
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
         return Precombat()
     end
+	
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
+        return Precombat()
+	end
 
 	if RubimRH.TargetIsValid() then
         -- variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)

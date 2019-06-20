@@ -10,20 +10,25 @@ local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Party, Raid = Unit.Party, Unit.Raid;
 
 
---- 16.03.2019
+--- 20.06.2019
 --- DBM Functions
 --- ============================= CORE ==============================
 local function DBM_timer_init()
+    DBM_timer_init = true
     if not DBM then
         function RubimRH.DBM_GetTimeRemaining()
+            return 0, 0
+        end
+		
+		function RubimRH.DBM_GetTimeRemainingBySpellID()
             return 0, 0
         end
         
         return
     end
     
-    local Timers = {}
-    DBM:RegisterCallback("DBM_TimerStart", function(_, id, text, timerRaw)
+    local Timers, TimersBySpellID = {}, {}
+    DBM:RegisterCallback("DBM_TimerStart", function(_, id, text, timerRaw, icon, timerType, spellid, colorId)
             -- Older versions of DBM return this value as a string:
             local duration
             if type(timerRaw) == "string" then
@@ -32,7 +37,10 @@ local function DBM_timer_init()
                 duration = timerRaw
             end
             
-            Timers[id] = {text = text:lower(), start = HL.GetTime(), duration = duration}          
+            Timers[id] = {text = text:lower(), start = HL.GetTime(), duration = duration}   
+			if spellid then 
+				TimersBySpellID[spellid] = Timers[id]
+			end 
     end)
     DBM:RegisterCallback("DBM_TimerStop", function(_, id) Timers[id] = nil end)
     
@@ -47,12 +55,24 @@ local function DBM_timer_init()
                 return remaining, expirationTime
             end
         end
-
+        
         return 0, 0
     end
+	
+	function RubimRH.DBM_GetTimeRemainingBySpellID(spellID)
+		if TimersBySpellID[spellID] then 
+			local expirationTime = TimersBySpellID[spellID].start + TimersBySpellID[spellID].duration
+			local remaining = (expirationTime) - HL.GetTime()
+			if remaining < 0 then remaining = 0 end
+			return remaining, expirationTime
+		end 
+        
+        return 0, 0
+	end 
 end
- 
+
 local function DBM_engaged_init()
+    DBM_engaged_init = true
     if not DBM then
         function RubimRH.DBM_IsBossEngaged()
             return false
@@ -85,28 +105,40 @@ local function DBM_engaged_init()
 end
 
 if not RubimRH.DBM_GetTimeRemaining then 
-	DBM_timer_init()
+    DBM_timer_init()
 end 
 
 if not RubimRH.DBM_IsBossEngaged then
-	DBM_engaged_init()
+    DBM_engaged_init()
 end 
 
 --- ========================== FUNCTIONAL ===========================
 -- Note: /dbm pull <5>
 -- Note: /dbm timer <10> <Name>
 function RubimRH.DBM_PullTimer()
-    local name = DBM_CORE_TIMER_PULL:lower()   
+    local name = DBM and DBM_CORE_TIMER_PULL:lower() or nil   
     return RubimRH.DBM_GetTimeRemaining(name)
 end 
 
-function RubimRH.DBM_GetTimer(name)
-    --local timername = format("%q", name:gsub("([%(%)%%%[%]%-%+%*%.%^%$])", "%%%1"):lower())        
-    local timername = name:lower()
-    return RubimRH.DBM_GetTimeRemaining(timername)
+function RubimRH.DBM_GetTimer(name)    
+	-- @arg name can be number (spellID) or string (localizated name of the timer)
+	-- @return number: remaining, expirationTime
+    if not A.IsInitialized or not A.GetToggle(1, "DBM") then
+        return 0, 0
+    end
+    
+    if type(name) == "string" then 
+		local timername = name:lower()
+		return RubimRH.DBM_GetTimeRemaining(timername)
+	else
+		return RubimRH.DBM_GetTimeRemainingBySpellID(name)
+	end 
 end 
 
 function RubimRH.DBM_IsEngage()
+    if not A.IsInitialized or not A.GetToggle(1, "DBM") then
+        return 0, 0
+    end
     -- Not tested  
     local BossName = UnitName("boss1")
     local name = BossName and format("%q", BossName:gsub("%%", "%%%%"):lower())
