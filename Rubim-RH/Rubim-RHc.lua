@@ -218,6 +218,17 @@ function RubimRH.PrecombatToggle()
     print("|cFF69CCF0Precombat" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.Precombat))
 end
 
+function RubimRH.InstantInterruptToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.InstantInterrupt == false then
+        RubimRH.db.profile.mainOption.InstantInterrupt = true
+
+    else
+        RubimRH.db.profile.mainOption.InstantInterrupt = false
+    end
+    print("|cFF69CCF0Instant Interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.InstantInterrupt))
+end
+
 function RubimRH.RacialToggle()
     RubimRH.playSoundR(891);
     if RubimRH.db.profile.mainOption.useRacial == false then
@@ -422,6 +433,17 @@ function RubimRH.PrecombatON()
         return false
     end
     if RubimRH.db.profile.mainOption.Precombat == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.InstantInterruptON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.InstantInterrupt == true then
         return true
     else
         return false

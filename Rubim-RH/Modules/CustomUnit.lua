@@ -215,6 +215,8 @@ function Unit:MaxSpeed()
     return math.floor(select(2, GetUnitSpeed(self.UnitID)) / 7 * 100)
 end
 
+--local interruptmin = RubimRH.db.profile.mainOption.minInterruptValue
+--local interruptmax = RubimRH.db.profile.mainOption.maxInterruptValue 
 local randomChannel = math.random(5, 15)
 local randomInterrupt = math.random(40, 90)
 local randomReflect = math.random(75, 90)
@@ -293,7 +295,15 @@ function Unit:IsInterruptible()
 	
 	if currentList[spellId] then
 
-        if self:IsCasting() and self:CastSecondsRemaining() <= 0.500 + Player:Ping() / 1000 then
+        if self:IsCasting() and RubimRH.InstaInterruptON() then
+           return true
+        end
+
+        if self:IsChanneling() and RubimRH.InstaInterruptON() then
+            return true
+        end
+	
+        if self:IsCasting() and self:CastSecondsRemaining() <= randomGenerator("Interrupt") then
             return true
         end
 

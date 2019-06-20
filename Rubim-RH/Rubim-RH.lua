@@ -230,6 +230,7 @@ local defaults = {
             smartCleave = false,
             PerfectPull = false,
             Precombat = true,
+			InstantInterrupt = false,
             useInterrupts = true,
             useRacial = true,
             startattack = false,

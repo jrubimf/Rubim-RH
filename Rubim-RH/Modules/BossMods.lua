@@ -123,7 +123,7 @@ end
 function RubimRH.DBM_GetTimer(name)    
 	-- @arg name can be number (spellID) or string (localizated name of the timer)
 	-- @return number: remaining, expirationTime
-    if not A.IsInitialized or not A.GetToggle(1, "DBM") then
+    if not RubimRH.PerfectPullON() then
         return 0, 0
     end
     
@@ -136,7 +136,7 @@ function RubimRH.DBM_GetTimer(name)
 end 
 
 function RubimRH.DBM_IsEngage()
-    if not A.IsInitialized or not A.GetToggle(1, "DBM") then
+    if not RubimRH.PerfectPullON() then
         return 0, 0
     end
     -- Not tested  

@@ -792,9 +792,23 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local interruptList_title = StdUi:FontString(tab.frame, '');
             StdUi:GlueTop(interruptList_title, tab.frame, 0, 0, 'CENTER');
 
+			-- Instant Interrupt
+            local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
+		    -- Set this checkbox a tooltip
+			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt instant - NOT RECOMMENDED IN PVP', 'TOPLEFT', 'TOPRIGHT', true);                    
+			-- Set default value (checked, unchecked)and save it to db 
+			InstantInterruptbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
+			-- Set positionning
+            StdUi:GlueBelow(InstantInterruptbutton, interruptList_title, 170, -30, 'LEFT');
+            -- What to do on value change                    
+		    function InstantInterruptbutton:OnValueChanged(value)
+		    -- See Rubim-RHc.lua 
+                 RubimRH.InstantInterruptToggle()
+            end
+			
             -- MIN Interrupt randomizer settings
             local interruptslider1 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.minInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider1, interruptList_title, -40, -30, 'LEFT');
+            StdUi:GlueBelow(interruptslider1, interruptList_title, -80, -30, 'LEFT');
             local sliderlabel = StdUi:FontString(tab.frame, "Interrupt min: " .. RubimRH.db.profile.mainOption.minInterruptValue)
             StdUi:GlueTop(sliderlabel, interruptslider1, 0, 16);
             StdUi:FrameTooltip(interruptslider1, "What the lowest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
@@ -807,7 +821,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
             -- MAX Interrupt randomizer settings
             local interruptslider2 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.maxInterruptValue, false, 5, 100)
-            StdUi:GlueBelow(interruptslider2, interruptList_title, 90, -30, 'LEFT');
+            StdUi:GlueBelow(interruptslider2, interruptList_title, 50, -30, 'LEFT');
             local sliderlabel = StdUi:FontString(tab.frame, "Interrupt max: " .. RubimRH.db.profile.mainOption.maxInterruptValue)
             StdUi:GlueTop(sliderlabel, interruptslider2, 0, 16);
             StdUi:FrameTooltip(interruptslider2, "What the highest percent cast we should interrupt ?", 'TOPLEFT', 'TOPRIGHT', true);
@@ -817,6 +831,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 interruptslider2 = value
                 sliderlabel:SetText("Interrupt max: " .. RubimRH.db.profile.mainOption.maxInterruptValue)
             end
+
+
 
 		    local function showTooltip(frame, show, spellId)
                 if show then
@@ -957,7 +973,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 return currentList
             end
             --StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');    
-            StdUi:GlueBelow(chooseprofil, interruptList_title, -180, -30, 'LEFT');
+            StdUi:GlueBelow(chooseprofil, interruptList_title, -250, -30, 'LEFT');
                        
             local function addSpell(spellID)
                 local name = nil;
