@@ -367,15 +367,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 -- Dice
                 if RubimRH.playerSpec == Outlaw then
                 local dice = {
-                        { text = 'Simcraft', value = "Simcraft" },
-                        { text = 'SoloMode', value = "SoloMode" },
+                         { text = 'Simcraft', value = "Simcraft" },
                         { text = '1+ Buff', value = "1+ Buff" },
-                        { text = 'Broadsides', value = "Broadsides" },
-                        { text = 'Buried Treasure', value = "Buried Treasure" },
-                        { text = 'Grand Melee', value = "Grand Melee" },
-                        { text = 'Jolly Roger', value = "Jolly Roger" },
-                        { text = 'Shark Infested Waters', value = "Shark Infested Waters" },
-                        { text = 'Ture Bearing', value = "Ture Bearing" },
                         { text = 'AoE Strat', value = "AoE Strat" },
                         { text = 'Mythic +', value = "Mythic +" },
                     }
