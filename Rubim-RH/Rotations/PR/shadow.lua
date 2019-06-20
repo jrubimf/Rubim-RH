@@ -49,8 +49,10 @@ RubimRH.Spell[258] = {
   Dispersion                            = Spell(47585),
   ShadowMend                            = Spell(186263),
   Silence                               = Spell(15487),
-  Purify                                = Spell(527),
-  
+  DispelMagic                           = Spell(528),
+  PurifyDisease                         = Spell(213634),  
+  MassDispell                           = Spell(32375),
+  VampiricEmbrace                       = Spell(15286),
 };
 local S = RubimRH.Spell[258]
 
@@ -416,12 +418,21 @@ local function APL()
     if (MultiDots(40, S.VampiricTouch, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() >= 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
         return 133015 
     end
+	-- vampiric_embrace
+    if S.VampiricEmbrace:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[258].sk3 then
+        return S.VampiricEmbrace:Cast()
+    end  
+	-- mass dispell	
+	-- purge (offensive dispell)
+    if S.DispelMagic:IsCastableP() and Target:HasStealableBuff() then
+      return S.DispelMagic:Cast()
+    end
 	-- Mouseover Dispell handler
     local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
     if MouseoverUnit then
-        -- Nature Cure
-	    if S.Purify:IsReady() and MouseOver:HasDispelableDebuff("Magic", "Disease") then
-            return S.Purify:Cast()
+        -- PurifyDisease
+	    if S.PurifyDisease:IsReady() and MouseOver:HasDispelableDebuff("Disease") then
+            return S.PurifyDisease:Cast()
         end
     end
     -- SwitchTarget()
