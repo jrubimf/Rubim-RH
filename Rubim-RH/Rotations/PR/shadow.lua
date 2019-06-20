@@ -53,10 +53,11 @@ RubimRH.Spell[258] = {
 local S = RubimRH.Spell[258]
 
 -- Items
---Item.Priest.Shadow = {
---  BattlePotionOfIntellect          = Item(163222)
---};
---local I = Item.Priest.Shadow;
+if not Item.Priest then Item.Priest = {} end
+Item.Priest.Shadow = {
+  BattlePotionOfIntellect          = Item(163222)
+};
+local I = Item.Priest.Shadow;
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
