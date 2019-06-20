@@ -48,7 +48,9 @@ RubimRH.Spell[258] = {
   FortressOfTheMind                     = Spell(193195),
   Dispersion                            = Spell(47585),
   ShadowMend                            = Spell(186263),
-  Silence                               = Spell(15487)
+  Silence                               = Spell(15487),
+  Purify                                = Spell(527),
+  
 };
 local S = RubimRH.Spell[258]
 
@@ -413,6 +415,14 @@ local function APL()
 	-- auto switch to next target
     if (MultiDots(40, S.VampiricTouch, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() >= 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
         return 133015 
+    end
+	-- Mouseover Dispell handler
+    local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
+    if MouseoverUnit then
+        -- Nature Cure
+	    if S.Purify:IsReady() and MouseOver:HasDispelableDebuff("Magic", "Disease") then
+            return S.Purify:Cast()
+        end
     end
     -- SwitchTarget()
     -- Silence
