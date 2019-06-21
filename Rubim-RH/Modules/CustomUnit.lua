@@ -295,11 +295,11 @@ function Unit:IsInterruptible()
 	
 	if currentList[spellId] then
 
-        if self:IsCasting() and RubimRH.InstaInterruptON() then
+        if self:IsCasting() and RubimRH.InstantInterruptON() then
            return true
         end
 
-        if self:IsChanneling() and RubimRH.InstaInterruptON() then
+        if self:IsChanneling() and RubimRH.InstantInterruptON() then
             return true
         end
 	
