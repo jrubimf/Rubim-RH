@@ -158,7 +158,9 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
     Precombat = function()
-
+	if RubimRH.PerfectPullON() and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+		return S.BladeofJustice:Cast()
+		end
     end
 
     if not Player:AffectingCombat() and RubimRH.PrecombatON() then
