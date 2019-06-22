@@ -16,6 +16,14 @@ UseKick = false
 
 local S = RubimRH.Spell[268]
 
+-- Items
+if not Item.Monk then Item.Monk = {} end
+Item.Monk.Brewmaster = {
+  BattlePotionOfAgility = Item(163223),
+  InvocationOfYulon     = Item(165568),
+};
+local I = Item.Monk.Brewmaster;
+
 --- Energy Cap -> Returns true if energy will cap in the next GCD
 local function EnergyWillCap()
     return (Player:Energy() + (Player:EnergyRegen() * Player:GCD())) >= 100
@@ -69,7 +77,31 @@ end
 --- Preliminary APL based on Peak of Serenity Rotation Priority for 8.0.1
 -- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
-
+	
+	Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+        -- potion
+	    if I.BattlePotionOfAgility:IsReady() and RubimRH.DBM_PullTimer() > Player:GCD() and RubimRH.DBM_PullTimer() <= 2 then
+            return 967532
+        end
+	    -- rushing_jade_wind
+        if S.RushingJadeWind:IsCastableP() and IsInMeleeRange() and (true) and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.RushingJadeWind:Cast() 
+        end
+        -- chi_burst
+        if S.ChiBurst:IsCastableP() and IsInMeleeRange() and (true) and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.ChiBurst:Cast()
+        end
+        -- chi_wave
+        if S.ChiWave:IsCastableP() and IsInMeleeRange() and (true) and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.ChiWave:Cast() 
+        end
+    end
+	
 	Precombat = function()
     -- flask
     -- food
@@ -98,11 +130,14 @@ local function APL()
  --   end
     -- call precombat
   	-- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-    end
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
+        return Precombat()
+	end
 	
     if QueueSkill() ~= nil then
 		return QueueSkill()
