@@ -67,12 +67,10 @@ RubimRH.Spell[62] = {
 local S = RubimRH.Spell[62];
 
 -- Items
-if not Item.Mage then
-              Item.Mage = {}
-end
+if not Item.Mage then Item.Mage = {} end
 Item.Mage.Arcane = {
-       BattlePotionofIntellect            = Item(163222),
-       TidestormCodex                     = Item(165576)
+  BattlePotionOfIntellect          = Item(163222),
+  TidestormCodex                   = Item(165576)
 };
 local I = Item.Mage.Arcane;
 
@@ -172,10 +170,32 @@ local Healthstone = 5512
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat, Burn, Conserve, Movement
+  local Precombat_DBM, Precombat, Burn, Conserve, Movement
   local BlinkAny = S.Shimmer:IsAvailable() and S.Shimmer or S.Blink
   UpdateRanges()
   RubimRH.UpdateSplashCount(Target, 10)
+   
+  Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- arcane_intellect
+    if S.ArcaneIntellect:IsCastableP() and Player:BuffDownP(S.ArcaneIntellectBuff, true) then
+      return S.ArcaneIntellect:Cast()
+    end
+    -- arcane_familiar
+    if S.ArcaneFamiliar:IsCastableP() and Player:BuffDownP(S.ArcaneFamiliarBuff) then
+      return S.ArcaneFamiliar:Cast()
+    end
+	-- pre potion
+    if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() > S.ArcaneBlast:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.ArcaneBlast:CastTime() + 2 then
+         return 967532
+    end
+    -- arcane_blast
+    if S.ArcaneBlast:IsReadyP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.ArcaneBlast:CastTime() then
+      return S.ArcaneBlast:Cast()
+    end
+  end
   
   Precombat = function()
     -- flask
@@ -386,10 +406,19 @@ local function APL()
     end
   end
   
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-    local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+		local ShouldReturn = Precombat_DBM(); 
+		    if ShouldReturn then return ShouldReturn; 
+        end	
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then		
+	    local ShouldReturn = Precombat(); 
+	       if ShouldReturn then return ShouldReturn; 
+        end	
+    end
+  
   -- protect against channeling interrupt
   if Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
