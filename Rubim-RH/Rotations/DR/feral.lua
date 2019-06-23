@@ -269,10 +269,6 @@ local function APL()
     end
     
 	SingleTarget = function()
-        -- cat_form,if=!buff.cat_form.up
-        if S.CatForm:IsReady() and (not Player:BuffP(S.CatFormBuff)) then
-            return S.CatForm:Cast()
-        end
         -- rake,if=buff.prowl.up|buff.shadowmeld.up
         if S.Rake:IsReady() and (Player:BuffP(S.ProwlBuff) or Player:BuffP(S.ShadowmeldBuff)) then
             return S.Rake:Cast()
@@ -476,10 +472,13 @@ local function APL()
     end
 	
 	-- WildChargeCat
-	if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
-        return 538771
-    end
-	
+	--if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
+    --    return 538771
+    --end
+	    -- cat_form,if=!buff.cat_form.up
+        if S.CatForm:IsReady() and (not Player:BuffP(S.CatFormBuff)) then
+            return S.CatForm:Cast()
+        end
 	-- SurvivalInstincts
     if S.SurvivalInstincts:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[103].sk3 then
         return S.SurvivalInstincts:Cast()
