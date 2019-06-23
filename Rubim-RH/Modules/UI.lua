@@ -397,7 +397,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
 			    --PROT PALADIN
                 if RubimRH.playerSpec == PProtection then
-				    -- Create the checkbox for Avenger Shield interrupt
+				    
+					-- Create the checkbox for Avenger Shield interrupt
                     local ASInterruptbutton = StdUi:Checkbox(tab.frame, 'Avenger\'s Shield interrupt only');                    
 					-- Set this checkbox a tooltip
 					StdUi:FrameTooltip(ASInterruptbutton, 'This will force Avenger\s Shield to be used as interrupt', 'TOPLEFT', 'TOPRIGHT', true);                    
@@ -410,11 +411,13 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					    -- See Rubim-RHc.lua 
                         RubimRH.ASInterrupt()
                     end
-                end
+                
+				end
 				
-			    --PROT Warrior 
+			    --PROT WARRIOR 
                 if RubimRH.playerSpec == Protection then
-                    -- UseShieldBlockDefensively
+                  
+        			-- UseShieldBlockDefensively
 					local UseShieldBlockDef = StdUi:Checkbox(tab.frame, 'Use Shield Block Defensively');                    
 					StdUi:FrameTooltip(UseShieldBlockDef, 'This will force Shield Block te be auto used defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
 					UseShieldBlockDef:SetChecked(RubimRH.db.profile[73].UseShieldBlockDefensively)                    
@@ -431,10 +434,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					function UseRageDef:OnValueChanged(value)
                         RubimRH.UseRageDef()
                     end
+					
                 end
 				
 			    --BALANCE DRUID
-                if RubimRH.playerSpec == Balance then				    
+                if RubimRH.playerSpec == Balance then
+				
                     local AutoMorphbutton = StdUi:Checkbox(tab.frame, 'Auto morph in Moonkin form');                    
 					StdUi:FrameTooltip(AutoMorphbutton, 'This will force Moonkin form everytime', 'TOPLEFT', 'TOPRIGHT', true);                    
 					AutoMorphbutton:SetChecked(RubimRH.db.profile[102].AutoMorph)                    
@@ -445,10 +450,31 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					    -- See Rubim-RHc.lua 
                         RubimRH.AutoMorph()
                     end
+					
                 end
+				
+			    --AFFLICTION WARLOCK
+                if RubimRH.playerSpec == Affliction then
+				    
+					-- Create the checkbox for Avenger Shield interrupt
+                    local AutoAOEbutton = StdUi:Checkbox(tab.frame, 'Auto AoE');                    
+					-- Set this checkbox a tooltip
+					StdUi:FrameTooltip(AutoAOEbutton, 'Activate auto AoE targetting', 'TOPLEFT', 'TOPRIGHT', true);                    
+					-- Set default value (checked, unchecked)and save it to db 
+					AutoAOEbutton:SetChecked(RubimRH.db.profile[265].AutoAoE)                    
+					-- Set positionning
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+                    -- What to do on value change                    
+					function AutoAOEbutton:OnValueChanged(value)
+					    -- See Rubim-RHc.lua 
+                        RubimRH.AffliAutoAoE()
+                    end
+                
+				end
 				
                 --DESTRUCTION LOCK
                 if RubimRH.playerSpec == Destruction then
+				
                     local color = {
                         { text = 'Auto', value = 1 },
                         { text = 'Green', value = 2 },
@@ -462,10 +488,31 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         RubimRH.db.profile[RubimRH.playerSpec].color = self:GetText()
                         print("Flames Color set on: " .. RubimRH.db.profile[RubimRH.playerSpec].color)
                     end
+					
                 end
+				
+			    --SHADOW PRIEST
+                if RubimRH.playerSpec == Shadow then
+				    
+					-- Create the checkbox for Avenger Shield interrupt
+                    local AutoAOEbutton = StdUi:Checkbox(tab.frame, 'Auto AoE');                    
+					-- Set this checkbox a tooltip
+					StdUi:FrameTooltip(AutoAOEbutton, 'Activate auto AoE targetting', 'TOPLEFT', 'TOPRIGHT', true);                    
+					-- Set default value (checked, unchecked)and save it to db 
+					AutoAOEbutton:SetChecked(RubimRH.db.profile[258].AutoAoE)                    
+					-- Set positionning
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+                    -- What to do on value change                    
+					function AutoAOEbutton:OnValueChanged(value)
+					    -- See Rubim-RHc.lua 
+                        RubimRH.ShadowAutoAoE()
+                    end
+                
+				end
                 
 				-- ARCANE MAGE
                 if RubimRH.playerSpec == Arcane then
+				
                     local useSplashData = {
                         { text = 'Enabled', value = "Enabled" },
                         { text = 'Disabled', value = "Disabled" },
@@ -486,11 +533,13 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                     end
                     StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+					
                 end
                 
                 
                 -- SHAMAN ELEMENTAL
                 if RubimRH.playerSpec == Elemental then
+				
                     local useSplashData = {
                         { text = 'Enabled', value = "Enabled" },
                         { text = 'Disabled', value = "Disabled" },
@@ -511,12 +560,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                     end
                     StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+					
                 end
 
                 
                 -- HUNTER MARKMANSHIP
 
                 if RubimRH.playerSpec == Marksmanship then
+				
                     local useSplashData = {
                         { text = 'Enabled', value = "Enabled" },
                         { text = 'Disabled', value = "Disabled" },
@@ -537,11 +588,13 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                     end
                     StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+					
                 end
                 
                 -- HUNTER BEAST MASTER
 
                 if RubimRH.playerSpec == BeastMastery then
+				
                     local useSplashData = {
                         { text = 'Enabled', value = "Enabled" },
                         { text = 'Disabled', value = "Disabled" },
@@ -562,6 +615,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     end
                     end
                     StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
+					
                 end
             
 

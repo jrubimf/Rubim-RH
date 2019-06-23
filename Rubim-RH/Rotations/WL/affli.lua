@@ -535,8 +535,9 @@ local function APL()
 	if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	
 	-- Auto multidot
-	if RubimRH.AoEON() and Target:DebuffRemainsP(S.AgonyDebuff) >= S.Agony:BaseDuration() * 0.80 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 7 and CombatTime("player") > 0 and 
+	if RubimRH.AoEON() and RubimRH.AffliAutoAoEON() and Target:DebuffRemainsP(S.AgonyDebuff) >= S.Agony:BaseDuration() * 0.90 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 7 and CombatTime("player") > 0 and 
 ( -- Agony
     not IsSpellInRange(980, "target") or   
     (
@@ -584,7 +585,7 @@ local function APL()
 		return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
 	end
 	-- Mythic+ - Shadowfury aoe stun test
-    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
+    if S.Shadowfury:IsCastableP() and not Player:IsMoving() and RubimRH.InterruptsON() and active_enemies() >= 2 and Target:IsInterruptible() then
 		return S.Shadowfury:Cast()
     end	
     -- drain_soul,interrupt_global=1,chain=1,cycle_targets=1,if=target.time_to_die<=gcd&soul_shard<5
@@ -677,7 +678,6 @@ end
 RubimRH.Rotation.SetAPL(265, APL)
 
 local function PASSIVE()
-    --print(RubimRH.DBM_PullTimer());
     return RubimRH.Shared()
 end
 
