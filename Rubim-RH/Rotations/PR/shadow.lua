@@ -54,6 +54,7 @@ RubimRH.Spell[258] = {
   PurifyDisease                         = Spell(213634),  
   MassDispell                           = Spell(32375),
   VampiricEmbrace                       = Spell(15286),
+  PowerWordShield                       = Spell(17),
 };
 local S = RubimRH.Spell[258]
 
@@ -411,6 +412,10 @@ local function APL()
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
+	-- Power Word: Shield
+	if S.PowerWordShield:IsReady() and not Player:Buff(S.PowerWordShield) and  Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
+        return S.PowerWordShield:Cast()
+    end
 
 	-- void_bolt
 	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2 then
@@ -471,7 +476,6 @@ local function APL()
             return S.PurifyDisease:Cast()
         end
     end
-    -- SwitchTarget()
     -- Silence
     if S.Silence:IsCastableP() and RubimRH.InterruptsON() and Target:IsInterruptible() then
       return S.Silence:Cast()

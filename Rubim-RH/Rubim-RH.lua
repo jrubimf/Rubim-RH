@@ -1261,6 +1261,9 @@ mythicList = {
 			sk3 = 30, -- Vampiric Embrace
             sk3id = 15286, -- Vampiric Embrace
             sk3tooltip = "Lowest party member HP to use Vampiric Embrace",
+			sk4 = 65, -- Power Word: Shield
+            sk4id = 17, -- Power Word: Shield
+            sk4tooltip = "Percent HP to use Power Word: Shield",
         }
     }
 }
