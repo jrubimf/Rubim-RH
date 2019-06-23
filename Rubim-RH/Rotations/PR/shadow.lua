@@ -12,6 +12,7 @@ local Pet    = Unit.Pet
 local Spell  = HL.Spell
 local Item   = HL.Item
 local mainAddon = RubimRH
+local MouseOver = Unit.MouseOver;
 
 -- Spells
 RubimRH.Spell[258] = {  
