@@ -406,6 +406,11 @@ local function APL()
     --if I.BattlePotionofIntellect:IsReady() and Settings.Commons.UsePotions and (Player:HasHeroism() or Target:TimeToDie() <= 80 or Target:HealthPercentage() < 35) then
     --  return I.BattlePotionofIntellect:Cast() "battle_potion_of_intellect 283"; end
     --end
+    -- QueueSkill
+	if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
+
 	-- void_bolt
 	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2 then
       return S.VoidBolt:Cast()
@@ -415,14 +420,36 @@ local function APL()
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
 	-- auto switch to next target
-    if (MultiDots(40, S.VampiricTouch, 10, 1) >= 1) and RubimRH.AoEON() and active_enemies() >= 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
-        return 133015 
-    end
+   -- if HL.CombatTime() > 0 and active_enemies() < 10 and (MultiDots(40, S.VampiricTouch, 10, 1) >= 1 or CombatTime("target") == 0) and RubimRH.AoEON() and active_enemies() >= 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
+   --     return 133015 
+   -- end
+	
+	
+	if RubimRH.AoEON() and Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff) and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 10 and CombatTime("player") > 0 and 
+( -- Shadow Word: Pain
+    not IsSpellInRange(589, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Vampiric Touch
+    MultiDots(40, S.VampiricTouch, 10, 1) >= 1 or MultiDots(40, S.ShadowWordPain, 10, 1) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+    return 133015 
+   end
+
+	
 	-- vampiric_embrace
     if S.VampiricEmbrace:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[258].sk3 then
         return S.VampiricEmbrace:Cast()
     end  
-	-- mass dispell	
+	-- mass dispell	todo
 	-- purge (offensive dispell)
     if S.DispelMagic:IsCastableP() and Target:HasStealableBuff() then
       return S.DispelMagic:Cast()
@@ -475,7 +502,6 @@ end
 RubimRH.Rotation.SetAPL(258, APL)
 
 local function PASSIVE()
-	--print(MultiDots(40, S.VampiricTouch, 10, 1));
     return RubimRH.Shared()
 end
 
