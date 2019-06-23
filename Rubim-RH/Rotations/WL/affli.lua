@@ -535,6 +535,26 @@ local function APL()
 	if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	-- Auto multidot
+	if RubimRH.AoEON() and Target:DebuffRemainsP(S.AgonyDebuff) >= S.Agony:BaseDuration() * 0.80 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 7 and CombatTime("player") > 0 and 
+( -- Agony
+    not IsSpellInRange(980, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Corruption
+    MultiDots(40, S.Corruption, 10, 1) >= 1 or MultiDots(40, S.Agony, 10, 1) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+      return 133015 
+   end
+
     -- variable,name=use_seed,value=talent.sow_the_seeds.enabled&spell_targets.seed_of_corruption_aoe>=3+raid_event.invulnerable.up|talent.siphon_life.enabled&spell_targets.seed_of_corruption>=5+raid_event.invulnerable.up|spell_targets.seed_of_corruption>=8+raid_event.invulnerable.up
     if (true) then
       VarUseSeed = num(S.SowtheSeeds:IsAvailable() and active_enemies() >= 3 or S.SiphonLife:IsAvailable() and active_enemies() >= 5 or active_enemies() >= 8)
