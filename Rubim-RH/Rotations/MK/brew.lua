@@ -1,13 +1,17 @@
---- Last Edit: Bishop : 7/21/18
---- BfA Brewmaster v1.0.2
+--- ============================ HEADER ============================
+--- ======= LOCALIZE =======
+-- Addon
 local addonName, addonTable = ...
 -- HeroLib
-local HL = HeroLib
-local Cache = HeroCache
-local Unit = HL.Unit
+local HL     = HeroLib
+local Cache  = HeroCache
+local Unit   = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
-local Spell = HL.Spell
+local Pet    = Unit.Pet
+local Spell  = HL.Spell
+local Item   = HL.Item
+local mainAddon = RubimRH
 
 -- Macro Settings
 UseBlackOxStatue = false
@@ -15,6 +19,14 @@ UseLegSweep = false
 UseKick = false
 
 local S = RubimRH.Spell[268]
+
+-- Items
+if not Item.Monk then Item.Monk = {} end
+Item.Monk.Brewmaster = {
+  BattlePotionOfAgility = Item(163223),
+  InvocationOfYulon     = Item(165568),
+};
+local I = Item.Monk.Brewmaster;
 
 --- Energy Cap -> Returns true if energy will cap in the next GCD
 local function EnergyWillCap()
@@ -69,7 +81,24 @@ end
 --- Preliminary APL based on Peak of Serenity Rotation Priority for 8.0.1
 -- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
+local Precombat_DBM, Precombat
 
+	Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+        -- potion
+	    if I.BattlePotionOfAgility:IsReady() and RubimRH.DBM_PullTimer() > Player:GCD() and RubimRH.DBM_PullTimer() <= 2 then
+            return 967532
+        end		
+        -- Tiger Palm
+        if S.TigerPalm:IsReady("Melee") and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.TigerPalm:Cast()
+        end
+    end
+	
 	Precombat = function()
     -- flask
     -- food
@@ -79,30 +108,23 @@ local function APL()
     --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions then
     --  if I.CastSuggested(I.ProlongedPower) then return "prolonged_power 4"; end
     --end
-	    -- rushing_jade_wind
-        if S.RushingJadeWind:IsCastableP() then
-            return S.RushingJadeWind:Cast() 
-        end
-        -- chi_burst
-        if S.ChiBurst:IsCastableP() then
-            return S.ChiBurst:Cast()
-        end
-        -- chi_wave
-        if S.ChiWave:IsCastableP() then
-            return S.ChiWave:Cast() 
+        -- Tiger Palm
+        if S.TigerPalm:IsReady("Melee") then
+            return S.TigerPalm:Cast()
         end
     end
       --- Not in combat
   --  if not Player:AffectingCombat() and RubimRH.PrecombatON() then
   --      return 0, 462338
  --   end
-    -- call precombat
-  	-- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Player:IsCasting() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-    end
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
+        return Precombat()
+	end
 	
     if QueueSkill() ~= nil then
 		return QueueSkill()
