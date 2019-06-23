@@ -446,7 +446,7 @@ local function APL()
 
 	
 	-- vampiric_embrace
-    if S.VampiricEmbrace:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[258].sk3 then
+    if S.VampiricEmbrace:IsCastableP() and GroupedBelow(mainAddon.db.profile[258].sk3) >= 2 then
         return S.VampiricEmbrace:Cast()
     end  
 	-- mass dispell	todo

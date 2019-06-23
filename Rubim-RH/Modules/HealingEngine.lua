@@ -69,7 +69,7 @@ end
 
 local function Grouped(t)
     -- if we are in 5yrds
-    if  CheckInteractDistance(t, 5)
+    if  CheckInteractDistance(t, 10)
     then
         return true
     else

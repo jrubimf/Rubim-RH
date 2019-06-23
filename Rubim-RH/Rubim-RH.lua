@@ -1258,9 +1258,9 @@ mythicList = {
             sk2 = 25, -- ShadowMend
             sk2id = 186263, -- ShadowMend
             sk2tooltip = "Percent HP to use ShadowMend",
-			sk3 = 30, -- ShadowMend
+			sk3 = 30, -- Vampiric Embrace
             sk3id = 15286, -- Vampiric Embrace
-            sk3tooltip = "Percent HP to use Vampiric Embrace",
+            sk3tooltip = "Lowest party member HP to use Vampiric Embrace",
         }
     }
 }
