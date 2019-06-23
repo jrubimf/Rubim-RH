@@ -215,7 +215,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_1_1.OnValueChanged = function(self, value)
                 local option1, option2 = unpack(value)
 
-                if if option1 == 1 or option2 == 1 then
+                if option1 == 1 or option2 == 1 then
                     RubimRH.db.profile.mainOption.useTrinkets[1] = true
                 end
 
