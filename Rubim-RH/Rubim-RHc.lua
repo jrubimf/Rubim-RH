@@ -148,6 +148,30 @@ function RubimRH.ASInterrupt()
     print("|cFF69CCF0Avenger's Shield interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].ASInterrupt))
 end
 
+-- Shadow priest Auto AoE
+function RubimRH.ShadowAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[258].AutoAoE == false then
+        RubimRH.db.profile[258].AutoAoE = true
+
+    else
+        RubimRH.db.profile[258].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[258].AutoAoE))
+end
+
+-- Affliction warlock Auto AoE
+function RubimRH.AffliAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[265].AutoAoE == false then
+        RubimRH.db.profile[265].AutoAoE = true
+
+    else
+        RubimRH.db.profile[265].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[265].AutoAoE))
+end
+
 -- Balance Druid auto morph checkbox handler
 function RubimRH.AutoMorph()
     RubimRH.playSoundR(891);
@@ -365,6 +389,30 @@ function RubimRH.ASInterruptON()
         return false
     end
     if RubimRH.db.profile[66].ASInterrupt == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Shadow priest
+function RubimRH.ShadowAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[258].AutoAoE == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Affli lock UI function
+function RubimRH.AffliAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[265].AutoAoE == true then
         return true
     else
         return false

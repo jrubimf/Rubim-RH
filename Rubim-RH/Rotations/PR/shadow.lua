@@ -431,7 +431,7 @@ local function APL()
    -- end
 	
 	
-	if RubimRH.AoEON() and Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff) and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 10 and CombatTime("player") > 0 and 
+	if RubimRH.AoEON() and RubimRH.ShadowAutoAoEON() and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= S.ShadowWordPain:BaseDuration() * 0.90 and Target:DebuffRemainsP(S.VampiricTouchDebuff)>= S.VampiricTouch:BaseDuration() * 0.90 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 10 and CombatTime("player") > 0 and 
 ( -- Shadow Word: Pain
     not IsSpellInRange(589, "target") or   
     (

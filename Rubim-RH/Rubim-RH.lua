@@ -1177,7 +1177,7 @@ mythicList = {
         -- WARLOCK
         [265] = {
             cooldowns = true,
-						
+			AutoAoE = true,			
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
@@ -1251,7 +1251,7 @@ mythicList = {
         },
         [258] = {
             cooldowns = true,
-			
+			AutoAoE = true,	
             sk1 = 20, -- Dispersion
             sk1id = 47585, -- Dispersion
             sk1tooltip = "Percent HP to use Dispersion",
