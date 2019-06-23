@@ -59,7 +59,9 @@ RubimRH.Spell[62] = {
               Blink                       = Spell(1953),
               Shimmer                     = Spell(212653),
               IceBlock                    = Spell(45438),
-              PrismaticBarrier            = Spell(235450),			
+              PrismaticBarrier            = Spell(235450),		
+              Spellsteal                  = Spell(30449),			 
+	          Counterspell                = Spell(2139),
 
 };
 local S = RubimRH.Spell[62];
@@ -166,7 +168,7 @@ end
 function Player:ArcaneChargesP()
        return math.min(self:ArcaneCharges() + num(self:IsCasting(S.ArcaneBlast)),4)
 end
-
+local Healthstone = 5512
 
 --- ======= ACTION LISTS =======
 local function APL()
@@ -395,7 +397,22 @@ local function APL()
   
   -- combat
   if RubimRH.TargetIsValid() then
-    -- counterspell,if=target.debuff.casting.react
+    -- Healthstone
+	if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+        return 538745
+    end
+    -- Queue sys
+	if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+    -- counterspell
+	if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Counterspell:Cast()
+    end
+	-- spell steal
+	if S.Spellsteal:IsReady() and RubimRH.InterruptsON() and Target:HasStealableBuff() then
+        return S.Spellsteal:Cast()
+    end
     -- call_action_list,name=burn,if=burn_phase|target.time_to_die<variable.average_burn_length
     if RubimRH.CDsON() and (BurnPhase:On() or Target:TimeToDie() < VarAverageBurnLength) then
       local ShouldReturn = Burn(); if ShouldReturn then return ShouldReturn; end
