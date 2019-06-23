@@ -215,16 +215,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_1_1.OnValueChanged = function(self, value)
                 local option1, option2 = unpack(value)
 
-                if option1 == 1 then
+                if if option1 == 1 or option2 == 1 then
                     RubimRH.db.profile.mainOption.useTrinkets[1] = true
-				else
-				    RubimRH.db.profile.mainOption.useTrinkets[1] = false
                 end
 
-                if option1 == 2 then
+                if option1 == 2 or option2 == 2 then
                     RubimRH.db.profile.mainOption.useTrinkets[2] = true
-				else
-				    RubimRH.db.profile.mainOption.useTrinkets[2] = false
                 end
             end;
 
