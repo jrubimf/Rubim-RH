@@ -501,11 +501,11 @@ local function Stealthed ()
 	end
 end
 
-								  
-			if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or Stealth2) then
-			 if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
-			       return S.CheapShot:Cast() 
-        end
+		-- Cheap Shot						  
+		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or Stealth2) then
+			if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+			    return S.CheapShot:Cast() 
+            end
 		end
 		
 -- # Damage over time abilities
@@ -723,6 +723,25 @@ local function APL ()
     if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Kick:Cast()
     end
+	
+	if RubimRH.AoEON() and RubimRH.AssaAutoAoEON() and Target:DebuffRemainsP(S.Rupture) >= S.Rupture:BaseDuration() * 0.90 and active_enemies() >= 2 and active_enemies() < 5 and CombatTime("player") > 0 and 
+( -- Rupture
+    not IsSpellInRange(1943, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Rupture
+    MultiDots(10, S.Rupture, 10, 3) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+    return 133015 
+   end
 
     -- In Combat
     -- actions=variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)

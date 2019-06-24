@@ -172,6 +172,18 @@ function RubimRH.AffliAutoAoE()
     print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[265].AutoAoE))
 end
 
+-- Assasination Rogue Auto AoE
+function RubimRH.AssaAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[259].AutoAoE == false then
+        RubimRH.db.profile[259].AutoAoE = true
+
+    else
+        RubimRH.db.profile[259].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[259].AutoAoE))
+end
+
 -- Balance Druid auto morph checkbox handler
 function RubimRH.AutoMorph()
     RubimRH.playSoundR(891);
@@ -413,6 +425,18 @@ function RubimRH.AffliAutoAoEON()
         return false
     end
     if RubimRH.db.profile[265].AutoAoE == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Assa Rogue UI function
+function RubimRH.AssaAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[259].AutoAoE == true then
         return true
     else
         return false

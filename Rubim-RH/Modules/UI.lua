@@ -472,6 +472,25 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 
 				end
 				
+			    --ASSA ROGUE
+                if RubimRH.playerSpec == Assassination then
+				    
+					-- Create the checkbox for Avenger Shield interrupt
+                    local AutoAOEbutton = StdUi:Checkbox(tab.frame, 'Auto AoE');                    
+					-- Set this checkbox a tooltip
+					StdUi:FrameTooltip(AutoAOEbutton, 'Activate auto AoE targetting', 'TOPLEFT', 'TOPRIGHT', true);                    
+					-- Set default value (checked, unchecked)and save it to db 
+					AutoAOEbutton:SetChecked(RubimRH.db.profile[259].AutoAoE)                    
+					-- Set positionning
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+                    -- What to do on value change                    
+					function AutoAOEbutton:OnValueChanged(value)
+					    -- See Rubim-RHc.lua 
+                        RubimRH.AssaAutoAoE()
+                    end
+                
+				end
+				
                 --DESTRUCTION LOCK
                 if RubimRH.playerSpec == Destruction then
 				

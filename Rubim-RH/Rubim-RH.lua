@@ -1023,6 +1023,7 @@ mythicList = {
             cooldown = true,
             stealthOOC = true,
             vanishattack = true,
+			AutoAoE = true,
 			
             sk1 = 65,
             sk1id = 185311,
