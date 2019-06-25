@@ -47,6 +47,21 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 
+RubimRH.CurrentAction = nil
+RubimRH.Cache = {}
+RubimRH.Cache.Persistent = {}
+RubimRH.Cache.Temp = {}
+RubimRH.GlobalTickCount = 0
+RubimRH.IgnoreGeneralPvP = {}
+--RubimRH.disabledSpellsCD = { RubimRH.Spell[1].Empty }
+RubimRH.CustomTrinket = {}
+RubimRH.List = {}
+RubimRH.List.Cleave = {}
+RubimRH.List.Stuns = {}
+RubimRH.List.InterruptsCC = {}
+RubimRH.List.Interrupts = {}
+RubimRH.List.Snare = {}
+
 --ClassGlobals
 Blood = 250
 Frost = 251
@@ -220,7 +235,14 @@ local Regrowth = 8936
 local Renewal = 108238
 
 local defaults = {
-    profile = {
+    global = {
+        version = 1,
+        blockedUnits = {},
+        debuffStacks = {},
+        dispelCount = {},
+        interruptsConfig = {}
+    },
+	profile = {
         mainOption = {
             version = 15062019,
             cooldownbind = nil,

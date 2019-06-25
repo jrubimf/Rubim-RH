@@ -1,14 +1,10 @@
----
---- 08.06.2019
----
-
 local pairs, ipairs = pairs, ipairs
-local GetSpellInfo = Action and Action.GetSpellInfo or GetSpellInfo
+local GetSpellInfo = GetSpellInfo
 local ItemSlots = { 1, 2, 3, 5 }
 
 local AzeriteEmpoweredItem = _G.C_AzeriteEmpoweredItem
 local AzeriteTraits = {}
-local AzeriteItem = _G.C_AzeriteItem
+
 local AzeriteEssence = _G.C_AzeriteEssence
 local AzeriteEssences = { Major = {}, Minor = {}, Total = {} }
 
@@ -107,9 +103,9 @@ local function AzeriteTraitsUpdate()
 end
 
 -- Azerite Empower
-RubimRH.Listener:Add("AzeriteTraits_Events", "PLAYER_ENTERING_WORLD", AzeriteTraitsUpdate)
-RubimRH.Listener:Add("AzeriteTraits_Events", "PLAYER_EQUIPMENT_CHANGED", AzeriteTraitsUpdate)
-RubimRH.Listener:Add("AzeriteTraits_Events", "SPELLS_CHANGED", AzeriteTraitsUpdate)
+RubimRH.Listener:Add("Rubim_Events", "PLAYER_ENTERING_WORLD", AzeriteTraitsUpdate)
+RubimRH.Listener:Add("Rubim_Events", "PLAYER_EQUIPMENT_CHANGED", AzeriteTraitsUpdate)
+RubimRH.Listener:Add("Rubim_Events", "SPELLS_CHANGED", AzeriteTraitsUpdate)
 
 function AzeriteRank(spellID)
     local rank = AzeriteTraits[GetSpellInfo(spellID)]
@@ -118,9 +114,9 @@ end
 
 -- Azerite Essence
 if AzeriteEssence then
-	RubimRH.Listener:Add("AzeriteTraits_Events", "AZERITE_ESSENCE_CHANGED", AzeriteEssenceUpdate)
-	RubimRH.Listener:Add("AzeriteTraits_Events", "AZERITE_ESSENCE_ACTIVATED", AzeriteEssenceUpdate)
-	RubimRH.Listener:Add("AzeriteTraits_Events", "AZERITE_ESSENCE_ACTIVATION_FAILED", AzeriteEssenceUpdate)
+	RubimRH.Listener:Add("Rubim_Events", "AZERITE_ESSENCE_CHANGED", AzeriteEssenceUpdate)
+	RubimRH.Listener:Add("Rubim_Events", "AZERITE_ESSENCE_ACTIVATED", AzeriteEssenceUpdate)
+	RubimRH.Listener:Add("Rubim_Events", "AZERITE_ESSENCE_ACTIVATION_FAILED", AzeriteEssenceUpdate)
 end 
 
 function AzeriteEssenceGet(ID)

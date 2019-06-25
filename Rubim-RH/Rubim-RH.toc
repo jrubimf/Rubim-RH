@@ -27,6 +27,7 @@ Modules\CombatTracker.lua
 Modules\HealingEngine.lua
 Modules\PredictHeal.lua
 Modules\Quest.lua
+Modules\Lists.lua
 Modules\MiniMap.lua
 Rotations\Shared.lua
 Rotations\DK\blood.lua

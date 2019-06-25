@@ -2,7 +2,7 @@ local HL = HeroLib;
 local Cache = HeroCache;
 local StdUi = LibStub('StdUi')
 local AceGUI = LibStub("AceGUI-3.0")
-
+local mainAddon = RubimRH
 
 function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
     local window = StdUi:Window(UIParent, 'Class Config', 650, 500);
@@ -918,8 +918,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local cols = {
 
             {
-                    name = 'Icon',
-                    width = 40,
+                    name = '',
+                    width = 50,
                     align = 'LEFT',
                     index = 'icon',
                     format = 'icon',
@@ -942,8 +942,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 },
             
                 {
-                    name = 'Spell ID',
-                    width = 60,
+                    name = 'ID',
+                    width = 80,
                     align = 'LEFT',
                     index = 'spellId',
                     format = 'number',
@@ -959,7 +959,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 },
                 {
                     name = 'Spell Name',
-                    width = 180,
+                    width = 170,
                     align = 'LEFT',
                     index = 'name',
                     format = 'string',
@@ -971,16 +971,79 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 },
                 
                 {
+                    name = 'Kick',
+                    width = 40,
+                    align = 'LEFT',
+                    index = 'useKick',
+                    format = 'string',
+                    color = function(table, value, rowData, columnData)
+                        if value == "Yes" then
+                            return { r = 0, g = 1, b = 0, a = 1 }
+                        end
+                        if value == "No" then
+                            return { r = 1, g = 0, b = 0, a = 1 }
+                        end
+                    end,
+                    events = {
+                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                            if not RubimRH.db.global.interruptsConfig[rowData.spellId] then
+                                RubimRH.db.global.interruptsConfig[rowData.spellId] = {}
+                            end
+                            if rowData.useKick == 'Yes' then
+                                rowData.useKick = 'No'
+                                RubimRH.db.global.interruptsConfig[rowData.spellId].useKick = false
+                                currentList[rowData.spellId].useKick = false
+                                print('UI: ' .. GetSpellInfo(rowData.spellId) .. " will NOT be kicked.")
+                            else
+                                rowData.useKick = 'Yes'
+                                RubimRH.db.global.interruptsConfig[rowData.spellId].useKick = true
+                                currentList[rowData.spellId].useKick = true
+                                print('UI: ' .. GetSpellInfo(rowData.spellId) .. " will be kicked.")
+                            end
+                        end,
+                    },
+                },
+
+                {
+                    name = 'CC',
+                    width = 40,
+                    align = 'LEFT',
+                    index = 'useCC',
+                    format = 'string',
+                    color = function(table, value, rowData, columnData)
+                        if value == "Yes" then
+                            return { r = 0, g = 1, b = 0, a = 1 }
+                        end
+                        if value == "No" then
+                            return { r = 1, g = 0, b = 0, a = 1 }
+                        end
+                    end,
+                    events = {
+                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
+                            if not RubimRH.db.global.interruptsConfig[rowData.spellId] then
+                                RubimRH.db.global.interruptsConfig[rowData.spellId] = {}
+                            end
+                            if rowData.useCC == 'Yes' then
+                                rowData.useCC = 'No'
+                                RubimRH.db.global.interruptsConfig[rowData.spellId].useCC = false
+                                currentList[rowData.spellId].useCC = false
+                                print('UI: ' .. GetSpellInfo(rowData.spellId) .. " will NOT be CCed.")
+                            else
+                                rowData.useCC = 'Yes'
+                                RubimRH.db.global.interruptsConfig[rowData.spellId].useCC = true
+                                currentList[rowData.spellId].useCC = true
+                                print('UI: ' .. GetSpellInfo(rowData.spellId) .. " will be CCed.")
+                            end
+                        end,
+                    },
+                },
+
+                {
                     name = 'Zone',
                     width = 100,
                     align = 'LEFT',
                     index = 'zone',
                     format = 'string',
-                    events = {
-                        OnClick = function(table, cellFrame, rowFrame, rowData, columnData, rowIndex)
-                            selectedSpell = rowData.spellId
-                        end,
-                    }
                 },
 
 
@@ -1013,7 +1076,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 if val == "Mythic+" then
                     print("Interrupt profil set on Mythic+")
                     RubimRH.db.profile.mainOption.activeList = val
-                    currentList = RubimRH.db.profile.mainOption.mythicList
+                    --currentList = RubimRH.db.profile.mainOption.mythicList
+					currentList = RubimRH.List.PvEInterrupts
                     RubimRH.RefreshList()
 
                     
@@ -1045,9 +1109,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             StdUi:GlueBelow(chooseprofil, interruptList_title, -250, -30, 'LEFT');
                        
             local function addSpell(spellID)
-                local name = nil;
-                local icon, castTime, minRange, maxRange, spellId;				
-				local zone = currentList[spellID].Zone
+                local name;
+                local icon, castTime, minRange, maxRange, spellId;
+                local zone = currentList[spellID].Zone
+                local useKick = (currentList[spellID].useKick == true and "Yes") or "No"
+                local useCC = (currentList[spellID].useCC == true and "Yes") or "No"
+			    --local zone = currentList[spellID].Zone
 
 				if currentList[spellID].Zone == nil then
 				   zone = "Custom"
@@ -1056,17 +1123,22 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 name, _, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID);
 
                 return {
-                    name = name,
-                    icon = icon,
-                    castTime = castTime,
-                    minRange = minRange,
-                    maxRange = maxRange,
-                    spellId = spellId;
-					zone = zone,
+                        name = name,
+                        icon = icon,
+                        castTime = castTime,
+                        minRange = minRange,
+                        maxRange = maxRange,
+                        spellId = spellId;
+                        zone = zone,
+                        useKick = useKick,
+                        useCC = useCC,
                 };
             end
 
             local data = {};
+		        --for i, v in pairs(RubimRH.List.PvEInterrupts) do
+                --    tinsert(data, addSpell(i));
+                --end
             -- Checking for current list not nil
             if currentList ~= nil then 
                 -- insert currentList values
