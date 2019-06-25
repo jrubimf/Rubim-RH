@@ -289,6 +289,10 @@ local function APL()
   
   -- combat
   if RubimRH.TargetIsValid() then
+      -- QueueSkill
+	if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
     -- Pummel
     if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()
