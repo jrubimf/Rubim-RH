@@ -237,6 +237,10 @@ local function APL()
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	-- Battleshout in combat refresh
+	if S.BattleShout:IsCastable() and not Player:BuffP(S.BattleShout) then
+        return S.BattleShout:Cast()
+    end
 	-- execute,if=buff.enrage.up
     if S.Execute:CooldownRemainsP() < 0.1 and Player:BuffRemainsP(S.SuddenDeathBuff) > 1 then
         return S.Execute:Cast()
