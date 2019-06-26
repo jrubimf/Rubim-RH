@@ -83,7 +83,38 @@ RubimRH.Spell[261] = {
     CloakofShadows = Spell(31224),
     CrimsonVial = Spell(185311),
     Feint = Spell(1966),
-    Evasion = Spell(5277)
+    Evasion = Spell(5277),
+	ReplicatingShadows                    = Spell(286121),
+	
+	--8.2 Essences
+    BloodOfTheEnemy       = Spell(297108),
+    BloodOfTheEnemy2      = Spell(298273),
+    BloodOfTheEnemy3      = Spell(298277),
+    ConcentratedFlame     = Spell(295373),
+    ConcentratedFlame2    = Spell(299349),
+    ConcentratedFlame3    = Spell(299353),
+    GuardianOfAzeroth     = Spell(295840),
+    GuardianOfAzeroth2    = Spell(299355),
+    GuardianOfAzeroth3    = Spell(299358),
+    FocusedAzeriteBeam    = Spell(295258),
+    FocusedAzeriteBeam2   = Spell(299336),
+    FocusedAzeriteBeam3   = Spell(299338),
+    PurifyingBlast        = Spell(295337),
+    PurifyingBlast2       = Spell(299345),
+    PurifyingBlast3       = Spell(299347),
+    TheUnboundForce       = Spell(298452),
+    TheUnboundForce2      = Spell(299376),
+    TheUnboundForce3      = Spell(299378),
+    RippleInSpace         = Spell(302731),
+    RippleInSpace2        = Spell(302982),
+    RippleInSpace3        = Spell(302983),
+    WorldveinResonance    = Spell(295186),
+    WorldveinResonance2   = Spell(298628),
+    WorldveinResonance3   = Spell(299334),
+    MemoryOfLucidDreams   = Spell(298357),
+    MemoryOfLucidDreams2  = Spell(299372),
+    MemoryOfLucidDreams3  = Spell(299374),
+	
 };
 local S = RubimRH.Spell[261]
 
@@ -92,9 +123,33 @@ local function CPMaxSpend()
     return S.DeeperStratagem:IsAvailable() and 6 or 5;
 end
 
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
+
 -- "cp_spend"
 local function CPSpend()
     return math.min(Player:ComboPoints(), CPMaxSpend());
+end
+
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
 end
 
 S.Eviscerate:RegisterDamage(
@@ -345,8 +400,52 @@ local function CDs ()
             if S.ShadowDance:IsReady() and not Player:BuffP(S.ShadowDanceBuff) and Target:FilteredTimeToDie("<=", 5 + num(S.Subterfuge:IsAvailable())) then
                 return S.ShadowDance:Cast()
             end
+			-- actions.cds+=/call_action_list,name=essences
+            ShouldReturn = Essences();
+            if ShouldReturn then return ShouldReturn; end
         end
     end
+end
+
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S..BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S..BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S..GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S..FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S..PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S..TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S..RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S..WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<40
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 40 then
+    return S..MemoryOfLucidDreams:Cast()
+  end
+  return false;
 end
 
 -- # Stealth Cooldowns
@@ -363,7 +462,8 @@ local function Stealth_CDs ()
                 and S.ShadowDance:IsReady() and S.Vanish:TimeSinceLastDisplay() > 0.3
                 and S.ShadowDance:TimeSinceLastDisplay() ~= 0 and S.Shadowmeld:TimeSinceLastDisplay() > 0.3 and S.ShadowDance:Charges() >= 1
                 and (not S.DarkShadow:IsAvailable() or Target:DebuffRemainsP(S.Nightblade) >= 5 + num(S.Subterfuge:IsAvailable()))
-                and (ShD_Threshold() or Player:BuffRemainsP(S.SymbolsofDeath) >= 1.2 or (Cache.EnemiesCount[10] >= 4 and S.SymbolsofDeath:CooldownRemainsP() > 10)) then
+                and (ShD_Threshold() or Player:BuffRemainsP(S.SymbolsofDeath) >= 1.2 or (Cache.EnemiesCount[10] >= 4 and S.SymbolsofDeath:CooldownRemainsP() > 10))
+				and (S.NightsVengeancePower:AzeriteRank() < 3 or Player:BuffP(S.NightsVengeanceBuff)) then
             return S.ShadowDance:Cast()
         end
         -- actions.stealth_cds+=/shadow_dance,if=target.time_to_die<cooldown.symbols_of_death.remains
@@ -442,6 +542,9 @@ local function APL ()
         Stealth = S.Stealth;
         VanishBuff = S.VanishBuff;
     end
+	-- Essences
+	DetermineEssenceRanks()
+	
     -- Unit Update
     HL.GetEnemies(10, true); -- Shuriken Storm & Death from Above
     HL.GetEnemies("Melee"); -- Melee
@@ -549,6 +652,13 @@ end
         if Stealth_CDs() ~= nil then
             return Stealth_CDs()
         end
+    end
+	
+	 -- actions+=/nightblade,if=azerite.nights_vengeance.enabled&spell_targets.shuriken_storm<2&(cooldown.symbols_of_death.remains<=3|(buff.symbols_of_death.up&!stealthed.all&azerite.nights_vengeance.rank>=3))&!buff.nights_vengeance.up&combo_points>=2
+    if S.Nightblade:IsCastableP() and IsInMeleeRange() and S.NightsVengeancePower:AzeriteEnabled() and Cache.EnemiesCount[10] < 2
+        and (S.SymbolsofDeath:CooldownRemainsP() <= 3 or (Player:BuffP(S.SymbolsofDeath) and not Player:IsStealthedP(true, true) and S.NightsVengeancePower:AzeriteRank() >= 3 ))
+        and not Player:BuffP(S.NightsVengeanceBuff) and Player:ComboPoints() >= 2 then
+        return S.Nightblade:Cast()
     end
 
     -- # Finish at 4+ without DS, 5+ with DS (outside stealth)

@@ -76,7 +76,36 @@ RubimRH.Spell[259] = {
 	SmokeBomb = Spell (212182),
 	DFA = Spell (269513),
 	Neuro = Spell (206328),
-    CheapShot = Spell(1833)
+    CheapShot = Spell(1833),
+	
+	--8.2 Essences
+    BloodOfTheEnemy       = Spell(297108),
+    BloodOfTheEnemy2      = Spell(298273),
+    BloodOfTheEnemy3      = Spell(298277),
+    ConcentratedFlame     = Spell(295373),
+    ConcentratedFlame2    = Spell(299349),
+    ConcentratedFlame3    = Spell(299353),
+    GuardianOfAzeroth     = Spell(295840),
+    GuardianOfAzeroth2    = Spell(299355),
+    GuardianOfAzeroth3    = Spell(299358),
+    FocusedAzeriteBeam    = Spell(295258),
+    FocusedAzeriteBeam2   = Spell(299336),
+    FocusedAzeriteBeam3   = Spell(299338),
+    PurifyingBlast        = Spell(295337),
+    PurifyingBlast2       = Spell(299345),
+    PurifyingBlast3       = Spell(299347),
+    TheUnboundForce       = Spell(298452),
+    TheUnboundForce2      = Spell(299376),
+    TheUnboundForce3      = Spell(299378),
+    RippleInSpace         = Spell(302731),
+    RippleInSpace2        = Spell(302982),
+    RippleInSpace3        = Spell(302983),
+    WorldveinResonance    = Spell(295186),
+    WorldveinResonance2   = Spell(298628),
+    WorldveinResonance3   = Spell(299334),
+    MemoryOfLucidDreams   = Spell(298357),
+    MemoryOfLucidDreams2  = Spell(299372),
+    MemoryOfLucidDreams3  = Spell(299374),
     
 };
 local S = RubimRH.Spell[259];
@@ -91,7 +120,26 @@ Item.Rogue.Assassination = {
 };
 local I = Item.Rogue.Assassination;
 
-
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
+end
 
 -- Variables
 local VarEnergyRegenCombined = 0;
@@ -111,6 +159,9 @@ local function num(val)
         return 0
     end
 end
+
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 
 local function bool(val)
     return val ~= 0
@@ -400,12 +451,14 @@ local function CDs ()
         if S.MarkedforDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
             return S.MarkedforDeath:Cast()
         end
-        -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
-        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
-                and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
-            return S.Vendetta:Cast()
-        end
-        if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
+      -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&!debuff.vendetta.up&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1&(spell_targets.fan_of_knives<6|!cooldown.vanish.up))&(!talent.nightstalker.enabled|!talent.exsanguinate.enabled|cooldown.exsanguinate.remains<5-2*talent.deeper_stratagem.enabled)
+        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
+          and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1 and (Cache.EnemiesCount[10] < 6 or not S.Vanish:CooldownUp()))
+          and (not S.Nightstalker:IsAvailable() or not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() < 5 - 2 * num(S.DeeperStratagem:IsAvailable())) then
+         return S.Vendetta:Cast()
+	    end
+       
+	   if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
             if S.Subterfuge:IsAvailable() and not Target:IsAPlayer() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
                 return S.Vanish:Cast()
@@ -441,8 +494,53 @@ local function CDs ()
         if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
             return S.ToxicBlade:Cast()
         end
+		-- actions.cds+=/call_action_list,name=essences
+        ShouldReturn = Essences();
+        if ShouldReturn then return ShouldReturn; end
     end
 end
+
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<50
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 50 then
+    return S.MemoryOfLucidDreams:Cast()
+  end
+  return false;
+end
+
 -- # Stealthed
 local function Stealthed ()	
 	if IsStealthed() then 
@@ -643,7 +741,9 @@ local function APL ()
     CrimsonTempestThreshold = (2 + ComboPoints * 2) * 0.3;
     RuptureDMGThreshold = S.Envenom:Damage() * 3; -- Used to check if Rupture is worth to be casted since it's a finisher.
     GarroteDMGThreshold = S.Mutilate:Damage() * 3; -- Used as TTD Not Valid fallback since it's a generator.
-
+   
+    --Essences caching
+	DetermineEssenceRanks();
 
     if QueueSkill() ~= nil then
         return QueueSkill()

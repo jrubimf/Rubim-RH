@@ -74,7 +74,36 @@ RubimRH.Spell[260] = {
     GrandMelee = Spell(193358),
     RuthlessPrecision = Spell(193357),
     SkullandCrossbones = Spell(199603),
-    TrueBearing = Spell(193359)
+    TrueBearing = Spell(193359),
+	
+	--8.2 Essences
+    BloodOfTheEnemy       = Spell(297108),
+    BloodOfTheEnemy2      = Spell(298273),
+    BloodOfTheEnemy3      = Spell(298277),
+    ConcentratedFlame     = Spell(295373),
+    ConcentratedFlame2    = Spell(299349),
+    ConcentratedFlame3    = Spell(299353),
+    GuardianOfAzeroth     = Spell(295840),
+    GuardianOfAzeroth2    = Spell(299355),
+    GuardianOfAzeroth3    = Spell(299358),
+    FocusedAzeriteBeam    = Spell(295258),
+    FocusedAzeriteBeam2   = Spell(299336),
+    FocusedAzeriteBeam3   = Spell(299338),
+    PurifyingBlast        = Spell(295337),
+    PurifyingBlast2       = Spell(299345),
+    PurifyingBlast3       = Spell(299347),
+    TheUnboundForce       = Spell(298452),
+    TheUnboundForce2      = Spell(299376),
+    TheUnboundForce3      = Spell(299378),
+    RippleInSpace         = Spell(302731),
+    RippleInSpace2        = Spell(302982),
+    RippleInSpace3        = Spell(302983),
+    WorldveinResonance    = Spell(295186),
+    WorldveinResonance2   = Spell(298628),
+    WorldveinResonance3   = Spell(299334),
+    MemoryOfLucidDreams   = Spell(298357),
+    MemoryOfLucidDreams2  = Spell(299372),
+    MemoryOfLucidDreams3  = Spell(299374),
 };
 
 local S = RubimRH.Spell[260]
@@ -87,6 +116,30 @@ local function num(val)
     else
         return 0
     end
+end
+
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
+
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
 end
 
 -- APL Action Lists (and Variables)
@@ -308,8 +361,53 @@ end
                 --return S.Shadowmeld:Cast()
             --end
         end
+		-- actions.cds+=/call_action_list,name=essences
+        ShouldReturn = Essences();
+        if ShouldReturn then return ShouldReturn; end
     end
 end
+
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<45
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 45 then
+    return S.MemoryOfLucidDreams:Cast()
+  end
+  return false;
+end
+
 local function Stealth ()
 
     if RubimRH.AoEON() and RubimRH.CDsON() and S.BladeFlurry:IsReady() and Cache.EnemiesCount[BladeFlurryRange] >= 2 and not Player:BuffP(S.BladeFlurry) then
@@ -335,13 +433,11 @@ local function Finish ()
     
     if S.DFA:IsAvailable() and S.DFA:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and RtB_Buffs() >= 1 then
         if Target:IsInRange(15) and not Player:IsStealthed() then
-    if not Target:IsImmune() and S.DFA:IsReady()  then
-    return S.DFA:Cast()
-    end
-    end
-    end
-    
-    
+            if not Target:IsImmune() and S.DFA:IsReady()  then
+                return S.DFA:Cast()
+            end
+	    end
+    end    
     
     -- # BtE over RtB rerolls with Deadshot/Ace traits or Ruthless Precision.
     -- actions.finish=between_the_eyes,if=buff.ruthless_precision.up|(azerite.deadshot.enabled|azerite.ace_up_your_sleeve.enabled)&buff.roll_the_bones.up
@@ -376,7 +472,7 @@ local function Finish ()
 
 local function Build ()
     -- actions.build=pistol_shot,if=buff.opportunity.up&(buff.keep_your_wits_about_you.stack<25|buff.deadshot.up|energy<45)
-    if S.PistolShot:IsReady(20) and Player:BuffP(S.Opportunity) and (Player:BuffStackP(S.KeepYourWitsBuff) < 25 or Player:BuffP(S.DeadshotBuff) or Player:Energy() < 45) then
+    if S.PistolShot:IsCastable(20) and Player:BuffP(S.Opportunity) and (Player:BuffStackP(S.KeepYourWitsBuff) < 10 or Player:BuffP(S.DeadshotBuff) or Player:EnergyPredicted() < 45) then
         return S.PistolShot:Cast()
     end
     -- actions.build+=/sinister_strike
@@ -412,6 +508,7 @@ end
 -- APL Main
 local function APL ()
     UpdateCDs()
+	DetermineEssenceRanks()
     -- Unit Update
     BladeFlurryRange = S.AcrobaticStrikes:IsAvailable() and 9 or 6;
     HL.GetEnemies(8); -- Cannonball Barrage
