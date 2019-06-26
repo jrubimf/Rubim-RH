@@ -285,39 +285,39 @@ end
 local function Essences ()
   -- blood_of_the_enemy
   if S.BloodOfTheEnemy:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
+    return 1869493
   end
   -- concentrated_flame
   if S.ConcentratedFlame:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
+    return 1869493
   end
   -- guardian_of_azeroth
   if S.GuardianOfAzeroth:IsCastableP() then
-    return S.GuardianOfAzeroth:Cast()
+    return 1869493
   end
   -- focused_azerite_beam
   if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.FocusedAzeriteBeam:Cast()
+    return 1869493
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
-    return S.PurifyingBlast:Cast()
+    return 1869493
   end
   -- the_unbound_force
   if S.TheUnboundForce:IsCastableP() then
-    return S.TheUnboundForce:Cast()
+    return 1869493
   end
   -- ripple_in_space
   if S.RippleInSpace:IsCastableP() then
-    return S.RippleInSpace:Cast()
+    return 1869493
   end
   -- worldvein_resonance
   if S.WorldveinResonance:IsCastableP() then
-    return S.WorldveinResonance:Cast()
+    return 1869493
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
   if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
-    return S.MemoryOfLucidDreams:Cast()
+    return 1869493
   end
   return false
 end
