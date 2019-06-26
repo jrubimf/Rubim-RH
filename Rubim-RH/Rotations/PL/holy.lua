@@ -54,8 +54,14 @@ RubimRH.Spell[65] = {
 	--Heart Essences
 	UnleashHeartofAzeroth = Spell(280431),
 	ConcentratedFlameHeal = Spell(295373),
+	ConcentratedFlameHeal2 = Spell(168612),
+	ConcentratedFlameHeal3 = Spell(168613),
 	VitalityConduit = Spell(296230),
+	VitalityConduit2 = Spell(299958),
+	VitalityConduit3 = Spell(299959),
 	Refreshment = Spell(296197),
+	Refreshment2 = Spell(299932),
+	Refreshment3 = Spell(299933),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -117,6 +123,16 @@ function ShouldDispell()
     end
     return false
 end
+
+local function DetermineEssenceRanks()
+	S.ConcentratedFlameHeal = S.ConcentratedFlameHeal2:IsAvailable() and S.ConcentratedFlameHeal2 or S.ConcentratedFlameHeal;
+	S.ConcentratedFlameHeal = S.ConcentratedFlameHeal3:IsAvailable() and S.ConcentratedFlameHeal3 or S.ConcentratedFlameHeal;
+	S.VitalityConduit = S.VitalityConduit2:IsAvailable() and S.VitalityConduit2 or S.VitalityConduit;
+	S.VitalityConduit = S.VitalityConduit3:IsAvailable() and S.VitalityConduit3 or S.VitalityConduit;
+	S.Refreshment = S.Refreshment2:IsAvailable() and S.Refreshment2 or S.Refreshment;
+	S.Refreshment = S.Refreshment3:IsAvailable() and S.Refreshment3 or S.Refreshment;
+end
+
 local function APL()
     local DPS, Healing
     --- Out of Combat    LeftCtrl = IsLeftControlKeyDown();
@@ -157,6 +173,8 @@ local function APL()
     end
 
     local Healing = function()
+	
+		DetermineEssenceRanks()
 	
 		--Save yourself
 		if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
@@ -241,7 +259,7 @@ local function APL()
         end
 		
 		--Concentrated Flame Heal
-        if S.ConcentratedFlameHeal:IsCastableP() and not Player:IsMoving() then
+        if S.ConcentratedFlameHeal:IsCastableP() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
@@ -252,7 +270,7 @@ local function APL()
         end
 		
 		--Vitality Conduit
-        if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
+        if S.VitalityConduit:IsCastableP() then
             if LowestAlly("TANK", "HP") <= 75 then
                 ForceHealingTarget("TANK")
             end
@@ -263,7 +281,7 @@ local function APL()
         end
 		
 		--Refreshment
-        if S.Refreshment:IsCastableP() and not Player:IsMoving() then
+        if S.Refreshment:IsCastableP() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
