@@ -370,16 +370,20 @@ local function APL()
   end
   
   Cooldowns = function()
-  	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+    -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
     -- potion,if=(talent.dark_soul_misery.enabled&cooldown.summon_darkglare.up&cooldown.dark_soul.up)|cooldown.summon_darkglare.up|target.time_to_die<30
     --if I.ProlongedPower:IsReady() and RubimRH.UsePotions and ((S.DarkSoulMisery:IsAvailable() and S.SummonDarkglare:CooldownUpP() and S.DarkSoul:CooldownUpP()) or S.SummonDarkglare:CooldownUpP() or Target:TimeToDie() < 30) then
     --  return I.ProlongedPower:Cast()
     --end
+	  -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
     -- use_items,if=!cooldown.summon_darkglare.up,if=cooldown.summon_darkglare.remains>70|time_to_die<20|((buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains)&!cooldown.summon_darkglare.remains)
     -- trinket1,if=pet.Darkglare.active
 	if trinketReady(1) and DarkglareIsActive() then

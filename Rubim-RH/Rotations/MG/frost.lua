@@ -115,7 +115,7 @@ local function UpdateRanges()
         HL.GetEnemies(i);
     end
 end
-
+local ShouldReturn; -- Used to get the return string
 local function num(val)
     if val then
         return 1
@@ -281,12 +281,11 @@ local function APL()
         end
     end
     Cooldowns = function()
-		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+	  -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
         -- time_warp
         -- icy_veins
         if S.IcyVeins:IsReadyP() and RubimRH.CDsON() then

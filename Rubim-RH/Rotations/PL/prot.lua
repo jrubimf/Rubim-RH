@@ -95,7 +95,7 @@ local I = Item.Paladin.Protection;
 
 
 -- Variables
-
+local ShouldReturn; -- Used to get the return string
 local EnemyRanges = { 8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -223,12 +223,11 @@ local function APL()
         return S.ShieldoftheRighteous:Cast()
     end
 
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+  -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
 	
     -- auto_attack
     -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2

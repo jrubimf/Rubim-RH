@@ -310,12 +310,11 @@ end
 local function CDs ()
 
 
-    	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+      -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
     
     if S.Dismantle:IsAvailable() and S.Dismantle:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsBursting() then
         if Target:IsInRange(15) and not Player:IsStealthed() then

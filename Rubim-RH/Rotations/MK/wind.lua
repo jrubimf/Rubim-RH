@@ -106,7 +106,7 @@ local I = Item.Monk.Windwalker;
 
 
 -- Variables
-
+local ShouldReturn; -- Used to get the return string
 local EnemyRanges = { 5, 8 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -218,12 +218,11 @@ return 0, 462338
     end
     Cd = function()
 	if RubimRH.CDsON() then
-		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+	  -- call precombat
+  if not Player:AffectingCombat() and not Player:IsCasting() then
+        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  end
+  
 --actions.cd=invoke_xuen_the_white_tiger
 if S.InvokeXuentheWhiteTiger:IsReady() then
 return S.InvokeXuentheWhiteTiger:Cast()
