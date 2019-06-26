@@ -251,7 +251,7 @@ local function APL()
             end
         end
 		
-		Vitality Conduit
+		--Vitality Conduit
         if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
             if LowestAlly("TANK", "HP") <= 75 then
                 ForceHealingTarget("TANK")
@@ -262,7 +262,7 @@ local function APL()
             end
         end
 		
-		Refreshment
+		--Refreshment
         if S.Refreshment:IsCastableP() and not Player:IsMoving() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
