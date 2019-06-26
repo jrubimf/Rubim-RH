@@ -498,11 +498,12 @@ local function APL()
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
 	-- Power Word: Shield
 	if S.PowerWordShield:IsReady() and not Player:Buff(S.PowerWordShield) and  Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()

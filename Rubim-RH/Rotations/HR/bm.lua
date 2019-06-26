@@ -300,11 +300,12 @@ local function APL()
       --end
     end
     Cds = function()
-	  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+		-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
       -- ancestral_call,if=cooldown.bestial_wrath.remains>30
       if S.AncestralCall:IsReady() and (S.BestialWrath:CooldownRemainsP() > 30) then
         return S.AncestralCall:Cast()

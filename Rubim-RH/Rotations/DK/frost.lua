@@ -143,7 +143,7 @@ end
 local function Precombat()
 
 end
-local ShouldReturn; -- Used to get the return string
+
 -- # Essences
 local function Essences()
   -- blood_of_the_enemy
@@ -398,11 +398,12 @@ local function ColdHeart()
 end
 
 local function Cooldowns()
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
     -- use_items,if=(cooldown.pillar_of_frost.ready|cooldown.pillar_of_frost.remains>20)&(!talent.breath_of_sindragosa.enabled|cooldown.empower_rune_weapon.remains>95)
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up

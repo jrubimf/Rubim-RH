@@ -138,8 +138,6 @@ local function UpdateRanges()
     end
 end
 
-local ShouldReturn; -- Used to get the return string
-
 local function num(val)
     if val then
         return 1
@@ -281,11 +279,12 @@ local function APL ()
     end
 
     Cds = function()
-	  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+		-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
         -- berserking,if=cooldown.coordinated_assault.remains>30
         if S.Berserking:IsReady() and (S.CoordinatedAssault:CooldownRemainsP() > 30) then
             return S.Berserking:Cast()

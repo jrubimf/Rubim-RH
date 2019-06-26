@@ -109,7 +109,7 @@ local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 
 local poolingforgargoyle
-local ShouldReturn; -- Used to get the return string
+
 local function GargoyleDuration()
     local gargoyleDuration = 0
     for i = 1, 5 do
@@ -311,11 +311,12 @@ local function APL()
         if S.ArmyoftheDead:IsCastable() and (true) then
             return S.ArmyoftheDead:Cast()
         end
-		  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+			-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
         -- apocalypse,if=debuff.festering_wound.stack>=4
         if S.Apocalypse:IsReady() and (Target:DebuffStackP(S.FesteringWoundDebuff) >= 4) then
             return S.Apocalypse:Cast()

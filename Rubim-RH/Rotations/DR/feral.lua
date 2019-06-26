@@ -135,7 +135,7 @@ end
 local function bool(val)
     return val ~= 0
 end
-local ShouldReturn; -- Used to get the return string
+
 S.FerociousBiteMaxEnergy.CustomCost = {
     [3] = function()
         if Player:BuffP(S.ApexPredatorBuff) then
@@ -269,11 +269,12 @@ local function APL()
     end
     
 	Cooldowns = function()
-	  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+		-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
         -- dash,if=!buff.cat_form.up
         -- prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
         if S.Prowl:IsReady() and (Player:BuffRemainsP(S.IncarnationBuff) < 0.5 and Player:BuffP(S.JungleStalkerBuff)) then

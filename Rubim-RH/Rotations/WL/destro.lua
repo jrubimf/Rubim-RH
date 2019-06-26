@@ -614,12 +614,11 @@ local function APL()
             return QueueSkill()
         end
 		-- actions.cds+=/call_action_list,name=essences
-  -- call precombat
-    -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+        if (RubimRH.CDsON()) then
+            if Essences() ~= nil then
+                return Essences()
+            end
+        end
         -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
         if active_enemies() >= 3 and S.Cataclysm:IsAvailable() then
             if Cata() ~= nil then

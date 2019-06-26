@@ -141,7 +141,7 @@ local function DetermineEssenceRanks()
   S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
   S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
 end
-local ShouldReturn; -- Used to get the return string
+
 -- Variables
 local VarEnergyRegenCombined = 0;
 local VarUseFiller = 0;
@@ -459,11 +459,12 @@ end
 local function CDs ()
     if Target:IsInRange("Melee") then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
         -- Racials
         if Target:Debuff(S.Vendetta) then
             -- actions.cds+=/blood_fury,if=debuff.vendetta.up

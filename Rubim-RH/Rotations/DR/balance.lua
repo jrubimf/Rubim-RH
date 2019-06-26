@@ -286,11 +286,12 @@ local function Essences()
 end
 
 local function CDs ()
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
     -- Suggest moonkin form if you're not in it.
     -- potion,if=buff.celestial_alignment.up|buff.incarnation.up
     -- blood_fury,if=buff.celestial_alignment.up|buff.incarnation.up

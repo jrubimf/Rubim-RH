@@ -126,7 +126,7 @@ local function RemainingTimeToCast(spell)
     end
 end
 
-local ShouldReturn; -- Used to get the return string
+
 local function num(val)
     if val then return 1 else return 0 end
 end
@@ -537,11 +537,12 @@ local function APL()
         return QueueSkill()
       end
     -- counterspell
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
     -- mirror_image,if=buff.combustion.down
     if S.MirrorImage:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then
     return S.MirrorImage:Cast()

@@ -159,7 +159,6 @@ function TotemMastery()
     return 0
 end
 
-local ShouldReturn; -- Used to get the return string
 -- Pet functions
 local PetType = {
   [77942] = {"Primal Storm Elemental", 30},
@@ -566,11 +565,12 @@ local function APL()
         return QueueSkill()
     end
 	
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear

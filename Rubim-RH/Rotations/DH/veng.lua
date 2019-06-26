@@ -85,7 +85,7 @@ S.Sever.TextureSpellID = { 279450 }
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 -- APL Main
-local ShouldReturn; -- Used to get the return string
+
 local EnemyRanges = { "Melee", 8, 10, 20, 30, 40 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -298,7 +298,11 @@ local function APL()
     end
 
 			-- actions.cds+=/call_action_list,name=essences
-  -- call precombat
+        if (RubimRH.CDsON()) then
+            if Essences() ~= nil then
+                return Essences()
+            end
+        end
 	
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then

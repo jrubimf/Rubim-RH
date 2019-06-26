@@ -116,7 +116,7 @@ local function PetActive()
 end
 
 S.AimedShot:RegisterInFlight()
-local ShouldReturn; -- Used to get the return string
+
 local EnemyRanges = { 40 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -256,11 +256,12 @@ local function APL ()
     --    end
 
     Cds = function()
-	  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+		-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
         -- hunters_mark,if=debuff.hunters_mark.down&!buff.trueshot.up
         if S.HuntersMark:IsCastableP() and (Target:DebuffDown(S.HuntersMarkDebuff) and not Player:BuffP(S.TrueshotBuff)) then
             return S.HuntersMark:Cast()

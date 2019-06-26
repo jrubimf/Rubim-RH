@@ -164,7 +164,7 @@ local OffensiveCDs = {
     S.Avatar,
     S.Bladestorm,
 }
-local ShouldReturn; -- Used to get the return string
+
 local function UpdateCDs()
     if mainAddon.CDsON() then
         for i, spell in pairs(OffensiveCDs) do
@@ -499,11 +499,12 @@ local function APL()
         return QueueSkill()
     end
 
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
 	
     -- charge
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and S.HeroicLeap:TimeSinceLastCast() >= 0.2 then

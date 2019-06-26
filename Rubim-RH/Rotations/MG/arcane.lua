@@ -122,8 +122,6 @@ local function UpdateRanges()
        end
 end
 
-local ShouldReturn; -- Used to get the return string
-
 local function GetEnemiesCount(range)
     if range == nil then range = 10 end
 	 -- Unit Update - Update differently depending on if splash data is being used
@@ -506,11 +504,12 @@ local function APL()
 	if QueueSkill() ~= nil then
         return QueueSkill()
     end
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
     -- counterspell
 	if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Counterspell:Cast()

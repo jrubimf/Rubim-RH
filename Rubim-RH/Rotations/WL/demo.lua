@@ -159,7 +159,7 @@ HL.GuardiansTable = {
           ImpsSpawnedFromHoG = 0   	  
 };
 
-local ShouldReturn; -- Used to get the return string
+
 -- local for pets count & duration functions        
 local PetDurations = {
  -- en, fr ,de ,ru
@@ -908,12 +908,12 @@ local function APL()
         if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
             return S.Fireblood:Cast()
         end
-		  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
-  -- call precombat
+		-- actions.cds+=/call_action_list,name=essences
+        if (RubimRH.CDsON()) then
+            if Essences() ~= nil then
+                return Essences()
+            end
+        end
 	    -- trinket1,if=pet.demonic_tyrant.active
 	    if trinketReady(1) and TyranIsActive() then
             return trinket1

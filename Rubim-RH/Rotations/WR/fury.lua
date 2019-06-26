@@ -120,7 +120,7 @@ Item.Warrior.Fury = {
     OldWar = Item(127844),
     KazzalaxFujiedasFury = Item(137053)
 };
-local ShouldReturn; -- Used to get the return string
+
 local I = Item.Warrior.Fury;
 
 local EnemyRanges = { "Melee", 5, 12 }
@@ -309,11 +309,12 @@ local function APL()
         return QueueSkill()
     end
 	
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
 	-- Battleshout in combat refresh
 	if S.BattleShout:IsCastable() and not Player:BuffP(S.BattleShout) then
         return S.BattleShout:Cast()

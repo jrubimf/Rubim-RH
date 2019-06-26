@@ -110,8 +110,6 @@ local function UpdateRanges()
     end
 end
 
-local ShouldReturn; -- Used to get the return string
-
 local function num(val)
     if val then
         return 1
@@ -477,11 +475,12 @@ local function APL()
         return S.VampiricBlood:Cast()
     end
 
-  -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
-  end
-  
+	-- actions.cds+=/call_action_list,name=essences
+    if (RubimRH.CDsON()) then
+        if Essences() ~= nil then
+            return Essences()
+        end
+    end
 	
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
