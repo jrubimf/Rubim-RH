@@ -54,8 +54,8 @@ RubimRH.Spell[65] = {
 	--Heart Essences
 	UnleashHeartofAzeroth = Spell(280431),
 	ConcentratedFlameHeal = Spell(295373),
-	VitalityConduit = Spell(299959),
-	Refreshment = Spell(299933),
+	VitalityConduit = Spell(296230),
+	Refreshment = Spell(296197),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -251,27 +251,27 @@ local function APL()
             end
         end
 		
-		--Vitality Conduit
-        --if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
-            --if LowestAlly("TANK", "HP") <= 75 then
-                --ForceHealingTarget("TANK")
-            --end
+		Vitality Conduit
+        if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
+            if LowestAlly("TANK", "HP") <= 75 then
+                ForceHealingTarget("TANK")
+            end
 
-            --if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
-                --return S.UnleashHeartofAzeroth:Cast()
-            --end
-        --end
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
+                return S.UnleashHeartofAzeroth:Cast()
+            end
+        end
 		
-		--Refreshment
-        --if S.Refreshment:IsCastableP() and not Player:IsMoving() then
-            --if LowestAlly("ALL", "HP") <= 75 then
-                --ForceHealingTarget("ALL")
-            --end
+		Refreshment
+        if S.Refreshment:IsCastableP() and not Player:IsMoving() then
+            if LowestAlly("ALL", "HP") <= 75 then
+                ForceHealingTarget("ALL")
+            end
 
-            --if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
-                --return S.UnleashHeartofAzeroth:Cast()
-            --end
-        --end
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+                return S.UnleashHeartofAzeroth:Cast()
+            end
+        end
 		
         --Flash of Light
         if S.FlashofLight:IsCastableP() and not Player:IsMoving() then
