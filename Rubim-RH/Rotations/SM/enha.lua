@@ -68,7 +68,35 @@ RubimRH.Spell[263] = {
   WindShear                             = Spell(57994),
   EarthenSpikeDebuff                    = Spell(188089),
   Boulderfist                           = Spell(246035),
-  StrengthofEarth                       = Spell(273461)
+  StrengthofEarth                       = Spell(273461),
+  
+  -- 8.2 Essences
+  BloodOfTheEnemy                       = Spell(297108),
+  BloodOfTheEnemy2                      = Spell(298273),
+  BloodOfTheEnemy3                      = Spell(298277),
+  MemoryOfLucidDreams                   = Spell(298357),
+  MemoryOfLucidDreams2                  = Spell(299372),
+  MemoryOfLucidDreams3                  = Spell(299374),
+  PurifyingBlast                        = Spell(295337),
+  PurifyingBlast2                       = Spell(299345),
+  PurifyingBlast3                       = Spell(299347),
+  ConcentratedFlame                     = Spell(295373),
+  ConcentratedFlame2                    = Spell(299349),
+  ConcentratedFlame3                    = Spell(299353),
+  TheUnboundForce                       = Spell(298452),
+  TheUnboundForce2                      = Spell(299376),
+  TheUnboundForce3                      = Spell(299378),
+  RecklessForce                         = Spell(302932),
+  WorldveinResonance                    = Spell(295186),
+  WorldveinResonance2                   = Spell(298628),
+  WorldveinResonance3                   = Spell(299334),
+  FocusedAzeriteBeam                    = Spell(295258),
+  FocusedAzeriteBeam2                   = Spell(299336),
+  FocusedAzeriteBeam3                   = Spell(299338),
+  GuardianOfAzeroth                     = Spell(295840),
+  GuardianOfAzeroth2                    = Spell(299355),
+  GuardianOfAzeroth3                    = Spell(299358),
+  
 };
 local S = RubimRH.Spell[263]
 
@@ -201,12 +229,33 @@ local function SpiritWolfIsActive()
     end
 end
 
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth
+end
+
 --- ======= ACTION LISTS =======
 local function APL()
   local Precombat, Asc, Cds, DefaultCore, Filler, FreezerburnCore, Maintenance, Opener, Priority
   UpdateRanges()
 
   Precombat = function()
+   	  --essences updater
+	  DetermineEssenceRanks()	
     -- flask
     -- food
     -- augmentation
@@ -253,10 +302,22 @@ local function APL()
       return S.AncestralCall:Cast()
     end
     -- potion,if=buff.ascendance.up|!talent.ascendance.enabled&feral_spirit.remains>5|target.time_to_die<=60
+    -- actions.cds+=/guardian_of_azeroth
+    if S.GuardianOfAzeroth:IsCastableP() then
+      return S.GuardianOfAzeroth:Cast()
+    end
 
+    -- actions.cds+=/memory_of_lucid_dreams
+    if S.MemoryOfLucidDreams:IsCastableP() then
+      return S.MemoryOfLucidDreams:Cast()
+    end
     -- feral_spirit
     if S.FeralSpirit:IsCastableP() then
       return S.FeralSpirit:Cast()
+    end
+	-- actions.cds+=/blood_of_the_enemy
+    if S.BloodOfTheEnemy:IsCastableP() then
+      return S.BloodOfTheEnemy:Cast()
     end
     -- ascendance,if=cooldown.strike.remains>0
     if S.Ascendance:IsCastableP() then
@@ -296,6 +357,25 @@ local function APL()
     -- sundering
     if S.Sundering:IsCastableP() then
       return S.Sundering:Cast()
+    end
+	-- actions.filler+=/focused_azerite_beam
+    if S.FocusedAzeriteBeam:IsCastableP() then
+      return S.FocusedAzeriteBeam:Cast()
+    end
+
+    -- actions.filler+=/purifying_blast
+    if S.PurifyingBlast:IsCastableP() then
+      return S.PurifyingBlast:Cast()
+    end
+
+    -- actions.filler+=/concentrated_flame
+    if S.ConcentratedFlame:IsCastableP() then
+      return S.ConcentratedFlame:Cast()
+    end
+
+    -- actions.filler+=/worldvein_resonance
+    if S.WorldveinResonance:IsCastableP() then
+      return S.WorldveinResonance:Cast()
     end
     -- crash_lightning,if=talent.forceful_winds.enabled&active_enemies>1&variable.furyCheck_CL
     if S.CrashLightning:IsCastableP() and S.ForcefulWinds:IsAvailable() and active_enemies() > 1 and bool(VarFurycheckCl) then
@@ -401,6 +481,10 @@ local function APL()
     if S.CrashLightning:IsCastableP() and active_enemies() >= (8 - (num(S.ForcefulWinds:IsAvailable()) * 3)) and bool(VarFreezerburnEnabled) and bool(VarFurycheckCl) then
       return S.CrashLightning:Cast()
     end
+	-- actions.priority+=/the_unbound_force,if=buff.reckless_force.up|time<5
+    if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForce) or HL.CombatTime() < 5) then
+      return S.TheUnboundForce:Cast()
+    end
     -- lava_lash,if=azerite.primal_primer.rank>=2&debuff.primal_primer.stack=10&active_enemies=1&variable.freezerburn_enabled&variable.furyCheck_LL
     if S.LavaLash:IsCastableP() and (S.PrimalPrimer:AzeriteRank() >= 2 and Target:DebuffStackP(S.PrimalPrimerDebuff) == 10 and active_enemies() == 1 and bool(VarFreezerburnEnabled) and bool(VarFurycheckLl)) then
       return S.LavaLash:Cast()
@@ -423,6 +507,14 @@ local function APL()
     -- sundering,if=active_enemies>=3
     if S.Sundering:IsCastableP() and (active_enemies() >= 3) then
       return S.Sundering:Cast()
+    end
+	 -- actions.priority+=/focused_azerite_beam,if=active_enemies>=3
+    if S.FocusedAzeriteBeam:IsCastableP() and (Cache.EnemiesCount[10] >= 3) then
+      return S.FocusedAzeriteBeam:Cast()
+    end
+    -- actions.priority+=/purifying_blast,if=active_enemies>=3
+    if S.PurifyingBlast:IsCastableP() and (Cache.EnemiesCount[10] >= 3) then
+      return S.PurifyingBlast:Cast()
     end
     -- rockbiter,if=talent.landslide.enabled&!buff.landslide.up&charges_fractional>1.7
     if S.Rockbiter:IsCastableP() and (S.Landslide:IsAvailable() and not Player:BuffP(S.LandslideBuff) and S.Rockbiter:ChargesFractionalP() > 1.7) then
