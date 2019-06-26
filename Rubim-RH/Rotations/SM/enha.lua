@@ -12,6 +12,7 @@ local Target = Unit.Target
 local Pet    = Unit.Pet
 local Spell  = HL.Spell
 local Item   = HL.Item
+local MultiSpell = HL.MultiSpell
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -69,33 +70,17 @@ RubimRH.Spell[263] = {
   EarthenSpikeDebuff                    = Spell(188089),
   Boulderfist                           = Spell(246035),
   StrengthofEarth                       = Spell(273461),
+  RecklessForce                         = Spell(302932),
   
   -- 8.2 Essences
-  BloodOfTheEnemy                       = Spell(297108),
-  BloodOfTheEnemy2                      = Spell(298273),
-  BloodOfTheEnemy3                      = Spell(298277),
-  MemoryOfLucidDreams                   = Spell(298357),
-  MemoryOfLucidDreams2                  = Spell(299372),
-  MemoryOfLucidDreams3                  = Spell(299374),
-  PurifyingBlast                        = Spell(295337),
-  PurifyingBlast2                       = Spell(299345),
-  PurifyingBlast3                       = Spell(299347),
-  ConcentratedFlame                     = Spell(295373),
-  ConcentratedFlame2                    = Spell(299349),
-  ConcentratedFlame3                    = Spell(299353),
-  TheUnboundForce                       = Spell(298452),
-  TheUnboundForce2                      = Spell(299376),
-  TheUnboundForce3                      = Spell(299378),
-  RecklessForce                         = Spell(302932),
-  WorldveinResonance                    = Spell(295186),
-  WorldveinResonance2                   = Spell(298628),
-  WorldveinResonance3                   = Spell(299334),
-  FocusedAzeriteBeam                    = Spell(295258),
-  FocusedAzeriteBeam2                   = Spell(299336),
-  FocusedAzeriteBeam3                   = Spell(299338),
-  GuardianOfAzeroth                     = Spell(295840),
-  GuardianOfAzeroth2                    = Spell(299355),
-  GuardianOfAzeroth3                    = Spell(299358),
+  BloodOfTheEnemy                       = MultiSpell(297108, 298273, 298277),
+  MemoryOfLucidDreams                   = MultiSpell(298357, 299372, 299374),
+  PurifyingBlast                        = MultiSpell(295337, 299345, 299347),
+  ConcentratedFlame                     = MultiSpell(295373, 299349, 299353),
+  TheUnboundForce                       = MultiSpell(298452, 299376, 299378),
+  WorldveinResonance                    = MultiSpell(295186, 298628, 299334),
+  FocusedAzeriteBeam                    = MultiSpell(295258, 299336, 299338),
+  GuardianOfAzeroth                     = MultiSpell(295840, 299355, 299358),
   
 };
 local S = RubimRH.Spell[263]
