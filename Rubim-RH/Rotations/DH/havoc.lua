@@ -110,6 +110,7 @@ RubimRH.Spell[577] = {
     ChaoticTransformation = Spell(288754),
 	
   --8.2 Essences
+  UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
   BloodOfTheEnemy3      = Spell(298277),
@@ -282,42 +283,42 @@ local function UpdateCDs()
 end
 
 -- # Essences
-local function Essences ()
+local function Essences()
   -- blood_of_the_enemy
   if S.BloodOfTheEnemy:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
   if S.ConcentratedFlame:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
   if S.GuardianOfAzeroth:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- focused_azerite_beam
   if S.FocusedAzeriteBeam:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- the_unbound_force
   if S.TheUnboundForce:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- ripple_in_space
   if S.RippleInSpace:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- worldvein_resonance
   if S.WorldveinResonance:IsCastableP() then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
   if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
-    return 1869493
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
 end
@@ -400,9 +401,13 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
-		      -- actions.cds+=/call_action_list,name=essences
-        ShouldReturn = Essences();
-        if ShouldReturn then return ShouldReturn; end
+		-- actions.cds+=/call_action_list,name=essences
+        if (RubimRH.CDsON()) then
+            if Essences() ~= nil then
+                return Essences()
+            end
+        end
+
     end
 
     DarkSlash = function()
