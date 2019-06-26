@@ -18,39 +18,74 @@ local Item = HL.Item
 
 -- Spells
 RubimRH.Spell[102] = {
-    MoonkinForm = Spell(24858),
-    SolarWrath = Spell(190984),
-    FuryofElune = Spell(202770),
-    CelestialAlignmentBuff = Spell(194223),
-    IncarnationBuff = Spell(102560),
-    CelestialAlignment = Spell(194223),
-    Incarnation = Spell(102560),
-    ForceofNature = Spell(205636),
-    Sunfire = Spell(93402),
-    SunfireDebuff = Spell(164815),
-    Moonfire = Spell(8921),
-    Regrowth = Spell(8936),
-    MoonfireDebuff = Spell(164812),
-    StellarFlare = Spell(202347),
-    LunarStrike = Spell(194153),
-    LunarEmpowermentBuff = Spell(164547),
-    SolarEmpowermentBuff = Spell(164545),
-    Starsurge = Spell(78674),
-    OnethsIntuitionBuff = Spell(209406),
-    Starfall = Spell(191034),
-    StarlordBuff = Spell(279709),
-    NewMoon = Spell(274281),
-    HalfMoon = Spell(274282),
-    FullMoon = Spell(274283),
-    WarriorofEluneBuff = Spell(202425),
-    BloodFury = Spell(20572),
-    Berserking = Spell(26297),
-    ArcaneTorrent = Spell(50613),
-    LightsJudgment = Spell(255647),
-    WarriorofElune = Spell(202425),
-    SunblazeBuff = Spell(274399),
-    OwlkinFrenzyBuff = Spell(157228),
-    SolarBeam = Spell(78675),
+    MoonkinForm                           = Spell(24858),
+    SolarWrath                            = Spell(190984),
+    FuryofElune                           = Spell(202770),
+    CelestialAlignmentBuff                = Spell(194223),
+    IncarnationBuff                       = Spell(102560),
+    CelestialAlignment                    = Spell(194223),
+    Incarnation                           = Spell(102560),
+    ForceofNature                         = Spell(205636),
+    Sunfire                               = Spell(93402),
+    SunfireDebuff                         = Spell(164815),
+    Moonfire                              = Spell(8921),
+    Regrowth                              = Spell(8936),
+    MoonfireDebuff                        = Spell(164812),
+    StellarFlare                          = Spell(202347),
+	StellarFlareDebuff                    = Spell(202347),
+    LunarStrike                           = Spell(194153),
+    LunarEmpowermentBuff                  = Spell(164547),
+    SolarEmpowermentBuff                  = Spell(164545),
+    Starsurge                             = Spell(78674),
+    OnethsIntuitionBuff                   = Spell(209406),
+    Starfall                              = Spell(191034),
+    StarlordBuff                          = Spell(279709),
+    NewMoon                               = Spell(274281),
+    HalfMoon                              = Spell(274282),
+    FullMoon                              = Spell(274283),
+    WarriorofEluneBuff                    = Spell(202425),
+    BloodFury                             = Spell(20572),
+    Berserking                            = Spell(26297),
+    ArcaneTorrent                         = Spell(50613),
+    LightsJudgment                        = Spell(255647),
+    WarriorofElune                        = Spell(202425),
+    SunblazeBuff                          = Spell(274399),
+    OwlkinFrenzyBuff                      = Spell(157228),
+    SolarBeam                             = Spell(78675),
+	LivelySpirit                          = Spell(279642),
+	LivelySpiritBuff                      = Spell(279646),
+	
+	-- 8.2 Essences
+    SolarBeam                             = Spell(78675),
+    BloodOfTheEnemy                       = Spell(297108),
+    BloodOfTheEnemy2                      = Spell(298273),
+    BloodOfTheEnemy3                      = Spell(298277),
+    MemoryOfLucidDreams                   = Spell(298357),
+    MemoryOfLucidDreams2                  = Spell(299372),
+    MemoryOfLucidDreams3                  = Spell(299374),
+    PurifyingBlast                        = Spell(295337),
+    PurifyingBlast2                       = Spell(299345),
+    PurifyingBlast3                       = Spell(299347),
+    RippleInSpace                         = Spell(302731),
+    RippleInSpace2                        = Spell(302982),
+    RippleInSpace3                        = Spell(302983),
+    ConcentratedFlame                     = Spell(295373),
+    ConcentratedFlame2                    = Spell(299349),
+    ConcentratedFlame3                    = Spell(299353),
+    TheUnboundForce                       = Spell(298452),
+    TheUnboundForce2                      = Spell(299376),
+    TheUnboundForce3                      = Spell(299378),
+    RecklessForce                         = Spell(302932),
+    WorldveinResonance                    = Spell(295186),
+    WorldveinResonance2                   = Spell(298628),
+    WorldveinResonance3                   = Spell(299334),
+    FocusedAzeriteBeam                    = Spell(295258),
+    FocusedAzeriteBeam2                   = Spell(299336),
+    FocusedAzeriteBeam3                   = Spell(299338),
+    GuardianOfAzeroth                     = Spell(295840),
+    GuardianOfAzeroth2                    = Spell(299355),
+    GuardianOfAzeroth3                    = Spell(299358),
+    Thorns                                = Spell(236696)
 };
 local S = RubimRH.Spell[102];
 
@@ -108,6 +143,60 @@ local function FutureAstralPower()
     end
 end
 
+local function CaInc()
+  return S.Incarnation:IsAvailable() and S.Incarnation or S.CelestialAlignment
+end
+
+local function AP_Check(spell)
+  local APGen = 0
+  local CurAP = Player:AstralPower()
+  if spell == S.Sunfire or spell == S.Moonfire then 
+    APGen = 3
+  elseif spell == S.StellarFlare or spell == S.SolarWrath then
+    APGen = 8
+  elseif spell == S.Incarnation or spell == S.CelestialAlignment then
+    APGen = 40
+  elseif spell == S.ForceofNature then
+    APGen = 20
+  elseif spell == S.LunarStrike then
+    APGen = 12
+  end
+  
+  if S.ShootingStars:IsAvailable() then 
+    APGen = APGen + 4
+  end
+  if S.NaturesBalance:IsAvailable() then
+    APGen = APGen + 2
+  end
+  
+  if CurAP + APGen < Player:AstralPowerMax() then
+    return true
+  else
+    return false
+  end
+end
+
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth
+end
+
 local function Precombat ()
     -- moonkin_form
     if S.MoonkinForm:IsReady() and not Player:Buff(S.MoonkinForm) then
@@ -147,15 +236,15 @@ local function CDs ()
         return S.WarriorofElune:Cast()
     end
     -- TODO(mrdmnd / synecdoche): INNERVATE here if azerite.lively_spirit and incarn is up or C.A cooldown is < 12 s
-    -- incarnation,if=astral_power>=40
-    if S.Incarnation:IsReady() and (FutureAstralPower() >= 40) then
-        return S.Incarnation:Cast()
+    -- incarnation,if=dot.sunfire.remains>8&dot.moonfire.remains>12&(dot.stellar_flare.remains>6|!talent.stellar_flare.enabled)&(buff.memory_of_lucid_dreams.up|ap_check)&!buff.ca_inc.up
+    if S.Incarnation:IsCastableP() and (Target:DebuffRemainsP(S.SunfireDebuff) > 8 and Target:DebuffRemainsP(S.MoonfireDebuff) > 12 and (Target:DebuffRemainsP(S.StellarFlareDebuff) > 6 or not S.StellarFlare:IsAvailable()) and (Player:BuffP(S.MemoryOfLucidDreams) or AP_Check(S.Incarnation)) and not Player:BuffP(CaInc())) then
+      return S.Incarnation:Cast()
     end
-    -- celestial_alignment,if=astral_power>=40
-    if S.CelestialAlignment:IsReady() and (FutureAstralPower() >= 40) then
-        return S.CelestialAlignment:Cast()
+    -- celestial_alignment,if=!buff.ca_inc.up&(buff.memory_of_lucid_dreams.up|(ap_check&astral_power>=40))&(!azerite.lively_spirit.enabled|buff.lively_spirit.up)&(dot.sunfire.remains>2&dot.moonfire.ticking&(dot.stellar_flare.ticking|!talent.stellar_flare.enabled))
+    if S.CelestialAlignment:IsCastableP() and (not Player:BuffP(CaInc()) and (Player:BuffP(S.MemoryOfLucidDreams) or (AP_Check(S.CelestialAlignment) and FutureAstralPower() >= 40)) and (not S.LivelySpirit:AzeriteEnabled() or Player:BuffP(S.LivelySpiritBuff)) and (Target:DebuffRemainsP(S.SunfireDebuff) > 2 and Target:DebuffP(S.MoonfireDebuff) and (Target:DebuffP(S.StellarFlareDebuff) or not S.StellarFlare:IsAvailable()))) then
+       return S.CelestialAlignment:Cast()
     end
-    -- fury_of_elune,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
+	-- fury_of_elune,if=(buff.celestial_alignment.up|buff.incarnation.up)|(cooldown.celestial_alignment.remains>30|cooldown.incarnation.remains>30)
     if S.FuryofElune:IsReady() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
         return S.FuryofElune:Cast()
     end
@@ -287,6 +376,7 @@ local function APL()
     UpdateRanges()
 	
 	Precombat_DBM = function()
+	    DetermineEssenceRanks()
         -- flask
         -- food
         -- augmentation
@@ -306,6 +396,7 @@ local function APL()
     end
 	
     Precombat = function()
+	    DetermineEssenceRanks()
         -- flask
         -- food
         -- augmentation
@@ -560,6 +651,47 @@ local function APL()
             if CDs() ~= nil then
                 return CDs()
             end
+        end
+		
+		-- blood_of_the_enemy,if=cooldown.ca_inc.remains>30
+        if S.BloodOfTheEnemy:IsCastableP() and (CaInc():CooldownRemainsP() > 30) then
+          return S.BloodOfTheEnemy:Cast()
+        end
+        -- memory_of_lucid_dreams,if=dot.sunfire.remains>10&dot.moonfire.remains>10&(!talent.stellar_flare.enabled|dot.stellar_flare.remains>10)&(astral_power<40|cooldown.ca_inc.remains>30)&!buff.ca_inc.up
+        if S.MemoryOfLucidDreams:IsCastableP() and (Target:DebuffRemainsP(S.SunfireDebuff) > 10 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 10) and (FutureAstralPower() < 40 or CaInc():CooldownRemainsP() > 30) and not Player:BuffP(CaInc())) then
+          return S.MemoryOfLucidDreams:Cast()
+        end
+        -- purifying_blast
+        if S.PurifyingBlast:IsCastableP() then
+          return S.PurifyingBlast:Cast()
+        end
+        -- ripple_in_space
+        if S.RippleInSpace:IsCastableP() then
+          return S.RippleInSpace:Cast()
+        end
+        -- concentrated_flame
+        if S.ConcentratedFlame:IsCastableP() then
+          return S.ConcentratedFlame:Cast()
+        end
+        -- the_unbound_force,if=buff.reckless_force.up|time<5
+        if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForce) or HL.CombatTime() < 5) then
+          return S.TheUnboundForce:Cast()
+        end
+        -- worldvein_resonance
+        if S.WorldveinResonance:IsCastableP() then
+          return S.WorldveinResonance:Cast()
+        end
+        -- focused_azerite_beam
+        if S.FocusedAzeriteBeam:IsCastableP() then
+            return S.FocusedAzeriteBeam:Cast()
+        end
+        -- guardian_of_azeroth
+        if S.GuardianOfAzeroth:IsCastableP() then
+          return S.GuardianOfAzeroth:Cast()
+        end
+        -- thorns
+        if S.Thorns:IsCastableP() then
+          return S.Thorns:Cast()
         end
 
         if Dot() ~= nil then
