@@ -17,10 +17,12 @@ local select = select;
 Player.CSPrediction = {
     CritCount = 0;
 };
-
+-- Rotation Var
 local ChaosStrikeMHDamageID = 222031;
 local AnnihilationMHDamageID = 227518;
 local ChaosStrikeEnergizeId = 193840;
+
+local ShouldReturn; -- Used to get the return string
 
 -- Return CS adjusted Fury HeroLib
 function Player:FuryWithCSRefund()
@@ -106,6 +108,35 @@ RubimRH.Spell[577] = {
     RevolvingBlades = Spell(279581),
     UnboundChaos = Spell(275144),
     ChaoticTransformation = Spell(288754),
+	
+  --8.2 Essences
+  BloodOfTheEnemy       = Spell(297108),
+  BloodOfTheEnemy2      = Spell(298273),
+  BloodOfTheEnemy3      = Spell(298277),
+  ConcentratedFlame     = Spell(295373),
+  ConcentratedFlame2    = Spell(299349),
+  ConcentratedFlame3    = Spell(299353),
+  GuardianOfAzeroth     = Spell(295840),
+  GuardianOfAzeroth2    = Spell(299355),
+  GuardianOfAzeroth3    = Spell(299358),
+  FocusedAzeriteBeam    = Spell(295258),
+  FocusedAzeriteBeam2   = Spell(299336),
+  FocusedAzeriteBeam3   = Spell(299338),
+  PurifyingBlast        = Spell(295337),
+  PurifyingBlast2       = Spell(299345),
+  PurifyingBlast3       = Spell(299347),
+  TheUnboundForce       = Spell(298452),
+  TheUnboundForce2      = Spell(299376),
+  TheUnboundForce3      = Spell(299378),
+  RippleInSpace         = Spell(302731),
+  RippleInSpace2        = Spell(302982),
+  RippleInSpace3        = Spell(302983),
+  WorldveinResonance    = Spell(295186),
+  WorldveinResonance2   = Spell(298628),
+  WorldveinResonance3   = Spell(299334),
+  MemoryOfLucidDreams   = Spell(298357),
+  MemoryOfLucidDreams2  = Spell(299372),
+  MemoryOfLucidDreams3  = Spell(299374),
 }
 local S = RubimRH.Spell[577]
 
@@ -122,6 +153,27 @@ S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }
 S.Metamorphosis.TextureSpellID = { 187827 }
 
+--Essences
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
+end
 
 -- Rotation Var
 local CleaveRangeID = tostring(S.ConsumeMagic:ID()); -- 20y range
@@ -229,6 +281,47 @@ local function UpdateCDs()
     end
 end
 
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
+    return S.MemoryOfLucidDreams:Cast()
+  end
+  return false
+end
+
 -- Main APL
 local function APL()
     local Precombat, Precombat_DBM, Cooldown, DarkSlash, Demonic, Normal
@@ -307,6 +400,9 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
+		      -- actions.cds+=/call_action_list,name=essences
+        ShouldReturn = Essences();
+        if ShouldReturn then return ShouldReturn; end
     end
 
     DarkSlash = function()
