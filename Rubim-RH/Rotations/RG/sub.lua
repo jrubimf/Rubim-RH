@@ -342,6 +342,47 @@ end
 -- # Stealth Macros
 -- This returns a table with the original Stealth spell and the result of the Stealthed action list as if the applicable buff was present
 
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S..BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S..BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S..GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S..FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S..PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S..TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S..RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S..WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<40
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 40 then
+    return S..MemoryOfLucidDreams:Cast()
+  end
+  return false;
+end
+
 -- # Cooldowns
 local function CDs ()
     if IsInMeleeRange() then
@@ -407,46 +448,7 @@ local function CDs ()
     end
 end
 
--- # Essences
-local function Essences ()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S..BloodOfTheEnemy:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S..BloodOfTheEnemy:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S..GuardianOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S..FocusedAzeriteBeam:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S..PurifyingBlast:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S..TheUnboundForce:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S..RippleInSpace:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S..WorldveinResonance:Cast()
-  end
-  -- memory_of_lucid_dreams,if=energy<40
-  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 40 then
-    return S..MemoryOfLucidDreams:Cast()
-  end
-  return false;
-end
+
 
 -- # Stealth Cooldowns
 local function Stealth_CDs ()

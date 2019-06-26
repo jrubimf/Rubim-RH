@@ -414,6 +414,47 @@ local function UpdateCDs()
     end
 end
 
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<50
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 50 then
+    return S.MemoryOfLucidDreams:Cast()
+  end
+  return false;
+end
+
 local function CDs ()
     if Target:IsInRange("Melee") then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
@@ -498,47 +539,6 @@ local function CDs ()
         ShouldReturn = Essences();
         if ShouldReturn then return ShouldReturn; end
     end
-end
-
--- # Essences
-local function Essences ()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.GuardianOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.FocusedAzeriteBeam:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.PurifyingBlast:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.TheUnboundForce:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.RippleInSpace:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.WorldveinResonance:Cast()
-  end
-  -- memory_of_lucid_dreams,if=energy<50
-  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 50 then
-    return S.MemoryOfLucidDreams:Cast()
-  end
-  return false;
 end
 
 -- # Stealthed

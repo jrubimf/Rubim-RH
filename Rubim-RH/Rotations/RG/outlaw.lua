@@ -265,6 +265,47 @@ local function CPMaxSpend ()
     return RubimRH.Spell[261].DeeperStratagem:IsAvailable() and 6 or 5;
 end
 
+-- # Essences
+local function Essences ()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.BloodOfTheEnemy:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.GuardianOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.FocusedAzeriteBeam:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.PurifyingBlast:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.TheUnboundForce:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.RippleInSpace:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.WorldveinResonance:Cast()
+  end
+  -- memory_of_lucid_dreams,if=energy<45
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 45 then
+    return S.MemoryOfLucidDreams:Cast()
+  end
+  return false;
+end
+
 local function CDs ()
 
     
@@ -365,47 +406,6 @@ end
         ShouldReturn = Essences();
         if ShouldReturn then return ShouldReturn; end
     end
-end
-
--- # Essences
-local function Essences ()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.BloodOfTheEnemy:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.GuardianOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.FocusedAzeriteBeam:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.PurifyingBlast:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.TheUnboundForce:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.RippleInSpace:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.WorldveinResonance:Cast()
-  end
-  -- memory_of_lucid_dreams,if=energy<45
-  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 45 then
-    return S.MemoryOfLucidDreams:Cast()
-  end
-  return false;
 end
 
 local function Stealth ()
