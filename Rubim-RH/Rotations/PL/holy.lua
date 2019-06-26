@@ -50,6 +50,12 @@ RubimRH.Spell[65] = {
 
     --Azerite
     DivineRevelations = Spell(275469),
+	
+	--Heart Essences
+	UnleashHeartofAzeroth = Spell(280431),
+	ConcentratedFlameHeal = Spell(295375),
+	VitalityConduit = Spell(299959),
+	Refreshment = Spell(299933),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -233,15 +239,37 @@ local function APL()
                 return S.BestowFaith:Cast()
             end
         end
-
-        --Light of the Martyr
-        if S.LightoftheMartyr:IsCastableP() and Player:IsMoving() and Player:HealthPercentage() > 75 then
+		
+		--Concentrated Flame Heal
+        if S.ConcentratedFlameHeal:IsCastableP() and not Player:IsMoving() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < 75 then
-                return S.LightoftheMartyr:Cast()
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+                return S.UnleashHeartofAzeroth:Cast()
+            end
+        end
+		
+		--Vitality Conduit
+        if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
+            if LowestAlly("TANK", "HP") <= 75 then
+                ForceHealingTarget("TANK")
+            end
+
+            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
+                return S.UnleashHeartofAzeroth:Cast()
+            end
+        end
+		
+		--Refreshment
+        if S.Refreshment:IsCastableP() and not Player:IsMoving() then
+            if LowestAlly("ALL", "HP") <= 75 then
+                ForceHealingTarget("ALL")
+            end
+
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+                return S.UnleashHeartofAzeroth:Cast()
             end
         end
 		
@@ -257,7 +285,7 @@ local function APL()
         end
 
         --Crusader Strike
-        if S.CrusaderStrike:IsReady("Melee") and S.CrusadersMight:IsAvailable() then
+        if S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() then
             return S.CrusaderStrike:Cast()
         end
 
@@ -269,6 +297,17 @@ local function APL()
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
                 return S.HolyLight:Cast()
+            end
+        end
+		
+        --Light of the Martyr
+        if S.LightoftheMartyr:IsCastableP() and Player:IsMoving() and Player:HealthPercentage() > 75 then
+            if LowestAlly("ALL", "HP") <= 75 then
+                ForceHealingTarget("ALL")
+            end
+
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < 75 then
+                return S.LightoftheMartyr:Cast()
             end
         end
 
