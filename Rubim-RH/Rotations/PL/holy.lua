@@ -62,6 +62,9 @@ RubimRH.Spell[65] = {
 	Refreshment = Spell(296197),
 	Refreshment2 = Spell(299932),
 	Refreshment3 = Spell(299933),
+	OverchargeMana = Spell(296072),
+	OverchargeMana2 = Spell(299875),
+	OverchargeMana3 = Spell(299876),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -131,6 +134,8 @@ local function DetermineEssenceRanks()
 	S.VitalityConduit = S.VitalityConduit3:IsAvailable() and S.VitalityConduit3 or S.VitalityConduit;
 	S.Refreshment = S.Refreshment2:IsAvailable() and S.Refreshment2 or S.Refreshment;
 	S.Refreshment = S.Refreshment3:IsAvailable() and S.Refreshment3 or S.Refreshment;
+	S.OverchargeMana = S.OverchargeMana2:IsAvailable() and S.OverchargeMana2 or S.OverchargeMana;
+	S.OverchargeMana = S.OverchargeMana3:IsAvailable() and S.OverchargeMana3 or S.OverchargeMana;
 end
 
 local function APL()
@@ -212,6 +217,10 @@ local function APL()
 
 		if RubimRH.CDsON() and S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
 			return S.AuraMastery:Cast()
+		end
+		
+		if RubimRH:CDsON() and S.OverchargeMana:IsCastable() then
+			return S.UnleashHeartofAzeroth:Cast()
 		end
 
         --Beacon of Virtue
