@@ -565,12 +565,8 @@ local function APL()
         return QueueSkill()
     end
 	
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear

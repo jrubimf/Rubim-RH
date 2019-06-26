@@ -155,7 +155,8 @@ local function num(val)
         return 0
     end
 end
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local function bool(val)
     return val ~= 0
 end
@@ -499,12 +500,8 @@ local function APL()
         return QueueSkill()
     end
 
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	
     -- charge
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and S.HeroicLeap:TimeSinceLastCast() >= 0.2 then

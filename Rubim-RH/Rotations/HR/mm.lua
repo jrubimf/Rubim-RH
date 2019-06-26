@@ -123,7 +123,8 @@ local function UpdateRanges()
         HL.GetEnemies(i);
     end
 end
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local function num(val)
     if val then
         return 1
@@ -257,11 +258,8 @@ local function APL ()
 
     Cds = function()
 		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
         -- hunters_mark,if=debuff.hunters_mark.down&!buff.trueshot.up
         if S.HuntersMark:IsCastableP() and (Target:DebuffDown(S.HuntersMarkDebuff) and not Player:BuffP(S.TrueshotBuff)) then
             return S.HuntersMark:Cast()

@@ -364,12 +364,8 @@ local function APL()
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- Pummel
     if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()

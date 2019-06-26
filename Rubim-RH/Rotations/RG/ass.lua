@@ -110,7 +110,8 @@ RubimRH.Spell[259] = {
     
 };
 local S = RubimRH.Spell[259];
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Rogue then
     Item.Rogue = {}
@@ -459,12 +460,8 @@ end
 local function CDs ()
     if Target:IsInRange("Melee") then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
         -- Racials
         if Target:Debuff(S.Vendetta) then
             -- actions.cds+=/blood_fury,if=debuff.vendetta.up

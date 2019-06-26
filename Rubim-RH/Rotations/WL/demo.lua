@@ -124,7 +124,8 @@ RubimRH.Spell[266] = {
 };
 
 local S = RubimRH.Spell[266]
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Warlock then
         Item.Warlock = {}
@@ -908,12 +909,8 @@ local function APL()
         if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
             return S.Fireblood:Cast()
         end
-		-- actions.cds+=/call_action_list,name=essences
-        if (RubimRH.CDsON()) then
-            if Essences() ~= nil then
-                return Essences()
-            end
-        end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	    -- trinket1,if=pet.demonic_tyrant.active
 	    if trinketReady(1) and TyranIsActive() then
             return trinket1

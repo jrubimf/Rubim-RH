@@ -97,7 +97,8 @@ RubimRH.Spell[MFrost] = {
 HL.Spell[MFrost] = RubimRH.Spell[MFrost]
 --Remove Watersomething
 local S = RubimRH.Spell[MFrost]
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Mage then
     Item.Mage = {}
@@ -281,12 +282,8 @@ local function APL()
         end
     end
     Cooldowns = function()
-		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
         -- time_warp
         -- icy_veins
         if S.IcyVeins:IsReadyP() and RubimRH.CDsON() then

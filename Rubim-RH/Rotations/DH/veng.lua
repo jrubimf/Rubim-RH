@@ -81,7 +81,8 @@ local S = RubimRH.Spell[581]
 S.Fracture.TextureSpellID = { 279450 }
 S.Sever.TextureSpellID = { 279450 }
 --S.ImmolationAura.TextureSpellID = { 202137 }
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
 -- APL Main
@@ -297,12 +298,8 @@ local function APL()
         return QueueSkill()
     end
 
-			-- actions.cds+=/call_action_list,name=essences
-        if (RubimRH.CDsON()) then
-            if Essences() ~= nil then
-                return Essences()
-            end
-        end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then

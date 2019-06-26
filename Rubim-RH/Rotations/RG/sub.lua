@@ -392,9 +392,8 @@ local function CDs ()
             -- TODO: Add Potion Suggestion
 	-- actions.cds+=/call_action_list,name=essences
 
-        if Essences() ~= nil then
-            return Essences()
-        end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 
             -- Racials
             if Player:IsStealthedP(true, false) then

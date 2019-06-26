@@ -130,7 +130,8 @@ Item.Hunter.Survival = {
 
 -- Variables
 local VarCanGcd = 0;
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local EnemyRanges = { 8, 40, "Melee" }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -280,11 +281,8 @@ local function APL ()
 
     Cds = function()
 		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
         -- berserking,if=cooldown.coordinated_assault.remains>30
         if S.Berserking:IsReady() and (S.CoordinatedAssault:CooldownRemainsP() > 30) then
             return S.Berserking:Cast()

@@ -401,12 +401,8 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
-		-- actions.cds+=/call_action_list,name=essences
-        if (RubimRH.CDsON()) then
-            if Essences() ~= nil then
-                return Essences()
-            end
-        end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 
     end
 

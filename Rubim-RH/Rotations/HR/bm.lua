@@ -117,7 +117,8 @@ local S = RubimRH.Spell[253]
 S.CallPet.TextureSpellID = { S.MendPet:ID() }
 S.RevivePet.TextureSpellID = { S.MendPet:ID() }
 
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Hunter then Item.Hunter = {} end
 Item.Hunter.BeastMastery = {
@@ -300,12 +301,8 @@ local function APL()
       --end
     end
     Cds = function()
-		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
       -- ancestral_call,if=cooldown.bestial_wrath.remains>30
       if S.AncestralCall:IsReady() and (S.BestialWrath:CooldownRemainsP() > 30) then
         return S.AncestralCall:Cast()

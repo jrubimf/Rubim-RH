@@ -498,12 +498,8 @@ local function APL()
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	-- Power Word: Shield
 	if S.PowerWordShield:IsReady() and not Player:Buff(S.PowerWordShield) and  Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()

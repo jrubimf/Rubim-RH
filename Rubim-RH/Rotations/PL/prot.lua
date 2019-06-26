@@ -93,7 +93,8 @@ Item.Paladin.Protection = {
 };
 local I = Item.Paladin.Protection;
 
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Variables
 
 local EnemyRanges = { 8 }
@@ -223,13 +224,8 @@ local function APL()
         return S.ShieldoftheRighteous:Cast()
     end
 
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
-	
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- auto_attack
     -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
     if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then

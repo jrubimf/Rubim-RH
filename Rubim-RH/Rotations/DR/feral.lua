@@ -111,7 +111,8 @@ Item.Druid.Feral = {
 };
 local I = Item.Druid.Feral;
 
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Variables
 local VarUseThrash = 0;
 local VarDelayedTfOpener = 0;
@@ -269,12 +270,8 @@ local function APL()
     end
     
 	Cooldowns = function()
-		-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
         -- dash,if=!buff.cat_form.up
         -- prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
         if S.Prowl:IsReady() and (Player:BuffRemainsP(S.IncarnationBuff) < 0.5 and Player:BuffP(S.JungleStalkerBuff)) then

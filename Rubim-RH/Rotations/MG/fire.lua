@@ -117,7 +117,8 @@ local function UpdateRanges()
         HL.GetEnemies(i);
     end
 end
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local function RemainingTimeToCast(spell)
     local spell, _, _, _, endTime = UnitCastingInfo("player")
     if spell then 
@@ -537,12 +538,8 @@ local function APL()
         return QueueSkill()
       end
     -- counterspell
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- mirror_image,if=buff.combustion.down
     if S.MirrorImage:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then
     return S.MirrorImage:Cast()

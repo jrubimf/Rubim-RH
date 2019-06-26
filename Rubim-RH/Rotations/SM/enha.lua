@@ -341,12 +341,8 @@ local function APL()
   
   Cds = function()
   
-  	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- berserking,if=variable.cooldown_sync
     if S.Berserking:IsCastableP() and RubimRH.CDsON() and (bool(VarCooldownSync)) then

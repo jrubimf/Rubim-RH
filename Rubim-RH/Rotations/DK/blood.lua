@@ -109,7 +109,8 @@ local function UpdateRanges()
         HL.GetEnemies(i);
     end
 end
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local function num(val)
     if val then
         return 1
@@ -475,12 +476,8 @@ local function APL()
         return S.VampiricBlood:Cast()
     end
 
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then

@@ -116,7 +116,8 @@ Item.DeathKnight.Frost = {
     HornofValor = Item(133642),
     ColdHeart = Item(151796)
 }
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local I = Item.DeathKnight.Frost;
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
@@ -399,11 +400,8 @@ end
 
 local function Cooldowns()
 	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- use_items,if=(cooldown.pillar_of_frost.ready|cooldown.pillar_of_frost.remains>20)&(!talent.breath_of_sindragosa.enabled|cooldown.empower_rune_weapon.remains>95)
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up

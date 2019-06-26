@@ -122,7 +122,8 @@ Item.Warrior.Fury = {
 };
 
 local I = Item.Warrior.Fury;
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 local EnemyRanges = { "Melee", 5, 12 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
@@ -309,12 +310,8 @@ local function APL()
         return QueueSkill()
     end
 	
-	-- actions.cds+=/call_action_list,name=essences
-    if (RubimRH.CDsON()) then
-        if Essences() ~= nil then
-            return Essences()
-        end
-    end
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
 	-- Battleshout in combat refresh
 	if S.BattleShout:IsCastable() and not Player:BuffP(S.BattleShout) then
         return S.BattleShout:Cast()
