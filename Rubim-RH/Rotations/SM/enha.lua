@@ -12,7 +12,7 @@ local Target = Unit.Target
 local Pet    = Unit.Pet
 local Spell  = HL.Spell
 local Item   = HL.Item
-local MultiSpell = HL.MultiSpell
+--local MultiSpell = HL.MultiSpell
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -73,14 +73,14 @@ RubimRH.Spell[263] = {
   RecklessForce                         = Spell(302932),
   
   -- 8.2 Essences
-  BloodOfTheEnemy                       = MultiSpell(297108, 298273, 298277),
-  MemoryOfLucidDreams                   = MultiSpell(298357, 299372, 299374),
-  PurifyingBlast                        = MultiSpell(295337, 299345, 299347),
-  ConcentratedFlame                     = MultiSpell(295373, 299349, 299353),
-  TheUnboundForce                       = MultiSpell(298452, 299376, 299378),
-  WorldveinResonance                    = MultiSpell(295186, 298628, 299334),
-  FocusedAzeriteBeam                    = MultiSpell(295258, 299336, 299338),
-  GuardianOfAzeroth                     = MultiSpell(295840, 299355, 299358),
+ -- BloodOfTheEnemy                       = MultiSpell(297108, 298273, 298277),
+ -- MemoryOfLucidDreams                   = MultiSpell(298357, 299372, 299374),
+ -- PurifyingBlast                        = MultiSpell(295337, 299345, 299347),
+ -- ConcentratedFlame                     = MultiSpell(295373, 299349, 299353),
+ -- TheUnboundForce                       = MultiSpell(298452, 299376, 299378),
+ -- WorldveinResonance                    = MultiSpell(295186, 298628, 299334),
+ -- FocusedAzeriteBeam                    = MultiSpell(295258, 299336, 299338),
+ -- GuardianOfAzeroth                     = MultiSpell(295840, 299355, 299358),
   
 };
 local S = RubimRH.Spell[263]
@@ -214,7 +214,7 @@ local function SpiritWolfIsActive()
     end
 end
 
-local function DetermineEssenceRanks()
+--[[local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
   S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
   S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
@@ -231,7 +231,7 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
   S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth
   S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth
-end
+end]]--
 
 --- ======= ACTION LISTS =======
 local function APL()
