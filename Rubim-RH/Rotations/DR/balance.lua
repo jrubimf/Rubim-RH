@@ -98,6 +98,8 @@ Item.Druid.Balance = {
 };
 local I = Item.Druid.Balance;
 
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 
 -- Variables
 
