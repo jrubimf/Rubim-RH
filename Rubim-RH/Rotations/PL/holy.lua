@@ -254,18 +254,18 @@ local function APL()
 		--Vitality Conduit
         --if S.VitalityConduit:IsCastableP() and not Player:IsMoving() then
             --if LowestAlly("TANK", "HP") <= 75 then
-                ForceHealingTarget("TANK")
+                --ForceHealingTarget("TANK")
             --end
 
             --if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
-                return S.UnleashHeartofAzeroth:Cast()
+                --return S.UnleashHeartofAzeroth:Cast()
             --end
         --end
 		
 		--Refreshment
         --if S.Refreshment:IsCastableP() and not Player:IsMoving() then
             --if LowestAlly("ALL", "HP") <= 75 then
-                ForceHealingTarget("ALL")
+                --ForceHealingTarget("ALL")
             --end
 
             --if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
