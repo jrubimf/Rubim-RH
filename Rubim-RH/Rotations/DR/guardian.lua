@@ -126,6 +126,7 @@ local I = Item.Druid.Guardian
 local ShouldReturn; -- Used to get the return string
 -- Range array declaration
 local RangeMod = S.BalanceAffinity:IsAvailable() and true or false
+
 local R = {
 	Moonfire = (RangeMod) and 43 or 40,
 	Mangle = (RangeMod) and 8 or "Melee",
@@ -134,8 +135,16 @@ local R = {
 	Maul = (RangeMod) and 8 or "Melee",
 	Pulverize = (RangeMod) and 8 or "Melee",
 	SkullBash = (RangeMod) and 13 or 10 }
+
 -- Keep track of whether or not we're tanking
 local IsTanking = false
+
+local EnemyRanges = {40, 30, 20, 10, 8, 5}
+local function UpdateRanges()
+    for _, i in ipairs(EnemyRanges) do
+        HL.GetEnemies(i);
+    end
+end
 
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
@@ -378,8 +387,12 @@ end
 
 local function APL()
 	UpdateVars()
-
-	if not Player:AffectingCombat() and RubimRH.PrecombatON() then return 0, 462338 end
+    UpdateRanges()
+	
+	-- precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() then 
+	    return 0, 462338 
+	end
 
 	-- TODO: Mighty Bash, Typhoon, Entanglement -> GGLoader textures not working
 
@@ -400,6 +413,26 @@ local function APL()
             return S.RemoveCorruption:Cast()
         end
     end
+	
+	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
+		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[5] >= 2 and Cache.EnemiesCount[5] < 6 and CombatTime("player") > 0 and 
+( -- Moonfire
+    not IsSpellInRange(8921, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Moonfire
+    MultiDots(10, S.Moonfire, 10, 3) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+      return 133015 
+   end
 	
 	-- call_action_list,name=essences
     local ShouldReturn = Essences(); 
