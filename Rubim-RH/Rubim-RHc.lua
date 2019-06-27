@@ -273,7 +273,7 @@ function RubimRH.InterruptEverythingToggle()
     else
         RubimRH.db.profile.mainOption.InterruptEverything = false
     end
-    print("|cFF69CCF0Instant Interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.InterruptEverything))
+    print("|cFF69CCF0Interrupt Everything" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.InterruptEverything))
 end
 
 function RubimRH.RacialToggle()
