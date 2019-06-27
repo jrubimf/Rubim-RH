@@ -1190,6 +1190,15 @@ mythicList = {
         [Guardian] = {
             cooldowns = true,
 			
+            sk1 = 50, -- Barkskin
+            sk1id = 22812, -- Barkskin
+            sk1tooltip = "Percent HP to use Barkskin",
+			
+            sk2 = 30, -- SurvivalInstincts
+            sk2id = 61336, -- SurvivalInstincts
+            sk2tooltip = "Percent HP to use Survival Instincts",
+			
+
         },
 		[105] = {
             cooldowns = true,
