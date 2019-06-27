@@ -390,10 +390,12 @@ local function CDs ()
         if RubimRH.CDsON() then
             -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|(buff.vanish.up&(buff.shadow_blades.up|cooldown.shadow_blades.remains<=30))
             -- TODO: Add Potion Suggestion
-	-- actions.cds+=/call_action_list,name=essences
-
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+			
+    -- actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.nightblade.ticking
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) and not Player:IsStealthedP(true, true) and Target:DebuffP(S.Nightblade) then 
+	    return ShouldReturn; 
+	end
 
             -- Racials
             if Player:IsStealthedP(true, false) then
