@@ -9,7 +9,109 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+
 -- Spell Localization
+RubimRH.Spell[104] = {
+    -- Racials
+    WarStomp = Spell(20549),
+    Berserking = Spell(26297),
+    -- Abilities
+    FrenziedRegeneration = Spell(22842),
+    Gore = Spell(210706),
+    GoreBuff = Spell(93622),
+    GoryFur = Spell(201671),
+    Ironfur = Spell(192081),
+    Mangle = Spell(33917),
+    Maul = Spell(6807),
+    Moonfire = Spell(8921),
+    MoonfireDebuff = Spell(164812),
+    Sunfire = Spell(197630),
+    SunfireDebuff = Spell(164815),
+    Starsurge = Spell(197626),
+    LunarEmpowerment = Spell(164547),
+    SolarEmpowerment = Spell(164545),
+    LunarStrike = Spell(197628),
+    Wrath = Spell(197629),
+    Regrowth = Spell(8936),
+    Swipe = Spell(213771),
+    Thrash = Spell(77758),
+    ThrashDebuff = Spell(192090),
+    ThrashCat = Spell(106830),
+    Prowl = Spell(5215),
+    -- Talents
+    BalanceAffinity = Spell(197488),
+    BloodFrenzy = Spell(203962),
+    Brambles = Spell(203953),
+    BristlingFur = Spell(155835),
+    Earthwarden = Spell(203974),
+    EarthwardenBuff = Spell(203975),
+    FeralAffinity = Spell(202155),
+    GalacticGuardian = Spell(203964),
+    GalacticGuardianBuff = Spell(213708),
+    GuardianOfElune = Spell(155578),
+    GuardianOfEluneBuff = Spell(213680),
+    Incarnation = Spell(102558),
+    LunarBeam = Spell(204066),
+    Pulverize = Spell(80313),
+    PulverizeBuff = Spell(158792),
+    RestorationAffinity = Spell(197492),
+    SouloftheForest = Spell(158477),
+    MightyBash = Spell(5211),
+    Typhoon = Spell(132469),
+    Entanglement = Spell(102359),
+    -- Artifact
+    RageoftheSleeper = Spell(200851),
+    -- Defensive
+    SurvivalInstincts = Spell(61336),
+    Barkskin = Spell(22812),
+    -- Utility
+    Growl = Spell(6795),
+    SkullBash = Spell(106839),
+    -- Affinity
+    FerociousBite = Spell(22568),
+    HealingTouch = Spell(5185),
+    Rake = Spell(1822),
+    RakeDebuff = Spell(155722),
+    Rejuvenation = Spell(774),
+    Rip = Spell(1079),
+    Shred = Spell(5221),
+    Swiftmend = Spell(18562),
+    -- Shapeshift
+    BearForm = Spell(5487),
+    CatForm = Spell(768),
+    MoonkinForm = Spell(197625),
+    TravelForm = Spell(783),
+			  --8.2 Essences
+  UnleashHeartOfAzeroth = Spell(280431),
+  BloodOfTheEnemy       = Spell(297108),
+  BloodOfTheEnemy2      = Spell(298273),
+  BloodOfTheEnemy3      = Spell(298277),
+  ConcentratedFlame     = Spell(295373),
+  ConcentratedFlame2    = Spell(299349),
+  ConcentratedFlame3    = Spell(299353),
+  GuardianOfAzeroth     = Spell(295840),
+  GuardianOfAzeroth2    = Spell(299355),
+  GuardianOfAzeroth3    = Spell(299358),
+  FocusedAzeriteBeam    = Spell(295258),
+  FocusedAzeriteBeam2   = Spell(299336),
+  FocusedAzeriteBeam3   = Spell(299338),
+  PurifyingBlast        = Spell(295337),
+  PurifyingBlast2       = Spell(299345),
+  PurifyingBlast3       = Spell(299347),
+  TheUnboundForce       = Spell(298452),
+  TheUnboundForce2      = Spell(299376),
+  TheUnboundForce3      = Spell(299378),
+  RippleInSpace         = Spell(302731),
+  RippleInSpace2        = Spell(302982),
+  RippleInSpace3        = Spell(302983),
+  WorldveinResonance    = Spell(295186),
+  WorldveinResonance2   = Spell(298628),
+  WorldveinResonance3   = Spell(299334),
+  MemoryOfLucidDreams   = Spell(298357),
+  MemoryOfLucidDreams2  = Spell(299372),
+  MemoryOfLucidDreams3  = Spell(299374),
+}
+
 local S = RubimRH.Spell[104]
 -- Optional debug to chat window
 local PrintDebug = false
@@ -103,8 +205,8 @@ local function Bear()
 
 	-- Survival Instincts
 	if S.SurvivalInstincts:ChargesFractional() >= 1
-			and not Player:Buff(S.Barkskin)
-			and not Player:Buff(S.SurvivalInstincts)
+			and not Player:BuffP(S.Barkskin)
+			and not Player:BuffP(S.SurvivalInstincts)
 			and Player:NeedPanicHealing() then
 		return S.SurvivalInstincts:Cast()
 	end
@@ -112,21 +214,21 @@ local function Bear()
 	-- TODO: Fix texture after GGLoader properly updates the Barkskin pixels
 	-- Barkskin
 	if S.Barkskin:IsReady()
-			and not Player:Buff(S.SurvivalInstincts)
-			and not Player:Buff(S.Barkskin)
+			and not Player:BuffP(S.SurvivalInstincts)
+			and not Player:BuffP(S.Barkskin)
 			and Player:NeedMajorHealing() then
 		return S.Barkskin:Cast()
 	end
 
 	-- Ironfur
 	if S.Ironfur:IsReady()
-			and Player:BuffRemains(S.Ironfur) <= Player:GCD()
+			and Player:BuffPRemainsP(S.Ironfur) <= Player:GCD()
 			and (IsTanking or Player:NeedMinorHealing()) then
 		return S.Ironfur:Cast()
 	end
 
 	-- Frenzied Regeneration
-	local FrenziedRegenerationHeal = (Player:Buff(S.GuardianOfEluneBuff)) and 21 or 18
+	local FrenziedRegenerationHeal = (Player:BuffP(S.GuardianOfEluneBuff)) and 21 or 18
 	local FrenziedOverHeal = (FrenziedRegenerationHeal + Player:HealthPercentage() >= 100) and true or false
 	if S.FrenziedRegeneration:IsReady()
 		and not FrenziedOverHeal
@@ -137,7 +239,7 @@ local function Bear()
 	--- Main Damage Rotation
 
 	-- Moonfire
-	if Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD()
+	if Target:DeBuffRemainsP(S.MoonfireDebuff) <= Player:GCD()
 			and S.Moonfire:IsReadyMorph(R.Moonfire) then
 		return S.Moonfire:Cast()
 	end
@@ -166,7 +268,7 @@ local function Bear()
 
 	-- Moonfire
 	if S.Moonfire:IsReadyMorph(R.Moonfire)
-			and Player:Buff(S.GalacticGuardianBuff) then
+			and Player:BuffP(S.GalacticGuardianBuff) then
 		return S.Moonfire:Cast()
 	end
 
@@ -187,25 +289,25 @@ local function Cat()
 	local CatWeave = S.FeralAffinity:IsAvailable()
 	if CatWeave then
 		if Player:ComboPoints() == 5
-				and Target:DebuffRemains(S.Rip) <= Player:GCD() * 5
+				and Target:DeBuffRemainsP(S.Rip) <= Player:GCD() * 5
 				and S.Rip:IsReadyMorph("Melee") then
 			return S.Rip:Cast()
 		end
 
 		if Player:ComboPoints() == 5
-				and Target:DebuffRemains(S.Rip) >= Player:GCD() * 5
+				and Target:DeBuffRemainsP(S.Rip) >= Player:GCD() * 5
 				and S.FerociousBite:IsReadyMorph("Melee") then
 			return S.FerociousBite:Cast()
 		end
 
 		if Player:ComboPoints() <= 5
-				and Target:DebuffRemains(S.RakeDebuff) <= Player:GCD() then
+				and Target:DeBuffRemainsP(S.RakeDebuff) <= Player:GCD() then
 			return S.Rake:Cast()
 		end
 	end
 
 	if S.ThrashCat:IsReadyMorph("Melee")
-			and Target:DebuffRemains(S.ThrashCat) <= Player:GCD() then
+			and Target:DeBuffRemainsP(S.ThrashCat) <= Player:GCD() then
 		return S.ThrashCat:Cast()
 	end
 
@@ -218,13 +320,13 @@ local function Moonkin()
 
 	-- Moonfire
 	if S.Moonfire:IsReadyMorph(R.Moonfire)
-			and (Target:DebuffRemains(S.MoonfireDebuff) <= Player:GCD() or Player:Buff(S.GalacticGuardianBuff)) then
+			and (Target:DeBuffRemainsP(S.MoonfireDebuff) <= Player:GCD() or Player:BuffP(S.GalacticGuardianBuff)) then
 		return S.Moonfire:Cast()
 	end
 
 	-- Sunfire
 	if S.Sunfire:IsReadyMorph(R.Moonfire)
-			and Target:DebuffRemains(S.SunfireDebuff) <= Player:GCD() then
+			and Target:DeBuffRemainsP(S.SunfireDebuff) <= Player:GCD() then
 		return S.Sunfire:Cast()
 	end
 
@@ -233,14 +335,14 @@ local function Moonkin()
 
 		-- Starsurge
 		if S.Starsurge:IsReadyMorph(R.Moonfire)
-				and not Player:Buff(S.LunarEmpowerment)
-				and not Player:Buff(S.SolarEmpowerment) then
+				and not Player:BuffP(S.LunarEmpowerment)
+				and not Player:BuffP(S.SolarEmpowerment) then
 			return S.Starsurge:Cast()
 		end
 
 		-- Lunar Strike
 		if S.LunarStrike:IsReadyMorph(R.Moonfire) and
-				Player:Buff(S.LunarEmpowerment) then
+				Player:BuffP(S.LunarEmpowerment) then
 			return S.LunarStrike:Cast()
 		end
 
