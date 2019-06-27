@@ -17,6 +17,8 @@ local PrintDebug = false
 if not Item.Druid then Item.Druid = {} end
 Item.Druid.Guardian = { EkowraithCreatorofWorlds = Item(137015, {5}), LuffaWrappings = Item(137056, {9}) }
 local I = Item.Druid.Guardian
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Range array declaration
 local RangeMod = S.BalanceAffinity:IsAvailable() and true or false
 local R = {
@@ -29,6 +31,47 @@ local R = {
 	SkullBash = (RangeMod) and 13 or 10 }
 -- Keep track of whether or not we're tanking
 local IsTanking = false
+
+-- # Essences
+local function Essences()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  return false
+end
 
 local function Bear()
 	--- Defensives / Healing
@@ -230,6 +273,10 @@ local function APL()
 	elseif Form == 4 and Moonkin() ~= nil then 
 		return Moonkin() 
 	end
+	
+	-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+	
     -- interrupt
     if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.SkullBash:Cast()
