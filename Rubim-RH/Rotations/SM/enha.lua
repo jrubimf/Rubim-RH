@@ -381,22 +381,22 @@ local function APL()
     end
     -- potion,if=buff.ascendance.up|!talent.ascendance.enabled&feral_spirit.remains>5|target.time_to_die<=60
     -- actions.cds+=/guardian_of_azeroth
-    if S.GuardianOfAzeroth:IsCastableP() then
-      return S.GuardianOfAzeroth:Cast()
-    end
+   -- if S.GuardianOfAzeroth:IsCastableP() then
+   --   return S.GuardianOfAzeroth:Cast()
+   -- end
 
     -- actions.cds+=/memory_of_lucid_dreams
-    if S.MemoryOfLucidDreams:IsCastableP() then
-      return S.MemoryOfLucidDreams:Cast()
-    end
+   -- if S.MemoryOfLucidDreams:IsCastableP() then
+   --   return S.MemoryOfLucidDreams:Cast()
+   -- end
     -- feral_spirit
     if S.FeralSpirit:IsCastableP() then
       return S.FeralSpirit:Cast()
     end
 	-- actions.cds+=/blood_of_the_enemy
-    if S.BloodOfTheEnemy:IsCastableP() then
-      return S.BloodOfTheEnemy:Cast()
-    end
+   -- if S.BloodOfTheEnemy:IsCastableP() then
+    --  return S.BloodOfTheEnemy:Cast()
+   -- end
     -- ascendance,if=cooldown.strike.remains>0
     if S.Ascendance:IsCastableP() then
       return S.Ascendance:Cast()
