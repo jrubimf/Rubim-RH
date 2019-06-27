@@ -239,7 +239,7 @@ local function Bear()
 	--- Main Damage Rotation
 
 	-- Moonfire
-	if Target:DeBuffRemainsP(S.MoonfireDebuff) <= Player:GCD()
+	if Target:DebuffRemainsP(S.MoonfireDebuff) <= Player:GCD()
 			and S.Moonfire:IsReadyMorph(R.Moonfire) then
 		return S.Moonfire:Cast()
 	end
@@ -289,25 +289,25 @@ local function Cat()
 	local CatWeave = S.FeralAffinity:IsAvailable()
 	if CatWeave then
 		if Player:ComboPoints() == 5
-				and Target:DeBuffRemainsP(S.Rip) <= Player:GCD() * 5
+				and Target:DebuffRemainsP(S.Rip) <= Player:GCD() * 5
 				and S.Rip:IsReadyMorph("Melee") then
 			return S.Rip:Cast()
 		end
 
 		if Player:ComboPoints() == 5
-				and Target:DeBuffRemainsP(S.Rip) >= Player:GCD() * 5
+				and Target:DebuffRemainsP(S.Rip) >= Player:GCD() * 5
 				and S.FerociousBite:IsReadyMorph("Melee") then
 			return S.FerociousBite:Cast()
 		end
 
 		if Player:ComboPoints() <= 5
-				and Target:DeBuffRemainsP(S.RakeDebuff) <= Player:GCD() then
+				and Target:DebuffRemainsP(S.RakeDebuff) <= Player:GCD() then
 			return S.Rake:Cast()
 		end
 	end
 
 	if S.ThrashCat:IsReadyMorph("Melee")
-			and Target:DeBuffRemainsP(S.ThrashCat) <= Player:GCD() then
+			and Target:DebuffRemainsP(S.ThrashCat) <= Player:GCD() then
 		return S.ThrashCat:Cast()
 	end
 
@@ -320,13 +320,13 @@ local function Moonkin()
 
 	-- Moonfire
 	if S.Moonfire:IsReadyMorph(R.Moonfire)
-			and (Target:DeBuffRemainsP(S.MoonfireDebuff) <= Player:GCD() or Player:BuffP(S.GalacticGuardianBuff)) then
+			and (Target:DebuffRemainsP(S.MoonfireDebuff) <= Player:GCD() or Player:BuffP(S.GalacticGuardianBuff)) then
 		return S.Moonfire:Cast()
 	end
 
 	-- Sunfire
 	if S.Sunfire:IsReadyMorph(R.Moonfire)
-			and Target:DeBuffRemainsP(S.SunfireDebuff) <= Player:GCD() then
+			and Target:DebuffRemainsP(S.SunfireDebuff) <= Player:GCD() then
 		return S.Sunfire:Cast()
 	end
 
