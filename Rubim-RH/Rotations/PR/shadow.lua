@@ -389,14 +389,6 @@ local function APL()
     --end
   end
   
-  -- Auto switch target function
-  --AutoDotCycle = function()
-  --  if S.VampiricTouch:IsCastableP() and S.ShadowWordPain:IsCastableP() then
-  --      if Target:DebuffRemainsP(S.VampiricTouchDebuff) >= 17 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= 13 then
---			return 0, CacheGetSpellTexture(153911)     
---		end		
---	end
- --- end
   
   Single = function()
     -- void_eruption
@@ -496,23 +488,21 @@ local function APL()
     --if I.BattlePotionofIntellect:IsReady() and Settings.Commons.UsePotions and (Player:HasHeroism() or Target:TimeToDie() <= 80 or Target:HealthPercentage() < 35) then
     --  return I.BattlePotionofIntellect:Cast() "battle_potion_of_intellect 283"; end
     --end
+	
     -- QueueSkill
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
+	
     -- call_action_list,name=essences
     local ShouldReturn = Essences(); 
 	if ShouldReturn and (true) then 
 	    return ShouldReturn; 
 	end
 	
-    -- shadow_word_pain,if=moving
-    if S.ShadowWordPain:IsCastableP() and Player:IsMoving() then
-      return S.ShadowWordPain:Cast()
-    end
-	
+
 	-- Shield for Speed
-	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:IsMoving() and S.BodyAndSoul:IsAvailable() then
+	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:MovingFor() >= 2 and S.BodyAndSoul:IsAvailable() then
         return S.PowerWordShield:Cast()
     end
 	
@@ -520,22 +510,22 @@ local function APL()
 	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()
     end
-
-
 	-- void_bolt
 	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2 then
       return S.VoidBolt:Cast()
     end
+	
+	-- shadow_word_pain,if=moving
+    if S.ShadowWordPain:IsCastableP() and Player:IsMoving() then
+      return S.ShadowWordPain:Cast()
+    end
+	
     -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking
     if (true) then
       VarDotsUp = num(Target:DebuffP(S.ShadowWordPainDebuff) and Target:DebuffP(S.VampiricTouchDebuff))
     end
-	-- auto switch to next target
-   -- if HL.CombatTime() > 0 and active_enemies() < 10 and (MultiDots(40, S.VampiricTouch, 10, 1) >= 1 or CombatTime("target") == 0) and RubimRH.AoEON() and active_enemies() >= 2 and Target:DebuffRemainsP(S.ShadowWordPainDebuff) > S.ShadowWordPain:BaseDuration() * 0.75 and Target:DebuffRemainsP(S.VampiricTouchDebuff) > S.VampiricTouch:BaseDuration() * 0.75 then
-   --     return 133015 
-   -- end
-	
-	
+
+	-- Auto AOE
 	if RubimRH.AoEON() and RubimRH.ShadowAutoAoEON() and Target:DebuffRemainsP(S.ShadowWordPainDebuff) >= S.ShadowWordPain:BaseDuration() * 0.90 and Target:DebuffRemainsP(S.VampiricTouchDebuff)>= S.VampiricTouch:BaseDuration() * 0.90 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 10 and CombatTime("player") > 0 and 
 ( -- Shadow Word: Pain
     not IsSpellInRange(589, "target") or   
@@ -554,7 +544,6 @@ local function APL()
 ) then 
     return 133015 
    end
-
 	
 	-- vampiric_embrace
     if S.VampiricEmbrace:IsCastableP() and GroupedBelow(mainAddon.db.profile[258].sk3) >= 2 then
