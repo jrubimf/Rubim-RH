@@ -148,6 +148,25 @@ function S.Firestarter:ActiveRemains()
     return S.Firestarter:IsAvailable() and ((Target:HealthPercentage() > 90) and Target:TimeToX(90, 3) or 0)
 end
 
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+end
+
 -- # Essences
 local function Essences()
   -- blood_of_the_enemy
@@ -325,11 +344,18 @@ local function APL()
     if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() and (Player:BuffDownP(S.CombustionBuff)) then
     return S.LightsJudgment:Cast()
     end
-    -- call_action_list,name=bm_combustion_phase,if=azerite.blaster_master.enabled&talent.flame_on.enabled
-    if S.BlasterMaster:AzeriteEnabled() and S.FlameOn:IsAvailable() then
+    --call_action_list,name=bm_combustion_phase,if=azerite.blaster_master.enabled&talent.flame_on.enabled
+	--call_action_list,name=bm_combustion_phase,if=azerite.blaster_master.enabled&talent.flame_on.enabled&!essence.memory_of_lucid_dreams.enabled
+    if S.BlasterMaster:AzeriteEnabled() and S.FlameOn:IsAvailable() and not S.MemoryOfLucidDreams:IsCastableP() then
       local ShouldReturn = BmCombustionPhase(); if ShouldReturn then return ShouldReturn; end
     end
-    -- rune_of_power,if=buff.combustion.down
+	
+	--actions.combustion_phase+=/blood_of_the_enemy
+    --actions.combustion_phase+=/memory_of_lucid_dreams
+    --actions.combustion_phase+=/guardian_of_azeroth
+    --actions.combustion_phase+=/rune_of_power,if=buff.combustion.down
+    
+	-- rune_of_power,if=buff.combustion.down
     if S.RuneOfPower:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then
     return S.RuneOfPower:Cast()
     end
