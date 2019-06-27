@@ -306,7 +306,7 @@ local function CDs ()
     end
 	-- call_action_list,name=essences
     local ShouldReturn = Essences(); 
-	    if ShouldReturn then return ShouldReturn; 
+	    if ShouldReturn and (true) then return ShouldReturn; 
 	end
 end
 
