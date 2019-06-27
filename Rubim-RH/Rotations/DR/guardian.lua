@@ -222,7 +222,7 @@ local function Bear()
 
 	-- Ironfur
 	if S.Ironfur:IsReady()
-			and Player:BuffPRemainsP(S.Ironfur) <= Player:GCD()
+			and Player:BuffRemainsP(S.Ironfur) <= Player:GCD()
 			and (IsTanking or Player:NeedMinorHealing()) then
 		return S.Ironfur:Cast()
 	end
