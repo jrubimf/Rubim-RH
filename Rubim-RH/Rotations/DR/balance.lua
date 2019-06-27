@@ -264,8 +264,7 @@ end
 
 local function CDs ()
 	-- actions.cds+=/call_action_list,name=essences
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+
     -- Suggest moonkin form if you're not in it.
     -- potion,if=buff.celestial_alignment.up|buff.incarnation.up
     -- blood_fury,if=buff.celestial_alignment.up|buff.incarnation.up
@@ -305,6 +304,10 @@ local function CDs ()
     if S.ForceofNature:IsReady() and ((Player:BuffP(S.CelestialAlignmentBuff) or Player:BuffP(S.IncarnationBuff)) or (S.CelestialAlignment:CooldownRemainsP() > 30 or S.Incarnation:CooldownRemainsP() > 30)) then
         return S.ForceofNature:Cast()
     end
+	-- call_action_list,name=essences
+    local ShouldReturn = Essences(); 
+	    if ShouldReturn then return ShouldReturn; 
+	end
 end
 
 local function Dot ()
