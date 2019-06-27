@@ -520,7 +520,7 @@ local function APL()
     end
 
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	
     -- charge
     if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and S.HeroicLeap:TimeSinceLastCast() >= 0.2 then

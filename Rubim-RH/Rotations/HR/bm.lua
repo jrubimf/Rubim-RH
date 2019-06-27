@@ -321,7 +321,7 @@ local function APL()
     end
     Cds = function()
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
       -- ancestral_call,if=cooldown.bestial_wrath.remains>30
       if S.AncestralCall:IsReady() and (S.BestialWrath:CooldownRemainsP() > 30) then
         return S.AncestralCall:Cast()

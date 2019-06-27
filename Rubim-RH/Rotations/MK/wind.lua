@@ -240,7 +240,7 @@ return 0, 462338
 	if RubimRH.CDsON() then
 		-- actions.cds+=/call_action_list,name=essences
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 --actions.cd=invoke_xuen_the_white_tiger
 if S.InvokeXuentheWhiteTiger:IsReady() then
 return S.InvokeXuentheWhiteTiger:Cast()

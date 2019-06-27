@@ -330,7 +330,7 @@ local function APL()
     end
 	
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	-- Battleshout in combat refresh
 	if S.BattleShout:IsCastable() and not Player:BuffP(S.BattleShout) then
         return S.BattleShout:Cast()

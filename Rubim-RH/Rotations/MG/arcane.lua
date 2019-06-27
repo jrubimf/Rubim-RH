@@ -525,7 +525,7 @@ local function APL()
         return QueueSkill()
     end
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- counterspell
 	if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Counterspell:Cast()

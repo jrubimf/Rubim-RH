@@ -55,8 +55,9 @@ RubimRH.Spell[258] = {
   MassDispell                           = Spell(32375),
   VampiricEmbrace                       = Spell(15286),
   PowerWordShield                       = Spell(17),
+  WeakenedSoulDebuff                    = Spell(6788),
   
-		  --8.2 Essences
+  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -498,10 +499,11 @@ local function APL()
 	if QueueSkill() ~= nil then
 		return QueueSkill()
     end
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    -- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+	
 	-- Power Word: Shield
-	if S.PowerWordShield:IsReady() and not Player:Buff(S.PowerWordShield) and  Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
+	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()
     end
 

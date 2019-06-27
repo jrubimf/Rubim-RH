@@ -633,7 +633,7 @@ local function APL()
             return QueueSkill()
         end
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
         if active_enemies() >= 3 and S.Cataclysm:IsAvailable() then
             if Cata() ~= nil then

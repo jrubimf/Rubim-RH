@@ -929,7 +929,7 @@ local function APL()
             return S.Fireblood:Cast()
         end
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	    -- trinket1,if=pet.demonic_tyrant.active
 	    if trinketReady(1) and TyranIsActive() then
             return trinket1

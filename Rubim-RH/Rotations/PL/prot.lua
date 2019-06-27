@@ -244,7 +244,7 @@ local function APL()
     end
 
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- auto_attack
     -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
     if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then

@@ -290,7 +290,7 @@ local function APL()
     
 	Cooldowns = function()
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- dash,if=!buff.cat_form.up
         -- prowl,if=buff.incarnation.remains<0.5&buff.jungle_stalker.up
         if S.Prowl:IsReady() and (Player:BuffRemainsP(S.IncarnationBuff) < 0.5 and Player:BuffP(S.JungleStalkerBuff)) then

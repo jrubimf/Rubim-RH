@@ -199,7 +199,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
@@ -420,7 +420,7 @@ end
 local function Cooldowns()
 	-- actions.cds+=/call_action_list,name=essences
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- use_items,if=(cooldown.pillar_of_frost.ready|cooldown.pillar_of_frost.remains>20)&(!talent.breath_of_sindragosa.enabled|cooldown.empower_rune_weapon.remains>95)
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up

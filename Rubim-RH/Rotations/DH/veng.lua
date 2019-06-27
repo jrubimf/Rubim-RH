@@ -318,7 +318,7 @@ local function APL()
     end
 
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	
     --- Defensives
     if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then

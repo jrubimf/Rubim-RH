@@ -396,7 +396,7 @@ local function APL()
 	end
 	
 	-- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	
     -- interrupt
     if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then

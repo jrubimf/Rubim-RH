@@ -301,7 +301,7 @@ local function APL ()
     Cds = function()
 		-- actions.cds+=/call_action_list,name=essences
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- berserking,if=cooldown.coordinated_assault.remains>30
         if S.Berserking:IsReady() and (S.CoordinatedAssault:CooldownRemainsP() > 30) then
             return S.Berserking:Cast()

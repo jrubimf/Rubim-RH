@@ -402,7 +402,7 @@ local function APL()
         --return S.LustrousGoldenPlumage:Cast()
         --end
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 
     end
 

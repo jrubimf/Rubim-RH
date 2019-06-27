@@ -233,7 +233,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
@@ -333,7 +333,7 @@ local function APL()
         end
 			-- actions.cds+=/call_action_list,name=essences
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- apocalypse,if=debuff.festering_wound.stack>=4
         if S.Apocalypse:IsReady() and (Target:DebuffStackP(S.FesteringWoundDebuff) >= 4) then
             return S.Apocalypse:Cast()

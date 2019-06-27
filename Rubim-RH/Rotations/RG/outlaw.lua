@@ -312,7 +312,7 @@ local function CDs ()
 
 
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     
     if S.Dismantle:IsAvailable() and S.Dismantle:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsBursting() then
         if Target:IsInRange(15) and not Player:IsStealthed() then

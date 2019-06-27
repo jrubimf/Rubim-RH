@@ -384,7 +384,7 @@ local function APL()
 		return QueueSkill()
     end
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- Pummel
     if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()

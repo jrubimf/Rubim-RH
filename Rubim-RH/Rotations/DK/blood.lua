@@ -496,7 +496,7 @@ local function APL()
     end
 
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	
     -- mind_freeze
     if S.MindFreeze:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then

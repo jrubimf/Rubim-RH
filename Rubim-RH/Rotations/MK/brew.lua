@@ -192,7 +192,7 @@ local Precombat_DBM, Precombat
     end
 	
 	-- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 
     if Player:IsChanneling() or Player:IsCasting() then
         return 0, 236353

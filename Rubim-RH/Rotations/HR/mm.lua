@@ -278,7 +278,7 @@ local function APL ()
     Cds = function()
 		-- actions.cds+=/call_action_list,name=essences
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- hunters_mark,if=debuff.hunters_mark.down&!buff.trueshot.up
         if S.HuntersMark:IsCastableP() and (Target:DebuffDown(S.HuntersMarkDebuff) and not Player:BuffP(S.TrueshotBuff)) then
             return S.HuntersMark:Cast()

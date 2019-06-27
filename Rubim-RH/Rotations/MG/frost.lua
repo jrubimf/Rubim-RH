@@ -302,7 +302,7 @@ local function APL()
     end
     Cooldowns = function()
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
         -- time_warp
         -- icy_veins
         if S.IcyVeins:IsReadyP() and RubimRH.CDsON() then

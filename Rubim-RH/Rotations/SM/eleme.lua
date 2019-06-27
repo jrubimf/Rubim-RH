@@ -585,7 +585,7 @@ local function APL()
     end
 	
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear

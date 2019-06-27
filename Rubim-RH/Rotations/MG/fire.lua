@@ -565,7 +565,7 @@ local function APL()
       end
     -- counterspell
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
     -- mirror_image,if=buff.combustion.down
     if S.MirrorImage:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then
     return S.MirrorImage:Cast()
