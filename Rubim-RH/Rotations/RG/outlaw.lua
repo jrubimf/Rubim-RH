@@ -253,7 +253,7 @@ local function Ambush_Condition ()
 end
 -- # With multiple targets, this variable is checked to decide whether some CDs should be synced with Blade Flurry
 -- actions+=/variable,name=blade_flurry_sync,value=spell_targets.blade_flurry<2&raid_event.adds.in>20|buff.blade_flurry.up
-local function Blade_Flurry_Sync ()
+local function Blade_Flurry_Sync()
     return not RubimRH.AoEON() or Cache.EnemiesCount[BladeFlurryRange] < 2 or Player:BuffP(S.BladeFlurry)
   end
 
@@ -269,8 +269,8 @@ end
 
 -- # Essences
 local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
+  -- blood_of_the_enemy,if=variable.blade_flurry_sync
+  if S.BloodOfTheEnemy:IsCastableP() and Blade_Flurry_Sync() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
