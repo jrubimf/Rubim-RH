@@ -344,44 +344,44 @@ end
 -- This returns a table with the original Stealth spell and the result of the Stealthed action list as if the applicable buff was present
 
 -- # Essences
-local function Essences ()
+local function Essences()
   -- blood_of_the_enemy
   if S.BloodOfTheEnemy:IsCastableP() then
-    return S..BloodOfTheEnemy:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
   if S.ConcentratedFlame:IsCastableP() then
-    return S..BloodOfTheEnemy:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
   if S.GuardianOfAzeroth:IsCastableP() then
-    return S..GuardianOfAzeroth:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- focused_azerite_beam
   if S.FocusedAzeriteBeam:IsCastableP() then
-    return S..FocusedAzeriteBeam:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
-    return S..PurifyingBlast:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- the_unbound_force
   if S.TheUnboundForce:IsCastableP() then
-    return S..TheUnboundForce:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- ripple_in_space
   if S.RippleInSpace:IsCastableP() then
-    return S..RippleInSpace:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
   -- worldvein_resonance
   if S.WorldveinResonance:IsCastableP() then
-    return S..WorldveinResonance:Cast()
+    return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- memory_of_lucid_dreams,if=energy<40
-  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 40 then
-    return S..MemoryOfLucidDreams:Cast()
+  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  if S.MemoryOfLucidDreams:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
   end
-  return false;
+  return false
 end
 
 -- # Cooldowns
@@ -537,47 +537,6 @@ local function Custom()
     if S.Evasion:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[261].sk3 and Player:LastSwinged() <= 3 then
         return S.Evasion:Cast()
     end
-end
-
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
 end
 
 -- APL Main
