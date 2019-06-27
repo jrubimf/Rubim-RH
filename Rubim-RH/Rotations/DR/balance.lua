@@ -54,6 +54,10 @@ RubimRH.Spell[102] = {
     SolarBeam                             = Spell(78675),
 	LivelySpirit                          = Spell(279642),
 	LivelySpiritBuff                      = Spell(279646),
+	StreakingStars                        = Spell(272871),
+	ShootingStars                         = Spell(202342),
+    NaturesBalance                        = Spell(202430),
+	
 	
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
