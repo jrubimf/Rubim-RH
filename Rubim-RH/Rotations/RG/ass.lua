@@ -418,8 +418,8 @@ end
 
 -- # Essences
 local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
+  -- actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
+  if RubimRH.CDsON() and not Player:IsStealthedP(true, true) and Target:DebuffP(S.Rupture) and MasterAssassinRemains() <= 0 then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
@@ -460,9 +460,14 @@ end
 local function CDs ()
     if Target:IsInRange("Melee") then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
-        -- Racials
+        
+		--actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
+        local ShouldReturn = Essences();
+		if ShouldReturn and (true) and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then
+		    return ShouldReturn; 
+		end
+        
+		-- Racials
         if Target:Debuff(S.Vendetta) then
             -- actions.cds+=/blood_fury,if=debuff.vendetta.up
             if S.BloodFury:IsReady() then
@@ -474,13 +479,13 @@ local function CDs ()
             end
 
             --actions.cds+=/fireblood,if=debuff.vendetta.up
-            --if S.Fireblood:IsReady() then
-              --  return S.Fireblood:Cast()
-            --end
+            if S.Fireblood:IsReady() then
+              return S.Fireblood:Cast()
+            end
             --actions.cds+=/ancestral_call,if=debuff.vendetta.up
-            --if S.AncestralCall:IsReady() then
-            --  return S.AncestralCall:Cast()
-            --end
+            if S.AncestralCall:IsReady() then
+              return S.AncestralCall:Cast()
+            end
         end
 		
 						 	        if Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then 
