@@ -502,7 +502,7 @@ local function APL()
     -- call_action_list,name=essences
     local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	
-	-- Power Word: Shield
+	-- Power Word: Shield with WeakenedSoulDebuff check
 	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()
     end
