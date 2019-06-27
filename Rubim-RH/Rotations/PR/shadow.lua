@@ -56,6 +56,7 @@ RubimRH.Spell[258] = {
   VampiricEmbrace                       = Spell(15286),
   PowerWordShield                       = Spell(17),
   WeakenedSoulDebuff                    = Spell(6788),
+  BodyAndSoul                           = Spell(64129),
   
   --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
@@ -500,12 +501,26 @@ local function APL()
 		return QueueSkill()
     end
     -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end
+	
+    -- shadow_word_pain,if=moving
+    if S.ShadowWordPain:IsCastableP() and Player:IsMoving() then
+      return S.ShadowWordPain:Cast()
+    end
+	
+	-- Shield for Speed
+	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:IsMoving() and S.BodyAndSoul:IsAvailable() then
+        return S.PowerWordShield:Cast()
+    end
 	
 	-- Power Word: Shield with WeakenedSoulDebuff check
 	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:HealthPercentage() <= RubimRH.db.profile[258].sk4 then
         return S.PowerWordShield:Cast()
     end
+
 
 	-- void_bolt
 	if Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2 then
