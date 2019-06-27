@@ -69,6 +69,7 @@ RubimRH.Spell[104] = {
     Growl = Spell(6795),
     SkullBash = Spell(106839),
 	RemoveCorruption = Spell(2782),
+	IncapacitatingRoar = Spell(99),
     -- Affinity
     FerociousBite = Spell(22568),
     HealingTouch = Spell(5185),
@@ -206,7 +207,7 @@ local function Bear()
 	end
 
 	-- Survival Instincts
-	if S.SurvivalInstincts:ChargesFractional() >= 1	and not Player:BuffP(S.Barkskin) and not Player:BuffP(S.SurvivalInstincts) and Player:HealthPercentage() <= RubimRH.db.profile[104].sk2 then
+	if S.SurvivalInstincts:ChargesFractional() >= 1	and active_enemies() >= 3 and not Player:BuffP(S.Barkskin) and not Player:BuffP(S.SurvivalInstincts) and Player:HealthPercentage() <= RubimRH.db.profile[104].sk2 then
 		return S.SurvivalInstincts:Cast()
 	end
 
@@ -401,7 +402,15 @@ local function APL()
     end
 	
 	-- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end
+	
+	-- interrupt IncapacitatingRoar
+    if S.IncapacitatingRoar:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and active_enemies() > 2 then
+        return S.IncapacitatingRoar:Cast()
+    end
 	
     -- interrupt
     if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
