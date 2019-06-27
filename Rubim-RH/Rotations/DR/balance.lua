@@ -711,39 +711,39 @@ local function APL()
 		
 		-- blood_of_the_enemy,if=cooldown.ca_inc.remains>30
         if S.BloodOfTheEnemy:IsCastableP() and (CaInc():CooldownRemainsP() > 30) then
-          return S.BloodOfTheEnemy:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- memory_of_lucid_dreams,if=dot.sunfire.remains>10&dot.moonfire.remains>10&(!talent.stellar_flare.enabled|dot.stellar_flare.remains>10)&(astral_power<40|cooldown.ca_inc.remains>30)&!buff.ca_inc.up
         if S.MemoryOfLucidDreams:IsCastableP() and (Target:DebuffRemainsP(S.SunfireDebuff) > 10 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 10) and (FutureAstralPower() < 40 or CaInc():CooldownRemainsP() > 30) and not Player:BuffP(CaInc())) then
-          return S.MemoryOfLucidDreams:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- purifying_blast
         if S.PurifyingBlast:IsCastableP() then
-          return S.PurifyingBlast:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- ripple_in_space
         if S.RippleInSpace:IsCastableP() then
-          return S.RippleInSpace:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- concentrated_flame
         if S.ConcentratedFlame:IsCastableP() then
-          return S.ConcentratedFlame:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- the_unbound_force,if=buff.reckless_force.up|time<5
         if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForce) or HL.CombatTime() < 5) then
-          return S.TheUnboundForce:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- worldvein_resonance
         if S.WorldveinResonance:IsCastableP() then
-          return S.WorldveinResonance:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- focused_azerite_beam
         if S.FocusedAzeriteBeam:IsCastableP() then
-            return S.FocusedAzeriteBeam:Cast()
+            return S.UnleashHeartOfAzeroth:Cast()
         end
         -- guardian_of_azeroth
         if S.GuardianOfAzeroth:IsCastableP() then
-          return S.GuardianOfAzeroth:Cast()
+          return S.UnleashHeartOfAzeroth:Cast()
         end
         -- thorns
         if S.Thorns:IsCastableP() then
