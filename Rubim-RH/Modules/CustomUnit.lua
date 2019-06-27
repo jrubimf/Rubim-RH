@@ -276,13 +276,13 @@ function Unit:IsInterruptible()
 	local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
 	
 	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
-	    currentList = RubimRH.db.profile.mainOption.mythicList
+	    currentList = RubimRH.List.PvEInterrupts
 	elseif RubimRH.db.profile.mainOption.activeList == "PvP" then
-	    currentList = RubimRH.db.profile.mainOption.pvpList
+	    currentList = RubimRH.List.PvPInterrupts
 	elseif RubimRH.db.profile.mainOption.activeList == "Mixed PvE PvP" then
-		currentList = RubimRH.db.profile.mainOption.mixedList
+		currentList = RubimRH.List.MixedInterrupts
 	else 
-	    currentList = RubimRH.db.profile.mainOption.customList
+	    currentList = RubimRH.List.CustomInterrupts
 	end	
 	
 	if not self:IsCasting() and not self:IsChanneling() then
@@ -293,6 +293,12 @@ function Unit:IsInterruptible()
         return false
     end
 	
+	-- Interrupt Everything
+	if RubimRH.InterruptEverythingON() and self:IsCasting() then
+	    return true
+	end
+	
+     -- Profils List	
 	if currentList[spellId] then
 
         if self:IsCasting() and RubimRH.InstantInterruptON() then

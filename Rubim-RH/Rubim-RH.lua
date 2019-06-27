@@ -244,7 +244,7 @@ local defaults = {
     },
 	profile = {
         mainOption = {
-            version = 15062019,
+            version = 27062019,
             cooldownbind = nil,
             interruptsbind = nil,
             aoebind = nil,
@@ -253,6 +253,7 @@ local defaults = {
             PerfectPull = false,
             Precombat = true,
 			InstantInterrupt = false,
+			InterruptEverything = false,
             useInterrupts = true,
             useRacial = true,
             startattack = false,
@@ -1310,12 +1311,12 @@ function RubimRH:OnInitialize()
     self.db.RegisterCallback(self, "OnNewProfile", "OnNewProfile")
     self:SetupOptions()
 
-    if RubimRH.db.profile.mainOption.version ~= (15062019) then
+    if RubimRH.db.profile.mainOption.version ~= (27062019) then
         self.db:ResetDB(defaultProfile)
         message("New version:\nResetting Profile")
         print("Reseting profile to avoid bugs")
         print("If you still have issues, delete your Rubim.lua in WTF folder")
-        RubimRH.db.profile.mainOption.version = 15062019
+        RubimRH.db.profile.mainOption.version = 27062019
     end
 
 

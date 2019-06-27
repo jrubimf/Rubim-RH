@@ -861,6 +861,20 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local interruptList_title = StdUi:FontString(tab.frame, '');
             StdUi:GlueTop(interruptList_title, tab.frame, 0, 0, 'CENTER');
 
+			-- Interrupt Everything
+            local InterruptEverythingbutton = StdUi:Checkbox(tab.frame, 'Interrupt Everything');                    
+		    -- Set this checkbox a tooltip
+			StdUi:FrameTooltip(InterruptEverythingbutton, 'This will interrupt everything', 'TOPLEFT', 'TOPRIGHT', true);                    
+			-- Set default value (checked, unchecked)and save it to db 
+			InterruptEverythingbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
+			-- Set positionning
+            StdUi:GlueBelow(InterruptEverythingbutton, interruptList_title, 170, -10, 'LEFT');
+            -- What to do on value change                    
+		    function InterruptEverythingbutton:OnValueChanged(value)
+		    -- See Rubim-RHc.lua 
+                 RubimRH.InterruptEverythingToggle()
+            end
+			
 			-- Instant Interrupt
             local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
 		    -- Set this checkbox a tooltip
@@ -1061,9 +1075,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 { text = 'PvP', value = "PvP" },
                 { text = 'Mixed PvE PvP', value = "Mixed PvE PvP" },
                 { text = 'Custom', value = "Custom" },
-            }
-			
-			
+            }			
 			
             local chooseprofil = StdUi:Dropdown(tab.frame, 100, 20, interruptProfilschoice, nil, nil);
                 chooseprofil:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile.mainOption.activeList);
@@ -1072,38 +1084,42 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 StdUi:GlueTop(chooseprofillabel, chooseprofil, 0, 16);
 			 	StdUi:FrameTooltip(chooseprofil, 'Choose between interrupts profils', 'TOPLEFT', 'TOPRIGHT', true);                
                 chooseprofil.OnValueChanged = function(self, val)
+				
+				--local currentList = RubimRH.db.profile.mainOption.activeList
                 
-                if val == "Mythic+" then
+				
+				if val == "Mythic+" then
                     print("Interrupt profil set on Mythic+")
                     RubimRH.db.profile.mainOption.activeList = val
                     --currentList = RubimRH.db.profile.mainOption.mythicList
 					currentList = RubimRH.List.PvEInterrupts
                     RubimRH.RefreshList()
-
                     
                 elseif val == "PvP" then
                     print("Interrupt profil set on PvP")
                     RubimRH.db.profile.mainOption.activeList = val
-                    currentList = RubimRH.db.profile.mainOption.pvpList
+                    --currentList = RubimRH.db.profile.mainOption.pvpList
+					currentList = RubimRH.List.PvPInterrupts
                     RubimRH.RefreshList()
-
                     
                 elseif val == "Mixed PvE PvP" then
                     print("Interrupt profil set on Mixed PvE PvP")
                     RubimRH.db.profile.mainOption.activeList = val
-                    currentList = RubimRH.db.profile.mainOption.mixedList
+                    currentList = RubimRH.List.MixedInterrupts
                     RubimRH.RefreshList()
                
                 elseif val == "Custom" then
                     print("Interrupt profil set on Custom")
                     RubimRH.db.profile.mainOption.activeList = val
-                    currentList = RubimRH.db.profile.mainOption.customList
+                    currentList = RubimRH.List.CustomInterrupts
                     RubimRH.RefreshList()
-                else
+                
+				else
                     print("An error as occured, no data :( Try to delete Rubim.lua in your WTF folder")
+					currentList = RubimRH.List.PvEInterrupts
                     RubimRH.RefreshList()
                 end
-                return currentList
+                return currentList				
             end
             --StdUi:GlueTop(chooseprofil, tab.frame, 10, -60, 'LEFT');    
             StdUi:GlueBelow(chooseprofil, interruptList_title, -250, -30, 'LEFT');
@@ -1128,7 +1144,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         castTime = castTime,
                         minRange = minRange,
                         maxRange = maxRange,
-                        spellId = spellId;
+                        spellId = spellId,
                         zone = zone,
                         useKick = useKick,
                         useCC = useCC,
@@ -1158,7 +1174,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
 
                 if tempAddSpell ~= 0 and currentList[tempAddSpell] == nil then
-                    currentList[tempAddSpell] = {true, Zone = "Custom"}
+                    currentList[tempAddSpell] = {true, Zone = "Custom", useKick = true, useCC = false}
                 end
 
                 local data = {};
@@ -1167,15 +1183,21 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
                 st:SetData(data);
             end
-
+			
             function RubimRH.RefreshList()
                 local data = {};
-                for i, spell in pairs(currentList) do
-                    table.insert(data, addSpell(i));
-                end
-                st:SetData(data);
+				                
+				if currentList ~= nil then 
+    				for i, spell in pairs(currentList) do
+                        table.insert(data, addSpell(i));
+                    end
+				end  
+                print(currentList)
+				
+				st:SetData(data);
                 st:ClearSelection()
             end
+			
             local function btn_delSpell()
                 if selectedSpell ~= nil then
                     RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\button.ogg")
@@ -1183,9 +1205,12 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     selectedSpell = nil
 
                     local data = {};
-                    for i, spell in pairs(currentList) do
-                        table.insert(data, addSpell(i));
-                    end
+
+                -- insert currentList values
+                for i, spell in pairs(currentList) do
+                    table.insert(data, addSpell(i));
+                end
+
                     st:SetData(data);
                     st:ClearSelection()
                     return
