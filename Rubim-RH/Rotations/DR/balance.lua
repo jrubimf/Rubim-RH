@@ -61,6 +61,7 @@ RubimRH.Spell[102] = {
 	
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
+	UnleashHeartOfAzeroth                 = Spell(280431),
     BloodOfTheEnemy                       = Spell(297108),
     BloodOfTheEnemy2                      = Spell(298273),
     BloodOfTheEnemy3                      = Spell(298277),
@@ -91,35 +92,7 @@ RubimRH.Spell[102] = {
     GuardianOfAzeroth3                    = Spell(299358),
     Thorns                                = Spell(236696),
 	
-		  --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
+
 };
 local S = RubimRH.Spell[102];
 
@@ -363,7 +336,7 @@ local function Dot ()
     if Evaluate_Moonfire_Target(Target) then
         return S.Moonfire:Cast()
     end
-    if S.StellarFlare:IsReady() and Evaluate_StellarFlare_Target(Target) then
+    if S.StellarFlare:IsReady() and not Player:PrevGCDP(1, S.StellarFlare) and Evaluate_StellarFlare_Target(Target) then
         return S.StellarFlare:Cast()
     end
 end
@@ -514,7 +487,7 @@ local function APL()
             return S.Moonfire:Cast()
         end
         -- stellar_flare,target_if=refreshable,if=target.time_to_die>10
-        if S.StellarFlare:IsReady() and Target:DebuffRemains(S.StellarFlare) <= 3 and (Target:TimeToDie() > 10) then
+        if S.StellarFlare:IsReady() and not Player:PrevGCDP(1, S.StellarFlare) and Target:DebuffRemains(S.StellarFlare) <= 3 and (Target:TimeToDie() > 10) then
             return S.StellarFlare:Cast()
         end
         -- lunar_strike,if=(buff.lunar_empowerment.stack=3|buff.solar_empowerment.stack=2&buff.lunar_empowerment.stack=2&astral_power>=40)&astral_power.deficit>14
@@ -588,7 +561,7 @@ local function APL()
             return S.Sunfire:Cast()
         end
         -- stellar_flare,target_if=refreshable,if=buff.the_emerald_dreamcatcher.remains>gcd.max|!buff.the_emerald_dreamcatcher.up
-        if S.StellarFlare:IsReady() and Target:DebuffRemains(S.StellarFlare) <= 3 and (Player:BuffRemains(S.TheEmeraldDreamcatcherBuff) > Player:GCD() or not Player:Buff(S.TheEmeraldDreamcatcherBuff)) then
+        if S.StellarFlare:IsReady() and not Player:PrevGCDP(1, S.StellarFlare) and Target:DebuffRemains(S.StellarFlare) <= 3 and (Player:BuffRemains(S.TheEmeraldDreamcatcherBuff) > Player:GCD() or not Player:Buff(S.TheEmeraldDreamcatcherBuff)) then
             return S.StellarFlare:Cast()
         end
         -- starfall,if=buff.oneths_overconfidence.up&(buff.the_emerald_dreamcatcher.remains>gcd.max|!buff.the_emerald_dreamcatcher.up)
@@ -642,7 +615,7 @@ local function APL()
             return S.Sunfire:Cast()
         end
         -- stellar_flare,target_if=refreshable,if=target.time_to_die>10
-        if S.StellarFlare:IsReady() and Target:DebuffRemains(S.StellarFlare) <= 3 and (Target:TimeToDie() > 10) then
+        if S.StellarFlare:IsReady() and not Player:PrevGCDP(1, S.StellarFlare) and Target:DebuffRemains(S.StellarFlare) <= 3 and (Target:TimeToDie() > 10) then
             return S.StellarFlare:Cast()
         end
         -- solar_wrath,if=(buff.solar_empowerment.stack=3|buff.solar_empowerment.stack=2&buff.lunar_empowerment.stack=2&astral_power>=40)&astral_power.deficit>10
