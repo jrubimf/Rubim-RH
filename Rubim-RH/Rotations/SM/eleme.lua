@@ -61,7 +61,7 @@ RubimRH.Spell[262] = {
   CallLightning                         = Spell(157348),    
   AstralShift                           = Spell(108271),    
   
-  		  --8.2 Essences
+  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -585,7 +585,10 @@ local function APL()
     end
 	
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear
