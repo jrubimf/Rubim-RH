@@ -415,9 +415,9 @@ local function APL()
     end
 	
 	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
-		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[5] >= 2 and Cache.EnemiesCount[5] < 6 and CombatTime("player") > 0 and 
+		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[8] >= 2 and Cache.EnemiesCount[8] < 6 and CombatTime("player") > 0 and 
 ( -- Moonfire
-    not IsSpellInRange(8921, "target") or   
+       
     (
         CombatTime("target") == 0 and
         not Player:InPvP()
