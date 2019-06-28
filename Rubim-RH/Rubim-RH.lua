@@ -1199,6 +1199,17 @@ mythicList = {
             sk2id = 61336, -- SurvivalInstincts
             sk2tooltip = "Percent HP to use Survival Instincts",
 			
+            sk3= 30, -- FrenziedRegeneration
+            sk3id = 22842, -- FrenziedRegeneration
+            sk3tooltip = "Percent HP to use Frenzied Regeneration",
+			
+            sk4 = 30, -- LunarBeam
+            sk4id = 204066, -- LunarBeam
+            sk4tooltip = "Percent HP to use Lunar Beam",
+			
+            sk5 = 30, -- BristlingFur
+            sk5id = 155835, -- BristlingFur
+            sk5tooltip = "Percent HP to use Bristling Fur",			
 
         },
 		[105] = {
