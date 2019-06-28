@@ -154,7 +154,6 @@ local function APL()
     local DelayAction =
         S.Fracture:TimeSinceLastCast() > Player:GCD()
     and S.Shear:TimeSinceLastCast() > Player:GCD() 
-    and S.InfernalStrike:TimeSinceLastCast() > Player:GCD()
     and S.FelDevastation:TimeSinceLastCast() > Player:GCD()
     and S.Felblade:TimeSinceLastCast() > Player:GCD()
     and S.ImmolationAura:TimeSinceLastCast() > Player:GCD()
@@ -222,7 +221,7 @@ local function APL()
     Defensives = function()
         --# Defensives
         --actions.defensives=demon_spikes
-        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 and Player:BuffDownP(S.Metamorphosis) then
+        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 and not Player:BuffP(S.Metamorphosis) then
             return S.DemonSpikes:Cast()
         end
 
