@@ -17,12 +17,10 @@ local select = select;
 Player.CSPrediction = {
     CritCount = 0;
 };
--- Rotation Var
+
 local ChaosStrikeMHDamageID = 222031;
 local AnnihilationMHDamageID = 227518;
 local ChaosStrikeEnergizeId = 193840;
-
-local ShouldReturn; -- Used to get the return string
 
 -- Return CS adjusted Fury HeroLib
 function Player:FuryWithCSRefund()
@@ -108,90 +106,112 @@ RubimRH.Spell[577] = {
     RevolvingBlades = Spell(279581),
     UnboundChaos = Spell(275144),
     ChaoticTransformation = Spell(288754),
-	
-  --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
-}
-local S = RubimRH.Spell[577]
 
--- Items
-if not Item.DemonHunter then Item.DemonHunter = {} end
+    --8.2 Essences
+    HoA                   = Spell(280431),
+    BloodOfTheEnemy       = Spell(297108),
+    BloodOfTheEnemy2      = Spell(298273),
+    BloodOfTheEnemy3      = Spell(298277),
+    ConcentratedFlame     = Spell(295373),
+    ConcentratedFlame2    = Spell(299349),
+    ConcentratedFlame3    = Spell(299353),
+    GuardianOfAzeroth     = Spell(295840),
+    GuardianOfAzeroth2    = Spell(299355),
+    GuardianOfAzeroth3    = Spell(299358),
+    FocusedAzeriteBeam    = Spell(295258),
+    FocusedAzeriteBeam2   = Spell(299336),
+    FocusedAzeriteBeam3   = Spell(299338),
+    PurifyingBlast        = Spell(295337),
+    PurifyingBlast2       = Spell(299345),
+    PurifyingBlast3       = Spell(299347),
+    TheUnboundForce       = Spell(298452),
+    TheUnboundForce2      = Spell(299376),
+    TheUnboundForce3      = Spell(299378),
+    RippleInSpace         = Spell(302731),
+    RippleInSpace2        = Spell(302982),
+    RippleInSpace3        = Spell(302983),
+    WorldveinResonance    = Spell(295186),
+    WorldveinResonance2   = Spell(298628),
+    WorldveinResonance3   = Spell(299334),
+    MemoryOfLucidDreams   = Spell(298357),
+    MemoryOfLucidDreams2  = Spell(299372),
+    MemoryOfLucidDreams3  = Spell(299374),
+}
+
+
+if not Item.DemonHunter then
+    Item.DemonHunter = {};
+end
 Item.DemonHunter.Havoc = {
-  BattlePotionofAgility                       = Item(163223),
-  VariableIntensityGigavoltOscillatingReactor = Item(165572)
 };
 local I = Item.DemonHunter.Havoc;
-
+local S = RubimRH.Spell[577]
 
 S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }
 S.Metamorphosis.TextureSpellID = { 187827 }
 
---Essences
+
 local function DetermineEssenceRanks()
-  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
-  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
-  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
-  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
-  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
-  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
-  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
-  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
-  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
-  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
-  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
-  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
-  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
-  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
-  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
-  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
-  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
-  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
+    S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+    S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+    S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+    S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+    S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+    S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+    S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+    S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+    S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+    S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+    S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+    S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+    S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+    S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+    S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+    S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+    S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+    S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
 end
+-- Variables
+local VarPoolingForMeta = 0;
+local VarWaitingForNemesis = 0;
+local VarBladeDance = 0;
+local VarPoolingForBladeDance = 0;
+local VarPoolingForEyeBeam = 0;
+local VarWaitingForMomentum = 0;
+local VarWaitingForDarkSlash = 0;
+
+HL:RegisterForEvent(function()
+    VarPoolingForMeta = 0
+    VarWaitingForNemesis = 0
+    VarBladeDance = 0
+    VarPoolingForBladeDance = 0
+    VarPoolingForEyeBeam = 0
+    VarWaitingForMomentum = 0
+    VarWaitingForDarkSlash = 0
+end, "PLAYER_REGEN_ENABLED")
 
 -- Rotation Var
+
 local CleaveRangeID = tostring(S.ConsumeMagic:ID()); -- 20y range
 
-local EnemyRanges = {40, 30, 20, 10, 8}
+local EnemyRanges = { "Melee", 8, 10, 20, 30, 40 }
 local function UpdateRanges()
-  for _, i in ipairs(EnemyRanges) do
-    HL.GetEnemies(i);
-  end
+    for _, i in ipairs(EnemyRanges) do
+        HL.GetEnemies(i);
+    end
 end
 
 local function num(val)
-  if val then return 1 else return 0 end
+    if val then
+        return 1
+    else
+        return 0
+    end
 end
 
 local function bool(val)
-  return val ~= 0
+    return val ~= 0
 end
 
 local function IsInMeleeRange()
@@ -218,49 +238,18 @@ local function IsMetaExtendedByDemonic()
     return false;
 end
 
-local function MetamorphosisCooldownAdjusted()
-    -- TODO: Make this better by sampling the Fury expenses over time instead of approximating
-    if I.ConvergenceofFates:IsEquipped() and I.DelusionsOfGrandeur:IsEquipped() then
-        return S.Metamorphosis:CooldownRemainsP() * 0.56;
-    elseif I.ConvergenceofFates:IsEquipped() then
-        return S.Metamorphosis:CooldownRemainsP() * 0.78;
-    elseif I.DelusionsOfGrandeur:IsEquipped() then
-        return S.Metamorphosis:CooldownRemainsP() * 0.67;
-    end
-    return S.Metamorphosis:CooldownRemainsP()
-end
-
-
 local T202PC, T204PC = HL.HasTier("T20");
 local T212PC, T214PC = HL.HasTier("T21");
-
--- Variables
-local VarPoolingForMeta = 0;
-local VarWaitingForNemesis = 0;
-local VarBladeDance = 0;
-local VarPoolingForBladeDance = 0;
-local VarPoolingForEyeBeam = 0;
-local VarWaitingForMomentum = 0;
-local VarWaitingForDarkSlash = 0;
 
 -- Spells Config
 --{ spellID = FelRush, isActive = true },
 --{ spellID = EyeBeam, isActive = true },
 --{ spellID = FelBarrage, isActive = true }
 
-HL:RegisterForEvent(function()
-  VarPoolingForMeta = 0
-  VarWaitingForNemesis = 0
-  VarBladeDance = 0
-  VarPoolingForBladeDance = 0
-  VarPoolingForEyeBeam = 0
-  VarWaitingForMomentum = 0
-  VarWaitingForDarkSlash = 0
-end, "PLAYER_REGEN_ENABLED")
-
 local OffensiveCDs = {
     S.Nemesis,
     S.Metamorphosis,
+    S.EyeBeam,
 }
 
 local function UpdateCDs()
@@ -280,47 +269,6 @@ local function UpdateCDs()
             end
         end
     end
-end
-
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
 end
 
 -- Main APL
@@ -352,8 +300,8 @@ local function APL()
         --end
         return 0, 462338
     end
-	
-	Precombat_DBM = function()
+
+    Precombat_DBM = function()
         -- flask
         -- augmentation
         -- food
@@ -370,15 +318,56 @@ local function APL()
         if S.DemonsBite:IsReady() and IsInMeleeRange() and (true) and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
             return S.DemonsBite:Cast()
         end
-  end
+        return 0, 462338
+    end
+    Essences = function()
+        -- concentrated_flame
+        if S.ConcentratedFlame:IsReady() then
+          return S.HoA:Cast()
+        end
+        -- blood_of_the_enemy
+        if S.BloodOfTheEnemy:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- guardian_of_azeroth
+        if S.GuardianOfAzeroth:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- focused_azerite_beam
+        if S.FocusedAzeriteBeam:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- purifying_blast
+        if S.PurifyingBlast:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- the_unbound_force
+        if S.TheUnboundForce:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- ripple_in_space
+        if S.RippleInSpace:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- worldvein_resonance
+        if S.WorldveinResonance:IsReady() then
+            return S.HoA:Cast()
+        end
+        -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+        if S.MemoryOfLucidDreams:IsReady() and (Player:Fury() < 40 and Player:BuffP(S.MetamorphosisBuff)) then
+            return S.HoA:Cast()
+        end
+    end
+
+
 
     Cooldown = function()
         -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|variable.waiting_for_nemesis)|target.time_to_die<25
-        if S.Metamorphosis:IsCastable() and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingForNemesis)) or Target:TimeToDie() < 25) then
+        if S.Metamorphosis:IsCastable() and Cache.EnemiesCount[8] > 0 and (not (S.Demonic:IsAvailable() or bool(VarPoolingForMeta) or bool(VarWaitingForNemesis)) or 10000000000 < 25) then
             return S.Metamorphosis:Cast()
         end
         -- metamorphosis,if=talent.demonic.enabled&(!azerite.chaotic_transformation.enabled|(cooldown.eye_beam.remains>20&cooldown.blade_dance.remains>gcd.max))
-        if S.Metamorphosis:IsCastable() and (S.Demonic:IsAvailable() and (not S.ChaoticTransformation:AzeriteEnabled() or (S.EyeBeam:CooldownRemainsP() > 20 and S.BladeDance:CooldownRemainsP() > Player:GCD()))) then
+        if S.Metamorphosis:IsCastable() and Cache.EnemiesCount[8] > 0 and (S.Demonic:IsAvailable() and (not S.ChaoticTransformation:AzeriteEnabled() or (S.EyeBeam:CooldownRemainsP() > 20 and S.BladeDance:CooldownRemainsP() > Player:GCD()))) then
             return S.Metamorphosis:Cast()
         end
         -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
@@ -401,9 +390,9 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
-
+        if RubimRH.CDsON() and Essences() ~= nil then
+            return Essences()
+        end
     end
 
     DarkSlash = function()
@@ -412,7 +401,7 @@ local function APL()
             return S.DarkSlash:Cast()
         end
         -- annihilation,if=debuff.dark_slash.up
-        if S.Annihilation:IsReadyMorph() and IsInMeleeRange() and (Target:DebuffP(S.DarkSlashDebuff)) then
+        if S.Annihilation:IsReadyMorph() and Cache.EnemiesCount[8] > 0 and (Target:DebuffP(S.DarkSlashDebuff)) then
             return S.Annihilation:Cast()
         end
         -- chaos_strike,if=debuff.dark_slash.up
@@ -444,7 +433,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- annihilation,if=!variable.pooling_for_blade_dance
-        if S.Annihilation:IsReadyMorph() and IsInMeleeRange() and (not bool(VarPoolingForBladeDance)) then
+        if S.Annihilation:IsReadyMorph() and Cache.EnemiesCount[8] > 0 and (not bool(VarPoolingForBladeDance)) then
             return S.Annihilation:Cast()
         end
         -- felblade,if=fury.deficit>=40
@@ -504,7 +493,7 @@ local function APL()
             return S.ImmolationAura:Cast()
         end
         -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-        if S.EyeBeam:IsReady() and active_enemies() >= 1 and (active_enemies() >= 1 and not bool(VarWaitingForMomentum)) then
+        if S.EyeBeam:IsReady() and  Cache.EnemiesCount[8] > 1 and (Cache.EnemiesCount[8] > 1 and not bool(VarWaitingForMomentum)) then
             return S.EyeBeam:Cast()
         end
         -- blade_dance,if=variable.blade_dance
@@ -532,7 +521,7 @@ local function APL()
             return S.ChaosStrike:Cast()
         end
         -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-        if S.EyeBeam:IsReady() and Cache.EnemiesCount[10] >= 1 and (S.BlindFury:IsAvailable()) then
+        if S.EyeBeam:IsReady() and Cache.EnemiesCount[8] >= 1 and (S.BlindFury:IsAvailable()) then
             return S.EyeBeam:Cast()
         end
         -- demons_bite
@@ -562,14 +551,6 @@ local function APL()
         return 0, 135328
     end
 
-   if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
-        return Precombat()
-    end
-	
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
-        return Precombat()
-    end
-	
     -- call DBM precombat
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
         return Precombat_DBM()
@@ -579,76 +560,73 @@ local function APL()
         return Precombat()
 	end
 
-	if RubimRH.TargetIsValid() then
-        -- variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
-        if (true) then
-            VarBladeDance = num(S.FirstBlood:IsAvailable() or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
-        end
-        -- variable,name=waiting_for_nemesis,value=!(!talent.nemesis.enabled|cooldown.nemesis.ready|cooldown.nemesis.remains>target.time_to_die|cooldown.nemesis.remains>60)
-        if (true) then
-            VarWaitingForNemesis = num(not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > Target:TimeToDie() or S.Nemesis:CooldownRemainsP() > 60))
-        end
-        -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)
-        if (true) then
-            VarPoolingForMeta = num(not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10))
-        end
-        -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
-        if (true) then
-            VarPoolingForBladeDance = num(bool(VarBladeDance) and (Player:Fury() < 75 - num(S.FirstBlood:IsAvailable()) * 20))
-        end
-        -- variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
-        if (true) then
-            VarPoolingForEyeBeam = num(S.Demonic:IsAvailable() and not S.BlindFury:IsAvailable() and S.EyeBeam:CooldownRemainsP() < (Player:GCD() * 2) and Player:FuryDeficit() > 20)
-        end
-        -- variable,name=waiting_for_dark_slash,value=talent.dark_slash.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.dark_slash.up
-        if (true) then
-            VarWaitingForDarkSlash = num(S.DarkSlash:IsAvailable() and not bool(VarPoolingForBladeDance) and not bool(VarPoolingForMeta) and S.DarkSlash:CooldownUpP())
-        end
-        -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
-        if (true) then
-            VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
-        end
-
-        if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
-            return S.Darkness:Cast()
-        end
-
-        if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk1 then
-            return S.Blur:Cast()
-        end
-
-        -- disrupt
-        if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-            return S.Disrupt:Cast()
-        end
-
-        if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
-            return S.ConsumeMagic:Cast()
-        end
-
-        -- call_action_list,name=cooldown,if=gcd.remains=0
-        if Cooldown() ~= nil then
-            return Cooldown()
-        end
-        -- pick_up_fragment,if=fury.deficit>=35
-        --if S.PickUpFragment:IsReady() and (Player:FuryDeficit() >= 35) then
-            --return S.PickUpFragment:Cast()
-        --end
-        -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
-        if DarkSlash() ~= nil and (S.DarkSlash:IsAvailable() and (bool(VarWaitingForDarkSlash) or Target:DebuffP(S.DarkSlashDebuff))) then
-            return DarkSlash()
-        end
-        -- run_action_list,name=demonic,if=talent.demonic.enabled
-        if (S.Demonic:IsAvailable()) then
-            return Demonic();
-        end
-        -- run_action_list,name=normal
-        if (true) then
-            return Normal();
-        end
-
-        return 0, 135328
+    -- variable,name=blade_dance,value=talent.first_blood.enabled|set_bonus.tier20_4pc|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
+    if (true) then
+        VarBladeDance = num(S.FirstBlood:IsAvailable() or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
     end
+    -- variable,name=waiting_for_nemesis,value=!(!talent.nemesis.enabled|cooldown.nemesis.ready|cooldown.nemesis.remains>target.time_to_die|cooldown.nemesis.remains>60)
+    if (true) then
+        VarWaitingForNemesis = num(not (not S.Nemesis:IsAvailable() or S.Nemesis:CooldownUpP() or S.Nemesis:CooldownRemainsP() > 10000000000 or S.Nemesis:CooldownRemainsP() > 60))
+    end
+    -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30&(!variable.waiting_for_nemesis|cooldown.nemesis.remains<10)
+    if (true) then
+        VarPoolingForMeta = num(not S.Demonic:IsAvailable() and S.Metamorphosis:CooldownRemainsP() < 6 and Player:FuryDeficit() > 30 and (not bool(VarWaitingForNemesis) or S.Nemesis:CooldownRemainsP() < 10))
+    end
+    -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)
+    if (true) then
+        VarPoolingForBladeDance = num(bool(VarBladeDance) and (Player:Fury() < 75 - num(S.FirstBlood:IsAvailable()) * 20))
+    end
+    -- variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
+    if (true) then
+        VarPoolingForEyeBeam = num(S.Demonic:IsAvailable() and not S.BlindFury:IsAvailable() and S.EyeBeam:CooldownRemainsP() < (Player:GCD() * 2) and Player:FuryDeficit() > 20)
+    end
+    -- variable,name=waiting_for_dark_slash,value=talent.dark_slash.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.dark_slash.up
+    if (true) then
+        VarWaitingForDarkSlash = num(S.DarkSlash:IsAvailable() and not bool(VarPoolingForBladeDance) and not bool(VarPoolingForMeta) and S.DarkSlash:CooldownUpP())
+    end
+    -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
+    if (true) then
+        VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
+    end
+
+    if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
+        return S.Darkness:Cast()
+    end
+
+    if S.Blur:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk1 then
+        return S.Blur:Cast()
+    end
+    -- disrupt
+    if S.Disrupt:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.Disrupt:Cast()
+    end
+
+    if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
+        return S.ConsumeMagic:Cast()
+    end
+
+    -- call_action_list,name=cooldown,if=gcd.remains=0
+    if Cooldown() ~= nil then
+        return Cooldown()
+    end
+    -- pick_up_fragment,if=fury.deficit>=35
+    --if S.PickUpFragment:IsReady() and (Player:FuryDeficit() >= 35) then
+        --return S.PickUpFragment:Cast()
+    --end
+    -- call_action_list,name=dark_slash,if=talent.dark_slash.enabled&(variable.waiting_for_dark_slash|debuff.dark_slash.up)
+    if DarkSlash() ~= nil and (S.DarkSlash:IsAvailable() and (bool(VarWaitingForDarkSlash) or Target:DebuffP(S.DarkSlashDebuff))) then
+        return DarkSlash()
+    end
+    -- run_action_list,name=demonic,if=talent.demonic.enabled
+    if (S.Demonic:IsAvailable()) then
+        return Demonic();
+    end
+    -- run_action_list,name=normal
+    if (true) then
+        return Normal();
+    end
+
+    return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(577, APL)
