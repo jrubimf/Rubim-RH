@@ -84,6 +84,8 @@ RubimRH.Spell[104] = {
     CatForm = Spell(768),
     MoonkinForm = Spell(197625),
     TravelForm = Spell(783),
+	HeartEssence                          = Spell(298554),
+    SharpenedClawsBuff                    = Spell(279943)
 	--8.2 Essences
     UnleashHeartOfAzeroth = Spell(280431),
     BloodOfTheEnemy       = Spell(297108),
@@ -199,7 +201,7 @@ local function Essences()
   if S.WorldveinResonance:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  -- memory_of_lucid_dreams
   if S.MemoryOfLucidDreams:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
@@ -413,6 +415,16 @@ local function APL()
             return S.RemoveCorruption:Cast()
         end
     end
+		
+	-- interrupt IncapacitatingRoar
+    if S.IncapacitatingRoar:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and active_enemies() > 2 then
+        return S.IncapacitatingRoar:Cast()
+    end
+	
+    -- interrupt
+    if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+        return S.SkullBash:Cast()
+    end	
 	
 	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
 		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[8] >= 2 and Cache.EnemiesCount[8] < 6 and CombatTime("player") > 0 and 
@@ -439,16 +451,6 @@ local function APL()
 	if ShouldReturn and (true) then 
 	    return ShouldReturn; 
 	end
-	
-	-- interrupt IncapacitatingRoar
-    if S.IncapacitatingRoar:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and active_enemies() > 2 then
-        return S.IncapacitatingRoar:Cast()
-    end
-	
-    -- interrupt
-    if S.SkullBash:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-        return S.SkullBash:Cast()
-    end
 	
 	return 0, 135328
 end
