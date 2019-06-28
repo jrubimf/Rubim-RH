@@ -114,12 +114,12 @@ local function UpdateRanges()
   end
 end
 
-local Settings.Fire.UseSplashData = true
+local UseSplashData = false
 
 local function GetEnemiesCount(range)
   -- Unit Update - Update differently depending on if splash data is being used
   if RubimRH.AoEON() then
-    if Settings.Fire.UseSplashData then
+    if UseSplashData then
       HL.GetEnemies(range, nil, true, Target)
       return Cache.EnemiesCount[range]
     else
@@ -152,12 +152,12 @@ function S.Firestarter:ActiveRemains()
     return S.Firestarter:IsAvailable() and ((Target:HealthPercentage() > 90) and Target:TimeToX(90, 3) or 0) or 0
 end
 
-HL.RegisterNucleusAbility(157981, 8, 6)               -- Blast Wave
-HL.RegisterNucleusAbility(153561, 8, 6)               -- Meteor
-HL.RegisterNucleusAbility(31661, 8, 6)                -- Dragon's Breath
-HL.RegisterNucleusAbility(44457, 10, 6)               -- Living Bomb
-HL.RegisterNucleusAbility(2120, 8, 6)                 -- Flamestrike
-HL.RegisterNucleusAbility(257541, 8, 6)               -- Phoenix Flames
+--HL.RegisterNucleusAbility(157981, 8, 6)               -- Blast Wave
+--HL.RegisterNucleusAbility(153561, 8, 6)               -- Meteor
+--HL.RegisterNucleusAbility(31661, 8, 6)                -- Dragon's Breath
+--HL.RegisterNucleusAbility(44457, 10, 6)               -- Living Bomb
+--HL.RegisterNucleusAbility(2120, 8, 6)                 -- Flamestrike
+--HL.RegisterNucleusAbility(257541, 8, 6)               -- Phoenix Flames
 
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy

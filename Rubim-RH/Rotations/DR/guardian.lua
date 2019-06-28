@@ -166,8 +166,8 @@ local function Thrash()
   end
 end]]
 
-HL.RegisterNucleusAbility(77758, 8, 6)               -- Thrash (Bear)
-HL.RegisterNucleusAbility(213771, 8, 6)              -- Swipe (Bear)
+--HL.RegisterNucleusAbility(77758, 8, 6)               -- Thrash (Bear)
+--HL.RegisterNucleusAbility(213771, 8, 6)              -- Swipe (Bear)
 
 
 --- ======= ACTION LISTS =======
