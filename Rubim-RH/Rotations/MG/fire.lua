@@ -641,9 +641,9 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- rune_of_power,if=talent.firestarter.enabled&firestarter.remains>full_recharge_time|cooldown.combustion.remains>variable.combustion_rop_cutoff&buff.combustion.down|target.time_to_die<cooldown.combustion.remains&buff.combustion.down
-    if S.RuneofPower:IsCastableP() and (S.Firestarter:IsAvailable() and S.Firestarter:ActiveRemains() > S.RuneofPower:FullRechargeTimeP() or S.RuneofPower:CooldownRemainsP() > combustion_rop_cutoff and Player:BuffDownP(S.CombustionBuff) or Target:TimeToDie() < S.Combustion:CooldownRemainsP() and Player:BuffDownP(S.CombustionBuff)) then
-      return S.RuneofPower:Cast()
-    end
+    --if S.RuneofPower:IsCastableP() and (S.Firestarter:IsAvailable() and S.Firestarter:ActiveRemains() > S.RuneofPower:FullRechargeTimeP() or S.RuneofPower:CooldownRemainsP() > combustion_rop_cutoff and Player:BuffDownP(S.CombustionBuff) or Target:TimeToDie() < S.Combustion:CooldownRemainsP() and Player:BuffDownP(S.CombustionBuff)) then
+    --  return S.RuneofPower:Cast()
+    --end
     -- use_item,name=malformed_heralds_legwraps,if=cooldown.combustion.remains>55
    -- if I.MalformedHeraldsLegwraps:IsReady() and (S.Combustion:CooldownRemainsP() > 55) then
     --  return I.MalformedHeraldsLegwraps:Cast()
