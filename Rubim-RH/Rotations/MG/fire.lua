@@ -114,9 +114,8 @@ local function UpdateRanges()
   end
 end
 
-local UseSplashData = false
-
 local function GetEnemiesCount(range)
+  local UseSplashData = false;
   -- Unit Update - Update differently depending on if splash data is being used
   if RubimRH.AoEON() then
     if UseSplashData then
