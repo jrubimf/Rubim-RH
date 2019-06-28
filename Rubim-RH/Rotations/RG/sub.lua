@@ -377,8 +377,8 @@ local function Essences()
   if S.WorldveinResonance:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  -- memory_of_lucid_dreams,if=energy<40&buff.symbols_of_death.up
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:EnergyPredicted() < 40 and Player:BuffP(S.SymbolsofDeath) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
