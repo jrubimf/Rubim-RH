@@ -222,7 +222,7 @@ local function APL()
     Defensives = function()
         --# Defensives
         --actions.defensives=demon_spikes
-        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 then
+        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 and Player:BuffDownP(S.MetamorphosisBuff) then
             return S.DemonSpikes:Cast()
         end
 
@@ -324,7 +324,7 @@ local function APL()
     end
 
     --- Defensives
-    if S.Metamorphosis:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then
+    if S.Metamorphosis:IsReady() and S.DemonSpikes:Charges() == 0 and Player:HealthPercentage() <= RubimRH.db.profile[581].sk1 then
         return S.Metamorphosis:Cast()
     end
 
