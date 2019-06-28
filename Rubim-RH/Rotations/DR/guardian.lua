@@ -378,7 +378,7 @@ local function APL()
 ) and
 (
     -- Moonfire
-    MultiDots(8, S.MoonfireDebuff, 10, 3) >= 1 or
+    MultiDots(5, S.MoonfireDebuff, 10, 1) >= 1 or
     (
         CombatTime("target") == 0 and
         not Player:InPvP()
