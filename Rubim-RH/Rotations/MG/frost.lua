@@ -114,7 +114,7 @@ local I = Item.Mage.Frost;
 local ShouldReturn; -- Used to get the return string
 local EnemiesCount;
 
-local EnemyRanges = {35, 10}
+local EnemyRanges = {40, 35, 10}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
