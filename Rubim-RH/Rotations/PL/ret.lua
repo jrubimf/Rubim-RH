@@ -440,5 +440,3 @@ local function PASSIVE()
 end
 
 RubimRH.Rotation.SetPASSIVE(70, PASSIVE);
-
-RubimRH.SetAPL(70, APL)

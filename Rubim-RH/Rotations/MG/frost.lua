@@ -351,7 +351,7 @@ local function APL()
     end
     -- lights_judgment
     if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() then
-      return S.LightsJudgment:Cast()lights_judgment 105"; end
+      return S.LightsJudgment:Cast()
     end
     -- fireblood
     if S.Fireblood:IsCastableP() and RubimRH.CDsON() then

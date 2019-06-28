@@ -125,7 +125,8 @@ RubimRH.Spell[71] = {
     MemoryOfLucidDreams   = Spell(298357),
     MemoryOfLucidDreams2  = Spell(299372),
     MemoryOfLucidDreams3  = Spell(299374),
-    RecklessForce         = Spell(302932)
+    RecklessForce         = Spell(302932),
+	Stormbolt             = Spell(302932),
 };
 
 local S = RubimRH.Spell[71]
@@ -195,7 +196,7 @@ local function APL()
       end
       -- memory_of_lucid_dreams
       if S.MemoryOfLucidDreams:IsCastableP() then
-        return S.UnleashHeartOfAzeroth:Cast()d
+        return S.UnleashHeartOfAzeroth:Cast()
       end
       -- guardian_of_azeroth
       if S.GuardianOfAzeroth:IsCastableP() then
@@ -560,6 +561,7 @@ local function APL()
     end
   end
   return 0, 135328
+  end
 end
 
 mainAddon.Rotation.SetAPL(71, APL);
@@ -571,6 +573,7 @@ local function PASSIVE()
 
     return mainAddon.Shared()
 end
+mainAddon.Rotation.SetPASSIVE(71, PASSIVE);
 
 local function PvP()
     if select(2, IsInInstance()) == "arena" then
@@ -618,6 +621,5 @@ local function PvP()
         end
     end
 end
-RubimRH.Rotation.SetPvP(71, PvP)
+RubimRH.Rotation.SetPvP(71, PvP);
 
-mainAddon.Rotation.SetPASSIVE(71, PASSIVE);
