@@ -190,6 +190,47 @@ local function DetermineEssenceRanks()
   S.Conflict = S.Conflict3:IsAvailable() and S.Conflict3 or S.Conflict1
 end
 
+-- # Essences
+local function Essences()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  if S.MemoryOfLucidDreams:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  return false
+end
+
 --[[local function Swipe()
   if Player:Buff(S.CatForm) then
     return S.SwipeCat;
@@ -355,7 +396,11 @@ local function APL()
             return S.RemoveCorruption:Cast()
         end
     end
-		
+	--Essences Temp
+	local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end	
 	-- interrupt IncapacitatingRoar
     if S.IncapacitatingRoar:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() and active_enemies() > 2 then
         return S.IncapacitatingRoar:Cast()

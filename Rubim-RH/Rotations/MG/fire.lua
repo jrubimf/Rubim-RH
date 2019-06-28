@@ -609,6 +609,10 @@ local function APL()
 	if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end
     -- counterspell
 	if S.Counterspell:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Counterspell:Cast()
