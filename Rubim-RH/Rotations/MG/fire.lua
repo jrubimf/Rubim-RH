@@ -56,7 +56,6 @@ RubimRH.Spell[63] = {
   BlasterMaster                         = Spell(274596),
   BlasterMasterBuff                     = Spell(274598),
   FlameOn                               = Spell(205029),
-  IceBarrier                            = Spell(11426),
   Invisibility                          = Spell(66),
   Freeze                                = Spell(33395),
   Spellsteal                            = Spell(30449),
