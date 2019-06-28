@@ -1,7 +1,6 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
--- Addon
-local addonName, addonTable = ...
+
 -- HeroLib
 local HL     = HeroLib
 local Cache  = HeroCache
@@ -43,9 +42,9 @@ RubimRH.Spell[70] = {
   TemplarsVerdict = Spell(85256),
   TheFiresofJustice = Spell(203316),
   TheFiresofJusticeBuff = Spell(209785),
+  ShieldOfVengeance = Spell(184662),
   Zeal = Spell(217020),
   FinalVerdict = Spell(198038),
-  ShieldOfVengance = Spell(184662),
   Forbearance = Spell(25771),
   -- Offensive
    AvengingWrath = Spell(31884),
@@ -77,6 +76,7 @@ RubimRH.Spell[70] = {
   HandOfHidrance                        = Spell(183218),  
   RecklessForce                         = Spell(302932),
   SeethingRageBuff                      = Spell(297126),
+  InquisitionBuff                       = Spell(84963),
   
   --8.2 Essences
   UnleashHeartOfAzeroth                 = Spell(280431),
@@ -109,7 +109,6 @@ RubimRH.Spell[70] = {
   MemoryOfLucidDreams3                  = Spell(299374),
 };
 local S = RubimRH.Spell[70]
-local G = RubimRH.Spell[1] -- General Skills
 
 -- Items
 if not Item.Paladin then Item.Paladin = {} end
@@ -126,7 +125,7 @@ local StunInterrupts = {
 };
 
 -- Variables
-local VarOpenerDone = 0;
+local VarOpenerDone = 1;
 local VarDsCastable = 0;
 local VarHow = 0;
 local Opener1 = 0;
@@ -199,7 +198,7 @@ local function APL()
     -- food
     -- augmentation
     -- snapshot_stats
-    if RubimRH.TargetIsValid() then
+    
       -- potion
      -- if I.BattlePotionofStrength:IsReady() and Settings.Commons.UsePotions then
      --   return I.BattlePotionofStrength:Cast()
@@ -212,7 +211,7 @@ local function APL()
       if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() and (not S.WakeofAshes:IsAvailable()) then
         return S.ArcaneTorrent:Cast()
       end
-    end
+    
   end
   
   Cooldowns = function()
@@ -229,8 +228,8 @@ local function APL()
       return S.Fireblood:Cast()
     end
     -- shield_of_vengeance,if=buff.seething_rage.down&buff.memory_of_lucid_dreams.down
-    if S.ShieldofVengeance:IsCastableP() and (Player:BuffDownP(S.SeethingRageBuff) and Player:BuffDownP(S.MemoryOfLucidDreams)) then
-      return S.ShieldofVengeance:Cast()
+    if S.ShieldOfVengeance:IsCastableP() and (Player:BuffDownP(S.SeethingRageBuff) and Player:BuffDownP(S.MemoryOfLucidDreams)) then
+      return S.ShieldOfVengeance:Cast()
     end
     -- the_unbound_force,if=time<=2|buff.reckless_force.up
     if S.TheUnboundForce:IsCastableP() and (HL.CombatTime() <= 2 or Player:BuffP(S.RecklessForce)) then
@@ -424,8 +423,8 @@ end
 RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
-    if S.ShieldOfVengance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
-        return S.ShieldOfVengance:Cast()
+    if S.ShieldOfVengeance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
+        return S.ShieldOfVengeance:Cast()
     end
 
     if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk4 and not Player:Debuff(S.Forbearance) then
