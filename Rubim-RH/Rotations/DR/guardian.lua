@@ -189,7 +189,7 @@ local function APL()
     -- augmentation
     -- memory_of_lucid_dreams
     if S.MemoryOfLucidDreams:IsCastableP() then
-      return S.MemoryOfLucidDreams:Cast()
+      return S.UnleashHeartOfAzeroth:Cast()
     end
     -- bear_form
     if S.BearForm:IsCastableP() and Player:BuffDownP(S.BearForm) then
@@ -205,7 +205,7 @@ local function APL()
 
     -- heart_essence
     if S.HeartEssence:IsCastableP() then
-      return S.HeartEssence:Cast()
+      return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_fury
     if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
@@ -267,8 +267,7 @@ local function APL()
       return S.Incarnation:Cast()
     end
     
-	-- use_items
-	
+	-- use_items	
   end
   
   -- call precombat
