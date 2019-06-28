@@ -20,6 +20,7 @@ RubimRH.Spell[104] = {
     ArcaneTorrent                           = Spell(50613),
     LightsJudgment                          = Spell(255647),
     Fireblood                               = Spell(265221),
+	AncestralCall                         = Spell(274738),
     -- Abilities
     FrenziedRegeneration                    = Spell(22842),
     Gore                                    = Spell(210706),
@@ -42,7 +43,9 @@ RubimRH.Spell[104] = {
     Thrash                                  = Spell(77758),
     ThrashDebuff                            = Spell(192090),
     ThrashCat                               = Spell(106830),
+	ThrashBearDebuff                        = Spell(192090),
     Prowl                                   = Spell(5215),
+	LayeredMane                           = Spell(279552),
     -- Talents
     BalanceAffinity                         = Spell(197488),
     BloodFrenzy                             = Spell(203962),
@@ -64,6 +67,7 @@ RubimRH.Spell[104] = {
     MightyBash                              = Spell(5211),
     Typhoon                                 = Spell(132469),
     Entanglement                            = Spell(102359),
+	IncarnationBuff                       = Spell(102558),
     -- Artifact
     RageoftheSleeper                        = Spell(200851),
     -- Defensive
@@ -83,6 +87,8 @@ RubimRH.Spell[104] = {
     Rip                                     = Spell(1079),
     Shred                                   = Spell(5221),
     Swiftmend                               = Spell(18562),
+	WildChargeTalent                      = Spell(102401),
+    WildChargeBear                        = Spell(16979),
     -- Shapeshift
     BearForm                                = Spell(5487),
     CatForm                                 = Spell(768),
@@ -119,6 +125,9 @@ RubimRH.Spell[104] = {
     MemoryOfLucidDreams                     = Spell(298357),
     MemoryOfLucidDreams2                    = Spell(299372),
     MemoryOfLucidDreams3                    = Spell(299374),
+	Conflict1                               = Spell(303823),
+	Conflict2                               = Spell(304088),
+	Conflict3                               = Spell(304121),
 }
 
 local S = RubimRH.Spell[104]
@@ -136,12 +145,21 @@ local IsTanking;
 local AoERadius; -- Range variables
 local EnemiesCount;
 
-local EnemyRanges = {11, 8}
+local EnemyRanges = {11, 8, 5}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
   end
 end
+local RangeMod = S.BalanceAffinity:IsAvailable() and true or false
+local R = {
+	Moonfire = (RangeMod) and 43 or 40,
+	Mangle = (RangeMod) and 8 or "Melee",
+	Thrash = (RangeMod) and 11 or 8,
+	Swipe = (RangeMod) and 11 or 8,
+	Maul = (RangeMod) and 8 or "Melee",
+	Pulverize = (RangeMod) and 8 or "Melee",
+	SkullBash = (RangeMod) and 13 or 10 }
 
 local function num(val)
   if val then return 1 else return 0 end
@@ -149,6 +167,27 @@ end
 
 local function bool(val)
   return val ~= 0
+end
+
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.Conflict = S.Conflict2:IsAvailable() and S.Conflict2 or S.Conflict1
+  S.Conflict = S.Conflict3:IsAvailable() and S.Conflict3 or S.Conflict1
 end
 
 --[[local function Swipe()
@@ -180,6 +219,7 @@ local function APL()
     AoERadius = 8
   end
   UpdateRanges()
+  DetermineEssenceRanks()
   EnemiesCount = Cache.EnemiesCount[AoERadius]
   IsTanking = Player:IsTankingAoE(AoERadius) or Player:IsTanking(Target)
   
@@ -260,6 +300,7 @@ local function APL()
       if S.BristlingFur:IsCastableP() and Player:Rage() < RubimRH.db.profile[104].sk5 then
         return S.BristlingFur:Cast()
       end
+	  
     end
 	
     -- incarnation,if=(dot.moonfire.ticking|active_enemies>1)&dot.thrash_bear.ticking
@@ -278,16 +319,17 @@ local function APL()
 	end
   end
   
-  if RubimRH.TargetIsValid() then
+  --if RubimRH.TargetIsValid() then
     -- Charge if out of range
     if S.WildChargeTalent:IsAvailable() and S.WildChargeBear:IsCastableP() and not Target:IsInRange(AoERadius) and Target:IsInRange(25) then
       return S.WildChargeBear:Cast()
     end
 	
+
 	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
-		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[5] >= 2 and Cache.EnemiesCount[5] < 6 and CombatTime("player") > 0 and 
-( -- Moonfire
-    not IsSpellInRange(8921, "target") or   
+		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.MoonfireDebuff:BaseDuration() * 0.90 and EnemiesCount >= 2 and EnemiesCount < 6 and CombatTime("player") > 0 and 
+( -- ThrashBearDebuff
+    not IsSpellInRange(192090, "target") or   
     (
         CombatTime("target") == 0 and
         not Player:InPvP()
@@ -303,7 +345,8 @@ local function APL()
 ) then 
       return 133015 
    end
-
+	
+	
     -- Mouseover Dispell handler
     local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
     if MouseoverUnit then
@@ -325,12 +368,17 @@ local function APL()
     -- auto_attack
 	
     -- call_action_list,name=cooldowns
-    if (true) then
+    if (true) and RubimRH.CDsON() then
       local ShouldReturn = Cooldowns(); 
 	  if ShouldReturn then 
 	      return ShouldReturn; 
 	  end
     end
+	-- Thrash
+	if S.Thrash:IsReadyMorph(R.Thrash, true)
+			and Target:DebuffStack(S.ThrashDebuff) < 3 then
+		return S.Thrash:Cast()
+	end
     -- maul,if=rage.deficit<10&active_enemies<4
     if S.Maul:IsReadyP() and (Player:RageDeficit() < 10 and EnemiesCount < 4) then
       return S.Maul:Cast()
@@ -344,34 +392,35 @@ local function APL()
       return S.Ironfur:Cast()
     end
     -- pulverize,target_if=dot.thrash_bear.stack=dot.thrash_bear.max_stacks
-    if S.Pulverize:IsCastableP() and TargetUnit:DebuffStackP(S.ThrashBearDebuff) == 3 and not Player:BuffP(S.PulverizeBuff) then
+    if S.Pulverize:IsReadyMorph(R.Pulverize) and Target:DebuffStackP(S.ThrashBearDebuff) == 3 and not Player:BuffP(S.PulverizeBuff) then
       return S.Pulverize:Cast()
     end
-    if S.Pulverize:IsCastableP() and Target:DebuffStackP(S.ThrashBearDebuff) == 3 then
+    if S.Pulverize:IsReadyMorph(R.Pulverize) and Target:DebuffStackP(S.ThrashBearDebuff) == 3 then
       return S.Pulverize:Cast()
     end
     -- moonfire,target_if=dot.moonfire.refreshable&active_enemies<2
-    if S.Moonfire:IsCastableP() and TargetUnit:DebuffRefreshableCP(S.MoonfireDebuff) and EnemiesCount < 2 then
-      return S.Moonfire:Cast()
-    end
+	if Target:DebuffRemainsP(S.MoonfireDebuff) <= Player:GCD()
+			and S.Moonfire:IsReadyMorph(R.Moonfire) then
+		return S.Moonfire:Cast()
+	end
     -- thrash,if=(buff.incarnation.down&active_enemies>1)|(buff.incarnation.up&active_enemies>4)
-    if S.Thrash:IsCastableP() and ((Player:BuffDownP(S.IncarnationBuff) and EnemiesCount > 1) or (Player:BuffP(S.IncarnationBuff) and EnemiesCount > 4)) then
+    if S.Thrash:IsReadyMorph(R.Thrash, true) and ((Player:BuffDownP(S.IncarnationBuff) and EnemiesCount > 1) or (Player:BuffP(S.IncarnationBuff) and EnemiesCount > 4)) then
       return S.Thrash:Cast()
     end
     -- swipe,if=buff.incarnation.down&active_enemies>4
-    if S.Swipe:IsCastableP() and (Player:BuffDownP(S.IncarnationBuff) and EnemiesCount > 4) then
+    if S.Swipe:IsReadyMorph(R.Swipe, true) and (Player:BuffDownP(S.IncarnationBuff) and EnemiesCount > 4) then
       return S.Swipe:Cast()
     end
     -- mangle,if=dot.thrash_bear.ticking
-    if S.Mangle:IsCastableP() and (Target:DebuffP(S.ThrashBearDebuff)) then
+    if S.Mangle:IsReadyMorph(R.Mangle) and (Target:DebuffP(S.ThrashBearDebuff)) then
       return S.Mangle:Cast()
     end
     -- moonfire,target_if=buff.galactic_guardian.up&active_enemies<2
-    if S.Moonfire:IsCastableP() and Player:BuffP(S.GalacticGuardianBuff) and EnemiesCount < 2 then
+    if S.Moonfire:IsReadyMorph(R.Moonfire) and Player:BuffP(S.GalacticGuardianBuff) and EnemiesCount < 2 then
       return S.Moonfire:Cast()
     end
     -- thrash
-    if S.Thrash:IsCastableP() then
+    if S.Thrash:IsReadyMorph(R.Thrash, true) then
       return S.Thrash:Cast()
     end
     -- maul
@@ -379,8 +428,19 @@ local function APL()
       return S.Maul:Cast()
     end
     -- swipe
-    if S.Swipe:IsCastableP() then
+    if S.Swipe:IsReadyMorph(R.Swipe, true) then
       return S.Swipe:Cast()
-    end
-  end
+    end	
+	
+  --end
+  return 0, 135328
 end
+
+
+RubimRH.Rotation.SetAPL(104, APL);
+
+local function PASSIVE()
+	return RubimRH.Shared()
+end
+
+RubimRH.Rotation.SetPASSIVE(104, PASSIVE);

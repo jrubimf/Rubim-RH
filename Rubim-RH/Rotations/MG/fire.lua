@@ -88,6 +88,9 @@ RubimRH.Spell[63] = {
   MemoryOfLucidDreams                   = Spell(298357),
   MemoryOfLucidDreams2                  = Spell(299372),
   MemoryOfLucidDreams3                  = Spell(299374),
+  MemoryOfLucidDreamsMinor1             = Spell(298357),
+  MemoryOfLucidDreamsMinor2             = Spell(299372),
+  MemoryOfLucidDreamsMinor3             = Spell(299374),
   RecklessForce                         = Spell(302932),
 };
 local S = RubimRH.Spell[63];
@@ -175,6 +178,8 @@ local function DetermineEssenceRanks()
   S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.MemoryOfLucidDreamsMinor = S.MemoryOfLucidDreamsMinor2:IsAvailable() and S.MemoryOfLucidDreamsMinor2 or S.MemoryOfLucidDreamsMinor1
+  S.MemoryOfLucidDreamsMinor = S.MemoryOfLucidDreamsMinor3:IsAvailable() and S.MemoryOfLucidDreamsMinor3 or S.MemoryOfLucidDreamsMinor1
 end
 
 -- # Essences
