@@ -57,7 +57,8 @@ RubimRH.Spell[MFrost] = {
   Invisibility                          = Spell(66),
   Freeze                                = Spell(33395),
   Spellsteal                            = Spell(30449),
-  
+  IceBarrier                            = Spell(11426),
+  IceBlock                              = Spell(45438),
   --[[BloodOfTheEnemy                       = MultiSpell(297108, 298273, 298277),
   MemoryOfLucidDreams                   = MultiSpell(298357, 299372, 299374),
   PurifyingBlast                        = MultiSpell(295337, 299345, 299347),
