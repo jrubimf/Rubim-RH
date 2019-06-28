@@ -283,6 +283,26 @@ local function APL()
     if S.WildChargeTalent:IsAvailable() and S.WildChargeBear:IsCastableP() and not Target:IsInRange(AoERadius) and Target:IsInRange(25) then
       return S.WildChargeBear:Cast()
     end
+	
+	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
+		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.Moonfire:BaseDuration() * 0.90 and Cache.EnemiesCount[5] >= 2 and Cache.EnemiesCount[5] < 6 and CombatTime("player") > 0 and 
+( -- Moonfire
+    not IsSpellInRange(8921, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Moonfire
+    MultiDots(10, S.MoonfireDebuff, 10, 3) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+      return 133015 
+   end
 
     -- Mouseover Dispell handler
     local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
