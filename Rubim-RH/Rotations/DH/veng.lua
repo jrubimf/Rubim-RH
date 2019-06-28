@@ -222,7 +222,7 @@ local function APL()
     Defensives = function()
         --# Defensives
         --actions.defensives=demon_spikes
-        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 and Player:BuffDownP(S.MetamorphosisBuff) then
+        if S.DemonSpikes:IsReady() and not Player:Buff(S.DemonSpikesBuff) and IsTanking and Player:HealthPercentage() < 70 and Player:BuffDownP(S.Metamorphosis) then
             return S.DemonSpikes:Cast()
         end
 
