@@ -70,6 +70,7 @@ RubimRH.Spell[70] = {
   HammerofJustice = Spell(853),
   Rebuke = Spell(96231),
   DivineSteed = Spell(190784),
+  EmpyreanPowerBuff                     = Spell(286393),
   -- PvP Talent
   HammerOfReckoning                     = Spell(247675),
   HammerOfReckoningBuff                 = Spell(247677),
