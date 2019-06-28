@@ -562,16 +562,16 @@ local function APL()
   return 0, 135328
 end
 
-RubimRH.Rotation.SetAPL(71, APL);
+mainAddon.Rotation.SetAPL(71, APL);
 
 local function PASSIVE()
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk3 then
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk3 then
         return S.DiebytheSword:Cast()
     end
-    return RubimRH.Shared()
+
+    return mainAddon.Shared()
 end
 
--- PvP Behavior
 local function PvP()
     if select(2, IsInInstance()) == "arena" then
 
@@ -619,4 +619,5 @@ local function PvP()
     end
 end
 RubimRH.Rotation.SetPvP(71, PvP)
-RubimRH.Rotation.SetPASSIVE(71, PASSIVE);
+
+mainAddon.Rotation.SetPASSIVE(71, PASSIVE);
