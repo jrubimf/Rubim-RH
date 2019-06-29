@@ -463,8 +463,10 @@ local function CDs ()
         
 		--actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
         local ShouldReturn = Essences();
-		if ShouldReturn and (true) and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then
-		    return ShouldReturn; 
+		if ShouldReturn and (true) then
+		    if and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then 
+		        return ShouldReturn; 
+		    end
 		end
         
 		-- Racials
@@ -543,9 +545,6 @@ local function CDs ()
         if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
             return S.ToxicBlade:Cast()
         end
-		-- actions.cds+=/call_action_list,name=essences
-        ShouldReturn = Essences();
-        if ShouldReturn then return ShouldReturn; end
     end
 end
 
