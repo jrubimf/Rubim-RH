@@ -239,12 +239,6 @@ local function APL()
   UpdateRanges()
   UpdateExecuteID()
   
-  Precombat = function()
-    -- flask
-    -- food
-    -- augmentation
-    -- snapshot_stats
-    if Everyone.TargetIsValid() then
       -- potion
     Precombat = function()
         -- flask
@@ -268,7 +262,7 @@ local function APL()
         return S.UnleashHeartOfAzeroth:Cast()
       end
     end
-  end
+  
   
   Execute = function()
     -- skullsplitter,if=rage<60&buff.deadly_calm.down&buff.memory_of_lucid_dreams.down
@@ -292,7 +286,7 @@ local function APL()
       return S.DeadlyCalm:Cast()
     end
     -- bladestorm,if=!buff.memory_of_lucid_dreams.up&buff.test_of_might.up&rage<30&!buff.deadly_calm.up
-    if S.Bladestorm:IsCastableP() and RubimRH.CDsON() and (Player:BuffDownP(S.MemoryOfLucidDreams) and Player:BuffP(S.TestofMightBuff) and Player:Rage() < 30 and Player:BuffDownP(S.DeadlyCalmBuff)) then
+    if S.Bladestorm:IsReady() and RubimRH.CDsON() and (Player:BuffDownP(S.MemoryOfLucidDreams) and Player:BuffP(S.TestofMightBuff) and Player:Rage() < 30 and Player:BuffDownP(S.DeadlyCalmBuff)) then
       return S.Bladestorm:Cast()
     end
     -- cleave,if=spell_targets.whirlwind>2
@@ -308,7 +302,7 @@ local function APL()
       return S.MortalStrike:Cast()
     end
     -- execute,if=buff.memory_of_lucid_dreams.up|buff.deadly_calm.up
-    if S.Execute:IsCastableP() and (Player:BuffP(S.MemoryOfLucidDreams) or Player:BuffP(S.DeadlyCalmBuff)) then
+    if S.Execute:IsReadyMorph() and (Player:BuffP(S.MemoryOfLucidDreams) or Player:BuffP(S.DeadlyCalmBuff)) then
       return S.Execute:Cast()
     end
     -- overpower
@@ -316,7 +310,7 @@ local function APL()
       return S.Overpower:Cast()
     end
     -- execute
-    if S.Execute:IsCastableP() then
+    if S.Execute:IsReadyMorph() then
       return S.Execute:Cast()
     end
   end
@@ -339,7 +333,7 @@ local function APL()
       return S.Warbreaker:Cast()
     end
     -- bladestorm,if=buff.sweeping_strikes.down&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
-    if S.Bladestorm:IsCastableP() and RubimRH.CDsON() and (Player:BuffDownP(S.SweepingStrikesBuff) and (not S.DeadlyCalm:IsAvailable() or Player:BuffDownP(S.DeadlyCalmBuff)) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
+    if S.Bladestorm:IsReady() and RubimRH.CDsON() and (Player:BuffDownP(S.SweepingStrikesBuff) and (not S.DeadlyCalm:IsAvailable() or Player:BuffDownP(S.DeadlyCalmBuff)) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
       return S.Bladestorm:Cast()
     end
     -- deadly_calm
@@ -351,7 +345,7 @@ local function APL()
       return S.Cleave:Cast()
     end
     -- execute,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|(buff.sudden_death.react|buff.stone_heart.react)&(buff.sweeping_strikes.up|cooldown.sweeping_strikes.remains>8)
-    if S.Execute:IsCastableP() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
+    if S.Execute:IsReadyMorph() and ((not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or (bool(Player:BuffStackP(S.SuddenDeathBuff)) or bool(Player:BuffStackP(S.StoneHeartBuff))) and (Player:BuffP(S.SweepingStrikesBuff) or S.SweepingStrikes:CooldownRemainsP() > 8)) then
       return S.Execute:Cast()
     end
     -- mortal_strike,if=(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sweeping_strikes.up&buff.overpower.stack=2&(talent.dreadnaught.enabled|buff.executioners_precision.stack=2)
@@ -402,7 +396,7 @@ local function APL()
       return S.Warbreaker:Cast()
     end
     -- bladestorm,if=(debuff.colossus_smash.up&raid_event.adds.in>target.time_to_die)|raid_event.adds.up&((debuff.colossus_smash.remains>4.5&!azerite.test_of_might.enabled)|buff.test_of_might.up)
-    if S.Bladestorm:IsCastableP() and RubimRH.CDsON() and ((Target:DebuffP(S.ColossusSmashDebuff) and 10000000000 > Target:TimeToDie()) or (Cache.EnemiesCount[8] > 1) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
+    if S.Bladestorm:IsReady() and RubimRH.CDsON() and ((Target:DebuffP(S.ColossusSmashDebuff) and 10000000000 > Target:TimeToDie()) or (Cache.EnemiesCount[8] > 1) and ((Target:DebuffRemainsP(S.ColossusSmashDebuff) > 4.5 and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff))) then
       return S.Bladestorm:Cast()
     end
     -- overpower,if=!raid_event.adds.up|(raid_event.adds.up&azerite.seismic_wave.enabled)
@@ -414,7 +408,7 @@ local function APL()
       return S.Cleave:Cast()
     end
     -- execute,if=!raid_event.adds.up|(!talent.cleave.enabled&dot.deep_wounds.remains<2)|buff.sudden_death.react
-    if S.Execute:IsCastableP() and (not (Cache.EnemiesCount[8] > 1) or (not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or bool(Player:BuffStackP(S.SuddenDeathBuff))) then
+    if S.Execute:IsReadyMorph() and (not (Cache.EnemiesCount[8] > 1) or (not S.Cleave:IsAvailable() and Target:DebuffRemainsP(S.DeepWoundsDebuff) < 2) or bool(Player:BuffStackP(S.SuddenDeathBuff))) then
       return S.Execute:Cast()
     end
     -- mortal_strike,if=!raid_event.adds.up|(!talent.cleave.enabled&dot.deep_wounds.remains<2)
@@ -465,11 +459,11 @@ local function APL()
       return S.DeadlyCalm:Cast()
     end
     -- execute,if=buff.sudden_death.react
-    if S.Execute:IsCastableP() and (bool(Player:BuffStackP(S.SuddenDeathBuff))) then
+    if S.Execute:IsReadyMorph() and (bool(Player:BuffStackP(S.SuddenDeathBuff))) then
       return S.Execute:Cast()
     end
     -- bladestorm,if=cooldown.mortal_strike.remains&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)&buff.memory_of_lucid_dreams.down
-    if S.Bladestorm:IsCastableP() and RubimRH.CDsON() and (bool(S.MortalStrike:CooldownRemainsP()) and (not S.DeadlyCalm:IsAvailable() or Player:BuffDownP(S.DeadlyCalmBuff)) and ((Target:DebuffP(S.ColossusSmashDebuff) and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff)) and Player:BuffDownP(S.MemoryOfLucidDreams)) then
+    if S.Bladestorm:IsReady() and RubimRH.CDsON() and (bool(S.MortalStrike:CooldownRemainsP()) and (not S.DeadlyCalm:IsAvailable() or Player:BuffDownP(S.DeadlyCalmBuff)) and ((Target:DebuffP(S.ColossusSmashDebuff) and not S.TestofMight:AzeriteEnabled()) or Player:BuffP(S.TestofMightBuff)) and Player:BuffDownP(S.MemoryOfLucidDreams)) then
       return S.Bladestorm:Cast()
     end
     -- cleave,if=spell_targets.whirlwind>2
@@ -623,22 +617,22 @@ local function APL()
     -- run_action_list,name=single_target
     if (true) then
       return SingleTarget();
-    end
+    end    
+  
   end
-  return 0, 135328
-  end
+
 end
 
-mainAddon.Rotation.SetAPL(71, APL);
+RubimRH.Rotation.SetAPL(71, APL);
 
 local function PASSIVE()
-    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= mainAddon.db.profile[71].sk3 then
+    if S.DiebytheSword:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk3 then
         return S.DiebytheSword:Cast()
     end
 
-    return mainAddon.Shared()
+    return RubimRH.Shared()
 end
-mainAddon.Rotation.SetPASSIVE(71, PASSIVE);
+
 
 local function PvP()
     if select(2, IsInInstance()) == "arena" then
@@ -688,3 +682,4 @@ local function PvP()
 end
 RubimRH.Rotation.SetPvP(71, PvP);
 
+RubimRH.Rotation.SetPASSIVE(71, PASSIVE);
