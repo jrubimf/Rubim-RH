@@ -1602,7 +1602,7 @@ function RubimRH.AoEHP(hp)
     local totalhp = 0
     if RubimRH.tableexist(members) then 
         for i = 1, #members do
-            if UnitIsPlayer(members[i].Unit) and RubimRH.UNITHP(members[i].Unit) <= hp then
+            if RubimRH.UNITHP(members[i].Unit) <= hp then
                 totalhp = totalhp + 1
             end
         end
