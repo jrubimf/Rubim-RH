@@ -19,11 +19,15 @@ local Item = HL.Item
 -- Spells
 RubimRH.Spell[259] = {
     -- Racials
+    -- Racials
+    AncestralCall  = Spell(274738),
     ArcanePulse = Spell(260364),
     ArcaneTorrent = Spell(25046),
+    Fireblood = Spell(265221),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     LightsJudgment = Spell(255647),
+    Shadowmeld = Spell(58984),
     -- Abilities
     Envenom = Spell(32645),
     FanofKnives = Spell(51723),
