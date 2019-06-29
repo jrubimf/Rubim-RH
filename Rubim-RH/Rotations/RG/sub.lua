@@ -86,7 +86,7 @@ RubimRH.Spell[261] = {
     Evasion = Spell(5277),
 	ReplicatingShadows                    = Spell(286121),
 	
-		  --8.2 Essences
+  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -450,7 +450,7 @@ local function CDs ()
             end
 			-- actions.cds+=/call_action_list,name=essences
             ShouldReturn = Essences();
-            if ShouldReturn then return ShouldReturn; end
+            if ShouldReturn and (true) then return ShouldReturn; end
         end
     end
 end
