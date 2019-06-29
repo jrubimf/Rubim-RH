@@ -228,6 +228,7 @@ local function APL()
   local Precombat, ActiveTalents, BMCombustionPhase, CombustionPhase, RopPhase, StandardRotation
   EnemiesCount = GetEnemiesCount(8)
   HL.GetEnemies(40) -- For interrupts
+  DetermineEssenceRanks()
   
   Precombat = function()
     -- flask
@@ -238,7 +239,7 @@ local function APL()
       return S.ArcaneIntellect:Cast()
     end
 	
-    if RubimRH.TargetIsValid() then
+    
       -- variable,name=combustion_rop_cutoff,op=set,value=60
       combustion_rop_cutoff = 60
       -- snapshot_stats
@@ -251,7 +252,7 @@ local function APL()
       if S.Pyroblast:IsCastableP() then
         return S.Pyroblast:Cast()
       end
-    end
+    
   end
   
   ActiveTalents = function()
@@ -595,7 +596,7 @@ local function APL()
   end
   
   -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
+  if not Player:AffectingCombat() and not Player:IsCasting() and RubimRH.PrecombatON() then
     local ShouldReturn = Precombat(); 
 	if ShouldReturn then 
 	    return ShouldReturn; 
@@ -605,6 +606,10 @@ local function APL()
   -- combat
   if RubimRH.TargetIsValid() then
     -- counterspell,if=target.debuff.casting.react
+    -- scorch
+    if S.Scorch:IsCastableP() and Player:IsMoving() then
+      return S.Scorch:Cast()
+    end
     -- Queue sys
 	if QueueSkill() ~= nil then
         return QueueSkill()
