@@ -255,9 +255,9 @@ local function APL()
   local Precombat, Cooldowns
   -- Determine ranges
   if S.BalanceAffinity:IsAvailable() then
-    AoERadius = 11
-  else
     AoERadius = 8
+  else
+    AoERadius = 5
   end
   UpdateRanges()
   DetermineEssenceRanks()
