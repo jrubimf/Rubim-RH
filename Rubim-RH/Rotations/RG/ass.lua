@@ -464,7 +464,7 @@ local function CDs ()
 		--actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
         local ShouldReturn = Essences();
 		if ShouldReturn and (true) then
-		    if and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then 
+		    if not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then 
 		        return ShouldReturn; 
 		    end
 		end
