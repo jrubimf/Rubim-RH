@@ -224,15 +224,14 @@ local function APL()
 		end
 
         --Beacon of Virtue
-        if S.BeaconofVirtue:IsCastableP() and GroupedBelow(85) >= 3 then
+        if S.BeaconofVirtue:IsCastableP() and RubimRH.AoEHP(85) >= 3 then
 			return S.BeaconofVirtue:Cast()
 		end
 
         --Light of Dawn
-        if S.LightofDawn:IsCastableP() and GroupedBelow(85) >= 3 then
+        if S.LightofDawn:IsCastableP() and RubimRH.AoEHP(85) >= 3 then
 			return S.LightofDawn:Cast()
         end
-
 
 		--Holy Shock
         if S.HolyShock:IsCastableP() then
@@ -348,7 +347,7 @@ local function APL()
         return 0, 236353
     end
 	
-    if Player:CanAttack(Target) then
+    if not UnitIsDead("target") and Player:CanAttack(Target) then
         return DPS()
     end
 
@@ -368,5 +367,4 @@ local function PASSIVE()
 
     return RubimRH.Shared()
 end
-
 RubimRH.Rotation.SetPASSIVE(65, PASSIVE);
