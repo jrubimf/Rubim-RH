@@ -418,10 +418,6 @@ end
 
 -- # Essences
 local function Essences()
-  -- actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
-  if RubimRH.CDsON() and not Player:IsStealthedP(true, true) and Target:DebuffP(S.Rupture) and MasterAssassinRemains() <= 0 then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
   -- concentrated_flame
   if S.ConcentratedFlame:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
