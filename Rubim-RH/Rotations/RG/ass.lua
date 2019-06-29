@@ -499,12 +499,12 @@ local function CDs ()
             return S.MarkedforDeath:Cast()
         end
       -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&!debuff.vendetta.up&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1&(spell_targets.fan_of_knives<6|!cooldown.vanish.up))&(!talent.nightstalker.enabled|!talent.exsanguinate.enabled|cooldown.exsanguinate.remains<5-2*talent.deeper_stratagem.enabled)
-        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
+        if S.Vendetta:CooldownRemainsP() < 0.1 and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
           and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1 and (Cache.EnemiesCount[10] < 6 or not S.Vanish:CooldownUp()))
           and (not S.Nightstalker:IsAvailable() or not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() < 5 - 2 * num(S.DeeperStratagem:IsAvailable())) then
          return S.Vendetta:Cast()
 	    end
-       
+      
 	   if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
             if S.Subterfuge:IsAvailable() and not Target:IsAPlayer() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
@@ -750,7 +750,7 @@ local function APL ()
 
     if QueueSkill() ~= nil then
         return QueueSkill()
-        end
+    end
 
     -- Defensives
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
