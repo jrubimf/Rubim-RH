@@ -368,9 +368,9 @@ local function APL()
 	
 
 	-- Auto spread Moonfireand RubimRH.AssaAutoAoEON() 
-		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.MoonfireDebuff:BaseDuration() * 0.90 and EnemiesCount >= 2 and EnemiesCount < 6 and CombatTime("player") > 0 and 
+		if RubimRH.AoEON() and Target:DebuffRemainsP(S.MoonfireDebuff) >= S.MoonfireDebuff:BaseDuration() * 0.90 and active_enemies() >= 2 and active_enemies() < 6 and CombatTime("player") > 0 and 
 ( -- ThrashBearDebuff
-    not IsSpellInRange(192090, "target") or   
+    IsSpellInRange(192090, "target") or   
     (
         CombatTime("target") == 0 and
         not Player:InPvP()
