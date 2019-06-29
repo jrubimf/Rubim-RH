@@ -241,6 +241,10 @@ local function APL()
   
       -- potion
     Precombat = function()
+	    -- Charge
+       if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
+         return S.Charge:Cast()
+       end
         -- flask
         -- food
         -- augmentation
@@ -505,13 +509,17 @@ local function APL()
   -- In Combat
   if RubimRH.TargetIsValid() then
     -- Charge
-    if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
+    if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and not Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
         return S.Charge:Cast()
     end
 	local ShouldReturn = Essences(); 
 	if ShouldReturn and (true) then 
 	    return ShouldReturn; 
 	end
+	       -- execute,if=buff.sudden_death.react
+        if S.Execute:IsReadyMorph() and (bool(Player:Buff(S.SuddenDeathBuff))) then
+            return S.Execute:Cast()
+        end
 	-- Victory Rush db.profil
     if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[71].sk1 then
         return S.VictoryRush:Cast()
