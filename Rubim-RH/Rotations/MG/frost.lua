@@ -176,47 +176,6 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
 end
 
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
-end
-
 --- ======= ACTION LISTS =======
 local function APL()
   local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop, Essences
@@ -296,7 +255,7 @@ local function APL()
     end
     -- call_action_list,name=essences
     local ShouldReturn = Essences(); 
-	if ShouldReturn then 
+	if ShouldReturn and (true) then 
 	    return ShouldReturn; 
 	end
     -- comet_storm
@@ -431,11 +390,6 @@ local function APL()
     if S.Flurry:IsCastableP() and (Player:PrevGCDP(1, S.Frostbolt) and bool(Player:BuffStackP(S.BrainFreezeBuff)) and (not S.GlacialSpike:IsAvailable() or Player:BuffStackP(S.IciclesBuff) < 4)) then
       return S.Flurry:Cast()
     end
-    -- call_action_list,name=essences
-    local ShouldReturn = Essences(); 
-	if ShouldReturn then 
-	    return ShouldReturn; 
-	end
     -- frozen_orb
     if S.FrozenOrb:IsCastableP() then
       return S.FrozenOrb:Cast()
