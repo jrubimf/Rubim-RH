@@ -50,21 +50,25 @@ RubimRH.Spell[65] = {
 
     --Azerite
     DivineRevelations = Spell(275469),
+	GlimmerofLight = Spell(287268),
 	
 	--Heart Essences
-	UnleashHeartofAzeroth = Spell(280431),
 	ConcentratedFlameHeal = Spell(295373),
 	ConcentratedFlameHeal2 = Spell(168612),
 	ConcentratedFlameHeal3 = Spell(168613),
-	VitalityConduit = Spell(296230),
-	VitalityConduit2 = Spell(299958),
-	VitalityConduit3 = Spell(299959),
-	Refreshment = Spell(296197),
-	Refreshment2 = Spell(299932),
-	Refreshment3 = Spell(299933),
+	LifeBindersInvocation = Spell(293032),
+	LifeBindersInvocation2 = Spell(299943),
+	LifeBindersInvocation3 = Spell(299944),
 	OverchargeMana = Spell(296072),
 	OverchargeMana2 = Spell(299875),
 	OverchargeMana3 = Spell(299876),
+	Refreshment = Spell(296197),
+	Refreshment2 = Spell(299932),
+	Refreshment3 = Spell(299933),
+	UnleashHeartofAzeroth = Spell(280431),
+	VitalityConduit = Spell(296230),
+	VitalityConduit2 = Spell(299958),
+	VitalityConduit3 = Spell(299959),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -130,8 +134,10 @@ end
 local function DetermineEssenceRanks()
 	S.ConcentratedFlameHeal = S.ConcentratedFlameHeal2:IsAvailable() and S.ConcentratedFlameHeal2 or S.ConcentratedFlameHeal;
 	S.ConcentratedFlameHeal = S.ConcentratedFlameHeal3:IsAvailable() and S.ConcentratedFlameHeal3 or S.ConcentratedFlameHeal;
-	S.VitalityConduit = S.VitalityConduit2:IsAvailable() and S.VitalityConduit2 or S.VitalityConduit;
-	S.VitalityConduit = S.VitalityConduit3:IsAvailable() and S.VitalityConduit3 or S.VitalityConduit;
+	S.LifeBindersInvocation = S.LifeBindersInvocation2:IsAvailable() and S.LifeBindersInvocation2 or S.OverchargeMana;
+	S.LifeBindersInvocation = S.LifeBindersInvocation3:IsAvailable() and S.LifeBindersInvocation3 or S.OverchargeMana;
+	S.OverchargeMana = S.OverchargeMana2:IsAvailable() and S.OverchargeMana2 or S.OverchargeMana;
+	S.OverchargeMana = S.OverchargeMana3:IsAvailable() and S.OverchargeMana3 or S.OverchargeMana;
 	S.Refreshment = S.Refreshment2:IsAvailable() and S.Refreshment2 or S.Refreshment;
 	S.Refreshment = S.Refreshment3:IsAvailable() and S.Refreshment3 or S.Refreshment;
 	S.OverchargeMana = S.OverchargeMana2:IsAvailable() and S.OverchargeMana2 or S.OverchargeMana;
@@ -202,25 +208,54 @@ local function APL()
 			--return S.Cleanse:Cast()
 		--end
 
-        --BURST HEAL
-		if RubimRH.CDsON() and S.AvengingWrath:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+        --Manuel Cooldown and not Glimmer of Light
+		if RubimRH.CDsON() and not Player:BuffStack(S.GlimmerofLight) == 3 then
+		if S.AvengingWrath:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingWrath:Cast()
         end
 
-		if RubimRH.CDsON() and S.AvengingCrusader:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+		if S.AvengingCrusader:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingCrusader:Cast()
         end		
 		
-		if RubimRH.CDsON() and S.HolyAvenger:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) then
+		if S.HolyAvenger:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) then
             return S.HolyAvenger:Cast()
         end
 
-		if RubimRH.CDsON() and S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+		if S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
 			return S.AuraMastery:Cast()
 		end
 		
-		if RubimRH:CDsON() and S.OverchargeMana:IsCastable() then
+		if S.LifeBindersInvocation:IsCastableP() and RubimRH.AoEHP(85) >= 5 then
 			return S.UnleashHeartofAzeroth:Cast()
+		end
+		
+		if S.OverchargeMana:IsCastableP() then
+			return S.UnleashHeartofAzeroth:Cast()
+		end
+		end
+		
+		--Manuel Cooldown and Glimmer of Light
+		if RubimRH.CDsON() and Player:BuffStack(S.GlimmerofLight) == 3 then
+		if S.AvengingWrath:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+            return S.AvengingWrath:Cast()
+        end
+		
+		if S.HolyAvenger:IsCastableP() and not Player:Buff(S.AuraMastery) then
+            return S.HolyAvenger:Cast()
+        end
+
+		if S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+			return S.AuraMastery:Cast()
+		end
+		
+		if S.LifeBindersInvocation:IsCastableP() and RubimRH.AoEHP(85) >= 5 then
+			return S.UnleashHeartofAzeroth:Cast()
+		end
+		
+		if S.OverchargeMana:IsCastableP() then
+			return S.UnleashHeartofAzeroth:Cast()
+		end
 		end
 
         --Beacon of Virtue
