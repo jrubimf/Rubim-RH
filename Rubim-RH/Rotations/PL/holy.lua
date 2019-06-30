@@ -323,17 +323,6 @@ local function APL()
             end
         end
 		
-		--Refreshment
-        if S.Refreshment:IsCastableP() then
-            if LowestAlly("ALL", "HP") <= 75 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
-                return S.UnleashHeartofAzeroth:Cast()
-            end
-        end
-		
         --Flash of Light
         if S.FlashofLight:IsCastableP() and not Player:IsMoving() then
             if LowestAlly("ALL", "HP") <= 75 then
