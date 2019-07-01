@@ -756,9 +756,11 @@ function findHealer()
         local enemyHealer = "None"
         if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
             print("arena" .. i)
+			enemyHealer = i
             break
         end
     end
+	return enemyHealer
 end
 
 local arenaSTART = CreateFrame("Frame")
@@ -1224,7 +1226,7 @@ RubimRH.Rotation.SetPvP(263, emptyAPL)
 RubimRH.Rotation.SetPvP(264, emptyAPL)
 
 RubimRH.Rotation.SetPvP(265, emptyAPL)
-RubimRH.Rotation.SetPvP(266, emptyAPL)
+--RubimRH.Rotation.SetPvP(266, emptyAPL)
 RubimRH.Rotation.SetPvP(267, emptyAPL)
 
 RubimRH.Rotation.SetPvP(72, emptyAPL)
