@@ -384,7 +384,7 @@ function RubimRH.CleaveON()
     end
 end
 
-function RubimRH.ccbreak()
+function RubimRH.CCBreakON()
     if RubimRH.db == nil then
         return false
     end

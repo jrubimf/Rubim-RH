@@ -1727,7 +1727,7 @@ local function AllPvP()
     end
     ArmsArenaSpell = function()
         RubimRH.Arena1Icon(nil)
-        RubimRH.Arena1Icon(nil)
+        RubimRH.Arena2Icon(nil)
         RubimRH.Arena3Icon(nil)
         if not Arena.arena1:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
             RubimRH.Arena1Icon(WRArms.Rend:Cast())
@@ -1813,7 +1813,7 @@ function RubimRH.PvP()
         return 0, 236390
     end
 
-    if Target:IsCC() then
+    if Target:IsCC() and RubimRH.CCBreakON() then
         return 0, 236390
     end
 
