@@ -506,7 +506,7 @@ local function Build ()
 
     if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or ShadowDanceBuff) then
         if not Target:IsImmune() and  IsInMeleeRange()  and (Target:HealthPercentage() <= 40 or Target:CastingCC()  or Target:IsBursting()) then
-            eturn S.CheapShot:Cast() 
+            return S.CheapShot:Cast() 
         end
     end
     -- actions.build=shuriken_toss,if=!talent.nightstalker.enabled&(!talent.dark_shadow.enabled|cooldown.symbols_of_death.remains>10)&buff.sharpened_blades.stack>=29&spell_targets.shuriken_storm<=(3*azerite.sharpened_blades.rank)
