@@ -38,7 +38,8 @@ RubimRH.Spell[266] = {
   Whiplash                      = Spell(119909),--Bitch
   FelStormFake                  = Spell(29893),-- HAck == CreateSoulwell
   FelStorm                      = Spell(89751),--FelGuard
-  PetStun                       = Spell(119914),
+  --PetStun                       = Spell(119914),Patch 4.x ?
+  PetStun						= Spell(89766), 
   SpellLock                     = Spell(119898),
 
   -- Talents
@@ -86,7 +87,8 @@ RubimRH.Spell[266] = {
   -- Utility
   TargetEnemy                   = Spell(153911),--doesnt work
   CreateHealthstone             = Spell(6201),--using this instead to target enemy
-  
+  DemonicCircleTeleport         = Spell(48020),  
+
   -- Misc
   DemonicCallingBuff            = Spell(205146),
   DemonicCoreBuff               = Spell(264173),
@@ -645,6 +647,7 @@ local function APL()
   UpdateRanges()
   UpdatePetTable()
   UpdateSoulShards()
+  DetermineEssenceRanks()
   
   -- Precombat DBM
   Precombat_DBM = function()
@@ -755,7 +758,7 @@ local function APL()
           return S.HandOfGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-        if S.SummonDemonicTyrant:IsCastableP() and ( (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) ) then
+        if S.SummonDemonicTyrant:IsCastableP() and ( (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) > 6) ) then
           return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
@@ -1055,7 +1058,7 @@ end
 local function PvP()
     -- If we are in arena
     if select(2, IsInInstance()) == "arena" then
-        -- For each possible target in current arena
+        -- For each possible target in current arena, handle differents situations...
         for i, arenaTarget in pairs(Arena) do
 		    -- Pet Stun Target Arena enemy casting a heal
             if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
@@ -1091,13 +1094,21 @@ local function PvP()
                 S.MortalCoil:ArenaCast(arenaTarget)
                 return
             end
+			-- Panic Demonic Circle : Teleport if player HP < 30% and arena target is bursting and we dont have UnendingResolve ready
+			if Player:HealthPercentage() <= 30 and not S.UnendingResolve:IsReady() and arenaTarget:IsBursting() and arenaTarget:IsTargeting(Player) then 
+			    return S.DemonicCircleTeleport:Cast()
+			end
+			-- Demonic Circle : Teleport if player is bursting and arenaTarget is casting a CC on player
+			if Player:IsBursting() and arenaTarget:CastingCC() and arenaTarget:IsTargeting(Player) then 
+			    return S.DemonicCircleTeleport:Cast()
+			end
         end
     end
 
     -- If we got a current arena target selected...
     if Target:Exists() then
 	    -- Cast PetStun if we got a valid target in the 35 yards range
-        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC())
+        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, arenaTarget) then 
             return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
         end
 		-- Cast MortalCoil if we got a valid target in the 35 yards range

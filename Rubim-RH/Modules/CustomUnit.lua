@@ -9,9 +9,8 @@ local Spell = HL.Spell;
 local Item = HL.Item;
 local debug = RubimRH.DebugPrint;
 local mainAddon = RubimRH;
-
-local pairs, next = pairs, next
-
+local next, pairs, type, print  = next, pairs, type, print
+local IsActionInRange, GetActionInfo, PetHasActionBar, GetPetActionsUsable, GetSpellInfo = IsActionInRange, GetActionInfo, PetHasActionBar, GetPetActionsUsable, GetSpellInfo
 local UnitIsPlayer, UnitExists, UnitGUID = UnitIsPlayer, UnitExists, UnitGUID
 
 do
@@ -333,63 +332,6 @@ end
 function RubimRH.UNITBoss(unitID)
     return RubimRH.UNITLevel(unitID) == -1 or UnitEffectiveLevel(unitID) == -1 or UnitIsQuestBoss(unitID) or UnitIsBoss(unitID) or false 
 end 
-
---[[function Unit:IsInterruptible()
-    if self:CastingInfo(8) == true or self:ChannelingInfo(7) == true then
-        return false
-    end
-
-    local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
-	-- Custom profils interrupts part 2
-	--
-    --local currentList = 			
-	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
-	    currentList = RubimRH.db.profile.mainOption.mythicList
-	elseif RubimRH.db.profile.mainOption.activeList == "PvP" then
-	    currentList = RubimRH.db.profile.mainOption.pvpList
-	elseif RubimRH.db.profile.mainOption.activeList == "Mixed PvE PvP" then
-		currentList = RubimRH.db.profile.mainOption.mixedList
-	else 
-	    currentList = RubimRH.db.profile.mainOption.customList
-	end
-
-    if spellId ~= nil then
-        if RubimRH.db.profile.mainOption.whitelist then
-            if currentList[spellId] then
-                if self:CastPercentage() >= randomGenerator("Interrupt") then
-                    return true
-                else
-				    if self:CastPercentage() >= randomGenerator("Channel") then
-                        return true
-					end
-                end
-            end
-        else
-            if currentList[spellId] then
-                return false
-            end
-        end
-    end
-
-    if not RubimRH.InterruptsON() then
-        return false
-    end
-
-    for i, v in pairs(currentList) do
-        if RubimRH.db.profile.mainOption.whitelist then
-            return true
-        end
-    end
-
-    if self:CastPercentage() >= randomGenerator("Interrupt") then
-        return true
-    end
-	if self:CastPercentage() >= randomGenerator("Channel") then
-        return true
-    end
-	
-    return false
-end]]--
 
 local otherTank = Player
 function Unit:IsTank()
@@ -760,7 +702,6 @@ local DispellablesPvP = {
  
 }
 
-
 -- Dispell function
 function Unit:IsDispellable()
 	
@@ -788,29 +729,9 @@ function Unit:IsDispellable()
     return false
 end
 
--- Test 
---PetBasicAttacks = {	
---Hunter
---17253, -- Bite
---16827, -- Claw
---49966, -- Smack
-
--- Warlock
---30213, --Legion Strike
---}
-
---function IsPetInRange(unit)
- --   if UnitExists(unit) and UnitExists("pet") then
-  --      for i = 1, #PetBasicAttacks do 
---		    if IsSpellInRange(GetSpellInfo(PetBasicAttacks[i]),unit) == 1 then 
---			    return true 
---			end 
---		end
- --   end
---end
-
--- Pet range 
-local pairs = pairs
+---------------------
+-- PET SPELL RANGE
+---------------------
 local oPetSlots = {
     -- Unholy 
     [252] = {
@@ -820,6 +741,7 @@ local oPetSlots = {
 	-- Demonology
 	[266] = {
         [30213] = 0, -- Legion Strike
+		[89766] = 30, -- PetStun Felguard
     }, 
 }
 function RubimRH.PetSpellInRange(id, unit)
