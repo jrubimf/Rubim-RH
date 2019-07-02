@@ -379,7 +379,7 @@ local function CoreRotation ()
     if S.Starsurge:IsReady() and Cache.EnemiesCount[40] < 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) and FutureAstralPower() >= 40 then
         return S.Starsurge:Cast()
     end
-    if S.Starfall:IsReady() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 and active_enemies() > 2 and active_enemies() < 7 then
+    if S.Starfall:IsReady() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 and active_enemies() > 7 then
         return S.Starfall:Cast()
     end
     if S.NewMoon:IsReady() and (Player:AstralPowerDeficit() > 10 + (Player:GCD() / 1.5)) then
@@ -506,7 +506,7 @@ local function APL()
             return S.Starsurge:Cast()
         end
         -- starfall,if=!buff.starlord.up|buff.starlord.remains>=4
-        if S.Starfall:IsReady() and (not Player:Buff(S.StarlordBuff) or Player:BuffRemains(S.StarlordBuff) >= 4) and active_enemies() > 2 and active_enemies() < 7 then
+        if S.Starfall:IsReady() and (not Player:Buff(S.StarlordBuff) or Player:BuffRemains(S.StarlordBuff) >= 4) and active_enemies() > 7 then
             return S.Starfall:Cast()
         end
         -- new_moon,if=astral_power.deficit>12
