@@ -97,6 +97,8 @@ RubimRH.Spell[266] = {
   -- PvP Talents
   NetherWard                   = Spell(212295),
   CurseOfWeakness              = Spell(199892),
+  CallFelLord                  = Spell(212459),
+  CallObserver                 = Spell(201996),
   
   --8.2 Essences
   UnleashHeartOfAzeroth        = Spell(280431),
@@ -1107,22 +1109,31 @@ local function PvP()
 
     -- If we got a current arena target selected...
     if Target:Exists() then
-	    -- Cast PetStun if we got a valid target in the 35 yards range
-        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, arenaTarget) then 
-            return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
-        end
-		-- Cast MortalCoil if we got a valid target in the 35 yards range
-        if S.MortalCoil:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) then
-            return S.MortalCoil:Cast()
-        end
-        -- Cast NetherWard to reflect current incoming CC
+	    -- Cast NetherWard to reflect current incoming CC
         if not Target:IsImmune() and Target:CastingCC() and Target:IsTargeting(Player) and S.NetherWard:IsCastable() and Target:CastPercentage() >= randomGenerator("Reflect") then
             return S.NetherWard:Cast()
         end
-        -- Cast Disarm if current target is using offensives CDs
+	    -- Cast PetStun if we got a valid target in the 30 yards range
+        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, arenaTarget) then 
+            return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+        end
+		-- Cast MortalCoil if we got a valid target in the 30 yards range
+        if S.MortalCoil:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) then
+            return S.MortalCoil:Cast()
+        end
+		-- Cast CallFelLord if enemy melee is bursting us
+        if S.CallFelLord:IsReadyP() and Target:MinDistanceToPlayer(true) <= 10 and arenaTarget:IsBursting() then
+            return S.CallFelLord:Cast()
+        end
+		-- Cast CallObserver if enemy caster is bursting us
+        if S.CallObserver:IsReadyP() and Target:MinDistanceToPlayer(true) <= 20 and arenaTarget:IsBursting() then
+            return S.CallObserver:Cast()
+        end
+        -- Cast CurseOfWeakness if current target is using offensives CDs
         if not Target:IsImmune() and Target:IsBursting() and S.CurseOfWeakness:IsCastable() and arenaTarget:IsMelee() then
             return S.CurseOfWeakness:Cast()
         end
+		
     end
 end
 RubimRH.Rotation.SetPvP(266, PvP);
