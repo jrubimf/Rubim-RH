@@ -497,7 +497,7 @@ local function Build ()
         return S.ShurikenToss:Cast()
     end
     -- actions.build=shuriken_storm,if=spell_targets>=2|buff.the_dreadlords_deceit.stack>=29
-    if RubimRH.AoEON() and S.ShurikenStorm:IsReadyP() and (active_enemies() >= 3 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
+    if RubimRH.AoEON() and S.ShurikenStorm:IsReadyP() and (Cache.EnemiesCount[10] >= 3 or Player:BuffStackP(S.TheDreadlordsDeceit) >= 29) then
         return S.ShurikenStorm:Cast()
     end
     if IsInMeleeRange() then
