@@ -191,7 +191,7 @@ local function APL()
       return S.ArcaneIntellect:Cast()
     end
     -- summon_water_elemental
-    if S.SummonWaterElemental:IsCastableP() then
+    if S.SummonWaterElemental:IsCastableP() and not Pet:Exists() then
       return S.SummonWaterElemental:Cast()
     end
     -- snapshot_stats
@@ -283,7 +283,7 @@ local function APL()
       return S.Ebonbolt:Cast()
     end
     -- glacial_spike
-    if S.GlacialSpike:IsCastableP() then
+    if S.GlacialSpike:IsCastableP() and Player:BuffStackP(S.IciclesBuff) == 5 then
       return S.GlacialSpike:Cast()
     end
     -- cone_of_cold
@@ -419,8 +419,8 @@ local function APL()
       return S.Blizzard:Cast()
     end
     -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
-    if S.GlacialSpike:IsCastableP() and (bool(Player:BuffStackP(S.BrainFreezeBuff)) or Player:PrevGCDP(1, S.Ebonbolt) or EnemiesCount > 1 and S.SplittingIce:IsAvailable()) then
-      return S.GlacialSpike:Cast()
+    if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Player:EnemiesAround(35) > 1 and S.SplittingIce:IsAvailable()) then
+        return S.GlacialSpike:Cast()
     end
     -- ice_nova
     if S.IceNova:IsCastableP() then
