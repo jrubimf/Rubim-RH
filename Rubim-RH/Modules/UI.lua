@@ -875,7 +875,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                  RubimRH.InterruptEverythingToggle()
             end
 			
-			-- Instant Interrupt
+			--[[ Instant Interrupt
             local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
 		    -- Set this checkbox a tooltip
 			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt instant - NOT RECOMMENDED IN PVP', 'TOPLEFT', 'TOPRIGHT', true);                    
@@ -887,7 +887,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		    function InstantInterruptbutton:OnValueChanged(value)
 		    -- See Rubim-RHc.lua 
                  RubimRH.InstantInterruptToggle()
-            end
+            end]]--
 			
             -- MIN Interrupt randomizer settings
             local interruptslider1 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.minInterruptValue, false, 5, 100)
