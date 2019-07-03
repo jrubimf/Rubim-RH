@@ -155,30 +155,29 @@ local function APL()
 	
     local DPS = function()
 
-		if S.Judgement:IsCastableP(30) and not Player:Buff(S.AvengingCrusader) then
+		if S.Judgement:IsCastable(30) and not Player:Buff(S.AvengingCrusader) then
 			return S.Judgement:Cast()
 		end
 
-		if S.HolyShock:IsCastableP(40) and not Player:Buff(S.AvengingCrusader) then
+		if S.HolyShock:IsCastable(40) and not Player:Buff(S.AvengingCrusader) then
 			return S.HolyShock:Cast()
 		end
 		
-		if S.CrusaderStrike:IsCastableP("Melee") and not Player:Buff(S.AvengingCrusader) then
+		if S.CrusaderStrike:IsCastable("Melee") and not Player:Buff(S.AvengingCrusader) then
 			return S.CrusaderStrike:Cast()
 		end
 		
-		if S.Consecration:IsCastableP("Melee") and not Player:Buff(S.AvengingCrusader) and not Target:Debuff(S.ConsecrationUp) then
+		if S.Consecration:IsCastable("Melee") and not Player:Buff(S.AvengingCrusader) and not Target:Debuff(S.ConsecrationUp) then
 			return S.Consecration:Cast()
 		end
 		
-		if S.Judgement:IsCastableP(30) and Player:Buff(S.AvengingCrusader) then
+		if S.Judgement:IsCastable(30) and Player:Buff(S.AvengingCrusader) then
 			return S.Judgement:Cast()
 		end
 
-		if S.CrusaderStrike:IsCastableP() and Player:Buff(S.AvengingCrusader) then
+		if S.CrusaderStrike:IsCastable() and Player:Buff(S.AvengingCrusader) then
 			return S.CrusaderStrike:Cast()
 		end
-		
 
         return 0, 135328
     end
@@ -188,12 +187,12 @@ local function APL()
 		DetermineEssenceRanks()
 	
 		--Save yourself
-		if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
+		if S.DivineShield:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
 			return S.DivineShield:Cast()
 		end	
 
         --Tank Emergency
-        if S.LayOnHands:IsCastableP() and not Target:Debuff(S.Forbearance) then
+        if S.LayOnHands:IsCastable() and not Target:Debuff(S.Forbearance) then
             if LowestAlly("TANK", "HP") < 25 then
                 ForceHealingTarget("TANK")
             end
@@ -204,72 +203,72 @@ local function APL()
         end
 
 		--Dispell
-		--if not Player:CanAttack(Target) and S.Cleanse:IsCastableP() and Target:HasDispelableDebuff("Magic", "Poison", "Disease") then
+		--if not Player:CanAttack(Target) and S.Cleanse:IsCastable() and Target:HasDispelableDebuff("Magic", "Poison", "Disease") then
 			--return S.Cleanse:Cast()
 		--end
 
         --Manuel Cooldown and not Glimmer of Light
 		if RubimRH.CDsON() and not S.GlimmerofLight:AzeriteEnabled(3) then
-		if S.AvengingWrath:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+		if S.AvengingWrath:IsCastable() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingWrath:Cast()
         end
 
-		if S.AvengingCrusader:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+		if S.AvengingCrusader:IsCastable() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingCrusader:Cast()
         end		
 		
-		if S.HolyAvenger:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) then
+		if S.HolyAvenger:IsCastable() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) then
             return S.HolyAvenger:Cast()
         end
 
-		if S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+		if S.AuraMastery:IsCastable() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
 			return S.AuraMastery:Cast()
 		end
 		
-		if S.LifeBindersInvocation:IsCastableP() and RubimRH.AoEHP(85) >= 5 then
+		if S.LifeBindersInvocation:IsCastable() and RubimRH.AoEHP(85) >= 5 then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
 		
-		if S.OverchargeMana:IsCastableP() then
+		if S.OverchargeMana:IsCastable() then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
 		end
 		
 		--Manuel Cooldown and Glimmer of Light
 		if RubimRH.CDsON() and S.GlimmerofLight:AzeriteEnabled(3) then
-		if S.AvengingWrath:IsCastableP() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
+		if S.AvengingWrath:IsCastable() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingWrath:Cast()
         end
 		
-		if S.HolyAvenger:IsCastableP() and not Player:Buff(S.AuraMastery) then
+		if S.HolyAvenger:IsCastable() and not Player:Buff(S.AuraMastery) then
             return S.HolyAvenger:Cast()
         end
 
-		if S.AuraMastery:IsCastableP() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+		if S.AuraMastery:IsCastable() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
 			return S.AuraMastery:Cast()
 		end
 		
-		if S.LifeBindersInvocation:IsCastableP() and RubimRH.AoEHP(85) >= 5 then
+		if S.LifeBindersInvocation:IsCastable() and RubimRH.AoEHP(85) >= 5 then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
 		
-		if S.OverchargeMana:IsCastableP() then
+		if S.OverchargeMana:IsCastable() then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
 		end
-		
+
         --Beacon of Virtue
-        if S.BeaconofVirtue:IsCastableP() and RubimRH.AoEHP(85) >= 3 then
+        if S.BeaconofVirtue:IsCastable() and RubimRH.AoEHP(85) >= 3 then
 			return S.BeaconofVirtue:Cast()
 		end
 
         --Light of Dawn
-        if S.LightofDawn:IsCastableP() and RubimRH.AoEHP(85) >= 3 then
+        if S.LightofDawn:IsCastable() and RubimRH.AoEHP(85) >= 3 then
 			return S.LightofDawn:Cast()
         end
 
 		--Holy Shock
-        if S.HolyShock:IsCastableP() then
+        if S.HolyShock:IsCastable() then
             if LowestAlly("ALL", "HP") <= 90 then
                 ForceHealingTarget("ALL")
             end
@@ -281,7 +280,7 @@ local function APL()
         end
 
         --Judgment Of Light
-        if RubimRH.AoEON() and S.Judgement:IsCastableP() and S.JudgementofLight:IsAvailable() then
+        if RubimRH.AoEON() and S.Judgement:IsCastable() and S.JudgementofLight:IsAvailable() then
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
@@ -292,7 +291,7 @@ local function APL()
         end
 		
         --Bestow Faith
-        if S.BestowFaith:IsAvailable() and S.BestowFaith:IsCastableP() then
+        if S.BestowFaith:IsAvailable() and S.BestowFaith:IsCastable() then
             if LowestAlly("ALL", "HP") <= 95 then
                 ForceHealingTarget("ALL")
             end
@@ -302,7 +301,7 @@ local function APL()
         end
 		
 		--Concentrated Flame Heal
-        if S.ConcentratedFlameHeal:IsCastableP() then
+        if S.ConcentratedFlameHeal:IsCastable() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
@@ -313,7 +312,7 @@ local function APL()
         end
 		
 		--Vitality Conduit
-        if S.VitalityConduit:IsCastableP() then
+        if S.VitalityConduit:IsCastable() then
             if LowestAlly("TANK", "HP") <= 75 then
                 ForceHealingTarget("TANK")
             end
@@ -324,7 +323,7 @@ local function APL()
         end
 		
         --Flash of Light
-        if S.FlashofLight:IsCastableP() and not Player:IsMoving() then
+        if S.FlashofLight:IsCastable() and not Player:IsMoving() then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
@@ -335,12 +334,12 @@ local function APL()
         end
 
         --Crusader Strike
-        if S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() then
+        if S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() and not S.HolyShock:IsReady() and Player:AffectingCombat() then
             return S.CrusaderStrike:Cast()
         end
 
         --Holy Light
-        if S.HolyLight:IsCastableP() and not Player:IsMoving() then
+        if S.HolyLight:IsCastable() and not Player:IsMoving() then
             if LowestAlly("ALL", "HP") <= 90 then
                 ForceHealingTarget("ALL")
             end
@@ -351,7 +350,7 @@ local function APL()
         end
 		
         --Light of the Martyr
-        if S.LightoftheMartyr:IsCastableP() and Player:IsMoving() and Player:HealthPercentage() > 75 then
+        if S.LightoftheMartyr:IsCastable() and Player:IsMoving() and Player:HealthPercentage() > 75 then
             if LowestAlly("ALL", "HP") <= 75 then
                 ForceHealingTarget("ALL")
             end
@@ -385,7 +384,7 @@ RubimRH.Rotation.SetAPL(65, APL);
 
 local function PASSIVE()
 
-    if S.DivineShield:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
+    if S.DivineShield:IsCastable() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
         return S.DivineShield:Cast()
     end
 
