@@ -272,18 +272,7 @@ local function APL()
     local DPS = function()
         --actions=potion
         --actions+=/wind_shear
-	    -- wind_shear
-        if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
-            return S.WindShear:Cast()
-        end
-	    -- purge (offensive dispell)
-        if S.Purge:IsCastableP() and Target:HasStealableBuff() then
-            return S.Purge:Cast()
-        end
-        --actions+=/spiritwalkers_grace,moving=1,if=movement.distance>6
-	    if S.SpiritWalkersGrace:IsReady() and Player:MovingFor() >= 5 and (RubimRH.incdmg5secs() > AVG_DMG + AVG_HPS) then
-            return S.SpiritWalkersGrace:Cast()
-        end
+
         --actions+=/use_items
         -- blood_fury
         if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
@@ -450,6 +439,18 @@ local function APL()
         if QueueSkill() ~= nil then
             return QueueSkill()
         end
+	    -- wind_shear
+        if S.WindShear:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+            return S.WindShear:Cast()
+        end
+	    -- purge (offensive dispell)
+        if S.Purge:IsCastableP() and Target:HasStealableBuff() then
+            return S.Purge:Cast()
+        end
+        --actions+=/spiritwalkers_grace,moving=1,if=movement.distance>6
+	    if S.SpiritWalkersGrace:IsReady() and Player:MovingFor() >= 5 and (RubimRH.incdmg5secs() > AVG_DMG + AVG_HPS) then
+            return S.SpiritWalkersGrace:Cast()
+        end
         -- Mouseover Dispell handler
         local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover") and Unit("mouseover") or nil
         if MouseoverUnit then
@@ -478,7 +479,7 @@ local function APL()
             return 0, 236353
         end
        
-	    if Player:CanAttack(Target) then
+	    if RubimRH.TargetIsValid() then
             return DPS()
         end
 		
