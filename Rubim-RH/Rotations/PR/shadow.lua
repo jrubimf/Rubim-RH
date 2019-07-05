@@ -498,8 +498,7 @@ local function APL()
     local ShouldReturn = Essences(); 
 	if ShouldReturn and (true) then 
 	    return ShouldReturn; 
-	end
-	
+	end	
 
 	-- Shield for Speed
 	if S.PowerWordShield:IsReady() and not Player:Debuff(S.WeakenedSoulDebuff) and Player:MovingFor() >= 2 and S.BodyAndSoul:IsAvailable() then
