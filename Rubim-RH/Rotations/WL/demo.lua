@@ -13,6 +13,7 @@ local Target = Unit.Target
 local Spell = HL.Spell
 local Item = HL.Item
 local Pet = Unit.Pet
+local Arena = Unit.Arena;
 
 RubimRH.Spell[266] = {
   -- Racials
@@ -605,9 +606,7 @@ end
 -- # Essences
 local function Essences()
   -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
+
   -- concentrated_flame
   if S.ConcentratedFlame:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
@@ -637,7 +636,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and FutureShard() < 2 and S.SummonDemonicTyrant:CooldownRemainsP() < 10 then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
@@ -657,7 +656,7 @@ local function APL()
     -- food
     -- augmentation
     -- actions.precombat+=/summon_pet
-    if (not IsPetInvoked() or not S.PetStun:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
+    if not Pet:Exists() and FutureShard() >= 1 then
         return S.SummonFelguard:Cast()
     end
 	-- potion
@@ -682,7 +681,7 @@ local function APL()
     -- food
     -- augmentation
     -- actions.precombat+=/summon_pet
-    if (not IsPetInvoked() or not S.PetStun:IsLearned()) or not IsPetInvoked() and FutureShard() >= 1 then
+    if not Pet:Exists() and FutureShard() >= 1 then
         return S.SummonFelguard:Cast()
     end
     -- inner_demons,if=talent.inner_demons.enabled
@@ -726,6 +725,10 @@ local function APL()
         -- hand_of_guldan,if=prev_gcd.1.hand_of_guldan&soul_shard>0&prev_gcd.2.soul_strike
         if S.HandOfGuldan:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShardsP() > 0 and Player:PrevGCDP(2, S.SoulStrike) then
           return S.HandOfGuldan:Cast()
+        end
+		  -- memory_of_lucid_dreams
+        if S.MemoryOfLucidDreams:IsCastableP() and FutureShard() < 5 and Player:PrevGCDP(1, S.HandOfGuldan) and HL.CombatTime() > 3 then
+           return S.UnleashHeartOfAzeroth:Cast()
         end
         -- demonic_strength,if=prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&(buff.wild_imps.stack>1&action.hand_of_guldan.in_flight)
         if S.DemonicStrength:IsReadyP() and S.FelStorm:CooldownRemainsP() <= 26.5 and (Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight())) then
@@ -947,6 +950,10 @@ local function APL()
     	if trinketReady(2) and TyranIsActive() then
             return trinket2
         end
+		-- Blood of the enemy with Tyran sync
+		if S.BloodOfTheEnemy:IsCastableP() and TyranIsActive() then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
 	    -- Mythic+ - interrupt2 (command demon)
     	if S.PetStun:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
     		return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
@@ -1064,7 +1071,7 @@ local function PvP()
         for i, arenaTarget in pairs(Arena) do
 		    -- Pet Stun Target Arena enemy casting a heal
             if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
-                RubimRH.getArenaTarget(arenaTarget)
+                RubimRH.getArenaTarget(arenaaTarget)
             end
             -- Pet Stun Target Arena enemy casting a CC
             if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
@@ -1114,23 +1121,23 @@ local function PvP()
             return S.NetherWard:Cast()
         end
 	    -- Cast PetStun if we got a valid target in the 30 yards range
-        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, arenaTarget) then 
+        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (Target:CastingHealing() or Target:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, Target) then 
             return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
         end
 		-- Cast MortalCoil if we got a valid target in the 30 yards range
-        if S.MortalCoil:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) then
+        if S.MortalCoil:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (Target:CastingHealing() or Target:CastingCC()) then
             return S.MortalCoil:Cast()
         end
 		-- Cast CallFelLord if enemy melee is bursting us
-        if S.CallFelLord:IsReadyP() and Target:MinDistanceToPlayer(true) <= 10 and arenaTarget:IsBursting() then
+        if S.CallFelLord:IsReadyP() and Target:MinDistanceToPlayer(true) <= 10 and Target:IsBursting() then
             return S.CallFelLord:Cast()
         end
 		-- Cast CallObserver if enemy caster is bursting us
-        if S.CallObserver:IsReadyP() and Target:MinDistanceToPlayer(true) <= 20 and arenaTarget:IsBursting() then
+        if S.CallObserver:IsReadyP() and Target:MinDistanceToPlayer(true) <= 25 and Target:IsBursting() then
             return S.CallObserver:Cast()
         end
         -- Cast CurseOfWeakness if current target is using offensives CDs
-        if not Target:IsImmune() and Target:IsBursting() and S.CurseOfWeakness:IsCastable() and arenaTarget:IsMelee() then
+        if not Target:IsImmune() and Target:IsBursting() and S.CurseOfWeakness:IsCastable() and Target:IsMelee() then
             return S.CurseOfWeakness:Cast()
         end
 		
