@@ -69,6 +69,9 @@ RubimRH.Spell[65] = {
 	VitalityConduit = Spell(296230),
 	VitalityConduit2 = Spell(299958),
 	VitalityConduit3 = Spell(299959),
+	MemoryOfLucidDreams = Spell(298357),
+	MemoryOfLucidDreams2 = Spell(299372),
+	MemoryOfLucidDreams3 = Spell(299374),
 
     --Healing
     BlessingofProtection = Spell(1022),
@@ -142,6 +145,8 @@ local function DetermineEssenceRanks()
 	S.Refreshment = S.Refreshment3:IsAvailable() and S.Refreshment3 or S.Refreshment;
 	S.OverchargeMana = S.OverchargeMana2:IsAvailable() and S.OverchargeMana2 or S.OverchargeMana;
 	S.OverchargeMana = S.OverchargeMana3:IsAvailable() and S.OverchargeMana3 or S.OverchargeMana;
+	S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+	S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
 end
 
 local function APL()
@@ -234,6 +239,10 @@ local function APL()
 		end
 		end
 		
+		if S.MemoryOfLucidDreams:IsCastable() and Player:Mana() < Player:ManaMax() * 0.85 then
+			return S.UnleashHeartofAzeroth:Cast()
+		end
+		
 		--Manuel Cooldown and Glimmer of Light
 		if RubimRH.CDsON() and S.GlimmerofLight:AzeriteEnabled(3) then
 		if S.AvengingWrath:IsCastable() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
@@ -255,6 +264,10 @@ local function APL()
 		if S.OverchargeMana:IsCastable() then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
+		end
+		
+		if S.MemoryOfLucidDreams:IsCastable() and Player:Mana() < Player:ManaMax() * 0.85 then
+			return S.UnleashHeartofAzeroth:Cast()
 		end
 
         --Beacon of Virtue
