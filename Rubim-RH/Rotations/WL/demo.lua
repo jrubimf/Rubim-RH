@@ -1071,7 +1071,7 @@ local function PvP()
         for i, arenaTarget in pairs(Arena) do
 		    -- Pet Stun Target Arena enemy casting a heal
             if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
-                RubimRH.getArenaTarget(arenaaTarget)
+                RubimRH.getArenaTarget(arenaTarget)
             end
             -- Pet Stun Target Arena enemy casting a CC
             if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
