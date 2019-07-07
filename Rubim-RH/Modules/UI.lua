@@ -269,9 +269,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_4_0:SetChecked(RubimRH.db.profile.mainOption.Precombat)
             function gn_4_0:OnValueChanged(value)
                 RubimRH.PrecombatToggle()
-            end
-            
+            end            
             StdUi:GlueBelow(gn_4_0, gn_3_0, 0, -15, 'LEFT');
+
+            -- Break CC Toggle
+            local gn_break_cc = StdUi:Checkbox(tab.frame, 'Break CCs');
+            StdUi:FrameTooltip(gn_break_cc, 'Break CCs', 'TOPLEFT', 'TOPRIGHT', true);
+            gn_break_cc:SetChecked(RubimRH.db.profile.mainOption.ccbreak)
+            function gn_break_cc:OnValueChanged(value)
+                RubimRH.CCToggle()
+            end            
+            StdUi:GlueBelow(gn_break_cc, gn_4_0, 0, -15, 'LEFT');
 
             -- Cds usage options
             local cdOptions = {

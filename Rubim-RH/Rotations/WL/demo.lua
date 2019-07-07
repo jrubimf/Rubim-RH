@@ -38,7 +38,8 @@ RubimRH.Spell[266] = {
   Whiplash                      = Spell(119909),--Bitch
   FelStormFake                  = Spell(29893),-- HAck == CreateSoulwell
   FelStorm                      = Spell(89751),--FelGuard
-  PetStun                       = Spell(119914),
+  --PetStun                       = Spell(119914),Patch 4.x ?
+  PetStun						= Spell(89766), 
   SpellLock                     = Spell(119898),
 
   -- Talents
@@ -86,41 +87,48 @@ RubimRH.Spell[266] = {
   -- Utility
   TargetEnemy                   = Spell(153911),--doesnt work
   CreateHealthstone             = Spell(6201),--using this instead to target enemy
-  
+  DemonicCircleTeleport         = Spell(48020),  
+
   -- Misc
   DemonicCallingBuff            = Spell(205146),
   DemonicCoreBuff               = Spell(264173),
   DemonicPowerBuff              = Spell(265273),
   
-  		  --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
+  -- PvP Talents
+  NetherWard                   = Spell(212295),
+  CurseOfWeakness              = Spell(199892),
+  CallFelLord                  = Spell(212459),
+  CallObserver                 = Spell(201996),
+  
+  --8.2 Essences
+  UnleashHeartOfAzeroth        = Spell(280431),
+  BloodOfTheEnemy              = Spell(297108),
+  BloodOfTheEnemy2             = Spell(298273),
+  BloodOfTheEnemy3             = Spell(298277),
+  ConcentratedFlame            = Spell(295373),
+  ConcentratedFlame2           = Spell(299349),
+  ConcentratedFlame3           = Spell(299353),
+  GuardianOfAzeroth            = Spell(295840),
+  GuardianOfAzeroth2           = Spell(299355),
+  GuardianOfAzeroth3           = Spell(299358),
+  FocusedAzeriteBeam           = Spell(295258),
+  FocusedAzeriteBeam2          = Spell(299336),
+  FocusedAzeriteBeam3          = Spell(299338),
+  PurifyingBlast               = Spell(295337),
+  PurifyingBlast2              = Spell(299345),
+  PurifyingBlast3              = Spell(299347),
+  TheUnboundForce              = Spell(298452),
+  TheUnboundForce2             = Spell(299376),
+  TheUnboundForce3             = Spell(299378),
+  RippleInSpace                = Spell(302731),
+  RippleInSpace2               = Spell(302982),
+  RippleInSpace3               = Spell(302983),
+  WorldveinResonance           = Spell(295186),
+  WorldveinResonance2          = Spell(298628),
+  WorldveinResonance3          = Spell(299334),
+  MemoryOfLucidDreams          = Spell(298357),
+  MemoryOfLucidDreams2         = Spell(299372),
+  MemoryOfLucidDreams3         = Spell(299374),
 };
 
 local S = RubimRH.Spell[266]
@@ -641,6 +649,7 @@ local function APL()
   UpdateRanges()
   UpdatePetTable()
   UpdateSoulShards()
+  DetermineEssenceRanks()
   
   -- Precombat DBM
   Precombat_DBM = function()
@@ -751,7 +760,7 @@ local function APL()
           return S.HandOfGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-        if S.SummonDemonicTyrant:IsCastableP() and ( (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) ) then
+        if S.SummonDemonicTyrant:IsCastableP() and ( (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) > 6) ) then
           return S.SummonDemonicTyrant:Cast()
         end
         -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
@@ -1035,6 +1044,99 @@ local function APL()
 end
 
 RubimRH.Rotation.SetAPL(266, APL)
+
+local function findEnemyHealer()
+    for i = 1, 3 do
+        local enemyHealer = "None"
+        if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
+            print("arena" .. i)
+			enemyHealer = i
+            break
+        end
+    end
+	return enemyHealer
+end
+
+local function PvP()
+    -- If we are in arena
+    if select(2, IsInInstance()) == "arena" then
+        -- For each possible target in current arena, handle differents situations...
+        for i, arenaTarget in pairs(Arena) do
+		    -- Pet Stun Target Arena enemy casting a heal
+            if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+            -- Pet Stun Target Arena enemy casting a CC
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.PetStun:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+            -- NetherWard Target Arena enemy casting a CC
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.NetherWard:IsCastable() and arenaTarget:CastPercentage() >= randomGenerator("Reflect") then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+            -- NetherWard Target Arena enemy casting a BigDamage spell
+            if not arenaTarget:IsImmune() and arenaTarget:IsBursting() and arenaTarget:IsInterruptible() and S.NetherWard:IsCastable() and arenaTarget:CastPercentage() >= randomGenerator("Reflect") then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+		    -- MortalCoil Target Arena enemy casting a heal
+            if not arenaTarget:IsImmune() and arenaTarget:CastingHealing() and arenaTarget:IsInterruptible() and S.MortalCoil:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+            -- MortalCoil Target Arena enemy casting a CC
+            if not arenaTarget:IsImmune() and arenaTarget:CastingCC() and arenaTarget:IsInterruptible() and S.MortalCoil:IsReady() and arenaTarget:MinDistanceToPlayer() <= 30 then
+                RubimRH.getArenaTarget(arenaTarget)
+            end
+            -- CurseOfWeakness Target Arena enemy currently bursting (Melee)
+            if not arenaTarget:IsImmune() and S.CurseOfWeakness:IsCastable() and arenaTarget:IsMelee() and arenaTarget:IsBursting() and arenaTarget:MinDistanceToPlayer(true) <= 30 then
+                S.CurseOfWeakness:ArenaCast(arenaTarget)
+                return
+            end
+            -- MortalCoil Healer if one of the Arena target Health < 20%
+            if not arenaTarget:IsImmune() and S.MortalCoil:IsCastable() and (arenaTarget:CastingHealing() or arenaTarget:HealthPercentage() <= 20) and arenaTarget:MinDistanceToPlayer(true) <= 30 then				
+                S.MortalCoil:ArenaCast(arenaTarget)
+                return
+            end
+			-- Panic Demonic Circle : Teleport if player HP < 30% and arena target is bursting and we dont have UnendingResolve ready
+			if Player:HealthPercentage() <= 30 and not S.UnendingResolve:IsReady() and arenaTarget:IsBursting() and arenaTarget:IsTargeting(Player) then 
+			    return S.DemonicCircleTeleport:Cast()
+			end
+			-- Demonic Circle : Teleport if player is bursting and arenaTarget is casting a CC on player
+			if Player:IsBursting() and arenaTarget:CastingCC() and arenaTarget:IsTargeting(Player) then 
+			    return S.DemonicCircleTeleport:Cast()
+			end
+        end
+    end
+
+    -- If we got a current arena target selected...
+    if Target:Exists() then
+	    -- Cast NetherWard to reflect current incoming CC
+        if not Target:IsImmune() and Target:CastingCC() and Target:IsTargeting(Player) and S.NetherWard:IsCastable() and Target:CastPercentage() >= randomGenerator("Reflect") then
+            return S.NetherWard:Cast()
+        end
+	    -- Cast PetStun if we got a valid target in the 30 yards range
+        if S.PetStun:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) and RubimRH.PetSpellInRange(S.PetStun, arenaTarget) then 
+            return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+        end
+		-- Cast MortalCoil if we got a valid target in the 30 yards range
+        if S.MortalCoil:IsReadyP() and Target:MinDistanceToPlayer(true) <= 30 and (arenaTarget:CastingHealing() or arenaTarget:CastingCC()) then
+            return S.MortalCoil:Cast()
+        end
+		-- Cast CallFelLord if enemy melee is bursting us
+        if S.CallFelLord:IsReadyP() and Target:MinDistanceToPlayer(true) <= 10 and arenaTarget:IsBursting() then
+            return S.CallFelLord:Cast()
+        end
+		-- Cast CallObserver if enemy caster is bursting us
+        if S.CallObserver:IsReadyP() and Target:MinDistanceToPlayer(true) <= 20 and arenaTarget:IsBursting() then
+            return S.CallObserver:Cast()
+        end
+        -- Cast CurseOfWeakness if current target is using offensives CDs
+        if not Target:IsImmune() and Target:IsBursting() and S.CurseOfWeakness:IsCastable() and arenaTarget:IsMelee() then
+            return S.CurseOfWeakness:Cast()
+        end
+		
+    end
+end
+RubimRH.Rotation.SetPvP(266, PvP);
 
 local function PASSIVE()
        return RubimRH.Shared()
