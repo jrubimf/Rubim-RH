@@ -886,7 +886,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- Instant Interrupt
             local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
 		    -- Set this checkbox a tooltip
-			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt instant - NOT RECOMMENDED IN PVP', 'TOPLEFT', 'TOPRIGHT', true);                    
+			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupts almost instant with very low randomizer', 'TOPLEFT', 'TOPRIGHT', true);                    
 			-- Set default value (checked, unchecked)and save it to db 
 			InstantInterruptbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
 			-- Set positionning
@@ -1440,7 +1440,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			------------------
 			-- Profil system
 			------------------
-			if RubimRH.playerSpec == 105 then
+		-- Restoration Druid
+		if RubimRH.playerSpec == 105 or RubimRH.playerSpec == 264 or RubimRH.playerSpec == 256 or RubimRH.playerSpec == 257 or RubimRH.playerSpec == 65 then
 			
 			local profileList = { }
 			
@@ -1474,45 +1475,270 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			
 			
-			----------------------------
-			-- HEALER SLIDERS 
-			----------------------------
-			-- RAID PART
-			-- Raid germination slider
-            local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
-			-- Raid rejuvenation slider
-            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			-- Raid wild growth slider
-            local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-			-- Raid cenarion slider
-            local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			-- Raid efflorescence slider
-            local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
-			-- Raid regrowth slider
-            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
-            -- TANK PART
-			-- Tank germination slider
-            local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
-			-- Tank rejuvenation slider
-            local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
-			-- Tank cenarion slider
-            local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
-			-- Tank regrowth slider
-            local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
-			-- Tank ironbark slider
-            local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
-			-- Tank Lifebloom slider
-            local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
-            -- MISC SETTINGS Part
-			-- Number of party member injured before using flourish...
-            local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
-			-- ....and how much hp should these number of party member have before using flourish
-            local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
-			-- Number of party member injured before using tranquility....
-            local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
-			-- ....and how much hp should these number of party member have before using Tranquility
-            local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+			---------------------------------
+			-- #1 RESTO DRUID SLIDERS VAR  --
+			---------------------------------
+			if RubimRH.playerSpec == 105
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid germination slider
+                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			    -- Raid rejuvenation slider
+                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			    -- Raid wild growth slider
+                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+			    -- Raid cenarion slider
+                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			    -- Raid efflorescence slider
+                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			    -- Raid regrowth slider
+                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank germination slider
+                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			     -- Tank rejuvenation slider
+                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			    -- Tank cenarion slider
+                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			    -- Tank regrowth slider
+                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			    -- Tank ironbark slider
+                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			    -- Tank Lifebloom slider
+                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Number of party member injured before using flourish...
+                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
+			    -- ....and how much hp should these number of party member have before using flourish
+                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			    -- Number of party member injured before using tranquility....
+                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Tranquility
+                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
 			
+			end
+			
+			-----------------------------
+			-- #2 DISCI PRIEST SLIDERS --
+			-----------------------------
+			if RubimRH.playerSpec == 256
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid germination slider
+                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			    -- Raid rejuvenation slider
+                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			    -- Raid wild growth slider
+                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+			    -- Raid cenarion slider
+                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			    -- Raid efflorescence slider
+                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			    -- Raid regrowth slider
+                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank germination slider
+                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			     -- Tank rejuvenation slider
+                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			    -- Tank cenarion slider
+                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			    -- Tank regrowth slider
+                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			    -- Tank ironbark slider
+                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			    -- Tank Lifebloom slider
+                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Number of party member injured before using flourish...
+                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
+			    -- ....and how much hp should these number of party member have before using flourish
+                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			    -- Number of party member injured before using tranquility....
+                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Tranquility
+                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+			
+			end
+			
+			---------------------------------
+			-- #3 HOLY PRIEST SLIDERS VAR  --
+			---------------------------------
+			if RubimRH.playerSpec == 257
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid germination slider
+                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			    -- Raid rejuvenation slider
+                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			    -- Raid wild growth slider
+                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+			    -- Raid cenarion slider
+                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			    -- Raid efflorescence slider
+                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			    -- Raid regrowth slider
+                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank germination slider
+                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			     -- Tank rejuvenation slider
+                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			    -- Tank cenarion slider
+                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			    -- Tank regrowth slider
+                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			    -- Tank ironbark slider
+                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			    -- Tank Lifebloom slider
+                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Number of party member injured before using flourish...
+                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
+			    -- ....and how much hp should these number of party member have before using flourish
+                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			    -- Number of party member injured before using tranquility....
+                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Tranquility
+                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+			
+			end
+			
+			--------------------------------
+			-- #4 RESTO SHAM SLIDERS VAR  --
+			--------------------------------
+			if RubimRH.playerSpec == 264
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid germination slider
+                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			    -- Raid rejuvenation slider
+                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			    -- Raid wild growth slider
+                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+			    -- Raid cenarion slider
+                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			    -- Raid efflorescence slider
+                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			    -- Raid regrowth slider
+                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank germination slider
+                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			     -- Tank rejuvenation slider
+                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			    -- Tank cenarion slider
+                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			    -- Tank regrowth slider
+                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			    -- Tank ironbark slider
+                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			    -- Tank Lifebloom slider
+                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Number of party member injured before using flourish...
+                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
+			    -- ....and how much hp should these number of party member have before using flourish
+                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			    -- Number of party member injured before using tranquility....
+                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Tranquility
+                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+			
+			end
+			
+			---------------------------------
+			-- #5 HOLY PALADIN SLIDERS VAR --
+			---------------------------------
+			if RubimRH.playerSpec == 65
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid Flash of Light slider
+                local raid_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_flashlight"]["value"], 1, 100 );
+			    -- Raid Holy Light slider
+                local raid_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holylight"]["value"], 1, 100 );
+			    -- Raid Holy Shock slider
+                local raid_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holyshock"]["value"], 1, 100 );
+			    -- Raid Light of the Martyr
+                local raid_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_martyr"]["value"], 1, 100 );
+				-- Raid Light of Dawn
+                local raid_lightofdawn_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_lightofdawn"]["value"], 1, 100 );
+		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank Flash of Light slider
+                local tank_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_flashlight"]["value"], 1, 100 );
+			    -- Tank Holy Light slider
+                local tank_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holylight"]["value"], 1, 100 );
+			    -- Tank Holy Shock slider
+                local tank_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holyshock"]["value"], 1, 100 );
+			    -- Tank Light of the Martyr
+                local tank_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_martyr"]["value"], 1, 100 );
+			    -- Tank Lay on Hands
+                local tank_layonhands_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_layonhands"]["value"], 1, 100 );				
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Divine Shield helth percentage for player
+                local divine_shield = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["divine_shield"]["value"], 1, 100 );					
+			    -- BeaconOfLight dropdown select
+                -- Custom Beacon Options             
+                local BeaconOptions = {
+                    { text = 'Tank', value = "Tank" },
+                    { text = 'Dps', value = "Dps" },
+                    { text = 'Healer', value = "Healer" },
+			        { text = 'All', value = "All" },
+                }
+                local beacon_choice = StdUi:Dropdown(tab.frame, 80, -24, BeaconOptions, nil, nil);
+                beacon_choice:SetPlaceholder("|cfff0f8ff|r" .. datavalue["beacon_option"]["value"]);
+                StdUi:AddLabel(tab.frame, beacon_choice, 'Beacon on:', 'TOP');
+                StdUi:FrameTooltip(beacon_choice, 'Choose ', 'TOPLEFT', 'TOPRIGHT', true);                
+                beacon_choice.OnValueChanged = function(self, val)
+                    if val == "Tank" then
+                        print("Beacon of Light will be used on Tanks")
+                        datavalue["beacon_option"]["value"] = val                    
+                    elseif val == "Dps" then
+                        print("Beacon of Light will be used on DPS")
+                        datavalue["beacon_option"]["value"] = val                  
+                    elseif val == "Healer" then
+                        print("Beacon of Light will be used on Healers")
+                        datavalue["beacon_option"]["value"] = val 
+                    else
+                        print("An error as occured, no beacon data :(")
+                    end
+                end
+                StdUi:GlueTop(beacon_choice, tab.frame, 50, -68, 'RIGHT');
+			
+			    -- Number of party member injured before using Aura Mastery....
+                local auramastery_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_auramastery"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Aura Mastery
+                local auramastery_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_auramastery"]["value"], 1, 100 );
+			
+			end
+			
+			-- Set the value on dropdown menu...
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
 			-- Current profil label
 			StdUi:AddLabel( tab.frame, profileDropdown, "Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile, "TOP" );
@@ -1520,6 +1746,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             profileDropdown.label:SetFont( profileDropdown.label:GetFont( ), 10 )
             profileDropdown.label:SetWidth( 0 )
 
+            -- On dropdown menu value change...
             function profileDropdown:OnValueChanged( value, text )
 			    
                 --Saving the current profile to another table.
@@ -1531,9 +1758,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.Print( 'Profile Changed to: ' .. value )
 				local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				
-				-------------------
-				-- Sliders Refresh
-				-------------------
+				--------------------------
+				-- #2 Sliders Refresh Part
+				--------------------------
+				------ DRUID SLIDERS -----
+				--------------------------
 				-- Profils label refresh
 				profileDropdown.label:SetText("Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile)
 				-- RAID PART
@@ -1663,11 +1892,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local Name = RubimRH.db.profile.mainOption.selectedProfile
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 			
+			--------------------------
+			-- DRUID SLIDERS CONFIG --
+			--------------------------			
 			--------------------
-			------ DRUID -------
-			--------------------			
-			--------------------
-			-- Rejuvenation Raid             
+			-- Rejuvenation Raid   			
             StdUi:GlueTop(raid_rejuv_slider, raid_setting_title, 20, -50);
             raid_rejuv_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_rejuv_slider, "Rejuvenation : " .. datavalue["raid_rejuv"]["value"], "TOP" );
@@ -1776,8 +2005,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_efflo_slider)
-			
-
 			
 			-------------------
 			-- Tank Part ----
@@ -1986,8 +2213,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
 		  
 		  
-		  end
-	      -- The end of spec = resto druid
+		end
+	    -- The end of spec = resto druid
 	
 	-- The end of Healer tab --
 	end 
