@@ -283,7 +283,7 @@ local function APL()
       return S.Ebonbolt:Cast()
     end
     -- glacial_spike
-    if S.GlacialSpike:IsCastableP() and Player:BuffStackP(S.IciclesBuff) == 5 then
+    if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 then
       return S.GlacialSpike:Cast()
     end
     -- cone_of_cold
