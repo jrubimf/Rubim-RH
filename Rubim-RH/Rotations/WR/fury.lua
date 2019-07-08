@@ -202,7 +202,7 @@ end
 -- # Essences
 local function Essences()
   -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
+  if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
@@ -210,7 +210,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
+  if S.GuardianOfAzeroth:IsCastableP() and RubimRH.CDsON() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- focused_azerite_beam
@@ -234,7 +234,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
