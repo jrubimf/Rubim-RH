@@ -458,40 +458,41 @@ local function APL()
     if not Player:AffectingCombat() and RubimRH.PrecombatON() then
       local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
     end
-
+    
+	-- In combat with valid target
     if RubimRH.TargetIsValid() then
-	-- countershot in combat
-	if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-        return S.CounterShot:Cast()
-    end
-	  if QueueSkill() ~= nil then
-        return QueueSkill()
-      end
-      -- auto_shot
-      -- use_items
+	    -- countershot in combat
+	    if S.CounterShot:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.CounterShot:Cast()
+        end
+		-- Queue spells
+	    if QueueSkill() ~= nil then
+            return QueueSkill()
+        end
+        -- auto_shot
+        -- use_items
         -- mendpet
         if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
         end
-	  -- summon_pet
-      if Pet:IsDeadOrGhost() then
-          return S.MendPet:Cast()
-      elseif not Pet:IsActive() then
-          return S.CallPet:Cast()
-      end
-
-      -- call_action_list,name=cds
-      if (true) then
-        local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
-      end
-      -- call_action_list,name=st,if=active_enemies<2
-      if (GetEnemiesCount() < 2) or not RubimRH.AoEON() then
-        local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
-      end
-      -- call_action_list,name=cleave,if=active_enemies>1
-      if (GetEnemiesCount() > 1 and RubimRH.AoEON()) then
-        local ShouldReturn = Cleave(); if ShouldReturn then return ShouldReturn; end
-      end
+	    -- summon_pet
+        if Pet:IsDeadOrGhost() then
+            return S.MendPet:Cast()
+        elseif not Pet:IsActive() then
+            return S.CallPet:Cast()
+        end
+        -- call_action_list,name=cds
+        if (true) then
+           local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
+        end
+        -- call_action_list,name=st,if=active_enemies<2
+        if (GetEnemiesCount() < 2) or not RubimRH.AoEON() then
+            local ShouldReturn = St(); if ShouldReturn then return ShouldReturn; end
+        end
+        -- call_action_list,name=cleave,if=active_enemies>1
+        if (GetEnemiesCount() > 1 and RubimRH.AoEON()) then
+           local ShouldReturn = Cleave(); if ShouldReturn then return ShouldReturn; end
+        end
     end
     return 0, 135328
 end
