@@ -277,7 +277,8 @@ local defaults = {
 			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider
 			
 			classprofiles = {
-			    -- resto druid defaut
+			    
+				-- Restoration Druid settings
 			    [105] = {	
 						["Default"] = {
 						
@@ -305,12 +306,121 @@ local defaults = {
 						              },							
 						
 						},
+				
+				-- Restoration Shaman settings
+			    [264] = {	
+						["Default"] = {
+						
+						              ["raid_rejuv"] = {value = 97},
+						              ["raid_germi"] = {value = 95},
+						              ["raid_wildg"] = {value = 96},
+						              ["raid_cenar"] = {value = 40},
+						              ["raid_efflo"] = {value = 80},
+						              ["raid_regro"] = {value = 40},
+						              ["raid_swift"] = {value = 50},
+ 						              
+									  ["tank_rejuv"] = {value = 97},
+						              ["tank_germi"] = {value = 95},
+						              ["tank_cenar"] = {value = 40},
+						              ["tank_regro"] = {value = 40},
+						              ["tank_swift"] = {value = 50},
+ 						              ["tank_bark"] = {value = 30},
+   						              ["tank_lifebloom"] = {value = 95},									  
+									  ["nb_flourish"] = {value = 5},
+									  ["health_flourish"] = {value = 40},
+									  ["nb_tranqui"] = {value = 8},
+									  ["health_tranqui"] = {value = 35},
+						              --["cd_flourish"] = {value = 5},									  
+									  
+						              },							
+						
+						},
+				
+				-- Holy Priest settings
+			    [257] = {	
+						["Default"] = {
+						
+						              ["raid_rejuv"] = {value = 97},
+						              ["raid_germi"] = {value = 95},
+						              ["raid_wildg"] = {value = 96},
+						              ["raid_cenar"] = {value = 40},
+						              ["raid_efflo"] = {value = 80},
+						              ["raid_regro"] = {value = 40},
+						              ["raid_swift"] = {value = 50},
+ 						              
+									  ["tank_rejuv"] = {value = 97},
+						              ["tank_germi"] = {value = 95},
+						              ["tank_cenar"] = {value = 40},
+						              ["tank_regro"] = {value = 40},
+						              ["tank_swift"] = {value = 50},
+ 						              ["tank_bark"] = {value = 30},
+   						              ["tank_lifebloom"] = {value = 95},									  
+									  ["nb_flourish"] = {value = 5},
+									  ["health_flourish"] = {value = 40},
+									  ["nb_tranqui"] = {value = 8},
+									  ["health_tranqui"] = {value = 35},
+						              --["cd_flourish"] = {value = 5},									  
+									  
+						              },							
+						
+						},
+				
+				-- Disci Priest settings
+			    [256] = {	
+						["Default"] = {
+						
+						              ["raid_rejuv"] = {value = 97},
+						              ["raid_germi"] = {value = 95},
+						              ["raid_wildg"] = {value = 96},
+						              ["raid_cenar"] = {value = 40},
+						              ["raid_efflo"] = {value = 80},
+						              ["raid_regro"] = {value = 40},
+						              ["raid_swift"] = {value = 50},
+ 						              
+									  ["tank_rejuv"] = {value = 97},
+						              ["tank_germi"] = {value = 95},
+						              ["tank_cenar"] = {value = 40},
+						              ["tank_regro"] = {value = 40},
+						              ["tank_swift"] = {value = 50},
+ 						              ["tank_bark"] = {value = 30},
+   						              ["tank_lifebloom"] = {value = 95},									  
+									  ["nb_flourish"] = {value = 5},
+									  ["health_flourish"] = {value = 40},
+									  ["nb_tranqui"] = {value = 8},
+									  ["health_tranqui"] = {value = 35},
+						              --["cd_flourish"] = {value = 5},									  
+									  
+						              },							
+						
+						},
+				
+				-- Holy Paladin settings
+			    [65] = {	
+						["Default"] = {
+						
+						              ["raid_flashlight"] = {value = 75},
+						              ["raid_holylight"] = {value = 90},
+						              ["raid_holyshock"] = {value = 90},
+						              ["raid_martyr"] = {value = 75},
+ 						              ["raid_lightofdawn"] = {value = 85},
+									  
+									  ["tank_flashlight"] = {value = 97},
+						              ["tank_holylight"] = {value = 95},
+						              ["tank_holyshock"] = {value = 40},
+						              ["tank_martyr"] = {value = 40},									  
+						              ["tank_layonhands"] = {value = 25},	
+									  
+									  ["beacon_option"] = {value = "Tank"},	
+									  
+						              },							
+						
+						},
 			},
 
 			
 			-- Interrupt UI values
-			minInterruptValue = 40,
-			maxInterruptValue = 90,
+			minInterruptValue = 7,
+			maxInterruptValue = 17,
 			
 			-- System options
 			dbm = true,			
