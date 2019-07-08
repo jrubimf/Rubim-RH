@@ -1478,7 +1478,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			---------------------------------
 			-- #1 RESTO DRUID SLIDERS VAR  --
 			---------------------------------
-			if RubimRH.playerSpec == 105
+			if RubimRH.playerSpec == 105 then
 			    ----------------------------
 			    -- RAID PART
 			    ----------------------------
@@ -1526,7 +1526,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-----------------------------
 			-- #2 DISCI PRIEST SLIDERS --
 			-----------------------------
-			if RubimRH.playerSpec == 256
+			if RubimRH.playerSpec == 256 then
 			    ----------------------------
 			    -- RAID PART
 			    ----------------------------
@@ -1574,7 +1574,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			---------------------------------
 			-- #3 HOLY PRIEST SLIDERS VAR  --
 			---------------------------------
-			if RubimRH.playerSpec == 257
+			if RubimRH.playerSpec == 257 then
 			    ----------------------------
 			    -- RAID PART
 			    ----------------------------
@@ -1621,8 +1621,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			--------------------------------
 			-- #4 RESTO SHAM SLIDERS VAR  --
-			--------------------------------
-			if RubimRH.playerSpec == 264
+			-------------------------------- 
+			if RubimRH.playerSpec == 264 then
 			    ----------------------------
 			    -- RAID PART
 			    ----------------------------
@@ -1670,7 +1670,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			---------------------------------
 			-- #5 HOLY PALADIN SLIDERS VAR --
 			---------------------------------
-			if RubimRH.playerSpec == 65
+			if RubimRH.playerSpec == 65 then
 			    ----------------------------
 			    -- RAID PART
 			    ----------------------------
@@ -1702,7 +1702,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			    -- MISC SETTINGS PART
 			    -----------------------
 			    -- Divine Shield helth percentage for player
-                local divine_shield = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["divine_shield"]["value"], 1, 100 );					
+                --local divine_shield = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["divine_shield"]["value"], 1, 100 );					
 			    -- BeaconOfLight dropdown select
                 -- Custom Beacon Options             
                 local BeaconOptions = {
@@ -1732,9 +1732,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 StdUi:GlueTop(beacon_choice, tab.frame, 50, -68, 'RIGHT');
 			
 			    -- Number of party member injured before using Aura Mastery....
-                local auramastery_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_auramastery"]["value"], 1, 9 );
+                --local auramastery_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_auramastery"]["value"], 1, 9 );
 			    -- ....and how much hp should these number of party member have before using Aura Mastery
-                local auramastery_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_auramastery"]["value"], 1, 100 );
+                --local auramastery_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_auramastery"]["value"], 1, 100 );
 			
 			end
 			
@@ -2436,6 +2436,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end;
             table.insert(sliders, tank_layonhands_slider)
 			
+			end
 			
 		end
 	    -- The end of spec == druid or paladin or shaman or priest
