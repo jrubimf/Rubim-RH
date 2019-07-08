@@ -165,8 +165,8 @@ local EnabledRotation = {
     [66] = true, -- Protection
     [70] = true, -- Retribution
     -- Priest
-    [256] = false, -- Discipline
-    [257] = false, -- Holy
+    [256] = true, -- Discipline
+    [257] = true, -- Holy
     [258] = true, -- Shadow
     -- Rogue
     [259] = true, -- Assassination
@@ -175,7 +175,7 @@ local EnabledRotation = {
     -- Shaman
     [262] = true, -- Elemental
     [263] = true, -- Enhancement
-    [264] = false, -- Restoration
+    [264] = true, -- Restoration
     -- Warlock
     [265] = true, -- Affliction
     [266] = true, -- Demonology

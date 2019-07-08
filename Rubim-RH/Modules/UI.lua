@@ -1761,10 +1761,14 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				--------------------------
 				-- #2 Sliders Refresh Part
 				--------------------------
-				------ DRUID SLIDERS -----
+				----- REFRESH LABELS -----
 				--------------------------
 				-- Profils label refresh
 				profileDropdown.label:SetText("Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile)
+				
+				--------------------
+				------ DRUID ------- 
+				--------------------
 				-- RAID PART
 				raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
 				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
@@ -1791,7 +1795,34 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				tank_bark_slider.editBox:SetValue(datavalue["tank_bark"]["value"])
 				tank_lifebloom_slider.label:SetText("Lifebloom : " .. datavalue["tank_lifebloom"]["value"])
 				tank_lifebloom_slider.editBox:SetValue(datavalue["tank_lifebloom"]["value"])
+  				
+				--------------------
+				----- PALADIN ------ 
+				--------------------
+				-- RAID PART
+				raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
+				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
+				raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
+				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
+				raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
+				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
+				raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
+				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
+				raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
+				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
+                -- TANK PART
+				tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
+				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
+				tank_holylight_slider.label:SetText("Holy Light : " .. datavalue["tank_holylight"]["value"])
+				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
+				tank_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["tank_holyshock"]["value"])
+				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
+				tank_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["tank_martyr"]["value"])
+				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
+				tank_layonhands_slider.label:SetText("Lay on Hands : " .. datavalue["tank_layonhands"]["value"])
+				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
 
+				
             end
 			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]      
 			
@@ -1894,7 +1925,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			--------------------------
 			-- DRUID SLIDERS CONFIG --
-			--------------------------			
+			--------------------------	
+            if playerSpec == 105 then 			
 			--------------------
 			-- Rejuvenation Raid   			
             StdUi:GlueTop(raid_rejuv_slider, raid_setting_title, 20, -50);
@@ -2211,10 +2243,202 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             function dbm_sync:OnValueChanged(self, state, value)			    
                 RubimRH.DBMSync()
             end
-		  
-		  
+			
+			
+			end
+		    -- The end of resto druid sliders loading
+		    
+			
+			----------------------------
+			-- PALADIN SLIDERS CONFIG --
+			----------------------------	
+            if playerSpec == 65 then 			
+			--------------------
+			-- Flash of Light   			
+            StdUi:GlueTop(raid_flashlight_slider, raid_setting_title, 20, -50);
+            raid_flashlight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_flashlight_slider, "Flash of Light : " .. datavalue["raid_flashlight"]["value"], "TOP" );
+            raid_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_flashlight_slider.label:SetFont( raid_flashlight_slider.label:GetFont( ), 10 )
+            raid_flashlight_slider.label:SetWidth( 0 )
+            raid_flashlight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_flashlight"]["value"] = value
+				print(datavalue["raid_flashlight"]["value"])
+                raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
+				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
+				
+            end;
+            table.insert(sliders, raid_flashlight_slider)	
+			
+			--------------------
+			-- Holy Light  			
+            StdUi:GlueTop(raid_holylight_slider, raid_setting_title, 20, -50);
+            raid_holylight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_holylight_slider, "Holy Light : " .. datavalue["raid_holylight"]["value"], "TOP" );
+            raid_holylight_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_holylight_slider.label:SetFont( raid_holylight_slider.label:GetFont( ), 10 )
+            raid_holylight_slider.label:SetWidth( 0 )
+            raid_holylight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_holylight"]["value"] = value
+				print(datavalue["raid_holylight"]["value"])
+                raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
+				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
+				
+            end;
+            table.insert(sliders, raid_holylight_slider)	
+			
+			--------------------
+			-- Holy Shock		
+            StdUi:GlueTop(raid_holyshock_slider, raid_setting_title, 20, -50);
+            raid_holyshock_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_holyshock_slider, "Holy Shock : " .. datavalue["raid_holyshock"]["value"], "TOP" );
+            raid_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_holyshock_slider.label:SetFont( raid_holyshock_slider.label:GetFont( ), 10 )
+            raid_holyshock_slider.label:SetWidth( 0 )
+            raid_holyshock_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_holyshock"]["value"] = value
+				print(datavalue["raid_holyshock"]["value"])
+                raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
+				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
+				
+            end;
+            table.insert(sliders, raid_holyshock_slider)
+			
+			--------------------
+			-- Light of the Martyr		
+            StdUi:GlueTop(raid_martyr_slider, raid_setting_title, 20, -50);
+            raid_martyr_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_martyr_slider, "Light of the Martyr : " .. datavalue["raid_martyr"]["value"], "TOP" );
+            raid_martyr_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_martyr_slider.label:SetFont( raid_martyr_slider.label:GetFont( ), 10 )
+            raid_martyr_slider.label:SetWidth( 0 )
+            raid_martyr_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_martyr"]["value"] = value
+				print(datavalue["raid_martyr"]["value"])
+                raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
+				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
+				
+            end;
+            table.insert(sliders, raid_martyr_slider)
+			
+			
+			--------------------
+			-- Light of Dawn		
+            StdUi:GlueTop(raid_lightofdawn_slider, raid_setting_title, 20, -50);
+            raid_lightofdawn_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_lightofdawn_slider, "Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"], "TOP" );
+            raid_lightofdawn_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_lightofdawn_slider.label:SetFont( raid_lightofdawn_slider.label:GetFont( ), 10 )
+            raid_lightofdawn_slider.label:SetWidth( 0 )
+            raid_lightofdawn_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_lightofdawn"]["value"] = value
+				print(datavalue["raid_lightofdawn"]["value"])
+                raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
+				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
+				
+            end;
+            table.insert(sliders, raid_lightofdawn_slider)
+			
+			
+			--------------------
+			-- Tank Flash of Light		
+            StdUi:GlueTop(tank_flashlight_slider, raid_setting_title, 20, -50);
+            tank_flashlight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_flashlight_slider, "Flash of Light : " .. datavalue["tank_flashlight"]["value"], "TOP" );
+            tank_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_flashlight_slider.label:SetFont( tank_flashlight_slider.label:GetFont( ), 10 )
+            tank_flashlight_slider.label:SetWidth( 0 )
+            tank_flashlight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_flashlight"]["value"] = value
+				print(datavalue["tank_flashlight"]["value"])
+                tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
+				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
+				
+            end;
+            table.insert(sliders, tank_flashlight_slider)
+			
+			
+			--------------------
+			-- Tank Holy Light		
+            StdUi:GlueTop(tank_holylight_slider, raid_setting_title, 20, -50);
+            tank_holylight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_holylight_slider, "Holy Light  : " .. datavalue["tank_holylight"]["value"], "TOP" );
+            tank_holylight_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_holylight_slider.label:SetFont( tank_holylight_slider.label:GetFont( ), 10 )
+            tank_holylight_slider.label:SetWidth( 0 )
+            tank_holylight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_holylight"]["value"] = value
+				print(datavalue["tank_holylight"]["value"])
+                tank_holylight_slider.label:SetText("Holy Light	 : " .. datavalue["tank_holylight"]["value"])
+				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
+				
+            end;
+            table.insert(sliders, tank_holylight_slider)
+			
+			--------------------
+			-- Tank Holy Shock	
+            StdUi:GlueTop(tank_holyshock_slider, raid_setting_title, 20, -50);
+            tank_holyshock_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_holyshock_slider, "Holy Shock  : " .. datavalue["tank_holyshock"]["value"], "TOP" );
+            tank_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_holyshock_slider.label:SetFont( tank_holyshock_slider.label:GetFont( ), 10 )
+            tank_holyshock_slider.label:SetWidth( 0 )
+            tank_holyshock_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_holyshock"]["value"] = value
+				print(datavalue["tank_holyshock"]["value"])
+                tank_holyshock_slider.label:SetText("Holy Shock	 : " .. datavalue["tank_holyshock"]["value"])
+				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
+				
+            end;
+            table.insert(sliders, tank_holyshock_slider)
+
+			--------------------
+			-- Tank Light of the Martyr
+            StdUi:GlueTop(tank_martyr_slider, raid_setting_title, 20, -50);
+            tank_martyr_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_martyr_slider, "Light of the Martyr  : " .. datavalue["tank_martyr"]["value"], "TOP" );
+            tank_martyr_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_martyr_slider.label:SetFont( tank_martyr_slider.label:GetFont( ), 10 )
+            tank_martyr_slider.label:SetWidth( 0 )
+            tank_martyr_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_martyr"]["value"] = value
+				print(datavalue["tank_martyr"]["value"])
+                tank_martyr_slider.label:SetText("Light of the Martyr  : " .. datavalue["tank_martyr"]["value"])
+				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
+				
+            end;
+            table.insert(sliders, tank_martyr_slider)
+
+			--------------------
+			-- Tank Lay on Hands
+            StdUi:GlueTop(tank_layonhands_slider, raid_setting_title, 20, -50);
+            tank_layonhands_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_layonhands_slider, "Lay on Hands  : " .. datavalue["tank_layonhands"]["value"], "TOP" );
+            tank_layonhands_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_layonhands_slider.label:SetFont( tank_layonhands_slider.label:GetFont( ), 10 )
+            tank_layonhands_slider.label:SetWidth( 0 )
+            tank_layonhands_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_layonhands"]["value"] = value
+				print(datavalue["tank_layonhands"]["value"])
+                tank_layonhands_slider.label:SetText("Lay on Hands  : " .. datavalue["tank_layonhands"]["value"])
+				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
+				
+            end;
+            table.insert(sliders, tank_layonhands_slider)
+			
+			
 		end
-	    -- The end of spec = resto druid
+	    -- The end of spec == druid or paladin or shaman or priest
 	
 	-- The end of Healer tab --
 	end 
