@@ -269,17 +269,9 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             gn_4_0:SetChecked(RubimRH.db.profile.mainOption.Precombat)
             function gn_4_0:OnValueChanged(value)
                 RubimRH.PrecombatToggle()
-            end            
+            end
+            
             StdUi:GlueBelow(gn_4_0, gn_3_0, 0, -15, 'LEFT');
-
-            -- Break CC Toggle
-            local gn_break_cc = StdUi:Checkbox(tab.frame, 'Break CCs');
-            StdUi:FrameTooltip(gn_break_cc, 'Break CCs', 'TOPLEFT', 'TOPRIGHT', true);
-            gn_break_cc:SetChecked(RubimRH.db.profile.mainOption.ccbreak)
-            function gn_break_cc:OnValueChanged(value)
-                RubimRH.CCToggle()
-            end            
-            StdUi:GlueBelow(gn_break_cc, gn_4_0, 0, -15, 'LEFT');
 
             -- Cds usage options
             local cdOptions = {
@@ -886,7 +878,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			--[[ Instant Interrupt
             local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
 		    -- Set this checkbox a tooltip
-			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupts almost instant with very low randomizer', 'TOPLEFT', 'TOPRIGHT', true);                    
+			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt instant - NOT RECOMMENDED IN PVP', 'TOPLEFT', 'TOPRIGHT', true);                    
 			-- Set default value (checked, unchecked)and save it to db 
 			InstantInterruptbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
 			-- Set positionning
@@ -1440,8 +1432,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			------------------
 			-- Profil system
 			------------------
-		-- Restoration Druid
-		if RubimRH.playerSpec == 105 or RubimRH.playerSpec == 264 or RubimRH.playerSpec == 256 or RubimRH.playerSpec == 257 or RubimRH.playerSpec == 65 then
+			if RubimRH.playerSpec == 105 then
 			
 			local profileList = { }
 			
@@ -1475,270 +1466,45 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			
 			
 			
-			---------------------------------
-			-- #1 RESTO DRUID SLIDERS VAR  --
-			---------------------------------
-			if RubimRH.playerSpec == 105 then
-			    ----------------------------
-			    -- RAID PART
-			    ----------------------------
-			    -- Raid germination slider
-                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
-			    -- Raid rejuvenation slider
-                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			    -- Raid wild growth slider
-                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-			    -- Raid cenarion slider
-                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			    -- Raid efflorescence slider
-                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
-			    -- Raid regrowth slider
-                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
-                --------------------------
-			    -- TANK PART
-			    --------------------------
-			    -- Tank germination slider
-                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
-			     -- Tank rejuvenation slider
-                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
-			    -- Tank cenarion slider
-                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
-			    -- Tank regrowth slider
-                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
-			    -- Tank ironbark slider
-                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
-			    -- Tank Lifebloom slider
-                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
-                -----------------------
-			    -- MISC SETTINGS PART
-			    -----------------------
-			    -- Number of party member injured before using flourish...
-                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
-			    -- ....and how much hp should these number of party member have before using flourish
-                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
-			    -- Number of party member injured before using tranquility....
-                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
-			    -- ....and how much hp should these number of party member have before using Tranquility
-                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
+			----------------------------
+			-- HEALER SLIDERS 
+			----------------------------
+			-- RAID PART
+			-- Raid germination slider
+            local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
+			-- Raid rejuvenation slider
+            local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
+			-- Raid wild growth slider
+            local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
+			-- Raid cenarion slider
+            local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
+			-- Raid efflorescence slider
+            local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
+			-- Raid regrowth slider
+            local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
+            -- TANK PART
+			-- Tank germination slider
+            local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
+			-- Tank rejuvenation slider
+            local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
+			-- Tank cenarion slider
+            local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
+			-- Tank regrowth slider
+            local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
+			-- Tank ironbark slider
+            local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
+			-- Tank Lifebloom slider
+            local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
+            -- MISC SETTINGS Part
+			-- Number of party member injured before using flourish...
+            local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
+			-- ....and how much hp should these number of party member have before using flourish
+            local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
+			-- Number of party member injured before using tranquility....
+            local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
+			-- ....and how much hp should these number of party member have before using Tranquility
+            local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
 			
-			end
-			
-			-----------------------------
-			-- #2 DISCI PRIEST SLIDERS --
-			-----------------------------
-			if RubimRH.playerSpec == 256 then
-			    ----------------------------
-			    -- RAID PART
-			    ----------------------------
-			    -- Raid germination slider
-                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
-			    -- Raid rejuvenation slider
-                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			    -- Raid wild growth slider
-                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-			    -- Raid cenarion slider
-                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			    -- Raid efflorescence slider
-                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
-			    -- Raid regrowth slider
-                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
-                --------------------------
-			    -- TANK PART
-			    --------------------------
-			    -- Tank germination slider
-                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
-			     -- Tank rejuvenation slider
-                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
-			    -- Tank cenarion slider
-                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
-			    -- Tank regrowth slider
-                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
-			    -- Tank ironbark slider
-                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
-			    -- Tank Lifebloom slider
-                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
-                -----------------------
-			    -- MISC SETTINGS PART
-			    -----------------------
-			    -- Number of party member injured before using flourish...
-                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
-			    -- ....and how much hp should these number of party member have before using flourish
-                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
-			    -- Number of party member injured before using tranquility....
-                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
-			    -- ....and how much hp should these number of party member have before using Tranquility
-                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
-			
-			end
-			
-			---------------------------------
-			-- #3 HOLY PRIEST SLIDERS VAR  --
-			---------------------------------
-			if RubimRH.playerSpec == 257 then
-			    ----------------------------
-			    -- RAID PART
-			    ----------------------------
-			    -- Raid germination slider
-                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
-			    -- Raid rejuvenation slider
-                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			    -- Raid wild growth slider
-                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-			    -- Raid cenarion slider
-                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			    -- Raid efflorescence slider
-                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
-			    -- Raid regrowth slider
-                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
-                --------------------------
-			    -- TANK PART
-			    --------------------------
-			    -- Tank germination slider
-                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
-			     -- Tank rejuvenation slider
-                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
-			    -- Tank cenarion slider
-                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
-			    -- Tank regrowth slider
-                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
-			    -- Tank ironbark slider
-                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
-			    -- Tank Lifebloom slider
-                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
-                -----------------------
-			    -- MISC SETTINGS PART
-			    -----------------------
-			    -- Number of party member injured before using flourish...
-                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
-			    -- ....and how much hp should these number of party member have before using flourish
-                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
-			    -- Number of party member injured before using tranquility....
-                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
-			    -- ....and how much hp should these number of party member have before using Tranquility
-                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
-			
-			end
-			
-			--------------------------------
-			-- #4 RESTO SHAM SLIDERS VAR  --
-			-------------------------------- 
-			if RubimRH.playerSpec == 264 then
-			    ----------------------------
-			    -- RAID PART
-			    ----------------------------
-			    -- Raid germination slider
-                local raid_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_germi"]["value"], 1, 100 );
-			    -- Raid rejuvenation slider
-                local raid_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_rejuv"]["value"], 1, 100 );
-			    -- Raid wild growth slider
-                local raid_wildg_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_wildg"]["value"], 1, 100 );
-			    -- Raid cenarion slider
-                local raid_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_cenar"]["value"], 1, 100 );
-			    -- Raid efflorescence slider
-                local raid_efflo_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_efflo"]["value"], 1, 100 );
-			    -- Raid regrowth slider
-                local raid_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_regro"]["value"], 1, 100 );		
-                --------------------------
-			    -- TANK PART
-			    --------------------------
-			    -- Tank germination slider
-                local tank_germi_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_germi"]["value"], 1, 100 );
-			     -- Tank rejuvenation slider
-                local tank_rejuv_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_rejuv"]["value"], 1, 100 );
-			    -- Tank cenarion slider
-                local tank_cenar_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_cenar"]["value"], 1, 100 );
-			    -- Tank regrowth slider
-                local tank_regro_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_regro"]["value"], 1, 100 );
-			    -- Tank ironbark slider
-                local tank_bark_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_bark"]["value"], 1, 100 );	
-			    -- Tank Lifebloom slider
-                local tank_lifebloom_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_lifebloom"]["value"], 1, 100 );	
-                -----------------------
-			    -- MISC SETTINGS PART
-			    -----------------------
-			    -- Number of party member injured before using flourish...
-                local flourish_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_flourish"]["value"], 1, 9 );					
-			    -- ....and how much hp should these number of party member have before using flourish
-                local flourish_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_flourish"]["value"], 1, 100 );
-			    -- Number of party member injured before using tranquility....
-                local tranqui_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_tranqui"]["value"], 1, 9 );
-			    -- ....and how much hp should these number of party member have before using Tranquility
-                local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
-			
-			end
-			
-			---------------------------------
-			-- #5 HOLY PALADIN SLIDERS VAR --
-			---------------------------------
-			if RubimRH.playerSpec == 65 then
-			    ----------------------------
-			    -- RAID PART
-			    ----------------------------
-			    -- Raid Flash of Light slider
-                local raid_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_flashlight"]["value"], 1, 100 );
-			    -- Raid Holy Light slider
-                local raid_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holylight"]["value"], 1, 100 );
-			    -- Raid Holy Shock slider
-                local raid_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holyshock"]["value"], 1, 100 );
-			    -- Raid Light of the Martyr
-                local raid_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_martyr"]["value"], 1, 100 );
-				-- Raid Light of Dawn
-                local raid_lightofdawn_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_lightofdawn"]["value"], 1, 100 );
-		
-                --------------------------
-			    -- TANK PART
-			    --------------------------
-			    -- Tank Flash of Light slider
-                local tank_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_flashlight"]["value"], 1, 100 );
-			    -- Tank Holy Light slider
-                local tank_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holylight"]["value"], 1, 100 );
-			    -- Tank Holy Shock slider
-                local tank_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holyshock"]["value"], 1, 100 );
-			    -- Tank Light of the Martyr
-                local tank_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_martyr"]["value"], 1, 100 );
-			    -- Tank Lay on Hands
-                local tank_layonhands_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_layonhands"]["value"], 1, 100 );				
-                -----------------------
-			    -- MISC SETTINGS PART
-			    -----------------------
-			    -- Divine Shield helth percentage for player
-                --local divine_shield = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["divine_shield"]["value"], 1, 100 );					
-			    -- BeaconOfLight dropdown select
-                -- Custom Beacon Options             
-                local BeaconOptions = {
-                    { text = 'Tank', value = "Tank" },
-                    { text = 'Dps', value = "Dps" },
-                    { text = 'Healer', value = "Healer" },
-			        { text = 'All', value = "All" },
-                }
-                local beacon_choice = StdUi:Dropdown(tab.frame, 80, -24, BeaconOptions, nil, nil);
-                beacon_choice:SetPlaceholder("|cfff0f8ff|r" .. datavalue["beacon_option"]["value"]);
-                StdUi:AddLabel(tab.frame, beacon_choice, 'Beacon on:', 'TOP');
-                StdUi:FrameTooltip(beacon_choice, 'Choose ', 'TOPLEFT', 'TOPRIGHT', true);                
-                beacon_choice.OnValueChanged = function(self, val)
-                    if val == "Tank" then
-                        print("Beacon of Light will be used on Tanks")
-                        datavalue["beacon_option"]["value"] = val                    
-                    elseif val == "Dps" then
-                        print("Beacon of Light will be used on DPS")
-                        datavalue["beacon_option"]["value"] = val                  
-                    elseif val == "Healer" then
-                        print("Beacon of Light will be used on Healers")
-                        datavalue["beacon_option"]["value"] = val 
-                    else
-                        print("An error as occured, no beacon data :(")
-                    end
-                end
-                StdUi:GlueTop(beacon_choice, tab.frame, 50, -68, 'RIGHT');
-			
-			    -- Number of party member injured before using Aura Mastery....
-                --local auramastery_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_auramastery"]["value"], 1, 9 );
-			    -- ....and how much hp should these number of party member have before using Aura Mastery
-                --local auramastery_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_auramastery"]["value"], 1, 100 );
-			
-			end
-			
-			-- Set the value on dropdown menu...
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
 			-- Current profil label
 			StdUi:AddLabel( tab.frame, profileDropdown, "Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile, "TOP" );
@@ -1746,7 +1512,6 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             profileDropdown.label:SetFont( profileDropdown.label:GetFont( ), 10 )
             profileDropdown.label:SetWidth( 0 )
 
-            -- On dropdown menu value change...
             function profileDropdown:OnValueChanged( value, text )
 			    
                 --Saving the current profile to another table.
@@ -1758,17 +1523,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.Print( 'Profile Changed to: ' .. value )
 				local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 				
-				--------------------------
-				-- #2 Sliders Refresh Part
-				--------------------------
-				----- REFRESH LABELS -----
-				--------------------------
+				-------------------
+				-- Sliders Refresh
+				-------------------
 				-- Profils label refresh
 				profileDropdown.label:SetText("Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile)
-				
-				--------------------
-				------ DRUID ------- 
-				--------------------
 				-- RAID PART
 				raid_rejuv_slider.label:SetText("Rejuvenation : " .. datavalue["raid_rejuv"]["value"])
 				raid_rejuv_slider.editBox:SetValue(datavalue["raid_rejuv"]["value"])
@@ -1795,34 +1554,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				tank_bark_slider.editBox:SetValue(datavalue["tank_bark"]["value"])
 				tank_lifebloom_slider.label:SetText("Lifebloom : " .. datavalue["tank_lifebloom"]["value"])
 				tank_lifebloom_slider.editBox:SetValue(datavalue["tank_lifebloom"]["value"])
-  				
-				--------------------
-				----- PALADIN ------ 
-				--------------------
-				-- RAID PART
-				raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
-				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
-				raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
-				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
-				raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
-				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
-				raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
-				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
-				raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
-				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
-                -- TANK PART
-				tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
-				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
-				tank_holylight_slider.label:SetText("Holy Light : " .. datavalue["tank_holylight"]["value"])
-				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
-				tank_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["tank_holyshock"]["value"])
-				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
-				tank_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["tank_martyr"]["value"])
-				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
-				tank_layonhands_slider.label:SetText("Lay on Hands : " .. datavalue["tank_layonhands"]["value"])
-				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
 
-				
             end
 			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]      
 			
@@ -1923,12 +1655,11 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			local Name = RubimRH.db.profile.mainOption.selectedProfile
 			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
 			
-			--------------------------
-			-- DRUID SLIDERS CONFIG --
-			--------------------------	
-            if playerSpec == 105 then 			
 			--------------------
-			-- Rejuvenation Raid   			
+			------ DRUID -------
+			--------------------			
+			--------------------
+			-- Rejuvenation Raid             
             StdUi:GlueTop(raid_rejuv_slider, raid_setting_title, 20, -50);
             raid_rejuv_slider:SetPrecision( 0 );
             StdUi:AddLabel( tab.frame, raid_rejuv_slider, "Rejuvenation : " .. datavalue["raid_rejuv"]["value"], "TOP" );
@@ -2037,6 +1768,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 				
             end;
             table.insert(sliders, raid_efflo_slider)
+			
+
 			
 			-------------------
 			-- Tank Part ----
@@ -2243,203 +1976,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             function dbm_sync:OnValueChanged(self, state, value)			    
                 RubimRH.DBMSync()
             end
-			
-			
-			end
-		    -- The end of resto druid sliders loading
-		    
-			
-			----------------------------
-			-- PALADIN SLIDERS CONFIG --
-			----------------------------	
-            if playerSpec == 65 then 			
-			--------------------
-			-- Flash of Light   			
-            StdUi:GlueTop(raid_flashlight_slider, raid_setting_title, 20, -50);
-            raid_flashlight_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_flashlight_slider, "Flash of Light : " .. datavalue["raid_flashlight"]["value"], "TOP" );
-            raid_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_flashlight_slider.label:SetFont( raid_flashlight_slider.label:GetFont( ), 10 )
-            raid_flashlight_slider.label:SetWidth( 0 )
-            raid_flashlight_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_flashlight"]["value"] = value
-				print(datavalue["raid_flashlight"]["value"])
-                raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
-				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
-				
-            end;
-            table.insert(sliders, raid_flashlight_slider)	
-			
-			--------------------
-			-- Holy Light  			
-            StdUi:GlueTop(raid_holylight_slider, raid_setting_title, 20, -50);
-            raid_holylight_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_holylight_slider, "Holy Light : " .. datavalue["raid_holylight"]["value"], "TOP" );
-            raid_holylight_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_holylight_slider.label:SetFont( raid_holylight_slider.label:GetFont( ), 10 )
-            raid_holylight_slider.label:SetWidth( 0 )
-            raid_holylight_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_holylight"]["value"] = value
-				print(datavalue["raid_holylight"]["value"])
-                raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
-				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
-				
-            end;
-            table.insert(sliders, raid_holylight_slider)	
-			
-			--------------------
-			-- Holy Shock		
-            StdUi:GlueTop(raid_holyshock_slider, raid_setting_title, 20, -50);
-            raid_holyshock_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_holyshock_slider, "Holy Shock : " .. datavalue["raid_holyshock"]["value"], "TOP" );
-            raid_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_holyshock_slider.label:SetFont( raid_holyshock_slider.label:GetFont( ), 10 )
-            raid_holyshock_slider.label:SetWidth( 0 )
-            raid_holyshock_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_holyshock"]["value"] = value
-				print(datavalue["raid_holyshock"]["value"])
-                raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
-				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
-				
-            end;
-            table.insert(sliders, raid_holyshock_slider)
-			
-			--------------------
-			-- Light of the Martyr		
-            StdUi:GlueTop(raid_martyr_slider, raid_setting_title, 20, -50);
-            raid_martyr_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_martyr_slider, "Light of the Martyr : " .. datavalue["raid_martyr"]["value"], "TOP" );
-            raid_martyr_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_martyr_slider.label:SetFont( raid_martyr_slider.label:GetFont( ), 10 )
-            raid_martyr_slider.label:SetWidth( 0 )
-            raid_martyr_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_martyr"]["value"] = value
-				print(datavalue["raid_martyr"]["value"])
-                raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
-				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
-				
-            end;
-            table.insert(sliders, raid_martyr_slider)
-			
-			
-			--------------------
-			-- Light of Dawn		
-            StdUi:GlueTop(raid_lightofdawn_slider, raid_setting_title, 20, -50);
-            raid_lightofdawn_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, raid_lightofdawn_slider, "Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"], "TOP" );
-            raid_lightofdawn_slider.label:SetFontObject( GameFontNormalLarge )
-            raid_lightofdawn_slider.label:SetFont( raid_lightofdawn_slider.label:GetFont( ), 10 )
-            raid_lightofdawn_slider.label:SetWidth( 0 )
-            raid_lightofdawn_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["raid_lightofdawn"]["value"] = value
-				print(datavalue["raid_lightofdawn"]["value"])
-                raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
-				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
-				
-            end;
-            table.insert(sliders, raid_lightofdawn_slider)
-			
-			
-			--------------------
-			-- Tank Flash of Light		
-            StdUi:GlueTop(tank_flashlight_slider, raid_setting_title, 20, -50);
-            tank_flashlight_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tank_flashlight_slider, "Flash of Light : " .. datavalue["tank_flashlight"]["value"], "TOP" );
-            tank_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
-            tank_flashlight_slider.label:SetFont( tank_flashlight_slider.label:GetFont( ), 10 )
-            tank_flashlight_slider.label:SetWidth( 0 )
-            tank_flashlight_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["tank_flashlight"]["value"] = value
-				print(datavalue["tank_flashlight"]["value"])
-                tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
-				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
-				
-            end;
-            table.insert(sliders, tank_flashlight_slider)
-			
-			
-			--------------------
-			-- Tank Holy Light		
-            StdUi:GlueTop(tank_holylight_slider, raid_setting_title, 20, -50);
-            tank_holylight_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tank_holylight_slider, "Holy Light  : " .. datavalue["tank_holylight"]["value"], "TOP" );
-            tank_holylight_slider.label:SetFontObject( GameFontNormalLarge )
-            tank_holylight_slider.label:SetFont( tank_holylight_slider.label:GetFont( ), 10 )
-            tank_holylight_slider.label:SetWidth( 0 )
-            tank_holylight_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["tank_holylight"]["value"] = value
-				print(datavalue["tank_holylight"]["value"])
-                tank_holylight_slider.label:SetText("Holy Light	 : " .. datavalue["tank_holylight"]["value"])
-				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
-				
-            end;
-            table.insert(sliders, tank_holylight_slider)
-			
-			--------------------
-			-- Tank Holy Shock	
-            StdUi:GlueTop(tank_holyshock_slider, raid_setting_title, 20, -50);
-            tank_holyshock_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tank_holyshock_slider, "Holy Shock  : " .. datavalue["tank_holyshock"]["value"], "TOP" );
-            tank_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
-            tank_holyshock_slider.label:SetFont( tank_holyshock_slider.label:GetFont( ), 10 )
-            tank_holyshock_slider.label:SetWidth( 0 )
-            tank_holyshock_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["tank_holyshock"]["value"] = value
-				print(datavalue["tank_holyshock"]["value"])
-                tank_holyshock_slider.label:SetText("Holy Shock	 : " .. datavalue["tank_holyshock"]["value"])
-				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
-				
-            end;
-            table.insert(sliders, tank_holyshock_slider)
-
-			--------------------
-			-- Tank Light of the Martyr
-            StdUi:GlueTop(tank_martyr_slider, raid_setting_title, 20, -50);
-            tank_martyr_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tank_martyr_slider, "Light of the Martyr  : " .. datavalue["tank_martyr"]["value"], "TOP" );
-            tank_martyr_slider.label:SetFontObject( GameFontNormalLarge )
-            tank_martyr_slider.label:SetFont( tank_martyr_slider.label:GetFont( ), 10 )
-            tank_martyr_slider.label:SetWidth( 0 )
-            tank_martyr_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["tank_martyr"]["value"] = value
-				print(datavalue["tank_martyr"]["value"])
-                tank_martyr_slider.label:SetText("Light of the Martyr  : " .. datavalue["tank_martyr"]["value"])
-				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
-				
-            end;
-            table.insert(sliders, tank_martyr_slider)
-
-			--------------------
-			-- Tank Lay on Hands
-            StdUi:GlueTop(tank_layonhands_slider, raid_setting_title, 20, -50);
-            tank_layonhands_slider:SetPrecision( 0 );
-            StdUi:AddLabel( tab.frame, tank_layonhands_slider, "Lay on Hands  : " .. datavalue["tank_layonhands"]["value"], "TOP" );
-            tank_layonhands_slider.label:SetFontObject( GameFontNormalLarge )
-            tank_layonhands_slider.label:SetFont( tank_layonhands_slider.label:GetFont( ), 10 )
-            tank_layonhands_slider.label:SetWidth( 0 )
-            tank_layonhands_slider.OnValueChanged = function( _, value)
-			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
-				datavalue["tank_layonhands"]["value"] = value
-				print(datavalue["tank_layonhands"]["value"])
-                tank_layonhands_slider.label:SetText("Lay on Hands  : " .. datavalue["tank_layonhands"]["value"])
-				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
-				
-            end;
-            table.insert(sliders, tank_layonhands_slider)
-			
-			end
-			
-		end
-	    -- The end of spec == druid or paladin or shaman or priest
+		  
+		  
+		  end
+	      -- The end of spec = resto druid
 	
 	-- The end of Healer tab --
 	end 
