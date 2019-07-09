@@ -77,6 +77,7 @@ RubimRH.Spell[72] = {
     -- Misc
     UmbralMoonglaives = Spell(242553),
     SpellReflection = Spell(216890),
+	CyclotronicBlast = Spell(293491),
     -- Azerite
     AzeriteColdSteelHotBlood = Spell(288080),
 	
@@ -246,6 +247,13 @@ local function APL()
     UpdateCDs()
     UpdateExecuteID()
     
+	-- Anti channeling interrupt
+	if Player:IsChanneling(S.CyclotronicBlast) then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end	
+
+	
+	
 	Precombat = function()
         -- flask
         -- food
