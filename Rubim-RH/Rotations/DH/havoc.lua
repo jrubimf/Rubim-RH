@@ -106,7 +106,7 @@ RubimRH.Spell[577] = {
     RevolvingBlades = Spell(279581),
     UnboundChaos = Spell(275144),
     ChaoticTransformation = Spell(288754),
-
+    CyclotronicBlast = Spell(293491),
     --8.2 Essences
     HoA                   = Spell(280431),
     BloodOfTheEnemy       = Spell(297108),
@@ -137,15 +137,16 @@ RubimRH.Spell[577] = {
     MemoryOfLucidDreams2  = Spell(299372),
     MemoryOfLucidDreams3  = Spell(299374),
 }
+local S = RubimRH.Spell[577]
 
-
-if not Item.DemonHunter then
-    Item.DemonHunter = {};
-end
+-- Items
+if not Item.DemonHunter then Item.DemonHunter = {} end
 Item.DemonHunter.Havoc = {
+  BattlePotionofAgility                       = Item(163223),
+  VariableIntensityGigavoltOscillatingReactor = Item(165572)
 };
 local I = Item.DemonHunter.Havoc;
-local S = RubimRH.Spell[577]
+
 
 S.Annihilation.TextureSpellID = { 204317 }
 S.DeathSweep.TextureSpellID = { 199552 }
@@ -277,9 +278,9 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
 
-    if Player:IsChanneling(S.EyeBeam) or Player:IsChanneling(S.FelBarrage) then
+    if Player:IsChanneling(S.EyeBeam) or Player:IsChanneling(S.FelBarrage) or Player:IsChanneling(S.CyclotronicBlast) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end
+    end	
 
     if QueueSkill() ~= nil then
         return QueueSkill()
