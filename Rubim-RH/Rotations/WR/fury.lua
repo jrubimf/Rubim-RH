@@ -118,8 +118,9 @@ if not Item.Warrior then
     Item.Warrior = {}
 end
 Item.Warrior.Fury = {
-    OldWar = Item(127844),
-    KazzalaxFujiedasFury = Item(137053)
+    BattlePotionofStrength = Item(163224),
+    AshvanesRazorCoral     = Item(169311),
+	CyclotronicBlast       = Item(167672),
 };
 
 local I = Item.Warrior.Fury;
@@ -248,7 +249,7 @@ local function APL()
     UpdateExecuteID()
     
 	-- Anti channeling interrupt
-	if Player:IsChanneling(S.CyclotronicBlast) then
+	if Player:IsChanneling(S.CyclotronicBlast) or Player:IsCasting(I.CyclotronicBlast) or Player:IsChanneling(I.CyclotronicBlast) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end	
 
@@ -261,12 +262,16 @@ local function APL()
         if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
             return S.BattleShout:Cast()
         end
+		--Prepots
+        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.01 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.1 + Player:GCD() then
+            return 967532
+        end
 		-- Charge to pull
-		if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and RubimRH.DBM_PullTimer() > 0.01  and RubimRH.DBM_PullTimer() < 0.1 then
+		if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
             return S.Charge:Cast()
         end
 		-- bloodthirst
-        if S.Bloodthirst:IsReady("Melee") and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
+        if S.Bloodthirst:IsReady("Melee") and Target:MaxDistanceToPlayer(true) < 8 and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
             return S.Bloodthirst:Cast()
         end
 		
