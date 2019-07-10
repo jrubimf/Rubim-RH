@@ -242,7 +242,7 @@ local function Essences()
 end
 
 local function APL()
-    local Precombat, Movement, SingleTarget, AoE
+    local Precombat_DBM, Precombat, Movement, SingleTarget, AoE
     UpdateRanges()
     UpdateCDs()
     UpdateExecuteID()
@@ -252,7 +252,25 @@ local function APL()
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end	
 
-	
+	Precombat_DBM = function()
+        -- flask
+        -- food
+        -- augmentation
+        -- snapshot_stats
+        -- potion
+        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
+            return S.BattleShout:Cast()
+        end
+		-- Charge to pull
+		if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and RubimRH.DBM_PullTimer() > 0.01  and RubimRH.DBM_PullTimer() < 0.1 then
+            return S.Charge:Cast()
+        end
+		-- bloodthirst
+        if S.Bloodthirst:IsReady("Melee") and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
+            return S.Bloodthirst:Cast()
+        end
+		
+    end
 	
 	Precombat = function()
         -- flask
@@ -322,8 +340,16 @@ local function APL()
         return S.Charge:Cast()
     end
 
-    -- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() then
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() then
+        if Precombat_DBM() ~= nil then
+            return Precombat_DBM()
+        end
+        return 0, 462338
+	end
+
+    -- call NON DBM precombat
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() then
         if Precombat() ~= nil then
             return Precombat()
         end
