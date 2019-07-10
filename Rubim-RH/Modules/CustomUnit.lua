@@ -217,6 +217,7 @@ end
 -- Interrupt Options
 local randomChannel = math.random(5, 15)
 local randomInterrupt = math.random(7, 17)
+local randomInstantInterrupt = math.random(0.17, 0.49)
 local randomReflect = math.random(75, 90)
 local randomSeconds = math.random(0.3, 0.5)
 
@@ -227,7 +228,12 @@ function randomGenerator(option)
         randomChannel = math.random(5, 15)
         randomReflect = math.random(75, 90)
         randomSeconds = math.random(0.25, 0.75)
+		randomInstantInterrupt = math.random(0.17, 0.49)
         randomTimer = GetTime()
+    end
+	
+	if option == "Instant Interrupt" then
+        return randomInstantInterrupt
     end
 
     if option == "Interrupt" then
@@ -272,7 +278,6 @@ end
 --- Interruptible with random generator
 function Unit:IsInterruptible()			
 	local spellId = self:CastingInfo(9) or self:ChannelingInfo(8)
-	local randomInstantInterrupt = math.random(0.17, 0.49)
 	
     -- Profils interrupts
 	if RubimRH.db.profile.mainOption.activeList == "Mythic+" then
@@ -301,11 +306,11 @@ function Unit:IsInterruptible()
      -- Profils List	
 	if currentList[spellId] then
         -- Instant cast interrupt with randomizer
-        if self:IsCasting() and RubimRH.InstantInterruptON() and self:CastSeconds() >= randomInstantInterrupt then
+        if self:IsCasting() and RubimRH.InstantInterruptON() and self:CastSeconds() >= randomGenerator("Instant Interrupt") then
            return true
         end
         -- Instant channel interrupt with randomizer
-        if self:IsChanneling() and RubimRH.InstantInterruptON() and self:CastSeconds() >= randomInstantInterrupt then
+        if self:IsChanneling() and RubimRH.InstantInterruptON() and self:CastSeconds() >= randomGenerator("Instant Interrupt") then
             return true
         end
 	    -- Cast interrupt with randomizer
