@@ -249,7 +249,7 @@ local function APL()
     UpdateExecuteID()
     
 	-- Anti channeling interrupt
-	if Player:IsChanneling(S.CyclotronicBlast) or Player:IsCasting(I.CyclotronicBlast) or Player:IsChanneling(I.CyclotronicBlast) then
+	if Player:IsChanneling() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end	
 
@@ -263,15 +263,15 @@ local function APL()
             return S.BattleShout:Cast()
         end
 		--Prepots
-        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.01 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.1 + Player:GCD() then
+        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.1 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.5 + Player:GCD() then
             return 967532
         end
 		-- Charge to pull
-		if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
+		if S.Charge:IsReady() and Target:MaxDistanceToPlayer(true) >= 8 and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() < 0.5 then
             return S.Charge:Cast()
         end
 		-- bloodthirst
-        if S.Bloodthirst:IsReady("Melee") and Target:MaxDistanceToPlayer(true) < 8 and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
+        if S.Bloodthirst:IsReady("Melee") and Target:MaxDistanceToPlayer(true) < 8 and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() < 0.5 then
             return S.Bloodthirst:Cast()
         end
 		
