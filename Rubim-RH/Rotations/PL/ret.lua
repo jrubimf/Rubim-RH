@@ -246,10 +246,10 @@ local function APL()
 	-- DBM Precombat if user activated DBM option
 	Precombat_DBM = function()
 	    -- pre potion 
-        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > Player:GCD() and RubimRH.DBM_PullTimer() <= 2 then
+        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.01 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.1 + Player:GCD() then
             return 967532
         end
-	    if S.BladeofJustice:IsCastable() and RubimRH.PerfectPullON() and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+	    if S.BladeofJustice:IsCastable() and RubimRH.PerfectPullON() and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
 		    return S.BladeofJustice:Cast()
 		end
     end
