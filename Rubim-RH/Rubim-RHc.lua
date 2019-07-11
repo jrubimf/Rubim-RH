@@ -406,6 +406,17 @@ function RubimRH.PerfectPullON()
     end
 end
 
+function RubimRH.AutoAttackON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.startattack == true then
+        return true
+    else
+        return false
+    end
+end
+
 -- Prot Paladin Avenger Shield UI function
 function RubimRH.ASInterruptON()
     if RubimRH.db == nil then

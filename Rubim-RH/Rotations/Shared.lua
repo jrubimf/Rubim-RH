@@ -84,7 +84,7 @@ end
 function RubimRH.Shared()
     if Player:AffectingCombat() then
 
-        if not Target:Exists() or Target:IsDeadOrGhost() then
+        if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
 			--print("It works");  
 			HL.GetEnemies(30)
 			if Cache.EnemiesCount[30] >= 1 then

@@ -194,8 +194,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_separator = StdUi:FontString(tab.frame, '===================');
             StdUi:GlueTop(gn_separator, gn_title, 0, -12);
 
-            local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto Suggest W/O Target');
-            StdUi:FrameTooltip(gn_1_0, 'When you are in combat, it will suggest skills even without a target.', 'TOPLEFT', 'TOPRIGHT', true);
+            local gn_1_0 = StdUi:Checkbox(tab.frame, 'Auto tab / attack everything');
+            StdUi:FrameTooltip(gn_1_0, 'This will spam tab until we got a target and then auto attack', 'TOPLEFT', 'TOPRIGHT', true);
             gn_1_0:SetChecked(RubimRH.db.profile.mainOption.startattack)
             StdUi:GlueBelow(gn_1_0, gn_separator, -100, -8, 'LEFT');
             function gn_1_0:OnValueChanged(value)

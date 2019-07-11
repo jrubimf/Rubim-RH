@@ -269,15 +269,10 @@ local defaults = {
             yCord = 0,
             disabledSpells = {},
             disabledSpellsCD = {},
-            disabledSpellsCleave = {},
-            
-			whiteList = true,
-		
-	        selectedProfile = "Default",
-			--classprofiles[RubimRH.playerSpec][Name].raid_rejuv_slider
-			
-			classprofiles = {
-			    
+            disabledSpellsCleave = {},            
+			whiteList = true,		
+	        selectedProfile = "Default",			
+			classprofiles = {			    
 				-- Restoration Druid settings
 			    [105] = {	
 						["Default"] = {
@@ -305,8 +300,7 @@ local defaults = {
 									  
 						              },							
 						
-						},
-				
+						},				
 				-- Restoration Shaman settings
 			    [264] = {	
 						["Default"] = {
@@ -334,8 +328,7 @@ local defaults = {
 									  
 						              },							
 						
-						},
-				
+						},				
 				-- Holy Priest settings
 			    [257] = {	
 						["Default"] = {
@@ -363,8 +356,7 @@ local defaults = {
 									  
 						              },							
 						
-						},
-				
+						},				
 				-- Disci Priest settings
 			    [256] = {	
 						["Default"] = {
@@ -392,8 +384,7 @@ local defaults = {
 									  
 						              },							
 						
-						},
-				
+						},				
 				-- Holy Paladin settings
 			    [65] = {	
 						["Default"] = {
