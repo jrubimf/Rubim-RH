@@ -11,6 +11,7 @@ local Target = Unit.Target
 local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
+local MouseOver = Unit.MouseOver;
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -59,6 +60,7 @@ RubimRH.Spell[102] = {
     NaturesBalance                        = Spell(202430),
 	Barkskin                              = Spell(22812),
 	Soothe                                = Spell(2908),
+	Innervate                             = Spell(29166),
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
 	UnleashHeartOfAzeroth                 = Spell(280431),
@@ -192,7 +194,7 @@ end
 
 -- Enrage debuff function
 local function HasDispellableEnrage()
-    if target:HasBuffList(RubimRH.List.PvEEnragePurge) then
+    if Target:HasBuffList(RubimRH.List.PvEEnragePurge) then
         return true
 	else 
 	    return false
@@ -301,8 +303,7 @@ local function CDs ()
     -- warrior_of_elune
     if S.WarriorofElune:IsReady() and not Player:Buff(S.WarriorofElune) then
         return S.WarriorofElune:Cast()
-    end
-    -- TODO(mrdmnd / synecdoche): INNERVATE here if azerite.lively_spirit and incarn is up or C.A cooldown is < 12 s
+    end	
     -- incarnation,if=dot.sunfire.remains>8&dot.moonfire.remains>12&(dot.stellar_flare.remains>6|!talent.stellar_flare.enabled)&(buff.memory_of_lucid_dreams.up|ap_check)&!buff.ca_inc.up
     if S.Incarnation:IsCastableP() and (Target:DebuffRemainsP(S.SunfireDebuff) > 8 and Target:DebuffRemainsP(S.MoonfireDebuff) > 12 and (Target:DebuffRemainsP(S.StellarFlareDebuff) > 6 or not S.StellarFlare:IsAvailable()) and (Player:BuffP(S.MemoryOfLucidDreams) or AP_Check(S.Incarnation)) and not Player:BuffP(CaInc())) then
       return S.Incarnation:Cast()
@@ -717,10 +718,28 @@ local function APL()
 	    if QueueSkill() ~= nil then
            return QueueSkill()
         end
-        --Soothe Enrage Buffs 
+        --Soothe Enrage target
 		if S.Soothe:IsCastableP() and HasDispellableEnrage() then 
 		    return S.Soothe:Cast()
 		end
+		
+		-- Mouseover Soothe
+        local MouseoverEnemy = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")
+        if MouseoverEnemy then
+            -- Soothe
+	        if S.Soothe:IsReady() and HasDispellableEnrage() then
+                return S.Soothe:Cast()
+            end
+        end
+		
+		-- Mouseover Innervate handler
+        local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
+        if MouseoverUnit then
+            -- Innervate
+	        if S.Innervate:IsCastableP() and RubimRH.CDsON() and (S.LivelySpirit:AzeriteEnabled() and (S.Incarnation:CooldownRemainsP() < 2 or S.CelestialAlignment:CooldownRemainsP() < 12)) then
+                return S.Innervate:Cast()
+            end
+        end	
 
 	     -- Solar Beam
         if S.SolarBeam:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
