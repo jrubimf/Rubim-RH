@@ -1259,6 +1259,11 @@ mythicList = {
 			useSplashData = "Enabled",
 			
         },
+		--Restoration
+		[264] = {
+            cooldowns = true,
+			
+        },
         --DRUID
         [102] = {
             cooldowns = true,
