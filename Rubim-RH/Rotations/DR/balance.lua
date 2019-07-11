@@ -57,7 +57,7 @@ RubimRH.Spell[102] = {
 	StreakingStars                        = Spell(272871),
 	ShootingStars                         = Spell(202342),
     NaturesBalance                        = Spell(202430),
-	
+	Barkskin                              = Spell(22812),
 	
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
@@ -666,6 +666,11 @@ local function APL()
 	-- heal on 40%
 	if S.Regrowth:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk1 then
         return S.Regrowth:Cast()
+    end
+	
+	-- barkskin,if=buff.bear_form.up
+    if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk1 then
+        return S.Barkskin:Cast()
     end
 	
     -- call precombat

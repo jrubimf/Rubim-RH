@@ -1276,7 +1276,9 @@ mythicList = {
             sk1id = 8936, -- Regrowth
             sk1tooltip = "Percent HP to self heal with Regrowth",
 			
-			
+			sk2 = 30, -- Barkskin
+            sk2id = 22812, -- Barkskin
+            sk2tooltip = "Percent HP to use Barkskin",
         },
         [Feral] = {
             cooldowns = true,
