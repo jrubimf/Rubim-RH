@@ -278,9 +278,11 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
 
-    if Player:IsChanneling(S.EyeBeam) or Player:IsChanneling(S.FelBarrage) or Player:IsChanneling(S.CyclotronicBlast) then
+	-- Anti channeling interrupt
+	if Player:IsChanneling() or Player:IsCasting() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end	
+
 
     if QueueSkill() ~= nil then
         return QueueSkill()

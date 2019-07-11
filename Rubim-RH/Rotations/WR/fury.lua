@@ -249,7 +249,7 @@ local function APL()
     UpdateExecuteID()
     
 	-- Anti channeling interrupt
-	if Player:IsChanneling() then
+	if Player:IsChanneling() or Player:IsCasting() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end	
 

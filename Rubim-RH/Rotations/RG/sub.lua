@@ -550,6 +550,11 @@ local function APL ()
 	-- Essences
 	DetermineEssenceRanks()
 	
+	-- Anti channeling interrupt
+	if Player:IsChanneling() or Player:IsCasting() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end	
+	
     -- Unit Update
     HL.GetEnemies(10, true); -- Shuriken Storm & Death from Above
     HL.GetEnemies("Melee"); -- Melee

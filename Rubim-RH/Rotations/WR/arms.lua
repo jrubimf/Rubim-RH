@@ -239,6 +239,13 @@ local function APL()
   UpdateRanges()
   UpdateExecuteID()
   
+  
+    -- Anti channeling interrupt
+	if Player:IsChanneling() or Player:IsCasting() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end	
+
+     
       -- potion
     Precombat = function()
 	    -- Charge

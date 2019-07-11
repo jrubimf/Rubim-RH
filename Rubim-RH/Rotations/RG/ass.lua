@@ -751,6 +751,12 @@ local function APL ()
    
     --Essences caching
 	DetermineEssenceRanks();
+	
+	-- Anti channeling interrupt
+	if Player:IsChanneling() or Player:IsCasting() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end	
+
 
     if QueueSkill() ~= nil then
         return QueueSkill()

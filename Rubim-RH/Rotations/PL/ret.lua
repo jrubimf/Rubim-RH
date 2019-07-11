@@ -242,7 +242,11 @@ local function APL()
     UpdateRanges()
     UpdateCDs()
     
-	
+	-- Anti channeling interrupt
+	if Player:IsChanneling() or Player:IsCasting() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end	
+
 	-- DBM Precombat if user activated DBM option
 	Precombat_DBM = function()
 	    -- pre potion 
