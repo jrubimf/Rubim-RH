@@ -535,7 +535,11 @@ local function MegaTyrant()
 	    return true
 	end
 	
-	if Player:SoulShardsP() > 0 and Player:SoulShardsP() < 4 and Player:BuffStackP(S.DemonicCoreBuff) >= 1 and WildImpsCount() + ImpsSpawnedDuring(2000) > 6 then
+	if Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) and Player:PrevGCDP(3, S.HandOfGuldan) and WildImpsCount() > 1 then
+	    return true
+	end
+	
+	if Player:SoulShardsP() > 0 and Player:SoulShardsP() < 4 and Player:BuffStackP(S.DemonicCoreBuff) >= 1 and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6 then
 	    return false
 	end
 	

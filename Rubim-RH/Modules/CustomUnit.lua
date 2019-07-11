@@ -44,6 +44,21 @@ do
         end
         return false
     end
+	
+	function Unit:HasBuffList(buffList)
+        local Buffs = Cache.Get("UnitInfo", self:GUID(), "Buffs", _UnitBuff)
+
+        for i = 1, #Buffs do
+            local Buff = Buffs[i]
+            local BuffID = Buff[10]
+            local Stealable = Buff[8]
+
+            if buffList and buffList[BuffID] then
+                return true
+            end
+        end
+        return false
+    end
 
     function Unit:HasStealableBuff()
         local GUID = self:GUID()

@@ -58,7 +58,7 @@ RubimRH.Spell[102] = {
 	ShootingStars                         = Spell(202342),
     NaturesBalance                        = Spell(202430),
 	Barkskin                              = Spell(22812),
-	
+	Soothe                                = Spell(2908),
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
 	UnleashHeartOfAzeroth                 = Spell(280431),
@@ -184,6 +184,17 @@ local function AP_Check(spell)
     return false
   end
 end
+
+
+-- Enrage debuff function
+local function HasDispellableEnrage()
+    if target:HasBuffList(RubimRH.List.PvEEnragePurge) then
+        return true
+	else 
+	    return false
+    end
+end
+
 
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
@@ -702,6 +713,11 @@ local function APL()
 	    if QueueSkill() ~= nil then
            return QueueSkill()
         end
+
+        --Soothe
+		if S.Soothe:IsCastableP() and HasDispellableEnrage() then 
+		    return S.Soothe:Cast()
+		end
 
 	     -- Solar Beam
         if S.SolarBeam:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
