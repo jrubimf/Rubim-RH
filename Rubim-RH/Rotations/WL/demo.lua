@@ -1043,7 +1043,7 @@ local function APL()
           return S.HandOfGuldan:Cast()
         end
         -- summon_demonic_tyrant,if=soul_shard<3&(!talent.demonic_consumption.enabled|buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6&time_to_imps.all.remains<cast_time)|target.time_to_die<20
-        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and Player:SoulShardsP() < 3 and (not S.DemonicConsumption:IsAvailable() or WildImpTotalEnergy >= 900) then
+        if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (not S.DemonicConsumption:IsAvailable() or MegaTyrant()) then
           return S.SummonDemonicTyrant:Cast()
         end
         -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
