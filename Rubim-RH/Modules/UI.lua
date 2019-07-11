@@ -202,19 +202,36 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.AttackToggle()
             end
 
+            --Trinkets UI
+			--
+			-- New commented lines need to be reviewed for fix trinket check/uncheck
+			--
             local trinketOptions = {
                 { text = 'Trinket 1', value = 1 },
                 { text = 'Trinket 2', value = 2 },
             }
 
             local gn_1_1 = StdUi:Dropdown(tab.frame, 125, 24, trinketOptions, nil, true);
+			
+			--local gn_1_1 = StdUi:Dropdown(tab.frame, 125, 24, {
+            --    { text = 'Trinket 1', value = "up" },
+            --    { text = 'Trinket 2', value = "down" },
+           -- }, nil, true);
+			
             gn_1_1:SetPlaceholder(' -- Trinkets --');
+			
             item1 = gn_1_1.optsFrame.scrollChild.items[1]
+			--gn_1_1.optsFrame.scrollChild.items[1]:SetChecked(RubimRH.db.profile.mainOption.useTrinkets[1])
             item2 = gn_1_1.optsFrame.scrollChild.items[2]
+			--gn_1_1.optsFrame.scrollChild.items[2]:SetChecked(RubimRH.db.profile.mainOption.useTrinkets[2])
+			
             StdUi:GlueBelow(gn_1_1, gn_separator, 100, -8, 'RIGHT');
             gn_1_1.OnValueChanged = function(self, value)
-                local option1, option2 = unpack(value)
-
+                local option1, option2 = unpack(value)				
+				
+				--RubimRH.db.profile.mainOption.useTrinkets[1] = gn_1_1.optsFrame.scrollChild.items[1]:GetChecked()
+				--RubimRH.db.profile.mainOption.useTrinkets[2] = gn_1_1.optsFrame.scrollChild.items[2]:GetChecked()
+				
                 if option1 == 1 or option2 == 1 then
                     RubimRH.db.profile.mainOption.useTrinkets[1] = true
                 end
