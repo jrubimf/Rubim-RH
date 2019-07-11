@@ -64,5 +64,7 @@ Rotations\MG\fire.lua
 Rotations\MG\frost.lua
 Rotations\MG\arcane.lua
 Rotations\PR\shadow.lua
+Rotations\PR\disci.lua
+Rotations\PR\holy.lua
 
 Modules\PVP.lua
