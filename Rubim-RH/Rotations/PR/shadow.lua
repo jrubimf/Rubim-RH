@@ -50,6 +50,7 @@ RubimRH.Spell[258] = {
   Dispersion                            = Spell(47585),
   ShadowMend                            = Spell(186263),
   Silence                               = Spell(15487),
+  ChorusofInsanity                      = Spell(278661),
   DispelMagic                           = Spell(528),
   PurifyDisease                         = Spell(213634),  
   MassDispell                           = Spell(32375),
@@ -59,34 +60,34 @@ RubimRH.Spell[258] = {
   BodyAndSoul                           = Spell(64129),
   
   --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
+  UnleashHeartOfAzeroth                 = Spell(280431),
+  BloodOfTheEnemy                       = Spell(297108),
+  BloodOfTheEnemy2                      = Spell(298273),
+  BloodOfTheEnemy3                      = Spell(298277),
+  ConcentratedFlame                     = Spell(295373),
+  ConcentratedFlame2                    = Spell(299349),
+  ConcentratedFlame3                    = Spell(299353),
+  GuardianOfAzeroth                     = Spell(295840),
+  GuardianOfAzeroth2                    = Spell(299355),
+  GuardianOfAzeroth3                    = Spell(299358),
+  FocusedAzeriteBeam                    = Spell(295258),
+  FocusedAzeriteBeam2                   = Spell(299336),
+  FocusedAzeriteBeam3                   = Spell(299338),
+  PurifyingBlast                        = Spell(295337),
+  PurifyingBlast2                       = Spell(299345),
+  PurifyingBlast3                       = Spell(299347),
+  TheUnboundForce                       = Spell(298452),
+  TheUnboundForce2                      = Spell(299376),
+  TheUnboundForce3                      = Spell(299378),
+  RippleInSpace                         = Spell(302731),
+  RippleInSpace2                        = Spell(302982),
+  RippleInSpace3                        = Spell(302983),
+  WorldveinResonance                    = Spell(295186),
+  WorldveinResonance2                   = Spell(298628),
+  WorldveinResonance3                   = Spell(299334),
+  MemoryOfLucidDreams                   = Spell(298357),
+  MemoryOfLucidDreams2                  = Spell(299372),
+  MemoryOfLucidDreams3                  = Spell(299374),
   
 };
 local S = RubimRH.Spell[258]
@@ -94,7 +95,9 @@ local S = RubimRH.Spell[258]
 -- Items
 if not Item.Priest then Item.Priest = {} end
 Item.Priest.Shadow = {
-  BattlePotionOfIntellect          = Item(163222)
+  BattlePotionOfIntellect          = Item(163222),
+  PocketsizedComputationDevice     = Item(167555),
+  AzsharasFontofPower              = Item(169314)
 };
 local I = Item.Priest.Shadow;
 
@@ -327,6 +330,10 @@ local function APL()
     if S.MemoryOfLucidDreams:IsCastableP() and (Player:BuffStackP(S.VoidformBuff) > (20 + 5 * num(Player:HasHeroism())) and Player:Insanity() <= 50) then
       return S.MemoryOfLucidDreams:Cast()
     end
+	-- use_item,name=pocketsized_computation_device,if=equipped.167555&(buff.voidform.up&buff.chorus_of_insanity.stack>20)|azerite.chorus_of_insanity.rank=0
+	--if I.PocketsizedComputationDevice:IsReady() and ((Player:BuffP(S.VoidformBuff) and Player:BuffStackP(S.ChorusofInsanity) > 20) or S.ChorusofInsanity:AzeriteRank() == 0) then
+	--  return I.PocketsizedComputationDevice:Cast()
+	--end
     -- shadow_word_death,target_if=target.time_to_die<3|buff.voidform.down
     if S.ShadowWordDeath:IsCastableP() and (Target:TimeToDie() < 3 or Player:BuffDownP(S.VoidformBuff)) and (Target:HealthPercentage() < ExecuteRange ()) then
       return S.ShadowWordDeath:Cast() 
@@ -403,6 +410,10 @@ local function APL()
     if (Player:BuffP(S.VoidformBuff) and S.VoidBolt:CooldownRemainsP() < 0.2) or Player:IsCasting(S.VoidEruption) then
       return S.VoidBolt:Cast()
     end
+	-- use_item,name=azsharas_font_of_power,if=(buff.voidform.up&buff.chorus_of_insanity.stack>20)|azerite.chorus_of_insanity.rank=0
+    --if I.AzsharasFontofPower:IsReady() and ((Player:BuffP(S.VoidformBuff) and Player:BuffStackP(S.ChorusofInsanity) > 20) or S.ChorusofInsanity:AzeriteRank() == 0) then
+    --  return I.AzsharasFontofPower:Cast()
+    --end
 	-- memory_of_lucid_dreams,if=buff.voidform.stack>(20+5*buff.bloodlust.up)&insanity<=50
     if S.MemoryOfLucidDreams:IsCastableP() and (Player:BuffStackP(S.VoidformBuff) > (20 + 5 * num(Player:HasHeroism())) and Player:Insanity() <= 50) then
       return S.MemoryOfLucidDreams:Cast()
