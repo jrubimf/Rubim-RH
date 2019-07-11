@@ -101,7 +101,11 @@ if not Item.Druid then
     Item.Druid = {}
 end
 Item.Druid.Balance = {
-  BattlePotionOfIntellect               = Item(163222)
+    BattlePotionOfIntellect          = Item(163222),
+	TidestormCodex                   = Item(165576),
+	AzsharasFontofPower              = Item(169314),
+    PocketsizedComputationDevice     = Item(167555),
+    ShiverVenomRelic                 = Item(168905),
 };
 local I = Item.Druid.Balance;
 
@@ -709,12 +713,11 @@ local function APL()
         if S.MoonkinForm:IsCastableP() and not Player:Buff(S.MoonkinForm) and RubimRH.AutoMorphON() then
            return S.MoonkinForm:Cast()
         end
-
+        --Queue system 
 	    if QueueSkill() ~= nil then
            return QueueSkill()
         end
-
-        --Soothe
+        --Soothe Enrage Buffs 
 		if S.Soothe:IsCastableP() and HasDispellableEnrage() then 
 		    return S.Soothe:Cast()
 		end
