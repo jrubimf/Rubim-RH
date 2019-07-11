@@ -595,8 +595,8 @@ local function APL()
         end
 		
 		-- Mouseover Attack handler
-        local MouseoverEnemyUnit = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover") and Unit("mouseover") or nil
-        if MouseoverUnit then
+        local MouseoverEnemyUnit = UnitExists("mouseover") and not UnitIsFriend("player", "mouseover")
+        if MouseoverEnemyUnit then
             return DPS()
         end	
 
