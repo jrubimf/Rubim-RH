@@ -602,3 +602,15 @@ function RubimRH.GetDescription(spellID)
     end)
     return numbers
 end
+
+-- Queen's Court specific rotation (Dont repeat same spell twice)
+local RepeatPerformance1 = 303126
+local RepeatPerformance2 = 301244
+local RepeatPerformance3 = 304409
+
+function UseQueenRotation()
+  if (Target:NPCID() == 152852 or Target:NPCID() == 152853) and ( Player:DebuffRemainsP(RepeatPerformance1) or Player:DebuffRemainsP(RepeatPerformance2) or Player:DebuffRemainsP(RepeatPerformance3) ) then
+    return true
+  end
+  return false
+end
