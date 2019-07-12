@@ -82,7 +82,7 @@ end
 --#TODO FIX THIS
 -- 13.05.19 - Should now work as intended
 function RubimRH.Shared()
-    local ValidUnits = ValidMembers(IsPlayer)   
+    local ValidUnits = ValidMembersAlive(IsPlayer)  
 
    -- Start attack if we find a target in 40yards
 	if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
@@ -99,6 +99,7 @@ function RubimRH.Shared()
             return 249170
         end
 		
+		-- Healthstone in raid with at least 10 raid members alive. 
         if Item(Healthstone):IsReady() and IsInRaid() and ValidUnits >= 10 and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end
