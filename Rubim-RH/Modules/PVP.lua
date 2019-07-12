@@ -1813,7 +1813,7 @@ function RubimRH.PvP()
         return 0, 236390
     end
 
-    if Target:IsCC() and RubimRH.CCBreakON() then
+    if Target:IsCC() and not RubimRH.CCBreakON() then
         return 0, 236390
     end
 
