@@ -82,15 +82,16 @@ end
 --#TODO FIX THIS
 -- 13.05.19 - Should now work as intended
 function RubimRH.Shared()
-    if Player:AffectingCombat() then
-
-        if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
-			--print("It works");  
-			HL.GetEnemies(30)
-			if Cache.EnemiesCount[30] >= 1 then
-		        return 133015   
-            end
+    -- Start attack if we find a target in 40yards
+	if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
+	    --print("It works");  
+		HL.GetEnemies(40)
+		if Cache.EnemiesCount[40] >= 1 then
+	        return 133015   
         end
+    end
+    
+	if Player:AffectingCombat() then
 
         if Player:ShouldStopCasting() and Player:IsCasting() then
             return 249170
