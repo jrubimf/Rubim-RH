@@ -61,6 +61,9 @@ RubimRH.Spell[102] = {
 	Barkskin                              = Spell(22812),
 	Soothe                                = Spell(2908),
 	Innervate                             = Spell(29166),
+	Renewal                               = Spell(108238),
+    Typhoon                               = Spell(132469),
+	MightyBash                            = Spell(5211),
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
 	UnleashHeartOfAzeroth                 = Spell(280431),
@@ -684,6 +687,11 @@ local function APL()
         return S.Regrowth:Cast()
     end
 	
+	-- Renewal on 40%
+	if S.Renewal:IsCastableP() and S.Renewal:IsAvailable() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk3 then
+        return S.Renewal:Cast()
+    end
+	
 	-- barkskin,if=buff.bear_form.up
     if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk2 then
         return S.Barkskin:Cast()
@@ -722,7 +730,14 @@ local function APL()
 		if S.Soothe:IsCastableP() and HasDispellableEnrage() then 
 		    return S.Soothe:Cast()
 		end
-		
+	    -- interrupt.talent.typhoon
+        if S.Typhoon:IsAvailable() and S.Typhoon:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.Typhoon:Cast()
+        end
+        -- interrupt.talent.mightybash
+        if S.MightyBash:IsAvailable() and S.MightyBash:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.MightyBash:Cast()
+        end
 		-- Mouseover Soothe
         local MouseoverEnemy = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")
         if MouseoverEnemy then
