@@ -242,7 +242,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
+  if S.ConcentratedFlame:IsCastableP() and Pet:BuffRemainsP(S.FrenzyBuff) >= Player:GCD() * 1.5 then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
