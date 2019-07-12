@@ -61,6 +61,11 @@ RubimRH.Spell[102] = {
 	Barkskin                              = Spell(22812),
 	Soothe                                = Spell(2908),
 	Innervate                             = Spell(29166),
+	Renewal                               = Spell(108238),
+    Typhoon                               = Spell(132469),
+	MightyBash                            = Spell(5211),
+	ArcanicPulsarBuff                     = Spell(287790),
+    ArcanicPulsar                         = Spell(287773),
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
 	UnleashHeartOfAzeroth                 = Spell(280431),
@@ -191,6 +196,16 @@ local function AP_Check(spell)
   end
 end
 
+-- Variables
+local VarAzSs = 0;
+local VarAzAp = 0;
+local VarSfTargets = 0;
+
+HL:RegisterForEvent(function()
+  VarAzSs = 0
+  VarAzAp = 0
+  VarSfTargets = 0
+end, "PLAYER_REGEN_ENABLED")
 
 -- Enrage debuff function
 local function HasDispellableEnrage()
@@ -224,6 +239,33 @@ local function DetermineEssenceRanks()
 end
 
 local function Precombat ()
+    if (true) then
+      VarAzSs = S.StreakingStars:AzeriteRank()
+    end
+    -- variable,name=az_ap,value=azerite.arcanic_pulsar.rank
+    if (true) then
+      VarAzAp = S.ArcanicPulsar:AzeriteRank()
+    end
+    -- variable,name=sf_targets,value=4
+    if (true) then
+      VarSfTargets = 4
+    end
+    -- variable,name=sf_targets,op=add,value=1,if=azerite.arcanic_pulsar.enabled
+    if (S.ArcanicPulsar:AzeriteEnabled()) then
+      VarSfTargets = VarSfTargets + 1
+    end
+    -- variable,name=sf_targets,op=add,value=1,if=talent.starlord.enabled
+    if (S.Starlord:IsAvailable()) then
+      VarSfTargets = VarSfTargets + 1
+    end
+    -- variable,name=sf_targets,op=add,value=1,if=azerite.streaking_stars.rank>2&azerite.arcanic_pulsar.enabled
+    if (S.StreakingStars:AzeriteRank() > 2 and S.ArcanicPulsar:AzeriteEnabled()) then
+      VarSfTargets = VarSfTargets + 1
+    end
+    -- variable,name=sf_targets,op=sub,value=1,if=!talent.twin_moons.enabled
+    if (not S.TwinMoons:IsAvailable()) then
+      VarSfTargets = VarSfTargets - 1
+    end
     -- moonkin_form
     if S.MoonkinForm:IsReady() and not Player:Buff(S.MoonkinForm) then
         return S.MoonkinForm:Cast()
@@ -393,6 +435,10 @@ local function CoreRotation ()
     -- actions+=/sunfire,if=(!buff.celestial_alignment.up&!buff.incarnation.up|!variable.az_streak|!prev_gcd.1.sunfire)&!(variable.az_potm>=2&spell_targets.moonfire>=2)
     -- actions+=/moonfire
     if S.Starsurge:IsReady() and Cache.EnemiesCount[40] < 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4 or (Player:GCD() * (FutureAstralPower() / 40)) > Target:TimeToDie()) and FutureAstralPower() >= 40 then
+        return S.Starsurge:Cast()
+    end
+	-- starsurge,if=(talent.starlord.enabled&(buff.starlord.stack<3|buff.starlord.remains>=5&buff.arcanic_pulsar.stack<8)|!talent.starlord.enabled&(buff.arcanic_pulsar.stack<8|buff.ca_inc.up))&spell_targets.starfall<variable.sf_targets&buff.lunar_empowerment.stack+buff.solar_empowerment.stack<4&buff.solar_empowerment.stack<3&buff.lunar_empowerment.stack<3&(!variable.az_ss|!buff.ca_inc.up|!prev.starsurge)|target.time_to_die<=execute_time*astral_power%40|!solar_wrath.ap_check
+    if S.Starsurge:IsReadyP() and ((S.Starlord:IsAvailable() and (Player:BuffStackP(S.StarlordBuff) < 3 or Player:BuffRemainsP(S.StarlordBuff) >= 5 and Player:BuffStackP(S.ArcanicPulsarBuff) < 8) or not S.Starlord:IsAvailable() and (Player:BuffStackP(S.ArcanicPulsarBuff) < 8 or Player:BuffP(CaInc()))) and Cache.EnemiesCount[40] < VarSfTargets and Player:BuffStackP(S.LunarEmpowermentBuff) + Player:BuffStackP(S.SolarEmpowermentBuff) < 4 and Player:BuffStackP(S.SolarEmpowermentBuff) < 3 and Player:BuffStackP(S.LunarEmpowermentBuff) < 3 and (not bool(VarAzSs) or not Player:BuffP(CaInc()) or not Player:PrevGCDP(1, S.Starsurge)) or Target:TimeToDie() <= S.Starsurge:ExecuteTime() * FutureAstralPower() / 40 or not AP_Check(S.SolarWrath)) then
         return S.Starsurge:Cast()
     end
     if S.Starfall:IsReady() and Cache.EnemiesCount[40] >= 3 and (not Player:BuffP(S.StarlordBuff) or Player:BuffRemainsP(S.StarlordBuff) >= 4) and FutureAstralPower() >= 50 and active_enemies() > 7 then
@@ -684,8 +730,13 @@ local function APL()
         return S.Regrowth:Cast()
     end
 	
+	-- Renewal on 40%
+	if S.Renewal:IsCastableP() and S.Renewal:IsAvailable() and Player:HealthPercentage() <= RubimRH.db.profile[102].sk3 then
+        return S.Renewal:Cast()
+    end
+	
 	-- barkskin,if=buff.bear_form.up
-    if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk1 then
+    if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk2 then
         return S.Barkskin:Cast()
     end
 	
@@ -722,7 +773,14 @@ local function APL()
 		if S.Soothe:IsCastableP() and HasDispellableEnrage() then 
 		    return S.Soothe:Cast()
 		end
-		
+	    -- interrupt.talent.typhoon
+        if S.Typhoon:IsAvailable() and S.Typhoon:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.Typhoon:Cast()
+        end
+        -- interrupt.talent.mightybash
+        if S.MightyBash:IsAvailable() and S.MightyBash:CooldownRemainsP() < 0.1 and RubimRH.InterruptsON() and Target:IsInterruptible() then
+            return S.MightyBash:Cast()
+        end
 		-- Mouseover Soothe
         local MouseoverEnemy = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")
         if MouseoverEnemy then
@@ -737,8 +795,12 @@ local function APL()
         if MouseoverUnit then
             -- Innervate
 	        if S.Innervate:IsCastableP() and RubimRH.CDsON() and (S.LivelySpirit:AzeriteEnabled() and (S.Incarnation:CooldownRemainsP() < 2 or S.CelestialAlignment:CooldownRemainsP() < 12)) then
-                return S.Innervate:Cast()
-            end
+                return S.Innervate:Cast()			
+			elseif S.Innervate:IsCastableP() and RubimRH.CDsON() and MouseOver:ManaPercentageP() < RubimRH.db.profile[102].sk3 then
+			    return S.Innervate:Cast()
+			else
+			    print("This unit is not eligible for Innervate")            
+			end
         end	
 
 	     -- Solar Beam

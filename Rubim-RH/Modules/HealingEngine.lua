@@ -1570,6 +1570,20 @@ function ValidMembers(IsPlayer)
     return total 
 end
 
+function ValidMembersAlive(IsPlayer)
+    local total = 0 
+    if IsPlayer and RubimRH.tableexist(members) then 
+        for i = 1, #members do
+            if UnitIsPlayer(members[i].Unit) and not UnitIsDeadOrGhost(members[i].Unit) then
+                total = total + 1
+            end
+        end
+    else 
+        total = #members
+    end
+    return total 
+end
+
 -- Refference for members in range as counter which usefully to check how much units should be done for AoE heal
 function RubimRH.AoEMembers(IsPlayer, SubStract, Limit)
     if not SubStract then SubStract = 1 end 
