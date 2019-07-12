@@ -82,7 +82,9 @@ end
 --#TODO FIX THIS
 -- 13.05.19 - Should now work as intended
 function RubimRH.Shared()
-    -- Start attack if we find a target in 40yards
+    local ValidUnits = ValidMembers(IsPlayer)   
+
+   -- Start attack if we find a target in 40yards
 	if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
 	    --print("It works");  
 		HL.GetEnemies(40)
@@ -96,12 +98,16 @@ function RubimRH.Shared()
         if Player:ShouldStopCasting() and Player:IsCasting() then
             return 249170
         end
-
-        if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+		
+        if Item(Healthstone):IsReady() and IsInRaid() and ValidUnits >= 10 and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end
 
-        if Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
+        if Item(Healthstone):IsReady() and not IsInRaid() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+            return 538745
+        end
+
+        if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
                 if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
                     if trinketReady(1) then
