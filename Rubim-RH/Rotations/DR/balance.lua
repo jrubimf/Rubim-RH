@@ -685,7 +685,7 @@ local function APL()
     end
 	
 	-- barkskin,if=buff.bear_form.up
-    if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk1 then
+    if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk2 then
         return S.Barkskin:Cast()
     end
 	

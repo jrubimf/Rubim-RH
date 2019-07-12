@@ -1275,6 +1275,11 @@ mythicList = {
 			sk2 = 30, -- Barkskin
             sk2id = 22812, -- Barkskin
             sk2tooltip = "Percent HP to use Barkskin",
+			
+			sk3 = 30, -- Renewal
+            sk3id = 108238, -- Renewal
+            sk3tooltip = "Percent HP to use Renewal",
+			
         },
         [Feral] = {
             cooldowns = true,
