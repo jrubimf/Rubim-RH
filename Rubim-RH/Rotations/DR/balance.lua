@@ -752,8 +752,12 @@ local function APL()
         if MouseoverUnit then
             -- Innervate
 	        if S.Innervate:IsCastableP() and RubimRH.CDsON() and (S.LivelySpirit:AzeriteEnabled() and (S.Incarnation:CooldownRemainsP() < 2 or S.CelestialAlignment:CooldownRemainsP() < 12)) then
-                return S.Innervate:Cast()
-            end
+                return S.Innervate:Cast()			
+			elseif S.Innervate:IsCastableP() and RubimRH.CDsON() and MouseOver:ManaPercentageP() < RubimRH.db.profile[102].sk3 then
+			    return S.Innervate:Cast()
+			else
+			    print("This unit is not eligible for Innervate")            
+			end
         end	
 
 	     -- Solar Beam
