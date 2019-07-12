@@ -160,6 +160,9 @@ local function APL()
     and S.FieryBrand:TimeSinceLastCast() > Player:GCD()
     and S.ThrowGlaive:TimeSinceLastCast() > Player:GCD()
     and S.SoulBarrier:TimeSinceLastCast() > Player:GCD()
+	and S.SigilofMisery:TimeSinceLastCast() > Player:GCD()
+	and S.SigilofChains:TimeSinceLastCast() > Player:GCD()
+	and S.SigilofSilence:TimeSinceLastCast() > Player:GCD()
     and S.SigilofFlame:TimeSinceLastCast() > Player:GCD()
     and S.SigilofFlame2:TimeSinceLastCast() > Player:GCD();
 
@@ -310,10 +313,23 @@ local function APL()
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and not Target:IsQuestMob() then
         return 0, 462338
     end
-
+	
     if S.Disrupt:IsReady(10) and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Disrupt:Cast()
     end
+		
+	if S.SigilofSilence:IsReadyMorph() and Cache.EnemiesCount[30] > 1 and RubimRH.InterruptsON() and Target:IsInterruptible() and Target:TimeToDie() >= 6 then
+        return S.SigilofSilence:Cast()
+    end
+	
+	if S.SigilofMisery:IsReadyMorph() and Cache.EnemiesCount[30] > 1  and RubimRH.InterruptsON() and Target:IsInterruptible() and Target:TimeToDie() >= 6 then
+        return S.SigilofMisery:Cast()
+    end
+	
+	if S.SigilofChains:IsReadyMorph() and Cache.EnemiesCount[30] > 1 and Target:TimeToDie() >= 6 then
+        return S.SigilofChains:Cast()
+    end
+	
     if S.ConsumeMagic:IsReadyP() and Target:HasStealableBuff() then
         return S.ConsumeMagic:Cast()
     end

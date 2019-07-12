@@ -200,7 +200,10 @@ local EyeBeam = 198013
 local FelBarrage = 258925
 local FieryBrand = 204021
 local InfernalStrike = 189110
-
+local SigilofSilence = 202137
+local SigilofMisery = 207684
+local SigilofChains = 202138
+	
 --Warrior
 local Warbreaker = 209577
 local Ravager = 152277
@@ -860,8 +863,7 @@ mythicList = {
             }
         },
         [Vengeance] = {
-            cooldown = true,
-			
+            cooldown = true,			
 
             sk1 = 50,
             sk1id = 187827, --Metamorphosis
@@ -874,6 +876,9 @@ mythicList = {
             Spells = {
                 { spellID = InfernalStrike, isActive = true },
                 { spellID = FieryBrand, isActive = true },
+				{ spellID = SigilofChains, isActive = true },
+				{ spellID = SigilofMisery, isActive = true },
+				{ spellID = SigilofSilence, isActive = true },
             }
         },
         --DK
