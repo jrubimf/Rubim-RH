@@ -66,6 +66,8 @@ RubimRH.Spell[102] = {
 	MightyBash                            = Spell(5211),
 	ArcanicPulsarBuff                     = Spell(287790),
     ArcanicPulsar                         = Spell(287773),
+	StarlordBuff                          = Spell(279709),
+    Starlord                              = Spell(202345),
 	-- 8.2 Essences
     SolarBeam                             = Spell(78675),
 	UnleashHeartOfAzeroth                 = Spell(280431),
