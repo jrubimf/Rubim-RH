@@ -707,7 +707,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local function showTooltip(frame, show, spellId)
                 if show then
                     GameTooltip:SetOwner(frame);
-                    GameTooltip:SetPoint('RIGHT');
+					--Not needed anymore with 8.2
+                    --GameTooltip:SetPoint('RIGHT');
                     GameTooltip:SetSpellByID(spellId)
                 else
                     GameTooltip:Hide();
@@ -937,7 +938,8 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		    local function showTooltip(frame, show, spellId)
                 if show then
                     GameTooltip:SetOwner(frame);
-                    GameTooltip:SetPoint('RIGHT');
+                    --Not needed anymore with 8.2
+					--GameTooltip:SetPoint('RIGHT');
                     GameTooltip:SetSpellByID(spellId)
                 else
                     GameTooltip:Hide();
