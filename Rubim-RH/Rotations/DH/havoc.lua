@@ -277,7 +277,8 @@ local function APL()
     local Precombat, Precombat_DBM, Cooldown, DarkSlash, Demonic, Normal
     UpdateRanges()
     UpdateCDs()
-
+    DetermineEssenceRanks()
+	
 	-- Anti channeling interrupt
 	if Player:IsChanneling() or Player:IsCasting() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
