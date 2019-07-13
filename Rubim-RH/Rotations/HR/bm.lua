@@ -282,6 +282,8 @@ local function APL()
     UpdateCDs()
     UpdateRanges()
     cacheOverwrite()
+	DetermineEssenceRanks()
+	
     if Player:BuffP(S.FeignDeath) or Player:BuffP(S.Shadowmeld) then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
     end
