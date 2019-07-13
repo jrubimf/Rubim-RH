@@ -254,7 +254,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             local gn_2_0 = StdUi:Checkbox(tab.frame, 'Perfect Pull');
             StdUi:FrameTooltip(gn_2_0, 'WIP Auto prepots & prepull from DBM Pull Timer', 'TOPLEFT', 'TOPRIGHT', true);
             gn_2_0:SetChecked(RubimRH.db.profile.mainOption.PerfectPull)
-            StdUi:GlueBelow(gn_2_0, gn_1_0, 0, -15, 'LEFT');
+            StdUi:GlueBelow(gn_2_0, gn_1_0, 0, 0, 'LEFT');
             function gn_2_0:OnValueChanged(value)
                 RubimRH.PerfectPull()
             end
@@ -278,7 +278,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.burstCDToggle()
             end
 
-            StdUi:GlueBelow(gn_3_0, gn_2_0, 0, -15, 'LEFT');
+            StdUi:GlueBelow(gn_3_0, gn_2_0, 0, 0, 'LEFT');
             
             -- precombat toggle
             local gn_4_0 = StdUi:Checkbox(tab.frame, 'Auto Precombat');
@@ -288,7 +288,17 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 RubimRH.PrecombatToggle()
             end
             
-            StdUi:GlueBelow(gn_4_0, gn_3_0, 0, -15, 'LEFT');
+            StdUi:GlueBelow(gn_4_0, gn_3_0, 0, 0, 'LEFT');
+			
+			-- break cc
+            local ccbreak = StdUi:Checkbox(tab.frame, 'Break CCs');
+            StdUi:FrameTooltip(ccbreak, 'Auto break CCs', 'TOPLEFT', 'TOPRIGHT', true);
+            ccbreak:SetChecked(RubimRH.db.profile.mainOption.ccbreak)
+            function ccbreak:OnValueChanged(value)
+                RubimRH.CCToggle()
+            end
+            
+            StdUi:GlueBelow(ccbreak, gn_4_0, 0, 0, 'LEFT');
 
             -- Cds usage options
             local cdOptions = {
