@@ -394,7 +394,7 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
-        if RubimRH.CDsON() and Essences() ~= nil then
+        if Essences() ~= nil then
             return Essences()
         end
     end
