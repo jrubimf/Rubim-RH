@@ -495,9 +495,9 @@ end
 local function APL()
     local Precombat, Aoe, Ed, St
     UpdateRanges()
+	DetermineEssenceRanks()
 	
-	Precombat_DBM = function()
-	    DetermineEssenceRanks()
+	Precombat_DBM = function()	    
         -- flask
         -- food
         -- augmentation
@@ -517,7 +517,6 @@ local function APL()
     end
 	
     Precombat = function()
-	    DetermineEssenceRanks()
         -- flask
         -- food
         -- augmentation
@@ -802,7 +801,7 @@ local function APL()
 			elseif S.Innervate:IsCastableP() and RubimRH.CDsON() and MouseOver:ManaPercentageP() < RubimRH.db.profile[102].sk3 then
 			    return S.Innervate:Cast()
 			else
-			    print("This unit is not eligible for Innervate")            
+			    return 0, 135328           
 			end
         end	
 
@@ -856,6 +855,16 @@ local function APL()
         -- thorns
         if S.Thorns:IsCastableP() then
           return S.Thorns:Cast()
+        end
+		
+		-- Sunfire when moving
+        if S.Sunfire:IsCastableP() and Player:IsMoving()then
+            return S.Sunfire:Cast()
+        end
+		
+		-- Moonfire when moving
+        if S.Moonfire:IsCastableP() and Player:IsMoving() then
+            return S.Moonfire:Cast()
         end
 
         if Dot() ~= nil then
