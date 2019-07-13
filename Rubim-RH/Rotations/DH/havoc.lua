@@ -394,9 +394,6 @@ local function APL()
         --if I.LustrousGoldenPlumage:IsReady() and (true) then
         --return S.LustrousGoldenPlumage:Cast()
         --end
-        if Essences() ~= nil then
-            return Essences()
-        end
     end
 
     DarkSlash = function()
@@ -592,6 +589,10 @@ local function APL()
     if (true) then
         VarWaitingForMomentum = num(S.Momentum:IsAvailable() and not Player:BuffP(S.MomentumBuff))
     end
+	
+	    if Essences() ~= nil then
+            return Essences()
+        end
 
     if S.Darkness:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[577].sk2 then
         return S.Darkness:Cast()
