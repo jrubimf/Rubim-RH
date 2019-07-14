@@ -560,7 +560,8 @@ local function APL()
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
         return Precombat()
 	end
-
+  -- combat
+  if RubimRH.TargetIsValid() then
     -- variable,name=blade_dance,value=talent.first_blood.enabled|set_bonus.tier20_4pc|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
     if (true) then
         VarBladeDance = num(S.FirstBlood:IsAvailable() or Cache.EnemiesCount[8] >= (3 - num(S.TrailofRuin:IsAvailable())))
@@ -630,7 +631,7 @@ local function APL()
     if (true) then
         return Normal();
     end
-
+  end
     return 0, 135328
 end
 
