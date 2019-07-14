@@ -388,10 +388,7 @@ local function APL()
     if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk2 then
         return S.Barkskin:Cast()
     end	
-  -- call precombat
-  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
-      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-  end
+
     -- precombat DBM
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
         if Precombat_DBM() ~= nil then
@@ -408,6 +405,10 @@ local function APL()
     end
   
   if RubimRH.TargetIsValid() then
+    -- call precombat
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end
     -- Interrupt
 	-- moonkin_form
     if S.MoonkinForm:IsReadyP() and not Player:Buff(S.MoonkinForm) and RubimRH.AutoMorphON() then
@@ -467,11 +468,11 @@ local function APL()
     end
     -- use_item,name=tidestorm_codex,if=equipped.165576
     -- use_item,name=pocketsized_computation_device,if=equipped.167555&dot.moonfire.ticking&dot.sunfire.ticking&(!talent.stellar_flare.enabled|dot.stellar_flare.ticking)
-    if trinketReady(1) and (Target:DebuffP(S.MoonfireDebuff) and Target:DebuffP(S.SunfireDebuff) and (not S.StellarFlare:IsAvailable() or Target:DebuffP(S.StellarFlareDebuff))) then
+    if trinketReady(1) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
         return trinket1
     end
 	-- use_item,name=pocketsized_computation_device,if=equipped.167555&dot.moonfire.ticking&dot.sunfire.ticking&(!talent.stellar_flare.enabled|dot.stellar_flare.ticking)
-    if trinketReady(2) and (Target:DebuffP(S.MoonfireDebuff) and Target:DebuffP(S.SunfireDebuff) and (not S.StellarFlare:IsAvailable() or Target:DebuffP(S.StellarFlareDebuff))) then
+    if trinketReady(2) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
         return trinket2
     end
     -- use_item,name=shiver_venom_relic,if=equipped.168905&cooldown.ca_inc.remains>30&!buff.ca_inc.up
