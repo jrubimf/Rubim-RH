@@ -388,10 +388,10 @@ local function APL()
     if S.Barkskin:IsCastableP() and Player:HealthPercentage() < RubimRH.db.profile[102].sk2 then
         return S.Barkskin:Cast()
     end	
-    -- call precombat
-    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end
+  -- call precombat
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end
     -- precombat DBM
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
         if Precombat_DBM() ~= nil then
