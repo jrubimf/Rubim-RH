@@ -67,7 +67,7 @@ local function CanHeal(t)
 	and 
 	    -- Underwater Monstrosity - Darkest Depths
 		( 
-			not currentZoneID or currentZoneID ~= 2164 or Unit(t):DebuffRemains(292127) <= 0 
+			not currentZoneID or currentZoneID ~= 2164 or Target:DebuffRemains(292127) <= 0 
 		)   
 end
 
