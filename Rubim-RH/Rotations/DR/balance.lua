@@ -368,7 +368,7 @@ local function APL()
         end
         -- snapshot_stats
         -- solar_wrath
-        if S.SolarWrath:IsCastableP() then
+        if S.SolarWrath:IsCastableP() and not Player:IsCasting(S.SolarWrath) then
             return S.SolarWrath:Cast()
         end
     end
@@ -541,7 +541,7 @@ local function APL()
       -- if RubimRH.Cancel(S.StarlordBuff) then return ""; end
     -- end
     -- starfall,if=(buff.starlord.stack<3|buff.starlord.remains>=8)&spell_targets>=variable.sf_targets&(target.time_to_die+1)*spell_targets>cost%2.5
-    if S.Starfall:IsReadyP() and ((Player:BuffStackP(S.StarlordBuff) < 3 or Player:BuffRemainsP(S.StarlordBuff) >= 8) and EnemiesCount >= VarSfTargets and (Target:TimeToDie() + 1) * EnemiesCount > S.Starfall:Cost() / 2.5) then
+    if S.Starfall:IsReadyP() and active_enemies() >= 6 and RubimRH.AoEON() and ((Player:BuffStackP(S.StarlordBuff) < 3 or Player:BuffRemainsP(S.StarlordBuff) >= 8) and EnemiesCount >= VarSfTargets and (Target:TimeToDie() + 1) * EnemiesCount > S.Starfall:Cost() / 2.5) then
         return S.Starfall:Cast()
     end
     -- starsurge,if=(talent.starlord.enabled&(buff.starlord.stack<3|buff.starlord.remains>=5&buff.arcanic_pulsar.stack<8)|!talent.starlord.enabled&(buff.arcanic_pulsar.stack<8|buff.ca_inc.up))&spell_targets.starfall<variable.sf_targets&buff.lunar_empowerment.stack+buff.solar_empowerment.stack<4&buff.solar_empowerment.stack<3&buff.lunar_empowerment.stack<3&(!variable.az_ss|!buff.ca_inc.up|!prev.starsurge)|target.time_to_die<=execute_time*astral_power%40|!solar_wrath.ap_check
@@ -581,11 +581,11 @@ local function APL()
         return S.FullMoon:Cast()
     end
     -- lunar_strike,if=buff.solar_empowerment.stack<3&(ap_check|buff.lunar_empowerment.stack=3)&((buff.warrior_of_elune.up|buff.lunar_empowerment.up|spell_targets>=2&!buff.solar_empowerment.up)&(!variable.az_ss|!buff.ca_inc.up)|variable.az_ss&buff.ca_inc.up&prev.solar_wrath)
-    if S.LunarStrike:IsCastableP() and (Player:BuffStackP(S.SolarEmpowermentBuff) < 3 and (AP_Check(S.LunarStrike) or Player:BuffStackP(S.LunarEmpowermentBuff) == 3) and ((Player:BuffP(S.WarriorofEluneBuff) or Player:BuffP(S.LunarEmpowermentBuff) or EnemiesCount >= 2 and not Player:BuffP(S.SolarEmpowermentBuff)) and (not bool(VarAzSs) or not Player:BuffP(CaInc())) or bool(VarAzSs) and Player:BuffP(CaInc()) and Player:PrevGCDP(1, S.SolarWrath))) then
+    if S.LunarStrike:IsCastableP() and not Player:IsCasting(S.LunarStrike) and (Player:BuffStackP(S.SolarEmpowermentBuff) < 3 and (AP_Check(S.LunarStrike) or Player:BuffStackP(S.LunarEmpowermentBuff) == 3) and ((Player:BuffP(S.WarriorofEluneBuff) or Player:BuffP(S.LunarEmpowermentBuff) or EnemiesCount >= 2 and not Player:BuffP(S.SolarEmpowermentBuff)) and (not bool(VarAzSs) or not Player:BuffP(CaInc())) or bool(VarAzSs) and Player:BuffP(CaInc()) and Player:PrevGCDP(1, S.SolarWrath))) then
         return S.LunarStrike:Cast()
     end
     -- solar_wrath,if=variable.az_ss<3|!buff.ca_inc.up|!prev.solar_wrath
-    if S.SolarWrath:IsCastableP() and (VarAzSs < 3 or not Player:BuffP(CaInc()) or not Player:PrevGCDP(1, S.SolarWrath)) then
+    if S.SolarWrath:IsCastableP() and not Player:IsCasting(S.SolarWrath) and (VarAzSs < 3 or not Player:BuffP(CaInc()) or not Player:PrevGCDP(1, S.SolarWrath)) then
         return S.SolarWrath:Cast()
     end
     -- sunfire
