@@ -240,10 +240,10 @@ local randomTimer = GetTime()
 function randomGenerator(option)
     if GetTime() - randomTimer >= 1 then
         randomInterrupt = math.random(RubimRH.db.profile.mainOption.minInterruptValue, RubimRH.db.profile.mainOption.maxInterruptValue)
-        randomChannel = math.random(5, 15)
+        randomChannel = math.random(5, 15) --percent
         randomReflect = math.random(75, 90)
         randomSeconds = math.random(0.25, 0.75)
-		randomInstantInterrupt = math.random(0.17, 0.49)
+		randomInstantInterrupt = math.random(0.75, 1.85) --seconds
         randomTimer = GetTime()
     end
 	
@@ -314,7 +314,7 @@ function Unit:IsInterruptible()
     end
 	
 	-- Interrupt Everything
-	if RubimRH.InterruptEverythingON() and self:IsCasting() and self:CastSecondsRemaining() <= randomGenerator("Interrupt") then
+	if RubimRH.InterruptEverythingON() and self:IsCasting() and self:CastPercentage() >= randomGenerator("Interrupt") then
 	    return true
 	end
 	
@@ -329,7 +329,7 @@ function Unit:IsInterruptible()
             return true
         end
 	    -- Cast interrupt with randomizer
-        if self:IsCasting() and not RubimRH.InstantInterruptON() and self:CastSecondsRemaining() <= randomGenerator("Interrupt") then
+        if self:IsCasting() and not RubimRH.InstantInterruptON() and self:CastPercentage() >= randomGenerator("Interrupt") then
             return true
         end
         -- Channel interrupt with randomizer
