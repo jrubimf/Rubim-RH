@@ -446,15 +446,16 @@ local function ActiveEnemiesUpdate()
         
         for i = 1, #RangeSpec do 
             if RubimRH.PlayerSpec == RangeSpec[i] then 
-                RubimRH.Listener:Add('Active_Enemies', "COMBAT_LOG_EVENT_UNFILTERED", ActiveEnemiesCLEU)
-                RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_ENABLED', function()
+                RubimRH.Listener:Add('Rubim_Events', "COMBAT_LOG_EVENT_UNFILTERED", ActiveEnemiesCLEU)
+                RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_ENABLED', function()
                         if not InCombatLockdown() and not UnitAffectingCombat("player") then
                             wipe(logUnits)
                             wipe(activeUnits)            
                         end        
                 end)
-                RubimRH.Listener:Add('Active_Enemies', 'PLAYER_REGEN_DISABLED', function()
+                RubimRH.Listener:Add('Rubim_Events', 'PLAYER_REGEN_DISABLED', function()
                         if HL.GetTime() - SpellLastCast("player", RubimRH.LastPlayerCastID) > 0.5 then 
+						    --print(RubimRH.LastPlayerCastID)
                             wipe(logUnits)
                             wipe(activeUnits)
                         end 
@@ -462,10 +463,10 @@ local function ActiveEnemiesUpdate()
                 return 
             end 
         end 
-        
+       -- print(RubimRH.LastPlayerCastID)
         wipe(logUnits)
         wipe(activeUnits)
-        RubimRH.Listener:Remove('Active_Enemies', "COMBAT_LOG_EVENT_UNFILTERED")
+        RubimRH.Listener:Remove('Rubim_Events', "COMBAT_LOG_EVENT_UNFILTERED")
         RubimRH.Listener:Remove('PLAYER_REGEN_ENABLED', "COMBAT_LOG_EVENT_UNFILTERED")
         RubimRH.Listener:Remove('PLAYER_REGEN_DISABLED', "COMBAT_LOG_EVENT_UNFILTERED")
     end 
@@ -512,10 +513,10 @@ function active_enemies()
     return total
 end
 
-RubimRH.Listener:Add('Active_Enemies', "PLAYER_ENTERING_WORLD", ActiveEnemiesUpdate)
-RubimRH.Listener:Add('Active_Enemies', "UPDATE_INSTANCE_INFO", ActiveEnemiesUpdate)
-RubimRH.Listener:Add('Active_Enemies', "PLAYER_SPECIALIZATION_CHANGED", ActiveEnemiesUpdate)
-RubimRH.Listener:Add('Active_Enemies', "PLAYER_TALENT_UPDATE", ActiveEnemiesUpdate)
+RubimRH.Listener:Add('Rubim_Events', "PLAYER_ENTERING_WORLD", ActiveEnemiesUpdate)
+RubimRH.Listener:Add('Rubim_Events', "UPDATE_INSTANCE_INFO", ActiveEnemiesUpdate)
+RubimRH.Listener:Add('Rubim_Events', "PLAYER_SPECIALIZATION_CHANGED", ActiveEnemiesUpdate)
+RubimRH.Listener:Add('Rubim_Events', "PLAYER_TALENT_UPDATE", ActiveEnemiesUpdate)
 
 RubimRH.Listener:Add('Rubim_Events', 'PLAYER_ENTERING_WORLD', function()
         wipe(activeUnitPlates)  

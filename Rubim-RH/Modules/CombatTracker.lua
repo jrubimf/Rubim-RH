@@ -444,6 +444,49 @@ function RubimRH.LastCast(_, unit)
     end
 end
 
+--[[ This is tracks CLEU spells only if they was applied/missed/reflected e.g. received in any form by end unit to feedback that info ]]
+--[[ Instead of this function for spells which have flying but wasn't received by end unit, since spell still in the fly, you need use UnitCooldown ]]
+function SpellLastCast(UNIT, SPELL, byID)
+	-- @return HL.GetTime() stamp when spell was casted 
+    local timer = 0
+    local GUID = UnitGUID(UNIT)
+    if Data[GUID] then
+        if not byID and type(SPELL) == "number" then 
+            SPELL = GetSpellInfo(SPELL)
+        end 
+        timer = Data[GUID].spell_lastcast_time[SPELL] or 0
+    end 
+    return timer
+end 
+
+function SpellTimeSinceLastCast(UNIT, SPELL, byID)
+	-- @return time ticked since last time cast 
+    local timer = 0
+    local GUID = UnitGUID(UNIT)
+    if Data[GUID] then
+        if not byID and type(SPELL) == "number" then 
+            SPELL = GetSpellInfo(SPELL)
+        end 
+        timer = Data[GUID].spell_lastcast_time[SPELL] or 0
+		if timer > 0 then 
+			timer = HL.GetTime() - timer
+		end 
+    end 
+    return timer
+end 
+
+function SpellCounter(UNIT, SPELL, byID)
+    local timer = 0
+    local GUID = UnitGUID(UNIT)
+    if Data[GUID] then
+        if not byID and type(SPELL) == "number" then 
+            SPELL = GetSpellInfo(SPELL)
+        end 
+        timer = Data[GUID].spell_counter[SPELL] or 0
+    end 
+    return timer
+end 
+
 function RubimRH.SpellDamage(_, unit, spellID)
     local GUID = UnitGUID(unit)
     return Data[GUID] and Data[GUID][spellID] or 0

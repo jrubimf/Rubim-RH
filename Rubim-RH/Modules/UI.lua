@@ -894,7 +894,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		    -- Set this checkbox a tooltip
 			StdUi:FrameTooltip(InterruptEverythingbutton, 'This will interrupt everything', 'TOPLEFT', 'TOPRIGHT', true);                    
 			-- Set default value (checked, unchecked)and save it to db 
-			InterruptEverythingbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
+			InterruptEverythingbutton:SetChecked(RubimRH.db.profile.mainOption.InterruptEverything)                    
 			-- Set positionning
             StdUi:GlueBelow(InterruptEverythingbutton, interruptList_title, 170, -10, 'LEFT');
             -- What to do on value change                    
@@ -903,10 +903,10 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                  RubimRH.InterruptEverythingToggle()
             end
 			
-			--[[ Instant Interrupt
-            local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Instant Interrupt');                    
+			-- Instant Interrupt
+            local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Fast Interrupt');                    
 		    -- Set this checkbox a tooltip
-			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt instant - NOT RECOMMENDED IN PVP', 'TOPLEFT', 'TOPRIGHT', true);                    
+			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt almost instant (With Randomizer)', 'TOPLEFT', 'TOPRIGHT', true);                    
 			-- Set default value (checked, unchecked)and save it to db 
 			InstantInterruptbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
 			-- Set positionning
@@ -915,7 +915,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 		    function InstantInterruptbutton:OnValueChanged(value)
 		    -- See Rubim-RHc.lua 
                  RubimRH.InstantInterruptToggle()
-            end]]--
+            end
 			
             -- MIN Interrupt randomizer settings
             local interruptslider1 = StdUi:Slider(tab.frame, 100, 20, RubimRH.db.profile.mainOption.minInterruptValue, false, 5, 100)
