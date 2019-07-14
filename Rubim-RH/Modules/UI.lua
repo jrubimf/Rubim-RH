@@ -471,7 +471,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					StdUi:FrameTooltip(AutoMorphbutton, 'This will force Moonkin form everytime', 'TOPLEFT', 'TOPRIGHT', true);                    
 					AutoMorphbutton:SetChecked(RubimRH.db.profile[102].AutoMorph)                    
 					-- Set positionning
-					StdUi:GlueBelow(AutoMorphbutton, gn_4_0, 0, -150, 'LEFT');
+					StdUi:GlueBelow(AutoMorphbutton, gn_4_0, 0, -180, 'LEFT');
                     -- What to do on value change                    
 					function AutoMorphbutton:OnValueChanged(value)
 					    -- See Rubim-RHc.lua 
@@ -509,7 +509,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					-- Set default value (checked, unchecked)and save it to db 
 					AutoAOEbutton:SetChecked(RubimRH.db.profile[259].AutoAoE)                    
 					-- Set positionning
-					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -200, 'LEFT');
                     -- What to do on value change                    
 					function AutoAOEbutton:OnValueChanged(value)
 					    -- See Rubim-RHc.lua 
@@ -582,6 +582,31 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					
                 end
                 
+				-- BALANCE DRUID
+                if RubimRH.playerSpec == Balance then
+				
+                    local useSplashData = {
+                        { text = 'Enabled', value = "Enabled" },
+                        { text = 'Disabled', value = "Disabled" },
+                    }
+                    local choosedata = StdUi:Dropdown(tab.frame, 125, 24, useSplashData, nil, nil);
+                    choosedata:SetPlaceholder("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
+                    StdUi:AddLabel(tab.frame, choosedata, 'Use Experimental Aoe Detection', 'TOP');
+                    StdUi:FrameTooltip(choosedata, 'Use Combat Log to detect real numbers of enemies around your target', 'TOPLEFT', 'TOPRIGHT', true);                
+                    
+                    choosedata.OnValueChanged = function(self, val)
+                    RubimRH.db.profile[RubimRH.playerSpec].useSplashData = val
+
+                    if val == "Enabled" then
+                        print("Experimental Aoe Detection Enabled")
+                    else
+                        print("Experimental Aoe Detection Disabled")
+                        choosedata:SetText("|cfff0f8ff|r" .. RubimRH.db.profile[RubimRH.playerSpec].useSplashData);
+                    end
+                    end
+                    StdUi:GlueBelow(choosedata, sk_1_0, 0, -94, 'LEFT');
+					
+                end
                 
                 -- SHAMAN ELEMENTAL
                 if RubimRH.playerSpec == Elemental then
