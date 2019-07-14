@@ -962,25 +962,25 @@ local function APL()
             return QueueSkill()
         end        
         -- berserking,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.Berserking:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+        if S.Berserking:IsCastableP() and RubimRH.CDsON() and TyranIsActive() and HL.CombatTime() > 5 then
             return S.Berserking:Cast()
         end
         -- blood_fury,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+        if S.BloodFury:IsCastableP() and RubimRH.CDsON() and TyranIsActive() and HL.CombatTime() > 5 then
             return S.BloodFury:Cast()
         end
         -- fireblood,if=pet.demonic_tyrant.active|target.time_to_die<=15
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
+        if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() and HL.CombatTime() > 5 then
             return S.Fireblood:Cast()
         end
         -- call_action_list,name=essences
         local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	    -- trinket1,if=pet.demonic_tyrant.active
-	    if trinketReady(1) and TyranIsActive() then
+	    if trinketReady(1) and TyranIsActive() and RubimRH.CDsON() and HL.CombatTime() > 5 then
             return trinket1
         end
 	    -- trinket2,if=pet.demonic_tyrant.active
-    	if trinketReady(2) and TyranIsActive() then
+    	if trinketReady(2) and TyranIsActive() and RubimRH.CDsON() and HL.CombatTime() > 5 then
             return trinket2
         end
 		-- Blood of the enemy with Tyran sync
