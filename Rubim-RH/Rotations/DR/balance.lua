@@ -447,7 +447,7 @@ local function APL()
 		elseif S.Innervate:CooldownRemainsP() < 0.1 and RubimRH.CDsON() and MouseOver:ManaPercentageP() < RubimRH.db.profile[102].sk3 then
 		    return S.Innervate:Cast()
 		else
-		    return 0, 135328            
+		    return            
 		end
     end	
 
@@ -521,11 +521,11 @@ local function APL()
         return S.Innervate:Cast()
     end
     -- incarnation,if=!buff.ca_inc.up&(buff.memory_of_lucid_dreams.up|((cooldown.memory_of_lucid_dreams.remains>20|!essence.memory_of_lucid_dreams.major)&ap_check&astral_power>=40))&(buff.memory_of_lucid_dreams.up|ap_check)&dot.sunfire.remains>8&dot.moonfire.remains>12&(dot.stellar_flare.remains>6|!talent.stellar_flare.enabled)
-    if S.Incarnation:IsCastableP() and (not Player:BuffP(CaInc()) and (Player:BuffP(S.MemoryOfLucidDreams) or ((S.MemoryOfLucidDreams:CooldownRemainsP() > 20 or not S.MemoryOfLucidDreams:IsAvailable()) and AP_Check(S.Incarnation) and FutureAstralPower() >= 40)) and (Player:BuffP(S.MemoryOfLucidDreams) or AP_Check(S.Incarnation)) and Target:DebuffRemainsP(S.SunfireDebuff) > 8 and Target:DebuffRemainsP(S.MoonfireDebuff) > 12 and (Target:DebuffRemainsP(S.StellarFlareDebuff) > 6 or not S.StellarFlare:IsAvailable())) then
+    if S.Incarnation:IsCastableP() and RubimRH.CDsON() and (not Player:BuffP(CaInc()) and (Player:BuffP(S.MemoryOfLucidDreams) or ((S.MemoryOfLucidDreams:CooldownRemainsP() > 20 or not S.MemoryOfLucidDreams:IsAvailable()) and AP_Check(S.Incarnation) and FutureAstralPower() >= 40)) and (Player:BuffP(S.MemoryOfLucidDreams) or AP_Check(S.Incarnation)) and Target:DebuffRemainsP(S.SunfireDebuff) > 8 and Target:DebuffRemainsP(S.MoonfireDebuff) > 12 and (Target:DebuffRemainsP(S.StellarFlareDebuff) > 6 or not S.StellarFlare:IsAvailable())) then
         return S.Incarnation:Cast()
     end
     -- celestial_alignment,if=!buff.ca_inc.up&(buff.memory_of_lucid_dreams.up|((cooldown.memory_of_lucid_dreams.remains>20|!essence.memory_of_lucid_dreams.major)&ap_check&astral_power>=40))&(!azerite.lively_spirit.enabled|buff.lively_spirit.up)&(dot.sunfire.remains>2&dot.moonfire.ticking&(dot.stellar_flare.ticking|!talent.stellar_flare.enabled)) and (not S.LivelySpirit:AzeriteEnabled() or Player:BuffP(S.LivelySpiritBuff))
-    if S.CelestialAlignment:IsCastableP() and (not Player:BuffP(CaInc()) and (Player:BuffP(S.MemoryOfLucidDreams) or ((S.MemoryOfLucidDreams:CooldownRemainsP() > 20 or not S.MemoryOfLucidDreams:IsAvailable()) and AP_Check(S.CelestialAlignment) and FutureAstralPower() >= 40)) and (Target:DebuffRemainsP(S.SunfireDebuff) > 2 and Target:DebuffP(S.MoonfireDebuff) and (Target:DebuffP(S.StellarFlareDebuff) or not S.StellarFlare:IsAvailable()))) then
+    if S.CelestialAlignment:IsCastableP() and RubimRH.CDsON() and (not Player:BuffP(CaInc()) and (Player:BuffP(S.MemoryOfLucidDreams) or ((S.MemoryOfLucidDreams:CooldownRemainsP() > 20 or not S.MemoryOfLucidDreams:IsAvailable()) and AP_Check(S.CelestialAlignment) and FutureAstralPower() >= 40)) and (Target:DebuffRemainsP(S.SunfireDebuff) > 2 and Target:DebuffP(S.MoonfireDebuff) and (Target:DebuffP(S.StellarFlareDebuff) or not S.StellarFlare:IsAvailable()))) then
         return S.CelestialAlignment:Cast()
     end
     -- fury_of_elune,if=(buff.ca_inc.up|cooldown.ca_inc.remains>30)&solar_wrath.ap_check
