@@ -438,7 +438,7 @@ local function APL()
         end
     end
 	
-	-- Mouseover Innervate handler
+	--[[-- Mouseover Innervate handler
     local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
     if MouseoverUnit then
         -- Innervate
@@ -449,7 +449,7 @@ local function APL()
 		else
 		    return            
 		end
-    end	
+    end	]]--
 
 	-- Solar Beam
     if S.SolarBeam:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then

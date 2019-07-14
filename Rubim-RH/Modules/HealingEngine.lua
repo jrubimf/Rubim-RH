@@ -6,6 +6,7 @@ local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
 local mainAddon = RubimRH
+local currentZoneID = select(8, GetInstanceInfo())
 
 local TargetColor = CreateFrame("Frame", "TargetColor", UIParent)
 TargetColor:SetBackdrop(nil)
@@ -63,8 +64,11 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
-    --and Unit(t):DebuffRemains(CycloneId) == 0 -- Cyclone
-   
+	and 
+	    -- Underwater Monstrosity - Darkest Depths
+		( 
+			not currentZoneID or currentZoneID ~= 2164 or Unit(t):DebuffRemains(292127) <= 0 
+		)   
 end
 
 local function Grouped(t)
