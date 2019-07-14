@@ -527,11 +527,11 @@ local function MegaTyrant()
 	    return true
 	end
 	
-	if WildImpsCount() >= 10 then
+	if WildImpsCount() >= 6 and not Player:BuffP(S.DemonicCoreBuff) and Player:SoulShardsP() <= 1 then
 	    return true
 	end
 	
-	if WildImpsCount() + ImpsSpawnedDuring(2000) >= 12 then
+	if WildImpsCount() + ImpsSpawnedDuring(2000) >= 10 then
 	    return true
 	end		
 	
@@ -719,11 +719,11 @@ local function APL()
   -- Shard generator
   BuildAShard = function()
         -- soul_strike,if=!talent.demonic_consumption.enabled|time>15|prev_gcd.1.hand_of_guldan&!buff.bloodlust.remains
-        if S.SoulStrike:IsCastableP() and FutureShard() < 5 and (not S.DemonicConsumption:IsAvailable() or HL.CombatTime() > 15 or Player:PrevGCDP(1, S.HandOfGuldan) and not Player:HasHeroism()) then
+        if S.SoulStrike:IsCastableP() and FutureShard() <= 4 and (not S.DemonicConsumption:IsAvailable() or HL.CombatTime() > 15 or Player:PrevGCDP(1, S.HandOfGuldan) and not Player:HasHeroism()) then
           return S.SoulStrike:Cast()
         end
         -- shadow_bolt
-        if S.ShadowBolt:IsCastableP() and not Player:IsCasting(S.ShadowBolt) and FutureShard() < 5 then
+        if S.ShadowBolt:IsCastableP() and not Player:IsMoving() and not Player:IsCasting(S.ShadowBolt) and FutureShard() <= 4 then
           return S.ShadowBolt:Cast()
         end
   end
@@ -731,7 +731,7 @@ local function APL()
   -- Demonic consumption opener
   DconOpener = function()
     -- hand_of_guldan,line_cd=30,if=azerite.explosive_potential.enabled
-    if S.HandOfGuldan:IsCastableP() and (HL.CombatTime() < 2 and Player:SoulShardsP() > 2 and S.ExplosivePotential:AzeriteEnabled()) then
+    if S.HandOfGuldan:IsCastableP() and not Player:PrevGCDP(1, S.HandOfGuldan) and (HL.CombatTime() < 2 and FutureShard() > 2 and S.ExplosivePotential:AzeriteEnabled()) then
       return S.HandOfGuldan:Cast()
     end
     -- implosion,if=azerite.explosive_potential.enabled&buff.wild_imps.stack>2&buff.explosive_potential.down
@@ -743,7 +743,7 @@ local function APL()
       return S.Doom:Cast()
     end
     -- hand_of_guldan,if=prev_gcd.1.hand_of_guldan&soul_shard>0&prev_gcd.2.soul_strike
-    if S.HandOfGuldan:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShardsP() > 0 and Player:PrevGCDP(2, S.SoulStrike)) then
+    if S.HandOfGuldan:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShardsP() > 0 and Player:PrevGCDP(2, S.SoulStrike)) and FutureShard() == 5 then
       return S.HandOfGuldan:Cast()
     end
 	-- memory_of_lucid_dreams
@@ -751,7 +751,7 @@ local function APL()
        return S.UnleashHeartOfAzeroth:Cast()
     end
     -- demonic_strength,if=prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&(buff.wild_imps.stack>1&action.hand_of_guldan.in_flight)
-    if S.DemonicStrength:IsReadyP() and S.FelStorm:CooldownRemainsP() <= 26.5 and (Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight())) then
+    if S.DemonicStrength:IsReadyP() and S.FelStorm:CooldownRemainsP() <= 26.5 and Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight()) then
       return S.DemonicStrength:Cast()
     end
     -- bilescourge_bombers
@@ -759,35 +759,39 @@ local function APL()
       return S.BilescourgeBombers:Cast()
     end
     -- soul_strike,line_cd=30,if=!buff.bloodlust.remains|time>5&prev_gcd.1.hand_of_guldan
-    if S.SoulStrike:IsCastableP() and (not Player:HasHeroism() or HL.CombatTime() > 5 and Player:PrevGCDP(1, S.HandOfGuldan)) then
+    if S.SoulStrike:IsCastableP() and (not Player:HasHeroism() or HL.CombatTime() > 5) and Player:PrevGCDP(1, S.HandOfGuldan) then
       return S.SoulStrike:Cast()
     end
     -- summon_vilefiend,if=soul_shard=5
-    if S.SummonVilefiend:IsReadyP() and (Player:SoulShardsP() == 5) then
+    if S.SummonVilefiend:IsReadyP() and (FutureShard() == 5) then
       return S.SummonVilefiend:Cast()
     end
     -- grimoire_felguard,if=soul_shard=5
-    if S.GrimoireFelguard:IsReadyP() and (Player:SoulShardsP() == 5) then
+    if S.GrimoireFelguard:IsReadyP() and (FutureShard() == 5) then
       return S.GrimoireFelguard:Cast()
     end
     -- call_dreadstalkers,if=soul_shard=5
-    if S.CallDreadStalkers:IsReadyP() and (Player:SoulShardsP() == 5) then
+    if S.CallDreadStalkers:IsReadyP() and (FutureShard() == 5) then
       return S.CallDreadStalkers:Cast()
     end
     -- hand_of_guldan,if=soul_shard=5
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() == 5) then
+    if S.HandOfGuldan:IsCastableP() and (FutureShard() == 5) then
       return S.HandOfGuldan:Cast()
     end
+	-- hand_of_guldan,empty all shards
+    --if S.HandOfGuldan:IsCastableP() and Player:PrevGCDP(1, S.HandOfGuldan) and Player:FutureShard() > 0 then
+    --  return S.HandOfGuldan:Cast()
+    --end
     -- hand_of_guldan,if=soul_shard>=3&prev_gcd.2.hand_of_guldan&time>5&(prev_gcd.1.soul_strike|!talent.soul_strike.enabled&prev_gcd.1.shadow_bolt)
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() >= 3 and Player:PrevGCDP(2, S.HandOfGuldan) and HL.CombatTime() > 5 and (Player:PrevGCDP(1, S.SoulStrike) or not S.SoulStrike:IsAvailable() and Player:PrevGCDP(1, S.ShadowBolt))) then
+    if S.HandOfGuldan:IsCastableP() and Player:SoulShardsP() >= 3 and Player:PrevGCDP(2, S.HandOfGuldan) and HL.CombatTime() > 5 and (Player:PrevGCDP(1, S.SoulStrike) or not S.SoulStrike:IsAvailable() and Player:PrevGCDP(1, S.ShadowBolt)) then
       return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-    if S.SummonDemonicTyrant:IsCastableP() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
+    if S.SummonDemonicTyrant:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan)) or (WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and (Player:SoulShardsP() <= 3 and bool(Player:BuffRemainsP(S.DemonicCoreBuff))) then
+    if S.Demonbolt:IsCastableP() and FutureShard() <= 3 and bool(Player:BuffRemainsP(S.DemonicCoreBuff)) then
       return S.Demonbolt:Cast()
     end
     -- call_action_list,name=build_a_shard
@@ -933,9 +937,22 @@ local function APL()
         end
   end
   
+	-- call precombat DBM
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        if Precombat_DBM() ~= nil then
+            return Precombat_DBM()
+        end
+    end
+  	-- call precombat
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
+        if Precombat() ~= nil then
+            return Precombat()
+        end
+    end
+  
   -- call precombat
-  if not Player:AffectingCombat() and not Player:IsCasting() then
-        local ShouldReturn = Precombat(); if ShouldReturn then return ShouldReturn; end
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
   end
   
   -- combat
@@ -956,8 +973,8 @@ local function APL()
         if S.Fireblood:IsCastableP() and RubimRH.CDsON() and TyranIsActive() then
             return S.Fireblood:Cast()
         end
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+        -- call_action_list,name=essences
+        local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 	    -- trinket1,if=pet.demonic_tyrant.active
 	    if trinketReady(1) and TyranIsActive() then
             return trinket1
@@ -991,7 +1008,7 @@ local function APL()
           return S.Demonbolt:Cast()
         end
         -- implosion,if=azerite.explosive_potential.rank&buff.wild_imps.stack>2&buff.explosive_potential.remains<action.shadow_bolt.execute_time&(!talent.demonic_consumption.enabled|cooldown.summon_demonic_tyrant.remains>12)
-        if S.Implosion:IsCastableP() and (bool(S.ExplosivePotential:AzeriteRank()) and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() and (not S.DemonicConsumption:IsAvailable() or S.SummonDemonicTyrant:CooldownRemainsP() > 10)) then
+        if S.Implosion:IsCastableP() and (bool(S.ExplosivePotential:AzeriteRank()) and WildImpsCount() > 2 and Player:BuffRemainsP(S.ExplosivePotentialBuff) < S.ShadowBolt:ExecuteTime() and (not S.DemonicConsumption:IsAvailable() or S.SummonDemonicTyrant:CooldownRemainsP() > 7)) then
           return S.Implosion:Cast()
         end
         -- doom,if=!ticking&time_to_die>30&spell_targets.implosion<2
