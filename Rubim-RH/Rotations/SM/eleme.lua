@@ -237,8 +237,8 @@ local function GetEnemiesCount()
       return RubimRH.GetSplashCount(Target, 10)
     else
       UpdateRanges()
-      --return Cache.EnemiesCount[40]
-	  return active_enemies()
+      return Cache.EnemiesCount[40]
+	  --return active_enemies()
     end
   else
     return 1
