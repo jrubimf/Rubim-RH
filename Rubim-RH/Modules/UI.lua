@@ -906,7 +906,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- Instant Interrupt
             local InstantInterruptbutton = StdUi:Checkbox(tab.frame, 'Fast Interrupt');                    
 		    -- Set this checkbox a tooltip
-			StdUi:FrameTooltip(InstantInterruptbutton, 'This will make all your interrupt almost instant (With Randomizer)', 'TOPLEFT', 'TOPRIGHT', true);                    
+			StdUi:FrameTooltip(InstantInterruptbutton, 'Interrupt almost instant(Randomized 0.75 - 1.85sec)', 'TOPLEFT', 'TOPRIGHT', true);                    
 			-- Set default value (checked, unchecked)and save it to db 
 			InstantInterruptbutton:SetChecked(RubimRH.db.profile.mainOption.InstantInterrupt)                    
 			-- Set positionning
