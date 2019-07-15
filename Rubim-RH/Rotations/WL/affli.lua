@@ -619,9 +619,11 @@ local function APL()
 		    if ShouldReturn then return ShouldReturn; 
         end	
 	end
-	if Player:IsChanneling() then
-        return 0, 236353
-	end
+  
+  -- Protect against interrupt of channeled spells
+  if (Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2)) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
 	
   if RubimRH.TargetIsValid() then
     
@@ -669,6 +671,10 @@ local function APL()
     if (true) then
       local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end
     end
+	-- siphon_life,target=1,!siphonlife.debuff
+    if S.Corruption:IsCastableP() and not Target:Debuff(S.CorruptionDebuff) and Player:IsMoving() then
+        return S.Corruption:Cast()
+    end	
     -- unending resolve,defensive,player.health<=40
     if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
         return S.UnendingResolve:Cast()
