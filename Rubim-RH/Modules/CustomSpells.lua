@@ -229,7 +229,7 @@ end
   *
   * @returns {number}
   *]]
-
+  
 function Spell:IsCastable(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
@@ -237,10 +237,8 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 	
 	-- Queens Court - Repeat Performance debuff checker
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
 
@@ -255,10 +253,8 @@ end
 function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
     -- Queens Court - Repeat Performance debuff checker
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
 	
@@ -277,10 +273,8 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
 	
     -- Queens Court - Repeat Performance debuff checker
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
 
@@ -317,10 +311,8 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
 	
 	-- Queens Court - Repeat Performance debuff checker
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
 
@@ -334,10 +326,8 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
 	
 	-- Queens Court - Repeat Performance debuff checker
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
 
@@ -388,14 +378,13 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-	-- Queens Court - Repeat Performance debuff checker
+	
 	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
+	    if Player:PrevGCD(1) == self:ID() then
+	        return false
 		end
 	end
+	
     
 	if Range then
         local RangeUnit = ThisUnit or Target
