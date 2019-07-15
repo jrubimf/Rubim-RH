@@ -64,11 +64,7 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
-	and 
-	    -- Underwater Monstrosity - Darkest Depths
-		( 
-			not currentZoneID or currentZoneID ~= 2164 or Target:DebuffRemains(292127) <= 0 
-		)   
+ 
 end
 
 local function Grouped(t)

@@ -235,12 +235,6 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 
     if Range then
         local RangeUnit = ThisUnit or Target;
@@ -251,12 +245,6 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
-    -- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 	
 	if Range then
         local RangeUnit = ThisUnit or Target;
@@ -271,12 +259,6 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
         return false
     end
 	
-    -- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 
     return self:IsCastableQueue(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
@@ -309,12 +291,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
@@ -324,12 +300,6 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 
     if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
         for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
@@ -379,11 +349,6 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
         return false
     end
 	
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) == self:ID() then
-	        return false
-		end
-	end
 	
     
 	if Range then
@@ -399,14 +364,6 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
 	
     if Range then
         local RangeUnit = ThisUnit or Target;
@@ -421,14 +378,6 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
 
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
