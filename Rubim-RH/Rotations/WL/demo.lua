@@ -651,8 +651,8 @@ local function GetEnemiesCount(range)
     end
 end
 
-HL.RegisterNucleusAbility(105174, 8, 6)  -- Hand of Gul'dan
-HL.RegisterNucleusAbility(196277, 8, 6)  -- Implosion
+--HL.RegisterNucleusAbility(105174, 8, 6)  -- Hand of Gul'dan
+--HL.RegisterNucleusAbility(196277, 8, 6)  -- Implosion
 
 --- ======= ACTION LISTS =======
 local function APL()
