@@ -269,12 +269,8 @@ end
 
 -- # Essences
 local function Essences()
-  -- blood_of_the_enemy,if=variable.blade_flurry_sync
-  if S.BloodOfTheEnemy:IsCastableP() and Blade_Flurry_Sync() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
   -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
+  if S.ConcentratedFlame:IsCastableP() and (Player:AffectingCombat() or Target:AffectingCombat()) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
@@ -282,8 +278,10 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
+  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and not Player:BuffP(S.AdrenalineRush) and Target:IsInRange("Melee") and not Player:IsMoving() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or RubimRH.TargetIsValid(true) and Player:EnergyPredicted() < 40 then
     return S.UnleashHeartOfAzeroth:Cast()
+  end
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
@@ -302,10 +300,16 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 45 and not Player:BuffP(S.AdrenalineRush) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  return false
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() then
+  if RubimRH.AoEON() and active_enemies() >= 4 and Blade_Flurry_Sync() or RubimRH.TargetIsValid(true) and Player:BuffP(S.AdrenalineRush) and Target:IsInRange("Melee") then
+    return S.UnleashHeartOfAzeroth:Cast()
+	end
+	end
+return false
 end
 
 local function CDs ()
