@@ -69,7 +69,7 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
-	and not Player:DebuffRemainsP(S.DarkestDepths) > 0
+	and not Player:DebuffRemainsP(S.DarkestDepths)
  
 end
 
