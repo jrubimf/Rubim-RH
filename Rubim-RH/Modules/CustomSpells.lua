@@ -10,10 +10,11 @@ local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Party, Raid = Unit.Party, Unit.Raid;
 
 -- Queen's Court specific rotation (Dont repeat same spell twice)
---local RepeatPerformance1 = 303126
-local RepeatPerformance2 = 301244
---local RepeatPerformance3 = 304409
 local currentZoneID = select(8, GetInstanceInfo())
+RubimRH.Spell[998] = {
+  RepeatPerformance = Spell(301244),
+}
+local S = RubimRH.Spell[998]
 
 local function GetTexture (Object)
     -- Spells
@@ -236,7 +237,7 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -254,7 +255,7 @@ end
 
 function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
     -- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -303,7 +304,7 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -324,7 +325,7 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -381,7 +382,7 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -403,7 +404,7 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
@@ -425,7 +426,7 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     end
 	
 	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(RepeatPerformance2) then
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
 	    if Player:PrevGCD(1) ~= self:ID() then
 	        return true
 		else
