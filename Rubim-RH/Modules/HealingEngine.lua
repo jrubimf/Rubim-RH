@@ -56,6 +56,11 @@ end
  --   end
 --end
 
+RubimRH.Spell[999] = {
+  DarkestDepths = Spell(292127),
+}
+local S = RubimRH.Spell[999]
+
 local function CanHeal(t)
     return UnitInRange(t)
     and not RubimRH.InLOS(UnitGUID(t)) -- LOS System (target)
@@ -64,7 +69,7 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
-	and not Player:DebuffRemainsP(292127)
+	and not Player:DebuffRemainsP(S.DarkestDepths) > 0
  
 end
 
