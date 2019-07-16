@@ -64,6 +64,7 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
+	and not Player:DebuffRemainsP(292127)
  
 end
 
