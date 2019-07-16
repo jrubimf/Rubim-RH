@@ -1171,7 +1171,7 @@ mythicList = {
             cooldown = true,
             exhilaration = 65,
             aspectoftheturtle = 30,
-			useSplashData = "Enabled",
+			useSplashData = "Disabled",
 			
             sk1 = 65,
             sk1id = 109304,
@@ -1188,7 +1188,7 @@ mythicList = {
         },
         [BeastMastery] = {
             cooldown = true,
-			useSplashData = "Enabled",
+			useSplashData = "Disabled",
 			
             sk1 = 70,
             sk1id = 136,
@@ -1261,7 +1261,7 @@ mythicList = {
 			sk2id = 108271,
             sk2tooltip = "Percent HP to use Astral Shift",
             cooldown = true,
-			useSplashData = "Enabled",
+			useSplashData = "Disabled",
 			
         },
 		--Restoration
@@ -1273,7 +1273,7 @@ mythicList = {
         [102] = {
             cooldowns = true,
 			AutoMorph = true,
-			useSplashData = "Enabled",
+			useSplashData = "Disabled",
 			sk1 = 50, -- Regrowth
             sk1id = 8936, -- Regrowth
             sk1tooltip = "Percent HP to self heal with Regrowth",
@@ -1342,13 +1342,16 @@ mythicList = {
 			
         },
         -- WARLOCK
+		-- Affliction
         [265] = {
+		    useSplashData = "Disabled",
             cooldowns = true,
 			AutoAoE = true,			
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
         },
+		--Demonology
         [266] = {
             cooldowns = true,
 						
@@ -1360,6 +1363,7 @@ mythicList = {
             sk2tooltip = "Imps to use Implosion (Aoe Mode)",
 
         },
+		--Destruction
         [267] = {
             cooldowns = true,
 			flamecolor = "Auto",
@@ -1383,7 +1387,7 @@ mythicList = {
             sk2 = 95, -- Prismaticbarrier
             sk2id = 235450, -- Prismaticbarrier
             sk2tooltip = "Percent HP to use Prismatic barrier",
-			useSplashData = "Enabled",
+			useSplashData = "Disabled",
         },
 		-- Fire
         [63] = {
