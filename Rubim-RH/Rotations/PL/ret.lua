@@ -17,6 +17,9 @@ RubimRH.Spell[70] = {
     GiftoftheNaaru = Spell(59547),
     Fireblood = Spell(265221),
     -- Abilities
+    SeethingRageBuff = Spell(297126),
+    CleanseToxins = Spell(213644),
+    RecklessForce = Spell(302932),
     BladeofJustice = Spell(184575),
     Consecration = Spell(205228),
     CrusaderStrike = Spell(35395),
@@ -115,20 +118,33 @@ local G = RubimRH.Spell[1] -- General Skills
 S.AvengingWrath.TextureSpellID = { 55748 }
 S.Crusade.TextureSpellID = { 55748 }
 
--- Rotation Var
-local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Paladin then Item.Paladin = {} end
 Item.Paladin.Retribution = {
-  BattlePotionofStrength           = Item(163224)
+    PotionofFocusedResolve           = Item(168506),
+    AshvanesRazorCoral               = Item(169311),
+    AzsharasFontofPower              = Item(169314)
 };
 local I = Item.Paladin.Retribution;
+
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
+
+local VarDsCastable = 0;
+local VarHow = 0;
+
+HL:RegisterForEvent(function()
+    VarDsCastable = 0
+    VarHow = 0
+end, "PLAYER_REGEN_ENABLED")
+
 local EnemyRanges = { "Melee", 5, 8, 12, 30 }
 local function UpdateRanges()
     for _, i in ipairs(EnemyRanges) do
         HL.GetEnemies(i);
     end
 end
+
 
 local function num(val)
     if val then
@@ -142,19 +158,19 @@ local function bool(val)
     return val ~= 0
 end
 
-local function ConcerationTime()
-    for i = 1, 5 do
-        local active, totemName, startTime, duration, textureId = GetTotemInfo(i)
-        if active == true then
-            return startTime + duration - GetTime()
-        end
-    end
-    return 0
-end
-
 local OffensiveCDs = {
     S.AvengingWrath,
     S.Crusade,
+    S.LightsJudgment,
+    S.Fireblood,
+    S.TheUnboundForce,
+    S.BloodOfTheEnemy,
+    S.GuardianOfAzeroth,
+    S.WorldveinResonance,
+    S.FocusedAzeriteBeam,
+    S.MemoryOfLucidDreams,
+    S.PurifyingBlast,
+    S.ConcentratedFlame
 }
 
 local function UpdateCDs()
@@ -175,6 +191,7 @@ local function UpdateCDs()
     end
 end
 
+
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
   S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
@@ -194,51 +211,9 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
 end
 
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
-end
 
-local VarDsCastable
-local VarHow
 local function APL()
-    local Precombat_DBM, Precombat, Cooldowns, Finishers, Generators, Opener
+    local Precombat_DBM, Precombat, Cooldowns, Finishers, Generators
     UpdateRanges()
     UpdateCDs()
     
@@ -248,71 +223,110 @@ local function APL()
     end	
 
 	-- DBM Precombat if user activated DBM option
-	Precombat_DBM = function()
+    
+    
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
+    Precombat_DBM = function()
 	    -- pre potion 
-        if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.01 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.1 + Player:GCD() then
+        if I.PotionofFocusedResolve:IsReady() and RubimRH.DBM_PullTimer() > 0.01 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.1 + Player:GCD() then
             return 967532
         end
 	    if S.BladeofJustice:IsCastable() and RubimRH.PerfectPullON() and RubimRH.DBM_PullTimer() > 0.01 and RubimRH.DBM_PullTimer() < 0.1 then
 		    return S.BladeofJustice:Cast()
-		end
+        end
+       return 0, 462338
     end
-	
-	-- NON DBM Precombat if user desactivated DBM option
-	Precombat = function()
-	    if S.BladeofJustice:IsCastable() and RubimRH.PrecombatON() then
-		    return S.BladeofJustice:Cast()
-		end
+
+    Precombat = function()
+            
+        return 0, 462338
     end
+    
 
 
     Cooldowns = function()
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+        -- call_action_list,name=essences
+        -- potion,if=buff.bloodlust.react|buff.avenging_wrath.up|buff.crusade.up&buff.crusade.remains<25
+        --if I.PotionofFocusedResolve:IsReady() and Settings.Commons.UsePotions and (Player:HasHeroism() or Player:BuffP(S.AvengingWrathBuff) or Player:BuffP(S.CrusadeBuff) and Player:BuffRemainsP(S.CrusadeBuff) < 25) then
+            --return 967532
+        --end
         -- lights_judgment,if=spell_targets.lights_judgment>=2|(!raid_event.adds.exists|raid_event.adds.in>75)
-        if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Cache.EnemiesCount[5] >= 2 or (not (Cache.EnemiesCount[30] > 1) or 10000000000 > 75)) then
+        if S.LightsJudgment:IsReadyP() and RubimRH.CDsON() and (Cache.EnemiesCount[5] >= 2 or (not (Cache.EnemiesCount[30] > 1) or 10000000000 > 75)) then
             return S.LightsJudgment:Cast()
         end
         -- fireblood,if=buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack=10
-        if S.Fireblood:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.AvengingWrath) or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) == 10) then
+        if S.Fireblood:IsReadyP() and RubimRH.CDsON() and (Player:BuffP(S.AvengingWrath) or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) == 10) then
             return S.Fireblood:Cast()
         end
-        -- shield_of_vengeance
-        -- avenging_wrath,if=buff.inquisition.up|!talent.inquisition.enabled
-        if S.AvengingWrath:IsReady('Melee') and (Player:BuffRemainsP(S.Inquisition) > 20 or not S.Inquisition:IsAvailable()) then
+        -- shield_of_vengeance,if=buff.seething_rage.down&buff.memory_of_lucid_dreams.down
+        --if S.ShieldofVengeance:IsCastableP() and (Player:BuffDownP(S.SeethingRageBuff) and Player:BuffDownP(S.MemoryOfLucidDreams)) then
+            --return S.ShieldOfVengance:Cast()
+        --end
+        -- use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.down|buff.avenging_wrath.remains>=20|buff.crusade.up&buff.crusade.stack=10&buff.crusade.remains>15
+    
+        -- the_unbound_force,if=time<=2|buff.reckless_force.up
+        if S.TheUnboundForce:IsReadyP() and (HL.CombatTime() <= 2 or Player:BuffP(S.RecklessForce)) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- blood_of_the_enemy,if=buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack=10
+        if S.BloodOfTheEnemy:IsReadyP() and (Player:BuffP(S.AvengingWrathBuff) or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) == 10) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- guardian_of_azeroth,if=!talent.crusade.enabled&(cooldown.avenging_wrath.remains<5&holy_power>=3&(buff.inquisition.up|!talent.inquisition.enabled)|cooldown.avenging_wrath.remains>=45)|(talent.crusade.enabled&cooldown.crusade.remains<gcd&holy_power>=4|holy_power>=3&time<10&talent.wake_of_ashes.enabled|cooldown.crusade.remains>=45)
+        if S.GuardianOfAzeroth:IsReadyP() and (not S.Crusade:IsAvailable() and (S.AvengingWrath:CooldownRemainsP() < 5 and Player:HolyPower() >= 3 and (Player:BuffP(S.Inquisition) or not S.Inquisition:IsAvailable()) or S.AvengingWrath:CooldownRemainsP() >= 45) or (S.Crusade:IsAvailable() and S.Crusade:CooldownRemainsP() < PlayerGCD and Player:HolyPower() >= 4 or Player:HolyPower() >= 3 and HL.CombatTime() < 10 and S.WakeofAshes:IsAvailable() or S.Crusade:CooldownRemainsP() >= 45)) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- worldvein_resonance,if=cooldown.avenging_wrath.remains<gcd&holy_power>=3|cooldown.crusade.remains<gcd&holy_power>=4|cooldown.avenging_wrath.remains>=45|cooldown.crusade.remains>=45
+        if S.WorldveinResonance:IsReadyP() and (S.AvengingWrath:CooldownRemainsP() < Player:GCD() and Player:HolyPower() >= 3 or S.Crusade:CooldownRemainsP() < Player:GCD() and Player:HolyPower() >= 4 or S.AvengingWrath:CooldownRemainsP() >= 45 or S.Crusade:CooldownRemainsP() >= 45) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- focused_azerite_beam,if=(!raid_event.adds.exists|raid_event.adds.in>30|spell_targets.divine_storm>=2)&(buff.avenging_wrath.down|buff.crusade.down)&(cooldown.blade_of_justice.remains>gcd*3&cooldown.judgment.remains>gcd*3)
+        if S.FocusedAzeriteBeam:IsReadyP() and ((Cache.EnemiesCount[8] >= 2) and (Player:BuffDownP(S.AvengingWrath) or Player:BuffDownP(S.Crusade)) and (S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 3 and S.Judgment:CooldownRemainsP() > Player:GCD() * 3)) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- memory_of_lucid_dreams,if=(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack=10)&holy_power<=3
+        if S.MemoryOfLucidDreams:IsReadyP() and ((Player:BuffP(S.AvengingWrath) or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) == 10) and Player:HolyPower() <= 3) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- purifying_blast,if=(!raid_event.adds.exists|raid_event.adds.in>30|spell_targets.divine_storm>=2)
+        if S.PurifyingBlast:IsReadyP() and (Cache.EnemiesCount[8] >= 2) then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- avenging_wrath,if=(!talent.inquisition.enabled|buff.inquisition.up)&holy_power>=3
+        if S.AvengingWrath:IsReadyP() and ((not S.Inquisition:IsAvailable() or Player:BuffP(S.Inquisition)) and Player:HolyPower() >= 3) then
             return S.AvengingWrath:Cast()
         end
-        -- crusade,if=holy_power>=4
-        if S.Crusade:IsReady() and (Player:HolyPower() >= 4) then
+        -- crusade,if=holy_power>=4|holy_power>=3&time<10&talent.wake_of_ashes.enabled
+        if S.Crusade:IsReadyP() and (Player:HolyPower() >= 4 or Player:HolyPower() >= 3 and HL.CombatTime() < 10 and S.WakeofAshes:IsAvailable()) then
             return S.Crusade:Cast()
         end
     end
     --varDSCastable = RubimRH.AzoEON() and (Cache.EnemiesCount[8] >= 3 or (not S.RighteousVerdict:IsAvailable() and S.DivineJudgement:IsAvailable() and Cache.EnemiesCount[8] >= 2) or (S.DivineRight:AzeriteEnabled() and Target:HealthPercentage() <= 20 and not Player:Buff(S.DivineStormBuffAzerite)))
     Finishers = function()
+        -- variable,name=wings_pool,value=!equipped.169314&(!talent.crusade.enabled&cooldown.avenging_wrath.remains>gcd*3|cooldown.crusade.remains>gcd*3)|equipped.169314&(!talent.crusade.enabled&cooldown.avenging_wrath.remains>gcd*6|cooldown.crusade.remains>gcd*6)
+        if (true) then
+            VarWingsPool = (not I.AzsharasFontofPower:IsEquipped() and (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemainsP() > Player:GCD() * 3 or S.Crusade:CooldownRemainsP() > Player:GCD() * 3) or I.AzsharasFontofPower:IsEquipped() and (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemainsP() > Player:GCD() * 6 or S.Crusade:CooldownRemainsP() > Player:GCD() * 6))
+        end
         -- variable,name=ds_castable,value=spell_targets.divine_storm>=2&!talent.righteous_verdict.enabled|spell_targets.divine_storm>=3&talent.righteous_verdict.enabled
-        VarDsCastable = (Cache.EnemiesCount[8] >= 2 and not S.RighteousVerdict:IsAvailable() or Cache.EnemiesCount[8] >= 3 and S.RighteousVerdict:IsAvailable())
-        -- inquisition,if=buff.inquisition.down|buff.inquisition.remains<5&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3
-        if S.Inquisition:IsReady() and (Player:BuffDownP(S.Inquisition) or Player:BuffRemainsP(S.Inquisition) < 5 and Player:HolyPower() >= 3 or S.ExecutionSentence:IsAvailable() and S.ExecutionSentence:CooldownRemainsP() < 10 and Player:BuffRemainsP(S.Inquisition) < 15 or S.AvengingWrath:CooldownRemainsP() < 15 and Player:BuffRemainsP(S.Inquisition) < 20 and Player:HolyPower() >= 3) then
+        if (true) then
+            VarDsCastable = (Cache.EnemiesCount[8] >= 2 and not S.RighteousVerdict:IsAvailable() or Cache.EnemiesCount[8] >= 3 and S.RighteousVerdict:IsAvailable())
+        end
+        -- inquisition,if=buff.avenging_wrath.down&(buff.inquisition.down|buff.inquisition.remains<8&holy_power>=3|talent.execution_sentence.enabled&cooldown.execution_sentence.remains<10&buff.inquisition.remains<15|cooldown.avenging_wrath.remains<15&buff.inquisition.remains<20&holy_power>=3)
+        if S.Inquisition:IsReadyP() and (Player:BuffDownP(S.Inquisition) and (Player:BuffDownP(S.Inquisition) or Player:BuffRemainsP(S.Inquisition) < 8 and Player:HolyPower() >= 3 or S.ExecutionSentence:IsAvailable() and S.ExecutionSentence:CooldownRemainsP() < 10 and Player:BuffRemainsP(S.Inquisition) < 15 or S.AvengingWrath:CooldownRemainsP() < 15 and Player:BuffRemainsP(S.Inquisition) < 20 and Player:HolyPower() >= 3)) then
             return S.Inquisition:Cast()
         end
-        -- execution_sentence,if=spell_targets.divine_storm<=2&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)
-        if S.ExecutionSentence:IsReady() and Cache.EnemiesCount[8] <= 2 and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 2) then
+        -- execution_sentence,if=spell_targets.divine_storm<=2&(!talent.crusade.enabled&cooldown.avenging_wrath.remains>10|talent.crusade.enabled&buff.crusade.down&cooldown.crusade.remains>10|buff.crusade.stack>=7)
+        if S.ExecutionSentence:IsReadyP() and (Cache.EnemiesCount[8] <= 2 and (not S.Crusade:IsAvailable() and S.AvengingWrath:CooldownRemainsP() > 10 or S.Crusade:IsAvailable() and Player:BuffDownP(S.Crusade) and S.Crusade:CooldownRemainsP() > 10 or Player:BuffStackP(S.Crusade) >= 7)) then
             return S.ExecutionSentence:Cast()
         end
-        -- divine_storm,if=variable.ds_castable&buff.divine_purpose.react
-        if S.DivineStorm:IsReady() and ((VarDsCastable) and Player:Buff(S.DivinePurposeBuff)) then
+        -- divine_storm,if=variable.ds_castable&variable.wings_pool&((!talent.execution_sentence.enabled|(spell_targets.divine_storm>=2|cooldown.execution_sentence.remains>gcd*2))|(cooldown.avenging_wrath.remains>gcd*3&cooldown.avenging_wrath.remains<10|cooldown.crusade.remains>gcd*3&cooldown.crusade.remains<10|buff.crusade.up&buff.crusade.stack<10))
+        if S.DivineStorm:IsReadyP() and ((VarDsCastable) and (VarWingsPool) and ((not S.ExecutionSentence:IsAvailable() or (Cache.EnemiesCount[8] >= 2 or S.ExecutionSentence:CooldownRemainsP() > Player:GCD() * 2)) or (S.AvengingWrath:CooldownRemainsP() > Player:GCD() * 3 and S.AvengingWrath:CooldownRemainsP() < 10 or S.Crusade:CooldownRemainsP() > Player:GCD() * 3 and S.Crusade:CooldownRemainsP() < 10 or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) < 10))) then
             return S.DivineStorm:Cast()
         end
-        -- divine_storm,if=variable.ds_castable&(!talent.crusade.enabled|cooldown.crusade.remains>gcd*2)|buff.empyrean_power.up&debuff.judgment.down&buff.divine_purpose.down
-        if S.DivineStorm:IsReady() and ((VarDsCastable) and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 2)) or Player:BuffP(S.EmpyreanPowerBuffAzerite) and  Target:DebuffDownP(S.JudgmentDebuff) and Player:BuffDownP(S.DivinePurposeBuff)  then
-            return S.DivineStorm:Cast()
-        end
-        -- templars_verdict,if=buff.divine_purpose.react
-        if S.TemplarsVerdict:IsReady() and Player:Buff(S.DivinePurposeBuff) then
-            return S.TemplarsVerdict:Cast()
-        end
-        -- templars_verdict,if=(!talent.crusade.enabled|cooldown.crusade.remains>gcd*3)&(!talent.execution_sentence.enabled|buff.crusade.up&buff.crusade.stack<10|cooldown.execution_sentence.remains>gcd*2)
-        if S.TemplarsVerdict:IsReady() and (not S.Crusade:IsAvailable() or S.Crusade:CooldownRemainsP() > Player:GCD() * 3) and (not S.ExecutionSentence:IsAvailable() or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) < 10 or S.ExecutionSentence:CooldownRemainsP() > Player:GCD() * 2) then
+        -- templars_verdict,if=variable.wings_pool&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd*2|cooldown.avenging_wrath.remains>gcd*3&cooldown.avenging_wrath.remains<10|cooldown.crusade.remains>gcd*3&cooldown.crusade.remains<10|buff.crusade.up&buff.crusade.stack<10)
+        if S.TemplarsVerdict:IsReadyP() and ((VarWingsPool) and (not S.ExecutionSentence:IsAvailable() or S.ExecutionSentence:CooldownRemainsP() > Player:GCD() * 2 or S.AvengingWrath:CooldownRemainsP() > Player:GCD() * 3 and S.AvengingWrath:CooldownRemainsP() < 10 or S.Crusade:CooldownRemainsP() > Player:GCD() * 3 and S.Crusade:CooldownRemainsP() < 10 or Player:BuffP(S.Crusade) and Player:BuffStackP(S.Crusade) < 10)) then
             return S.TemplarsVerdict:Cast()
         end
     end
@@ -320,14 +334,14 @@ local function APL()
     Generators = function()
         -- variable,name=HoW,value=(!talent.hammer_of_wrath.enabled|target.health.pct>=20&(buff.avenging_wrath.down|buff.crusade.down))
         VarHow = ((not S.HammerofWrath:IsAvailable() or Target:HealthPercentage() >= 20 and (Player:BuffDownP(S.AvengingWrath) or Player:BuffDownP(S.Crusade))))
-        -- call_action_list,name=finishers,if=holy_power>=5
-        if (Player:HolyPower() >= 5) then
+
+        if (Player:HolyPower() >= 5 or Player:BuffP(S.MemoryOfLucidDreams)and Player:HolyPower() >= 3) then
             if Finishers() ~= nil then
                 return Finishers()
             end
         end
-        -- wake_of_ashes,if=(!raid_event.adds.exists|raid_event.adds.in>15|spell_targets.wake_of_ashes>=2)&(holy_power<=0|holy_power=1&cooldown.blade_of_justice.remains>gcd)
-        if S.WakeofAshes:IsReady() and Cache.EnemiesCount[5] >= 1 and (not (Cache.EnemiesCount[30] > 1) or 10000000000 > 15 or Cache.EnemiesCount >= 2) and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemainsP() > Player:GCD()) then
+        -- wake_of_ashes,if=(!raid_event.adds.exists|raid_event.adds.in>15|spell_targets.wake_of_ashes>=2)&(holy_power<=0|holy_power=1&cooldown.blade_of_justice.remains>gcd)&(cooldown.avenging_wrath.remains>10|talent.crusade.enabled&cooldown.crusade.remains>10)
+        if S.WakeofAshes:IsReadyP() and ((not (Cache.EnemiesCount[5] > 1) or Cache.EnemiesCount[8] >= 2) and (Player:HolyPower() <= 0 or Player:HolyPower() == 1 and S.BladeofJustice:CooldownRemainsP() > Player:GCD()) and (S.AvengingWrath:CooldownRemainsP() > 10 or S.Crusade:IsAvailable() and S.Crusade:CooldownRemainsP() > 10)) then
             return S.WakeofAshes:Cast()
         end
         -- blade_of_justice,if=holy_power<=2|(holy_power=3&(cooldown.hammer_of_wrath.remains>gcd*2|variable.HoW))
@@ -346,14 +360,14 @@ local function APL()
         if S.Consecration:IsReady() and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 and S.Judgment:CooldownRemainsP() > Player:GCD() * 2) then
             return S.Consecration:Cast()
         end
-        -- call_action_list,name=finishers,if=talent.hammer_of_wrath.enabled&(target.health.pct<=20|buff.avenging_wrath.up|buff.crusade.up)
-        if (S.HammerofWrath:IsAvailable() and (Target:HealthPercentage() <= 20 or Player:BuffP(S.AvengingWrath) or Player:BuffP(S.Crusade))) then
+        -- call_action_list,name=finishers,if=talent.hammer_of_wrath.enabled&target.health.pct<=20|buff.avenging_wrath.up|buff.crusade.up
+        if (S.HammerofWrath:IsAvailable() and Target:HealthPercentage() <= 20 or Player:BuffP(S.AvengingWrath) or Player:BuffP(S.Crusade)) then
             if Finishers() ~= nil then
                 return Finishers()
             end
         end
         -- crusader_strike,if=cooldown.crusader_strike.charges_fractional>=1.75&(holy_power<=2|holy_power<=3&cooldown.blade_of_justice.remains>gcd*2|holy_power=4&cooldown.blade_of_justice.remains>gcd*2&cooldown.judgment.remains>gcd*2&cooldown.consecration.remains>gcd*2)
-        if S.CrusaderStrike:IsReady() and (S.CrusaderStrike:ChargesFractional() >= 1.75 and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 and S.Judgment:CooldownRemainsP() > Player:GCD() * 2 and S.Consecration:CooldownRemainsP() > Player:GCD() * 2)) then
+        if S.CrusaderStrike:IsReady('Melee') and (S.CrusaderStrike:ChargesFractional() >= 1.75 and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > Player:GCD() * 2 and S.Judgment:CooldownRemainsP() > Player:GCD() * 2 and S.Consecration:CooldownRemainsP() > Player:GCD() * 2)) then
             return S.CrusaderStrike:Cast()
         end
         -- call_action_list,name=finishers
@@ -362,8 +376,12 @@ local function APL()
                 return Finishers()
             end
         end
+        -- concentrated_flame
+        if S.ConcentratedFlame:IsReadyP() then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
         -- crusader_strike,if=holy_power<=4
-        if S.CrusaderStrike:IsReady() and (Player:HolyPower() <= 4) then
+        if S.CrusaderStrike:IsReady('Melee') and (Player:HolyPower() <= 4) then
             return S.CrusaderStrike:Cast()
         end
         -- arcane_torrent,if=holy_power<=4
@@ -372,92 +390,7 @@ local function APL()
         end
     end
 
-    Opener = function()
-        
-        --actions.opener=sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
-        --name=wake_opener_ES_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:execution_sentence
-        if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
-            RubimRH.castSpellSequence = {
-                S.ShieldOfVengance,
-                S.BladeofJustice,
-                S.Judgment,
-                S.Crusade,
-                S.TemplarsVerdict,
-                S.WakeofAshes,
-                S.TemplarsVerdict,
-                S.CrusaderStrike,
-                S.ExecutionSentence,
-            }
-        end
 
-        --actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&!talent.execution_sentence.enabled&!talent.hammer_of_wrath.enabled,
-        --name=wake_opener_CS:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:crusader_strike:templars_verdict
-        if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and not S.HammerofWrath:IsAvailable() then
-            RubimRH.castSpellSequence = {
-                S.ShieldOfVengance,
-                S.BladeofJustice,
-                S.judgment,
-                S.Crusade,
-                S.TemplarsVerdict,
-                S.WakeofAshes,
-                S.TemplarsVerdict,
-                S.CrusaderStrike,
-                S.TemplarsVerdict,
-            }
-        end
-
-        --actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled,
-        --name=wake_opener_ES_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:execution_sentence
-        if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
-            RubimRH.castSpellSequence = {
-                S.ShieldOfVengance,
-                S.BladeofJustice,
-                S.judgment,
-                S.Crusade,
-                S.TemplarsVerdict,
-                S.WakeofAshes,
-                S.TemplarsVerdict,
-                S.HammerofWrath,
-                S.ExecutionSentence,
-            }
-        end
-        --actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.crusade.enabled&!talent.execution_sentence.enabled&talent.hammer_of_wrath.enabled,
-        --name=wake_opener_HoW:shield_of_vengeance:blade_of_justice:judgment:crusade:templars_verdict:wake_of_ashes:templars_verdict:hammer_of_wrath:templars_verdict
-        if S.WakeofAshes:IsAvailable() and S.Crusade:IsAvailable() and not S.ExecutionSentence:IsAvailable() and S.HammerofWrath:IsAvailable() then
-            RubimRH.castSpellSequence = {
-                S.ShieldOfVengance,
-                S.BladeofJustice,
-                S.Judgment,
-                S.Crusade,
-                S.TemplarsVerdict,
-                S.WakeofAshes,
-                S.TemplarsVerdict,
-                S.HammerofWrath,
-                S.TemplarsVerdict,
-            }
-        end
-        --actions.opener+=/sequence,if=talent.wake_of_ashes.enabled&talent.inquisition.enabled,
-        --name=wake_opener_Inq:shield_of_vengeance:blade_of_justice:judgment:inquisition:avenging_wrath:wake_of_ashes
-        if S.WakeofAshes:IsAvailable() and S.Inquisition:IsAvailable() then
-            RubimRH.castSpellSequence = {
-                S.ShieldOfVengance,
-                S.BladeofJustice,
-                S.Judgment,
-                S.Inquisition,
-                S.AvengingWrath,
-                S.WakeofAshes,
-            }
-        end
-
-        if RubimRH.CastSequence() ~= nil and RubimRH.CastSequence():IsReady() then
-            return RubimRH.CastSequence():Cast()
-        end
-    end
-
-    --if HL.CombatTime() < 2 and opener ~= nil and RubimRH.CDsON() and Target:IsInRange("Melee") then
-        --return Opener()
-    --end
-	
     -- DBM Precombat
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
         if Precombat_DBM() ~= nil then
@@ -473,12 +406,17 @@ local function APL()
         return 0, 462338
     end
 
-    if S.Rebuke:IsReady(30) and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
+        return Precombat()
+	end
+
+    if S.Rebuke:IsReadyP(30) and RubimRH.db.profile.mainOption.usweInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
-    end
-	
-    if QueueSkill() ~= nil then
-        return QueueSkill()
     end
 
     if S.FlashOfLight:IsReady() and Player:BuffStack(S.SelfLessHealerBuff) == 4 and Player:HealthPercentage() <= RubimRH.db.profile[70].sk2 and Player:StoppedFor() >= 0.5 then
@@ -497,7 +435,7 @@ local function APL()
 
     end
 
-    if S.WordofGlory:IsCastable() then
+    if S.WordofGlory:IsReadyP() then
         -- Regular
         if Player:HealthPercentage() <= RubimRH.db.profile[70].sk6 and not Player:Buff(S.DivinePurposeBuff) and Player:HolyPower() >= 3 then
             return S.WordofGlory:Cast()
@@ -507,7 +445,10 @@ local function APL()
             return S.WordofGlory:Cast()
         end
     end
-
+    --Dispell
+	if S.CleanseToxins:IsReady() and Player:HasDispelableDebuff("Poison", "Disease") then
+		return S.CleanseToxins:Cast()
+    end
     --actions+=/call_action_list,name=cooldowns
     if Cooldowns() ~= nil then
         return Cooldowns()
@@ -525,15 +466,15 @@ RubimRH.Rotation.SetAPL(70, APL);
 
 local function PASSIVE()
 
-    if S.ShieldOfVengance:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
+    if S.ShieldOfVengance:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk1 then
         return S.ShieldOfVengance:Cast()
     end
 
-    if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk4 and not Player:Debuff(S.Forbearance) then
+    if S.DivineShield:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk4 and not Player:Debuff(S.Forbearance) then
         return S.DivineShield:Cast()
     end
 
-    if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk5 and not Player:Debuff(S.Forbearance) then
+    if S.LayOnHands:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[70].sk5 and not Player:Debuff(S.Forbearance) then
         return S.LayOnHands:Cast()
     end
 
