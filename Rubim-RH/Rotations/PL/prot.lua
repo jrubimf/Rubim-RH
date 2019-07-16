@@ -18,6 +18,8 @@ local Item = HL.Item
 
 -- Spells
 RubimRH.Spell[66] = {
+    CleanseToxins = Spell(213644),
+    Fireblood = Spell(265221),
     BastionOfLight = Spell(204035),
     Seraphim = Spell(152262),
     ShieldoftheRighteous = Spell(53600),
@@ -89,7 +91,11 @@ if not Item.Paladin then
     Item.Paladin = {}
 end
 Item.Paladin.Protection = {
-    ProlongedPower = Item(142117)
+    PotionofUnbridledFury            = Item(169299),
+    AzsharasFontofPower              = Item(169314),
+    GrongsPrimalRage                 = Item(165574),
+    MerekthasFang                    = Item(158367),
+    RazdunksBigRedButton             = Item(159611)
 };
 local I = Item.Paladin.Protection;
 
@@ -116,37 +122,6 @@ local function bool(val)
     return val ~= 0
 end
 
-local OffensiveCDs = {
-    S.AvengingWrath
-}
-
-local function ConcerationTime()
-    for i = 1, 5 do
-        local active, totemName, startTime, duration, textureId = GetTotemInfo(i)
-        if active == true then
-            return startTime + duration - GetTime()
-        end
-    end
-    return 0
-end
-
-local function UpdateCDs()
-    if RubimRH.config.cooldown then
-        for i, spell in pairs(OffensiveCDs) do
-            if not spell:IsEnabledCD() then
-                RubimRH.delSpellDisabledCD(spell:ID())
-            end
-        end
-
-    end
-    if not RubimRH.config.cooldown then
-        for i, spell in pairs(OffensiveCDs) do
-            if spell:IsEnabledCD() then
-                RubimRH.addSpellDisabledCD(spell:ID())
-            end
-        end
-    end
-end
 
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
@@ -167,52 +142,14 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
 end
 
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
-end
 
 --- ======= ACTION LISTS =======
 local function APL()
-    local Precombat
+    local Precombat, Cooldowns
     UpdateRanges()
-    UpdateCDs()
+    if QueueSkill() ~= nil then
+        return QueueSkill()
+    end
     Precombat = function()
         -- flask
         -- food
@@ -227,48 +164,108 @@ local function APL()
         end
         return 0, 462338
     end
+    
+    Cooldowns = function()
+        -- fireblood,if=buff.avenging_wrath.up
+        if S.Fireblood:IsReadyP() and (Player:BuffP(S.AvengingWrathBuff)) then
+            return S.Fireblood:Cast()
+        end
+        -- use_item,name=azsharas_font_of_power,if=cooldown.seraphim.remains<=10|!talent.seraphim.enabled
+        --if I.AzsharasFontofPower:IsUsable() and (S.Seraphim:CooldownRemainsP() <= 10 or not S.Seraphim:IsAvailable()) then
+            --return S.UnleashHeartOfAzeroth:Cast()
+        --end
+        -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
+        if S.Seraphim:IsReadyP() and (S.ShieldoftheRighteous:ChargesFractionalP() >= 2) then
+            return S.Seraphim:Cast()
+        end
+        -- avenging_wrath,if=buff.seraphim.up|cooldown.seraphim.remains<2|!talent.seraphim.enabled
+        if S.AvengingWrath:IsReadyP('Melee') and (Player:Buff(S.SeraphimBuff) or S.Seraphim:CooldownRemains() < 2 or not S.Seraphim:IsAvailable()) then
+            return S.AvengingWrath:Cast()
+        end
+        -- bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
+        if S.BastionOfLight:IsReadyP() and S.ShieldoftheRighteous:ChargesFractional() <= 0.5 then
+            return S.BastionOfLight:Cast()
+        end
+        -- potion,if=buff.avenging_wrath.up
+        --if I.PotionofUnbridledFury:IsReady() and (Player:BuffP(S.AvengingWrathBuff)) then
+            --return 967532
+        --end
+        -- use_item,name=grongs_primal_rage,if=((cooldown.judgment.full_recharge_time>4|(!talent.crusaders_judgment.enabled&prev_gcd.1.judgment))&cooldown.avengers_shield.remains>4&buff.seraphim.remains>4)|(buff.seraphim.remains<4)
+        --if I.GrongsPrimalRage:IsUsable() and (((S.Judgment:FullRechargeTimeP() > 4 or (not S.CrusadersJudgment:IsAvailable() and Player:PrevGCDP(1, S.Judgment))) and S.AvengersShield:CooldownRemainsP() > 4 and Player:BuffRemainsP(S.SeraphimBuff) > 4) or (Player:BuffRemainsP(S.SeraphimBuff) < 4)) then
+            --return 1030902
+        --end
+        -- use_item,name=merekthas_fang,if=!buff.avenging_wrath.up&(buff.seraphim.up|!talent.seraphim.enabled)
+        --if I.MerekthasFang:IsUsable() and (not Player:BuffP(S.AvengingWrathBuff) and (Player:BuffP(S.SeraphimBuff) or not S.Seraphim:IsAvailable())) then
+            --return 1030902
+        --end
+        -- use_item,name=razdunks_big_red_button
+        --if I.RazdunksBigRedButton:IsUsable() then
+            --return 1030902
+        --end
+        -- blood_of_the_enemy
+        if S.BloodOfTheEnemy:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- concentrated_flame
+        if S.ConcentratedFlame:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- guardian_of_azeroth
+        if S.GuardianOfAzeroth:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- focused_azerite_beam
+        if S.FocusedAzeriteBeam:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- purifying_blast
+        if S.PurifyingBlast:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast('Melee')
+        end
+        -- the_unbound_force
+        if S.TheUnboundForce:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- ripple_in_space
+        if S.RippleInSpace:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- worldvein_resonance
+        if S.WorldveinResonance:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+        -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+        if S.MemoryOfLucidDreams:IsReadyP('Melee') then
+            return S.UnleashHeartOfAzeroth:Cast()
+        end
+    end
 
-    if S.AvengersShield:IsReady() and Target:IsInterruptible() and RubimRH.ASInterruptON() then
+    
+    if S.AvengersShield:IsReadyP(30) and Target:IsInterruptible() and RubimRH.ASInterruptON() then
         return S.AvengersShield:Cast()
     end
-    if S.Rebuke:IsReady() and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
+    if S.Rebuke:IsReadyP('Melee') and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
     end
 
-    if (S.LightofTheProtector:IsReady() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].sk1 and not Player:HealingAbsorbed() then
+    if (S.LightofTheProtector:IsReadyP() or S.HandOfTheProtector:IsReady()) and Player:HealthPercentage() <= RubimRH.db.profile[66].sk1 and not Player:HealingAbsorbed() then
         return S.LightofTheProtector:Cast()
     end
 
-    if S.ShieldoftheRighteous:IsReady() and not Player:BuffP(S.ShieldoftheRighteousBuff) and not Player:BuffP(S.AvengingWrathBuff) and Player:HealthPercentage() < 75 and RubimRH.ASInterruptON() then
+    if S.ShieldoftheRighteous:IsReadyP('Melee') and not Player:BuffP(S.ShieldoftheRighteousBuff) and not Player:BuffP(S.AvengingWrathBuff) and Player:HealthPercentage() < 75 and RubimRH.ASInterruptON() then
         return S.ShieldoftheRighteous:Cast()
-    end
-
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
-    -- auto_attack
-    -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
-    if S.Seraphim:IsReady() and (S.ShieldoftheRighteous:ChargesFractional() >= 2) then
-        return S.Seraphim:Cast()
-    end
-    -- avenging_wrath,if=buff.seraphim.up|cooldown.seraphim.remains<2|!talent.seraphim.enabled
-    if S.AvengingWrath:IsReady() and (Player:Buff(S.SeraphimBuff) or S.Seraphim:CooldownRemains() < 2 or not S.Seraphim:IsAvailable()) then
-        return S.AvengingWrath:Cast()
-    end
-    -- bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
-    if S.BastionOfLight:IsReady() and S.ShieldoftheRighteous:ChargesFractional() <= 0.5 then
-        return S.BastionOfLight:Cast()
     end
     -- Mouseover Functionality
     local MouseoverUnit = (UnitExists("mouseover") and UnitIsFriend("player", "mouseover") and (UnitGUID("mouseover") ~= UnitGUID("player"))) and Unit("mouseover") or nil
     if MouseoverUnit then
         -- Hand of the Protector -> Mouseover
-        if S.HandOfTheProtector:IsReady()
+        if S.HandOfTheProtector:IsReadyP()
                 and MouseoverUnit:NeedMajorHealing() then
             return S.HandOfTheProtector:Cast()
         end
 
         -- Blessing of Protection -> Mousover
-        if S.BlessingOfProtection:IsReady()
+        if S.BlessingOfProtection:IsReadyP()
                 and MouseoverUnitNeedsBoP then
             return S.BlessingOfProtection:Cast()
         end
@@ -282,84 +279,88 @@ local function APL()
 
     -- Blessing of Freedom -> if snared
     if Player:IsSnared()
-            and S.BlessingOfFreedom:IsReady() then
+            and S.BlessingOfFreedom:IsReadyP() then
         return S.BlessingOfFreedom:Cast()
     end
 
     -- TODO: Restore these when GGLoader texture updates are complete
     -- Lay on Hands
-    if S.LayOnHands:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk4 and not Player:Debuff(S.Forbearance) and not Player:Buff(S.ArdentDefender) and not Player:Buff(S.GuardianOfAncientKings) then
+    if S.LayOnHands:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk4 and not Player:Debuff(S.Forbearance) and not Player:Buff(S.ArdentDefender) and not Player:Buff(S.GuardianOfAncientKings) then
         return S.LayOnHands:Cast()
     end
 
     -- Guardian of Ancient Kings -> Use on Panic Heals, should be proactively cast by user
-    if S.GuardianOfAncientKings:IsReady() and Player:HealthPercentage() < RubimRH.db.profile[66].sk3 and not Player:Buff(S.ArdentDefender) then
+    if S.GuardianOfAncientKings:IsReadyP() and Player:HealthPercentage() < RubimRH.db.profile[66].sk3 and not Player:Buff(S.ArdentDefender) then
         return S.GuardianOfAncientKings:Cast()
     end
 
     -- Ardent Defender -> Ardent defender @ Player:NeedPanicHealing() <= 90% HP, should be proactively cast by the
-    if S.ArdentDefender:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk2 and not Player:Buff(S.GuardianOfAncientKings) then
+    if S.ArdentDefender:IsReadyP() and Player:HealthPercentage() <= RubimRH.db.profile[66].sk2 and not Player:Buff(S.GuardianOfAncientKings) then
         return S.ArdentDefender:Cast()
     end
 
+    if S.CleanseToxins:IsReady() and Player:HasDispelableDebuff( "Poison", "Disease") then
+        return S.CleanseToxins:Cast()
+    end    
+    --actions+=/call_action_list,name=cooldowns
+    if Cooldowns() ~= nil and RubimRH.CDsON() then
+        return Cooldowns()
+    end
+
     -- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
-    if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengersValorBuff) and S.ShieldoftheRighteous:ChargesFractional() >= 2.5) and (S.Seraphim:CooldownRemains() > Player:GCD() or not S.Seraphim:IsAvailable())) then
+    if S.ShieldoftheRighteous:IsReadyP('Melee') and ((Player:Buff(S.AvengersValorBuff) and S.ShieldoftheRighteous:ChargesFractional() >= 2.5) and (S.Seraphim:CooldownRemains() > Player:GCD() or not S.Seraphim:IsAvailable())) then
         return S.ShieldoftheRighteous:Cast()
     end
     
     -- shield_of_the_righteous,if=(buff.avenging_wrath.up&!talent.seraphim.enabled)|buff.seraphim.up&buff.avengers_valor.up
-    if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengingWrathBuff) and not S.Seraphim:IsAvailable()) or Player:Buff(S.SeraphimBuff) and Player:Buff(S.AvengersValorBuff)) then
+    if S.ShieldoftheRighteous:IsReadyP('Melee') and ((Player:Buff(S.AvengingWrathBuff) and not S.Seraphim:IsAvailable()) or Player:Buff(S.SeraphimBuff) and Player:Buff(S.AvengersValorBuff)) then
         return S.ShieldoftheRighteous:Cast()
     end
     -- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
-    if S.ShieldoftheRighteous:IsReady() and ((Player:Buff(S.AvengingWrathBuff) and Player:BuffRemains(S.AvengingWrathBuff) < 4 and not S.Seraphim:IsAvailable()) or (Player:BuffRemains(S.SeraphimBuff) < 4 and Player:Buff(S.SeraphimBuff))) then
+    if S.ShieldoftheRighteous:IsReadyP('Melee') and ((Player:Buff(S.AvengingWrathBuff) and Player:BuffRemains(S.AvengingWrathBuff) < 4 and not S.Seraphim:IsAvailable()) or (Player:BuffRemains(S.SeraphimBuff) < 4 and Player:Buff(S.SeraphimBuff))) then
         return S.ShieldoftheRighteous:Cast()
     end
     -- lights_judgment,if=buff.seraphim.up&buff.seraphim.remains<3
-    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (Player:Buff(S.SeraphimBuff) and Player:BuffPRemains(S.SeraphimBuff) < 3) then
+    if S.LightsJudgment:IsReadyP(30) and RubimRH.CDsON() and (Player:Buff(S.SeraphimBuff) and Player:BuffPRemains(S.SeraphimBuff) < 3) then
         return S.LightsJudgment:Cast()
     end
 
     -- consecration,if=!consecration.up
-    if S.Consecration:IsReady() and not Player:BuffP(S.ConsecrationBuff)   then
+    if S.Consecration:IsReadyP() and not Player:BuffP(S.ConsecrationBuff)   then
         return S.Consecration:Cast()
     end
 
-    -- avengers_shield,if=(cooldown.shield_of_the_righteous.charges_fractional>2.5&!buff.avengers_valor.up)|active_enemies>=2
-    if S.AvengersShield:IsReady() and ((S.ShieldoftheRighteous:ChargesFractional() > 2.5 and not Player:Buff(S.AvengersValorBuff)) or Cache.EnemiesCount[8] >= 2) and not RubimRH.ASInterruptON() then
-        return S.AvengersShield:Cast()
-    end
     -- judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1&cooldown_react)|!talent.crusaders_judgment.enabled
-    if S.Judgment:IsReady() and ((S.Judgment:CooldownRemains() < Player:GCD() and S.Judgment:ChargesFractional() > 1 and S.Judgment:CooldownUpP()) or not S.CrusadersJudgment:IsAvailable()) then
+    if S.Judgment:IsReadyP(30) and Target:AffectingCombat() and ((S.Judgment:CooldownRemains() < Player:GCD() and S.Judgment:ChargesFractional() > 1 and S.Judgment:CooldownUpP()) or not S.CrusadersJudgment:IsAvailable()) then
         return S.Judgment:Cast()
     end
 
     -- avengers_shield,if=cooldown_react
-    if S.AvengersShield:IsReady() and S.AvengersShield:CooldownUpP() and not RubimRH.ASInterruptON() then
+    if S.AvengersShield:IsReadyP(30) and Target:AffectingCombat() and S.AvengersShield:CooldownUpP() and not RubimRH.ASInterruptON() then
         return S.AvengersShield:Cast()
     end
 
     -- judgment,if=cooldown_react|!talent.crusaders_judgment.enabled
-    if S.Judgment:IsReady() and (S.Judgment:CooldownUpP() or not S.CrusadersJudgment:IsAvailable()) then
+    if S.Judgment:IsReadyP(30) and Target:AffectingCombat() and (S.Judgment:CooldownUpP() or not S.CrusadersJudgment:IsAvailable()) then
         return S.Judgment:Cast()
     end
 
     -- lights_judgment,if=!talent.seraphim.enabled|buff.seraphim.up
-    if S.LightsJudgment:IsReady() and RubimRH.CDsON() and (S.Seraphim:IsAvailable() or Player:Buff(S.SeraphimBuff)) then
+    if S.LightsJudgment:IsReadyP() and RubimRH.CDsON() and (S.Seraphim:IsAvailable() or Player:Buff(S.SeraphimBuff)) then
         return S.LightsJudgment:Cast()
     end
-    
-    -- actions+=/blessed_hammer,strikes=3
-    if S.BlessedHammer:IsReady() then
+    -- blessed_hammer,strikes=3judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1&cooldown_react)|!talent.crusaders_judgment.enabled
+    -- blessed_hammer,strikes=3
+    if S.BlessedHammer:IsReadyP('Melee') then
         return S.BlessedHammer:Cast()
     end
     -- hammer_of_the_righteous
-    if S.HammeroftheRighteous:IsReady() then
+    if S.HammeroftheRighteous:IsReadyP('Melee') then
         return S.HammeroftheRighteous:Cast()
     end
 
     -- consecration
-    if S.Consecration:IsReady()  then
+    if S.Consecration:IsReadyP()  then
         return S.Consecration:Cast()
     end
 
