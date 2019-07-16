@@ -9,13 +9,6 @@ local Focus, MouseOver = Unit.Focus, Unit.MouseOver;
 local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
 local Party, Raid = Unit.Party, Unit.Raid;
 
--- Queen's Court specific rotation (Dont repeat same spell twice)
-local currentZoneID = select(8, GetInstanceInfo())
-RubimRH.Spell[998] = {
-  RepeatPerformance = Spell(301244),
-}
-local S = RubimRH.Spell[998]
-
 local function GetTexture (Object)
     -- Spells
     local SpellID = Object.SpellID;
@@ -236,15 +229,6 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
-
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -254,14 +238,7 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
-    -- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end	
+
 	if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownRemainsTrue() <= 0.2 and RangeUnit:IsInRange(Range, AoESpell);
@@ -302,15 +279,6 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     if self:SanityChecks() == false then
         return false
     end
-	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
 
     if not self:IsAvailable() then
         return false
@@ -323,15 +291,6 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end	
 
     if RubimRH.db.profile[RubimRH.playerSpec].Spells ~= nil then
         for i, v in pairs(RubimRH.db.profile[RubimRH.playerSpec].Spells) do
@@ -380,15 +339,6 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
     
 	if Range then
         local RangeUnit = ThisUnit or Target
@@ -403,15 +353,6 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
         return false
     end
 	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
-	
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -424,15 +365,6 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
-	
-	-- Queens Court - Repeat Performance debuff checker
-	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
-	    if Player:PrevGCD(1) ~= self:ID() then
-	        return true
-		else
-		    return false
-		end
-	end
 
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false

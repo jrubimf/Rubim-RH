@@ -93,6 +93,9 @@ RubimRH.Spell[265] = {
   MemoryOfLucidDreams                  = Spell(298357),
   MemoryOfLucidDreams2                 = Spell(299372),
   MemoryOfLucidDreams3                 = Spell(299374),
+  VisionOfPerfectionMinor              = Spell(296320),
+  VisionOfPerfectionMinor2             = Spell(299367),
+  VisionOfPerfectionMinor3             = Spell(299369),
 
 };
 local S = RubimRH.Spell[265]
@@ -239,6 +242,8 @@ local function DetermineEssenceRanks()
   S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.VisionOfPerfectionMinor = S.VisionOfPerfectionMinor2:IsAvailable() and S.VisionOfPerfectionMinor2 or S.VisionOfPerfectionMinor
+  S.VisionOfPerfectionMinor = S.VisionOfPerfectionMinor3:IsAvailable() and S.VisionOfPerfectionMinor3 or S.VisionOfPerfectionMinor
 end
         
 -- Summoned pet duration
@@ -344,15 +349,13 @@ local function APL()
     -- food
     -- augmentation
     -- summon_pet
-    if S.SummonPet:IsCastableP() then
+    if S.SummonPet:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and not Pet:IsActive() and (not bool(Player:BuffRemainsP(S.GrimoireofSacrificeBuff)))  then
       return S.SummonPet:Cast()
     end
     -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
     if S.GrimoireofSacrifice:IsCastableP() and Player:BuffDownP(S.GrimoireofSacrificeBuff) and (S.GrimoireofSacrifice:IsAvailable()) then
       return S.GrimoireofSacrifice:Cast()
     end
-    -- snapshot_stats
-    if RubimRH.TargetIsValid() then
       -- potion
       -- seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3
       if S.SeedofCorruption:IsCastableP() and Player:DebuffDownP(S.SeedofCorruptionDebuff) and (EnemiesCount >= 3) then
@@ -366,7 +369,6 @@ local function APL()
       if S.ShadowBolt:IsCastableP() and (not S.Haunt:IsAvailable() and EnemiesCount < 3) then
         return S.ShadowBolt:Cast()
       end
-    end
   end
   
   Cooldowns = function()
@@ -431,7 +433,7 @@ local function APL()
       return S.Agony:Cast()
     end
     -- corruption,line_cd=15,if=(dot.corruption.remains%dot.corruption.duration)<=(dot.agony.remains%dot.agony.duration)&(dot.corruption.remains%dot.corruption.duration)<=(dot.siphon_life.remains%dot.siphon_life.duration)&dot.corruption.remains<dot.corruption.duration*1.3
-    if S.Corruption:IsCastableP() and ((Target:DebuffRemainsP(S.CorruptionDebuff) / S.CorruptionDebuff:BaseDuration()) <= (Target:DebuffRemainsP(S.AgonyDebuff) / S.AgonyDebuff:BaseDuration()) and (Target:DebuffRemainsP(S.CorruptionDebuff) / S.CorruptionDebuff:BaseDuration()) <= (Target:DebuffRemainsP(S.SiphonLifeDebuff) / S.SiphonLifeDebuff:BaseDuration()) and Target:DebuffRemainsP(S.CorruptionDebuff) < S.CorruptionDebuff:BaseDuration() * 1.3) then
+    if S.Corruption:IsCastableP() and not S.AbsoluteCorruption:IsAvailable() and ((Target:DebuffRemainsP(S.CorruptionDebuff) / S.CorruptionDebuff:BaseDuration()) <= (Target:DebuffRemainsP(S.AgonyDebuff) / S.AgonyDebuff:BaseDuration()) and (Target:DebuffRemainsP(S.CorruptionDebuff) / S.CorruptionDebuff:BaseDuration()) <= (Target:DebuffRemainsP(S.SiphonLifeDebuff) / S.SiphonLifeDebuff:BaseDuration()) and Target:DebuffRemainsP(S.CorruptionDebuff) < S.CorruptionDebuff:BaseDuration() * 1.3) then
       return S.Corruption:Cast()
     end
   end
@@ -453,8 +455,12 @@ local function APL()
     if S.SiphonLife:IsCastableP() and (S.SiphonLifeDebuff:ActiveDot() < 8 - num(S.CreepingDeath:IsAvailable()) - EnemiesCount) and Target:TimeToDie() > 10 and Target:DebuffRefreshableCP(S.SiphonLifeDebuff) and (not bool(Target:DebuffRemainsP(S.SiphonLifeDebuff)) and EnemiesCount == 1 or S.SummonDarkglare:CooldownRemainsP() > Player:SoulShardsP() * S.UnstableAffliction:ExecuteTime()) then
       return S.SiphonLife:Cast()
     end
+    -- corruption,cycle_targets=1,if=!prevgcd.corruption&refreshable&target.time_to_die<=5
+    if S.Corruption:IsCastableP() and S.AbsoluteCorruption:IsAvailable() and not Player:PrevGCDP(1, S.Corruption) and not Target:Debuff(S.CorruptionDebuff) and HL.CombatTime() <= 5 then
+        return S.Corruption:Cast()
+    end	
     -- corruption,cycle_targets=1,if=spell_targets.seed_of_corruption_aoe<3+raid_event.invulnerable.up+talent.writhe_in_agony.enabled&(remains<=gcd|cooldown.summon_darkglare.remains>10&refreshable)&target.time_to_die>10
-    if S.Corruption:IsCastableP() and EnemiesCount < 3 + num(S.WritheInAgony:IsAvailable()) and (Target:DebuffRemainsP(S.CorruptionDebuff) <= Player:GCD() or S.SummonDarkglare:CooldownRemainsP() > 10 and Target:DebuffRefreshableCP(S.CorruptionDebuff)) and Target:TimeToDie() > 10 then
+    if S.Corruption:IsCastableP() and active_enemies() < 3 and Target:DebuffRemainsP(S.CorruptionDebuff) <= Player:GCD() and not S.AbsoluteCorruption:IsAvailable() and Target:DebuffRefreshableCP(S.CorruptionDebuff) then
       return S.Corruption:Cast()
     end
   end
@@ -489,7 +495,7 @@ local function APL()
       return S.SiphonLife:Cast()
     end
     -- corruption,if=buff.movement.up&!prev_gcd.1.corruption&!talent.absolute_corruption.enabled
-    if S.Corruption:IsCastableP() and (Player:IsMoving() and not Player:PrevGCDP(1, S.Corruption) and not S.AbsoluteCorruption:IsAvailable()) then
+    if S.Corruption:IsCastableP() and not Target:DebuffP(S.CorruptionDebuff) and Player:IsMoving() and not Player:PrevGCDP(1, S.Corruption) and not S.AbsoluteCorruption:IsAvailable() then
       return S.Corruption:Cast()
     end
     --  drain_life,if=buff.inevitable_demise.stack>10&target.time_to_die<=10
@@ -668,7 +674,7 @@ local function APL()
       return S.Haunt:Cast()
     end
     -- summon_darkglare,if=dot.agony.ticking&dot.corruption.ticking&(buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|dot.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains|spell_targets.seed_of_corruption_aoe>1+raid_event.invulnerable.up)
-    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and (Target:DebuffP(S.AgonyDebuff) and Target:DebuffP(S.CorruptionDebuff) and (ActiveUAs() == 5 or Player:SoulShardsP() == 0) and (not S.PhantomSingularity:IsAvailable() or Target:DebuffP(S.PhantomSingularityDebuff)) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or S.Deathbolt:CooldownUpP() or EnemiesCount > 1)) then
+    if S.SummonDarkglare:IsCastableP() and RubimRH.CDsON() and Target:DebuffP(S.AgonyDebuff) and (Target:DebuffP(S.CorruptionDebuff) or S.AbsoluteCorruption:IsAvailable()) and (ActiveUAs() == 5 or Player:SoulShardsP() == 0) and (not S.PhantomSingularity:IsAvailable() or Target:DebuffP(S.PhantomSingularityDebuff)) and (not S.Deathbolt:IsAvailable() or S.Deathbolt:CooldownRemainsP() <= Player:GCD() or S.Deathbolt:CooldownUpP() or EnemiesCount > 1) then
       return S.SummonDarkglare:Cast()
     end
     -- deathbolt,if=cooldown.summon_darkglare.remains&spell_targets.seed_of_corruption_aoe=1+raid_event.invulnerable.up&(!essence.vision_of_perfection.minor&!azerite.dreadful_calling.rank|cooldown.summon_darkglare.remains>30)
