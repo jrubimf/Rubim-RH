@@ -47,6 +47,7 @@ RubimRH.Spell[65] = {
 	ConsecrationUp = Spell(204242),
 	JudgmentUp = Spell(214222),
 	HolyPrism = Spell(114165),
+	LightsHammer = Spell(114158),
 
     --Azerite
     DivineRevelations = Spell(275469),
@@ -76,16 +77,12 @@ RubimRH.Spell[65] = {
     --Healing
     BlessingofProtection = Spell(1022),
     HolyLight = Spell(82326),
-
-
     LayOnHands = Spell(633),
     Forbearance = Spell(25771),
     DivineProtection = Spell(498),
     DivineShield = Spell(642),
-    -- Legendaries
-    LiadrinsFuryUnleashed = Spell(208408),
-    ScarletInquisitorsExpurgation = Spell(248289);
-    WhisperoftheNathrezim = Spell(207635)
+    -- Raid
+	DarkestDepths = Spell(292127),
 };
 local S = RubimRH.Spell[65]
 -- Items
@@ -96,7 +93,8 @@ Item.Paladin.Holy = {
     -- Legendaries
     JusticeGaze = Item(137065, { 1 }),
     LiadrinsFuryUnleashed = Item(137048, { 11, 12 }),
-    WhisperoftheNathrezim = Item(137020, { 15 })
+    WhisperoftheNathrezim = Item(137020, { 15 }),
+	RevitalizingVoodooTotem = Item(158320, { 14 })
 };
 local I = Item.Paladin.Holy;
 -- Rotation Var
@@ -269,6 +267,16 @@ local function APL()
 		if S.MemoryOfLucidDreams:IsReady() and Player:Mana() < Player:ManaMax() * 0.85 then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
+		
+		--Use Trinkets
+        --if I.RevitalizingVoodooTotem:IsReady() then
+            --if LowestAlly("TANK", "HP") < 75 then
+                --ForceHealingTarget("TANK")
+            --end
+            --if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 75 then
+                --return S.GiftoftheNaaru:Cast()
+            --end
+        --end
 
         --Beacon of Virtue
         if S.BeaconofVirtue:IsReady() and RubimRH.AoEHP(85) >= 3 then
@@ -296,6 +304,10 @@ local function APL()
         if RubimRH.AoEON() and S.Judgement:IsReady() and S.JudgementofLight:IsAvailable() and Player:AffectingCombat() then
             return S.Judgement:Cast()
         end
+		
+		if RubimRH.AoEON() and S.LightsHammer:IsReady() and RubimRH.AoEHP(75) >= 5 then
+			return S.LightsHammer:Cast()
+		end
 		
 		--Holy Prism
 		if RubimRH.AoEON() and S.HolyPrism:IsReady() and RubimRH.AoEHP(75) >= 3 then
@@ -346,7 +358,7 @@ local function APL()
         end
 
         --Crusader Strike
-        if S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() and not S.HolyShock:IsReady() and Player:AffectingCombat() then
+        if RubimRH.AoEON() and S.CrusaderStrike:IsReady() and S.CrusadersMight:IsAvailable() and not S.HolyShock:IsReady() and Player:AffectingCombat() then
             return S.CrusaderStrike:Cast()
         end
 
