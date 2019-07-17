@@ -782,7 +782,7 @@ local function APL()
       return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-    if S.SummonDemonicTyrant:IsCastableP() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
@@ -800,6 +800,10 @@ local function APL()
     if S.Implosion:IsCastableP() and ((WildImpsCount() >= 6 and (Player:SoulShardsP() < 3 or Player:PrevGCDP(1, S.CallDreadStalkers) or WildImpsCount() >= 9 or Player:PrevGCDP(1, S.BilescourgeBombers) or (not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan))) and not Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and Player:BuffDownP(S.DemonicPowerBuff)) or (Target:TimeToDie() < 3 and WildImpsCount() > 0) or (Player:PrevGCDP(2, S.CallDreadStalkers) and WildImpsCount() > 2 and not S.DemonicCalling:IsAvailable())) then
       return S.Implosion:Cast()
     end
+	-- implosion,if=PetStack.imps>=mainAddon.db.profile[266].sk2+RubimRH.AoEON
+    if S.Implosion:IsCastableP() and not Player:PrevGCDP(1, S.SummonDemonicTyrant) and not Player:PrevGCDP(1, S.Implosion) and WildImpsCount() > 1 and WildImpsCount() >= mainAddon.db.profile[266].sk2 and RubimRH.AoEON() then
+        return S.Implosion:Cast()
+    end  
     -- grimoire_felguard,if=cooldown.summon_demonic_tyrant.remains<13|!equipped.132369
     if S.GrimoireFelguard:IsReadyP() and (S.SummonDemonicTyrant:CooldownRemainsP() < 13) then
       return S.GrimoireFelguard:Cast()
@@ -809,7 +813,7 @@ local function APL()
       return S.CallDreadStalkers:Cast()
     end
     -- summon_demonic_tyrant
-    if S.SummonDemonicTyrant:IsCastableP() then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() then
       return S.SummonDemonicTyrant:Cast()
     end
     -- hand_of_guldan,if=soul_shard>=5
@@ -971,6 +975,10 @@ local function APL()
     if S.PetStun:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
     end
+	-- actions.combat+=/summon_pet.if_dead
+    if not Pet:Exists() and FutureShard() >= 1 then
+        return S.SummonFelguard:Cast()
+    end
     -- Queue system
     if QueueSkill() ~= nil then
         return QueueSkill()
@@ -1101,7 +1109,7 @@ local function APL()
       return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=soul_shard<3&(!talent.demonic_consumption.enabled|buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6&time_to_imps.all.remains<cast_time)|target.time_to_die<20
-    if S.SummonDemonicTyrant:IsCastableP() and (Player:SoulShardsP() < 3 and (not S.DemonicConsumption:IsAvailable() or WildImpsCount() + ImpsSpawnedDuring(2000) >= 6)) then
+    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:SoulShardsP() < 3 and (not S.DemonicConsumption:IsAvailable() or WildImpsCount() + ImpsSpawnedDuring(2000) >= 6)) then
       return S.SummonDemonicTyrant:Cast()
     end
     -- power_siphon,if=buff.wild_imps.stack>=2&buff.demonic_core.stack<=2&buff.demonic_power.down&spell_targets.implosion<2
