@@ -158,6 +158,14 @@ end
 local AVG_DMG = AVG_DMG()
 local AVG_HPS = AVG_HPS()
 
+local function BadDebuffOnTarget()    
+    local DarkestDepths = Spell(292127)
+	
+	if Target:DebuffRemainsP(DarkestDepths) > 0 then 
+        return true
+    end
+    return false
+end	
 
 local function HealingRain()
     for i = 1, 5 do
@@ -333,7 +341,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 45 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 45 then
                 return S.HolyWordSerenity:Cast()
             end
         end
@@ -344,7 +352,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 35 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 35 then
                 return S.HolyWordSerenity:Cast()
             end
         end
@@ -355,7 +363,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 91 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 91 then
                 return S.HolyWordSanctify:Cast()
             end
         end		
@@ -366,7 +374,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.PrayerOfMending:Cast()
             end
         end	
@@ -377,7 +385,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 60 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 60 then
                 return S.FlashHeal:Cast()
             end
         end
@@ -388,7 +396,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 80 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 80 then
                 return S.PrayerOfHealing:Cast()
             end
         end
@@ -399,7 +407,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.Heal:Cast()
             end
         end
@@ -410,7 +418,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
                 return S.Renew:Cast()
             end
         end	

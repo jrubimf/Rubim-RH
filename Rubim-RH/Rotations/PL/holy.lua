@@ -100,6 +100,14 @@ local I = Item.Paladin.Holy;
 -- Rotation Var
 
 -- APL Action Lists (and Variables)
+local function BadDebuffOnTarget()    
+    local DarkestDepths = Spell(292127)
+	
+	if Target:DebuffRemainsP(DarkestDepths) > 0 then 
+        return true
+    end
+    return false
+end	
 
 -- APL Main
 function ShouldDispell()
@@ -200,7 +208,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 25 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 25 then
                 return S.LayOnHands:Cast()
             end
         end
@@ -273,7 +281,7 @@ local function APL()
             --if LowestAlly("TANK", "HP") < 75 then
                 --ForceHealingTarget("TANK")
             --end
-            --if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 75 then
+            --if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 75 then
                 --return S.GiftoftheNaaru:Cast()
             --end
         --end
@@ -294,7 +302,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
                 return S.HolyShock:Cast()
             end
 
@@ -319,7 +327,7 @@ local function APL()
             if LowestAlly("TANK", "HP") <= 95 then
                 ForceHealingTarget("TANK")
             end
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 95 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 95 then
                 return S.BestowFaith:Cast()
             end
         end
@@ -330,7 +338,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
                 return S.UnleashHeartofAzeroth:Cast()
             end
         end
@@ -341,7 +349,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() <= 75 then
                 return S.UnleashHeartofAzeroth:Cast()
             end
         end
@@ -352,7 +360,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
                 return S.FlashofLight:Cast()
             end
         end
@@ -368,7 +376,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
                 return S.HolyLight:Cast()
             end
         end
@@ -379,7 +387,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < 75 then
                 return S.LightoftheMartyr:Cast()
             end
         end

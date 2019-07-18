@@ -126,6 +126,16 @@ local function PvESoothe(unit)
     })>2
 end
 
+
+local function BadDebuffOnTarget()    
+    local DarkestDepths = Spell(292127)
+	
+	if Target:DebuffRemainsP(DarkestDepths) > 0 then 
+        return true
+    end
+    return false
+end	
+ 
 --local RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]
 --RubimRH.db.profile[64].sk1
 -- Restoration
@@ -346,7 +356,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 25 then
                 return S.Ironbark:Cast()
             end
         end
@@ -357,7 +367,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 97 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 97 then
                 return S.Lifebloom:Cast()
             end
         end
@@ -368,7 +378,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 98 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 98 then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -379,7 +389,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 93 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 93 then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -390,7 +400,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 90 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 90 then
                 return S.CenarionWard:Cast()
             end
         end
@@ -402,7 +412,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 50 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 50 then
                 return S.Swiftmend:Cast()
             end
         end
@@ -417,7 +427,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_bark"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_bark"]["value"] then
                 return S.Ironbark:Cast()
             end
         end
@@ -428,7 +438,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffDownP(S.Lifebloom) or Target:BuffRemainsP(S.Lifebloom) < 3 and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffDownP(S.Lifebloom) or Target:BuffRemainsP(S.Lifebloom) < 3 and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
                 return S.Lifebloom:Cast()
             end
         end
@@ -439,7 +449,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffDownP(S.Rejuvenation) or Target:BuffRemainsP(S.Rejuvenation) < 3 and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffDownP(S.Rejuvenation) or Target:BuffRemainsP(S.Rejuvenation) < 3 and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_rejuv"]["value"] then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -450,7 +460,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and S.Germination:IsAvailable() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_germi"]["value"] then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -461,7 +471,7 @@ local function APL()
                 ForceHealingTarget("TANK")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and RubimRH.SpellInRange("target", 102351) and RubimRH.PredictHeal("Cenarion Ward", "target") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and RubimRH.SpellInRange("target", 102351) and RubimRH.PredictHeal("Cenarion Ward", "target") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_cenar"]["value"] then
                 return S.CenarionWard:Cast()
             end
         end
@@ -481,7 +491,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and RubimRH.PredictHeal("Swiftmend", "target") and Target:Exists() and Target:HealthPercentage() <= 50 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and RubimRH.PredictHeal("Swiftmend", "target") and Target:Exists() and Target:HealthPercentage() <= 50 then
                 return S.Swiftmend:Cast()
             end
         end
@@ -491,7 +501,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffDownP(S.Rejuvenation) and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_rejuv"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffDownP(S.Rejuvenation) and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_rejuv"]["value"] then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -502,7 +512,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_germi"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and not Target:Buff(S.RejuvenationGerm) and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_germi"]["value"] then
                 return S.Rejuvenation:Cast()
             end
         end
@@ -513,7 +523,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and RubimRH.PredictHeal("Wild Growth", "target") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_wildg"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and RubimRH.PredictHeal("Wild Growth", "target") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_wildg"]["value"] then
                 return S.WildGrowth:Cast()
             end
         end
@@ -524,7 +534,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:BuffRemainsP(S.Rejuvenation) > 1 and Target:Exists() and Target:HealthPercentage() <= 75 then
                 return S.CenarionWard:Cast()
             end
         end
@@ -536,7 +546,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:Buff(S.Rejuvenation) and RubimRH.PredictHeal("Regrowth", "target") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_regro"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:Buff(S.Rejuvenation) and RubimRH.PredictHeal("Regrowth", "target") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_regro"]["value"] then
                 return S.Regrowth:Cast()
             end
         end
@@ -548,7 +558,7 @@ local function APL()
                 ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_efflo"]["value"] then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_efflo"]["value"] then
                 return S.Efflorescence:Cast()
             end
         end	
@@ -561,7 +571,7 @@ local function APL()
         --        ForceHealingTarget("ALL")
         --    end
 
-        --    if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 35 then
+        --    if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 35 then
         --        return S.Lifebloom:Cast()
         --    end
         --end

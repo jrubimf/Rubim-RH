@@ -1,10 +1,10 @@
-local HL = HeroLib;
-local Cache = HeroCache;
-local Unit = HL.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-local Spell = HL.Spell;
-local Item = HL.Item;
+local HL = HeroLib
+local Cache = HeroCache
+local Unit = HL.Unit
+local Player = Unit.Player
+local Target = Unit.Target
+local Spell = HL.Spell
+local Item = HL.Item
 local mainAddon = RubimRH
 local currentZoneID = select(8, GetInstanceInfo())
 
@@ -40,29 +40,8 @@ function RubimRH.tableexist(self)
     return (type(self) == "table" and next(self)) or false
 end
 
---local function CanHeal(t)
- --   if UnitInRange(t)
-            --Missing LOS Check
- --           and UnitCanCooperate("player", t)
- --           and not UnitIsCharmed(t)
- --           and not UnitIsDeadOrGhost(t)
- --           and UnitIsConnected(t)
-    --          and UnitDebuffID(t,104451) == nil -- Ice Tomb
-    --          and UnitDebuffID(t,76577) == nil -- Smoke Bomb
- --   then
- --       return true
- --   else
---        return false
- --   end
---end
-
-RubimRH.Spell[999] = {
-  DarkestDepths = Spell(292127),
-}
-local S = RubimRH.Spell[999]
-
 local function CanHeal(t)
-    return UnitInRange(t)
+	return UnitInRange(t)
     and not RubimRH.InLOS(UnitGUID(t)) -- LOS System (target)
     and not RubimRH.InLOS(t)           -- LOS System (another such as party)
     --and UnitCanCooperate("player", t)
@@ -139,7 +118,7 @@ local function HealingEngine(ACTUALHP)
         -- Note: We can't use CanHeal here because it will take not all units results could be wrong
         FrequencyPairs["MAXHP"] = (FrequencyPairs["MAXHP"] or 0) + UnitHealthMax(member)
         FrequencyPairs["AHP"] = (FrequencyPairs["AHP"] or 0) + memberahp
-
+        	
         -- Checking all Party/Raid Members for Range/Health
         if CanHeal(member) then
 
