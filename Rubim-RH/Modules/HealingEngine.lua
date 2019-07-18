@@ -69,7 +69,7 @@ local function CanHeal(t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
     and UnitIsConnected(t)
-	and not Target:Debuff(S.DarkestDepths)
+	and DebuffRemains(S.DarkestDepths, "Target") < 1
  
 end
 
