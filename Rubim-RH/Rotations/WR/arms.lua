@@ -238,7 +238,7 @@ local function APL()
   local Precombat, Execute, FiveTarget, Hac, SingleTarget
   UpdateRanges()
   UpdateExecuteID()
-  
+  DetermineEssenceRanks()
   
     -- Anti channeling interrupt
 	if Player:IsChanneling() or Player:IsCasting() then
