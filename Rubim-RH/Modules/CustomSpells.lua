@@ -229,6 +229,21 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
         return false
     end
 	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -284,6 +299,21 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
         return false
     end
 	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
@@ -307,6 +337,21 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
     end
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
 
     if RubimRH.db.profile.mainOption.startattack then
 
@@ -339,7 +384,22 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-    
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	    
 	if Range then
         local RangeUnit = ThisUnit or Target
         return self:IsLearned() and self:CooldownRemainsP(BypassRecovery or true, Offset or "Auto") == 0 and RangeUnit:IsInRange(Range, AoESpell)
@@ -353,6 +413,21 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
         return false
     end
 	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -365,6 +440,21 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
 
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
