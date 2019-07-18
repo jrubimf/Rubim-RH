@@ -490,7 +490,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					-- Set default value (checked, unchecked)and save it to db 
 					AutoAOEbutton:SetChecked(RubimRH.db.profile[265].AutoAoE)                    
 					-- Set positionning
-					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -200, 'LEFT');
                     -- What to do on value change                    
 					function AutoAOEbutton:OnValueChanged(value)
 					    -- See Rubim-RHc.lua 
@@ -547,7 +547,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					-- Set default value (checked, unchecked)and save it to db 
 					AutoAOEbutton:SetChecked(RubimRH.db.profile[258].AutoAoE)                    
 					-- Set positionning
-					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -150, 'LEFT');
+					StdUi:GlueBelow(AutoAOEbutton, gn_4_0, 0, -200, 'LEFT');
                     -- What to do on value change                    
 					function AutoAOEbutton:OnValueChanged(value)
 					    -- See Rubim-RHc.lua 

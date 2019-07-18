@@ -68,9 +68,7 @@ local function CanHeal(t)
     --and UnitCanCooperate("player", t)
     and not UnitIsCharmed(t)
 	and not UnitIsDeadOrGhost(t)
-    and UnitIsConnected(t)
-	and DebuffRemains(S.DarkestDepths, "Target") < 1
- 
+    and UnitIsConnected(t) 
 end
 
 local function Grouped(t)
