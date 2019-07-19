@@ -3,55 +3,56 @@
 -- Addon
 local addonName, addonTable = ...
 -- HeroLib
-local mainAddon = RubimRH
-local HL     = HeroLib
-local Cache  = HeroCache
-local Unit   = HL.Unit
-local Player = Unit.Player
-local Target = Unit.Target
-local Pet    = Unit.Pet
-local Spell  = HL.Spell
-local Item   = HL.Item
+local HL         = HeroLib
+local Cache      = HeroCache
+local Unit       = HL.Unit
+local Player     = Unit.Player
+local Target     = Unit.Target
+local Pet        = Unit.Pet
+local Spell      = HL.Spell
+local MultiSpell = HL.MultiSpell
+local Item       = HL.Item
+-- HeroRotation
+local HR         = HeroRotation
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
-
 -- Spells
 RubimRH.Spell[267] = {  
-  
   SummonPet                             = Spell(688),
   GrimoireofSacrifice                   = Spell(108503),
   SoulFire                              = Spell(6353),
   Incinerate                            = Spell(29722),
   RainofFire                            = Spell(5740),
-  Cataclysm                             = Spell(152108),
-  Immolate                              = Spell(348),
+  CrashingChaosBuff                     = Spell(277706),
+  GrimoireofSupremacy                   = Spell(266086),
+  Havoc                                 = Spell(80240),
+  RainofFireDebuff                      = Spell(5740),
   ChannelDemonfire                      = Spell(196447),
   ImmolateDebuff                        = Spell(157736),
-  ChaosBolt                             = Spell(116858),
-  ActiveHavocBuff                       = Spell(80240),
-  Havoc                                 = Spell(80240),
-  GrimoireofSupremacy                   = Spell(266086),
+  Immolate                              = Spell(348),
+  Cataclysm                             = Spell(152108),
   HavocDebuff                           = Spell(80240),
-  GrimoireofSupremacyBuff               = Spell(266091),
+  ChaosBolt                             = Spell(116858),
+  Inferno                               = Spell(270545),
+  FireandBrimstone                      = Spell(196408),
+  BackdraftBuff                         = Spell(117828),
   Conflagrate                           = Spell(17962),
   Shadowburn                            = Spell(17877),
-  ShadowburnDebuff                      = Spell(17877),
-  BackdraftBuff                         = Spell(117828),
   SummonInfernal                        = Spell(1122),
   DarkSoulInstability                   = Spell(113858),
+  DarkSoulInstabilityBuff               = Spell(113858),
   Berserking                            = Spell(26297),
   BloodFury                             = Spell(20572),
   Fireblood                             = Spell(265221),
-  Flashover                             = Spell(267115),
-  RoaringBlaze                          = Spell(205184),
   InternalCombustion                    = Spell(266134),
+  ShadowburnDebuff                      = Spell(17877),
+  Flashover                             = Spell(267115),
+  CrashingChaos                         = Spell(277644),
   Eradication                           = Spell(196412),
-  FireandBrimstone                      = Spell(196408),
-  Inferno                               = Spell(270545),
   EradicationDebuff                     = Spell(196414),
-  DarkSoulInstabilityBuff               = Spell(113858),
+  ShiverVenomDebuff                     = Spell(301624),
   -- Pet abilities
   CauterizeMaster                       = Spell(119905),--imp
   Suffering                             = Spell(119907),--voidwalker
@@ -65,100 +66,147 @@ RubimRH.Spell[267] = {
   UnendingResolve                       = Spell(104773),
   SummonDoomGuard                       = Spell(18540),
   SummonDoomGuardSuppremacy             = Spell(157757),
-  SummonInfernal                        = Spell(1122),
   SummonInfernalSuppremacy              = Spell(157898),
   SummonImp                             = Spell(688),
   GrimoireImp                           = Spell(111859),
-  
-  		  --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
-
- };
+  --8.2 Essences
+  UnleashHeartOfAzeroth                 = Spell(280431),
+  BloodOfTheEnemy                       = Spell(297108),
+  BloodOfTheEnemy2                      = Spell(298273),
+  BloodOfTheEnemy3                      = Spell(298277),
+  ConcentratedFlame                     = Spell(295373),
+  ConcentratedFlame2                    = Spell(299349),
+  ConcentratedFlame3                    = Spell(299353),
+  GuardianOfAzeroth                     = Spell(295840),
+  GuardianOfAzeroth2                    = Spell(299355),
+  GuardianOfAzeroth3                    = Spell(299358),
+  FocusedAzeriteBeam                    = Spell(295258),
+  FocusedAzeriteBeam2                   = Spell(299336),
+  FocusedAzeriteBeam3                   = Spell(299338),
+  PurifyingBlast                        = Spell(295337),
+  PurifyingBlast2                       = Spell(299345),
+  PurifyingBlast3                       = Spell(299347),
+  TheUnboundForce                       = Spell(298452),
+  TheUnboundForce2                      = Spell(299376),
+  TheUnboundForce3                      = Spell(299378),
+  RippleInSpace                         = Spell(302731),
+  RippleInSpace2                        = Spell(302982),
+  RippleInSpace3                        = Spell(302983),
+  WorldveinResonance                    = Spell(295186),
+  WorldveinResonance2                   = Spell(298628),
+  WorldveinResonance3                   = Spell(299334),
+  MemoryOfLucidDreams                   = Spell(298357),
+  MemoryOfLucidDreams2                  = Spell(299372),
+  MemoryOfLucidDreams3                  = Spell(299374),
+};
 local S = RubimRH.Spell[267]
 
 -- Items
-if not Item.Warlock then
-    Item.Warlock = {}
-end
+if not Item.Warlock then Item.Warlock = {} end
 Item.Warlock.Destruction = {
-  BattlePotionOfIntellect               = Item(163222)
+  PotionofUnbridledFury            = Item(169299),
+  AzsharasFontofPower              = Item(169314),
+  PocketsizedComputationDevice     = Item(167555),
+  RotcrustedVoodooDoll             = Item(159624),
+  ShiverVenomRelic                 = Item(168905),
+  AquipotentNautilus               = Item(169305),
+  TidestormCodex                   = Item(165576),
+  VialofStorms                     = Item(158224)
 };
 local I = Item.Warlock.Destruction;
 
 -- Rotation Var
 local ShouldReturn; -- Used to get the return string
+local EnemiesCount;
 
-local BestUnit, BestUnitTTD, BestUnitSpellToCast, DebuffRemains; -- Used for cycling
-local range = 40
-local CastIncinerate, CastImmolate, CastConflagrate, CastRainOfFire
-local PetSpells={[S.Suffering:ID()] = true, [S.SpellLock:ID()] = true, [S.Whiplash:ID()] = true, [S.CauterizeMaster:ID()] = true}
+-- Variables
+local VarPoolSoulShards = 0;
 
-local EnemyRanges = {40, 35, 5}
+HL:RegisterForEvent(function()
+  VarPoolSoulShards = 0
+end, "PLAYER_REGEN_ENABLED")
+
+local EnemyRanges = {40}
 local function UpdateRanges()
-    for _, i in ipairs(EnemyRanges) do
-        HL.GetEnemies(i);
+  for _, i in ipairs(EnemyRanges) do
+    HL.GetEnemies(i);
+  end
+end
+
+local function GetEnemiesCount(range)
+    if range == nil then range = 10 end
+	 -- Unit Update - Update differently depending on if splash data is being used
+	if RubimRH.AoEON() then       
+	        if RubimRH.db.profile[267].useSplashData == "Enabled" then	
+                HL.GetEnemies(range, nil, true, Target)
+                return Cache.EnemiesCount[range]
+            else
+                UpdateRanges()
+                return active_enemies()
+            end
+    else
+        return 1
     end
 end
 
+S.ConcentratedFlame:RegisterInFlight()
 S.ChaosBolt:RegisterInFlight()
 
 local function num(val)
-    if val then return 1 else return 0 end
+  if val then return 1 else return 0 end
 end
 
 local function bool(val)
-    return val ~= 0
+  return val ~= 0
 end
 
-local function IsPetInvoked (testBigPets)
-    testBigPets = testBigPets or false
-    return S.Suffering:IsLearned() or S.SpellLock:IsLearned() or S.Whiplash:IsLearned() or S.CauterizeMaster:IsLearned() or (testBigPets and (S.ShadowLock:IsLearned() or S.MeteorStrike:IsLearned()))
+local function FutureShard()
+  local Shard = Player:SoulShards()
+  if not Player:IsCasting() then
+    return Shard
+  else
+    if Player:IsCasting(S.UnstableAffliction) 
+        or Player:IsCasting(S.SeedOfCorruption) then
+      return Shard - 1
+    elseif Player:IsCasting(S.SummonDoomGuard) 
+        or Player:IsCasting(S.SummonDoomGuardSuppremacy) 
+        or Player:IsCasting(S.SummonInfernal) 
+        or Player:IsCasting(S.SummonInfernalSuppremacy) 
+        or Player:IsCasting(S.GrimoireFelhunter) 
+        or Player:IsCasting(S.SummonFelhunter) then
+      return Shard - 1
+    else
+      return Shard
+    end
+  end
 end
-  
-local function GetImmolateStack(target)
-    if not S.RoaringBlaze:IsAvailable() then  
-        return 0
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+
+    if trinketPosition == 1 then
+        inventoryPosition = 13
     end
-    if not target then 
-      return 0
+	
+    if trinketPosition == 2 then
+        inventoryPosition = 14
     end
-    return HL.ImmolationTable.Destruction.ImmolationDebuff[target:GUID()] or 0;
-end
-  
-local function EnemyHasHavoc ()
-    for _, Value in pairs(Cache.Enemies[range]) do
-        if Value:Debuff(S.Havoc) then
-            return Value:DebuffRemainsP(S.Havoc)
-        end
+	
+    local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+
+    if enable == 0 then
+        return false
     end
-    return 0
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+    return true
 end
 
 local PetType = {
@@ -218,345 +266,34 @@ local function InfernalIsActive()
     end
 end
 
-local function handleSettings()
-    --auto
-    if RubimRH.db.profile[267].color == 1 then 
-        CastIncinerate = S.IncinerateAuto
-        CastImmolate = S.ImmolateAuto
-        CastConflagrate = S.ConflagrateAuto
-        CastRainOfFire = S.RainOfFireAuto
-    --green
-    elseif RubimRH.db.profile[267].color == 2 then 
-        CastIncinerate = S.IncinerateGreen
-        CastImmolate = S.ImmolateGreen
-        CastConflagrate = S.ConflagrateGreen
-        CastRainOfFire = S.RainOfFireGreen
-    --orange
-    else 
-        CastIncinerate = S.IncinerateOrange
-        CastImmolate = S.ImmolateOrange
-        CastConflagrate = S.ConflagrateOrange
-        CastRainOfFire = S.RainOfFireOrange
+local function EnemyHasHavoc()
+  for _, Value in pairs(Cache.Enemies[40]) do
+    if Value:Debuff(S.Havoc) then
+      return Value:DebuffRemainsP(S.Havoc)
     end
+  end
+  return 0
 end
 
-local function FutureShard ()
-    local Shard = Player:SoulShards()
-    if not Player:IsCasting() then
-        return Shard
-    else
-        if Player:IsCasting(S.ChaosBolt) then
-            return Shard - 2
-        elseif Player:IsCasting(S.SummonDoomGuard) or Player:IsCasting(S.SummonDoomGuardSuppremacy) or Player:IsCasting(S.SummonInfernalSuppremacy) or Player:IsCasting(S.GrimoireImp) or Player:IsCasting(S.SummonImp) then
-            return Shard - 1
-        elseif Player:IsCasting(S.Incinerate) then
-            return Shard + 0.2
-        else
-            return Shard
-        end
-    end
-end  
-
-local function Cds()
-        -- summon_infernal,if=target.time_to_die>=210|!cooldown.dark_soul_instability.remains|target.time_to_die<=30+gcd|!talent.dark_soul_instability.enabled
-        if S.SummonInfernal:IsReadyP() and RubimRH.CDsON() and Player:SoulShardsP() >= 3 then
-            return S.SummonInfernal:Cast()
-        end
-        -- dark_soul_instability,if=target.time_to_die>=140|pet.infernal.active|target.time_to_die<=20+gcd
-        if S.DarkSoulInstability:IsReadyP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() <= 171 or S.SummonInfernal:CooldownRemainsP() >= 45)   then
-            return S.DarkSoulInstability:Cast()
-        end
-        -- berserking
-        if S.Berserking:IsCastableP() and RubimRH.CDsON() then
-            return S.Berserking:Cast()
-        end
-        -- blood_fury
-        if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
-            return S.BloodFury:Cast()
-        end
-        -- fireblood
-        if S.Fireblood:IsCastableP() and RubimRH.CDsON() then
-            return S.Fireblood:Cast()
-        end
-end
-
-local function Cata()
-    -- call_action_list,name=cds
-    if RubimRH.CDsON() then
-            if Cds() ~= nil then
-                return Cds()
-            end
-    end
-        -- rain_of_fire,if=soul_shard>=4.5
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (Player:SoulShardsP() >= 4.5) then
-            return S.RainofFire:Cast()
-        end
-        -- cataclysm
-        if S.Cataclysm:IsCastableP() then
-            return S.Cataclysm:Cast()
-        end
-        -- immolate,if=talent.channel_demonfire.enabled&!remains&cooldown.channel_demonfire.remains<=action.chaos_bolt.execute_time
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and S.ChannelDemonfire:IsAvailable() and not bool(Target:DebuffRemainsP(S.ImmolateDebuff)) and S.ChannelDemonfire:CooldownRemainsP() <= S.ChaosBolt:ExecuteTime() then
-            return S.Immolate:Cast()
-        end
-        -- channel_demonfire,if=!buff.active_havoc.remains
-        if S.ChannelDemonfire:IsCastableP() and (not bool(Player:BuffRemainsP(S.ActiveHavocBuff))) then
-            return S.ChannelDemonfire:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=8+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=8+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Cache.EnemiesCount[35] <= 8  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&active_enemies<=8+raid_event.invulnerable.up&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%3)<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[40] <= 8  and ((108 * (Cache.EnemiesCount[35] ) / 3) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
-            return S.ChaosBolt:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Target:TimeToDie() > 10 and Cache.EnemiesCount[35] <= 4 ) then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Cache.EnemiesCount[35] <= 4 ) then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&buff.active_havoc.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and Cache.EnemiesCount[35] <= 4 then
-            return S.ChaosBolt:Cast()
-        end
-        -- immolate,if=!debuff.havoc.remains&refreshable&remains<=cooldown.cataclysm.remains
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Target:DebuffRefreshableCP(S.ImmolateDebuff) and Target:DebuffRemainsP(S.ImmolateDebuff) <= S.Cataclysm:CooldownRemainsP() then
-            return S.Immolate:Cast()
-        end
-        -- rain_of_fire
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and Cache.EnemiesCount[35] > 5 and (FutureShard() > 3) then
-            return S.RainofFire:Cast()
-        end
-        -- soul_fire,if=!debuff.havoc.remains
-        if S.SoulFire:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.SoulFire:Cast()
-        end
-        -- conflagrate,if=!debuff.havoc.remains
-        if S.Conflagrate:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.Conflagrate:Cast()
-        end
-        -- shadowburn,if=!debuff.havoc.remains&((charges=2|!buff.backdraft.remains|buff.backdraft.remains>buff.backdraft.stack*action.incinerate.execute_time))
-        if S.Shadowburn:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and ((S.Shadowburn:ChargesP() == 2 or not bool(Player:BuffRemainsP(S.BackdraftBuff)) or Player:BuffRemainsP(S.BackdraftBuff) > Player:BuffStackP(S.BackdraftBuff) * S.Incinerate:ExecuteTime())) then
-            return S.Shadowburn:Cast()
-        end
-        -- incinerate,if=!debuff.havoc.remains
-        if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5 and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.Incinerate:Cast()
-        end
-    end
-    
-    local function Fnb()
-        -- call_action_list,name=cds
-        if RubimRH.CDsON() then
-            if Cds() ~= nil then
-                return Cds()
-            end
-        end
-        -- rain_of_fire,if=soul_shard>=4.5
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (Player:SoulShardsP() >= 4.5) then
-            return S.RainofFire:Cast()
-        end
-        -- immolate,if=talent.channel_demonfire.enabled&!remains&cooldown.channel_demonfire.remains<=action.chaos_bolt.execute_time
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and  S.ChannelDemonfire:IsAvailable() and not bool(Target:DebuffRemainsP(S.ImmolateDebuff)) and S.ChannelDemonfire:CooldownRemainsP() <= S.ChaosBolt:ExecuteTime() then
-            return S.Immolate:Cast()
-        end
-        -- channel_demonfire,if=!buff.active_havoc.remains
-        if S.ChannelDemonfire:IsCastableP() and (not bool(Player:BuffRemainsP(S.ActiveHavocBuff))) then
-            return S.ChannelDemonfire:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and Target:DebuffRemainsP(S.HavocDebuff) <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 4  and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&active_enemies<=4+raid_event.invulnerable.up&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%3)<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  and ((108 * (Cache.EnemiesCount[35] ) / 3) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
-            return S.ChaosBolt:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4 then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (active_enemies() <= 4 ) then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&buff.active_havoc.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  then
-            return S.ChaosBolt:Cast()
-        end
-        -- immolate,if=!debuff.havoc.remains&refreshable&spell_targets.incinerate<=8+raid_event.invulnerable.up
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and  not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Target:DebuffRefreshableCP(S.ImmolateDebuff) and active_enemies() <= 8  then
-            return S.Immolate:Cast()
-        end
-        -- rain_of_fire
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 3) then
-            return S.RainofFire:Cast()
-        end
-        -- soul_fire,if=!debuff.havoc.remains&spell_targets.incinerate<=3+raid_event.invulnerable.up
-        if S.SoulFire:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and active_enemies() <= 3 then
-            return S.SoulFire:Cast()
-        end
-        -- conflagrate,if=!debuff.havoc.remains&(talent.flashover.enabled&buff.backdraft.stack<=2|spell_targets.incinerate<=7+raid_event.invulnerable.up|talent.roaring_blaze.enabled&spell_targets.incinerate<=9+raid_event.invulnerable.up)
-        if S.Conflagrate:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.Flashover:IsAvailable() and Player:BuffStackP(S.BackdraftBuff) <= 2 then
-            return S.Conflagrate:Cast()
-        end
-        -- incinerate,if=!debuff.havoc.remains
-        if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5  and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.Incinerate:Cast()
-        end
-    end
-    
-    local function Inf()
-        -- call_action_list,name=cds
-        if RubimRH.CDsON() then
-            if Cds() ~= nil then
-                return Cds()
-            end
-        end
-        -- rain_of_fire,if=soul_shard>=4.5
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 4) then
-            return S.RainofFire:Cast()
-        end
-        -- cataclysm
-        if S.Cataclysm:IsCastableP() then
-            return S.Cataclysm:Cast()
-        end
-        -- immolate,if=talent.channel_demonfire.enabled&!remains&cooldown.channel_demonfire.remains<=action.chaos_bolt.execute_time
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and S.ChannelDemonfire:IsAvailable() and not bool(Target:DebuffRemainsP(S.ImmolateDebuff)) and S.ChannelDemonfire:CooldownRemainsP() <= S.ChaosBolt:ExecuteTime() then
-            return S.Immolate:Cast()
-        end
-        -- channel_demonfire,if=!buff.active_havoc.remains
-        if S.ChannelDemonfire:IsCastableP() and (not bool(Player:BuffRemainsP(S.ActiveHavocBuff))) then
-            return S.ChannelDemonfire:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&talent.grimoire_of_supremacy.enabled&pet.infernal.active&pet.infernal.remains<=10
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and S.GrimoireofSupremacy:IsAvailable() and InfernalIsActive() and PetDuration("Infernal") <= 10 then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&talent.grimoire_of_supremacy.enabled&pet.infernal.remains>execute_time&spell_targets.rain_of_fire<=4+raid_event.invulnerable.up+talent.internal_combustion.enabled&((108*(spell_targets.rain_of_fire+raid_event.invulnerable.up)%(3-0.16*(spell_targets.rain_of_fire+raid_event.invulnerable.up)))<(240*(1+0.08*buff.grimoire_of_supremacy.stack)%2*(1+buff.active_havoc.remains>execute_time)))
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and S.GrimoireofSupremacy:IsAvailable() and PetDuration("Infernal") > S.ChaosBolt:ExecuteTime() and active_enemies() <= 4  + num(S.InternalCombustion:IsAvailable()) and ((108 * (Cache.EnemiesCount[35] ) / (3 - 0.16 * (Cache.EnemiesCount[35] ))) < (240 * (1 + 0.08 * Player:BuffStackP(S.GrimoireofSupremacyBuff)) / 2 * num((1 + Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime())))) then
-            return S.ChaosBolt:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and Target:TimeToDie() > 10 and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
-            return S.Havoc:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&buff.active_havoc.remains>execute_time&spell_targets.rain_of_fire<=3+raid_event.invulnerable.up&(talent.eradication.enabled|talent.internal_combustion.enabled)
-        if S.ChaosBolt:IsCastableP() and (FutureShard() >= 2) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:ExecuteTime() and active_enemies() <= 3  and (S.Eradication:IsAvailable() or S.InternalCombustion:IsAvailable()) then
-            return S.ChaosBolt:Cast()
-        end
-        -- immolate,if=!debuff.havoc.remains&refreshable
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and  not bool(Target:DebuffRemainsP(S.HavocDebuff)) and Target:DebuffRefreshableCP(S.ImmolateDebuff) then
-            return S.Immolate:Cast()
-        end
-        -- rain_of_fire
-        if S.RainofFire:IsCastableP() and RubimRH.AoEON() and active_enemies() > 5 and (FutureShard() > 3) then
-            return S.RainofFire:Cast()
-        end
-        -- soul_fire,if=!debuff.havoc.remains
-        if S.SoulFire:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.SoulFire:Cast()
-        end
-        -- conflagrate,if=!debuff.havoc.remains
-        if S.Conflagrate:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.Conflagrate:Cast()
-        end
-        -- shadowburn,if=!debuff.havoc.remains&((charges=2|!buff.backdraft.remains|buff.backdraft.remains>buff.backdraft.stack*action.incinerate.execute_time))
-        if S.Shadowburn:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and ((S.Shadowburn:ChargesP() == 2 or not bool(Player:BuffRemainsP(S.BackdraftBuff)) or Player:BuffRemainsP(S.BackdraftBuff) > Player:BuffStackP(S.BackdraftBuff) * S.Incinerate:ExecuteTime())) then
-            return S.Shadowburn:Cast()
-        end
-        -- incinerate,if=!debuff.havoc.remains
-        if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5 and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.Incinerate:Cast()
-        end
-    end
-	
-local function DetermineEssenceRanks()
-  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
-  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
-  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
-  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
-  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
-  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
-  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace
-  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace
-  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
-  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
-  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
-  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
-  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
-  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
-  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
-  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
-end
-	
-	-- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
-end
+--HL.RegisterNucleusAbility(42223, 8, 6)               -- Rain of Fire
+--HL.RegisterNucleusAbility(152108, 8, 6)              -- Cataclysm
+--HL.RegisterNucleusAbility(22703, 10, 6)               -- Summon Infernal
 
 --- ======= ACTION LISTS =======
 local function APL()
-    --local Precombat, Cata, Cds, Fnb, Inf
-    UpdateRanges()
-    DetermineEssenceRanks()
-	Precombat_DBM = function()
+  local Precombat_DBM, Precombat, Aoe, Cds, Havoc
+  EnemiesCount = GetEnemiesCount(10)
+  DetermineEssenceRanks()
+  HL.GetEnemies(40) -- To populate Cache.Enemies[40] for CastCycles
+  
+  -- Mouseover checker on Havoc
+  local MouseoverEnemy = UnitExists("mouseover") and not UnitIsFriend("target", "mouseover")
+
+  --if RubimRH.TargetIsValid() then
+  --  print(EnemiesCount)
+  --end
+  
+  	Precombat_DBM = function()
         -- flask
         -- food
         -- augmentation
@@ -570,158 +307,421 @@ local function APL()
         end
         -- snapshot_stats
 	    -- potion
-        if I.BattlePotionOfIntellect:IsReady() and RubimRH.DBM_PullTimer() >= S.Incinerate:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Incinerate:CastTime() + 2 then
+        if I.PotionofUnbridledFury:IsReady() and RubimRH.DBM_PullTimer() >= S.Incinerate:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Incinerate:CastTime() + 2 then
             return 967532
         end
         -- soul_fire
-        --if S.SoulFire:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.SoulFire:CastTime() then
-        --    return S.SoulFire:Cast()
-        --end
+        if S.SoulFire:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.SoulFire:CastTime() then
+            return S.SoulFire:Cast()
+        end
         -- incinerate,if=!talent.soul_fire.enabled
         if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5 and (not S.SoulFire:IsAvailable()) and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Incinerate:CastTime() + S.Incinerate:TravelTime() then
             return S.Incinerate:Cast()
         end
     end
-	
-	Precombat = function()
-        -- flask
-        -- food
-        -- augmentation
-        -- summon_pet
-        if S.SummonPet:IsCastableP() and not IsPetInvoked() then
-            return S.SummonPet:Cast()
-        end
-        -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
-        if S.GrimoireofSacrifice:IsCastableP() and (S.GrimoireofSacrifice:IsAvailable()) then
-            return S.GrimoireofSacrifice:Cast()
-        end
-        -- snapshot_stats
-        -- potion
-        --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions then
-        --    HR.CastSuggested(I.ProlongedPower):Cast()
-        --end
-        -- soul_fire
-        if S.SoulFire:IsCastableP() then
-            return S.SoulFire:Cast()
-        end
-        -- incinerate,if=!talent.soul_fire.enabled
-        if S.Incinerate:IsCastableP() and Player:SoulShardsP() < 4.5 and (not S.SoulFire:IsAvailable()) then
-            return S.Incinerate:Cast()
-        end
+  
+  Precombat = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- summon_pet
+    if S.SummonPet:IsCastableP() and not IsPetInvoked() then
+      return S.SummonPet:Cast()
     end
-
+    -- grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
+    if S.GrimoireofSacrifice:IsCastableP() and (S.GrimoireofSacrifice:IsAvailable()) then
+      return S.GrimoireofSacrifice:Cast()
+    end
+    -- snapshot_stats
+    if RubimRH.TargetIsValid() then
+      -- potion
+      -- soul_fire
+      if S.SoulFire:IsCastableP() then
+        return S.SoulFire:Cast()
+      end
+      -- incinerate,if=!talent.soul_fire.enabled
+      if S.Incinerate:IsCastableP() and (not S.SoulFire:IsAvailable()) then
+        return S.Incinerate:Cast()
+      end
+    end
+  end
+  
+  Aoe = function()
+    -- rain_of_fire,if=pet.infernal.active&(buff.crashing_chaos.down|!talent.grimoire_of_supremacy.enabled)&(!cooldown.havoc.ready|active_enemies>3)
+    if S.RainofFire:IsReadyP() and (S.SummonInfernal:CooldownRemainsP() > 150 and (Player:BuffDownP(S.CrashingChaosBuff) or not S.GrimoireofSupremacy:IsAvailable()) and (not S.Havoc:CooldownUpP() or EnemiesCount > 3)) then
+      return S.RainofFire:Cast()
+    end
+    -- channel_demonfire,if=dot.immolate.remains>cast_time
+    if S.ChannelDemonfire:IsCastableP() and (Target:DebuffRemainsP(S.ImmolateDebuff) > S.ChannelDemonfire:CastTime()) then
+      return S.ChannelDemonfire:Cast()
+    end
+    -- immolate,cycle_targets=1,if=remains<5&(!talent.cataclysm.enabled|cooldown.cataclysm.remains>remains)
+    if S.Immolate:IsCastableP() and Target:DebuffRemainsP(S.ImmolateDebuff) < 5 and (not S.Cataclysm:IsAvailable() or S.Cataclysm:CooldownRemainsP() > Target:DebuffRemainsP(S.ImmolateDebuff)) then
+      return S.Immolate:Cast()
+    end
+    -- call_action_list,name=cds
+    if RubimRH.CDsON() then
+      local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- havoc,cycle_targets=1,if=!(target=self.target)&active_enemies<4
+    if S.Havoc:IsCastableP() and Cache.EnemiesCount[40] < 4 then
+      return S.Havoc:Cast()
+    end
+    -- chaos_bolt,if=talent.grimoire_of_supremacy.enabled&pet.infernal.active&(havoc_active|talent.cataclysm.enabled|talent.inferno.enabled&active_enemies<4)
+    if S.ChaosBolt:IsReadyP() and (S.GrimoireofSupremacy:IsAvailable() and S.SummonInfernal:CooldownRemainsP() > 150 and (bool(EnemyHasHavoc()) or S.Cataclysm:IsAvailable() or S.Inferno:IsAvailable() and EnemiesCount < 4)) then
+      return S.ChaosBolt:Cast()
+    end
+    -- rain_of_fire
+    if S.RainofFire:IsReadyP() then
+      return S.RainofFire:Cast()
+    end
+    -- focused_azerite_beam
+    if S.FocusedAzeriteBeam:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- purifying_blast
+    if S.PurifyingBlast:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- havoc,cycle_targets=1,if=!(target=self.target)&(!talent.grimoire_of_supremacy.enabled|!talent.inferno.enabled|talent.grimoire_of_supremacy.enabled&pet.infernal.remains<=10)
+    if S.Havoc:IsCastableP() and (not S.GrimoireofSupremacy:IsAvailable() or not S.Inferno:IsAvailable() or S.GrimoireofSupremacy:IsAvailable() and Target:DebuffRemainsP(S.HavocDebuff) <= 10) then
+      return S.Havoc:Cast()
+    end
+    -- incinerate,if=talent.fire_and_brimstone.enabled&buff.backdraft.up&soul_shard<5-0.2*active_enemies
+    if S.Incinerate:IsCastableP() and (S.FireandBrimstone:IsAvailable() and Player:BuffP(S.BackdraftBuff) and Player:SoulShardsP() < 5 - 0.2 * EnemiesCount) then
+      return S.Incinerate:Cast()
+    end
+    -- soul_fire
+    if S.SoulFire:IsCastableP() then
+      return S.SoulFire:Cast()
+    end
+    -- conflagrate,if=buff.backdraft.down
+    if S.Conflagrate:IsCastableP() and (Player:BuffDownP(S.BackdraftBuff)) then
+      return S.Conflagrate:Cast()
+    end
+    -- shadowburn,if=!talent.fire_and_brimstone.enabled
+    if S.Shadowburn:IsCastableP() and (not S.FireandBrimstone:IsAvailable()) then
+      return S.Shadowburn:Cast()
+    end
+    -- concentrated_flame,if=!dot.concentrated_flame_burn.remains&!action.concentrated_flame.in_flight&active_enemies<5
+    -- Need ConcentratedFlame DoT Spell ID
+    if S.ConcentratedFlame:IsCastableP() and (EnemiesCount < 5) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- incinerate
+    if S.Incinerate:IsCastableP() then
+      return S.Incinerate:Cast()
+    end
+  end
+  
+  Cds = function()
+    -- use_item,name=azsharas_font_of_power,if=cooldown.summon_infernal.up|cooldown.summon_infernal.remains<5
+    if I.AzsharasFontofPower:IsReady() and (S.SummonInfernal:CooldownUpP() or S.SummonInfernal:CooldownRemainsP() < 5) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- summon_infernal,if=cooldown.dark_soul_instability.ready|cooldown.memory_of_lucid_dreams.ready|(!talent.dark_soul_instability.enabled&!essence.memory_of_lucid_dreams.major)|cooldown.dark_soul_instability.remains<=10|cooldown.memory_of_lucid_dreams.remains<=10
+    if S.SummonInfernal:IsCastableP() and (S.DarkSoulInstability:CooldownUpP() or S.MemoryofLucidDreams:CooldownUpP() or (not S.DarkSoulInstability:IsAvailable() and not S.MemoryofLucidDreams:IsAvailable()) or S.DarkSoulInstability:CooldownRemainsP() <= 10 or S.MemoryofLucidDreams:CooldownRemainsP() <= 10) then
+      return S.SummonInfernal:Cast()
+    end
+    -- guardian_of_azeroth,if=pet.infernal.active
+    if S.GuardianofAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- dark_soul_instability,if=pet.infernal.active&pet.infernal.remains<=20
+    if S.DarkSoulInstability:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150 and Player:BuffRemainsP(S.DarkSoulInstabilityBuff) <= 20) then
+      return S.DarkSoulInstability:Cast()
+    end
+    -- memory_of_lucid_dreams,if=pet.infernal.active&pet.infernal.remains<=20
+    if S.MemoryofLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150 and S.SummonInfernal:CooldownRemainsP() <= 170) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- summon_infernal,if=target.time_to_die>cooldown.summon_infernal.duration+30
+    if S.SummonInfernal:IsCastableP() and (Target:TimeToDie() > S.SummonInfernal:BaseDuration() + 30) then
+      return S.SummonInfernal:Cast()
+    end
+    -- guardian_of_azeroth,if=time>30&target.time_to_die>cooldown.guardian_of_azeroth.duration+30
+    if S.GuardianofAzeroth:IsCastableP() and (HL.CombatTime() > 30 and Target:TimeToDie() > S.GuardianofAzeroth:BaseDuration() + 30) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- summon_infernal,if=talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains>target.time_to_die
+    if S.SummonInfernal:IsCastableP() and (S.DarkSoulInstability:IsAvailable() and S.DarkSoulInstability:CooldownRemainsP() > Target:TimeToDie()) then
+      return S.SummonInfernal:Cast()
+    end
+    -- guardian_of_azeroth,if=cooldown.summon_infernal.remains>target.time_to_die
+    if S.GuardianofAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- dark_soul_instability,if=cooldown.summon_infernal.remains>target.time_to_die
+    if S.DarkSoulInstability:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
+      return S.DarkSoulInstability:Cast()
+    end
+    -- memory_of_lucid_dreams,if=cooldown.summon_infernal.remains>target.time_to_die
+    if S.MemoryofLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- summon_infernal,if=target.time_to_die<30
+    if S.SummonInfernal:IsCastableP() and (Target:TimeToDie() < 30) then
+      return S.SummonInfernal:Cast()
+    end
+    -- guardian_of_azeroth,if=target.time_to_die<30
+    if S.GuardianofAzeroth:IsCastableP() and (Target:TimeToDie() < 30) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- dark_soul_instability,if=target.time_to_die<20
+    if S.DarkSoulInstability:IsCastableP() and (Target:TimeToDie() < 20) then
+      return S.DarkSoulInstability:Cast()
+    end
+    -- memory_of_lucid_dreams,if=target.time_to_die<20
+    if S.MemoryofLucidDreams:IsCastableP() and (Target:TimeToDie() < 20) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- blood_of_the_enemy
+    if S.BloodofTheEnemy:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- worldvein_resonance
+    if S.WorldveinResonance:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- ripple_in_space
+    if S.RippleInSpace:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- potion,if=pet.infernal.active|target.time_to_die<30
+    -- berserking,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
+    if S.Berserking:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+      return S.Berserking:Cast()
+    end
+    -- blood_fury,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
+    if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+      return S.BloodFury:Cast()
+    end
+    -- fireblood,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
+    if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+      return S.Fireblood:Cast()
+    end
+    -- use_items,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
+    -- use_item,name=pocketsized_computation_device,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.PocketsizedComputationDevice:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=rotcrusted_voodoo_doll,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.RotcrustedVoodooDoll:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=shiver_venom_relic,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.ShiverVenomRelic:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=aquipotent_nautilus,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.AquipotentNautilus:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=tidestorm_codex,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.TidestormCodex:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=vial_of_storms,if=dot.immolate.remains>=5&(cooldown.summon_infernal.remains>=20|target.time_to_die<30)
+    if I.VialofStorms:IsReady() and (Target:DebuffRemainsP(S.ImmolateDebuff) >= 5 and (S.SummonInfernal:CooldownRemainsP() >= 20 or Target:TimeToDie() < 30)) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+  end
+  
+  Havoc = function()
+    -- conflagrate,if=buff.backdraft.down&soul_shard>=1&soul_shard<=4
+    if S.Conflagrate:IsCastableP() and (Player:BuffDownP(S.BackdraftBuff) and Player:SoulShardsP() >= 1 and Player:SoulShardsP() <= 4) then
+      return S.Conflagrate:Cast()
+    end
+    -- immolate,if=talent.internal_combustion.enabled&remains<duration*0.5|!talent.internal_combustion.enabled&refreshable
+    if S.Immolate:IsCastableP() and (S.InternalCombustion:IsAvailable() and Target:DebuffRemainsP(S.ImmolateDebuff) < S.ImmolateDebuff:BaseDuration() * 0.5 or not S.InternalCombustion:IsAvailable() and Target:DebuffRefreshableCP(S.ImmolateDebuff)) then
+      return S.Immolate:Cast()
+    end
+    -- chaos_bolt,if=cast_time<havoc_remains
+    if S.ChaosBolt:IsReadyP() and (S.ChaosBolt:CastTime() < EnemyHasHavoc()) then
+      return S.ChaosBolt:Cast()
+    end
+    -- soul_fire
+    if S.SoulFire:IsCastableP() then
+      return S.SoulFire:Cast()
+    end
+    -- shadowburn,if=active_enemies<3|!talent.fire_and_brimstone.enabled
+    if S.Shadowburn:IsCastableP() and (EnemiesCount < 3 or not S.FireandBrimstone:IsAvailable()) then
+      return S.Shadowburn:Cast()
+    end
+    -- incinerate,if=cast_time<havoc_remains
+    if S.Incinerate:IsCastableP() and (S.Incinerate:CastTime() < EnemyHasHavoc()) then
+      return S.Incinerate:Cast()
+    end
+  end
+  
+  	-- Protect against interrupt of channeled spells
+    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+    end 
+  
     -- call precombat DBM
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
-            if Precombat_DBM() ~= nil then
-                return Precombat_DBM()
-            end
+        if Precombat_DBM() ~= nil then
+            return Precombat_DBM()
+        end
     end
 	-- call precombat
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
-            if Precombat() ~= nil then
-                return Precombat()
-            end
-    end
-    
-    if Player:IsChanneling() then
-        return 0, 236353
-    end
-	
-    -- combat
-    if RubimRH.TargetIsValid() then
-		if QueueSkill() ~= nil then
-            return QueueSkill()
-        end
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
-        -- run_action_list,name=cata,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.cataclysm.enabled
-        if active_enemies() >= 3 and S.Cataclysm:IsAvailable() then
-            if Cata() ~= nil then
-                return Cata()
-            end
-        end
-        -- run_action_list,name=fnb,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.fire_and_brimstone.enabled
-        if active_enemies() >= 3 and S.FireandBrimstone:IsAvailable() then
-            if Fnb() ~= nil then
-                return Fnb()
-            end
-        end
-        -- run_action_list,name=inf,if=spell_targets.infernal_awakening>=3+raid_event.invulnerable.up&talent.inferno.enabled
-        if active_enemies() >= 3 and S.Inferno:IsAvailable() then
-            if Inf() ~= nil then
-                return Inf()
-            end
-        end
-        -- auto switch target on havoc cast and not player tabbing
-        if S.Havoc:CooldownRemainsP() > 1 and bool(Target:DebuffRemainsP(S.HavocDebuff)) and RubimRH.AoEON() then
-            return 133015
-        end
-    	-- unending resolve,defensive,player.health<=40
-       if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[266].sk1 then
-            return S.UnendingResolve:Cast()
-        end  
-	    -- Mythic+ - interrupt2 (command demon)
-	    if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-	    	return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
-	    end
-	    -- Mythic+ - Shadowfury aoe stun test
-        if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
-	    	return S.Shadowfury:Cast()
-        end	
-        -- cataclysm
-        if S.Cataclysm:IsCastableP() then
-            return S.Cataclysm:Cast()
-        end
-        -- immolate,if=!debuff.havoc.remains&(refreshable|talent.internal_combustion.enabled&action.chaos_bolt.in_flight&remains-action.chaos_bolt.travel_time-5<duration*0.3)
-        if S.Immolate:IsCastableP() and not Player:IsCasting(S.Immolate) and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and (Target:DebuffRefreshableCP(S.ImmolateDebuff) or S.InternalCombustion:IsAvailable() and S.ChaosBolt:InFlight() and Target:DebuffRemainsP(S.ImmolateDebuff) - S.ChaosBolt:TravelTime() - 5 < S.ImmolateDebuff:BaseDuration() * 0.3) then
-            return S.Immolate:Cast()
-        end
-        -- call_action_list,name=cds
-        if RubimRH.CDsON() then
-            if Cds() ~= nil then
-                return Cds()
-            end
-        end
-        -- channel_demonfire,if=!buff.active_havoc.remains
-        if S.ChannelDemonfire:IsCastableP() and (not bool(Player:BuffRemainsP(S.ActiveHavocBuff))) then
-            return S.ChannelDemonfire:Cast()
-        end
-        -- havoc,if=!(target=sim.target)&target.time_to_die>10&active_enemies>1+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (Target:TimeToDie() > 10 and active_enemies() > 1 ) then
-            return S.Havoc:Cast()
-        end
-        -- havoc,if=active_enemies>1+raid_event.invulnerable.up
-        if S.Havoc:IsCastableP() and Player:SoulShardsP() >= 2 and RubimRH.AoEON() and (active_enemies() > 1 ) then
-            return S.Havoc:Cast()
-        end
-        -- soul_fire,if=!debuff.havoc.remains
-        if S.SoulFire:IsCastableP() and (not bool(Target:DebuffRemainsP(S.HavocDebuff))) then
-            return S.SoulFire:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(cooldown.summon_infernal.remains>=20|!talent.grimoire_of_supremacy.enabled)&(cooldown.dark_soul_instability.remains>=20|!talent.dark_soul_instability.enabled)&(talent.eradication.enabled&debuff.eradication.remains<=cast_time|buff.backdraft.remains|talent.internal_combustion.enabled) 
-		-- removed and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie()
-        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and (S.SummonInfernal:CooldownRemainsP() >= 20 or not S.GrimoireofSupremacy:IsAvailable()) and (S.DarkSoulInstability:CooldownRemainsP() >= 20 or not S.DarkSoulInstability:IsAvailable()) and (S.Eradication:IsAvailable() and Target:DebuffRemainsP(S.EradicationDebuff) <= S.ChaosBolt:CastTime() or bool(Player:BuffRemainsP(S.BackdraftBuff)) or S.InternalCombustion:IsAvailable()) then
-            return S.ChaosBolt:Cast()
-        end
-        -- chaos_bolt,if=!debuff.havoc.remains&execute_time+travel_time<target.time_to_die&(soul_shard>=4|buff.dark_soul_instability.remains>cast_time|pet.infernal.active|buff.active_havoc.remains>cast_time)
-		-- removed and S.ChaosBolt:ExecuteTime() + S.ChaosBolt:TravelTime() < Target:TimeToDie()
-        if S.ChaosBolt:IsCastableP() and FutureShard() >= 2 and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and (Player:SoulShardsP() >= 4 or Player:BuffRemainsP(S.DarkSoulInstabilityBuff) > S.ChaosBolt:CastTime() or InfernalIsActive() or Player:BuffRemainsP(S.ActiveHavocBuff) > S.ChaosBolt:CastTime()) then
-            return S.ChaosBolt:Cast()
-        end
-		-- conflagrate,if=!debuff.havoc.remains&((talent.flashover.enabled&buff.backdraft.stack<=2)|(!talent.flashover.enabled&buff.backdraft.stack<2))
-        if S.Conflagrate:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and ((S.Flashover:IsAvailable() and Player:BuffStackP(S.BackdraftBuff) <= 2) or (not S.Flashover:IsAvailable() and Player:BuffStackP(S.BackdraftBuff) < 2)) then
-            return S.Conflagrate:Cast()
-        end
-        -- shadowburn,if=!debuff.havoc.remains&((charges=2|!buff.backdraft.remains|buff.backdraft.remains>buff.backdraft.stack*action.incinerate.execute_time))
-        if S.Shadowburn:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) and ((S.Shadowburn:ChargesP() == 2 or not bool(Player:BuffRemainsP(S.BackdraftBuff)) or Player:BuffRemainsP(S.BackdraftBuff) > Player:BuffStackP(S.BackdraftBuff) * S.Incinerate:ExecuteTime())) then
-            return S.Shadowburn:Cast()
-        end
-        -- incinerate,if=!debuff.havoc.remains
-        if S.Incinerate:IsCastableP() and not bool(Target:DebuffRemainsP(S.HavocDebuff)) then
-        return S.Incinerate:Cast()
+        if Precombat() ~= nil then
+            return Precombat()
         end
     end
-    return 0, 135328
+  
+  -- call combat
+  if RubimRH.TargetIsValid() then
+    -- auto switch target on havoc cast and not player tabbing
+    if S.Havoc:CooldownRemainsP() > 1 and bool(Target:DebuffRemainsP(S.HavocDebuff)) and RubimRH.AoEON() then
+        return 133015
+    end
+    -- unending resolve,defensive,player.health<=40
+    if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[267].sk1 then
+        return S.UnendingResolve:Cast()
+    end  
+    -- Mythic+ - interrupt2 (command demon)
+    if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
+     	return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+	end
+	-- Mythic+ - Shadowfury aoe stun test
+    if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
+	 	return S.Shadowfury:Cast()
+    end	
+    -- call_action_list,name=havoc,if=havoc_active&active_enemies<5-talent.inferno.enabled+(talent.inferno.enabled&talent.internal_combustion.enabled)
+    if (bool(EnemyHasHavoc()) and EnemiesCount < 5 - num(S.Inferno:IsAvailable()) + num((S.Inferno:IsAvailable() and S.InternalCombustion:IsAvailable()))) then
+      local ShouldReturn = Havoc(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- cataclysm
+    if S.Cataclysm:IsCastableP() then
+      return S.Cataclysm:Cast()
+    end
+    -- call_action_list,name=aoe,if=active_enemies>2
+    if (EnemiesCount > 2) then
+      local ShouldReturn = Aoe(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- immolate,cycle_targets=1,if=refreshable&(!talent.cataclysm.enabled|cooldown.cataclysm.remains>remains)
+    if S.Immolate:IsCastableP() and Target:DebuffRefreshableCP(S.ImmolateDebuff) and (not S.Cataclysm:IsAvailable() or S.Cataclysm:CooldownRemainsP() > Target:DebuffRemainsP(S.ImmolateDebuff)) then
+      return S.Immolate:Cast()
+    end
+    -- immolate,if=talent.internal_combustion.enabled&action.chaos_bolt.in_flight&remains<duration*0.5
+    if S.Immolate:IsCastableP() and (S.InternalCombustion:IsAvailable() and S.ChaosBolt:InFlight() and Target:DebuffRemainsP(S.ImmolateDebuff) < S.ImmolateDebuff:BaseDuration() * 0.5) then
+      return S.Immolate:Cast()
+    end
+    -- call_action_list,name=cds
+    if RubimRH.CDsON() then
+      local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- focused_azerite_beam,if=!pet.infernal.active|!talent.grimoire_of_supremacy.enabled
+    if S.FocusedAzeriteBeam:IsCastableP() and (not S.SummonInfernal:CooldownRemainsP() > 150 or not S.GrimoireofSupremacy:IsAvailable()) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- the_unbound_force,if=buff.reckless_force.react
+    if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForceBuff)) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- purifying_blast
+    if S.PurifyingBlast:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- concentrated_flame,if=!dot.concentrated_flame_burn.remains&!action.concentrated_flame.in_flight
+    if S.ConcentratedFlame:IsCastableP() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- channel_demonfire
+    if S.ChannelDemonfire:IsCastableP() then
+      return S.ChannelDemonfire:Cast()
+    end
+    -- havoc,cycle_targets=1,if=!(target=self.target)&(dot.immolate.remains>dot.immolate.duration*0.5|!talent.internal_combustion.enabled)&(!cooldown.summon_infernal.ready|!talent.grimoire_of_supremacy.enabled|talent.grimoire_of_supremacy.enabled&pet.infernal.remains<=10)
+    if S.Havoc:IsCastableP() and (Target:DebuffRemainsP(S.ImmolateDebuff) > S.ImmolateDebuff:BaseDuration() * 0.5 or not S.InternalCombustion:IsAvailable()) and (not S.SummonInfernal:CooldownUpP() or not S.GrimoireofSupremacy:IsAvailable() or S.GrimoireofSupremacy:IsAvailable() and Target:DebuffRemainsP(S.HavocDebuff) <= 10) then
+      return S.Havoc:Cast()
+    end
+    -- soul_fire
+    if S.SoulFire:IsCastableP() then
+      return S.SoulFire:Cast()
+    end
+    -- conflagrate,if=buff.backdraft.down&soul_shard>=1.5-0.3*talent.flashover.enabled&!variable.pool_soul_shards
+    if S.Conflagrate:IsCastableP() and (Player:BuffDownP(S.BackdraftBuff) and Player:SoulShardsP() >= 1.5 - 0.3 * num(S.Flashover:IsAvailable()) and not bool(VarPoolSoulShards)) then
+      return S.Conflagrate:Cast()
+    end
+    -- shadowburn,if=soul_shard<2&(!variable.pool_soul_shards|charges>1)
+    if S.Shadowburn:IsCastableP() and (Player:SoulShardsP() < 2 and (not bool(VarPoolSoulShards) or S.Shadowburn:ChargesP() > 1)) then
+      return S.Shadowburn:Cast()
+    end
+    -- variable,name=pool_soul_shards,value=active_enemies>1&cooldown.havoc.remains<=10|cooldown.summon_infernal.remains<=20&(talent.grimoire_of_supremacy.enabled|talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains<=20)|talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains<=20&(cooldown.summon_infernal.remains>target.time_to_die|cooldown.summon_infernal.remains+cooldown.summon_infernal.duration>target.time_to_die)
+    if (true) then
+      VarPoolSoulShards = num(EnemiesCount > 1 and S.Havoc:CooldownRemainsP() <= 10 or S.SummonInfernal:CooldownRemainsP() <= 20 and (S.GrimoireofSupremacy:IsAvailable() or S.DarkSoulInstability:IsAvailable() and S.DarkSoulInstability:CooldownRemainsP() <= 20) or S.DarkSoulInstability:IsAvailable() and S.DarkSoulInstability:CooldownRemainsP() <= 20 and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie() or S.SummonInfernal:CooldownRemainsP() + S.SummonInfernal:BaseDuration() > Target:TimeToDie()))
+    end
+    -- chaos_bolt,if=(talent.grimoire_of_supremacy.enabled|azerite.crashing_chaos.enabled)&pet.infernal.active|buff.dark_soul_instability.up|buff.reckless_force.react&buff.reckless_force.remains>cast_time
+    if S.ChaosBolt:IsReadyP() and ((S.GrimoireofSupremacy:IsAvailable() or S.CrashingChaos:AzeriteEnabled()) and S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.DarkSoulInstabilityBuff) or Player:BuffP(S.RecklessForceBuff) and Player:BuffRemainsP(S.RecklessForceBuff) > S.ChaosBolt:CastTime()) then
+      return S.ChaosBolt:Cast()
+    end
+    -- chaos_bolt,if=!variable.pool_soul_shards&!talent.eradication.enabled
+    if S.ChaosBolt:IsReadyP() and (not bool(VarPoolSoulShards) and not S.Eradication:IsAvailable()) then
+      return S.ChaosBolt:Cast()
+    end
+    -- chaos_bolt,if=!variable.pool_soul_shards&talent.eradication.enabled&(debuff.eradication.remains<cast_time|buff.backdraft.up)
+    if S.ChaosBolt:IsReadyP() and (not bool(VarPoolSoulShards) and S.Eradication:IsAvailable() and (Target:DebuffRemainsP(S.EradicationDebuff) < S.ChaosBolt:CastTime() or Player:BuffP(S.BackdraftBuff))) then
+      return S.ChaosBolt:Cast()
+    end
+    -- chaos_bolt,if=(soul_shard>=4.5-0.2*active_enemies)
+    if S.ChaosBolt:IsReadyP() and ((Player:SoulShardsP() >= 4.5 - 0.2 * EnemiesCount)) then
+      return S.ChaosBolt:Cast()
+    end
+    -- conflagrate,if=charges>1
+    if S.Conflagrate:IsCastableP() and (S.Conflagrate:ChargesP() > 1) then
+      return S.Conflagrate:Cast()
+    end
+    -- incinerate
+    if S.Incinerate:IsCastableP() then
+      return S.Incinerate:Cast()
+    end
+   end
+   return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(267, APL)

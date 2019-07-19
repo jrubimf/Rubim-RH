@@ -1354,7 +1354,7 @@ mythicList = {
 		--Demonology
         [266] = {
             cooldowns = true,
-						
+			useSplashData = "Disabled",			
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
@@ -1367,7 +1367,7 @@ mythicList = {
         [267] = {
             cooldowns = true,
 			flamecolor = "Auto",
-						
+			useSplashData = "Disabled",			
 			sk1 = 40,
             sk1id = 104773,
             sk1tooltip = "Percent HP to use Unending Resolve",
