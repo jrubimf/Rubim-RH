@@ -419,9 +419,6 @@ local function APL()
       return S.AncestralCall:Cast()
     end
     -- call_action_list,name=trinkets
-    if (true) then
-      local ShouldReturn = Trinkets(); if ShouldReturn then return ShouldReturn; end
-    end
     -- flamestrike,if=((talent.flame_patch.enabled&active_enemies>2)|active_enemies>6)&buff.hot_streak.react&!azerite.blaster_master.enabled
     if S.Flamestrike:IsCastableP() and (((S.FlamePatch:IsAvailable() and EnemiesCount > 2) or EnemiesCount > 6) and Player:BuffP(S.HotStreakBuff) and not S.BlasterMaster:AzeriteEnabled()) then
       return S.Flamestrike:Cast()
