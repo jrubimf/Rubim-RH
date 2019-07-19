@@ -19,14 +19,14 @@ local Item = HL.Item
 -- Spells
 RubimRH.Spell[259] = {
     -- Racials
-    -- Racials
-    AncestralCall  = Spell(274738),
     ArcanePulse = Spell(260364),
     ArcaneTorrent = Spell(25046),
-    Fireblood = Spell(265221),
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     LightsJudgment = Spell(255647),
+	-- Racials
+    AncestralCall  = Spell(274738),   
+    Fireblood = Spell(265221),
     Shadowmeld = Spell(58984),
     -- Abilities
     Envenom = Spell(32645),
@@ -80,8 +80,7 @@ RubimRH.Spell[259] = {
 	SmokeBomb = Spell (212182),
 	DFA = Spell (269513),
 	Neuro = Spell (206328),
-    CheapShot = Spell(1833),
-	
+    CheapShot = Spell(1833),	
 		  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
@@ -423,7 +422,7 @@ end
 -- # Essences
 local function Essences()
   -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() and (Player:AffectingCombat() or Target:AffectingCombat()) then
+  if S.ConcentratedFlame:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
@@ -431,10 +430,8 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and not Player:IsMoving() then
-  if RubimRH.AoEON() and active_enemies() >= 4 or not S.Vendetta:CooldownUp() and Player:EnergyPredicted() < 40 then
+  if S.FocusedAzeriteBeam:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
-  end
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
@@ -453,15 +450,9 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 45 and not S.Vendetta:CooldownUp() then
+  if S.MemoryOfLucidDreams:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("melee") then
-  if RubimRH.AoEON() and active_enemies() >= 4 or RubimRH.TargetIsValid(true) and S.Vendetta:CooldownUp() then
-    return S.UnleashHeartOfAzeroth:Cast()
-	end
-	end
   return false
 end
 
@@ -471,10 +462,8 @@ local function CDs ()
         
 		--actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
         local ShouldReturn = Essences();
-		if ShouldReturn and (true) then
-		    if not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then 
-		        return ShouldReturn; 
-		    end
+		if ShouldReturn and (true) and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then
+		    return ShouldReturn; 
 		end
         
 		-- Racials
@@ -511,12 +500,12 @@ local function CDs ()
             return S.MarkedforDeath:Cast()
         end
       -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&!debuff.vendetta.up&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1&(spell_targets.fan_of_knives<6|!cooldown.vanish.up))&(!talent.nightstalker.enabled|!talent.exsanguinate.enabled|cooldown.exsanguinate.remains<5-2*talent.deeper_stratagem.enabled)
-        if S.Vendetta:CooldownRemainsP() < 0.1 and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
+        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
           and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1 and (Cache.EnemiesCount[10] < 6 or not S.Vanish:CooldownUp()))
           and (not S.Nightstalker:IsAvailable() or not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() < 5 - 2 * num(S.DeeperStratagem:IsAvailable())) then
          return S.Vendetta:Cast()
 	    end
-      
+       
 	   if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
             if S.Subterfuge:IsAvailable() and not Target:IsAPlayer() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
@@ -553,6 +542,9 @@ local function CDs ()
         if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
             return S.ToxicBlade:Cast()
         end
+		-- actions.cds+=/call_action_list,name=essences
+        ShouldReturn = Essences();
+        if ShouldReturn then return ShouldReturn; end
     end
 end
 
@@ -759,16 +751,10 @@ local function APL ()
    
     --Essences caching
 	DetermineEssenceRanks();
-	
-	-- Anti channeling interrupt
-	if Player:IsChanneling() or Player:IsCasting() then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end	
-
 
     if QueueSkill() ~= nil then
         return QueueSkill()
-    end
+        end
 
     -- Defensives
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
