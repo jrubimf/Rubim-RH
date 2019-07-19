@@ -100,13 +100,15 @@ RubimRH.Spell[102] = {
     GuardianOfAzeroth2                    = Spell(299355),
     GuardianOfAzeroth3                    = Spell(299358),
     Thorns                                = Spell(236696),
-	  StreakingStars                        = Spell(272871),
-  ArcanicPulsarBuff                     = Spell(287790),
-  ArcanicPulsar                         = Spell(287773),
-  StarlordBuff                          = Spell(279709),
-  Starlord                              = Spell(202345),
-  TwinMoons                             = Spell(279620),
-	
+    TwinMoons                             = Spell(279620),
+	ShootingStars                         = Spell(202342),
+    NaturesBalance                        = Spell(202430),
+    Barkskin                              = Spell(22812),
+    Renewal                               = Spell(108238),
+    SolarBeam                             = Spell(78675),
+    ShiverVenomDebuff                     = Spell(301624),
+    CyclotronicBlast                      = Spell(167672),
+    AzsharasFontofPowerBuff               = Spell(296962),
 
 };
 local S = RubimRH.Spell[102];
