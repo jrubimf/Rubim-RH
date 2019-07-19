@@ -230,19 +230,20 @@ function ElementalUp()
     return 0
 end
 
-local function GetEnemiesCount()
-  if RubimRH.AoEON() then
-    if RubimRH.db.profile[262].useSplashData == "Enabled" then
-      RubimRH.UpdateSplashCount(Target, 10)
-      return RubimRH.GetSplashCount(Target, 10)
+local function GetEnemiesCount(range)
+    if range == nil then range = 10 end
+	 -- Unit Update - Update differently depending on if splash data is being used
+	if RubimRH.AoEON() then       
+	        if RubimRH.db.profile[262].useSplashData == "Enabled" then	
+                RubimRH.UpdateSplashCount(Target, range)
+                return RubimRH.GetSplashCount(Target, range)
+            else
+                UpdateRanges()
+                return active_enemies()
+            end
     else
-      UpdateRanges()
-      return Cache.EnemiesCount[40]
-	  --return active_enemies()
+        return 1
     end
-  else
-    return 1
-  end
 end
 
 local function DetermineEssenceRanks()
@@ -474,7 +475,7 @@ local function APL()
       return S.LiquidMagmaTotem:Cast()
     end
     -- lightning_bolt,if=buff.stormkeeper.up&Cache.EnemiesCount[40].chain_lightning<2&(buff.master_of_the_elements.up&!talent.surge_of_power.enabled|buff.surge_of_power.up)
-    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and (Player:BuffP(S.StormkeeperBuff) and GetEnemiesCount() < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff))) then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and Player:BuffP(S.StormkeeperBuff) and GetEnemiesCount() < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff)) then
       return S.LightningBolt:Cast()
     end
     --# There might come an update for this line with some SoP logic.
