@@ -12,7 +12,7 @@ local Pet        = Unit.Pet
 local Spell      = HL.Spell
 --local MultiSpell = HL.MultiSpell
 local Item       = HL.Item
-
+local MouseOver = Unit.MouseOver;
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
