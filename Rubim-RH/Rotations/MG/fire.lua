@@ -193,7 +193,7 @@ end
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat_DBM, Precombat, ActiveTalents, BmCombustionPhase, CombustionPhase, RopPhase, StandardRotation, Trinkets
+  local Precombat_DBM, Precombat, ActiveTalents, BmCombustionPhase, CombustionPhase, RopPhase, StandardRotation
   EnemiesCount = GetEnemiesCount(8)
   HL.GetEnemies(40) -- For interrupts
   DetermineEssenceRanks()
@@ -295,9 +295,6 @@ local function APL()
       return S.AncestralCall:Cast()
     end
     -- call_action_list,name=trinkets
-    if (true) then
-      local ShouldReturn = Trinkets(); if ShouldReturn then return ShouldReturn; end
-    end
     -- pyroblast,if=prev_gcd.1.scorch&buff.heating_up.up
     if S.Pyroblast:IsCastableP() and (Player:PrevGCDP(1, S.Scorch) and Player:BuffP(S.HeatingUpBuff)) then
       return S.Pyroblast:Cast()
