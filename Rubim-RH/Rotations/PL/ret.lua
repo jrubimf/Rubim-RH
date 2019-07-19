@@ -405,8 +405,9 @@ local function APL()
         end
         return 0, 462338
     end
-
-   if RubimRH.TargetIsValid()
+   
+   --Call Combat
+   if RubimRH.TargetIsValid() then
 
     if S.Rebuke:IsReadyP(30) and RubimRH.db.profile.mainOption.usweInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
@@ -452,7 +453,7 @@ local function APL()
         return Generators()
     end
   end
-    return 0, 135328
+  return 0, 135328
 end
 
 RubimRH.Rotation.SetAPL(70, APL);
