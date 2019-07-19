@@ -344,6 +344,16 @@ local function APL()
 		    return
 		end
     end
+	-- all trinkets
+	if RubimRH.TargetIsValid() and RubimRH.CDsON() then
+		if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
     -- call_action_list,name=essences
     if (true) then
       local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
