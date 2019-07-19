@@ -423,7 +423,7 @@ local function APL()
 		end
     end
     -- summon_infernal,if=cooldown.dark_soul_instability.ready|cooldown.memory_of_lucid_dreams.ready|(!talent.dark_soul_instability.enabled&!essence.memory_of_lucid_dreams.major)|cooldown.dark_soul_instability.remains<=10|cooldown.memory_of_lucid_dreams.remains<=10
-    if S.SummonInfernal:IsCastableP() and (S.DarkSoulInstability:CooldownUpP() or S.MemoryofLucidDreams:CooldownUpP() or (not S.DarkSoulInstability:IsAvailable() and not S.MemoryofLucidDreams:IsAvailable()) or S.DarkSoulInstability:CooldownRemainsP() <= 10 or S.MemoryofLucidDreams:CooldownRemainsP() <= 10) then
+    if S.SummonInfernal:IsCastableP() and (S.DarkSoulInstability:CooldownUpP() or S.MemoryOfLucidDreams:CooldownUpP() or (not S.DarkSoulInstability:IsAvailable() and not S.MemoryOfLucidDreams:IsAvailable()) or S.DarkSoulInstability:CooldownRemainsP() <= 10 or S.MemoryOfLucidDreams:CooldownRemainsP() <= 10) then
       return S.SummonInfernal:Cast()
     end
     -- guardian_of_azeroth,if=pet.infernal.active
@@ -435,7 +435,7 @@ local function APL()
       return S.DarkSoulInstability:Cast()
     end
     -- memory_of_lucid_dreams,if=pet.infernal.active&pet.infernal.remains<=20
-    if S.MemoryofLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150 and S.SummonInfernal:CooldownRemainsP() <= 170) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150 and S.SummonInfernal:CooldownRemainsP() <= 170) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- summon_infernal,if=target.time_to_die>cooldown.summon_infernal.duration+30
@@ -459,7 +459,7 @@ local function APL()
       return S.DarkSoulInstability:Cast()
     end
     -- memory_of_lucid_dreams,if=cooldown.summon_infernal.remains>target.time_to_die
-    if S.MemoryofLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- summon_infernal,if=target.time_to_die<30
@@ -475,7 +475,7 @@ local function APL()
       return S.DarkSoulInstability:Cast()
     end
     -- memory_of_lucid_dreams,if=target.time_to_die<20
-    if S.MemoryofLucidDreams:IsCastableP() and (Target:TimeToDie() < 20) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (Target:TimeToDie() < 20) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_of_the_enemy
@@ -492,15 +492,15 @@ local function APL()
     end
     -- potion,if=pet.infernal.active|target.time_to_die<30
     -- berserking,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
-    if S.Berserking:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+    if S.Berserking:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryOfLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
       return S.Berserking:Cast()
     end
     -- blood_fury,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
-    if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+    if S.BloodFury:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryOfLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
       return S.BloodFury:Cast()
     end
     -- fireblood,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30
-    if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryofLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
+    if S.Fireblood:IsCastableP() and RubimRH.CDsON() and (S.SummonInfernal:CooldownRemainsP() > 150 or Player:BuffP(S.MemoryOfLucidDreams) or Player:BuffP(S.DarkSoulInstabilityBuff) or Target:TimeToDie() < 30) then
       return S.Fireblood:Cast()
     end
     -- use_items,if=pet.infernal.active|buff.memory_of_lucid_dreams.remains|buff.dark_soul_instability.remains|target.time_to_die<30

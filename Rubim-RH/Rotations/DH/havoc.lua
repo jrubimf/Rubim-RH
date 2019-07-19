@@ -302,7 +302,7 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-    if S.MemoryofLucidDreams:IsCastableP() and (Player:Fury() < 40 and Player:BuffP(S.MetamorphosisBuff)) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (Player:Fury() < 40 and Player:BuffP(S.MetamorphosisBuff)) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
   end

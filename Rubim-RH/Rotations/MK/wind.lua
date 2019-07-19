@@ -263,7 +263,7 @@ local function APL ()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- memory_of_lucid_dreams,if=energy<40&buff.storm_earth_and_fire.up
-    if S.MemoryofLucidDreams:IsCastableP() and (Player:Energy() < 40 and Player:BuffP(S.StormEarthAndFire)) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (Player:Energy() < 40 and Player:BuffP(S.StormEarthAndFire)) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
   end
@@ -491,7 +491,6 @@ local function APL ()
     -- actions+=/tiger_palm,target_if=min:debuff.mark_of_the_crane.remains,if=(energy.time_to_max<1|(talent.serenity.enabled&cooldown.serenity.remains<2))&chi.max-chi>=2&!prev_gcd.1.tiger_palm
     if S.TigerPalm:IsReadyP() and ((Player:EnergyTimeToMaxPredicted() < 1 or (S.Serenity:IsAvailable() and S.Serenity:CooldownRemainsP() < 2)) and Player:ChiDeficit() >= 2 and not Player:PrevGCD(1, S.TigerPalm)) then
       return S.TigerPalm:Cast() 
-      end
     end
     -- actions.st=call_action_list,name=cd
     if (true) then
@@ -500,7 +499,7 @@ local function APL ()
     -- actions+=/call_action_list,name=st,if=active_enemies<3
     if Cache.EnemiesCount[8] < 3 then
       local ShouldReturn = SingleTarget(); if ShouldReturn then return ShouldReturn; end
-    end;
+    end
     -- actions+=/call_action_list,name=aoe,if=active_enemies>=3
     if Cache.EnemiesCount[8] >= 3 then
       local ShouldReturn = Aoe(); if ShouldReturn then return ShouldReturn; end
