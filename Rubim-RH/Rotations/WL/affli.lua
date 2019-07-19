@@ -612,6 +612,11 @@ local function APL()
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	
+	-- corruption,cycle_targets=1,if=!prevgcd.corruption&refreshable&target.time_to_die<=5
+    if S.Corruption:IsCastableP() and not Target:Debuff(S.CorruptionDebuff) then
+        return S.Corruption:Cast()
+    end	
     
     -- Auto multidot
     if RubimRH.AoEON() and RubimRH.AffliAutoAoEON() and Target:DebuffRemainsP(S.AgonyDebuff) >= S.Agony:BaseDuration() * 0.90 and not Player:IsChanneling() and active_enemies() >= 2 and active_enemies() < 7 and CombatTime("player") > 0 and 
