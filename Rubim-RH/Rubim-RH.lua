@@ -1380,7 +1380,7 @@ mythicList = {
 		--Arcane
         [62] = {
             cooldowns = true,
-			
+			useSplashData = "Disabled",
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
@@ -1391,6 +1391,7 @@ mythicList = {
         },
 		-- Fire
         [63] = {
+		    useSplashData = "Disabled",
             cooldowns = true,
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
@@ -1399,7 +1400,7 @@ mythicList = {
         -- Frost
         [64] = {
             cooldowns = true,
-			
+			useSplashData = "Disabled",
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",

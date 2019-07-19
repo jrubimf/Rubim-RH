@@ -20,77 +20,77 @@ local mainAddon = RubimRH
 
 -- Spells
 RubimRH.Spell[62] = {
-              ArcaneIntellectBuff         = Spell(1459),
-              ArcaneIntellect             = Spell(1459),
-              ArcaneFamiliarBuff          = Spell(210126),
-              ArcaneFamiliar              = Spell(205022),
-              Equipoise                   = Spell(286027),
-              MirrorImage                 = Spell(55342),
-              ArcaneBlast                 = Spell(30451),
-              Evocation                   = Spell(12051),
-              ChargedUp                   = Spell(205032),
-              ArcaneChargeBuff            = Spell(36032),
-              NetherTempest               = Spell(114923),
-              NetherTempestDebuff         = Spell(114923),
-              RuneofPowerBuff             = Spell(116014),
-              ArcanePowerBuff             = Spell(12042),
-              RuleofThreesBuff            = Spell(264774),
-              Overpowered                 = Spell(155147),
-              LightsJudgment              = Spell(255647),
-              RuneofPower                 = Spell(116011),
-              ArcanePower                 = Spell(12042),
-              Berserking                  = Spell(26297),
-              BloodFury                   = Spell(20572),
-              Fireblood                   = Spell(265221),
-              AncestralCall               = Spell(274738),
-              PresenceofMind              = Spell(205025),
-              PresenceofMindBuff          = Spell(205025),
-              BerserkingBuff              = Spell(26297),
-              BloodFuryBuff               = Spell(20572),
-              ArcaneOrb                   = Spell(153626),
-              Resonance                   = Spell(205028),
-              ArcaneBarrage               = Spell(44425),
-              ArcaneExplosion             = Spell(1449),
-              ArcaneMissiles              = Spell(5143),
-              ClearcastingBuff            = Spell(263725),
-              Amplification               = Spell(236628),
-              ArcanePummeling             = Spell(270669),
-              Supernova                   = Spell(157980),
-              Blink                       = Spell(1953),
-              Shimmer                     = Spell(212653),
-              IceBlock                    = Spell(45438),
-              PrismaticBarrier            = Spell(235450),		
-              Spellsteal                  = Spell(30449),			 
-	          Counterspell                = Spell(2139),
-			  		  --8.2 Essences
-  UnleashHeartOfAzeroth = Spell(280431),
-  BloodOfTheEnemy       = Spell(297108),
-  BloodOfTheEnemy2      = Spell(298273),
-  BloodOfTheEnemy3      = Spell(298277),
-  ConcentratedFlame     = Spell(295373),
-  ConcentratedFlame2    = Spell(299349),
-  ConcentratedFlame3    = Spell(299353),
-  GuardianOfAzeroth     = Spell(295840),
-  GuardianOfAzeroth2    = Spell(299355),
-  GuardianOfAzeroth3    = Spell(299358),
-  FocusedAzeriteBeam    = Spell(295258),
-  FocusedAzeriteBeam2   = Spell(299336),
-  FocusedAzeriteBeam3   = Spell(299338),
-  PurifyingBlast        = Spell(295337),
-  PurifyingBlast2       = Spell(299345),
-  PurifyingBlast3       = Spell(299347),
-  TheUnboundForce       = Spell(298452),
-  TheUnboundForce2      = Spell(299376),
-  TheUnboundForce3      = Spell(299378),
-  RippleInSpace         = Spell(302731),
-  RippleInSpace2        = Spell(302982),
-  RippleInSpace3        = Spell(302983),
-  WorldveinResonance    = Spell(295186),
-  WorldveinResonance2   = Spell(298628),
-  WorldveinResonance3   = Spell(299334),
-  MemoryOfLucidDreams   = Spell(298357),
-  MemoryOfLucidDreams2  = Spell(299372),
-  MemoryOfLucidDreams3  = Spell(299374),
+    ArcaneIntellectBuff   = Spell(1459),
+    ArcaneIntellect       = Spell(1459),
+    ArcaneFamiliarBuff    = Spell(210126),
+    ArcaneFamiliar        = Spell(205022),
+    Equipoise             = Spell(286027),
+    MirrorImage           = Spell(55342),
+    ArcaneBlast           = Spell(30451),
+    Evocation             = Spell(12051),
+    ChargedUp             = Spell(205032),
+    ArcaneChargeBuff      = Spell(36032),
+    NetherTempest         = Spell(114923),
+    NetherTempestDebuff   = Spell(114923),
+    RuneofPowerBuff       = Spell(116014),
+    ArcanePowerBuff       = Spell(12042),
+    RuleofThreesBuff      = Spell(264774),
+    Overpowered           = Spell(155147),
+    LightsJudgment        = Spell(255647),
+    RuneofPower           = Spell(116011),
+    ArcanePower           = Spell(12042),
+    Berserking            = Spell(26297),
+    BloodFury             = Spell(20572),
+    Fireblood             = Spell(265221),
+    AncestralCall         = Spell(274738),
+    PresenceofMind        = Spell(205025),
+    PresenceofMindBuff    = Spell(205025),
+    BerserkingBuff        = Spell(26297),
+    BloodFuryBuff         = Spell(20572),
+    ArcaneOrb             = Spell(153626),
+    Resonance             = Spell(205028),
+    ArcaneBarrage         = Spell(44425),
+    ArcaneExplosion       = Spell(1449),
+    ArcaneMissiles        = Spell(5143),
+    ClearcastingBuff      = Spell(263725),
+    Amplification         = Spell(236628),
+    ArcanePummeling       = Spell(270669),
+    Supernova             = Spell(157980),
+    Blink                 = Spell(1953),
+    Shimmer               = Spell(212653),
+    IceBlock              = Spell(45438),
+    PrismaticBarrier      = Spell(235450),		
+    Spellsteal            = Spell(30449),			 
+    Counterspell          = Spell(2139),
+	--8.2 Essences
+    UnleashHeartOfAzeroth = Spell(280431),
+    BloodOfTheEnemy       = Spell(297108),
+    BloodOfTheEnemy2      = Spell(298273),
+    BloodOfTheEnemy3      = Spell(298277),
+    ConcentratedFlame     = Spell(295373),
+    ConcentratedFlame2    = Spell(299349),
+    ConcentratedFlame3    = Spell(299353),
+    GuardianOfAzeroth     = Spell(295840),
+    GuardianOfAzeroth2    = Spell(299355),
+    GuardianOfAzeroth3    = Spell(299358),
+    FocusedAzeriteBeam    = Spell(295258),
+    FocusedAzeriteBeam2   = Spell(299336),
+    FocusedAzeriteBeam3   = Spell(299338),
+    PurifyingBlast        = Spell(295337),
+    PurifyingBlast2       = Spell(299345),
+    PurifyingBlast3       = Spell(299347),
+    TheUnboundForce       = Spell(298452),
+    TheUnboundForce2      = Spell(299376),
+    TheUnboundForce3      = Spell(299378),
+    RippleInSpace         = Spell(302731),
+    RippleInSpace2        = Spell(302982),
+    RippleInSpace3        = Spell(302983),
+    WorldveinResonance    = Spell(295186),
+    WorldveinResonance2   = Spell(298628),
+    WorldveinResonance3   = Spell(299334),
+    MemoryOfLucidDreams   = Spell(298357),
+    MemoryOfLucidDreams2  = Spell(299372),
+    MemoryOfLucidDreams3  = Spell(299374),
 
 };
 local S = RubimRH.Spell[62];
@@ -99,7 +99,7 @@ local S = RubimRH.Spell[62];
 if not Item.Mage then Item.Mage = {} end
 Item.Mage.Arcane = {
   BattlePotionOfIntellect          = Item(163222),
-  TidestormCodex                   = Item(165576)
+  TidestormCodex         = Item(165576)
 };
 local I = Item.Mage.Arcane;
 
@@ -119,7 +119,7 @@ end, "PLAYER_REGEN_ENABLED")
 local EnemyRanges = {40, 10}
 local function UpdateRanges()
        for _, i in ipairs(EnemyRanges) do
-              HL.GetEnemies(i);
+    HL.GetEnemies(i);
        end
 end
 
@@ -128,15 +128,15 @@ local function GetEnemiesCount(range)
 	 -- Unit Update - Update differently depending on if splash data is being used
 	if RubimRH.AoEON() then       
 	        if RubimRH.db.profile[62].useSplashData == "Enabled" then	
-                RubimRH.UpdateSplashCount(Target, range)
-                return RubimRH.GetSplashCount(Target, range)
+      RubimRH.UpdateSplashCount(Target, range)
+      return RubimRH.GetSplashCount(Target, range)
             else
-                UpdateRanges()
-                if range == 10 then
-                    return Cache.EnemiesCount[range]
-                else
-                    return active_enemies()
-                end
+      UpdateRanges()
+      if range == 10 then
+          return Cache.EnemiesCount[range]
+      else
+          return active_enemies()
+      end
             end
     else
         return 1
@@ -163,8 +163,8 @@ BurnPhase:Reset()
 
 function BurnPhase:Start()
        if Player:AffectingCombat() then
-              self.state = true
-              self.last_start = HL.GetTime()
+    self.state = true
+    self.last_start = HL.GetTime()
        end
 end
 
