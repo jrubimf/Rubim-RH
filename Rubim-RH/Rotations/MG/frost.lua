@@ -181,7 +181,7 @@ local function APL()
   local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop, Essences
   local BlinkAny = S.Shimmer:IsAvailable() and S.Shimmer or S.Blink
   EnemiesCount = GetEnemiesCount(8)
-  
+  DetermineEssenceRanks()
   Precombat = function()
     -- flask
     -- food

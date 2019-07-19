@@ -309,7 +309,7 @@ end
 local function APL()
   local Precombat_DBM, Precombat, Aoe, SingleTarget
   UpdateRanges()
-  
+  DetermineEssenceRanks()
    Precombat_DBM = function()
     -- flask
     -- food

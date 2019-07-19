@@ -264,7 +264,8 @@ local function APL()
   local BlinkAny = S.Shimmer:IsAvailable() and S.Shimmer or S.Blink
   UpdateRanges()
   RubimRH.UpdateSplashCount(Target, 10)
-   
+  DetermineEssenceRanks()
+  
   Precombat_DBM = function()
     -- flask
     -- food

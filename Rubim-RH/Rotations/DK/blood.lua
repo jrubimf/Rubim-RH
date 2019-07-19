@@ -187,7 +187,7 @@ local function APL()
     local Precombat, StandardSimc, Standard, Immunity
     UpdateRanges()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target);
-
+    DetermineEssenceRanks()
     Precombat = function()
 
     end

@@ -150,6 +150,7 @@ local function APL()
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
+	DetermineEssenceRanks()
     Precombat = function()
         -- flask
         -- food

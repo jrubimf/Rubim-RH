@@ -246,7 +246,7 @@ local function APL()
   local Precombat_DBM, Precombat, Aoe, St, Defensive
   local gcdTime = Player:GCD()
   UpdateRanges()
-  
+  DetermineEssenceRanks()
   -- Precombat DBM function
   Precombat_DBM = function()
     -- flask

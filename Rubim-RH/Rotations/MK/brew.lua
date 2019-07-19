@@ -143,7 +143,7 @@ end
 -- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
 local Precombat_DBM, Precombat
-
+    DetermineEssenceRanks()
 	Precombat_DBM = function()
     -- flask
     -- food

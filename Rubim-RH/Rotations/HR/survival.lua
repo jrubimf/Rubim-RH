@@ -272,7 +272,7 @@ local function APL ()
     UpdateRanges()
     UpdateCDs()
     UpdateWFB()
-
+    DetermineEssenceRanks()
     Precombat = function()
         -- flask
         -- augmentation

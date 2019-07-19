@@ -555,7 +555,7 @@ end
 local function APL()
     --local Precombat, Cata, Cds, Fnb, Inf
     UpdateRanges()
-    
+    DetermineEssenceRanks()
 	Precombat_DBM = function()
         -- flask
         -- food

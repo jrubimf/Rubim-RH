@@ -560,6 +560,7 @@ end
 
 local function APL()
     UpdateRanges()
+	DetermineEssenceRanks()
     --Mov Speed
     if Player:MovingFor() >= 1 and S.DeathsAdvance:IsReadyMorph() then
         return S.DeathsAdvance:Cast()

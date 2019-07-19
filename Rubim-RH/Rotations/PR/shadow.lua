@@ -262,9 +262,7 @@ local function APL()
   end
   
   
-  Precombat = function()
- 	  --essences updater
-	  DetermineEssenceRanks()	  
+  Precombat = function() 
       -- variable,name=mind_blast_targets,op=set,value=floor((4.5+azerite.whispers_of_the_damned.rank)%(1+0.27*azerite.searing_dialogue.rank))
       if (true) then
         VarMindBlastTargets = math.floor((4.5 + S.WhispersoftheDamned:AzeriteRank()) / (1 + 0.27 * S.SearingDialogue:AzeriteRank()))

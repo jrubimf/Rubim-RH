@@ -216,8 +216,9 @@ end
 local function APL ()
     local Precombat, Cds, St, Trickshots
     UpdateRanges()
-
-    Precombat = function()
+    DetermineEssenceRanks()
+    
+	Precombat = function()
         if RubimRH.TargetIsValid() then
             -- flask
             -- augmentation

@@ -225,6 +225,7 @@ local function APL()
     local Precombat, Aoe, Cd, Serenity, St
     UpdateCDs()
     UpdateRanges()
+	DetermineEssenceRanks()
     Precombat = function()
 --actions.precombat=flask
 --actions.precombat+=/food

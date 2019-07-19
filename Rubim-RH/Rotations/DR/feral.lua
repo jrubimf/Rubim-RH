@@ -247,7 +247,7 @@ local function APL()
     local Precombat, Cooldowns, Opener, SingleTarget, StFinishers, StGenerators
     UpdateRanges()
     UpdateCDs()
-    
+    DetermineEssenceRanks()
 	Precombat = function()
         -- flask
         -- food
