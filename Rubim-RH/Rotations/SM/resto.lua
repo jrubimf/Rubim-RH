@@ -32,7 +32,7 @@ RubimRH.Spell[264] = {
 	ChainHeal             = Spell(1064),
 	HealingRain           = Spell(73920),
 	HealingStreamTotem    = Spell(5394),
-	TidalWaveBuff         = Spell(51564),
+	TidalWaveBuff         = Spell(53390),
 	
 	-- Offensive Abilities
 	FlameShock            = Spell(188838),
@@ -357,11 +357,11 @@ local function APL()
 	
         --1 Riptide on Tank
         if S.Riptide:IsReady() then
-            if LowestAlly("TANK", "HP") <= 98 then
-                ForceHealingTarget("TANK")
+            if LowestAlly("ALL", "HP") <= 98 then
+                ForceHealingTarget("ALL")
             end
 
-            if Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:HealthPercentage() <= 98 then
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 98 then
                 return S.Riptide:Cast()
             end
         end
@@ -377,17 +377,6 @@ local function APL()
             end
         end		
 		
-		--3 HealingRain
-        if S.HealingRain:IsReady() and RubimRH.AoEON() and RubimRH.AoEHP(95) >= 3 and HealingRain() <= 3 then
-           if LowestAlly("ALL", "HP") <= 95 then
-                ForceHealingTarget("ALL")
-            end
-
-            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
-                return S.HealingRain:Cast()
-            end
-        end	
-
 		--4 ChainHeal
         if S.ChainHeal:IsReady() and RubimRH.AoEON() and RubimRH.AoEHP(80) >= 3 then
             if LowestAlly("ALL", "HP") <= 80 then
@@ -429,6 +418,17 @@ local function APL()
 
             if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 90 then
                 return S.HealingWave:Cast()
+            end
+        end	
+
+		--3 HealingRain
+        if S.HealingRain:IsReady() and RubimRH.AoEON() and RubimRH.AoEHP(95) >= 3 and HealingRain() <= 3 then
+           if LowestAlly("ALL", "HP") <= 95 then
+                ForceHealingTarget("ALL")
+            end
+
+            if Target:GUID() == LowestAlly("ALL", "GUID") and Target:Exists() and Target:HealthPercentage() <= 95 then
+                return S.HealingRain:Cast()
             end
         end	
     end
