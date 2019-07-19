@@ -478,7 +478,16 @@ local function APL()
     if trinketReady(2) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
         return trinket2
     end
-    -- use_item,name=shiver_venom_relic,if=equipped.168905&cooldown.ca_inc.remains>30&!buff.ca_inc.up
+    -- use_item,name=shiver_venom_relicif=!buff.ca_inc.up,target_if=dot.shiver_venom.stack>=5
+    if I.ShiverVenomRelic:IsReady() and Player:BuffDownP(CaInc()) and Target:DebuffStackP(S.ShiverVenomDebuff) >= 5 then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
     -- use_items,if=cooldown.ca_inc.remains>30
     -- blood_of_the_enemy,if=cooldown.ca_inc.remains>30
     if S.BloodOfTheEnemy:IsCastableP() and (CaInc():CooldownRemainsP() > 30) then
