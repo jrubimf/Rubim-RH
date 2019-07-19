@@ -613,6 +613,9 @@ local function APL()
   
   -- call combat
   if RubimRH.TargetIsValid() then
+    if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
     -- auto switch target on havoc cast and not player tabbing
     if S.Havoc:CooldownRemainsP() > 1 and bool(Target:DebuffRemainsP(S.HavocDebuff)) and RubimRH.AoEON() then
        return 133015

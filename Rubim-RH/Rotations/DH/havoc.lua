@@ -501,6 +501,9 @@ local function APL()
 
   -- Call combat
   if RubimRH.TargetIsValid() then
+    if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
     -- call DBM precombat
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
         return Precombat_DBM()
