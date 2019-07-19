@@ -12,8 +12,6 @@ local Pet        = Unit.Pet
 local Spell      = HL.Spell
 local MultiSpell = HL.MultiSpell
 local Item       = HL.Item
--- HeroRotation
-local HR         = HeroRotation
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -141,7 +139,6 @@ local function GetEnemiesCount(range)
                 HL.GetEnemies(range, nil, true, Target)
                 return Cache.EnemiesCount[range]
             else
-                UpdateRanges()
                 return active_enemies()
             end
     else
