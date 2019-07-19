@@ -391,19 +391,17 @@ local function APL()
     end
 
 
-    -- DBM Precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
-        if Precombat_DBM() ~= nil then
-            return Precombat_DBM()
-        end
-        return 0, 462338
+    -- call DBM precombat
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
+        local ShouldReturn = Precombat_DBM(); 
+            if ShouldReturn then return ShouldReturn; 
+        end    
     end
-    -- NON DBM Precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-        return 0, 462338
+    -- call non DBM precombat
+    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then        
+        local ShouldReturn = Precombat(); 
+            if ShouldReturn then return ShouldReturn; 
+        end    
     end
    
    --Call Combat
