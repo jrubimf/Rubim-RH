@@ -274,11 +274,11 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_of_the_enemy,if=buff.metamorphosis.up|target.time_to_die<=10
-    if S.BloodofTheEnemy:IsCastableP() and (Player:BuffP(S.MetamorphosisBuff) or Target:TimeToDie() <= 10) then
+    if S.BloodOfTheEnemy:IsCastableP() and (Player:BuffP(S.MetamorphosisBuff) or Target:TimeToDie() <= 10) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- guardian_of_azeroth
-    if S.GuardianofAzeroth:IsCastableP() then
+    if S.GuardianOfAzeroth:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- focused_azerite_beam,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60

@@ -235,11 +235,11 @@ local function APL ()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_of_the_enemy
-    if S.BloodofTheEnemy:IsCastableP() then
+    if S.BloodOfTheEnemy:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- guardian_of_azeroth
-    if S.GuardianofAzeroth:IsCastableP() then
+    if S.GuardianOfAzeroth:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- focused_azerite_beam

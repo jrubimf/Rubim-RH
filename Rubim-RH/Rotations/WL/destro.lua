@@ -427,7 +427,7 @@ local function APL()
       return S.SummonInfernal:Cast()
     end
     -- guardian_of_azeroth,if=pet.infernal.active
-    if S.GuardianofAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150) then
+    if S.GuardianOfAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > 150) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- dark_soul_instability,if=pet.infernal.active&pet.infernal.remains<=20
@@ -443,7 +443,7 @@ local function APL()
       return S.SummonInfernal:Cast()
     end
     -- guardian_of_azeroth,if=time>30&target.time_to_die>cooldown.guardian_of_azeroth.duration+30
-    if S.GuardianofAzeroth:IsCastableP() and (HL.CombatTime() > 30 and Target:TimeToDie() > S.GuardianofAzeroth:BaseDuration() + 30) then
+    if S.GuardianOfAzeroth:IsCastableP() and (HL.CombatTime() > 30 and Target:TimeToDie() > S.GuardianOfAzeroth:BaseDuration() + 30) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- summon_infernal,if=talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains>target.time_to_die
@@ -451,7 +451,7 @@ local function APL()
       return S.SummonInfernal:Cast()
     end
     -- guardian_of_azeroth,if=cooldown.summon_infernal.remains>target.time_to_die
-    if S.GuardianofAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
+    if S.GuardianOfAzeroth:IsCastableP() and (S.SummonInfernal:CooldownRemainsP() > Target:TimeToDie()) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- dark_soul_instability,if=cooldown.summon_infernal.remains>target.time_to_die
@@ -467,7 +467,7 @@ local function APL()
       return S.SummonInfernal:Cast()
     end
     -- guardian_of_azeroth,if=target.time_to_die<30
-    if S.GuardianofAzeroth:IsCastableP() and (Target:TimeToDie() < 30) then
+    if S.GuardianOfAzeroth:IsCastableP() and (Target:TimeToDie() < 30) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- dark_soul_instability,if=target.time_to_die<20
@@ -479,7 +479,7 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_of_the_enemy
-    if S.BloodofTheEnemy:IsCastableP() then
+    if S.BloodOfTheEnemy:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- worldvein_resonance
