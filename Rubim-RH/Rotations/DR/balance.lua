@@ -473,13 +473,13 @@ local function APL()
     end
     -- use_item,name=tidestorm_codex,if=equipped.165576
     -- use_item,name=pocketsized_computation_device,if=equipped.167555&dot.moonfire.ticking&dot.sunfire.ticking&(!talent.stellar_flare.enabled|dot.stellar_flare.ticking)
-    if trinketReady(1) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
-        return trinket1
-    end
+    --if trinketReady(1) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
+   --     return trinket1
+   -- end
 	-- use_item,name=pocketsized_computation_device,if=equipped.167555&dot.moonfire.ticking&dot.sunfire.ticking&(!talent.stellar_flare.enabled|dot.stellar_flare.ticking)
-    if trinketReady(2) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
-        return trinket2
-    end
+   -- if trinketReady(2) and Target:DebuffRemainsP(S.MoonfireDebuff) > 2 and Target:DebuffRemainsP(S.SunfireDebuff) > 2 and (not S.StellarFlare:IsAvailable() or Target:DebuffRemainsP(S.StellarFlareDebuff) > 2) then
+    --    return trinket2
+   -- end
     -- use_item,name=shiver_venom_relicif=!buff.ca_inc.up,target_if=dot.shiver_venom.stack>=5
     if I.ShiverVenomRelic:IsReady() and Player:BuffDownP(CaInc()) and Target:DebuffStackP(S.ShiverVenomDebuff) >= 5 then
 	    if trinketReady(1) then
