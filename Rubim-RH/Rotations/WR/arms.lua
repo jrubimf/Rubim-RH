@@ -506,6 +506,10 @@ local function APL()
       return S.Slam:Cast()
     end
   end
+    -- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
   -- call precombat
   if not Player:AffectingCombat() then
     local ShouldReturn = Precombat(); 
@@ -633,9 +637,7 @@ local function APL()
     if (true) then
       return SingleTarget();
     end    
-  
   end
-
 end
 
 RubimRH.Rotation.SetAPL(71, APL);

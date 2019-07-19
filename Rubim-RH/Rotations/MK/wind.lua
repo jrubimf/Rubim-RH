@@ -451,6 +451,11 @@ local function APL ()
     end
     -- actions.st+=/flying_serpent_kick,if=prev_gcd.1.blackout_kick&chi>3&buff.swift_roundhouse.stack<2,interrupt=1
   end
+  
+    -- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
 
     -- call DBM precombat
     if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then

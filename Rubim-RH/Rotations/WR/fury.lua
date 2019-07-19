@@ -340,6 +340,10 @@ local function APL()
         return 0, 135328
     end
 
+  -- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
 
     if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 40 and S.Charge:IsReady() and not Target:IsQuestMob() and S.Charge:TimeSinceLastCast() >= Player:GCD() then
         return S.Charge:Cast()
@@ -350,7 +354,6 @@ local function APL()
         if Precombat_DBM() ~= nil then
             return Precombat_DBM()
         end
-        return 0, 462338
 	end
 
     -- call NON DBM precombat
@@ -358,7 +361,6 @@ local function APL()
         if Precombat() ~= nil then
             return Precombat()
         end
-        return 0, 462338
     end
 
   -- combat

@@ -498,6 +498,11 @@ local function APL()
       return S.ThrowGlaive:Cast()
     end
   end
+  
+    -- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
 
   -- Call combat
   if RubimRH.TargetIsValid() then
