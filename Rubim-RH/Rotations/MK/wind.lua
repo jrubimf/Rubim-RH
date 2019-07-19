@@ -518,8 +518,8 @@ RubimRH.Rotation.SetAPL(269, APL)
 
 local function PASSIVE()
 
-    if S.DampemHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk2 then
-        return S.DampemHarm:Cast()
+    if S.DampenHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[269].sk2 then
+        return S.DampenHarm:Cast()
     end
 
     return RubimRH.Shared()
