@@ -16,7 +16,7 @@ local mainAddon = RubimRH
 
 --- APL Local Vars
 -- Spells
-RubimRH.Spell[257] = {
+RubimRH.Spell[256] = {
     -- Racials
     ArcaneTorrent         = Spell(25046),
     GiftoftheNaaru        = Spell(59547),
@@ -88,7 +88,7 @@ RubimRH.Spell[257] = {
     MemoryOfLucidDreams3  = Spell(299374),	
 	
 };
-local S = RubimRH.Spell[257];
+local S = RubimRH.Spell[256];
 
 -- Items
 if not Item.Priest then
@@ -498,10 +498,10 @@ local function APL()
 	--end
 end
 
-RubimRH.Rotation.SetAPL(257, APL)
+RubimRH.Rotation.SetAPL(256, APL)
 
 local function PASSIVE()
     return RubimRH.Shared()
 end
 
-RubimRH.Rotation.SetPASSIVE(257, PASSIVE)
+RubimRH.Rotation.SetPASSIVE(256, PASSIVE)

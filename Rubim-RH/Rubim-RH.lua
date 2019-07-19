@@ -1410,17 +1410,22 @@ mythicList = {
         },
 		
 		--Priest
+		-- Holy
         [256] = {
-            cooldowns = true,
-			
+            cooldowns = true,			
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
         },
+		-- Discipline
         [257] = {
             cooldowns = true,
+            sk1 = 10, -- IceBlock
+            sk1id = 45438, -- Iceblock
+            sk1tooltip = "Percent HP to use Ice Block",
 			
         },
+		-- Shadow
         [258] = {
             cooldowns = true,
 			AutoAoE = true,	
