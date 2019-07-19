@@ -976,7 +976,7 @@ local function APL()
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
     end
 	-- actions.combat+=/summon_pet.if_dead
-    if not Pet:Exists() and FutureShard() >= 1 then
+    if (not Pet:Exists() or Pet:IsDeadOrGhost()) and Player:SoulShardsP() >= 1 then
         return S.SummonFelguard:Cast()
     end
     -- Queue system
