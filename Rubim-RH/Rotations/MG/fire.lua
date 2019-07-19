@@ -107,14 +107,6 @@ local I = Item.Mage.Fire;
 local ShouldReturn; -- Used to get the return string
 local EnemiesCount;
 
--- GUI Settings
-local Everyone = RubimRH.Commons.Everyone;
-local Settings = {
-  General = RubimRH.GUISettings.General,
-  Commons = RubimRH.GUISettings.APL.Mage.Commons,
-  Fire = RubimRH.GUISettings.APL.Mage.Fire
-};
-
 -- Variables
 local VarCombustionRopCutoff = 0;
 local VarFireBlastPooling = 0;
