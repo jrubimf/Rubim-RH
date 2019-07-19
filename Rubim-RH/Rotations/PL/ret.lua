@@ -406,14 +406,7 @@ local function APL()
         return 0, 462338
     end
 
-    -- call DBM precombat
-	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
-        return Precombat_DBM()
-	end
-    -- call non DBM precombat
-	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
-        return Precombat()
-	end
+   if RubimRH.TargetIsValid()
 
     if S.Rebuke:IsReadyP(30) and RubimRH.db.profile.mainOption.usweInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
@@ -458,7 +451,7 @@ local function APL()
     if Generators() ~= nil then
         return Generators()
     end
-
+  end
     return 0, 135328
 end
 

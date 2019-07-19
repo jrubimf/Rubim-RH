@@ -615,79 +615,79 @@ local function APL()
   if RubimRH.TargetIsValid() then
     -- auto switch target on havoc cast and not player tabbing
     if S.Havoc:CooldownRemainsP() > 1 and bool(Target:DebuffRemainsP(S.HavocDebuff)) and RubimRH.AoEON() then
-        return 133015
+       return 133015
     end
     -- unending resolve,defensive,player.health<=40
     if S.UnendingResolve:IsCastableP() and Player:HealthPercentage() <= mainAddon.db.profile[267].sk1 then
-        return S.UnendingResolve:Cast()
+       return S.UnendingResolve:Cast()
     end  
     -- Mythic+ - interrupt2 (command demon)
     if S.SpellLock:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
-     	return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
+       return 0, "Interface\\Addons\\Rubim-RH\\Media\\wl_lock_red.tga"
 	end
 	-- Mythic+ - Shadowfury aoe stun test
     if S.Shadowfury:IsCastableP() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and RubimRH.InterruptsON() and active_enemies() >= 3 and Target:IsInterruptible() then
-	 	return S.Shadowfury:Cast()
+	   return S.Shadowfury:Cast()
     end	
     -- call_action_list,name=havoc,if=havoc_active&active_enemies<5-talent.inferno.enabled+(talent.inferno.enabled&talent.internal_combustion.enabled)
     if (bool(EnemyHasHavoc()) and EnemiesCount < 5 - num(S.Inferno:IsAvailable()) + num((S.Inferno:IsAvailable() and S.InternalCombustion:IsAvailable()))) then
-      local ShouldReturn = Havoc(); if ShouldReturn then return ShouldReturn; end
+       local ShouldReturn = Havoc(); if ShouldReturn then return ShouldReturn; end
     end
     -- cataclysm
     if S.Cataclysm:IsCastableP() then
-      return S.Cataclysm:Cast()
+       return S.Cataclysm:Cast()
     end
     -- call_action_list,name=aoe,if=active_enemies>2
     if (EnemiesCount > 2) then
-      local ShouldReturn = Aoe(); if ShouldReturn then return ShouldReturn; end
+       local ShouldReturn = Aoe(); if ShouldReturn then return ShouldReturn; end
     end
     -- immolate,cycle_targets=1,if=refreshable&(!talent.cataclysm.enabled|cooldown.cataclysm.remains>remains)
     if S.Immolate:IsCastableP() and Target:DebuffRefreshableCP(S.ImmolateDebuff) and (not S.Cataclysm:IsAvailable() or S.Cataclysm:CooldownRemainsP() > Target:DebuffRemainsP(S.ImmolateDebuff)) then
-      return S.Immolate:Cast()
+       return S.Immolate:Cast()
     end
     -- immolate,if=talent.internal_combustion.enabled&action.chaos_bolt.in_flight&remains<duration*0.5
     if S.Immolate:IsCastableP() and (S.InternalCombustion:IsAvailable() and S.ChaosBolt:InFlight() and Target:DebuffRemainsP(S.ImmolateDebuff) < S.ImmolateDebuff:BaseDuration() * 0.5) then
-      return S.Immolate:Cast()
+       return S.Immolate:Cast()
     end
     -- call_action_list,name=cds
     if RubimRH.CDsON() then
-      local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
+       local ShouldReturn = Cds(); if ShouldReturn then return ShouldReturn; end
     end
     -- focused_azerite_beam,if=!pet.infernal.active|!talent.grimoire_of_supremacy.enabled
     if S.FocusedAzeriteBeam:IsCastableP() and (not S.SummonInfernal:CooldownRemainsP() > 150 or not S.GrimoireofSupremacy:IsAvailable()) then
-      return S.UnleashHeartOfAzeroth:Cast()
+       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- the_unbound_force,if=buff.reckless_force.react
     if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForceBuff)) then
-      return S.UnleashHeartOfAzeroth:Cast()
+       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- purifying_blast
     if S.PurifyingBlast:IsCastableP() then
-      return S.UnleashHeartOfAzeroth:Cast()
+       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- concentrated_flame,if=!dot.concentrated_flame_burn.remains&!action.concentrated_flame.in_flight
     if S.ConcentratedFlame:IsCastableP() then
-      return S.UnleashHeartOfAzeroth:Cast()
+       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- channel_demonfire
     if S.ChannelDemonfire:IsCastableP() then
-      return S.ChannelDemonfire:Cast()
+       return S.ChannelDemonfire:Cast()
     end
     -- havoc,cycle_targets=1,if=!(target=self.target)&(dot.immolate.remains>dot.immolate.duration*0.5|!talent.internal_combustion.enabled)&(!cooldown.summon_infernal.ready|!talent.grimoire_of_supremacy.enabled|talent.grimoire_of_supremacy.enabled&pet.infernal.remains<=10)
     if S.Havoc:IsCastableP() and (Target:DebuffRemainsP(S.ImmolateDebuff) > S.ImmolateDebuff:BaseDuration() * 0.5 or not S.InternalCombustion:IsAvailable()) and (not S.SummonInfernal:CooldownUpP() or not S.GrimoireofSupremacy:IsAvailable() or S.GrimoireofSupremacy:IsAvailable() and Target:DebuffRemainsP(S.HavocDebuff) <= 10) then
-      return S.Havoc:Cast()
+       return S.Havoc:Cast()
     end
     -- soul_fire
     if S.SoulFire:IsCastableP() then
-      return S.SoulFire:Cast()
+       return S.SoulFire:Cast()
     end
     -- conflagrate,if=buff.backdraft.down&soul_shard>=1.5-0.3*talent.flashover.enabled&!variable.pool_soul_shards
     if S.Conflagrate:IsCastableP() and (Player:BuffDownP(S.BackdraftBuff) and Player:SoulShardsP() >= 1.5 - 0.3 * num(S.Flashover:IsAvailable()) and not bool(VarPoolSoulShards)) then
-      return S.Conflagrate:Cast()
+       return S.Conflagrate:Cast()
     end
     -- shadowburn,if=soul_shard<2&(!variable.pool_soul_shards|charges>1)
     if S.Shadowburn:IsCastableP() and (Player:SoulShardsP() < 2 and (not bool(VarPoolSoulShards) or S.Shadowburn:ChargesP() > 1)) then
-      return S.Shadowburn:Cast()
+       return S.Shadowburn:Cast()
     end
     -- variable,name=pool_soul_shards,value=active_enemies>1&cooldown.havoc.remains<=10|cooldown.summon_infernal.remains<=20&(talent.grimoire_of_supremacy.enabled|talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains<=20)|talent.dark_soul_instability.enabled&cooldown.dark_soul_instability.remains<=20&(cooldown.summon_infernal.remains>target.time_to_die|cooldown.summon_infernal.remains+cooldown.summon_infernal.duration>target.time_to_die)
     if (true) then
