@@ -443,7 +443,7 @@ local function APL()
     end
     -- immolation_aura
     if S.ImmolationAura:IsCastableP() then
-      return S.ImmolationAura:Cast()immolation_aura 179"; end
+      return S.ImmolationAura:Cast()
     end
     -- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
     if S.EyeBeam:IsReadyP(20) and (Cache.EnemiesCount[20] > 1 and not bool(VarWaitingForMomentum)) then
