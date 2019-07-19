@@ -486,6 +486,11 @@ local function APL()
 	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then		
         return Precombat()
 	end
+	
+	-- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
   
   	--if Player:IsChanneling() then
     --    return 0, 236353

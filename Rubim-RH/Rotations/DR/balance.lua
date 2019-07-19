@@ -372,6 +372,12 @@ local function APL()
             return S.SolarWrath:Cast()
         end
     end
+	
+	-- Protect against interrupt of channeled spells
+  if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
+      return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+  end 
+	
     -- Moonkin Form OOC, if setting is true
     if GetShapeshiftForm() ~= 4 and RubimRH.AutoMorphON() then
         return S.MoonkinForm:Cast()
@@ -405,10 +411,7 @@ local function APL()
     end
   
   if RubimRH.TargetIsValid() then
-    -- call precombat
-    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end
+
     -- Interrupt
 	-- moonkin_form
     if S.MoonkinForm:IsReadyP() and not Player:Buff(S.MoonkinForm) and RubimRH.AutoMorphON() then
