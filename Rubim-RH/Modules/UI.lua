@@ -1446,7 +1446,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 
         end
         
-        if tab.title == "Healer" then
+        if tab.title == "Healer" and RubimRH.playerSpec == 105 then
             
             --local heal_title = StdUi:FontString(tab.frame, 'Healer Configuration');
             --StdUi:GlueTop(heal_title, tab.frame, 0, -10);
@@ -2037,7 +2037,525 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 	
 	-- The end of Healer tab --
 	end 
-	 
+	
+	
+	if tab.title == "Healer" and RubimRH.playerSpec == 65 then
+			   --local heal_title = StdUi:FontString(tab.frame, 'Healer Configuration');
+            --StdUi:GlueTop(heal_title, tab.frame, 0, -10);
+            --local heal_separator = StdUi:FontString(tab.frame, '===================');
+            --StdUi:GlueTop(heal_separator, heal_title, 0, -12);
+			
+			-- Raid settings title
+            local raid_setting_title = StdUi:FontString(tab.frame, 'Raid settings');
+            StdUi:GlueTop(raid_setting_title, tab.frame, -270, -10);
+			local raid_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(raid_setting_title_separator, raid_setting_title, 0, -10);
+			
+			-- Tank settings title
+            local tank_setting_title = StdUi:FontString(tab.frame, 'Tank settings');
+            StdUi:GlueTop(tank_setting_title, tab.frame, -140, -10);
+			local tank_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(tank_setting_title_separator, tank_setting_title, 0, -10);
+			
+			-- Profils settings title
+            local profils_setting_title = StdUi:FontString(tab.frame, 'Profils settings');
+            StdUi:GlueTop(profils_setting_title, tab.frame, 200, -10);
+			local profils_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(profils_setting_title_separator, profils_setting_title, 0, -10);
+			
+			-- Misc settings title
+            local general_setting_title = StdUi:FontString(tab.frame, 'General settings');
+            StdUi:GlueTop(general_setting_title, tab.frame, 20, -10);
+			local general_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(general_setting_title_separator, general_setting_title, 0, -10);
+			
+			-- Cooldowns settings title
+            local misc_setting_title = StdUi:FontString(tab.frame, 'Cooldowns settings');
+            StdUi:GlueTop(misc_setting_title, tab.frame, 20, -110);
+			local misc_setting_title_separator = StdUi:FontString(tab.frame, '-----------------');
+            StdUi:GlueTop(misc_setting_title_separator, misc_setting_title, 0, -10);
+			
+			------------------
+			-- Profil system
+			------------------
+			
+			local profileList = { }
+			
+			-- Dropdown choice list
+            local profileDropdown = StdUi:Dropdown(tab.frame, 90, 25, profileList);
+            profileDropdown:SetPlaceholder('Selected Profil');
+            StdUi:GlueTop(profileDropdown, profils_setting_title, -40, -50, 'CENTER');
+            local function update_profileList( )
+                profileList = { }
+                for k, v in pairs(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]) do
+                    table.insert( profileList, { text = k, value = k })
+                end
+                profileDropdown:SetOptions( profileList )
+            end
+            update_profileList( )
+			
+			-- Need to implement a function to refresh all sliders 
+			--[[function RubimRH.RefreshSettingsList()
+                local data = {};
+				for i = 1, #sliders, 2 do
+                    table.insert(data, sliders(i));
+					currentslider = sliders(i);
+					currentslider:SetData(data);
+					currentslider:ClearSelection();
+                end
+            end]]--
+			if RubimRH.db.profile.mainOption.selectedProfile == nil then
+			   RubimRH.db.profile.mainOption.selectedProfile = "Default"			
+			end
+			local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
+			
+			
+			
+			----------------------------
+			-- HEALER SLIDERS 
+			----------------------------
+			-- RAID PART
+			---------------------------------
+			-- #5 HOLY PALADIN SLIDERS VAR --
+			---------------------------------
+			    ----------------------------
+			    -- RAID PART
+			    ----------------------------
+			    -- Raid Flash of Light slider
+                local raid_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_flashlight"]["value"], 1, 100 );
+			    -- Raid Holy Light slider
+                local raid_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holylight"]["value"], 1, 100 );
+			    -- Raid Holy Shock slider
+                local raid_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_holyshock"]["value"], 1, 100 );
+			    -- Raid Light of the Martyr
+                local raid_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_martyr"]["value"], 1, 100 );
+				-- Raid Light of Dawn
+                local raid_lightofdawn_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["raid_lightofdawn"]["value"], 1, 100 );
+		
+                --------------------------
+			    -- TANK PART
+			    --------------------------
+			    -- Tank Flash of Light slider
+                local tank_flashlight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_flashlight"]["value"], 1, 100 );
+			    -- Tank Holy Light slider
+                local tank_holylight_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holylight"]["value"], 1, 100 );
+			    -- Tank Holy Shock slider
+                local tank_holyshock_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_holyshock"]["value"], 1, 100 );
+			    -- Tank Light of the Martyr
+                local tank_martyr_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_martyr"]["value"], 1, 100 );
+			    -- Tank Lay on Hands
+                local tank_layonhands_slider = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["tank_layonhands"]["value"], 1, 100 );					
+                -----------------------
+			    -- MISC SETTINGS PART
+			    -----------------------
+			    -- Divine Shield helth percentage for player
+                local divine_shield = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["divine_shield"]["value"], 1, 100 );					
+			    -- BeaconOfLight dropdown select
+                -- Custom Beacon Options             
+                local BeaconOptions = {
+                    { text = 'Tank', value = "TANK" },
+                    { text = 'Dps', value = "DPS" },
+                    { text = 'Heal', value = "HEAL" },
+			        { text = 'All', value = "ALL" },
+                }
+                local beacon_choice = StdUi:Dropdown(tab.frame, 80, -24, BeaconOptions, nil, nil);
+                beacon_choice:SetPlaceholder("|cfff0f8ff|r" .. datavalue["beacon_option"]["value"]);
+                StdUi:AddLabel(tab.frame, beacon_choice, 'Beacon of Light on:', 'TOP');
+                StdUi:FrameTooltip(beacon_choice, 'Choose your priority for Beacon of Light', 'TOPLEFT', 'TOPRIGHT', true);                
+                beacon_choice.OnValueChanged = function(self, val)
+                    if val == "TANK" then
+                        print("Beacon of Light will be used on Tanks")
+                        datavalue["beacon_option"]["value"] = val                    
+                    elseif val == "DPS" then
+                        print("Beacon of Light will be used on DPS")
+                        datavalue["beacon_option"]["value"] = val                  
+                    elseif val == "HEAL" then
+                        print("Beacon of Light will be used on Healers")
+                        datavalue["beacon_option"]["value"] = val 
+                    elseif val == "ALL" then
+                        print("Beacon of Light will be used on everyone")
+						datavalue["beacon_option"]["value"] = val
+					else 
+    					print("No beacon data :'( Try reload")
+                    end
+                end
+                StdUi:GlueTop(beacon_choice, general_setting_title, 0, -70, 'RIGHT');
+			
+			    -- Number of party member injured before using Aura Mastery....
+                local auramastery_number = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["nb_auramastery"]["value"], 1, 9 );
+			    -- ....and how much hp should these number of party member have before using Aura Mastery
+                local auramastery_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_auramastery"]["value"], 1, 100 );
+			
+			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
+			-- Current profil label
+			StdUi:AddLabel( tab.frame, profileDropdown, "Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile, "TOP" );
+            profileDropdown.label:SetFontObject( GameFontNormalLarge )
+            profileDropdown.label:SetFont( profileDropdown.label:GetFont( ), 10 )
+            profileDropdown.label:SetWidth( 0 )
+
+            function profileDropdown:OnValueChanged( value, text )
+			    
+                --Saving the current profile to another table.
+                RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]
+                
+                --Setting the select profile.
+                RubimRH.db.profile[RubimRH.playerSpec] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][value]
+                RubimRH.db.profile.mainOption.selectedProfile = value
+                RubimRH.Print( 'Profile Changed to: ' .. value )
+				local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				
+				-------------------
+				-- Sliders Refresh
+				-------------------
+				-- Profils label refresh
+				profileDropdown.label:SetText("Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile)
+				-- RAID PART
+				-- RAID PART
+				raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
+				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
+				raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
+				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
+				raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
+				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
+				raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
+				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
+				raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
+				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
+                -- TANK PART
+				tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
+				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
+				tank_holylight_slider.label:SetText("Holy Light : " .. datavalue["tank_holylight"]["value"])
+				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
+				tank_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["tank_holyshock"]["value"])
+				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
+				tank_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["tank_martyr"]["value"])
+				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
+				tank_layonhands_slider.label:SetText("Lay on Hands : " .. datavalue["tank_layonhands"]["value"])
+				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
+
+            end
+			RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile] = RubimRH.db.profile[RubimRH.playerSpec]      
+			
+			-- Profil settings button - OK
+            local profileSettingsButton = StdUi:Button(tab.frame, 90, 25, 'Profile Settings' );
+			StdUi:GlueTop(profileSettingsButton, profils_setting_title, 60, -50, 'CENTER');
+			-- Profil button label
+			--StdUi:AddLabel( tab.frame, profileSettingsButton, "Manage my profils", "TOP" );
+           -- profileSettingsButton.label:SetFontObject( GameFontNormalLarge )
+           -- profileSettingsButton.label:SetFont( profileSettingsButton.label:GetFont( ), 10 )
+           -- profileSettingsButton.label:SetWidth( 0 )
+			
+            profileSettingsButton:SetScript( 'OnClick', function( )
+                local rr, gg, bb, aa = RubimRH.db.profile.mainOption.mainframeColor_r, RubimRH.db.profile.mainOption.mainframeColor_g, RubimRH.db.profile.mainOption.mainframeColor_b, RubimRH.db.profile.mainOption.mainframeColor_a			   
+                StdUi.config.backdrop.panel = {r = rr, g = gg, b = bb, a = aa}
+                local window = StdUi:Window(tab.frame, 'Profile Settings', 300, 150 );
+				--window:SetPoint('TOPLEFT', window, 'BOTTOMRIGHT', -10, 10);
+				--StdUi:GlueTop(window, tab.frame, 0, 0, 'LEFT');
+                --local pRI = StdUi:PanelWithLabel(window, 80, 40, nil, 'GlueRight, Inside');
+                local SelectedProfileText = StdUi:FontString( window, "Selected Profile: " .. RubimRH.db.profile.mainOption.selectedProfile );
+                local createButton = StdUi:Button( window, 200, 20, 'Create Profile' );
+                local createButtonTT = StdUi:FrameTooltip( createButton, 'Create a new profile using the name on the EditBox below.', 'tooltipDropDown', 'TOPRIGHT', true );
+                local deleteButton = StdUi:Button( window, 200, 20, 'Delete Profile' );
+                local createButtonTT = StdUi:FrameTooltip( deleteButton, 'Delete a profile using the name on the EditBox below.', 'tooltipDropDown', 'TOPRIGHT', true );
+                local createNameEditbox = StdUi:EditBox( window, 150, 24, '-- Profile Name --', stringValidator );
+                local createNameEditboxTT = StdUi:FrameTooltip( createNameEditbox, 'Sets an profile to create or delete. Only Alphanumeric.', 'tooltipDropDown', 'TOPRIGHT', true );
+                
+                createButton:SetScript( 'OnClick', function( )
+                    local Name = createNameEditbox.value
+                    if Name and not Name:match( "%W" ) and Name ~= 'Default' and not RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] then
+                        function deepcopy( orig )
+                            local orig_type = type( orig )
+                            local copy
+                            if orig_type == 'table' then
+                                copy = { }
+                                for orig_key, orig_value in next, orig, nil do
+                                    copy[ deepcopy( orig_key )] = deepcopy( orig_value )
+                                end
+                                setmetatable( copy, deepcopy( getmetatable( orig )))
+                            else -- number, string, boolean, etc
+                                copy = orig
+                            end
+                            return copy
+                        end
+                        RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] = deepcopy(RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]['Default'])
+                        RubimRH.Print("Created Profile: " .. Name)
+                        update_profileList( )
+                    end
+                end );
+                
+                deleteButton:SetScript( "OnClick", function( )
+                    local Name = createNameEditbox.value
+                    if Name and not Name:match( "%W" ) and Name ~= 'Default' and RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] then
+                        RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][Name] = nil
+                        RubimRH.Print("Deleted Profile: " .. Name)
+                        
+                        if Name == RubimRH.db.profile.mainOption.selectedProfile then
+                            profileDropdown:SetValue('Default', 'Default')
+                        end
+                        update_profileList( )
+                    end
+                end );
+                
+                local function stringValidator( self )
+                    local text = self:GetText( );
+                    
+                    if text:match( "%W" ) then
+                        StdUi:MarkAsValid( self, false ); -- red edge
+                        RubimRH.Print( "Only Characters and Numbers." )
+                        return false;
+                    else
+                        self.value = text;
+                        StdUi:MarkAsValid( self, true );
+                        return true;
+                    end
+                end
+                
+                --window:SetPoint('CENTER', tab.frame, 'LEFT', 24, 0);
+                
+                StdUi:EasyLayout( window, { padding = { top = 40 }});
+                window:AddRow( ):AddElement( SelectedProfileText );
+                window:AddRow( ):AddElements( createButton, deleteButton, { margin = { top = 0 }, column = '6' });
+                window:AddRow( ):AddElement( createNameEditbox );
+                
+                window:Hide( )
+                window:SetScript( 'OnShow', function( of )
+                    of:DoLayout( );
+                end );
+                window:Show( )
+                -- Popup positionning
+                window:SetPoint( 'TOPRIGHT', tab.frame, 'TOPRIGHT', 310, 65 );
+            end )
+			
+			------------------
+			--- Healers UI ---
+			------------------
+            local sliders2 = { }
+			local Name = RubimRH.db.profile.mainOption.selectedProfile
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+			--local datavalue = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
+			-- Flash of Light   			
+            StdUi:GlueTop(raid_flashlight_slider, raid_setting_title, 20, -50);
+            raid_flashlight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_flashlight_slider, "Flash of Light : " .. datavalue["raid_flashlight"]["value"], "TOP" );
+			raid_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_flashlight_slider.label:SetFont( raid_flashlight_slider.label:GetFont( ), 10 )
+            raid_flashlight_slider.label:SetWidth( 0 )
+            raid_flashlight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_flashlight"]["value"] = value
+				print(datavalue["raid_flashlight"]["value"])
+                raid_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["raid_flashlight"]["value"])
+				raid_flashlight_slider.editBox:SetValue(datavalue["raid_flashlight"]["value"])
+				
+            end;
+            table.insert(sliders2, raid_flashlight_slider)	
+			
+			--------------------
+			-- Holy Light  			
+            StdUi:GlueTop(raid_holylight_slider, raid_setting_title, 20, -110);
+            raid_holylight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_holylight_slider, "Holy Light : " .. datavalue["raid_holylight"]["value"], "TOP" );
+            raid_holylight_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_holylight_slider.label:SetFont( raid_holylight_slider.label:GetFont( ), 10 )
+            raid_holylight_slider.label:SetWidth( 0 )
+            raid_holylight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_holylight"]["value"] = value
+				print(datavalue["raid_holylight"]["value"])
+                raid_holylight_slider.label:SetText("Holy Light : " .. datavalue["raid_holylight"]["value"])
+				raid_holylight_slider.editBox:SetValue(datavalue["raid_holylight"]["value"])
+				
+            end;
+            table.insert(sliders2, raid_holylight_slider)	
+			
+			--------------------
+			-- Holy Shock		
+            StdUi:GlueTop(raid_holyshock_slider, raid_setting_title, 20, -170);
+            raid_holyshock_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_holyshock_slider, "Holy Shock : " .. datavalue["raid_holyshock"]["value"], "TOP" );
+            raid_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_holyshock_slider.label:SetFont( raid_holyshock_slider.label:GetFont( ), 10 )
+            raid_holyshock_slider.label:SetWidth( 0 )
+            raid_holyshock_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_holyshock"]["value"] = value
+				print(datavalue["raid_holyshock"]["value"])
+                raid_holyshock_slider.label:SetText("Holy Shock : " .. datavalue["raid_holyshock"]["value"])
+				raid_holyshock_slider.editBox:SetValue(datavalue["raid_holyshock"]["value"])
+				
+            end;
+            table.insert(sliders2, raid_holyshock_slider)
+			
+			--------------------
+			-- Light of the Martyr		
+            StdUi:GlueTop(raid_martyr_slider, raid_setting_title, 20, -230);
+            raid_martyr_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_martyr_slider, "Light of the Martyr : " .. datavalue["raid_martyr"]["value"], "TOP" );
+            raid_martyr_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_martyr_slider.label:SetFont( raid_martyr_slider.label:GetFont( ), 10 )
+            raid_martyr_slider.label:SetWidth( 0 )
+            raid_martyr_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_martyr"]["value"] = value
+				print(datavalue["raid_martyr"]["value"])
+                raid_martyr_slider.label:SetText("Light of the Martyr : " .. datavalue["raid_martyr"]["value"])
+				raid_martyr_slider.editBox:SetValue(datavalue["raid_martyr"]["value"])
+				
+            end;
+            table.insert(sliders2, raid_martyr_slider)
+			
+			
+			--------------------
+			-- Light of Dawn		
+            StdUi:GlueTop(raid_lightofdawn_slider, raid_setting_title, 20, -290);
+            raid_lightofdawn_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, raid_lightofdawn_slider, "Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"], "TOP" );
+            raid_lightofdawn_slider.label:SetFontObject( GameFontNormalLarge )
+            raid_lightofdawn_slider.label:SetFont( raid_lightofdawn_slider.label:GetFont( ), 10 )
+            raid_lightofdawn_slider.label:SetWidth( 0 )
+            raid_lightofdawn_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["raid_lightofdawn"]["value"] = value
+				print(datavalue["raid_lightofdawn"]["value"])
+                raid_lightofdawn_slider.label:SetText("Light of Dawn : " .. datavalue["raid_lightofdawn"]["value"])
+				raid_lightofdawn_slider.editBox:SetValue(datavalue["raid_lightofdawn"]["value"])
+				
+            end;
+            table.insert(sliders2, raid_lightofdawn_slider)
+			
+			
+			--------------------
+			-- Tank Flash of Light		
+            StdUi:GlueTop(tank_flashlight_slider, tank_setting_title, 20, -50);
+            tank_flashlight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_flashlight_slider, "Flash of Light : " .. datavalue["tank_flashlight"]["value"], "TOP" );
+            tank_flashlight_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_flashlight_slider.label:SetFont( tank_flashlight_slider.label:GetFont( ), 10 )
+            tank_flashlight_slider.label:SetWidth( 0 )
+            tank_flashlight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_flashlight"]["value"] = value
+				print(datavalue["tank_flashlight"]["value"])
+                tank_flashlight_slider.label:SetText("Flash of Light : " .. datavalue["tank_flashlight"]["value"])
+				tank_flashlight_slider.editBox:SetValue(datavalue["tank_flashlight"]["value"])
+				
+            end;
+            table.insert(sliders2, tank_flashlight_slider)
+			
+			
+			--------------------
+			-- Tank Holy Light		
+            StdUi:GlueTop(tank_holylight_slider, tank_setting_title, 20, -110);
+            tank_holylight_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_holylight_slider, "Holy Light  : " .. datavalue["tank_holylight"]["value"], "TOP" );
+            tank_holylight_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_holylight_slider.label:SetFont( tank_holylight_slider.label:GetFont( ), 10 )
+            tank_holylight_slider.label:SetWidth( 0 )
+            tank_holylight_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_holylight"]["value"] = value
+				print(datavalue["tank_holylight"]["value"])
+                tank_holylight_slider.label:SetText("Holy Light	 : " .. datavalue["tank_holylight"]["value"])
+				tank_holylight_slider.editBox:SetValue(datavalue["tank_holylight"]["value"])
+				
+            end;
+            table.insert(sliders2, tank_holylight_slider)
+			
+			--------------------
+			-- Tank Holy Shock	
+            StdUi:GlueTop(tank_holyshock_slider, tank_setting_title, 20, -170);
+            tank_holyshock_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_holyshock_slider, "Holy Shock  : " .. datavalue["tank_holyshock"]["value"], "TOP" );
+            tank_holyshock_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_holyshock_slider.label:SetFont( tank_holyshock_slider.label:GetFont( ), 10 )
+            tank_holyshock_slider.label:SetWidth( 0 )
+            tank_holyshock_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_holyshock"]["value"] = value
+				print(datavalue["tank_holyshock"]["value"])
+                tank_holyshock_slider.label:SetText("Holy Shock	 : " .. datavalue["tank_holyshock"]["value"])
+				tank_holyshock_slider.editBox:SetValue(datavalue["tank_holyshock"]["value"])
+				
+            end;
+            table.insert(sliders2, tank_holyshock_slider)
+
+			--------------------
+			-- Tank Light of the Martyr
+            StdUi:GlueTop(tank_martyr_slider, tank_setting_title, 20, -230);
+            tank_martyr_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_martyr_slider, "Light of the Martyr  : " .. datavalue["tank_martyr"]["value"], "TOP" );
+            tank_martyr_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_martyr_slider.label:SetFont( tank_martyr_slider.label:GetFont( ), 10 )
+            tank_martyr_slider.label:SetWidth( 0 )
+            tank_martyr_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_martyr"]["value"] = value
+				print(datavalue["tank_martyr"]["value"])
+                tank_martyr_slider.label:SetText("Light of the Martyr  : " .. datavalue["tank_martyr"]["value"])
+				tank_martyr_slider.editBox:SetValue(datavalue["tank_martyr"]["value"])
+				
+            end;
+            table.insert(sliders2, tank_martyr_slider)
+
+			--------------------
+			-- Tank Lay on Hands
+            StdUi:GlueTop(tank_layonhands_slider, tank_setting_title, 20, -290);
+            tank_layonhands_slider:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, tank_layonhands_slider, "Lay on Hands  : " .. datavalue["tank_layonhands"]["value"], "TOP" );
+            tank_layonhands_slider.label:SetFontObject( GameFontNormalLarge )
+            tank_layonhands_slider.label:SetFont( tank_layonhands_slider.label:GetFont( ), 10 )
+            tank_layonhands_slider.label:SetWidth( 0 )
+            tank_layonhands_slider.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["tank_layonhands"]["value"] = value
+				print(datavalue["tank_layonhands"]["value"])
+                tank_layonhands_slider.label:SetText("Lay on Hands  : " .. datavalue["tank_layonhands"]["value"])
+				tank_layonhands_slider.editBox:SetValue(datavalue["tank_layonhands"]["value"])
+				
+            end;
+            table.insert(sliders2, tank_layonhands_slider)
+			
+			
+			-------------------
+			-- Aura of Mastery Number            
+            StdUi:GlueTop(auramastery_number, misc_setting_title, 0, -50);
+            auramastery_number:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, auramastery_number, "Use Aura Mastery on at least " .. datavalue["nb_auramastery"]["value"] .. " people", "TOP" );
+            auramastery_number.label:SetFontObject( GameFontNormalLarge )
+            auramastery_number.label:SetFont( auramastery_number.label:GetFont( ), 10 )
+            auramastery_number.label:SetWidth( 0 )
+            auramastery_number.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["nb_auramastery"]["value"] = value
+				print(datavalue["nb_auramastery"]["value"])
+                auramastery_number.label:SetText("Use Aura Mastery on at least " .. datavalue["nb_auramastery"]["value"] .. " people")
+				auramastery_number.editBox:SetValue(datavalue["nb_auramastery"]["value"])
+				auramastery_health.label:SetText("and if those " .. datavalue["nb_auramastery"]["value"] .. " people HP <= " .. datavalue["health_auramastery"]["value"])
+				
+            end;
+            table.insert(sliders2, auramastery_number)
+			
+			-------------------
+			-- Aura of Mastery Health           
+            StdUi:GlueTop(auramastery_health, misc_setting_title, 161, -50);
+            auramastery_health:SetPrecision( 0 );
+            StdUi:AddLabel( tab.frame, auramastery_health, "and if those " .. datavalue["nb_auramastery"]["value"] .. " people HP <= " .. datavalue["health_auramastery"]["value"], "TOP" );
+            auramastery_health.label:SetFontObject( GameFontNormalLarge )
+            auramastery_health.label:SetFont( auramastery_health.label:GetFont( ), 10 )
+            auramastery_health.label:SetWidth( 0 )
+            auramastery_health.OnValueChanged = function( _, value)
+			local datavalue = RubimRH.db.profile[RubimRH.playerSpec]
+				datavalue["health_auramastery"]["value"] = value
+				print(datavalue["health_auramastery"]["value"])
+                auramastery_health.label:SetText("and if those " .. datavalue["nb_auramastery"]["value"] .. " people HP <= " .. datavalue["health_auramastery"]["value"])
+				auramastery_health.editBox:SetValue(datavalue["health_auramastery"]["value"])
+				
+            end;
+            table.insert(sliders2, auramastery_health)
+			
+			
+			
+	 end
 	 
 	 
         -------------------	 

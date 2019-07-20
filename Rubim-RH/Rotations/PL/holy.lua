@@ -204,22 +204,32 @@ local function APL()
 
         --Tank Emergency
         if S.LayOnHands:IsReady() and not Target:Debuff(S.Forbearance) then
-            if LowestAlly("TANK", "HP") < 25 then
+            if LowestAlly("TANK", "HP") < RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["tank_layonhands"]["value"] then
                 ForceHealingTarget("TANK")
             end
 
-            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < 25 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:HealthPercentage() < RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["tank_layonhands"]["value"] then
                 return S.LayOnHands:Cast()
             end
         end
+		
+		--Custom Beacon
+        if S.BeaconofLight:IsReady() and not Target:BuffRemainsP(S.BeaconofLight) then
+            if LowestAlly(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["beacon_option"]["value"], "HP") < 99 then
+                ForceHealingTarget(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["beacon_option"]["value"])
+            end
 
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["beacon_option"]["value"], "GUID") and Target:HealthPercentage() < 99 then
+                return S.BeaconofLight:Cast()
+            end
+        end
 		--Dispell
 		--if not Player:CanAttack(Target) and S.Cleanse:IsReady() and Target:HasDispelableDebuff("Magic", "Poison", "Disease") then
 			--return S.Cleanse:Cast()
 		--end
 
-        --Manuel Cooldown and not Glimmer of Light
-		if RubimRH.CDsON() and not S.GlimmerofLight:AzeriteEnabled(3) then
+    --Manuel Cooldown and not Glimmer of Light
+	if RubimRH.CDsON() and not S.GlimmerofLight:AzeriteEnabled(3) then
 		if S.AvengingWrath:IsReady() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingWrath:Cast()
         end
@@ -243,14 +253,14 @@ local function APL()
 		if S.OverchargeMana:IsReady() then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
-		end
+	end
 		
 		if S.MemoryOfLucidDreams:IsReady() and Player:Mana() < Player:ManaMax() * 0.85 then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
 		
-		--Manuel Cooldown and Glimmer of Light
-		if RubimRH.CDsON() and S.GlimmerofLight:AzeriteEnabled(3) then
+	--Manuel Cooldown and Glimmer of Light
+	if RubimRH.CDsON() and S.GlimmerofLight:AzeriteEnabled(3) then
 		if S.AvengingWrath:IsReady() and not Player:Buff(S.AuraMastery) and not Player:Buff(S.HolyAvenger) then
             return S.AvengingWrath:Cast()
         end
@@ -270,11 +280,18 @@ local function APL()
 		if S.OverchargeMana:IsReady() then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
-		end
+	end
 		
 		if S.MemoryOfLucidDreams:IsReady() and Player:Mana() < Player:ManaMax() * 0.85 then
 			return S.UnleashHeartofAzeroth:Cast()
 		end
+		
+		--AuraMastery settings
+        if S.AuraMastery:IsReady() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+            if GroupedBelow(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["health_auramastery"]["value"]) >= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["nb_auramastery"]["value"] then
+                return S.AuraMastery:Cast()
+            end
+        end
 		
 		--Use Trinkets
         --if I.RevitalizingVoodooTotem:IsReady() then
@@ -298,11 +315,11 @@ local function APL()
 
 		--Holy Shock
         if S.HolyShock:IsReady() then
-            if LowestAlly("ALL", "HP") <= 90 then
+            if LowestAlly("ALL", "HP") <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_holyshock"]["value"] then
                 ForceHealingTarget("ALL")
             end
 
-            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_holyshock"]["value"] then
                 return S.HolyShock:Cast()
             end
 
@@ -356,11 +373,11 @@ local function APL()
 		
         --Flash of Light
         if S.FlashofLight:IsReady() and not Player:IsMoving() then
-            if LowestAlly("ALL", "HP") <= 75 then
+            if LowestAlly("ALL", "HP") <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_flashlight"]["value"] then
                 ForceHealingTarget("ALL")
             end
 
-            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_flashlight"]["value"] then
                 return S.FlashofLight:Cast()
             end
         end
@@ -372,22 +389,22 @@ local function APL()
 
         --Holy Light
         if S.HolyLight:IsReady() and not Player:IsMoving() then
-            if LowestAlly("ALL", "HP") <= 90 then
+            if LowestAlly("ALL", "HP") <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_holylight"]["value"] then
                 ForceHealingTarget("ALL")
             end
 
-            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= 90 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_holylight"]["value"] then
                 return S.HolyLight:Cast()
             end
         end
 		
         --Light of the Martyr
         if S.LightoftheMartyr:IsReady() and Player:IsMoving() and Player:HealthPercentage() > 75 then
-            if LowestAlly("ALL", "HP") <= 75 then
+            if LowestAlly("ALL", "HP") <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_martyr"]["value"] then
                 ForceHealingTarget("ALL")
             end
 
-            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < 75 then
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("ALL", "GUID") and Target:HealthPercentage() < RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["raid_martyr"]["value"] then
                 return S.LightoftheMartyr:Cast()
             end
         end

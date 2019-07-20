@@ -303,91 +303,7 @@ local defaults = {
 									  
 						              },							
 						
-						},				
-				-- Restoration Shaman settings
-			    [264] = {	
-						["Default"] = {
-						
-						              ["raid_rejuv"] = {value = 97},
-						              ["raid_germi"] = {value = 95},
-						              ["raid_wildg"] = {value = 96},
-						              ["raid_cenar"] = {value = 40},
-						              ["raid_efflo"] = {value = 80},
-						              ["raid_regro"] = {value = 40},
-						              ["raid_swift"] = {value = 50},
- 						              
-									  ["tank_rejuv"] = {value = 97},
-						              ["tank_germi"] = {value = 95},
-						              ["tank_cenar"] = {value = 40},
-						              ["tank_regro"] = {value = 40},
-						              ["tank_swift"] = {value = 50},
- 						              ["tank_bark"] = {value = 30},
-   						              ["tank_lifebloom"] = {value = 95},									  
-									  ["nb_flourish"] = {value = 5},
-									  ["health_flourish"] = {value = 40},
-									  ["nb_tranqui"] = {value = 8},
-									  ["health_tranqui"] = {value = 35},
-						              --["cd_flourish"] = {value = 5},									  
-									  
-						              },							
-						
-						},				
-				-- Holy Priest settings
-			    [257] = {	
-						["Default"] = {
-						
-						              ["raid_rejuv"] = {value = 97},
-						              ["raid_germi"] = {value = 95},
-						              ["raid_wildg"] = {value = 96},
-						              ["raid_cenar"] = {value = 40},
-						              ["raid_efflo"] = {value = 80},
-						              ["raid_regro"] = {value = 40},
-						              ["raid_swift"] = {value = 50},
- 						              
-									  ["tank_rejuv"] = {value = 97},
-						              ["tank_germi"] = {value = 95},
-						              ["tank_cenar"] = {value = 40},
-						              ["tank_regro"] = {value = 40},
-						              ["tank_swift"] = {value = 50},
- 						              ["tank_bark"] = {value = 30},
-   						              ["tank_lifebloom"] = {value = 95},									  
-									  ["nb_flourish"] = {value = 5},
-									  ["health_flourish"] = {value = 40},
-									  ["nb_tranqui"] = {value = 8},
-									  ["health_tranqui"] = {value = 35},
-						              --["cd_flourish"] = {value = 5},									  
-									  
-						              },							
-						
-						},				
-				-- Disci Priest settings
-			    [256] = {	
-						["Default"] = {
-						
-						              ["raid_rejuv"] = {value = 97},
-						              ["raid_germi"] = {value = 95},
-						              ["raid_wildg"] = {value = 96},
-						              ["raid_cenar"] = {value = 40},
-						              ["raid_efflo"] = {value = 80},
-						              ["raid_regro"] = {value = 40},
-						              ["raid_swift"] = {value = 50},
- 						              
-									  ["tank_rejuv"] = {value = 97},
-						              ["tank_germi"] = {value = 95},
-						              ["tank_cenar"] = {value = 40},
-						              ["tank_regro"] = {value = 40},
-						              ["tank_swift"] = {value = 50},
- 						              ["tank_bark"] = {value = 30},
-   						              ["tank_lifebloom"] = {value = 95},									  
-									  ["nb_flourish"] = {value = 5},
-									  ["health_flourish"] = {value = 40},
-									  ["nb_tranqui"] = {value = 8},
-									  ["health_tranqui"] = {value = 35},
-						              --["cd_flourish"] = {value = 5},									  
-									  
-						              },							
-						
-						},				
+						},							
 				-- Holy Paladin settings
 			    [65] = {	
 						["Default"] = {
@@ -403,8 +319,11 @@ local defaults = {
 						              ["tank_holyshock"] = {value = 40},
 						              ["tank_martyr"] = {value = 40},									  
 						              ["tank_layonhands"] = {value = 25},	
+									  ["divine_shield"] = {value = 25},	
+									  ["beacon_option"] = {value = "TANK"},	
+									  ["nb_auramastery"] = {value = 5},	
+									  ["health_auramastery"] = {value = 50},	
 									  
-									  ["beacon_option"] = {value = "Tank"},	
 									  
 						              },							
 						
@@ -1543,14 +1462,13 @@ function RubimRH.mainRotation(option)
     end
 	
     --RubimRH.CreateConfig[RubimRH.playerSpec]()
-	-- check only for healing specs
-	if RubimRH.playerSpec == 105 then
+-- check only for healing specs
+if RubimRH.playerSpec == 105 or RubimRH.playerSpec == 65 or RubimRH.playerSpec == Holy then
     if RubimRH.db.profile[RubimRH.playerSpec] and not RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] then
 		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec] = {}
 		RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec]["Default"] = RubimRH.db.profile[RubimRH.playerSpec]
 		RubimRH.db.profile.mainOption.selectedProfile = 'Default'
-	end
-	
+	end	
 
 	if RubimRH.db.profile[RubimRH.playerSpec] and RubimRH.db.profile.mainOption.selectedProfile then
         RubimRH.db.profile[RubimRH.playerSpec] = RubimRH.db.profile.mainOption.classprofiles[RubimRH.playerSpec][RubimRH.db.profile.mainOption.selectedProfile]
