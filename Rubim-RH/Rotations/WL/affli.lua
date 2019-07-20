@@ -62,6 +62,7 @@ RubimRH.Spell[265] = {
   Shadowfury                           = Spell(30283),
   PandemicInvocation                   = Spell(289364),
   Berserking                           = Spell(26297), 
+  ShiverVenomDebuff                    = Spell(301624),
   -- Defensive
   UnendingResolve                      = Spell(104773), 
   --8.2 Essences
@@ -105,7 +106,12 @@ if not Item.Warlock then Item.Warlock = {} end
 Item.Warlock.Affliction = {
   PotionofUnbridledFury            = Item(169299),
   AzsharasFontofPower              = Item(169314),
-  PocketsizedComputationDevice     = Item(167555)
+  PocketsizedComputationDevice     = Item(167555),
+  RotcrustedVoodooDoll             = Item(159624),
+  ShiverVenomRelic                 = Item(168905),
+  AquipotentNautilus               = Item(169305),
+  TidestormCodex                   = Item(165576),
+  VialofStorms                     = Item(158224)
 };
 local I = Item.Warlock.Affliction;
 
@@ -383,9 +389,6 @@ local function APL()
         end
     end
     -- potion,if=(talent.dark_soul_misery.enabled&cooldown.summon_darkglare.up&cooldown.dark_soul.up)|cooldown.summon_darkglare.up|target.time_to_die<30
-    if I.PotionofUnbridledFury:IsReady() and Settings.Commons.UsePotions and ((S.DarkSoulMisery:IsAvailable() and S.SummonDarkglare:CooldownUpP() and S.DarkSoul:CooldownUpP()) or S.SummonDarkglare:CooldownUpP() or Target:TimeToDie() < 30) then
-      return I.PotionofUnbridledFury:Cast()
-    end
     -- use_items,if=cooldown.summon_darkglare.remains>70|time_to_die<20|((buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|cooldown.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains)&!cooldown.summon_darkglare.remains)
     -- use_item,name=pocketsized_computation_device,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
     if I.PocketsizedComputationDevice:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
@@ -412,6 +415,66 @@ local function APL()
     -- blood_of_the_enemy,if=pet.darkglare.remains|(!cooldown.deathbolt.remains|!talent.deathbolt.enabled)&cooldown.summon_darkglare.remains>=80&essence.blood_of_the_enemy.rank>1
     if S.BloodOfTheEnemy:IsCastableP() and (S.SummonDarkglare:CooldownRemainsP() > 160 or (S.Deathbolt:CooldownUpP() or not S.Deathbolt:IsAvailable()) and S.SummonDarkglare:CooldownRemainsP() >= 80 and not S.BloodOfTheEnemy:ID() == 297108) then
       return S.UnleashHeartOfAzeroth:Cast()
+    end
+	-- use_item,name=pocketsized_computation_device,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.PocketsizedComputationDevice:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=rotcrusted_voodoo_doll,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.RotcrustedVoodooDoll:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=shiver_venom_relic,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.ShiverVenomRelic:IsReady() and Target:DebuffStackP(S.ShiverVenomDebuff) >= 5 and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=aquipotent_nautilus,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.AquipotentNautilus:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=tidestorm_codex,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.TidestormCodex:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=vial_of_storms,if=cooldown.summon_darkglare.remains>=25&(cooldown.deathbolt.remains|!talent.deathbolt.enabled)
+    if I.VialofStorms:IsReady() and (S.SummonDarkglare:CooldownRemainsP() >= 25 and (bool(S.Deathbolt:CooldownRemainsP()) or not S.Deathbolt:IsAvailable())) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
     end
     -- worldvein_resonance,if=buff.lifeblood.stack<3
     if S.WorldveinResonance:IsCastableP() and (Player:BuffStackP(S.LifebloodBuff) < 3) then
