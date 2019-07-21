@@ -341,6 +341,10 @@ local function APL()
     if S.Fireblood:IsReady() and RubimRH.CDsON() and Player:BuffP(S.MetamorphosisBuff) then
       return S.Fireblood:Cast()
     end
+	-- call_action_list,name=essences
+    if (true) then
+      local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    end
     -- potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
     -- use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.down|(!equipped.dribbling_inkpod&(buff.metamorphosis.remains>20|target.time_to_die<20))|(equipped.dribbling_inkpod&target.health.pct<31)
     if I.AshvanesRazorCoral:IsReady() and (Target:DebuffDownP(S.RazorCoralDebuff) or (not I.DribblingInkpod:IsEquipped() and (Player:BuffRemainsP(S.MetamorphosisBuff) > 20 or Target:TimeToDie() < 20)) or (I.DribblingInkpod:IsEquipped() and Target:HealthPercentage() < 31)) then
@@ -362,10 +366,7 @@ local function APL()
 		    return
 		end
     end
-    -- call_action_list,name=essences
-    if (true) then
-      local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
-    end
+
   end
  
   DarkSlash = function()
