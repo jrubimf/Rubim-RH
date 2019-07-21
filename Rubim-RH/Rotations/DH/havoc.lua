@@ -277,20 +277,13 @@ local function APL()
   end
  
   Essences = function()
-    -- concentrated_flame
-    if S.ConcentratedFlame:IsReady() then
-      return S.UnleashHeartOfAzeroth:Cast()
-    end
+
     -- blood_of_the_enemy,if=buff.metamorphosis.up|target.time_to_die<=10
     if S.BloodOfTheEnemy:IsReady() and (Player:BuffP(S.MetamorphosisBuff) or Target:TimeToDie() <= 10) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- guardian_of_azeroth
     if S.GuardianOfAzeroth:IsReady() then
-      return S.UnleashHeartOfAzeroth:Cast()
-    end
-    -- focused_azerite_beam,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60
-    if S.FocusedAzeriteBeam:IsReady() and (Cache.EnemiesCount[8] >= 2) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- purifying_blast,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60
@@ -570,6 +563,14 @@ local function APL()
 
     if S.ConsumeMagic:IsReady() and Target:HasStealableBuff() then
         return S.ConsumeMagic:Cast()
+    end
+	-- concentrated_flame
+    if S.ConcentratedFlame:IsReady() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+	-- focused_azerite_beam,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60
+    if S.FocusedAzeriteBeam:IsReady() and (Cache.EnemiesCount[8] >= 2) then
+      return S.UnleashHeartOfAzeroth:Cast()
     end
     -- call_action_list,name=cooldown,if=gcd.remains=0
     if RubimRH.CDsON() then
