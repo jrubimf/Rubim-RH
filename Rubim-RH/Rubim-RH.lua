@@ -209,6 +209,8 @@ local Warbreaker = 209577
 local Ravager = 152277
 local OdynsFury = 205545
 local Charge = 100
+local Stormbolt = 107570
+local Shockwave = 46968
 local RallyingCry = 97462
 local DefensiveStance = 197690
 local DiebytheSword = 118038
@@ -1030,7 +1032,12 @@ mythicList = {
             sk2 = 20, -- Last Stand
             sk2id = 12975,
             sk2tooltip =  "Percent HP to use Last Stand",
-
+            
+			Spells = {
+                { spellID = Charge, isActive = true },
+				{ spellID = Stormbolt, isActive = true },
+				{ spellID = Shockwave, isActive = true }
+            }
         },
         --ROGUE
         [260] = { --Outlaw

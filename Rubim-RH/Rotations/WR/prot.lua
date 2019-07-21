@@ -73,6 +73,7 @@ RubimRH.Spell[73] = {
     LastStandBuff = Spell(12975),
     IntimidatingShout = Spell(5246),
 	Stormbolt = Spell(107570),
+	Shockwave = Spell(46968),
 	
 	--8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
@@ -118,14 +119,6 @@ local I = Item.Warrior.Protection;
 
 local ShouldReturn;
 
-local EnemyRanges = {}
-local function UpdateRanges()
-  for _, i in ipairs(EnemyRanges) do
-    HL.GetEnemies(i);
-  end
-end
-
-
 local function num(val)
   if val then return 1 else return 0 end
 end
@@ -134,7 +127,7 @@ local function bool(val)
   return val ~= 0
 end
 
-local EnemyRanges = {5}
+local EnemyRanges = {5, 10}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
@@ -248,6 +241,7 @@ local function APL()
   local gcdTime = Player:GCD()
   UpdateRanges()
   DetermineEssenceRanks()
+  
   -- Precombat DBM function
   Precombat_DBM = function()
     -- flask
@@ -386,13 +380,17 @@ local function APL()
     end
 -- call_action_list,name=essences
     local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
-    -- Pummel
+	-- Shockwave
+    if S.Shockwave:IsCastableP() and Target:IsInRange(10) and Cache.EnemiesCount[10] >= 3 and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.Shockwave:Cast()
+    end
+    -- Stormbolt
+    if S.Stormbolt:IsAvailable() and S.Stormbolt:CooldownRemainsP() < 0.1 and S.Pummel:CooldownRemainsP() > 0 and Target:IsInRange(20) and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.Stormbolt:Cast()
+    end
+	-- Pummel
     if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()
-    end
-	-- Stormbolt
-    if S.Stormbolt:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
-        return S.Stormbolt:Cast()
     end
     -- Check defensives if tanking
     if isCurrentlyTanking() then
