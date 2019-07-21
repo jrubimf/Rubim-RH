@@ -333,6 +333,7 @@ local defaults = {
 			},
 
 			
+			
 			-- Interrupt UI values
 			minInterruptValue = 7,
 			maxInterruptValue = 17,
@@ -702,6 +703,8 @@ local defaults = {
             exhilaration = 65,
             aspectoftheturtle = 30,
 			useSplashData = "Disabled",
+			-- Hunter pet list
+			activepet = "",
 			
             sk1 = 65,
             sk1id = 109304,
@@ -719,6 +722,7 @@ local defaults = {
         [BeastMastery] = {
             cooldown = true,
 			useSplashData = "Disabled",
+			activepet = "",
 			
             sk1 = 70,
             sk1id = 136,
@@ -735,6 +739,8 @@ local defaults = {
 
         [Survival] = {
             cooldown = true,
+			activepet = "",
+			
             sk1 = 70,
             sk1id = 136,
             sk1tooltip = "Percent HP to use Victory Rush",

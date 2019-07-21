@@ -576,7 +576,37 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                     StdUi:GlueBelow(choosedata, sk_1_0, 0, -64, 'LEFT');
 					
                 end
+				
+			-- HUNTER PET OPTION
+            if RubimRH.playerSpec == BeastMastery or RubimRH.playerSpec == Survival or RubimRH.playerSpec == Marksmanship then
+
+				local function GetActivePets()
+				    local activepetinfo = {
+										
+					}							
+					for i = 1, 5 do 
+					    petIcon, petName, petLevel, petType, petLoyalty = GetStablePetInfo(i)	
+                        tinsert(activepetinfo, { text = petName, value = petName });						
+					end	
+                    return activepetinfo					
+				end
+				
+                -- Custom Pets Options             
+                local PetsOptions = GetActivePets()
+                local petvalue = RubimRH.db.profile[RubimRH.playerSpec].activepet
+				
+                local pet_choice = StdUi:Dropdown(tab.frame, 120, -24, PetsOptions, nil, nil);
+                pet_choice:SetPlaceholder("|cfff0f8ff|r" .. petvalue);
+                StdUi:AddLabel(tab.frame, pet_choice, 'Pet Selection:', 'TOP');
+                StdUi:FrameTooltip(pet_choice, 'Choose the pet we should use', 'TOPLEFT', 'TOPRIGHT', true);                
+                pet_choice.OnValueChanged = function(self, val)       
+                    RubimRH.db.profile[RubimRH.playerSpec].activepet = val     
+				end
+                StdUi:GlueTop(pet_choice, sk_1_0, -5, -170, 'RIGHT');
                 
+			end
+			
+			
 				-- BALANCE DRUID
                 if RubimRH.playerSpec == Balance then
 				
