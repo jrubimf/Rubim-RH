@@ -144,17 +144,16 @@ local trinket1 = 1030902
 -- Trinket Ready
 local function trinketReady(trinketPosition)
     local inventoryPosition
-
-    if trinketPosition == 1 then
+    
+	if trinketPosition == 1 then
         inventoryPosition = 13
     end
-	
-    if trinketPosition == 2 then
+    
+	if trinketPosition == 2 then
         inventoryPosition = 14
     end
-	
-    local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
-
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
     if enable == 0 then
         return false
     end
@@ -162,6 +161,15 @@ local function trinketReady(trinketPosition)
     if start + duration - GetTime() > 0 then
         return false
     end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end
+	
     return true
 end
 
