@@ -72,6 +72,7 @@ RubimRH.Spell[73] = {
     AvatarBuff = Spell(107574),
     LastStandBuff = Spell(12975),
     IntimidatingShout = Spell(5246),
+	Stormbolt = Spell(107570),
 	
 	--8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
@@ -388,6 +389,10 @@ local function APL()
     -- Pummel
     if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()
+    end
+	-- Stormbolt
+    if S.Stormbolt:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.Stormbolt:Cast()
     end
     -- Check defensives if tanking
     if isCurrentlyTanking() then
