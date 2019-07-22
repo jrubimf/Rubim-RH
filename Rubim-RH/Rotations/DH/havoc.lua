@@ -186,12 +186,12 @@ local function trinketReady(trinketPosition)
         return false
     end
 	
-	if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
-	    return true
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
 	end
 	
-   	if RubimRH.db.profile.mainOption.useTrinkets[2] == true then
-	    return true
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
 	end
 	
     return true
