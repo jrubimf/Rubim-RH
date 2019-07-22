@@ -324,8 +324,10 @@ local defaults = {
 									  ["divine_shield"] = {value = 25},	
 									  ["beacon_option"] = {value = "TANK"},	
 									  ["nb_auramastery"] = {value = 5},	
-									  ["health_auramastery"] = {value = 50},	
-									  
+									  ["health_auramastery"] = {value = 50},
+									  ["divine_shield"] = {value = 30},
+									  ["divine_protection"] = {value = 50},
+									  ["lay_on_hands"] = {value = 15},
 									  
 						              },							
 						
