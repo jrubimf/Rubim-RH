@@ -934,6 +934,9 @@ local defaults = {
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
+            sk2 = 95, -- Blazing Barrier
+            sk2id = 235313, -- Blazing Barrier
+            sk2tooltip = "Percent HP to use Blazing Barrier",
         },
         -- Frost
         [64] = {
