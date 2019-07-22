@@ -428,13 +428,73 @@ function RubimRH.getAbsorb(unit, spellID)
     return (not spellID and UnitGetTotalAbsorbs(unit)) or (spellID and Data[GUID] and Data[GUID].absorb_spells[GetSpellInfo(spellID)]["Amount"]) or 0
 end 
 
-function RubimRH.TimeToDie(unit)
+--[[function RubimRH.TimeToDie(unit)
     local ttd = 0
     local DMG, Hits = RubimRH.getDMG(unit)
     if DMG >= 1 and Hits > 1 then
         ttd = UnitHealth(unit) / DMG
     end
     return ttd or 8675309
+end]]--
+
+function RubimRH.TimeToDie(UNIT)
+    if not UNIT then 
+		UNIT = "target" 
+	end
+	
+    local ttd = UnitHealthMax(UNIT)
+    local DMG, Hits = getDMG(UNIT)
+	
+    if DMG >= 1 and Hits > 1 then
+        ttd = UnitHealth(UNIT) / DMG
+    end    
+	
+	--[[-- Trainer dummy totems exception 
+    if Env.Zone == "none" and UnitHealth(UNIT) == 1 then
+        ttd = 500
+    end]]--
+	
+    return ttd
+end
+
+function RubimRH.TimeToDieMagicX(UNIT, X)
+    if not UNIT then 
+		UNIT = "target" 
+	end
+
+    local ttd = UnitHealth(UNIT) - ( UnitHealthMax(UNIT) * (X / 100) )
+    local Hits, _, DMG = select(2, getDMG(UNIT))
+	
+    if DMG >= 1 and Hits > 1 then
+        ttd = ttd / DMG
+    end    
+	
+	--[[-- Trainer dummy totems exception 
+    if Env.Zone == "none" and UnitHealth(UNIT) == 1 then
+        ttd = 500
+    end]]--
+	
+    return ttd
+end
+
+function RubimRH.TimeToDieMagic(UNIT)
+    if not UNIT then 
+		UNIT = "target" 
+	end
+	
+    local ttd = UnitHealthMax(UNIT)
+    local Hits, _, DMG = select(2, getDMG(UNIT))
+	
+    if DMG >= 1 and Hits > 1 then
+        ttd = UnitHealth(UNIT) / DMG
+    end  
+	
+	--[[-- Trainer dummy totems exception 
+    if Env.Zone == "none" and UnitHealth(UNIT) == 1 then
+        ttd = 500
+    end]]--
+	
+    return ttd
 end
 
 function RubimRH.LastCast(_, unit)
