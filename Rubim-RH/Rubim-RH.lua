@@ -324,8 +324,10 @@ local defaults = {
 									  ["divine_shield"] = {value = 25},	
 									  ["beacon_option"] = {value = "TANK"},	
 									  ["nb_auramastery"] = {value = 5},	
-									  ["health_auramastery"] = {value = 50},	
-									  
+									  ["health_auramastery"] = {value = 50},
+									  ["divine_shield"] = {value = 30},
+									  ["divine_protection"] = {value = 50},
+									  ["lay_on_hands"] = {value = 15},
 									  
 						              },							
 						
@@ -932,6 +934,9 @@ local defaults = {
             sk1 = 10, -- IceBlock
             sk1id = 45438, -- Iceblock
             sk1tooltip = "Percent HP to use Ice Block",
+            sk2 = 95, -- Blazing Barrier
+            sk2id = 235313, -- Blazing Barrier
+            sk2tooltip = "Percent HP to use Blazing Barrier",
         },
         -- Frost
         [64] = {
@@ -1140,3 +1145,62 @@ end
         end
     end
 end
+
+----------------------------
+------- Cache Wrapper ------
+----------------------------
+
+local Cache = { 
+	bufer = {},
+	newVal = function(self, interval, keyArg, func, ...)
+		local obj = {
+		  t = HL.GetTime() + (interval or 0.01) + 0.001,  -- Add small delay to make sure what it's not previous corroute                
+		  v = { func(...) },     
+		}      
+		if keyArg then 
+			self.bufer[func][keyArg] = obj
+		else 
+			self.bufer[func] = obj
+		end 
+		return unpack(obj.v)
+	end,	
+	-- Static without arguments or with cycling arguments in func
+	WrapStatic = function(t, func, interval)
+		if not t.bufer[func] then 
+			t.bufer[func] = setmetatable({}, { __mode == "kv" })
+		end 	
+		return function(...)  
+			if HL.GetTime() > (t.bufer[func].t or 0) then			
+				return t:newVal(interval, nil, func)
+			else
+				return unpack(t.bufer[func].v)
+			end      
+		end
+	end,	
+	-- Dynamic with unlimited arguments in func 
+	WrapDynamic = function(t, func, interval)
+		if not t.bufer[func] then 
+			t.bufer[func] = setmetatable({}, { __mode == "kv" })
+		end 	
+		return function(...) 
+			local arg = {...} 
+            local keyArg = ""
+            for i = 1, #arg do
+                keyArg = keyArg .. tostring(arg[i])            
+            end 			
+			if HL.GetTime() > (t.bufer[func][keyArg] and t.bufer[func][keyArg].t or 0) then			
+				return t:newVal(interval, keyArg, func, ...)
+			else
+				return unpack(t.bufer[func][keyArg].v)
+			end      
+		end
+	end,		
+}
+
+function RubimRH.MakeFunctionCachedStatic(func, interval)
+	return Cache:WrapStatic(func, interval)
+end 
+
+function RubimRH.MakeFunctionCachedDynamic(func, interval)
+	return Cache:WrapDynamic(func, interval)
+end 

@@ -144,8 +144,14 @@ local S = RubimRH.Spell[266]
 -- Items
 if not Item.Warlock then Item.Warlock = {} end
 Item.Warlock.Demonology = {
-  PotionofUnbridledFury        = Item(169299),
-  AzsharasFontofPower          = Item(169314)
+  PotionofUnbridledFury            = Item(169299),
+  AzsharasFontofPower              = Item(169314),
+  PocketsizedComputationDevice     = Item(167555),
+  RotcrustedVoodooDoll             = Item(159624),
+  ShiverVenomRelic                 = Item(168905),
+  AquipotentNautilus               = Item(169305),
+  TidestormCodex                   = Item(165576),
+  VialofStorms                     = Item(158224)
 };
 local I = Item.Warlock.Demonology;
 
@@ -734,68 +740,69 @@ local function APL()
     if S.ShadowBolt:IsCastableP() then
       return S.ShadowBolt:Cast()
     end
-  end
+  end 
   
-  DconOpener = function()
+  Opener = function()
     -- hand_of_guldan,line_cd=30,if=azerite.explosive_potential.enabled
-    if S.HandOfGuldan:IsCastableP() and (HL.CombatTime() < 2 and Player:SoulShardsP() > 2 and S.ExplosivePotential:AzeriteEnabled()) then
-      return S.HandOfGuldan:Cast()
+    if S.HandOfGuldan:IsReadyP() and S.ExplosivePotential:AzeriteEnabled() then
+     return S.HandOfGuldan:Cast()
     end
     -- implosion,if=azerite.explosive_potential.enabled&buff.wild_imps.stack>2&buff.explosive_potential.down
-    if S.Implosion:IsCastableP() and (S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff)) then
-      return S.Implosion:Cast()
+    if S.Implosion:IsReadyP() and S.ExplosivePotential:AzeriteEnabled() and WildImpsCount() > 2 and Player:BuffDownP(S.ExplosivePotentialBuff) then
+     return S.Implosion:Cast()
     end
     -- doom,line_cd=30
-    if S.Doom:IsCastableP() and (Target:DebuffRefreshableCP(S.DoomDebuff)) then
-      return S.Doom:Cast()
+    -- Manually added DebuffDownP check to avoid getting stuck at this line
+    if S.Doom:IsCastableP() and (Target:DebuffDownP(S.DoomDebuff)) then
+     return S.Doom:Cast()
     end
     -- guardian_of_azeroth
-    if S.GuardianOfAzeroth:IsCastableP() and RubimRH.CDsON() then
-      return S.UnleashHeartOfAzeroth:Cast()
+    if S.GuardianofAzeroth:IsCastableP() then
+     return S.UnleashHeartOfAzeroth:Cast()
     end
     -- hand_of_guldan,if=prev_gcd.1.hand_of_guldan&soul_shard>0&prev_gcd.2.soul_strike
-    if S.HandOfGuldan:IsCastableP() and (Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShardsP() > 0 and Player:PrevGCDP(2, S.SoulStrike)) then
-      return S.HandOfGuldan:Cast()
+    if S.HandOfGuldan:IsReadyP() and Player:PrevGCDP(1, S.HandOfGuldan) and Player:SoulShardsP() > 0 and Player:PrevGCDP(2, S.SoulStrike) then
+     return S.HandOfGuldan:Cast()
     end
     -- demonic_strength,if=prev_gcd.1.hand_of_guldan&!prev_gcd.2.hand_of_guldan&(buff.wild_imps.stack>1&action.hand_of_guldan.in_flight)
-    if S.DemonicStrength:IsReadyP() and S.FelStorm:CooldownRemainsP() <= 26.5 and (Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight())) then
-      return S.DemonicStrength:Cast()
+    if S.DemonicStrength:IsCastableP() and S.FelStorm:CooldownRemainsP() <= 26.5 and Player:PrevGCDP(1, S.HandOfGuldan) and not Player:PrevGCDP(2, S.HandOfGuldan) and (WildImpsCount() > 1 and S.HandOfGuldan:InFlight()) then
+     return S.DemonicStrength:Cast()
     end
     -- bilescourge_bombers
     if S.BilescourgeBombers:IsReadyP() then
-      return S.BilescourgeBombers:Cast()
+     return S.BilescourgeBombers:Cast()
     end
     -- soul_strike,line_cd=30,if=!buff.bloodlust.remains|time>5&prev_gcd.1.hand_of_guldan
-    if S.SoulStrike:IsCastableP() and (not Player:HasHeroism() or HL.CombatTime() > 5 and Player:PrevGCDP(1, S.HandOfGuldan)) then
-      return S.SoulStrike:Cast()
+    if S.SoulStrike:IsCastableP() and FutureShard() < 5 and ((not Player:HasHeroism()) or (HL.CombatTime() > 5 and Player:PrevGCDP(1, S.HandOfGuldan))) then
+     return S.SoulStrike:Cast()
     end
     -- summon_vilefiend,if=soul_shard=5
     if S.SummonVilefiend:IsReadyP() and (Player:SoulShardsP() == 5) then
-      return S.SummonVilefiend:Cast()
+     return S.SummonVilefiend:Cast()
     end
     -- grimoire_felguard,if=soul_shard=5
     if S.GrimoireFelguard:IsReadyP() and (Player:SoulShardsP() == 5) then
-      return S.GrimoireFelguard:Cast()
+     return S.GrimoireFelguard:Cast()
     end
     -- call_dreadstalkers,if=soul_shard=5
     if S.CallDreadStalkers:IsReadyP() and (Player:SoulShardsP() == 5) then
-      return S.CallDreadStalkers:Cast()
+     return S.CallDreadStalkers:Cast()
     end
     -- hand_of_guldan,if=soul_shard=5
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() == 5) then
-      return S.HandOfGuldan:Cast()
+    if S.HandOfGuldan:IsReadyP() and (Player:SoulShardsP() == 5) then
+     return S.HandOfGuldan:Cast()
     end
     -- hand_of_guldan,if=soul_shard>=3&prev_gcd.2.hand_of_guldan&time>5&(prev_gcd.1.soul_strike|!talent.soul_strike.enabled&prev_gcd.1.shadow_bolt)
-    if S.HandOfGuldan:IsCastableP() and (Player:SoulShardsP() >= 3 and Player:PrevGCDP(2, S.HandOfGuldan) and HL.CombatTime() > 5 and (Player:PrevGCDP(1, S.SoulStrike) or not S.SoulStrike:IsAvailable() and Player:PrevGCDP(1, S.ShadowBolt))) then
-      return S.HandOfGuldan:Cast()
+    if S.HandOfGuldan:IsReadyP() and (Player:SoulShardsP() >= 3 and Player:PrevGCDP(2, S.HandOfGuldan) and HL.CombatTime() > 5 and (Player:PrevGCDP(1, S.SoulStrike) or not S.SoulStrike:IsAvailable() and Player:PrevGCDP(1, S.ShadowBolt))) then
+     return S.HandOfGuldan:Cast()
     end
     -- summon_demonic_tyrant,if=prev_gcd.1.demonic_strength|prev_gcd.1.hand_of_guldan&prev_gcd.2.hand_of_guldan|!talent.demonic_strength.enabled&buff.wild_imps.stack+imps_spawned_during.2000%spell_haste>=6
-    if S.SummonDemonicTyrant:IsCastableP() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(2000) >= 6) then
-      return S.SummonDemonicTyrant:Cast()
+    if S.SummonDemonicTyrant:IsReadyP() and (Player:PrevGCDP(1, S.DemonicStrength) or Player:PrevGCDP(1, S.HandOfGuldan) and Player:PrevGCDP(2, S.HandOfGuldan) or not S.DemonicStrength:IsAvailable() and WildImpsCount() + ImpsSpawnedDuring(S.SummonDemonicTyrant:CastTime()) >= 6) then
+     return S.SummonDemonicTyrant:Cast()
     end
     -- demonbolt,if=soul_shard<=3&buff.demonic_core.remains
-    if S.Demonbolt:IsCastableP() and (Player:SoulShardsP() <= 3 and bool(Player:BuffRemainsP(S.DemonicCoreBuff))) then
-      return S.Demonbolt:Cast()
+    if S.Demonbolt:IsCastableP() and (FutureShard() <= 3 and Player:BuffP(S.DemonicCoreBuff)) then
+     return S.Demonbolt:Cast()
     end
     -- call_action_list,name=build_a_shard
     if (true) then
@@ -1042,12 +1049,82 @@ local function APL()
     if S.RippleInSpace:IsCastableP() and (DemonicTyrantTime() > 0 and (not S.VisionOfPerfection:IsAvailable() or not S.DemonicConsumption:IsAvailable() or S.SummonDemonicTyrant:CooldownRemainsP() >= S.SummonDemonicTyrant:BaseDuration() - 5)) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- call_action_list,name=dcon_opener,if=talent.demonic_consumption.enabled&time<30&!cooldown.summon_demonic_tyrant.remains
-    if (S.DemonicConsumption:IsAvailable() and HL.CombatTime() < 30 and not bool(S.SummonDemonicTyrant:CooldownRemainsP())) then
-      local ShouldReturn = DconOpener(); if ShouldReturn then return ShouldReturn; end
-    end
     -- use_item,name=azsharas_font_of_power,if=talent.grimoire_felguard.enabled&(target.time_to_die>120|target.time_to_die<cooldown.summon_demonic_tyrant.remains+15)|target.time_to_die<=35
     if I.AzsharasFontofPower:IsReady() and (S.GrimoireFelguard:IsAvailable() and (Target:TimeToDie() > 120 or Target:TimeToDie() < S.SummonDemonicTyrant:CooldownRemainsP() + 15) or Target:TimeToDie() <= 35) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+	 -- use_item,name=pocketsized_computation_device,if=cooldown.summon_demonic_tyrant.remains>=20&cooldown.summon_demonic_tyrant.remains<=cooldown.summon_demonic_tyrant.duration-15|target.time_to_die<=30
+    if I.PocketsizedComputationDevice:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 20 and S.SummonDemonicTyrant:CooldownRemainsP() <= 75 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=rotcrusted_voodoo_doll,if=(cooldown.summon_demonic_tyrant.remains>=25|target.time_to_die<=30)
+    if I.RotcrustedVoodooDoll:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 25 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=shiver_venom_relic,if=(cooldown.summon_demonic_tyrant.remains>=25|target.time_to_die<=30)
+    if I.ShiverVenomRelic:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 25 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=aquipotent_nautilus,if=(cooldown.summon_demonic_tyrant.remains>=25|target.time_to_die<=30)
+    if I.AquipotentNautilus:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 25 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=tidestorm_codex,if=(cooldown.summon_demonic_tyrant.remains>=25|target.time_to_die<=30)
+    if I.TidestormCodex:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 25 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- use_item,name=vial_of_storms,if=(cooldown.summon_demonic_tyrant.remains>=25|target.time_to_die<=30)
+    if I.VialofStorms:IsReady() and (S.SummonDemonicTyrant:CooldownRemainsP() >= 25 or Target:TimeToDie() <= 30) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
+    -- call_action_list,name=opener,if=!talent.nether_portal.enabled&time<30&!cooldown.summon_demonic_tyrant.remains
+    if (not S.NetherPortal:IsAvailable() and HL.CombatTime() < 30 and not bool(S.SummonDemonicTyrant:CooldownRemainsP())) then
+      local ShouldReturn = Opener(); if ShouldReturn then return ShouldReturn; end
+    end
+    -- use_item,name=azsharas_font_of_power,if=(time>30|!talent.nether_portal.enabled)&talent.grimoire_felguard.enabled&(target.time_to_die>120|target.time_to_die<cooldown.summon_demonic_tyrant.remains+15)|target.time_to_die<=35
+    if I.AzsharasFontofPower:IsReady() and ((HL.CombatTime() > 30 or not S.NetherPortal:IsAvailable()) and S.GrimoireFelguard:IsAvailable() and (Target:TimeToDie() > 120 or Target:TimeToDie() < S.SummonDemonicTyrant:CooldownRemainsP() + 15) or Target:TimeToDie() <= 35) then
 	    if trinketReady(1) then
             return trinket1
 		elseif trinketReady(2) then

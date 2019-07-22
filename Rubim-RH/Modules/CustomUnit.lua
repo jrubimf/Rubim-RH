@@ -355,6 +355,29 @@ function RubimRH.UNITBoss(unitID)
     return RubimRH.UNITLevel(unitID) == -1 or UnitEffectiveLevel(unitID) == -1 or UnitIsQuestBoss(unitID) or UnitIsBoss(unitID) or false 
 end 
 
+local HealerSpecs = {
+    [105] = true, -- Restoration(druid)
+    [270] = true, -- Mistweaver
+    [65] = true, -- Holy
+    [256] = true, -- Discipline
+    [257] = true, -- Holy
+    [264] = true -- Restoration(shaman)
+}
+
+-- @return boolean
+function Unit:IsHealer()
+    local specID = self:SpecID()
+
+    if HealerSpecs[specID] then
+        return true
+    end
+    return false
+end
+
+function Unit:IsBoss()
+    return self:Classification() == "worldboss" or self:Classification() == "rareelite" or self:Classification() == "rare"
+end
+
 local otherTank = Player
 function Unit:IsTank()
     local unitRole = UnitGroupRolesAssigned(self:ID())

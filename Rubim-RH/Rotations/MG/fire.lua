@@ -53,6 +53,8 @@ RubimRH.Spell[63] = {
   Kindling                              = Spell(155148),
   Counterspell                          = Spell(2139),
   Spellsteal                            = Spell(30449),
+  IceBlock                              = Spell(45438),
+  BlazingBarrier                        = Spell(235313),
   --8.2 Essences
   UnleashHeartOfAzeroth                 = Spell(280431),
   BloodOfTheEnemy                       = Spell(297108),
@@ -320,7 +322,7 @@ local function APL()
       return S.FireBlast:Cast()
     end
     -- scorch,if=buff.hot_streak.down&(cooldown.fire_blast.remains<cast_time|action.fire_blast.charges>0)
-    if S.Scorch:IsCastableP() and (Player:BuffDownP(S.HotStreakBuff) and (S.FireBlast:CooldownRemainsP() < S.Scorch:CastTime() or S.FireBlast:ChargesP() > 0)) then
+    if S.Scorch:IsCastableP() and Player:BuffDownP(S.HotStreakBuff) and (S.FireBlast:CooldownRemainsP() < S.Scorch:CastTime() or S.FireBlast:ChargesP() > 0) then
       return S.Scorch:Cast()
     end
     -- fire_blast,use_while_casting=1,use_off_gcd=1,if=buff.blaster_master.stack>1&(prev_gcd.1.scorch&!buff.hot_streak.up&!action.scorch.executing|buff.blaster_master.remains<0.15)
@@ -504,7 +506,7 @@ local function APL()
       return S.PhoenixFlames:Cast()
     end
     -- scorch,if=target.health.pct<=30&talent.searing_touch.enabled
-    if S.Scorch:IsCastableP() and (Target:HealthPercentage() <= 30 and S.SearingTouch:IsAvailable()) then
+    if S.Scorch:IsCastableP() and Player:IsMoving() and (Target:HealthPercentage() <= 30 and S.SearingTouch:IsAvailable()) then
       return S.Scorch:Cast()
     end
     -- dragons_breath,if=active_enemies>2
@@ -636,6 +638,10 @@ local function APL()
 	if S.Spellsteal:IsReady() and RubimRH.InterruptsON() and Target:HasStealableBuff() then
         return S.Spellsteal:Cast()
     end
+	-- scorch.moving
+    if S.Scorch:IsCastableP() and Player:IsMoving() then
+      return S.Scorch:Cast()
+    end
     -- mirror_image,if=buff.combustion.down
     if S.MirrorImage:IsCastableP() and (Player:BuffDownP(S.CombustionBuff)) then
       return S.MirrorImage:Cast()
@@ -709,6 +715,13 @@ end
 RubimRH.Rotation.SetAPL(63, APL)
 
 local function PASSIVE()
+    if S.IceBlock:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[63].sk1 then
+        return S.IceBlock:Cast()
+    end
+
+    if S.BlazingBarrier:IsReady() and not Player:Buff(S.BlazingBarrier) and  Player:HealthPercentage() <= RubimRH.db.profile[63].sk2 then
+        return S.BlazingBarrier:Cast()
+    end
     return RubimRH.Shared()
 end
 RubimRH.Rotation.SetPASSIVE(63, PASSIVE)

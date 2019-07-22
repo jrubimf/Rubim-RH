@@ -198,7 +198,7 @@ local function APL()
 		DetermineEssenceRanks()
 	
 		--Save yourself
-		if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
+		if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["divine_shield"]["value"] and not Player:Debuff(S.Forbearance) then
 			return S.DivineShield:Cast()
 		end	
 
@@ -287,7 +287,7 @@ local function APL()
 		end
 		
 		--AuraMastery settings
-        if S.AuraMastery:IsReady() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+        if S.AuraMastery:IsReady() and RubimRH.CDsON() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
             if RubimRH.AoEHP(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["health_auramastery"]["value"]) >= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["nb_auramastery"]["value"] then
                 return S.AuraMastery:Cast()
             end
@@ -433,7 +433,7 @@ RubimRH.Rotation.SetAPL(65, APL);
 
 local function PASSIVE()
 
-    if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[65].sk2 and not Player:Debuff(S.Forbearance) then
+    if S.DivineShield:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["divine_shield"]["value"] and not Player:Debuff(S.Forbearance) then
         return S.DivineShield:Cast()
     end
 
