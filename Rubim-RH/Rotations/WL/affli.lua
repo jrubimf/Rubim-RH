@@ -348,7 +348,7 @@ local function APL()
          return 967532
     end
     -- haunt
-    if S.Haunt:IsCastableP() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
+    if S.Haunt:IsCastableP() and not Player:IsMoving() and RubimRH.DBM_PullTimer() > 0.1 and RubimRH.DBM_PullTimer() <= S.Haunt:CastTime() and (not Player:IsMoving()) and not Player:ShouldStopCasting() and Player:DebuffDownP(S.HauntDebuff) then
       return S.Haunt:Cast()
     end
     -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
@@ -376,7 +376,7 @@ local function APL()
         return S.SeedofCorruption:Cast()
       end
       -- haunt
-      if S.Haunt:IsCastableP() and Player:DebuffDownP(S.HauntDebuff) then
+      if S.Haunt:IsCastableP() and not Player:IsMoving() and Player:DebuffDownP(S.HauntDebuff) then
         return S.Haunt:Cast()
       end
       -- shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3
@@ -586,7 +586,7 @@ local function APL()
       return S.DrainLife:Cast()
     end
     -- haunt
-    if S.Haunt:IsCastableP() then
+    if S.Haunt:IsCastableP() and not Player:IsMoving() then
       return S.Haunt:Cast()
     end
     -- focused_azerite_beam
@@ -746,7 +746,7 @@ local function APL()
       return S.DrainSoul:Cast()
     end
     -- haunt,if=spell_targets.seed_of_corruption_aoe<=2+raid_event.invulnerable.up
-    if S.Haunt:IsCastableP() and (EnemiesCount <= 2) then
+    if S.Haunt:IsCastableP() and not Player:IsMoving() and (EnemiesCount <= 2) then
       return S.Haunt:Cast()
     end
     -- summon_darkglare,if=dot.agony.ticking&dot.corruption.ticking&(buff.active_uas.stack=5|soul_shard=0)&(!talent.phantom_singularity.enabled|dot.phantom_singularity.remains)&(!talent.deathbolt.enabled|cooldown.deathbolt.remains<=gcd|!cooldown.deathbolt.remains|spell_targets.seed_of_corruption_aoe>1+raid_event.invulnerable.up)
