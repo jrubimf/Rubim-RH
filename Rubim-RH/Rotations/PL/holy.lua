@@ -287,7 +287,7 @@ local function APL()
 		end
 		
 		--AuraMastery settings
-        if S.AuraMastery:IsReady() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
+        if S.AuraMastery:IsReady() and RubimRH.CDsON() and not Player:Buff(S.AvengingWrath) and not Player:Buff(S.AvengingCrusader) and not Player:Buff(S.HolyAvenger) then
             if RubimRH.AoEHP(RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["health_auramastery"]["value"]) >= RubimRH.db.profile.mainOption.classprofiles[65][RubimRH.db.profile.mainOption.selectedProfile]["nb_auramastery"]["value"] then
                 return S.AuraMastery:Cast()
             end
