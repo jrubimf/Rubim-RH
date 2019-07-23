@@ -83,14 +83,52 @@ local function trinketReady(trinketPosition)
     return true
 end
 
+-- Essence fix for QueueSkill
+local EssencesID = {   
+  297108,
+  298273,
+  298277,
+  295373,
+  299349,
+  299353,
+  295840,
+  299355,
+  299358,
+  295258,
+  299336,
+  299338,
+  295337,
+  299345,
+  299347,
+  298452,
+  299376,
+  299378,
+  302731,
+  302982,
+  302983,
+  295186,
+  298628,
+  299334,
+  298357,
+  299372,
+  299374,
+}
+
 function QueueSkill()
-    if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
+    local UnleashHeartOfAzeroth = Spell(280431)
+    
+	if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
-    if RubimRH.QueuedSpell():IsReadyQueue() then
-        if RubimRH.QueuedSpell():ID() == 194844 and Player:RunicPower() <= 90 then
-        else
-            return RubimRH.QueuedSpell():Cast()
+    
+	if RubimRH.QueuedSpell():IsReadyQueue() then
+        -- Essence fix for QueueSkill
+		for i = 1, #EssencesID do		
+		    if RubimRH.QueuedSpell():ID() == #EssencesID[i] then
+                return UnleashHeartOfAzeroth:Cast()		
+		    else
+                return RubimRH.QueuedSpell():Cast()
+			end
         end
     end
 
