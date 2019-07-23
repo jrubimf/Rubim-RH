@@ -191,7 +191,6 @@ local function UpdateCDs()
     end
 end
 
-
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
   S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
@@ -209,6 +208,42 @@ local function DetermineEssenceRanks()
   S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+end
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+    
+	if trinketPosition == 1 then
+        inventoryPosition = 13
+    end
+    
+	if trinketPosition == 2 then
+        inventoryPosition = 14
+    end
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+    if enable == 0 then
+        return false
+    end
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end
+	
+    return true
 end
 
 
