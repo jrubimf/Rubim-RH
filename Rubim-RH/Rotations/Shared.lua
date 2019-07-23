@@ -130,7 +130,7 @@ function QueueSkill()
                 return RubimRH.QueuedSpell():Cast()
 			end
         end
-    end]]-
+    end]]--
 
     if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
         RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
