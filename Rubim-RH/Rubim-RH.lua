@@ -301,6 +301,7 @@ local defaults = {
 									  ["health_flourish"] = {value = 40},
 									  ["nb_tranqui"] = {value = 8},
 									  ["health_tranqui"] = {value = 35},
+									  ["lifebloom"] = {value = "TANK"},	
 						              --["cd_flourish"] = {value = 5},									  
 									  
 						              },							
@@ -325,7 +326,6 @@ local defaults = {
 									  ["beacon_option"] = {value = "TANK"},	
 									  ["nb_auramastery"] = {value = 5},	
 									  ["health_auramastery"] = {value = 50},
-									  ["divine_shield"] = {value = 30},
 									  ["divine_protection"] = {value = 50},
 									  ["lay_on_hands"] = {value = 15},
 									  

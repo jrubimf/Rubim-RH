@@ -1584,6 +1584,38 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 			-- ....and how much hp should these number of party member have before using Tranquility
             local tranqui_health = StdUi:SliderWithBox(tab.frame, 105, 16, datavalue["health_tranqui"]["value"], 1, 100 );
 			
+			-- Custom Lifebloom Options             
+                local LifebloomOptions = {
+                    { text = 'Tank', value = "TANK" },
+                    { text = 'Dps', value = "DPS" },
+                    { text = 'Heal', value = "HEAL" },
+			        { text = 'All', value = "ALL" },
+                }
+                local Lifebloom_choice = StdUi:Dropdown(tab.frame, 80, -24, LifebloomOptions, nil, nil);
+                Lifebloom_choice:SetPlaceholder("|cfff0f8ff|r" .. datavalue["lifebloom"]["value"]);
+                StdUi:AddLabel(tab.frame, Lifebloom_choice, 'Lifebloom on:', 'TOP');
+                StdUi:FrameTooltip(Lifebloom_choice, 'Choose your priority for Lifebloom', 'TOPLEFT', 'TOPRIGHT', true);                
+                Lifebloom_choice.OnValueChanged = function(self, val)
+                    if val == "TANK" then
+                        print("Lifebloom will be used on Tanks")
+                        datavalue["lifebloom"]["value"] = val                    
+                    elseif val == "DPS" then
+                        print("Lifebloom will be used on DPS")
+                        datavalue["lifebloom"]["value"] = val                  
+                    elseif val == "HEAL" then
+                        print("Lifebloom will be used on Healers")
+                        datavalue["lifebloom"]["value"] = val 
+                    elseif val == "ALL" then
+                        print("Lifebloom will be used on everyone")
+						datavalue["lifebloom"]["value"] = val
+					else 
+    					print("No Lifebloom data :'( Try reload")
+                    end
+                end
+                --StdUi:GlueTop(Lifebloom_choice, general_setting_title, 0, -70, 'RIGHT');
+			    StdUi:GlueTop(Lifebloom_choice, general_setting_title, -15, -100, 'LEFT');
+			
+			
 			profileDropdown:SetValue(RubimRH.db.profile.mainOption.selectedProfile, RubimRH.db.profile.mainOption.selectedProfile)
 			-- Current profil label
 			StdUi:AddLabel( tab.frame, profileDropdown, "Current Profil : " .. RubimRH.db.profile.mainOption.selectedProfile, "TOP" );

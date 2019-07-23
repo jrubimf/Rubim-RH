@@ -110,6 +110,42 @@ local I = Item.Druid.Resto;
 
 -- APL Action Lists (and Variables)
 
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+    
+	if trinketPosition == 1 then
+        inventoryPosition = 13
+    end
+    
+	if trinketPosition == 2 then
+        inventoryPosition = 14
+    end
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+    if enable == 0 then
+        return false
+    end
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end
+	
+    return true
+end
+
 -- PvE
 local function PvESoothe(unit)
     -- https://questionablyepic.com/bfa-dungeon-debuffs/
@@ -482,7 +518,16 @@ local function APL()
     local Healing_Raid = function()
 	
    
-	  
+	    --Tank Priority Lifebloom
+        if S.Lifebloom:IsReady() then
+            if LowestAlly(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["lifebloom"]["value"], "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
+                ForceHealingTarget(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["lifebloom"]["value"])
+            end
+
+            if not BadDebuffOnTarget() and Target:GUID() == LowestAlly("TANK", "GUID") and Target:Exists() and Target:BuffDownP(S.Lifebloom) or Target:BuffRemainsP(S.Lifebloom) < 3 and Target:HealthPercentage() <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["tank_lifebloom"]["value"] then
+                return S.Lifebloom:Cast()
+            end
+        end
 	
         --16Swiftmend on low allies
         if S.Swiftmend:IsReady() then
@@ -518,7 +563,7 @@ local function APL()
         end
 
 		--21WildGrowth_Party
-        if S.WildGrowth:IsReady() and RubimRH.AoEON() and GroupedBelow(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_wildg"]["value"]) >= 3 then
+        if S.WildGrowth:IsReady() and RubimRH.AoEON() and RubimRH.AoEHP(RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_wildg"]["value"]) >= 3 then
             if LowestAlly("ALL", "HP") <= RubimRH.db.profile.mainOption.classprofiles[105][RubimRH.db.profile.mainOption.selectedProfile]["raid_wildg"]["value"] then
                 ForceHealingTarget("ALL")
             end
