@@ -121,7 +121,7 @@ function QueueSkill()
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     
-	if RubimRH.QueuedSpell():IsReadyQueue() then
+	--[[if RubimRH.QueuedSpell():IsReadyQueue() then
         -- Essence fix for QueueSkill
 		for i = 1, #EssencesID do		
 		    if RubimRH.QueuedSpell():ID() == #EssencesID[i] then
@@ -130,7 +130,7 @@ function QueueSkill()
                 return RubimRH.QueuedSpell():Cast()
 			end
         end
-    end
+    end]]-
 
     if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
         RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
