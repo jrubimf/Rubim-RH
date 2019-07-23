@@ -683,7 +683,7 @@ end
 
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat_DBM, Precombat, BuildAShard, DconOpener, Implosion, NetherPortal, NetherPortalActive, NetherPortalBuilding
+  local Precombat_DBM, Precombat, BuildAShard, Opener, Implosion, NetherPortal, NetherPortalActive, NetherPortalBuilding
   EnemiesCount = GetEnemiesCount(8)
   HL.GetEnemies(40) -- To populate Cache.Enemies[40] for CastCycles
   UpdatePetTable()
@@ -770,7 +770,7 @@ local function APL()
      return S.Doom:Cast()
     end
     -- guardian_of_azeroth
-    if S.GuardianofAzeroth:IsCastableP() then
+    if S.GuardianOfAzeroth:IsCastableP() then
      return S.UnleashHeartOfAzeroth:Cast()
     end
     -- hand_of_guldan,if=prev_gcd.1.hand_of_guldan&soul_shard>0&prev_gcd.2.soul_strike
