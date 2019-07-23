@@ -169,7 +169,7 @@ function RubimRH.Shared()
             return 538745
         end
 
-        --[[if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
+        if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
                 if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
                     if trinketReady(1) then
@@ -183,7 +183,7 @@ function RubimRH.Shared()
                     end
                 end
             end
-        end]]--
+        end
 
     end
 end
