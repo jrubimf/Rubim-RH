@@ -169,6 +169,13 @@ local function BadDebuffOnTarget()
 	if Target:DebuffRemainsP(DarkestDepths) > 0 then 
         return true
     end
+	
+	--[[for i 1, #DebuffList do		
+	    if Target:DebuffRemainsP(i) > 0 then 
+            return true
+        end
+	end]]--
+	
     return false
 end	
  

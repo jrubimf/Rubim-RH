@@ -79,13 +79,6 @@ local function CalculateHP(unitID)
 end
 
 
-local function CalculateHP(t)
-    incomingheals = UnitGetIncomingHeals(t) and UnitGetIncomingHeals(t) or 0
-    local PercentWithIncoming = 100 * (UnitHealth(t) + incomingheals) / UnitHealthMax(t)
-    local ActualWithIncoming = (UnitHealthMax(t) - (UnitHealth(t) + incomingheals))
-    return PercentWithIncoming, ActualWithIncoming
-end
-
 local function CanHeal(unitID, unitGUID)
     return 
 		UnitInRange(unitID)
@@ -907,6 +900,97 @@ local function setColorTarget(isForced)
 end
 
 -----------------------
+--- OLD RUBIM PART ----
+-----------------------
+
+--healingTarget = "None"
+--healingTargetGUID = "None"
+
+function ForceHealingTarget(TARGET)
+    local target = TARGET or nil
+    healingTarget = "None"
+    healingTargetGUID = "None"
+    --showHealingColor(healingTarget)
+	setColorTarget(true)
+
+    if TARGET == "TANK" then
+        healingTarget = RubimRH.HealingEngine.Members.TANK[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.TANK[1].GUID
+        --showHealingColor(healingTarget)
+		setColorTarget(true)
+        return
+    end
+
+    if TARGET == "DPS" and RubimRH.HealingEngine.Members.DAMAGER[1].HP < hp then
+        healingTarget = RubimRH.HealingEngine.Members.DAMAGER[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.DAMAGER[1].GUID
+        --showHealingColor(healingTarget)
+		setColorTarget(true)
+        return
+    end
+
+    if TARGET == "HEAL" and RubimRH.HealingEngine.Members.HEALER[1].HP < hp then
+        healingTarget = RubimRH.HealingEngine.Members.HEALER[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.HEALER[1].GUID
+        --showHealingColor(healingTarget)
+		setColorTarget(true)
+        return
+    end
+
+    if TARGET == "ALL" and RubimRH.HealingEngine.Members.ALL[1].HP < 99 then
+        healingTarget = RubimRH.HealingEngine.Members.ALL[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.ALL[1].GUID
+        --showHealingColor(healingTarget)
+		setColorTarget(true)
+        return
+    end
+end
+
+function setHealingTarget(TARGET, HP)
+    local target = TARGET or nil
+    local hp = HP or 99
+    
+    if TARGET == "TANK" and #RubimRH.HealingEngine.Members.TANK > 0 then
+        healingTarget = RubimRH.HealingEngine.Members.TANK[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.TANK[1].GUID
+        return RubimRH.HealingEngine.Members.TANK[1].HP
+    end
+    
+    if TARGET == "DAMAGER" and #RubimRH.HealingEngine.Members.DAMAGER > 0 and RubimRH.HealingEngine.Members.DAMAGER[1].HP < hp then
+        healingTarget = RubimRH.HealingEngine.Members.DAMAGER[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.DAMAGER[1].GUID
+        return RubimRH.HealingEngine.Members.DAMAGER[1].HP
+    end
+    
+    if TARGET == "HEALER" and #RubimRH.HealingEngine.Members.HEALER > 0 and RubimRH.HealingEngine.Members.HEALER[1].HP < hp then
+        healingTarget = RubimRH.HealingEngine.Members.HEALER[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.HEALER[1].GUID
+        return RubimRH.HealingEngine.Members.HEALER[1].HP
+    end
+    
+    if TARGET == "RAID" then -- No Tanks
+        if #RubimRH.HealingEngine.Members.DAMAGER > 0 and #RubimRH.HealingEngine.Members.HEALER > 0 and RubimRH.HealingEngine.Members.DAMAGER[1].HP <= RubimRH.HealingEngine.Members.HEALER[1].HP then 
+            healingTarget = RubimRH.HealingEngine.Members.DAMAGER[1].Unit
+            healingTargetGUID = RubimRH.HealingEngine.Members.DAMAGER[1].GUID
+            return RubimRH.HealingEngine.Members.DAMAGER[1].HP 
+        elseif #RubimRH.HealingEngine.Members.HEALER > 0 then 
+            healingTarget = RubimRH.HealingEngine.Members.HEALER[1].Unit
+            healingTargetGUID = RubimRH.HealingEngine.Members.HEALER[1].GUID
+            return RubimRH.HealingEngine.Members.HEALER[1].HP
+        end
+    end
+    
+    if TARGET == nil and #RubimRH.HealingEngine.Members.ALL > 0 and RubimRH.HealingEngine.Members.ALL[1].HP < 99 then
+        healingTarget = RubimRH.HealingEngine.Members.ALL[1].Unit
+        healingTargetGUID = RubimRH.HealingEngine.Members.ALL[1].GUID
+        return RubimRH.HealingEngine.Members.ALL[1].HP
+    end
+    healingTarget = "None"
+    healingTargetGUID = "None"
+end
+
+
+-----------------------
 ----- LOS PART --------
 -----------------------
 local function UpdateLOS()
@@ -986,6 +1070,7 @@ end
 
 function RubimRH.HealingEngine.GetMembersByMode()
 	-- @return table 
+	--TODO Implement UI option to choose healing mode
 	local mode = "ALL" -- or RubimRH.mainoption.healingmode
 	return RubimRH.HealingEngine.Members[mode] 
 end 
