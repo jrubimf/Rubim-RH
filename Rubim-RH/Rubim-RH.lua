@@ -368,6 +368,7 @@ local defaults = {
                 [2] = false
             },
 			trinketsUsage = "Everything",
+			essencesUsage = "Everything",
             cooldownsUsage = "Everything",
             burstCD = false,
             debug = false,
