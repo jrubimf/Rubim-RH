@@ -17,9 +17,6 @@ local ProlongedPower = Item(142117)
 local Healthstone = 5512
 local autoAttack = Spell(6603)
 
-local trinket2 = 1030910
-local trinket1 = 1030902
-
 function Item:IsBuffTrinket()
 
 end
@@ -36,6 +33,10 @@ local function IsAreaTrinket(itemID)
     end
     return false
 end
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
 
 -- Trinket Ready
 local function trinketReady(trinketPosition)
@@ -64,8 +65,21 @@ local function trinketReady(trinketPosition)
 	
    	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
 	    return false
-	end
+	end	
 	
+    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
+        return true
+    end
+	
+	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
+        if not UnitExists("boss1") then
+            return false
+        end
+
+        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+            return false
+        end
+    end	
     return true
 end
 
@@ -117,7 +131,7 @@ function RubimRH.Shared()
             return 538745
         end
 
-        if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
+        --[[if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
                 if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
                     if trinketReady(1) then
@@ -131,7 +145,7 @@ function RubimRH.Shared()
                     end
                 end
             end
-        end
+        end]]--
 
     end
 end

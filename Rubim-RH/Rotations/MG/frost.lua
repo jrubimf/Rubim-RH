@@ -152,8 +152,21 @@ local function trinketReady(trinketPosition)
 	
    	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
 	    return false
-	end
+	end	
 	
+    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
+        return true
+    end
+	
+	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
+        if not UnitExists("boss1") then
+            return false
+        end
+
+        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+            return false
+        end
+    end	
     return true
 end
 

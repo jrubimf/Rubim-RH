@@ -312,7 +312,26 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
                 gn_3_1:SetText("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.cooldownsUsage);
             end
-            StdUi:GlueBelow(gn_3_1, gn_2_1, 0, -24, 'RIGHT');
+            StdUi:GlueBelow(gn_3_1, gn_2_1, 0, -10, 'RIGHT');
+			
+            -- Trinkets usage options
+            local trinketoptions = {
+                { text = 'Everything', value = "Everything" },
+                { text = 'Boss Only', value = "Boss Only" },
+            }
+            local trinkets_mode = StdUi:Dropdown(tab.frame, 125, 24, trinketoptions, nil, nil);
+            StdUi:FrameTooltip(trinkets_mode, 'Everything - Every mob available\nBosses - Only Bosses or Rares', 'TOPLEFT', 'TOPRIGHT', true);
+            trinkets_mode:SetPlaceholder("|cfff0f8ffTrinkets: |r" .. RubimRH.db.profile.mainOption.trinketsUsage);
+            trinkets_mode.OnValueChanged = function(self, val)
+                RubimRH.db.profile.mainOption.trinketsUsage = val
+                if val == "Everything" then
+                    print("Trinkets will be used on every mob")
+                else
+                    print("Trinkets will only be used on Bosses/Rares")
+                end
+                trinkets_mode:SetText("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.trinketsUsage);
+            end
+            StdUi:GlueBelow(trinkets_mode, gn_3_1, 0, -10, 'RIGHT');
 
             --------------------------------------------------
             local sk_title = StdUi:FontString(tab.frame, 'Class Specific');

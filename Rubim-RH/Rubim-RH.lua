@@ -367,6 +367,7 @@ local defaults = {
                 [1] = false,
                 [2] = false
             },
+			trinketsUsage = "Everything",
             cooldownsUsage = "Everything",
             burstCD = false,
             debug = false,
