@@ -84,53 +84,54 @@ local function trinketReady(trinketPosition)
 end
 
 -- Essence fix for QueueSkill
-local EssencesID = {   
-  297108,
-  298273,
-  298277,
-  295373,
-  299349,
-  299353,
-  295840,
-  299355,
-  299358,
-  295258,
-  299336,
-  299338,
-  295337,
-  299345,
-  299347,
-  298452,
-  299376,
-  299378,
-  302731,
-  302982,
-  302983,
-  295186,
-  298628,
-  299334,
-  298357,
-  299372,
-  299374,
+local Essences = {   
+  Spell(297108),
+  Spell(298273),
+  Spell(298277),
+  Spell(295373),
+  Spell(299349),
+  Spell(299353),
+  Spell(295840),
+  Spell(299355),
+  Spell(299358),
+  Spell(295258),
+  Spell(299336),
+  Spell(299338),
+  Spell(295337),
+  Spell(299345),
+  Spell(299347),
+  Spell(298452),
+  Spell(299376),
+  Spell(299378),
+  Spell(302731),
+  Spell(302982),
+  Spell(302983),
+  Spell(295186),
+  Spell(298628),
+  Spell(299334),
+  Spell(298357),
+  Spell(299372),
+  Spell(299374),
 }
 
 function QueueSkill()
-    local UnleashHeartOfAzeroth = Spell(280431)
-    
+    local UnleashHeartOfAzeroth = Spell(280431)    
+	
 	if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     
-	if RubimRH.QueuedSpell():IsReadyQueue() then
+	--[[if RubimRH.QueuedSpell():IsReadyQueue() then
         -- Essence fix for QueueSkill
-		--for i = 1, #EssencesID do		
-		  --  if RubimRH.QueuedSpell():ID() == #EssencesID[i] then
-          --      return UnleashHeartOfAzeroth:Cast()		
-		  --  else
+		for i = 1, #Essences do		
+		    local EssencesID = Essences[i]
+		    if RubimRH.QueuedSpell():ID() == EssencesID then
+                return UnleashHeartOfAzeroth:Cast()		
+		    else
                 return RubimRH.QueuedSpell():Cast()
-			--end
-        --end
-    end
+			end
+        end
+    end]]--
 
     if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
         RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
