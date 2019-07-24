@@ -121,19 +121,19 @@ function QueueSkill()
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
     
-	--[[if RubimRH.QueuedSpell():IsReadyQueue() then
-        -- Essence fix for QueueSkill
+	if RubimRH.QueuedSpell():IsReadyQueue() then
+        --[[-- Essence fix for QueueSkill
 		for i = 1, #Essences do		
 		    local EssencesID = Essences[i]:ID()
 		    if RubimRH.QueuedSpell():ID() == EssencesID then
 			    print("Queued ID = " .. RubimRH.QueuedSpell():ID())
 			    print("Compared Essence ID = " .. EssencesID)
                 return UnleashHeartOfAzeroth:Cast()		
-		    else
+		    else]]--
                 return RubimRH.QueuedSpell():Cast()
-			end
-        end
-    end]]--
+			--end
+        --end
+    end
 
     if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
         RubimRH.queuedSpellAuto = { RubimRH.Spell[1].Empty, 0 }
