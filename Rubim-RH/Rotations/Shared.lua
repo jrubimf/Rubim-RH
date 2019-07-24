@@ -124,8 +124,10 @@ function QueueSkill()
 	--[[if RubimRH.QueuedSpell():IsReadyQueue() then
         -- Essence fix for QueueSkill
 		for i = 1, #Essences do		
-		    local EssencesID = Essences[i]
+		    local EssencesID = Essences[i]:ID()
 		    if RubimRH.QueuedSpell():ID() == EssencesID then
+			    print("Queued ID = " .. RubimRH.QueuedSpell():ID())
+			    print("Compared Essence ID = " .. EssencesID)
                 return UnleashHeartOfAzeroth:Cast()		
 		    else
                 return RubimRH.QueuedSpell():Cast()
