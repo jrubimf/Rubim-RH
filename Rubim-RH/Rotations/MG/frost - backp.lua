@@ -3,15 +3,15 @@
 -- Addon
 local addonName, addonTable = ...
 -- HeroLib
-local HL         = HeroLib
-local Cache      = HeroCache
-local Unit       = HL.Unit
-local Player     = Unit.Player
-local Target     = Unit.Target
-local Pet        = Unit.Pet
-local Spell      = HL.Spell
---local MultiSpell = HL.MultiSpell
-local Item       = HL.Item
+local HL     = HeroLib
+local Cache  = HeroCache
+local Unit   = HL.Unit
+local Player = Unit.Player
+local Target = Unit.Target
+local Pet    = Unit.Pet
+local Spell  = HL.Spell
+local Item   = HL.Item
+local mainAddon = RubimRH
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -54,12 +54,20 @@ RubimRH.Spell[MFrost] = {
   SplittingIce                          = Spell(56377),
   FreezingRain                          = Spell(240555),
   Counterspell                          = Spell(2139),
-  IncantersFlow                         = Spell(1463),
   Invisibility                          = Spell(66),
   Freeze                                = Spell(33395),
   Spellsteal                            = Spell(30449),
   IceBarrier                            = Spell(11426),
   IceBlock                              = Spell(45438),
+  --[[BloodOfTheEnemy                       = MultiSpell(297108, 298273, 298277),
+  MemoryOfLucidDreams                   = MultiSpell(298357, 299372, 299374),
+  PurifyingBlast                        = MultiSpell(295337, 299345, 299347),
+  RippleInSpace                         = MultiSpell(302731, 302982, 302983),
+  ConcentratedFlame                     = MultiSpell(295373, 299349, 299353),
+  TheUnboundForce                       = MultiSpell(298452, 299376, 299378),
+  WorldveinResonance                    = MultiSpell(295186, 298628, 299334),
+  FocusedAzeriteBeam                    = MultiSpell(295258, 299336, 299338),
+  GuardianOfAzeroth                     = MultiSpell(295840, 299355, 299358),]]--
   --8.2 Essences
   UnleashHeartOfAzeroth                 = Spell(280431),
   BloodOfTheEnemy                       = Spell(297108),
@@ -91,18 +99,14 @@ RubimRH.Spell[MFrost] = {
   MemoryOfLucidDreams3                  = Spell(299374),
   RecklessForce                         = Spell(302932),
   RecklessForce                         = Spell(302932),
-  RecklessForceBuff                     = Spell(302932),
-  ConcentratedFlameBurn                 = Spell(295368),
-  CyclotronicBlast                      = Spell(167672)
 };
 local S = RubimRH.Spell[MFrost]
 
 -- Items
 if not Item.Mage then Item.Mage = {} end
 Item.Mage.Frost = {
-  PotionofUnbridledFury            = Item(169299),
-  TidestormCodex                   = Item(165576),
-  PocketsizedComputationDevice     = Item(167555)
+  ProlongedPower                   = Item(142117),
+  TidestormCodex                   = Item(165576)
 };
 local I = Item.Mage.Frost;
 
@@ -110,7 +114,7 @@ local I = Item.Mage.Frost;
 local ShouldReturn; -- Used to get the return string
 local EnemiesCount;
 
-local EnemyRanges = {35, 10}
+local EnemyRanges = {40, 35, 10}
 local function UpdateRanges()
   for _, i in ipairs(EnemyRanges) do
     HL.GetEnemies(i);
@@ -182,6 +186,24 @@ local function GetEnemiesCount(range)
   end
 end
 
+S.FrozenOrb:RegisterInFlight()
+
+local function num(val)
+  if val then return 1 else return 0 end
+end
+
+local function bool(val)
+  return val ~= 0
+end
+
+S.FrozenOrb.EffectID = 84721
+S.Frostbolt:RegisterInFlight()
+
+--HL.RegisterNucleusAbility(84714, 8, 6)               -- Frost Orb
+--HL.RegisterNucleusAbility(190356, 8, 6)              -- Blizzard
+--HL.RegisterNucleusAbility(153595, 8, 6)              -- Comet Storm
+--HL.RegisterNucleusAbility(120, 12, 6)                -- Cone of Cold
+
 local function DetermineEssenceRanks()
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
   S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
@@ -201,48 +223,12 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
 end
 
-S.FrozenOrb:RegisterInFlight()
-
-local function num(val)
-  if val then return 1 else return 0 end
-end
-
-local function bool(val)
-  return val ~= 0
-end
-
-S.FrozenOrb.EffectID = 84721
-S.Frostbolt:RegisterInFlight()
-
---HL.RegisterNucleusAbility(84714, 8, 6)               -- Frost Orb
---HL.RegisterNucleusAbility(190356, 8, 6)              -- Blizzard
---HL.RegisterNucleusAbility(153595, 8, 6)              -- Comet Storm
---HL.RegisterNucleusAbility(120, 12, 6)                -- Cone of Cold
-
 --- ======= ACTION LISTS =======
 local function APL()
-  local Precombat_DBM, Precombat, Aoe, Cooldowns, Movement, Single, TalentRop, Essences
+  local Precombat, Aoe, Cooldowns, Movement, Single, TalentRop, Essences
   local BlinkAny = S.Shimmer:IsAvailable() and S.Shimmer or S.Blink
   EnemiesCount = GetEnemiesCount(8)
   DetermineEssenceRanks()
-  
-    Precombat_DBM = function()
-        -- flask
-        -- food
-        -- augmentation
-        -- arcane_intellect
-        if S.ArcaneIntellect:IsCastableP() and Player:BuffDownP(S.ArcaneIntellectBuff, true) then
-          return S.ArcaneIntellect:Cast()
-        end
-	    -- potion
-        if I.PotionofUnbridledFury:IsReady() and RubimRH.DBM_PullTimer() >= S.Frostbolt:CastTime() + 1 and RubimRH.DBM_PullTimer() <= S.Frostbolt:CastTime() + 2 then
-            return 967532
-        end
-        -- Frostbolt
-        if S.Frostbolt:IsCastableP() and RubimRH.DBM_PullTimer() > 1 and RubimRH.DBM_PullTimer() <= S.Frostbolt:CastTime() then
-            return S.Frostbolt:Cast()
-        end
-   end
   
   Precombat = function()
     -- flask
@@ -257,48 +243,51 @@ local function APL()
       return S.SummonWaterElemental:Cast()
     end
     -- snapshot_stats
+    if RubimRH.TargetIsValid() then
       -- mirror_image
       if S.MirrorImage:IsCastableP() and RubimRH.CDsON() then
         return S.MirrorImage:Cast()
       end
       -- potion
+
       -- frostbolt
       if S.Frostbolt:IsCastableP() then
         return S.Frostbolt:Cast()
       end
+    end
   end
-  
-  Essences = function()
-    -- focused_azerite_beam,if=buff.rune_of_power.down|active_enemies>3
-    if S.FocusedAzeriteBeam:IsCastableP() and (Player:BuffDownP(S.RuneofPowerBuff) or EnemiesCount > 3) then
+ 
+ Essences = function()
+    -- focused_azerite_beam
+    if S.FocusedAzeriteBeam:IsCastableP() then
+      return S.FocusedAzeriteBeam:Cast()
+    end
+    -- memory_of_lucid_dreams,if=buff.icicles.stack<2
+    if S.MemoryOfLucidDreams:IsCastableP() and (Player:BuffStackP(S.IciclesBuff) < 2) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- memory_of_lucid_dreams,if=active_enemies<5&(buff.icicles.stack<=1|!talent.glacial_spike.enabled)&cooldown.frozen_orb.remains>10
-    if S.MemoryofLucidDreams:IsCastableP() and (EnemiesCount < 5 and (Player:BuffStackP(S.IciclesBuff) <= 1 or not S.GlacialSpike:IsAvailable()) and S.FrozenOrb:CooldownRemainsP() > 10) then
+    -- blood_of_the_enemy,if=buff.icicles.stack=5&buff.brain_freeze.react|!talent.glacial_spike.enabled|active_enemies>4
+    if S.BloodOfTheEnemy:IsCastableP() and (Player:BuffStackP(S.IciclesBuff) == 5 and Player:BuffP(S.BrainFreezeBuff) or not S.GlacialSpike:IsAvailable() or EnemiesCount > 4) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- blood_of_the_enemy,if=(talent.glacial_spike.enabled&buff.icicles.stack=5&(buff.brain_freeze.react|prev_gcd.1.ebonbolt))|((active_enemies>3|!talent.glacial_spike.enabled)&(prev_gcd.1.frozen_orb|ground_aoe.frozen_orb.remains>5))
-    if S.BloodoftheEnemy:IsCastableP() and ((S.GlacialSpike:IsAvailable() and Player:BuffStackP(S.IciclesBuff) == 5 and (Player:BuffP(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt))) or ((EnemiesCount > 3 or not S.GlacialSpike:IsAvailable()) and (Player:PrevGCDP(1, S.FrozenOrb) or Player:FrozenOrbGroundAoeRemains() > 5))) then
+    -- purifying_blast
+    if S.PurifyingBlast:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- purifying_blast,if=buff.rune_of_power.down|active_enemies>3
-    if S.PurifyingBlast:IsCastableP() and (Player:BuffDownP(S.RuneofPowerBuff) or EnemiesCount > 3) then
+    -- ripple_in_space
+    if S.RippleInSpace:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- ripple_in_space,if=buff.rune_of_power.down|active_enemies>3
-    if S.RippleInSpace:IsCastableP() and (Player:BuffDownP(S.RuneofPowerBuff) or EnemiesCount > 3) then
-      return S.UnleashHeartOfAzeroth:Cast()
-    end
-    -- concentrated_flame,line_cd=6,if=buff.rune_of_power.down
-    if S.ConcentratedFlame:IsCastableP() and (Player:BuffDownP(S.RuneofPowerBuff)) then
+    -- concentrated_flame
+    if S.ConcentratedFlame:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- the_unbound_force,if=buff.reckless_force.up
-    if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForceBuff)) then
+    if S.TheUnboundForce:IsCastableP() and (Player:BuffP(S.RecklessForce)) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
-    -- worldvein_resonance,if=buff.rune_of_power.down|active_enemies>3
-    if S.WorldveinResonance:IsCastableP() and (Player:BuffDownP(S.RuneofPowerBuff) or EnemiesCount > 3) then
+    -- worldvein_resonance
+    if S.WorldveinResonance:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
   end
@@ -313,7 +302,10 @@ local function APL()
       return S.Blizzard:Cast()
     end
     -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then 
+	    return ShouldReturn; 
+	end
     -- comet_storm
     if S.CometStorm:IsCastableP() then
       return S.CometStorm:Cast()
@@ -347,32 +339,19 @@ local function APL()
       return S.ConeofCold:Cast()
     end
     -- use_item,name=tidestorm_codex,if=buff.icy_veins.down&buff.rune_of_power.down
-    if I.TidestormCodex:IsReady() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
-        if trinketReady(1) then
-            return trinket1
-        elseif trinketReady(2) then
-            return trinket2
-        else
-            return
-        end
-    end
-    -- use_item,effect_name=cyclotronic_blast,if=buff.icy_veins.down&buff.rune_of_power.down
-    if I.PocketsizedComputationDevice:IsReady() and S.CyclotronicBlast:IsAvailable() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
-        if trinketReady(1) then
-            return trinket1
-        elseif trinketReady(2) then
-            return trinket2
-        else
-            return
-        end
-    end
+    --if I.TidestormCodex:IsReady() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
+    --  if RubimRH.Cast(I.TidestormCodex:Cast()
+    --end
     -- frostbolt
     if S.Frostbolt:IsCastableP() then
       return S.Frostbolt:Cast()
     end
     -- call_action_list,name=movement
     if (true) then
-      local ShouldReturn = Movement(); if ShouldReturn then return ShouldReturn; end
+      local ShouldReturn = Movement(); 
+	  if ShouldReturn then 
+	      return ShouldReturn; 
+	  end
     end
     -- ice_lance
     if S.IceLance:IsCastableP() then
@@ -382,7 +361,7 @@ local function APL()
   
   Cooldowns = function()
     -- guardian_of_azeroth
-    if S.GuardianofAzeroth:IsCastableP() then
+    if S.GuardianOfAzeroth:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- icy_veins
@@ -399,22 +378,16 @@ local function APL()
     end
     -- call_action_list,name=talent_rop,if=talent.rune_of_power.enabled&active_enemies=1&cooldown.rune_of_power.full_recharge_time<cooldown.frozen_orb.remains
     if (S.RuneofPower:IsAvailable() and EnemiesCount == 1 and S.RuneofPower:FullRechargeTimeP() < S.FrozenOrb:CooldownRemainsP()) then
-      local ShouldReturn = TalentRop(); if ShouldReturn then return ShouldReturn; end
+      local ShouldReturn = TalentRop(); 
+	  if ShouldReturn then 
+	      return ShouldReturn; 
+	  end
     end
     -- potion,if=prev_gcd.1.icy_veins|target.time_to_die<30
-    if I.PotionofUnbridledFury:IsReady() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.IcyVeins) or Target:TimeToDie() < 30) then
-        return 967532
-    end
-    -- use_item,name=pocketsized_computation_device,if=!cooldown.cyclotronic_blast.duration
-    if I.PocketsizedComputationDevice:IsReady() and (not bool(S.CyclotronicBlast:CooldownRemainsP())) then
-        if trinketReady(1) then
-            return trinket1
-        elseif trinketReady(2) then
-            return trinket2
-        else
-            return
-        end
-    end
+    --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions and (Player:PrevGCDP(1, S.IcyVeins) or Target:TimeToDie() < 30) then
+    --  if RubimRH.CastSuggested(I.ProlongedPower:Cast()prolonged_power 96"; end
+    --end
+    -- use_items
     -- blood_fury
     if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
       return S.BloodFury:Cast()
@@ -440,7 +413,7 @@ local function APL()
   Movement = function()
     -- blink,if=movement.distance>10
     if BlinkAny:IsCastableP() and (not Target:IsInRange(S.Frostbolt:MaximumRange())) then
-      return S.BlinkAny:Cast()
+      S.BlinkAny:Cast()
     end
     -- ice_floes,if=buff.ice_floes.down
     if S.IceFloes:IsCastableP() and (Player:BuffDownP(S.IceFloesBuff)) then
@@ -453,61 +426,58 @@ local function APL()
     if S.IceNova:IsCastableP() and (S.IceNova:CooldownUpP() and Target:DebuffP(S.WintersChillDebuff)) then
       return S.IceNova:Cast()
     end
-    -- flurry,if=talent.ebonbolt.enabled&prev_gcd.1.ebonbolt&buff.brain_freeze.react
-    if S.Flurry:IsCastableP() and (S.Ebonbolt:IsAvailable() and Player:PrevGCDP(1, S.Ebonbolt) and bool(Player:BuffStackP(S.BrainFreezeBuff))) then
+    -- flurry,if=talent.ebonbolt.enabled&prev_gcd.1.ebonbolt&(!talent.glacial_spike.enabled|buff.icicles.stack<4|buff.brain_freeze.react)
+    if S.Flurry:IsCastableP() and (S.Ebonbolt:IsAvailable() and Player:PrevGCDP(1, S.Ebonbolt) and (not S.GlacialSpike:IsAvailable() or Player:BuffStackP(S.IciclesBuff) < 4 or bool(Player:BuffStackP(S.BrainFreezeBuff)))) then
       return S.Flurry:Cast()
     end
-    -- flurry,if=prev_gcd.1.glacial_spike&buff.brain_freeze.react
-    if S.Flurry:IsCastableP() and (Player:PrevGCDP(1, S.GlacialSpike) and bool(Player:BuffStackP(S.BrainFreezeBuff))) then
+    -- flurry,if=talent.glacial_spike.enabled&prev_gcd.1.glacial_spike&buff.brain_freeze.react
+    if S.Flurry:IsCastableP() and (S.GlacialSpike:IsAvailable() and Player:PrevGCDP(1, S.GlacialSpike) and bool(Player:BuffStackP(S.BrainFreezeBuff))) then
       return S.Flurry:Cast()
     end
-    -- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
+    -- flurry,if=prev_gcd.1.frostbolt&buff.brain_freeze.react&(!talent.glacial_spike.enabled|buff.icicles.stack<4)
+    if S.Flurry:IsCastableP() and (Player:PrevGCDP(1, S.Frostbolt) and bool(Player:BuffStackP(S.BrainFreezeBuff)) and (not S.GlacialSpike:IsAvailable() or Player:BuffStackP(S.IciclesBuff) < 4)) then
+      return S.Flurry:Cast()
+    end
     -- frozen_orb
     if S.FrozenOrb:IsCastableP() then
       return S.FrozenOrb:Cast()
     end
-    -- blizzard,if=active_enemies>2|active_enemies>1&!talent.splitting_ice.enabled
-    if S.Blizzard:IsCastableP() and (EnemiesCount > 2 or EnemiesCount > 1 and not S.SplittingIce:IsAvailable()) then
+    -- blizzard,if=active_enemies>2|active_enemies>1&cast_time=0&buff.fingers_of_frost.react<2
+    if S.Blizzard:IsCastableP() and (EnemiesCount > 2 or EnemiesCount > 1 and S.Blizzard:CastTime() == 0 and Player:BuffStackP(S.FingersofFrostBuff) < 2) then
       return S.Blizzard:Cast()
+    end
+    -- ice_lance,if=buff.fingers_of_frost.react
+    if S.IceLance:IsCastableP() and (bool(Player:BuffStackP(S.FingersofFrostBuff))) then
+      return S.IceLance:Cast()
     end
     -- comet_storm
     if S.CometStorm:IsCastableP() then
       return S.CometStorm:Cast()
     end
-    -- ebonbolt,if=buff.icicles.stack=5&!buff.brain_freeze.react
-    if S.Ebonbolt:IsCastableP() and (Player:BuffStackP(S.IciclesBuff) == 5 and Player:BuffDownP(S.BrainFreezeBuff)) then
+    -- ebonbolt
+    if S.Ebonbolt:IsCastableP() then
       return S.Ebonbolt:Cast()
     end
-    -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|talent.incanters_flow.enabled&cast_time+travel_time>incanters_flow_time_to.5.up&cast_time+travel_time<incanters_flow_time_to.4.down
-    -- TODO: Add handling for the Incanter's Flow conditions
-    if S.GlacialSpike:IsReadyP() and (Player:BuffP(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt)) then
-      return S.GlacialSpike:Cast()
+    -- ray_of_frost,if=!action.frozen_orb.in_flight&ground_aoe.frozen_orb.remains=0
+    if S.RayofFrost:IsCastableP() and (not S.FrozenOrb:InFlight() and Player:FrozenOrbGroundAoeRemains() == 0) then
+      return S.RayofFrost:Cast()
+    end
+    -- blizzard,if=cast_time=0|active_enemies>1
+    if S.Blizzard:IsCastableP() and (S.Blizzard:CastTime() == 0 or EnemiesCount > 1) then
+      return S.Blizzard:Cast()
+    end
+    -- glacial_spike,if=buff.brain_freeze.react|prev_gcd.1.ebonbolt|active_enemies>1&talent.splitting_ice.enabled
+    if S.GlacialSpike:IsReadyP() and Player:BuffStackP(S.IciclesBuff) == 5 and (Player:Buff(S.BrainFreezeBuff) or Player:PrevGCDP(1, S.Ebonbolt) or Player:EnemiesAround(35) > 1 and S.SplittingIce:IsAvailable()) then
+        return S.GlacialSpike:Cast()
     end
     -- ice_nova
     if S.IceNova:IsCastableP() then
       return S.IceNova:Cast()
     end
     -- use_item,name=tidestorm_codex,if=buff.icy_veins.down&buff.rune_of_power.down
-    if I.TidestormCodex:IsReady() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
-        if trinketReady(1) then
-            return trinket1
-        elseif trinketReady(2) then
-            return trinket2
-        else
-            return
-        end
-    end
-    -- use_item,effect_name=cyclotronic_blast,if=buff.icy_veins.down&buff.rune_of_power.down
-    if I.PocketsizedComputationDevice:IsReady() and S.CyclotronicBlast:IsAvailable() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
-        if trinketReady(1) then
-            return trinket1
-        elseif trinketReady(2) then
-            return trinket2
-        else
-            return
-        end
-    end
+    --if I.TidestormCodex:IsReady() and (Player:BuffDownP(S.IcyVeins) and Player:BuffDownP(S.RuneofPowerBuff)) then
+    --  if RubimRH.Cast(I.TidestormCodex:Cast()tidestorm_codex 218"; end
+    --end
     -- frostbolt
     if S.Frostbolt:IsCastableP() then
       return S.Frostbolt:Cast()
@@ -521,7 +491,6 @@ local function APL()
       return S.IceLance:Cast()
     end
   end
-  
   TalentRop = function()
     -- rune_of_power,if=talent.glacial_spike.enabled&buff.icicles.stack=5&(buff.brain_freeze.react|talent.ebonbolt.enabled&cooldown.ebonbolt.remains<cast_time)
     if S.RuneofPower:IsCastableP() and (S.GlacialSpike:IsAvailable() and Player:BuffStackP(S.IciclesBuff) == 5 and (bool(Player:BuffStackP(S.BrainFreezeBuff)) or S.Ebonbolt:IsAvailable() and S.Ebonbolt:CooldownRemainsP() < S.RuneofPower:CastTime())) then
@@ -532,26 +501,14 @@ local function APL()
       return S.RuneofPower:Cast()
     end
   end
+  -- call precombat
+  if not Player:AffectingCombat() and (not Player:IsCasting() or Player:IsCasting(S.WaterElemental)) then
+    local ShouldReturn = Precombat(); 
+	if ShouldReturn then 
+	    return ShouldReturn; 
+	end
+  end
   
-  	-- Protect against interrupt of channeled spells
-    if Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2) or Player:IsChanneling() then
-        return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
-    end 
-  
-    -- call precombat DBM
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Player:IsCasting() then
-        if Precombat_DBM() ~= nil then
-            return Precombat_DBM()
-        end
-    end
-	-- call precombat
-    if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Player:IsCasting() then
-        if Precombat() ~= nil then
-            return Precombat()
-        end
-    end
-  
-  -- In combat
   if RubimRH.TargetIsValid() then
 	-- Queue sys
 	if QueueSkill() ~= nil then
@@ -565,17 +522,31 @@ local function APL()
 	if S.Spellsteal:IsReady() and RubimRH.InterruptsON() and Target:HasStealableBuff() then
         return S.Spellsteal:Cast()
     end
+
+    -- ice_lance,if=prev_gcd.1.flurry&!buff.fingers_of_frost.react
+    if S.IceLance:IsCastableP() and (Player:PrevGCDP(1, S.Flurry) and not bool(Player:BuffStackP(S.FingersofFrostBuff))) then
+      return S.IceLance:Cast()
+    end
     -- call_action_list,name=cooldowns
     if RubimRH.CDsON() then
-      local ShouldReturn = Cooldowns(); if ShouldReturn then return ShouldReturn; end
+      local ShouldReturn = Cooldowns(); 
+	  if ShouldReturn then 
+	      return ShouldReturn; 
+	  end
     end
     -- call_action_list,name=aoe,if=active_enemies>3&talent.freezing_rain.enabled|active_enemies>4
     if (EnemiesCount > 3 and S.FreezingRain:IsAvailable() or EnemiesCount > 4) then
-      local ShouldReturn = Aoe(); if ShouldReturn then return ShouldReturn; end
+      local ShouldReturn = Aoe(); 
+	  if ShouldReturn then 
+	      return ShouldReturn; 
+	  end
     end
     -- call_action_list,name=single
     if (true) then
-      local ShouldReturn = Single(); if ShouldReturn then return ShouldReturn; end
+      local ShouldReturn = Single(); 
+	  if ShouldReturn then 
+	      return ShouldReturn; 
+	  end
     end
   end
   return 0, 135328
