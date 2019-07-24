@@ -603,7 +603,7 @@ local function APL()
       end
     end
     -- potion,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
-    if I.BattlePotionofStrength:IsReady() RubimRH.CDsON() and (Player:BuffP(S.PillarofFrostBuff) and Player:BuffP(S.EmpowerRuneWeaponBuff)) then
+    if I.BattlePotionofStrength:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.PillarofFrostBuff) and Player:BuffP(S.EmpowerRuneWeaponBuff)) then
       return 967532
     end
     -- blood_fury,if=buff.pillar_of_frost.up&buff.empower_rune_weapon.up
