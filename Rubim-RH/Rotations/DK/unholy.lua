@@ -207,6 +207,10 @@ local function bool(val)
   return val ~= 0
 end
 
+local function DeathStrikeHeal()
+  return Player:HealthPercentage() <= RubimRH.db.profile[252].sk3 and true or false;
+end
+
 local function EvaluateCycleFesteringStrike40(TargetUnit)
   return TargetUnit:DebuffStackP(S.FesteringWoundDebuff) <= 1 and bool(S.DeathandDecay:CooldownRemainsP())
 end
@@ -228,7 +232,7 @@ local function APL()
   local Precombat_DBM, Precombat, Aoe, Cooldowns, Essences, Generic
   UpdateRanges()
   DetermineEssenceRanks()
-  --local no_heal = not DeathStrikeHeal()
+  local no_heal = not DeathStrikeHeal()
   --local Gargoyle = S.DarkArbiter:IsLearned() and S.DarkArbiter or S.SummonGargoyle
   
   	-- Anti channeling interrupt
@@ -531,9 +535,9 @@ local function APL()
         return S.RaiseDead:Cast()
     end
     -- use DeathStrike on low HP in Solo Mode
-    --if not no_heal and S.DeathStrike:IsReadyP("Melee") then
-    --  return S.DeathStrike:Cast()
-    --end
+    if not no_heal and S.DeathStrike:IsReadyP("Melee") then
+      return S.DeathStrike:Cast()
+    end
     -- use DeathStrike with Proc in Solo Mode
     --if Settings.General.SoloMode and S.DeathStrike:IsReadyP("Melee") and Player:BuffP(S.DeathStrikeBuff) then
     --  return S.DeathStrike:Cast()
