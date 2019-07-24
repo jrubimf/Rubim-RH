@@ -393,7 +393,7 @@ local function APL()
   
   Essences = function()
     -- memory_of_lucid_dreams,if=rune.time_to_1>gcd&runic_power<40
-    if S.MemoryofLucidDreams:IsCastableP() and (Player:RuneTimeToX(1) > Player:GCD() and Player:RunicPower() < 40) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (Player:RuneTimeToX(1) > Player:GCD() and Player:RunicPower() < 40) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- blood_of_the_enemy,if=(cooldown.death_and_decay.remains&spell_targets.death_and_decay>1)|(cooldown.defile.remains&spell_targets.defile>1)|(cooldown.apocalypse.remains&cooldown.death_and_decay.ready)
@@ -401,7 +401,7 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- guardian_of_azeroth,if=cooldown.apocalypse.ready
-    if S.GuardianofAzeroth:IsCastableP() and (S.Apocalypse:IsCastableP()) then
+    if S.GuardianOfAzeroth:IsCastableP() and (S.Apocalypse:IsCastableP()) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- the_unbound_force,if=buff.reckless_force.up|buff.reckless_force_counter.stack<11

@@ -654,7 +654,7 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- guardian_of_azeroth
-    if S.GuardianofAzeroth:IsCastableP() then
+    if S.GuardianOfAzeroth:IsCastableP() then
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- chill_streak,if=buff.pillar_of_frost.remains<5|target.1.time_to_die<5
@@ -686,7 +686,7 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- memory_of_lucid_dreams,if=buff.empower_rune_weapon.remains<5&buff.breath_of_sindragosa.up|(rune.time_to_2>gcd&runic_power<50)
-    if S.MemoryofLucidDreams:IsCastableP() and (Player:BuffRemainsP(S.EmpowerRuneWeaponBuff) < 5 and Player:BuffP(S.BreathofSindragosa) or (Player:RuneTimeToX(2) > Player:GCD() and Player:RunicPower() < 50)) then
+    if S.MemoryOfLucidDreams:IsCastableP() and (Player:BuffRemainsP(S.EmpowerRuneWeaponBuff) < 5 and Player:BuffP(S.BreathofSindragosa) or (Player:RuneTimeToX(2) > Player:GCD() and Player:RunicPower() < 50)) then
       return S.UnleashHeartOfAzeroth:Cast()
     end
   end
