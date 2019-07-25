@@ -18,7 +18,7 @@ RubimRH.Spell[1] = {
     Fireblood = Spell(265221),
     GiftoftheNaaru = Spell(59547),
     LightsJudgment = Spell(255647),
-
+    UnleashHeartOfAzeroth = Spell(280431),
 
         -- Potions
     PotionOfProlongedPowerBuff = Spell(229206),
