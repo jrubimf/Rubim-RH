@@ -354,7 +354,7 @@ local function APL()
             return S.Bladestorm:Cast()
         end
 		-- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
-        if S.Bloodthirst:IsCastableP("Melee") and (Player:BuffDownP(S.EnrageBuff) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
+        if S.Bloodthirst:IsCastableP("Melee") and (Player:BuffDownP(S.Enrage) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
             return S.Bloodthirst:Cast()
         end
         -- dragonroar,if=spell_targets.dragonroar>1&!buff.enrage.up
