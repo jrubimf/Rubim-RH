@@ -67,6 +67,37 @@ function Spell:QueueAuto(powerExtra)
     RubimRH.queuedSpellAuto = { self, powerEx }
 end
 
+-- Essence fix for QueueSkill
+local Essences = {   
+  Spell(297108),
+  Spell(298273),
+  Spell(298277),
+  Spell(295373),
+  Spell(299349),
+  Spell(299353),
+  Spell(295840),
+  Spell(299355),
+  Spell(299358),
+  Spell(295258),
+  Spell(299336),
+  Spell(299338),
+  Spell(295337),
+  Spell(299345),
+  Spell(299347),
+  Spell(298452),
+  Spell(299376),
+  Spell(299378),
+  Spell(302731),
+  Spell(302982),
+  Spell(302983),
+  Spell(295186),
+  Spell(298628),
+  Spell(299334),
+  Spell(298357),
+  Spell(299372),
+  Spell(299374),
+}
+
 RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
 function Spell:Queue(powerExtra, bypassRemove)
     local bypassRemove = bypassRemove or false
@@ -78,11 +109,25 @@ function Spell:Queue(powerExtra, bypassRemove)
         return
     end
 
-    if self:IsAvailable() then
-        RubimRH.queuedSpell = { self, powerEx }
-        RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
-        RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
-        return
+    if self:IsAvailable() then	
+	-- Essence fix for QueueSkill
+		for i = 1, #Essences do		
+		    local EssencesID = Essences[i]:ID()
+		    -- If an Essence is queued
+			if self:ID() == EssencesID then
+			    RubimRH.queuedSpell = {RubimRH.Spell[1].UnleashHeartOfAzeroth, 0}
+				RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
+			    print("Queued ID = " .. GetSpellLink(self:ID()))
+			    print("Compared Essence ID = " .. EssencesID)
+                return
+		    -- If not Essence, return classic queue spell
+			else	
+                RubimRH.queuedSpell = { self, powerEx }
+                RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
+                return
+			end
+		end
     end
     RubimRH.print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
 

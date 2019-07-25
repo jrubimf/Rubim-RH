@@ -79,9 +79,9 @@ RubimRH.Spell[72] = {
     SpellReflection = Spell(216890),
 	CyclotronicBlast = Spell(293491),
     -- Azerite
-    AzeriteColdSteelHotBlood = Spell(288080),
+    ColdSteelHotBlood = Spell(288080),
 	
-			  --8.2 Essences
+	--8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -154,7 +154,6 @@ end
 local OffensiveCDs = {
    
     S.Recklessness,
-    S.Siegebreaker,
     S.Bladestorm,
     
     
@@ -354,9 +353,13 @@ local function APL()
         if S.Bladestorm:IsReady() and (Player:PrevGCDP(1, S.Rampage)) then
             return S.Bladestorm:Cast()
         end
-        -- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
-        if S.Bloodthirst:IsReady("Melee") and Player:BuffDownP(S.Enrage) then
+		-- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
+        if S.Bloodthirst:IsCastableP("Melee") and (Player:BuffDownP(S.Enrage) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
             return S.Bloodthirst:Cast()
+        end
+        -- dragonroar,if=spell_targets.dragonroar>1&!buff.enrage.up
+        if S.DragonRoar:IsReady("Melee") and Cache.EnemiesCount [5] > 1 and Player:BuffP(S.Enrage) then 
+            return S.DragonRoar:Cast ()
         end
         -- raging_blow,if=charges=2
         if S.RagingBlow:IsReady("Melee") and (S.RagingBlow:ChargesP() == 2) then

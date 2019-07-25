@@ -184,6 +184,14 @@ local function UpdateRanges()
     end
 end
 
+local function GotAtonement()	
+	if Target:BuffP(S.AtonementBuff) > 0 then 
+        return true
+    end
+    return false
+end
+
+
 -- # Essences
 local function Essences()
   -- blood_of_the_enemy

@@ -19,7 +19,7 @@ RubimRH.Spell[255] = {
   SteelTrap                             = Spell(162488),
   Harpoon                               = Spell(190925),
   MongooseBite                          = Spell(259387),
-  MongooseBiteEagle                     = Spell(265888),
+  MongooseBiteEagle                     = Spell(265888)
   --MongooseBite                        = MultiSpell(259387, 265888),
   CoordinatedAssaultBuff                = Spell(266779),
   BlurofTalonsBuff                      = Spell(277969),
@@ -28,9 +28,7 @@ RubimRH.Spell[255] = {
   --RaptorStrike                        = MultiSpell(186270, 265189),
   FlankingStrike                        = Spell(269751),
   KillCommand                           = Spell(259489),
-  CounterShot                           = Spell(147362),
   --WildfireBomb                        = MultiSpell(259495, 270335, 270323, 271045),
-  WildfireBomb                          = Spell(259495),
   WildfireBombDebuff                    = Spell(269747),
   ShrapnelBomb                          = Spell(270335),
   PheromoneBomb                         = Spell(270323),
@@ -116,7 +114,6 @@ RubimRH.Spell[255] = {
   MemoryOfLucidDreams3                  = Spell(299374),
 };
 
-local S = RubimRH.Spell[255]
 -- Items
 if not Item.Hunter then Item.Hunter = {} end
 Item.Hunter.Survival = {
@@ -314,7 +311,7 @@ local function APL()
     -- augmentation
     -- food
     -- summon_pet
-    if S.SummonPet:IsCastableP() and not Pet:Exists() then
+    if S.SummonPet:IsCastableP() then
       return S.SummonPet:Cast()
     end
     -- snapshot_stats
@@ -350,7 +347,7 @@ local function APL()
     -- augmentation
     -- food
     -- summon_pet
-    if S.SummonPet:IsCastableP() and not Pet:Exists() then
+    if S.SummonPet:IsCastableP() then
       return S.SummonPet:Cast()
     end
     -- snapshot_stats
@@ -656,7 +653,7 @@ local function APL()
     end
     -- steel_trap
     if S.SteelTrap:IsCastableP() then
-      return S.SteelTrap:Cast()
+      return S.SteelTrap:Cast()d
     end
     -- harpoon,if=talent.terms_of_engagement.enabled
     if S.Harpoon:IsCastableP() and (S.TermsofEngagement:IsAvailable()) then

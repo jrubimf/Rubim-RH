@@ -136,11 +136,11 @@ local function HealingEngine(MODE, useActualHP)
                 memberhp = memberhp - threat
             end            
             
-			--[[-- Enable specific instructions by profile 
-			if Env.IsGGLprofile then 
+			-- Enable specific instructions by profile 
+			--if RubimRH.IsGGLprofile then 
 				-- Holy Paladin 
-				if UnitSpec("player", 65) then                 
-					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and Env.SpellUsable(4987) and not UnitIsUnit("player", member) and Env.Dispel(member) then 
+				if RubimRH.playerSpec == 65 then                 
+					if (not isQueuedDispel and Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and SpellUsable(4987) and not UnitIsUnit("player", member) then 
 						-- DISPEL PRIORITY
 						isQueuedDispel = true 
 						-- if we will have lower unit than 50% then don't dispel it
@@ -148,10 +148,10 @@ local function HealingEngine(MODE, useActualHP)
 						if Unit(member, RubimRH.HealingEngine.Refresh):IsHealer() then 
 							memberhp = 25
 						end
-					elseif AzeriteRank(287268) > 0 and Env.SpellCD(20473) <= Env.CurrentTimeGCD() and Unit(member, 0.5):HasBuffs(287280, "player") <= Env.GCD() then 
+					elseif Spell(287268):AzeriteRank() > 0 and Spell(20473):CooldownRemainsP() <= RubimRH.CurrentTimeGCD() and Unit(member, 0.5):BuffsRemainsP(287280) <= Player:GCD() then 
 						-- Glimmer of Light 
 						-- Generally, prioritize players that might die in the next few seconds > non-Beaconed tank (without Glimmer buff) > Beaconed tank (without Glimmer buff) > players without the Glimmer buff
-						if Env.PredictHeal("HolyShock", member) then 
+						if RubimRH.PredictHeal("HolyShock", member) then 
 							if Unit(member, RubimRH.HealingEngine.Refresh):IsTank() then 
 								if Unit(member):HasBuffs({156910, 53563}, "player") == 0 then 
 									memberhp = 35
@@ -168,7 +168,7 @@ local function HealingEngine(MODE, useActualHP)
 						-- Beacon HPS SYSTEM + hot current ticking and total duration
 						local BestowFaith1, BestowFaith2 = Unit(member):HasBuffs(223306, "player")
 						if BestowFaith1 > 0 then 
-							memberhp = memberhp + ( 100 * (Env.GetDescription(223306)[1]) / membermhp )
+							memberhp = memberhp + ( 100 * (RubimRH.GetDescription(223306)[1]) / membermhp )
 						end 
 						-- Checking if Member has Beacons on them            
 						if Unit(member):HasBuffs({53563, 156910}, "player") > 0 then
@@ -178,8 +178,8 @@ local function HealingEngine(MODE, useActualHP)
 				end 
 				
 				-- Restor Druid 
-				if UnitSpec("player", 105) then 					
-					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and Env.SpellUsable(88423) and not UnitIsUnit("player", member) and Env.Dispel(member) then 
+				if RubimRH.playerSpec == 105) then 					
+					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and RubimRH.SpellUsable(88423) and not UnitIsUnit("player", member) and RubimRH.Dispel(member) then 
 						-- DISPEL PRIORITY
 						isQueuedDispel = true 
 						memberhp = 50 
@@ -196,34 +196,34 @@ local function HealingEngine(MODE, useActualHP)
 						local Germination1, Germination2 = Unit(member):HasBuffs(155777, "player") -- Rejuvenation Talent 
 						local summup, summdmg = 0, {}
 						if Rejuvenation1 > 0 then 
-							summup = summup + (Env.GetDescription(774)[1] / Rejuvenation2 * Rejuvenation1)
+							summup = summup + (RubimRH.GetDescription(774)[1] / Rejuvenation2 * Rejuvenation1)
 							table.insert(summdmg, Rejuvenation1)
 						else
 							-- If current target is Tank then to prevent staying on that target we will cycle rest units 
 							if healingTarget and healingTarget ~= "None" and Unit(healingTarget, RubimRH.HealingEngine.Refresh):IsTank() then 
 								memberhp = memberhp - 15
 							else 
-								summup = summup - (Env.GetDescription(774)[1] * 3)
+								summup = summup - (RubimRH.GetDescription(774)[1] * 3)
 							end 
 						end
 						
 						if Regrowth1 > 0 then 
-							summup = summup + (Env.GetDescription(8936)[2] / Regrowth2 * Regrowth1)
+							summup = summup + (RubimRH.GetDescription(8936)[2] / Regrowth2 * Regrowth1)
 							table.insert(summdmg, Regrowth1)
 						end
 						
 						if WildGrowth1 > 0 then 
-							summup = summup + (Env.GetDescription(48438)[1] / WildGrowth2 * WildGrowth1)
+							summup = summup + (RubimRH.GetDescription(48438)[1] / WildGrowth2 * WildGrowth1)
 							table.insert(summdmg, WildGrowth1)                    
 						end
 						
 						if Lifebloom1 > 0 then 
-							summup = summup + (Env.GetDescription(33763)[1] / Lifebloom2 * Lifebloom1) 
+							summup = summup + (RubimRH.GetDescription(33763)[1] / Lifebloom2 * Lifebloom1) 
 							table.insert(summdmg, Lifebloom1)    
 						end
 						
 						if Germination1 > 0 then -- same with Rejuvenation
-							summup = summup + (Env.GetDescription(774)[1] / Germination2 * Germination1)
+							summup = summup + (RubimRH.GetDescription(774)[1] / Germination2 * Germination1)
 							table.insert(summdmg, Germination1)    
 						end
 						
@@ -244,8 +244,8 @@ local function HealingEngine(MODE, useActualHP)
 				end
 				
 				-- Discipline Priest
-				if UnitSpec("player", 256) then                 
-					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and not UnitIsUnit("player", member) and (Env.Dispel(member) or Env.Purje(member) or Env.MassDispel(member)) then 
+				if RubimRH.playerSpec == 256) then                 
+					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and not UnitIsUnit("player", member) and (RubimRH.Dispel(member) or RubimRH.Purje(member) or RubimRH.MassDispel(member)) then 
 						-- DISPEL PRIORITY
 						isQueuedDispel = true 
 						memberhp = 50 
@@ -253,13 +253,13 @@ local function HealingEngine(MODE, useActualHP)
 						if Unit(member, RubimRH.HealingEngine.Refresh):IsHealer() then 
 							memberhp = 25
 						end 
-					elseif AtonementRenew_Toggle and Unit(member):HasBuffs(81749, "player") <= Env.CurrentTimeGCD() then 				
+					elseif AtonementRenew_Toggle and Unit(member):HasBuffs(81749, "player") <= RubimRH.CurrentTimeGCD() then 				
 						-- Toggle "Group Atonement/Renew﻿"
 						memberhp = 50
 					elseif memberhp < 100 then                    
 						-- Atonement priority 
-						if Unit(member):HasBuffs(81749, "player") > 0 and Env.oPR and Env.oPR["AtonementHPS"] then 
-							memberhp = memberhp + ( 100 * Env.oPR["AtonementHPS"] / membermhp )
+						if Unit(member):HasBuffs(81749, "player") > 0 and RubimRH.oPR and RubimRH.oPR["AtonementHPS"] then 
+							memberhp = memberhp + ( 100 * RubimRH.oPR["AtonementHPS"] / membermhp )
 						end 
 						
 						-- Absorb system 
@@ -269,23 +269,23 @@ local function HealingEngine(MODE, useActualHP)
 							CombatTime("player") > 0 or 
 							(
 								-- Pre shield before battle will start
-								( Env.Zone == "arena" or Env.Zone == "pvp" ) and
-								HL.GetTime() - Env.ZoneTimeStampSinceJoined < 120                             
+								( RubimRH.Zone == "arena" or RubimRH.Zone == "pvp" ) and
+								HL.GetTime() - RubimRH.ZoneTimeStampSinceJoined < 120                             
 							)
 						) and getAbsorb(member, 17) == 0 then 
 							memberhp = memberhp - 10
 						end                     
 						
 						-- Toggle or PrePare combat or while Rapture always
-						if HE_Absorb or CombatTime("player") <= 5 or Unit("player"):HasBuffs(47536, "player") > Env.CurrentTimeGCD() then 
+						if HE_Absorb or CombatTime("player") <= 5 or Unit("player"):HasBuffs(47536, "player") > RubimRH.CurrentTimeGCD() then 
 							memberhp = memberhp + ( 100 * getAbsorb(member, 17) / membermhp )
 						end 
 					end 
 				end 
 				
 				-- Holy Priest
-				if UnitSpec("player", 257) then                 
-					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and not UnitIsUnit("player", member) and (Env.Dispel(member) or Env.Purje(member) or Env.MassDispel(member)) then 
+				if RubimRH.playerSpec == 257) then                 
+					if (not isQueuedDispel or Unit(member, RubimRH.HealingEngine.Refresh):IsHealer()) and not UnitIsUnit("player", member) and (RubimRH.Dispel(member) or RubimRH.Purje(member) or RubimRH.MassDispel(member)) then 
 						-- DISPEL PRIORITY
 						isQueuedDispel = true 
 						memberhp = 50 
@@ -293,17 +293,17 @@ local function HealingEngine(MODE, useActualHP)
 						if Unit(member, RubimRH.HealingEngine.Refresh):IsHealer() then 
 							memberhp = 25
 						end  
-					elseif AtonementRenew_Toggle and Unit(member):HasBuffs(139, "player") <= Env.CurrentTimeGCD() then 				
+					elseif AtonementRenew_Toggle and Unit(member):HasBuffs(139, "player") <= RubimRH.CurrentTimeGCD() then 				
 						-- Toggle "Group Atonement/Renew﻿"
 						memberhp = 50
 					elseif memberhp < 100 then 
 						if UnitIsTrailOfLight(member) then 
 							-- Single Rotation 
-							local ST = Env.IsIconDisplay("TMW:icon:1RhherQmOw_V") or 0
+							local ST = RubimRH.IsIconDisplay("TMW:icon:1RhherQmOw_V") or 0
 							if ST == 2061 then 
-								memberhp = memberhp + ( 100 * (Env.GetDescription(2061)[1] * 0.35) / membermhp )
+								memberhp = memberhp + ( 100 * (RubimRH.GetDescription(2061)[1] * 0.35) / membermhp )
 							elseif ST == 2060 then 
-								memberhp = memberhp + ( 100 * (Env.GetDescription(2060)[1] * 0.35) / membermhp )
+								memberhp = memberhp + ( 100 * (RubimRH.GetDescription(2060)[1] * 0.35) / membermhp )
 							end 
 						end 
 					end 
@@ -322,7 +322,7 @@ local function HealingEngine(MODE, useActualHP)
 					elseif memberhp < 100 and RubimRH.GetToggle(2, "HealingEngineAutoHot") and A[ACTION_CONST_MONK_MW].RenewingMist:IsReady() then 
 						-- Keep Renewing Mist hots as much as it possible on cooldown
 						local RenewingMist = Unit(member):HasBuffs(A[ACTION_CONST_MONK_MW].RenewingMist.ID, true)
-						if RenewingMist == 0 and Env.PredictHeal("RenewingMist", A[ACTION_CONST_MONK_MW].RenewingMist.ID, member) then 
+						if RenewingMist == 0 and RubimRH.PredictHeal("RenewingMist", A[ACTION_CONST_MONK_MW].RenewingMist.ID, member) then 
 							memberhp = memberhp - 40
 							if memberhp < 55 then 
 								memberhp = 55 
@@ -330,7 +330,7 @@ local function HealingEngine(MODE, useActualHP)
 						end 
 					end 
 				end 
-			end]]-- 
+			--end 
 			
             -- Misc: Sort by Roles 		
             -- Tank			
