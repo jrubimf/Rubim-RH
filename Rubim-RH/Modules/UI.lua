@@ -495,6 +495,15 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                         RubimRH.UseRageDef()
                     end
 					
+                    -- UseLastStandToFillShieldBlockDownTime
+					local UseLastStandToFill = StdUi:Checkbox(tab.frame, 'Use LastStand To Fill ShieldBlock DownTime');                    
+					StdUi:FrameTooltip(UseLastStandToFill, 'This will force Last Stand usage defensively', 'TOPLEFT', 'TOPRIGHT', true);                    
+					UseLastStandToFill:SetChecked(RubimRH.db.profile[73].UseLastStandToFillShieldBlockDownTime)                    
+					StdUi:GlueBelow(UseLastStandToFill, gn_4_0, 0, -260, 'LEFT');                  
+					function UseLastStandToFill:OnValueChanged(value)
+                        RubimRH.UseLastStandToFill()
+                    end
+					
                 end
 				
 			    --BALANCE DRUID

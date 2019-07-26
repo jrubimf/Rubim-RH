@@ -632,6 +632,8 @@ local defaults = {
             cooldown = true,
 			UseShieldBlockDefensively = true,
 			UseRageDefensively = true,
+			UseLastStandToFillShieldBlockDownTime = true,
+			
             victoryrush = 80,
 			
             sk1 = 30, -- ShieldWall
