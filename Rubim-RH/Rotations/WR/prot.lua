@@ -398,7 +398,7 @@ local function APL()
     end
     -- dragon_roar
     if S.DragonRoar:IsCastableP() and RubimRH.CDsON() then
-      return S.DragonRoar:Cast()d
+      return S.DragonRoar:Cast()
     end
     -- thunder_clap
     if S.ThunderClap:IsCastableP() then
