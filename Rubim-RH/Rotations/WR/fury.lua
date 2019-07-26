@@ -94,6 +94,9 @@ RubimRH.Spell[72] = {
   MemoryOfLucidDreams                   = Spell(298357),
   MemoryOfLucidDreams2                  = Spell(299372),
   MemoryOfLucidDreams3                  = Spell(299374),
+  CondensedLifeforce                    = Spell(295834),
+  CondensedLifeforce2                   = Spell(299354),
+  CondensedLifeforce3                   = Spell(299357),
 }
 
 local S = RubimRH.Spell[72]
@@ -157,6 +160,8 @@ local function DetermineEssenceRanks()
   S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+  S.CondensedLifeforce = S.CondensedLifeforce2:IsAvailable() and S.CondensedLifeforce2 or S.CondensedLifeforce
+  S.CondensedLifeforce = S.CondensedLifeforce3:IsAvailable() and S.CondensedLifeforce3 or S.CondensedLifeforce
 end
 
 -- Trinket var
@@ -441,7 +446,7 @@ local function APL()
       return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    if S.Whirlwind:IsCastableP() and (Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff)) then
+    if S.Whirlwind:IsCastableP() and Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff) then
       return S.Whirlwind:Cast()
     end
     -- use_item,name=ashvanes_razor_coral,if=!debuff.razor_coral_debuff.up|(target.health.pct<30.1&debuff.conductive_ink_debuff.up)|(!debuff.conductive_ink_debuff.up&buff.memory_of_lucid_dreams.up|prev_gcd.2.recklessness&(buff.guardian_of_azeroth.up|!essence.memory_of_lucid_dreams.major&!essence.condensed_lifeforce.major))
