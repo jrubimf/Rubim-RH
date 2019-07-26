@@ -164,7 +164,7 @@ function RubimRH.Shared()
         end
 		
 		-- Healthstone in raid with at least 10 raid members alive. 
-        if Item(Healthstone):IsReady() and IsInRaid() and ValidUnits >= 10 and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+        if Item(Healthstone):IsReady() and IsInRaid() and ValidUnits >= 15 and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end
 
