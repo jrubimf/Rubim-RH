@@ -296,9 +296,9 @@ local function APL()
       return S.Rampage:Cast()
     end
     -- execute,if=buff.enrage.upSuddenDeathBuff
-    if S.Execute:CooldownRemainsP() < 0.1 and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange()) then
-        return S.Execute:Cast()
-    end
+    --if S.Execute:CooldownRemainsP() < 0.1 and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange()) then
+    --    return S.Execute:Cast()
+    --end
     -- bladestorm,if=prev_gcd.1.rampage
     if S.Bladestorm:IsReady() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.Rampage)) then
       return S.Bladestorm:Cast()
