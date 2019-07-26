@@ -374,11 +374,11 @@ local function APL()
       return S.Judgment:Cast()
     end
     -- hammer_of_wrath,if=holy_power<=4
-    if S.HammerofWrath:IsCastableP() and (Player:HolyPower() <= 4) then
+    if S.HammerofWrath:IsReady() and (Player:HolyPower() <= 4) then
       return S.HammerofWrath:Cast()
     end
     -- consecration,if=holy_power<=2|holy_power<=3&cooldown.blade_of_justice.remains>gcd*2|holy_power=4&cooldown.blade_of_justice.remains>gcd*2&cooldown.judgment.remains>gcd*2
-    if S.Consecration:IsCastableP() and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 and S.Judgment:CooldownRemainsP() > PlayerGCD * 2) then
+    if S.Consecration:IsReady() and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 and S.Judgment:CooldownRemainsP() > PlayerGCD * 2) then
       return S.Consecration:Cast()
     end
     -- call_action_list,name=finishers,if=talent.hammer_of_wrath.enabled&target.health.pct<=20|buff.avenging_wrath.up|buff.crusade.up
@@ -386,7 +386,7 @@ local function APL()
       local ShouldReturn = Finishers(); if ShouldReturn then return ShouldReturn; end
     end
     -- crusader_strike,if=cooldown.crusader_strike.charges_fractional>=1.75&(holy_power<=2|holy_power<=3&cooldown.blade_of_justice.remains>gcd*2|holy_power=4&cooldown.blade_of_justice.remains>gcd*2&cooldown.judgment.remains>gcd*2&cooldown.consecration.remains>gcd*2)
-    if S.CrusaderStrike:IsCastableP() and (S.CrusaderStrike:ChargesFractionalP() >= 1.75 and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 and S.Judgment:CooldownRemainsP() > PlayerGCD * 2 and S.Consecration:CooldownRemainsP() > PlayerGCD * 2)) then
+    if S.CrusaderStrike:IsReady('Melee') and (S.CrusaderStrike:ChargesFractionalP() >= 1.75 and (Player:HolyPower() <= 2 or Player:HolyPower() <= 3 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 or Player:HolyPower() == 4 and S.BladeofJustice:CooldownRemainsP() > PlayerGCD * 2 and S.Judgment:CooldownRemainsP() > PlayerGCD * 2 and S.Consecration:CooldownRemainsP() > PlayerGCD * 2)) then
       return S.CrusaderStrike:Cast()
     end
     -- call_action_list,name=finishers
@@ -398,11 +398,11 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- crusader_strike,if=holy_power<=4
-    if S.CrusaderStrike:IsCastableP() and (Player:HolyPower() <= 4) then
+    if S.CrusaderStrike:IsReady('Melee') and (Player:HolyPower() <= 4) then
       return S.CrusaderStrike:Cast()
     end
     -- arcane_torrent,if=holy_power<=4
-    if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() and (Player:HolyPower() <= 4) then
+    if S.ArcaneTorrent:IsReady() and RubimRH.CDsON() and (Player:HolyPower() <= 4) then
       return S.ArcaneTorrent:Cast()
     end
   end
