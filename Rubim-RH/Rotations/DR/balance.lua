@@ -280,15 +280,10 @@ local function GetEnemiesCount(range)
 	 -- Unit Update - Update differently depending on if splash data is being used
 	if RubimRH.AoEON() then       
 	        if RubimRH.db.profile[62].useSplashData == "Enabled" then	
-                RubimRH.UpdateSplashCount(Target, range)
-                return RubimRH.GetSplashCount(Target, range)
+                HL.GetEnemies(range, nil, true, Target)
+                return Cache.EnemiesCount[range]
             else
-                UpdateRanges()
-                if range == 10 then
-                    return Cache.EnemiesCount[range]
-                else
-                    return active_enemies()
-                end
+                return active_enemies()
             end
     else
         return 1
