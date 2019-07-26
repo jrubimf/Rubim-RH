@@ -54,6 +54,10 @@ RubimRH.Spell[72] = {
   RazorCoralDebuff                      = Spell(303568),
   ConductiveInkDebuff                   = Spell(302565),
   BattleShout                           = Spell(6673),
+  Victorious                            = Spell(32216),
+  VictoryRush                           = Spell(34428),
+  -- Defensive
+  RallyingCry                           = Spell(97462),
   -- Misc
   UmbralMoonglaives                     = Spell(242553),
   SpellReflection                       = Spell(216890),
