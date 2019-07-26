@@ -58,6 +58,7 @@ RubimRH.Spell[72] = {
   VictoryRush                           = Spell(34428),
   SuddenDeath                           = Spell(280721),
   SuddenDeathBuff                       = Spell(280776),
+  ImpendingVictory                      = Spell(202168),
   -- Defensive
   RallyingCry                           = Spell(97462),
   -- Misc
