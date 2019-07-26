@@ -56,6 +56,8 @@ RubimRH.Spell[72] = {
   BattleShout                           = Spell(6673),
   Victorious                            = Spell(32216),
   VictoryRush                           = Spell(34428),
+  SuddenDeath                           = Spell(280721),
+  SuddenDeathBuff                       = Spell(280776),
   -- Defensive
   RallyingCry                           = Spell(97462),
   -- Misc
@@ -478,7 +480,6 @@ local function APL()
   end
   return 0, 135328
 end
-
 
 RubimRH.Rotation.SetAPL(72, APL);
 
