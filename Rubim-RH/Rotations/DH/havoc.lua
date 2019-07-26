@@ -327,7 +327,7 @@ local function APL()
       return S.Metamorphosis:Cast()
     end
     -- metamorphosis,if=talent.demonic.enabled&(!azerite.chaotic_transformation.enabled|(cooldown.eye_beam.remains>20&(!variable.blade_dance|cooldown.blade_dance.remains>gcd.max)))
-	if S.Metamorphosis:IsCastableP(40) and (Player:BuffDownP(S.MetamorphosisBuff) and S.Demonic:IsAvailable() and (not S.ChaoticTransformation:AzeriteEnabled() or (S.EyeBeam:CooldownRemainsP() > 12 and (not bool(VarBladeDance) or S.BladeDance:CooldownRemainsP() > Player:GCD())))) then
+	if S.Metamorphosis:IsCastableP(40) and Player:BuffDownP(S.MetamorphosisBuff) and S.Demonic:IsAvailable() and (not S.ChaoticTransformation:AzeriteEnabled() or (S.EyeBeam:CooldownRemainsP() > 12 and (not bool(VarBladeDance) or S.BladeDance:CooldownRemainsP() > Player:GCD()))) then
       return S.Metamorphosis:Cast()
     end
     -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
