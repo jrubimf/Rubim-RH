@@ -171,6 +171,11 @@ function RubimRH.Shared()
         if Item(Healthstone):IsReady() and not IsInRaid() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end
+		
+		-- Protect against interrupt of channeled spells
+        if (Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2)) or Player:IsChanneling() then
+            return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+        end 
 
         if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
