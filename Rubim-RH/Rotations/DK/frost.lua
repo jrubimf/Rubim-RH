@@ -198,7 +198,6 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
   S.RecklessForceCounter = S.RecklessForceCounter2:IsAvailable() and S.RecklessForceCounter2 or S.RecklessForceCounter
-  S.SummonGargoyle = S.SummonGargoyle2:IsAvailable() and S.SummonGargoyle2 or S.SummonGargoyle
 end
 
 -- Functions
