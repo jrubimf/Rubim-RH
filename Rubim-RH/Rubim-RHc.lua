@@ -199,35 +199,24 @@ end
 -- Prot Warrior 
 function RubimRH.UseShieldBlockDef()
     RubimRH.playSoundR(891);
-    if RubimRH.db.profile[73].UseShieldBlockDef == false then
-        RubimRH.db.profile[73].UseShieldBlockDef = true
+    if RubimRH.db.profile[102].UseShieldBlockDef == false then
+        RubimRH.db.profile[102].UseShieldBlockDef = true
 
     else
-        RubimRH.db.profile[73].UseShieldBlockDef = false
+        RubimRH.db.profile[102].UseShieldBlockDef = false
     end
     print("|cFF69CCF0Use Shield Block Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseShieldBlockDef))
 end
 
 function RubimRH.UseRageDef()
     RubimRH.playSoundR(891);
-    if RubimRH.db.profile[73].UseRageDef == false then
-        RubimRH.db.profile[73].UseRageDef = true
+    if RubimRH.db.profile[102].UseRageDef == false then
+        RubimRH.db.profile[102].UseRageDef = true
 
     else
-        RubimRH.db.profile[73].UseRageDef = false
+        RubimRH.db.profile[102].UseRageDef = false
     end
     print("|cFF69CCF0Use your Rage Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseRageDef))
-end
-
-function RubimRH.UseLastStandToFill()
-    RubimRH.playSoundR(891);
-    if RubimRH.db.profile[73].UseLastStandToFill == false then
-        RubimRH.db.profile[73].UseLastStandToFill = true
-
-    else
-        RubimRH.db.profile[73].UseLastStandToFill = false
-    end
-    print("|cFF69CCF0Use LastStand To Fill ShieldBlock DownTime " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseLastStandToFill))
 end
 
 -- Resto druid Force Rejuv handler
@@ -505,17 +494,6 @@ function RubimRH.UseRageDefON()
         return false
     end
     if RubimRH.db.profile[73].UseRageDefensively == true then
-        return true
-    else
-        return false
-    end
-end
-
-function RubimRH.UseLastStandToFillON()
-    if RubimRH.db == nil then
-        return false
-    end
-    if RubimRH.db.profile[73].UseLastStandToFill == true then
         return true
     else
         return false
