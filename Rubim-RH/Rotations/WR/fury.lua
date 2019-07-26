@@ -213,6 +213,10 @@ local function trinketReady(trinketPosition)
     return true
 end
 
+local function ExecuteRange()
+	return S.Massacre:IsAvailable() and 35 or 20;
+end
+
 --- ======= ACTION LISTS =======
 local function APL()
   local Precombat_DBM, Precombat, Movement, SingleTarget
@@ -242,7 +246,7 @@ local function APL()
         return S.UnleashHeartOfAzeroth:Cast()
       end
       -- recklessness,if=!talent.furious_slash.enabled
-      if S.Recklessness:IsCastableP() and (not S.FuriousSlash:IsAvailable()) then
+      if S.Recklessness:IsReady() and (not S.FuriousSlash:IsAvailable()) then
         return S.Recklessness:Cast()
       end
 	  -- Charge to pull
@@ -270,7 +274,7 @@ local function APL()
         return S.UnleashHeartOfAzeroth:Cast()
       end
       -- recklessness,if=!talent.furious_slash.enabled
-      if S.Recklessness:IsCastableP() and (not S.FuriousSlash:IsAvailable()) then
+      if S.Recklessness:IsReady() and (not S.FuriousSlash:IsAvailable()) then
         return S.Recklessness:Cast()
       end
   end
@@ -284,47 +288,47 @@ local function APL()
   
   SingleTarget = function()
     -- siegebreaker
-    if S.Siegebreaker:IsCastableP() and RubimRH.CDsON() then
+    if S.Siegebreaker:IsReady("Melee") and RubimRH.CDsON() then
       return S.Siegebreaker:Cast()
     end
     -- rampage,if=(buff.recklessness.up|buff.memory_of_lucid_dreams.up)|(talent.frothing_berserker.enabled|talent.carnage.enabled&(buff.enrage.remains<gcd|rage>90)|talent.massacre.enabled&(buff.enrage.remains<gcd|rage>90))
-    if S.Rampage:IsReadyP() and ((Player:BuffP(S.RecklessnessBuff) or Player:BuffP(S.MemoryOfLucidDreams)) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90))) then
+    if S.Rampage:IsReady("Melee") and ((Player:BuffP(S.RecklessnessBuff) or Player:BuffP(S.MemoryOfLucidDreams)) or (S.FrothingBerserker:IsAvailable() or S.Carnage:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90) or S.Massacre:IsAvailable() and (Player:BuffRemainsP(S.EnrageBuff) < Player:GCD() or Player:Rage() > 90))) then
       return S.Rampage:Cast()
     end
-    -- execute
-    if S.Execute:IsCastableP() then
-      return S.Execute:Cast()
+    -- execute,if=buff.enrage.upSuddenDeathBuff
+    if S.Execute:CooldownRemainsP() < 0.1 and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange()) then
+        return S.Execute:Cast()
     end
     -- bladestorm,if=prev_gcd.1.rampage
-    if S.Bladestorm:IsCastableP() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.Rampage)) then
+    if S.Bladestorm:IsReady() and RubimRH.CDsON() and (Player:PrevGCDP(1, S.Rampage)) then
       return S.Bladestorm:Cast()
     end
     -- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
-    if S.Bloodthirst:IsCastableP() and (Player:BuffDownP(S.EnrageBuff) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
+    if S.Bloodthirst:IsCastableP("Melee") and (Player:BuffDownP(S.EnrageBuff) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
       return S.Bloodthirst:Cast()
     end
     -- dragon_roar,if=buff.enrage.up
-    if S.DragonRoar:IsCastableP() and RubimRH.CDsON() and (Player:BuffP(S.EnrageBuff)) then
+    if S.DragonRoar:IsReady("Melee") and RubimRH.CDsON() and (Player:BuffP(S.EnrageBuff)) then
       return S.DragonRoar:Cast()
     end
     -- raging_blow,if=charges=2
-    if S.RagingBlow:IsCastableP() and (S.RagingBlow:ChargesP() == 2) then
+    if S.RagingBlow:IsReady("Melee") and (S.RagingBlow:ChargesP() == 2) then
       return S.RagingBlow:Cast()
     end
     -- bloodthirst
-    if S.Bloodthirst:IsCastableP() then
+    if S.Bloodthirst:IsCastableP("Melee") then
       return S.Bloodthirst:Cast()
     end
     -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
-    if S.RagingBlow:IsCastableP() and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
+    if S.RagingBlow:IsReady("Melee") and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
       return S.RagingBlow:Cast()
     end
     -- furious_slash,if=talent.furious_slash.enabled
-    if S.FuriousSlash:IsCastableP() and (S.FuriousSlash:IsAvailable()) then
+    if S.FuriousSlash:IsReady("Melee") and (S.FuriousSlash:IsAvailable()) then
       return S.FuriousSlash:Cast()
     end
     -- whirlwind
-    if S.Whirlwind:IsCastableP() then
+    if S.Whirlwind:IsReady("Melee") then
       return S.Whirlwind:Cast()
     end
   end
@@ -398,11 +402,11 @@ local function APL()
     end
     -- potion
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
-    if S.FuriousSlash:IsCastableP() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
+    if S.FuriousSlash:IsReady("Melee") and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
       return S.FuriousSlash:Cast()
     end
     -- rampage,if=cooldown.recklessness.remains<3
-    if S.Rampage:IsReadyP() and (S.Recklessness:CooldownRemainsP() < 3) then
+    if S.Rampage:IsReady("Melee") and (S.Recklessness:CooldownRemainsP() < 3) then
       return S.Rampage:Cast()
     end
     -- blood_of_the_enemy,if=buff.recklessness.up
@@ -442,11 +446,11 @@ local function APL()
       return S.UnleashHeartOfAzeroth:Cast()
     end
     -- recklessness,if=!essence.condensed_lifeforce.major&!essence.blood_of_the_enemy.major|cooldown.guardian_of_azeroth.remains>20|buff.guardian_of_azeroth.up|cooldown.blood_of_the_enemy.remains<gcd
-    if S.Recklessness:IsCastableP() and RubimRH.CDsON() and (not S.CondensedLifeforce:IsAvailable() and not S.BloodOfTheEnemy:IsAvailable() or S.GuardianOfAzeroth:CooldownRemainsP() > 20 or Player:BuffP(S.GuardianOfAzeroth) or S.BloodOfTheEnemy:CooldownRemainsP() < Player:GCD()) then
+    if S.Recklessness:IsReady() and RubimRH.CDsON() and (not S.CondensedLifeforce:IsAvailable() and not S.BloodOfTheEnemy:IsAvailable() or S.GuardianOfAzeroth:CooldownRemainsP() > 20 or Player:BuffP(S.GuardianOfAzeroth) or S.BloodOfTheEnemy:CooldownRemainsP() < Player:GCD()) then
       return S.Recklessness:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
-    if S.Whirlwind:IsCastableP() and Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff) then
+    if S.Whirlwind:IsReady("Melee") and Cache.EnemiesCount[8] > 1 and not Player:BuffP(S.MeatCleaverBuff) then
       return S.Whirlwind:Cast()
     end
     -- use_item,name=ashvanes_razor_coral,if=!debuff.razor_coral_debuff.up|(target.health.pct<30.1&debuff.conductive_ink_debuff.up)|(!debuff.conductive_ink_debuff.up&buff.memory_of_lucid_dreams.up|prev_gcd.2.recklessness&(buff.guardian_of_azeroth.up|!essence.memory_of_lucid_dreams.major&!essence.condensed_lifeforce.major))
