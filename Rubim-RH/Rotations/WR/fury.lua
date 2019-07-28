@@ -80,6 +80,10 @@ RubimRH.Spell[72] = {
 	CyclotronicBlast = Spell(293491),
     -- Azerite
     ColdSteelHotBlood = Spell(288080),
+    RazorCoralDebuff = Spell(303568),
+    ConductiveInkDebuff = Spell(302565),
+    MemoryOfLucidDreamsBuff = Spell(298357),
+    ConcentratedFlameDebuff = Spell(295368),
 	
 	--8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
@@ -207,7 +211,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
+  if (S.ConcentratedFlame:IsCastableP() and Target:DebuffDownP(S.ConcentratedFlameDebuff)) and (not Player:BuffP(S.Recklessness) and not Target:DebuffP(S.SiegebreakerDebuff)) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
@@ -307,9 +311,6 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
-        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
-            return S.BattleShout:Cast()
-        end
 		--Prepots
         if I.BattlePotionofStrength:IsReady() and RubimRH.DBM_PullTimer() > 0.1 + Player:GCD() and RubimRH.DBM_PullTimer() < 0.5 + Player:GCD() then
             return 967532
@@ -331,13 +332,17 @@ local function APL()
         -- augmentation
         -- snapshot_stats
         -- potion
-        if S.BattleShout:IsCastable() and not Player:BuffPvP(S.BattleShout) then
+        if S.BattleShout:IsCastable() and not Player:BuffP(S.BattleShout) then
             return S.BattleShout:Cast()
         end
     end
 
     SingleTarget = function()
-         --siegebreaker
+        -- furious_slash,if=talent.furious_slash.enabled
+        if S.FuriousSlash:IsReady("Melee") and (S.FuriousSlash:IsAvailable()) and (Player:BuffRemainsP(S.FuriousSlashBuff) < 3) then
+            return S.FuriousSlash:Cast()
+        end
+        -- siegebreaker
         if S.Siegebreaker:IsReady("Melee") then
             return S.Siegebreaker:Cast()
         end
@@ -353,37 +358,21 @@ local function APL()
         if S.Bladestorm:IsReady() and (Player:PrevGCDP(1, S.Rampage)) then
             return S.Bladestorm:Cast()
         end
-		-- bloodthirst,if=buff.enrage.down|azerite.cold_steel_hot_blood.rank>1
-        if S.Bloodthirst:IsCastableP("Melee") and (Player:BuffDownP(S.EnrageBuff) or S.ColdSteelHotBlood:AzeriteRank() > 1) then
+		-- bloodthirst
+        if S.Bloodthirst:IsCastableP("Melee") then
             return S.Bloodthirst:Cast()
-        end
-        -- dragonroar,if=spell_targets.dragonroar>1&!buff.enrage.up
-        if S.DragonRoar:IsReady("Melee") and Cache.EnemiesCount [5] > 1 and Player:BuffP(S.Enrage) then 
-            return S.DragonRoar:Cast ()
         end
         -- raging_blow,if=charges=2
         if S.RagingBlow:IsReady("Melee") and (S.RagingBlow:ChargesP() == 2) then
             return S.RagingBlow:Cast()
         end
-        -- bloodthirst
-        if S.Bloodthirst:IsReady("Melee") then
-            return S.Bloodthirst:Cast()
-        end
 		-- dragon_roar,if=buff.enrage.up - fix
 	    if S.DragonRoar:IsReady("Melee") and S.DragonRoar:IsAvailable() and Player:BuffP(S.Enrage) and S.DragonRoar:CooldownRemainsP() < 1 then
             return S.DragonRoar:Cast()
         end
-        -- dragon_roar,if=buff.enrage.up
-      --  if S.DragonRoar:IsCastableP() and S.DragonRoar:IsAvailable() and Player:BuffRemainsP(S.Enrage) > Player:GCD() then
-      --      return S.DragonRoar:Cast()
-      --  end
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
         if S.RagingBlow:IsReady("Melee") and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
             return S.RagingBlow:Cast()
-        end
-        -- furious_slash,if=talent.furious_slash.enabled
-        if S.FuriousSlash:IsReady("Melee") and (S.FuriousSlash:IsAvailable()) then
-            return S.FuriousSlash:Cast()
         end
         -- whirlwind
         if S.Whirlwind:IsReady("Melee")  then
@@ -417,7 +406,7 @@ local function APL()
 
   -- combat
   if RubimRH.TargetIsValid() then
-	
+  	
     if QueueSkill() ~= nil then
         return QueueSkill()
     end
@@ -444,10 +433,6 @@ local function APL()
     if S.VictoryRush:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk1 then
         return S.VictoryRush:Cast()
     end
-	-- Victory Rush -> Buff about to expire
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady("Melee") then
-        return S.VictoryRush:Cast()
-    end
     if S.ImpendingVictory:IsReadyMorph() and Player:HealthPercentage() <= RubimRH.db.profile[72].sk2 then
         return S.VictoryRush:Cast()
     end
@@ -456,11 +441,11 @@ local function APL()
         return S.RallyingCry:Cast()
     end
 
-    if S.Bloodthirst:IsReady("Melee") and Player:HealthPercentage() <= 80 and Player:Buff(S.EnragedRegeneration) then
+    if S.Bloodthirst:IsReady("Melee") and Player:HealthPercentage() <= 80 and Player:BuffP(S.EnragedRegeneration) then
         return S.Bloodthirst:Cast()
     end
     -- furious_slash,if=talent.furious_slash.enabled&(buff.furious_slash.stack<3|buff.furious_slash.remains<3|(cooldown.recklessness.remains<3&buff.furious_slash.remains<9))
-    if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 3 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
+    if S.FuriousSlash:IsReady() and (S.FuriousSlash:IsAvailable() and (Player:BuffStackP(S.FuriousSlashBuff) < 3 or Player:BuffRemainsP(S.FuriousSlashBuff) < 2 or (S.Recklessness:CooldownRemainsP() < 3 and Player:BuffRemainsP(S.FuriousSlashBuff) < 9))) then
         return S.FuriousSlash:Cast()
     end
     -- rampage,if=cooldown.recklessness.remains<3
@@ -470,6 +455,10 @@ local function APL()
     -- recklessness,if=!talent.siegebreaker.enabled|(cooldown.siegebreaker.remains<1|cooldown.siegebreaker.remains>5)
     if S.Recklessness:IsReady() and ((not S.Siegebreaker:IsAvailable()) or (S.Siegebreaker:CooldownRemainsP() < 1 or S.Siegebreaker:CooldownRemainsP() > 5)) then
         return S.Recklessness:Cast()
+    end
+    -- dragonroar,if=spell_targets.dragonroar>1&!buff.enrage.up
+    if S.DragonRoar:IsReady("Melee") and Cache.EnemiesCount [5] > 1 and Player:BuffP(S.Enrage) then 
+    	return S.DragonRoar:Cast()
     end
     -- whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up
     if S.Whirlwind:IsReady("Melee") and Cache.EnemiesCount[5] > 1 and not Player:BuffP(S.WhirlwindBuff) and S.WhirlwindPassive:IsAvailable() then
@@ -496,7 +485,6 @@ local function APL()
     if S.AncestralCall:IsReady() and RubimRH.CDsON() and (Player:BuffP(S.Recklessness)) then
         return S.AncestralCall:Cast()
     end
-
     -- run_action_list,name=single_target
     if (true) then
         return SingleTarget();
