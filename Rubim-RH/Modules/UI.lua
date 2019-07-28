@@ -255,7 +255,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
             end
             -- Healthstone
             local gn_2_1 = StdUi:Slider(tab.frame, 125, 16, RubimRH.db.profile.mainOption.healthstoneper / 2.5, false, 0, 40)
-            StdUi:GlueBelow(gn_2_1, gn_1_1, 0, -24, 'RIGHT');
+            StdUi:GlueBelow(gn_2_1, gn_title, -110, -140, 'LEFT');
             local gn_2_1Label = StdUi:FontString(tab.frame, 'Healthstone: |cff00ff00' .. RubimRH.db.profile.mainOption.healthstoneper);
 
             StdUi:GlueTop(gn_2_1Label, gn_2_1, 0, 16);
@@ -312,7 +312,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
                 end
                 gn_3_1:SetText("|cfff0f8ffCD: |r" .. RubimRH.db.profile.mainOption.cooldownsUsage);
             end
-            StdUi:GlueBelow(gn_3_1, gn_2_1, 0, -10, 'RIGHT');
+            StdUi:GlueBelow(gn_3_1, gn_1_1, 0, -10, 'RIGHT');
 			
             -- Trinkets usage options
             local trinketoptions = {
@@ -465,7 +465,7 @@ function AllMenu(selectedTab, point, relativeTo, relativePoint, xOfs, yOfs)
 					-- Set default value (checked, unchecked)and save it to db 
 					ASInterruptbutton:SetChecked(RubimRH.db.profile[66].ASInterrupt)                    
 					-- Set positionning
-					StdUi:GlueBelow(ASInterruptbutton, gn_4_0, 0, -150, 'LEFT');
+					StdUi:GlueBelow(ASInterruptbutton, gn_4_0, 0, -200, 'LEFT');
                     -- What to do on value change                    
 					function ASInterruptbutton:OnValueChanged(value)
 					    -- See Rubim-RHc.lua 
