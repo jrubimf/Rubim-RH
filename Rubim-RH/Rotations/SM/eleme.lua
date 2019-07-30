@@ -699,7 +699,7 @@ local function APL()
       return SingleTarget();
     end
   return 0, 135328
-end
+  end
 end
 RubimRH.Rotation.SetAPL(262, APL);
 

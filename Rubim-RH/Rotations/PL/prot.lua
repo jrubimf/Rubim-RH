@@ -290,13 +290,13 @@ local function APL()
         end
     end
 
-        -- avengers_shield,if=cooldown_react
-    if S.AvengersShield:CooldownRemainsP() < 0.1 and RubimRH.TargetIsValid() and not RubimRH.ASInterruptON() then
-        return S.AvengersShield:Cast()
+    -- avengers_shield,if=cooldown_react
+    if S.AvengersShield:IsCastableP() and (S.AvengersShield:CooldownUpP()) then
+      return S.AvengersShield:Cast()
     end
-    if S.AvengersShield:CooldownRemainsP() < 0.1 and Target:IsInterruptible() and RubimRH.ASInterruptON() then
-        return S.AvengersShield:Cast()
-    end
+   -- if S.AvengersShield:IsReadyP(30) and Target:IsInterruptible() and RubimRH.ASInterruptON() then
+   --     return S.AvengersShield:Cast()
+   -- end
     if S.Rebuke:IsReadyP('Melee') and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
     end
