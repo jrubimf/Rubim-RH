@@ -291,7 +291,7 @@ local function APL()
     end
 
     -- avengers_shield,if=cooldown_react
-    if S.AvengersShield:IsCastableP() and (S.AvengersShield:CooldownUpP()) then
+    if S.AvengersShield:IsReadyP(30) and (S.AvengersShield:CooldownUpP()) then
       return S.AvengersShield:Cast()
     end
    -- if S.AvengersShield:IsReadyP(30) and Target:IsInterruptible() and RubimRH.ASInterruptON() then
