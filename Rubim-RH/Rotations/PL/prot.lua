@@ -290,13 +290,10 @@ local function APL()
         end
     end
 
-    -- avengers_shield,if=cooldown_react
-    if S.AvengersShield:IsReadyP(30) and (S.AvengersShield:CooldownUpP()) then
-      return S.AvengersShield:Cast()
+    
+    if S.AvengersShield:IsReadyP(30) and Target:IsInterruptible() and RubimRH.ASInterruptON() then
+        return S.AvengersShield:Cast()
     end
-   -- if S.AvengersShield:IsReadyP(30) and Target:IsInterruptible() and RubimRH.ASInterruptON() then
-   --     return S.AvengersShield:Cast()
-   -- end
     if S.Rebuke:IsReadyP('Melee') and RubimRH.db.profile.mainOption.useInterrupts and Target:IsInterruptible() then
         return S.Rebuke:Cast()
     end
@@ -386,6 +383,11 @@ local function APL()
     -- judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1&cooldown_react)|!talent.crusaders_judgment.enabled
     if S.Judgment:IsReadyP(30) and Target:AffectingCombat() and ((S.Judgment:CooldownRemains() < Player:GCD() and S.Judgment:ChargesFractional() > 1 and S.Judgment:CooldownUpP()) or not S.CrusadersJudgment:IsAvailable()) then
         return S.Judgment:Cast()
+    end
+
+    -- avengers_shield,if=cooldown_react
+    if S.AvengersShield:IsReadyP(30) and Target:AffectingCombat() and S.AvengersShield:CooldownUpP() and not RubimRH.ASInterruptON() then
+        return S.AvengersShield:Cast()
     end
 
     -- judgment,if=cooldown_react|!talent.crusaders_judgment.enabled
