@@ -79,7 +79,8 @@ RubimRH.Spell[253] = {
     SephuzBuff = Spell(208052),
     ConcusiveShot = Spell(5116),
     Intimidation = Spell(19577),
-	
+	RazorCoralDebuff       = Spell(303568),
+	CyclotronicBlast                      = Spell(167672),
 		  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
@@ -122,7 +123,8 @@ local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Hunter then Item.Hunter = {} end
 Item.Hunter.BeastMastery = {
-  BattlePotionofAgility            = Item(163223)
+  BattlePotionofAgility            = Item(163223),
+  AshvanesRazorCoral               = Item(169311),
 };
 local I = Item.Hunter.BeastMastery;
 
@@ -527,6 +529,16 @@ local function APL()
         end
         -- auto_shot
         -- use_items
+		--actions+=/use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.up&(prev_gcd.1.aspect_of_the_wild|!equipped.cyclotronic_blast&buff.aspect_of_the_wild.up)|(debuff.razor_coral_debuff.down|target.time_to_die<26)&target.time_to_die>(24*(cooldown.cyclotronic_blast.remains+4<target.time_to_die))
+    if I.AshvanesRazorCoral:IsEquipped() and I.AshvanesRazorCoral:IsReady() and (Target:DebuffP(S.RazorCoralDebuff) and (Player:PrevGCDP(1, S.AspectoftheWild) or not S.CyclotronicBlast:IsAvailable() and Player:BuffP(S.AspectoftheWildBuff)) or (Target:DebuffDownP(S.RazorCoralDebuff) or Target:TimeToDie() < 26) and Target:TimeToDie() > (24 * num(S.CyclotronicBlast:CooldownRemainsP() + 4 < Target:TimeToDie()))) then
+	    if trinketReady(1) then
+            return trinket1
+		elseif trinketReady(2) then
+		    return trinket2
+		else
+		    return
+		end
+    end
         -- mendpet
         if S.MendPet:IsCastable() and Pet:IsActive() and Pet:HealthPercentage() > 0 and Pet:HealthPercentage() <= RubimRH.db.profile[253].sk1 and not Pet:Buff(S.MendPet) then
             return S.MendPet:Cast()
