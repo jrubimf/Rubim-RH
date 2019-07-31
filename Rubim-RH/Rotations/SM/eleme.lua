@@ -61,7 +61,7 @@ RubimRH.Spell[262] = {
   CallLightning                         = Spell(157348),    
   AstralShift                           = Spell(108271),    
   
-  --8.2 Essences
+  		  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -218,55 +218,6 @@ local function StormElementalIsActive()
     end
 end
 
--- Trinket var
-local trinket2 = 1030910
-local trinket1 = 1030902
-
--- Trinket Ready
-local function trinketReady(trinketPosition)
-    local inventoryPosition
-    
-	if trinketPosition == 1 then
-        inventoryPosition = 13
-    end
-    
-	if trinketPosition == 2 then
-        inventoryPosition = 14
-    end
-    
-	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
-    if enable == 0 then
-        return false
-    end
-
-    if start + duration - GetTime() > 0 then
-        return false
-    end
-	
-	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
-	    return false
-	end
-	
-   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
-	    return false
-	end	
-	
-    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
-        return true
-    end
-	
-	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
-        if not UnitExists("boss1") then
-            return false
-        end
-
-        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
-            return false
-        end
-    end	
-    return true
-end
-
 --136024 - Earth
 --135790 - Fire
 function ElementalUp()
@@ -279,19 +230,19 @@ function ElementalUp()
     return 0
 end
 
-local function GetEnemiesCount(range)
-    if range == nil then range = 10 end
-	 -- Unit Update - Update differently depending on if splash data is being used
-	if RubimRH.AoEON() then       
-	        if RubimRH.db.profile[262].useSplashData == "Enabled" then	
-                HL.GetEnemies(range, nil, true, Target)
-                return Cache.EnemiesCount[range]
-            else
-                return active_enemies()
-            end
+local function GetEnemiesCount()
+  if RubimRH.AoEON() then
+    if RubimRH.db.profile[262].useSplashData == "Enabled" then
+      RubimRH.UpdateSplashCount(Target, 10)
+      return RubimRH.GetSplashCount(Target, 10)
     else
-        return 1
+      UpdateRanges()
+      --return Cache.EnemiesCount[40]
+	  return active_enemies()
     end
+  else
+    return 1
+  end
 end
 
 local function DetermineEssenceRanks()
@@ -348,7 +299,7 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  if S.MemoryOfLucidDreams:IsCastableP() and Player:Fury() < 40 and bool(Player:BuffP(S.MetamorphosisBuff)) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   return false
@@ -358,7 +309,7 @@ end
 local function APL()
   local Precombat_DBM, Precombat, Aoe, SingleTarget
   UpdateRanges()
-  DetermineEssenceRanks()
+  
    Precombat_DBM = function()
     -- flask
     -- food
@@ -523,7 +474,7 @@ local function APL()
       return S.LiquidMagmaTotem:Cast()
     end
     -- lightning_bolt,if=buff.stormkeeper.up&Cache.EnemiesCount[40].chain_lightning<2&(buff.master_of_the_elements.up&!talent.surge_of_power.enabled|buff.surge_of_power.up)
-    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and Player:BuffP(S.StormkeeperBuff) and GetEnemiesCount() < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff)) then
+    if S.LightningBolt:IsCastableP() and FutureMaelstromPower() <= 100 and (Player:BuffP(S.StormkeeperBuff) and GetEnemiesCount() < 2 and (Player:BuffP(S.MasteroftheElementsBuff) and not S.SurgeofPower:IsAvailable() or Player:BuffP(S.SurgeofPowerBuff))) then
       return S.LightningBolt:Cast()
     end
     --# There might come an update for this line with some SoP logic.
@@ -634,10 +585,7 @@ local function APL()
     end
 	
 -- call_action_list,name=essences
-    local ShouldReturn = Essences(); 
-	if ShouldReturn and (true) then 
-	    return ShouldReturn; 
-	end
+    local ShouldReturn = Essences(); if ShouldReturn then return ShouldReturn; end
     -- bloodlust,if=azerite.ancestral_resonance.enabled
     -- potion,if=expected_combat_length-time<30|cooldown.fire_elemental.remains>120|cooldown.storm_elemental.remains>120
     -- wind_shear
@@ -699,7 +647,7 @@ local function APL()
       return SingleTarget();
     end
   return 0, 135328
-  end
+end
 end
 RubimRH.Rotation.SetAPL(262, APL);
 
