@@ -338,10 +338,6 @@ local function APL()
     end
 
     SingleTarget = function()
-        -- furious_slash,if=talent.furious_slash.enabled
-        if S.FuriousSlash:IsReady("Melee") and (S.FuriousSlash:IsAvailable()) and (Player:BuffRemainsP(S.FuriousSlashBuff) < 3) then
-            return S.FuriousSlash:Cast()
-        end
         -- siegebreaker
         if S.Siegebreaker:IsReady("Melee") then
             return S.Siegebreaker:Cast()
@@ -353,6 +349,10 @@ local function APL()
         -- execute,if=buff.enrage.upSuddenDeathBuff
         if S.Execute:CooldownRemainsP() < 0.1 and (Player:BuffP(S.Enrage)) and (Target:HealthPercentage() < ExecuteRange ()) then
             return S.Execute:Cast()
+        end
+		-- furious_slash,if=!buff.bloodlust.up&buff.furious_slash.remains<3
+        if S.FuriousSlash:IsReady("Melee") and (not Player:HasHeroism() and Player:BuffRemainsP(S.FuriousSlashBuff) < 3) then
+          return S.FuriousSlash:Cast()
         end
         -- bladestorm,if=prev_gcd.1.rampage
         if S.Bladestorm:IsReady() and (Player:PrevGCDP(1, S.Rampage)) then
@@ -373,6 +373,10 @@ local function APL()
         -- raging_blow,if=talent.carnage.enabled|(talent.massacre.enabled&rage<80)|(talent.frothing_berserker.enabled&rage<90)
         if S.RagingBlow:IsReady("Melee") and (S.Carnage:IsAvailable() or (S.Massacre:IsAvailable() and Player:Rage() < 80) or (S.FrothingBerserker:IsAvailable() and Player:Rage() < 90)) then
             return S.RagingBlow:Cast()
+        end
+		-- furious_slash,if=talent.furious_slash.enabled
+        if S.FuriousSlash:IsCastableP("Melee") and (S.FuriousSlash:IsAvailable()) then
+            return S.FuriousSlash:Cast()
         end
         -- whirlwind
         if S.Whirlwind:IsReady("Melee")  then
