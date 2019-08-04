@@ -261,6 +261,7 @@ local function UpdateCVAR()
     if GetCVar("colorblindsimulator")~="0" then SetCVar("colorblindsimulator", 0) end; 
     -- Not neccessary
     if GetCVar("RenderScale")~="1" then SetCVar("RenderScale", 1) end; 
+	--[[
     if GetCVar("MSAAQuality")~="0" then SetCVar("MSAAQuality", 0) end;
     -- Could effect bugs if > 0 but FXAA should work, some people saying MSAA working too 
 	local AAM = tonumber(GetCVar("ffxAntiAliasingMode"))
@@ -268,6 +269,7 @@ local function UpdateCVAR()
 		SetCVar("ffxAntiAliasingMode", 0) 
 		print("You can't set higher AntiAliasing mode than FXAA or not equal to MSAA 8x")
 	end
+	]]
     if GetCVar("doNotFlashLowHealthWarning")~="1" then SetCVar("doNotFlashLowHealthWarning", 1) end; 
     -- WM removal
     if GetCVar("screenshotQuality")~="10" then SetCVar("screenshotQuality", 10) end;    
