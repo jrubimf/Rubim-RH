@@ -76,6 +76,12 @@ RubimRH.Spell[73] = {
 	Shockwave = Spell(46968),
 	
 	--8.2 Essences
+  AnimaofDeath          = Spell(294926),
+  AnimaofDeath2          = Spell(294926),
+  AnimaofDeath3          = Spell(294926),
+  AnimaofLife           = Spell(294964),
+  AnimaofLife2           = Spell(294964),
+  AnimaofLife3           = Spell(294964),
   UnleashHeartOfAzeroth = Spell(280431),
   BloodOfTheEnemy       = Spell(297108),
   BloodOfTheEnemy2      = Spell(298273),
@@ -176,6 +182,10 @@ local function offensiveRage()
 end
 
 local function DetermineEssenceRanks()
+  S.AnimaofDeath = S.AnimaofDeath2:IsAvailable() and S.AnimaofDeath2 or S.AnimaofDeath
+  S.AnimaofDeath = S.AnimaofDeath3:IsAvailable() and S.AnimaofDeath3 or S.AnimaofDeath
+  S.AnimaofLife = S.AnimaofLife2:IsAvailable() and S.AnimaofLife2 or S.AnimaofLife
+  S.AnimaofLife = S.AnimaofLife3:IsAvailable() and S.AnimaofLife3 or S.AnimaofLife
   S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
   S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
   S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
@@ -194,95 +204,7 @@ local function DetermineEssenceRanks()
   S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
 end
 
--- # Essences
-local function Essences()
-  -- blood_of_the_enemy
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- purifying_blast
-  if S.PurifyingBlast:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- the_unbound_force
-  if S.TheUnboundForce:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- ripple_in_space
-  if S.RippleInSpace:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- worldvein_resonance
-  if S.WorldveinResonance:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
-  end
-  return false
-end
 
--- Trinket var
-local trinket2 = 1030910
-local trinket1 = 1030902
-
--- Trinket Ready
-local function trinketReady(trinketPosition)
-    local inventoryPosition
-    
-	if trinketPosition == 1 then
-        inventoryPosition = 13
-    end
-    
-	if trinketPosition == 2 then
-        inventoryPosition = 14
-    end
-    
-	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
-    if enable == 0 then
-        return false
-    end
-
-    if start + duration - GetTime() > 0 then
-        return false
-    end
-	
-	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
-	    return false
-	end
-	
-   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
-	    return false
-	end	
-	
-    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
-        return true
-    end
-	
-	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
-        if not UnitExists("boss1") then
-            return false
-        end
-
-        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
-            return false
-        end
-    end	
-    return true
-end
 
 --- ======= ACTION LISTS =======
 local function APL()
@@ -318,12 +240,11 @@ local function APL()
     if S.ShieldWall:IsCastableP() and Player:HealthPercentage() <= RubimRH.db.profile[73].sk1 then
         return S.ShieldWall:Cast()
     end
-	-- Shield Block
-    if S.ShieldBlock:IsReadyP() and (((not Player:Buff(S.ShieldBlockBuff)) or Player:BuffRemains(S.ShieldBlockBuff) <= gcdTime + (gcdTime * 0.5)) and 
-      (not Player:Buff(S.LastStandBuff)) and Player:Rage() >= 30) then
+	  -- Shield Block
+    if S.ShieldBlock:IsReadyP('Melee') and (((not Player:Buff(S.ShieldBlockBuff) and (not Player:BuffP(S.LastStandBuff) or not S.Bolster:IsAvailable())) or Player:BuffRemains(S.ShieldBlockBuff) <= gcdTime + (gcdTime * 0.5)) and Player:HealthPercentage() < 50) then
         return S.ShieldBlock:Cast()
     end
-	-- Last Stand
+	  -- Last Stand
     if S.LastStand:IsCastableP() and ((not Player:Buff(S.ShieldBlockBuff)) and Player:HealthPercentage() <= RubimRH.db.profile[73].sk2 and S.ShieldBlock:RechargeP() > (gcdTime * 2)) then
         return S.LastStand:Cast()
     end
@@ -332,37 +253,47 @@ local function APL()
   -- Multi target
   Aoe = function()
     -- thunder_clap
-    if S.ThunderClap:IsCastableP() then
+    if S.ThunderClap:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.ThunderClap:Cast()
     end
+    -- memory_of_lucid_dreams,if=buff.avatar.down
+    if S.MemoryOfLucidDreams:IsCastableP('Melee') and (Player:BuffDownP(S.AvatarBuff)) and RubimRH.CDsON() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
     -- demoralizing_shout,if=talent.booming_voice.enabled
-    if S.DemoralizingShout:IsCastableP() and (S.BoomingVoice:IsAvailable() and Player:RageDeficit() >= 40) then
+    if S.DemoralizingShout:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.DemoralizingShout:Cast()
     end
+    -- anima_of_death,if=buff.last_stand.up
+    if S.AnimaofDeath:IsCastableP('Melee') and (Player:BuffP(S.LastStandBuff)) then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
     -- dragon_roar
-    if S.DragonRoar:IsCastableP() and RubimRH.CDsON() then
+    if S.DragonRoar:IsCastableP(5) and Cache.EnemiesCount[5] > 0 and RubimRH.CDsON() then
       return S.DragonRoar:Cast()
     end
     -- revenge
-    if S.Revenge:IsReadyP() and (Player:Buff(S.FreeRevenge) or offensiveRage() or Player:Rage() >= 75 or ((not isCurrentlyTanking()) and Player:Rage() >= 50)) then
+    if S.Revenge:IsReadyP() and Cache.EnemiesCount[5] > 0 and (Player:Buff(S.FreeRevenge) or Player:Rage() >= 60 or ((not isCurrentlyTanking()) and Player:Rage() >= 30)) then
       return S.Revenge:Cast()
     end
+    -- use_item,name=grongs_primal_rage,if=buff.avatar.down|cooldown.thunder_clap.remains>=4
     -- ravager
-    if S.Ravager:IsCastableP() then
+    if S.Ravager:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.Ravager:Cast()
     end
     -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down
-    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and offensiveShieldBlock()) then
+    if S.ShieldBlock:IsReadyP('Melee') and (S.ShieldSlam:CooldownUpP() and (not Player:BuffP(S.ShieldBlockBuff) and (not Player:BuffP(S.LastStandBuff) or not S.Bolster:IsAvailable()))) then
       return S.ShieldBlock:Cast()
     end
     -- shield_slam
-    if S.ShieldSlam:IsCastableP() then
+    if S.ShieldSlam:IsCastableP('Melee') then
       return S.ShieldSlam:Cast()
     end
-	-- devastate
-    if S.Devastate:IsCastableP() then
+     -- devastate
+     if S.Devastate:IsCastableP('Melee') then
       return S.Devastate:Cast()
     end
+    
   end
   -- Single Target
   St = function()
@@ -370,48 +301,51 @@ local function APL()
     if S.ThunderClap:IsCastableP() and (Cache.EnemiesCount[5] == 2 and S.UnstoppableForce:IsAvailable() and Player:BuffP(S.AvatarBuff)) then
       return S.ThunderClap:Cast()
     end
-    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down&azerite.brace_for_impact.rank>azerite.deafening_crash.rank&buff.avatar.up
-    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and S.BraceForImpact:AzeriteRank() > S.DeafeningCrash:AzeriteRank() and Player:BuffP(S.AvatarBuff) and offensiveShieldBlock()) then
+    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down
+    if S.ShieldBlock:IsReadyP('Melee') and (S.ShieldSlam:CooldownUpP() and (not Player:BuffP(S.ShieldBlockBuff) and (not Player:BuffP(S.LastStandBuff) or not S.Bolster:IsAvailable()))) then
       return S.ShieldBlock:Cast()
     end
-    -- shield_slam,if=azerite.brace_for_impact.rank>azerite.deafening_crash.rank&buff.avatar.up&buff.shield_block.up
-    if S.ShieldSlam:IsCastableP() and (S.BraceForImpact:AzeriteRank() > S.DeafeningCrash:AzeriteRank() and Player:BuffP(S.AvatarBuff) and Player:BuffP(S.ShieldBlockBuff)) then
+    -- shield_slam,if=buff.shield_block.up
+    if S.ShieldSlam:IsCastableP("Melee") and (Player:BuffP(S.ShieldBlockBuff)) then
       return S.ShieldSlam:Cast()
     end
     -- thunder_clap,if=(talent.unstoppable_force.enabled&buff.avatar.up)
-    if S.ThunderClap:IsCastableP() and ((S.UnstoppableForce:IsAvailable() and Player:BuffP(S.AvatarBuff))) then
+    if S.ThunderClap:IsCastableP() and Cache.EnemiesCount[5] > 0 and ((S.UnstoppableForce:IsAvailable() and Player:BuffP(S.AvatarBuff))) then
       return S.ThunderClap:Cast()
     end
     -- demoralizing_shout,if=talent.booming_voice.enabled
-    if S.DemoralizingShout:IsCastableP() and (S.BoomingVoice:IsAvailable() and Player:RageDeficit() >= 40) then
+    if S.DemoralizingShout:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.DemoralizingShout:Cast()
     end
-    -- shield_block,if=cooldown.shield_slam.ready&buff.shield_block.down
-    if S.ShieldBlock:IsReadyP() and (S.ShieldSlam:CooldownUpP() and Player:BuffDownP(S.ShieldBlockBuff) and offensiveShieldBlock()) then
-      return S.ShieldBlock:Cast()
+    -- anima_of_death,if=buff.last_stand.up
+    if S.AnimaofDeath:IsCastableP('Melee') and (Player:BuffP(S.LastStandBuff)) then
+      return S.UnleashHeartOfAzeroth:Cast()
     end
     -- shield_slam
-    if S.ShieldSlam:IsCastableP() then
+    if S.ShieldSlam:IsCastableP("Melee") then
       return S.ShieldSlam:Cast()
     end
+    -- use_item,name=ashvanes_razor_coral,target_if=debuff.razor_coral_debuff.stack=0
+    -- use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.stack>7&(cooldown.avatar.remains<5|buff.avatar.up)
     -- dragon_roar
-    if S.DragonRoar:IsCastableP() and RubimRH.CDsON() then
+    if S.DragonRoar:IsCastableP() and Cache.EnemiesCount[5] > 0 and RubimRH.CDsON() then
       return S.DragonRoar:Cast()
     end
     -- thunder_clap
-    if S.ThunderClap:IsCastableP() then
+    if S.ThunderClap:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.ThunderClap:Cast()
     end
     -- revenge
-    if S.Revenge:IsReadyP() and (Player:Buff(S.FreeRevenge) or offensiveRage() or Player:Rage() >= 75 or ((not isCurrentlyTanking()) and Player:Rage() >= 50)) then
+    if S.Revenge:IsReadyP() and Cache.EnemiesCount[5] > 0 and (Player:Buff(S.FreeRevenge) or Player:Rage() >= 60 or ((not isCurrentlyTanking()) and Player:Rage() >= 30)) then
       return S.Revenge:Cast()
     end
+    -- actions.st+=/use_item,name=grongs_primal_rage,if=buff.avatar.down|cooldown.shield_slam.remains>=4
     -- ravager
-    if S.Ravager:IsCastableP() then
+    if S.Ravager:IsCastableP() and Cache.EnemiesCount[5] > 0 then
       return S.Ravager:Cast()
     end
     -- devastate
-    if S.Devastate:IsCastableP() then
+    if S.Devastate:IsCastableP('Melee') then
       return S.Devastate:Cast()
     end
   end
@@ -426,19 +360,12 @@ local function APL()
       -- QueueSkill
 	if QueueSkill() ~= nil then
 		return QueueSkill()
-    end
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
+  end
+  
 	-- Shockwave
-    if S.Shockwave:IsCastableP() and Target:IsInRange(10) and Cache.EnemiesCount[10] >= 3 and Target:IsInterruptible() and RubimRH.InterruptsON() then
-        return S.Shockwave:Cast()
-    end
-    -- Stormbolt
-    if S.Stormbolt:IsAvailable() and S.Stormbolt:CooldownRemainsP() < 0.1 and S.Pummel:CooldownRemainsP() > 0 and Target:IsInRange(20) and Target:IsInterruptible() and RubimRH.InterruptsON() then
-        return S.Stormbolt:Cast()
-    end
+   
 	-- Pummel
-    if S.Pummel:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+    if S.Pummel:IsReady('Melee') and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.Pummel:Cast()
     end
     -- Check defensives if tanking
@@ -456,52 +383,68 @@ local function APL()
     --  return I.GrongsPrimalRage:Cast()
     --end
     -- blood_fury
-    if S.BloodFury:IsCastableP() and RubimRH.CDsON() then
+    if S.BloodFury:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.BloodFury:Cast()
     end
     -- berserking
-    if S.Berserking:IsCastableP() and RubimRH.CDsON() then
+    if S.Berserking:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.Berserking:Cast()
     end
     -- arcane_torrent
-    if S.ArcaneTorrent:IsCastableP() and RubimRH.CDsON() then
+    if S.ArcaneTorrent:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.ArcaneTorrent:Cast()
     end
     -- lights_judgment
-    if S.LightsJudgment:IsCastableP() and RubimRH.CDsON() then
+    if S.LightsJudgment:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.LightsJudgment:Cast()
     end
     -- fireblood
-    if S.Fireblood:IsCastableP() and RubimRH.CDsON() then
+    if S.Fireblood:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.Fireblood:Cast()
     end
     -- ancestral_call
-    if S.AncestralCall:IsCastableP() and RubimRH.CDsON() then
+    if S.AncestralCall:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.AncestralCall:Cast()
     end
     -- potion,if=buff.avatar.up|target.time_to_die<25
     --if I.BattlePotionofStrength:IsReady() and RubimRH.PerfectPullON() and (Player:BuffP(S.AvatarBuff) or Target:TimeToDie() < 25) then
     --  return I.BattlePotionofStrength:Cast()
     --end
- -- Impending Victory -> Cast when < 85% HP
+  -- Impending Victory -> Cast when < 85% HP
     if S.ImpendingVictory:IsReady()
-            and Player:HealthPercentage() <= 85 then
-        return S.VictoryRush:Cast()
-    end
-    -- Victory Rush -> Cast when < 85% HP
-    if Player:Buff(S.Victorious) and S.VictoryRush:IsReady() and Player:HealthPercentage() <= 85 then
+            and Player:HealthPercentage() <= 70 then
         return S.VictoryRush:Cast()
     end
     -- Victory Rush -> Buff about to expire
-    if Player:Buff(S.Victorious) and Player:BuffRemains(S.Victorious) <= 2 and S.VictoryRush:IsReady() then
+    if Player:BuffP(S.Victorious) and Player:HealthPercentage() <= 70 and S.VictoryRush:IsReady() then
         return S.VictoryRush:Cast()
     end	
     -- ignore_pain,if=rage.deficit<25+20*talent.booming_voice.enabled*cooldown.demoralizing_shout.ready
+    if S.IgnorePain:IsReadyP() and (Player:RageDeficit() < 25 + 20 * num(S.BoomingVoice:IsAvailable()) * num(S.DemoralizingShout:CooldownUpP())) then
+      return S.IgnorePain:Cast()
+    end
     if S.IgnorePain:IsReadyP() and (Player:RageDeficit() < 25 + 20 * num(S.BoomingVoice:IsAvailable()) * num(S.DemoralizingShout:CooldownUpP()) and shouldCastIp() and isCurrentlyTanking()) then
       return S.IgnorePain:Cast()
     end
+    -- worldvein_resonance,if=cooldown.avatar.remains<=2
+    if S.WorldveinResonance:IsCastableP('Melee') and (S.Avatar:CooldownRemainsP() <= 2) and RubimRH.CDsON() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- ripple_in_space
+    if S.RippleInSpace:IsCastableP('Melee') and RubimRH.CDsON() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- memory_of_lucid_dreams
+    if S.MemoryOfLucidDreams:IsCastableP('Melee') and RubimRH.CDsON() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- concentrated_flame,if=buff.avatar.down
+    if S.ConcentratedFlame:IsCastableP('Melee') and (Player:BuffDownP(S.AvatarBuff)) and RubimRH.CDsON() then
+      return S.UnleashHeartOfAzeroth:Cast()
+    end
+    -- last_stand,if=cooldown.anima_of_death.remains<=2
     -- avatar
-    if S.Avatar:IsCastableP() and RubimRH.CDsON() then
+    if S.Avatar:IsCastableP('Melee') and RubimRH.CDsON() then
       return S.Avatar:Cast()
     end
     -- run_action_list,name=aoe,if=spell_targets.thunder_clap>=3
