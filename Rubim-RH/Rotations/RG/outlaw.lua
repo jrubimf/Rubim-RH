@@ -363,10 +363,6 @@ end
 
 local function CDs ()
 
-
--- call_action_list,name=essences
-    local ShouldReturn = Essences(); 
-	if ShouldReturn and (true) then return ShouldReturn; end
     
     if S.Dismantle:IsAvailable() and S.Dismantle:CooldownUp() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() and Target:IsBursting() then
         if Target:IsInRange(15) and not Player:IsStealthed() then
@@ -584,6 +580,9 @@ local function APL ()
         return QueueSkill()
     end
 	
+-- call_action_list,name=essences
+    local ShouldReturn = Essences(); 
+	if ShouldReturn and (true) then return ShouldReturn; end
 	-- Anti channeling interrupt
 	if Player:IsChanneling() or Player:IsCasting() then
         return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
