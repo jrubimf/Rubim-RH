@@ -12,6 +12,7 @@ local Pet = Unit.Pet
 local Spell = HL.Spell
 local Item = HL.Item
 local mainAddon = RubimRH
+local MouseOver = Unit.MouseOver;
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -67,6 +68,7 @@ RubimRH.Spell[103] = {
     IronJawsBuff = Spell(276026),
 	WildChargeCat = Spell(102401),
 	SurvivalInstincts = Spell(61336),
+	Thorns = Spell(467),
 	
 		  --8.2 Essences
   UnleashHeartOfAzeroth = Spell(280431),
@@ -617,6 +619,15 @@ local function APL()
 	--if Target:MinDistanceToPlayer(true) >= 8 and Target:MinDistanceToPlayer(true) <= 25 and S.WildChargeCat:CooldownRemainsP() < 0.1 then
     --    return 538771
     --end
+	
+	-- Mouseover Thorns
+    local MouseoverUnit = UnitExists("mouseover") and UnitIsFriend("player", "mouseover")
+    if MouseoverUnit then
+        -- PurifyDisease
+	    if S.Thorns:IsCastable() then
+            return S.Thorns:Cast()
+        end
+    end
 	    -- cat_form,if=!buff.cat_form.up
         if S.CatForm:IsReady() and (not Player:BuffP(S.CatFormBuff)) then
             return S.CatForm:Cast()
