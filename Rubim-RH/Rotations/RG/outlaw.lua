@@ -319,16 +319,18 @@ end
 -- # Essences
 local function Essences()
   -- concentrated_flame
-  if S.ConcentratedFlame:IsCastableP() and (Player:AffectingCombat() or Target:AffectingCombat()) then
+  if S.ConcentratedFlame:IsCastableP() and (Player:AffectingCombat() and Target:AffectingCombat()) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
+  if S.GuardianOfAzeroth:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
+  end
   -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and not Player:BuffP(S.AdrenalineRush) and Target:IsInRange("Melee") and not Player:IsMoving() then
-  if RubimRH.AoEON() and active_enemies() >= 4 or RubimRH.TargetIsValid(true) and Player:EnergyPredicted() < 40 then
+  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and not Player:IsMoving() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Player:EnergyPredicted() < 50 and not Player:BuffP(S.AdrenalineRush) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   end
@@ -348,13 +350,13 @@ local function Essences()
   if S.WorldveinResonance:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 45 and not Player:BuffP(S.AdrenalineRush) then
+  -- memory_of_lucid_dreams
+  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 40 and not Player:BuffP(S.AdrenalineRush) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- blood_of_the_enemy
   if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() then
-  if RubimRH.AoEON() and active_enemies() >= 4 and Blade_Flurry_Sync() or RubimRH.TargetIsValid(true) and Player:BuffP(S.AdrenalineRush) and Target:IsInRange("Melee") then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Player:BuffP(S.AdrenalineRush) and Target:IsInRange("Melee") then
     return S.UnleashHeartOfAzeroth:Cast()
 	end
 	end

@@ -475,16 +475,17 @@ local function Essences()
     return S.UnleashHeartOfAzeroth:Cast()
   end
   -- guardian_of_azeroth
-  if S.GuardianOfAzeroth:IsCastableP() then
+  if S.GuardianOfAzeroth:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-    -- guardian_of_azeroth
-  if S.BloodOfTheEnemy:IsCastableP() then
-    return S.UnleashHeartOfAzeroth:Cast()
   end
+
   -- focused_azerite_beam
-  if S.FocusedAzeriteBeam:IsCastableP() then
+  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and not Player:IsMoving() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Player:EnergyPredicted() < 50 then
     return S.UnleashHeartOfAzeroth:Cast()
+  end
   end
   -- purifying_blast
   if S.PurifyingBlast:IsCastableP() then
@@ -502,10 +503,18 @@ local function Essences()
   if S.WorldveinResonance:IsCastableP() then
     return S.UnleashHeartOfAzeroth:Cast()
   end
-  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-  if S.MemoryOfLucidDreams:IsCastableP() then
+  -- memory_of_lucid_dreams
+  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 40 then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) then
     return S.UnleashHeartOfAzeroth:Cast()
   end
+  end
+  -- Blood of the enemy
+  if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Target:Debuff(S.Vendetta) and Target:IsInRange("Melee") then
+    return S.UnleashHeartOfAzeroth:Cast()
+	end
+	end
   return false
 end
 
