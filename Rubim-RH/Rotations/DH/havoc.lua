@@ -332,7 +332,7 @@ local function APL()
     end
     -- nemesis,target_if=min:target.time_to_die,if=raid_event.adds.exists&debuff.nemesis.down&(active_enemies>desired_targets|raid_event.adds.in>60)
     -- nemesis,if=!raid_event.adds.exists
-    if S.Nemesis:IsReady(50) and (not Cache.EnemiesCount[40] > 1) then
+    if S.Nemesis:IsReady(50) and Cache.EnemiesCount[40] <= 1 then
       return S.Nemesis:Cast()
     end
 	-- berserking,if=buff.metamorphosis.up
