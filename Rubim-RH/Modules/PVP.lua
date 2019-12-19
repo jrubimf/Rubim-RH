@@ -756,9 +756,11 @@ function findHealer()
         local enemyHealer = "None"
         if GetSpecializationRoleByID(GetArenaOpponentSpec(i)) == "HEALER" then
             print("arena" .. i)
+			enemyHealer = i
             break
         end
     end
+	return enemyHealer
 end
 
 local arenaSTART = CreateFrame("Frame")
@@ -1224,7 +1226,7 @@ RubimRH.Rotation.SetPvP(263, emptyAPL)
 RubimRH.Rotation.SetPvP(264, emptyAPL)
 
 RubimRH.Rotation.SetPvP(265, emptyAPL)
-RubimRH.Rotation.SetPvP(266, emptyAPL)
+--RubimRH.Rotation.SetPvP(266, emptyAPL)
 RubimRH.Rotation.SetPvP(267, emptyAPL)
 
 RubimRH.Rotation.SetPvP(72, emptyAPL)
@@ -1725,7 +1727,7 @@ local function AllPvP()
     end
     ArmsArenaSpell = function()
         RubimRH.Arena1Icon(nil)
-        RubimRH.Arena1Icon(nil)
+        RubimRH.Arena2Icon(nil)
         RubimRH.Arena3Icon(nil)
         if not Arena.arena1:IsImmune() and WRArms.Rend:IsCastable() and Arena.arena1:MinDistanceToPlayer(true) <= 5 then
             RubimRH.Arena1Icon(WRArms.Rend:Cast())
@@ -1811,7 +1813,7 @@ function RubimRH.PvP()
         return 0, 236390
     end
 
-    if Target:IsCC() then
+    if Target:IsCC() and not RubimRH.CCBreakON() then
         return 0, 236390
     end
 

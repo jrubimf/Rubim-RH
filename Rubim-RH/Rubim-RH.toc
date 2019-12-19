@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80200
 ## Title: Rubim Rotation Helper
 ## Author: Rubim
 ## Version: 1.0
@@ -17,13 +17,17 @@ Modules\Spells.lua
 Modules\Custom.lua
 Modules\CustomSpells.lua
 Modules\CustomUnit.lua
+Modules\BossMods.lua
+Modules\MultiUnits.lua
 Modules\Enemies.lua
 Modules\Debug.lua
 Modules\Icons.lua
 Modules\UI.lua
 Modules\CombatTracker.lua
 Modules\HealingEngine.lua
+Modules\PredictHeal.lua
 Modules\Quest.lua
+Modules\Lists.lua
 Modules\MiniMap.lua
 Rotations\Shared.lua
 Rotations\DK\blood.lua
@@ -52,9 +56,15 @@ Rotations\HR\mm.lua
 Rotations\DR\feral.lua
 Rotations\DR\guardian.lua
 Rotations\DR\balance.lua
+Rotations\DR\resto.lua
 Rotations\WL\affli.lua
+Rotations\WL\demo.lua
+Rotations\WL\destro.lua
 Rotations\MG\fire.lua
 Rotations\MG\frost.lua
 Rotations\MG\arcane.lua
+Rotations\PR\shadow.lua
+Rotations\PR\disci.lua
+Rotations\PR\holy.lua
 
 Modules\PVP.lua

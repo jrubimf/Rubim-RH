@@ -24,6 +24,10 @@ RubimRH.Spell[259] = {
     Berserking = Spell(26297),
     BloodFury = Spell(20572),
     LightsJudgment = Spell(255647),
+	-- Racials
+    AncestralCall  = Spell(274738),   
+    Fireblood = Spell(265221),
+    Shadowmeld = Spell(58984),
     -- Abilities
     Envenom = Spell(32645),
     FanofKnives = Spell(51723),
@@ -57,7 +61,6 @@ RubimRH.Spell[259] = {
     SharpenedBladesBuff = Spell(272916),
     ShroudedSuffocation = Spell(278666),
     -- Poisons
-
     CripplingPoison = Spell(3408),
     DeadlyPoison = Spell(2823),
     DeadlyPoisonDebuff = Spell(2818),
@@ -70,10 +73,48 @@ RubimRH.Spell[259] = {
     CloakofShadows = Spell(31224),
     TheDreadlordsDeceit = Spell(208693),
     Kick = Spell(1766),
-
+	ShadowStep = Spell (36554),
+	-- PvP
+	Sap = Spell(6770),
+	Shiv = Spell(248744),
+	SmokeBomb = Spell (212182),
+	DFA = Spell (269513),
+	Neuro = Spell (206328),
+    CheapShot = Spell(1833),	
+		  --8.2 Essences
+  UnleashHeartOfAzeroth = Spell(280431),
+  BloodOfTheEnemy       = Spell(297108),
+  BloodOfTheEnemy2      = Spell(298273),
+  BloodOfTheEnemy3      = Spell(298277),
+  ConcentratedFlame     = Spell(295373),
+  ConcentratedFlame2    = Spell(299349),
+  ConcentratedFlame3    = Spell(299353),
+  GuardianOfAzeroth     = Spell(295840),
+  GuardianOfAzeroth2    = Spell(299355),
+  GuardianOfAzeroth3    = Spell(299358),
+  FocusedAzeriteBeam    = Spell(295258),
+  FocusedAzeriteBeam2   = Spell(299336),
+  FocusedAzeriteBeam3   = Spell(299338),
+  PurifyingBlast        = Spell(295337),
+  PurifyingBlast2       = Spell(299345),
+  PurifyingBlast3       = Spell(299347),
+  TheUnboundForce       = Spell(298452),
+  TheUnboundForce2      = Spell(299376),
+  TheUnboundForce3      = Spell(299378),
+  RippleInSpace         = Spell(302731),
+  RippleInSpace2        = Spell(302982),
+  RippleInSpace3        = Spell(302983),
+  WorldveinResonance    = Spell(295186),
+  WorldveinResonance2   = Spell(298628),
+  WorldveinResonance3   = Spell(299334),
+  MemoryOfLucidDreams   = Spell(298357),
+  MemoryOfLucidDreams2  = Spell(299372),
+  MemoryOfLucidDreams3  = Spell(299374),
+    
 };
 local S = RubimRH.Spell[259];
-
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
 -- Items
 if not Item.Rogue then
     Item.Rogue = {}
@@ -84,7 +125,26 @@ Item.Rogue.Assassination = {
 };
 local I = Item.Rogue.Assassination;
 
-
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy;
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams;
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams;
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast;
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast;
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace;
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace;
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame;
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame;
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce;
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce;
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance;
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam;
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth2:IsAvailable() and S.GuardianOfAzeroth2 or S.GuardianOfAzeroth;
+  S.GuardianOfAzeroth = S.GuardianOfAzeroth3:IsAvailable() and S.GuardianOfAzeroth3 or S.GuardianOfAzeroth;
+end
 
 -- Variables
 local VarEnergyRegenCombined = 0;
@@ -105,12 +165,64 @@ local function num(val)
     end
 end
 
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
+
 local function bool(val)
     return val ~= 0
 end
 
 local function CanDoTUnit(Unit, HealthThreshold)
     return Unit:Health() >= HealthThreshold or Unit:IsDummy();
+end
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+    
+	if trinketPosition == 1 then
+        inventoryPosition = 13
+    end
+    
+	if trinketPosition == 2 then
+        inventoryPosition = 14
+    end
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+    if enable == 0 then
+        return false
+    end
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end	
+	
+    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
+        return true
+    end
+	
+	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
+        if not UnitExists("boss1") then
+            return false
+        end
+
+        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+            return false
+        end
+    end	
+    return true
 end
 
 -- Master Assassin Remains Check
@@ -356,11 +468,67 @@ local function UpdateCDs()
     end
 end
 
+-- # Essences
+local function Essences()
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  end
+
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and not Player:IsMoving() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Player:EnergyPredicted() < 50 then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- memory_of_lucid_dreams
+  if S.MemoryOfLucidDreams:IsCastableP() and RubimRH.CDsON() and Target:IsInRange("Melee") and Player:EnergyPredicted() < 40 then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  end
+  -- Blood of the enemy
+  if S.BloodOfTheEnemy:IsCastableP() and RubimRH.CDsON() then
+  if RubimRH.AoEON() and active_enemies() >= 4 or UnitExists("boss1") and RubimRH.TargetIsValid(true) and Target:Debuff(S.Vendetta) and Target:IsInRange("Melee") then
+    return S.UnleashHeartOfAzeroth:Cast()
+	end
+	end
+  return false
+end
+
 local function CDs ()
     if Target:IsInRange("Melee") then
         -- actions.cds=potion,if=buff.bloodlust.react|target.time_to_die<=60|debuff.vendetta.up&cooldown.vanish.remains<5
-
-        -- Racials
+        
+		--actions.cds+=/call_action_list,name=essences,if=!stealthed.all&dot.rupture.ticking&master_assassin_remains=0
+        local ShouldReturn = Essences();
+		if ShouldReturn and (true) and not Player:IsStealthedP() and Target:DebuffP(S.Rupture) and Player:BuffRemainsP(MasterAssassinBuff) == 0 then
+		    return ShouldReturn; 
+		end
+        
+		-- Racials
         if Target:Debuff(S.Vendetta) then
             -- actions.cds+=/blood_fury,if=debuff.vendetta.up
             if S.BloodFury:IsReady() then
@@ -372,47 +540,57 @@ local function CDs ()
             end
 
             --actions.cds+=/fireblood,if=debuff.vendetta.up
-            --if S.Fireblood:IsReady() then
-              --  return S.Fireblood:Cast()
-            --end
+            if S.Fireblood:IsReady() then
+              return S.Fireblood:Cast()
+            end
             --actions.cds+=/ancestral_call,if=debuff.vendetta.up
-            --if S.AncestralCall:IsReady() then
-            --  return S.AncestralCall:Cast()
-            --end
+            if S.AncestralCall:IsReady() then
+              return S.AncestralCall:Cast()
+            end
         end
+		
+						 	        if Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then 
+					if not Player:IsStealthed() and not Target:IsCC()  and Target:IsInRange("Melee") and Player:ComboPoints() >= 4 then
+			       if not Target:IsImmune() and S.KidneyShot:IsReady() and (Target:HealthPercentage() <= 35 or Target:CastingCC()  or Target:IsBursting() or Target:IsTargeting(Player)) then
+                               return S.KidneyShot:Cast()
+         end
+			end
+			   end
 
         -- actions.cds+=/marked_for_death,target_if=min:target.time_to_die,if=target.time_to_die<combo_points.deficit*1.5|(raid_event.adds.in>40&combo_points.deficit>=cp_max_spend)
         if S.MarkedforDeath:IsReady() and ComboPointsDeficit >= CPMaxSpend() then
             return S.MarkedforDeath:Cast()
         end
-        -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1)
-        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture)
-                and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1) then
-            return S.Vendetta:Cast()
-        end
-        if S.Vanish:IsReady() and not Player:IsTanking(Target) then
+      -- actions.cds+=/vendetta,if=!stealthed.rogue&dot.rupture.ticking&!debuff.vendetta.up&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier>1&(spell_targets.fan_of_knives<6|!cooldown.vanish.up))&(!talent.nightstalker.enabled|!talent.exsanguinate.enabled|cooldown.exsanguinate.remains<5-2*talent.deeper_stratagem.enabled)
+        if S.Vendetta:IsCastable() and not Player:IsStealthedP(true, false) and Target:DebuffP(S.Rupture) and not Target:DebuffP(S.Vendetta)
+          and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) > 1 and (Cache.EnemiesCount[10] < 6 or not S.Vanish:CooldownUp()))
+          and (not S.Nightstalker:IsAvailable() or not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() < 5 - 2 * num(S.DeeperStratagem:IsAvailable())) then
+         return S.Vendetta:Cast()
+	    end
+       
+	   if S.Vanish:IsReady() and not Player:IsTanking(Target) and not Target:IsAPlayer() then
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&!dot.garrote.ticking&variable.single_target
-            if S.Subterfuge:IsAvailable() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
+            if S.Subterfuge:IsAvailable() and not Target:IsAPlayer() and not Target:DebuffP(S.Garrote) and Cache.EnemiesCount[10] < 2 then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.exsanguinate.enabled&(talent.nightstalker.enabled|talent.subterfuge.enabled&spell_targets.fan_of_knives<2)&combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1&(!talent.subterfuge.enabled|!azerite.shrouded_suffocation.enabled|dot.garrote.pmultiplier<=1)
-            if S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
+            if not Target:IsAPlayer() and S.Exsanguinate:IsAvailable() and (S.Nightstalker:IsAvailable() or S.Subterfuge:IsAvailable() and Cache.EnemiesCount[10] < 2)
                     and ComboPoints >= CPMaxSpend() and S.Exsanguinate:CooldownRemainsP() < 1
                     and (not S.Subterfuge:IsAvailable() or not S.ShroudedSuffocation:AzeriteEnabled() or Target:PMultiplier(S.Garrote) <= 1) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.nightstalker.enabled&!talent.exsanguinate.enabled&combo_points>=cp_max_spend&debuff.vendetta.up
-            if S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
+            if not Target:IsAPlayer() and S.Nightstalker:IsAvailable() and not S.Exsanguinate:IsAvailable() and ComboPoints >= CPMaxSpend() and Target:Debuff(S.Vendetta) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.subterfuge.enabled&(!talent.exsanguinate.enabled|spell_targets.fan_of_knives>=2)&!stealthed.rogue&cooldown.garrote.up&dot.garrote.refreshable&(spell_targets.fan_of_knives<=3&combo_points.deficit>=1+spell_targets.fan_of_knives|spell_targets.fan_of_knives>=4&combo_points.deficit>=4)
-            if S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthedP(true, false)
+            if not Target:IsAPlayer() and S.Subterfuge:IsAvailable() and (not S.Exsanguinate:IsAvailable() or Cache.EnemiesCount[10] >= 2) and not Player:IsStealthedP(true, false)
                     and S.Garrote:CooldownUp() and Target:DebuffRefreshableP(S.Garrote, 5.4)
                     and ((Cache.EnemiesCount[10] <= 3 and ComboPointsDeficit >= 1 + Cache.EnemiesCount[10]) or (Cache.EnemiesCount[10] >= 4 and ComboPointsDeficit >= 4)) then
                 return S.Vanish:Cast()
             end
             -- actions.cds+=/vanish,if=talent.master_assassin.enabled&!stealthed.all&master_assassin_remains<=0&!dot.rupture.refreshable
-            if S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
+            if not Target:IsAPlayer() and S.MasterAssassin:IsAvailable() and not Player:IsStealthedP(true, false) and MasterAssassinRemains() <= 0 and not Target:DebuffRefreshableP(S.Rupture, RuptureThreshold) then
                 return S.Vanish:Cast()
             end
         end
@@ -426,63 +604,77 @@ local function CDs ()
         if S.ToxicBlade:IsReady("Melee") and Target:DebuffP(S.Rupture) then
             return S.ToxicBlade:Cast()
         end
+		-- actions.cds+=/call_action_list,name=essences
+        ShouldReturn = Essences();
+        if ShouldReturn then return ShouldReturn; end
     end
 end
+
 -- # Stealthed
-local function Stealthed ()
-    -- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
-    if S.Rupture:IsReady("Melee") and ComboPoints >= 4
-            and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
-            and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
-        return S.Rupture:Cast()
-    end
-    -- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
-    if S.Envenom:IsReady("Melee") and ComboPoints >= CPMaxSpend() then
-        return S.Envenom:Cast()
-    end
-    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
-        local function Evaluate_Garrote_Target_A(TargetUnit)
-            return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
-                    and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_A(Target)
-                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&pmultiplier<=1&target.time_to_die-remains>2
-        local function Evaluate_Garrote_Target_B(TargetUnit)
-            return TargetUnit:PMultiplier(S.Garrote) <= 1 and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_B(Target)
-                and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-    end
-    -- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
-    if S.Rupture:IsReady("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
-        return S.Rupture:Cast()
-    end
-    if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
-        -- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
-        local function Evaluate_Garrote_Target_C(TargetUnit)
-            return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
-        end
-        if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
-                and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
-            return S.Garrote:Cast()
-        end
-        -- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
-        if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
-            -- actions.stealthed+=/pool_resource,for_next=1
-            if Player:EnergyPredicted() < 45 then
-                S.Garrote:QueueAuto()
-                return 0, 135328
-            end
-            return S.Garrote:Cast()
-        end
-    end
+local function Stealthed ()	
+	if IsStealthed() then 
+		-- actions.stealthed=rupture,if=combo_points>=4&(talent.nightstalker.enabled|talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<=2&spell_targets.fan_of_knives<2|!ticking)&target.time_to_die-remains>6
+		if S.Rupture:IsReady("Melee") and ComboPoints >= 4
+				and (S.Nightstalker:IsAvailable() or (S.Subterfuge:IsAvailable() and S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() <= 2 and Cache.EnemiesCount[10] < 2) or not Target:DebuffP(S.Rupture))
+				and (Target:FilteredTimeToDie(">", 6, -Target:DebuffRemainsP(S.Rupture)) or Target:TimeToDieIsNotValid()) then
+			return S.Rupture:Cast()
+		end
+		-- actions.stealthed+=/envenom,if=combo_points>=cp_max_spend
+		if S.Envenom:IsReady("Melee") and ComboPoints >= CPMaxSpend() then
+			return S.Envenom:Cast()
+		end
+		if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&refreshable&target.time_to_die-remains>2
+			local function Evaluate_Garrote_Target_A(TargetUnit)
+				return TargetUnit:DebuffRefreshableP(S.Garrote, 5.4)
+						and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_A(Target)
+					and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&pmultiplier<=1&target.time_to_die-remains>2
+			local function Evaluate_Garrote_Target_B(TargetUnit)
+				return TargetUnit:PMultiplier(S.Garrote) <= 1 and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_B(Target)
+					and (Target:FilteredTimeToDie(">", 2, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+		end
+		-- actions.stealthed+=/rupture,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&!dot.rupture.ticking
+		if S.Rupture:IsReady("Melee") and S.Subterfuge:IsAvailable() and ComboPoints > 0 and S.ShroudedSuffocation:AzeriteEnabled() and not Target:DebuffP(S.Rupture) then
+			return S.Rupture:Cast()
+		end
+		if S.Garrote:IsReady("Melee") and S.Subterfuge:IsAvailable() then
+			-- actions.stealthed+=/garrote,cycle_targets=1,if=talent.subterfuge.enabled&azerite.shrouded_suffocation.enabled&target.time_to_die>remains
+			local function Evaluate_Garrote_Target_C(TargetUnit)
+				return S.ShroudedSuffocation:AzeriteEnabled() and CanDoTUnit(TargetUnit, GarroteDMGThreshold);
+			end
+			if Target:IsInRange("Melee") and Evaluate_Garrote_Target_C(Target)
+					and (Target:FilteredTimeToDie(">", 0, -Target:DebuffRemainsP(S.Garrote)) or Target:TimeToDieIsNotValid()) then
+				return S.Garrote:Cast()
+			end
+			-- actions.stealthed+=/garrote,if=talent.subterfuge.enabled&talent.exsanguinate.enabled&cooldown.exsanguinate.remains<1&prev_gcd.1.rupture&dot.rupture.remains>5+4*cp_max_spend
+			if S.Exsanguinate:IsAvailable() and S.Exsanguinate:CooldownRemainsP() < 1 and Player:PrevGCD(1, S.Rupture) and Target:DebuffRemainsP(S.Rupture) > 5 + 4 * CPMaxSpend() then
+				-- actions.stealthed+=/pool_resource,for_next=1
+				if Player:EnergyPredicted() < 45 then
+					S.Garrote:QueueAuto()
+					return 0, 135328
+				end
+				return S.Garrote:Cast()
+			end
+		end
+	end
 end
+
+		-- Cheap Shot						  
+		if Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and (Player:IsStealthed() or Stealth2) then
+			if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Target:HealthPercentage() <= 40 or Target:CastingCC() or Target:IsBursting()) then
+			    return S.CheapShot:Cast() 
+            end
+		end
+		
 -- # Damage over time abilities
 local function Dot ()
     -- actions.dot=rupture,if=talent.exsanguinate.enabled&((combo_points>=cp_max_spend&cooldown.exsanguinate.remains<1)|(!ticking&(time>10|combo_points>=2)))
@@ -513,7 +705,7 @@ local function Dot ()
         end
     end
     -- actions.dot+=/crimson_tempest,if=spell_targets>=2&remains<2+(spell_targets>=5)&combo_points>=4
-    if RubimRH.AoEON() and S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and Cache.EnemiesCount[10] >= 2
+    if RubimRH.AoEON() and S.CrimsonTempest:IsReady("Melee") and ComboPoints >= 4 and active_enemies() >= 2
             and Target:DebuffRemainsP(S.CrimsonTempest) < 2 + num(Cache.EnemiesCount[10] >= 5) then
         return S.CrimsonTempest:Cast()
     end
@@ -543,6 +735,33 @@ local function Direct ()
             and (not S.Exsanguinate:IsAvailable() or S.Exsanguinate:CooldownRemainsP() > 2) then
         return S.Envenom:Cast()
     end
+	
+		
+				if S.Neuro:IsAvailable() and S.Neuro:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Target:IsCC() and not Player:IsStealthed() and Player:AffectingCombat() then
+			 if not Target:IsImmune() and  Target:IsInRange("Melee")  and (Player:HealthPercentage() <= 75 and Target:IsTargeting(Player) or Target:IsBursting()) then
+			       return S.Neuro:Cast() 
+        end
+		end
+		
+		
+
+				    if S.Shiv:IsAvailable() and S.Shiv:CooldownUp() and Target:IsAPlayer() and Target:Exists() and Target:IsInRange("Melee") and Target:AffectingCombat() then
+            if not Target:IsImmuneMagic() and Player:CanAttack(Target) and not Target:IsTargeting(Player)then
+            if not Target:IsImmune() and S.Shiv:IsReady() and not Target:IsSnared() and not Target:IsCC() then
+                return S.Shiv:Cast()
+        end
+    end
+end
+
+		 		    if S.DFA:IsAvailable() and S.DFA:CooldownUp() and Target:IsAPlayer() and not Target:IsDeadOrGhost() and Player:CanAttack(Target) and Target:Exists() then
+					if Player:ComboPoints() >= 5 and Target:IsInRange(15) then
+            if not Target:IsImmune() and S.DFA:IsReady()  then
+                return S.DFA:Cast()
+        end
+    end
+end
+
+	
 
     -------------------------------------------------------------------
     -------------------------------------------------------------------
@@ -558,7 +777,7 @@ local function Direct ()
             return S.PoisonedKnife:Cast()
         end
         -- actions.direct+=/fan_of_knives,if=variable.use_filler&(buff.hidden_blades.stack>=19|spell_targets.fan_of_knives>=2+stealthed.rogue|buff.the_dreadlords_deceit.stack>=29)
-        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or Cache.EnemiesCount[10] >= 2 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
+        if RubimRH.AoEON() and S.FanofKnives:IsReady("Melee") and (Player:BuffStack(S.HiddenBladesBuff) >= 19 or active_enemies() >= 3 + num(Player:IsStealthedP(true, false)) or Player:BuffStack(S.TheDreadlordsDeceit) >= 29) then
             return S.FanofKnives:Cast()
         end
         -- actions.direct+=/blindside,if=variable.use_filler&(buff.blindside.up|!talent.venom_rush.enabled)
@@ -591,7 +810,9 @@ local function APL ()
     CrimsonTempestThreshold = (2 + ComboPoints * 2) * 0.3;
     RuptureDMGThreshold = S.Envenom:Damage() * 3; -- Used to check if Rupture is worth to be casted since it's a finisher.
     GarroteDMGThreshold = S.Mutilate:Damage() * 3; -- Used as TTD Not Valid fallback since it's a generator.
-
+   
+    --Essences caching
+	DetermineEssenceRanks();
 
     if QueueSkill() ~= nil then
         return QueueSkill()
@@ -601,7 +822,28 @@ local function APL ()
     if S.CrimsonVial:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk1 then
         return S.CrimsonVial:Cast()
     end
-
+							 	        if S.SmokeBomb:IsAvailable() and S.SmokeBomb:CooldownUp() and Target:IsAPlayer() and Target:Exists() and not Player:IsStealthed() then
+								if not Target:IsCC()  and Target:IsInRange("Melee") and Target:AffectingCombat()  then
+			       if not Target:IsImmune()  and S.SmokeBomb:IsReady() and (Player:HealthPercentage() <= 40 or RubimRH.CDsON() and Target:IsBursting()) then
+                               return S.SmokeBomb:Cast()
+         end
+			end
+			   end
+			   	  if S.ShadowStep:IsReady() and Target:IsAPlayer() and not Player:CanAttack(Target) and not Target:IsDeadOrGhost() and Target:Exists()  then
+                 if Target:IsInRange(S.ShadowStep) and not Target:IsInRange(15) and Target:IsCC() then
+				if Player:IsSnared() or Target:IsCC() or Player:HealthPercentage() <= 55 or Target:HealthPercentage() <= 55 then
+               return S.ShadowStep:Cast()
+                end
+                end
+	            end
+						 if Target:Exists() and Target:IsAPlayer() and not Target:IsDeadOrGhost() then
+			if Player:IsStealthed() and  Target:IsInRange(10) and not Target:AffectingCombat() and (Player:CanAttack(Target) or Target:IsTargeting(Player) or Target:CastingCC()  or Target:IsBursting()) then
+					 if not Target:IsImmune() and S.Sap:IsReady() then
+			                      return S.Sap:Cast()
+								  
+								  end
+								  end
+								  end
     --CUSTOM
     if S.CloakofShadows:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[259].sk2 then
         return S.CloakofShadows:Cast()
@@ -635,9 +877,11 @@ local function APL ()
         -- Food
         -- Rune
         -- PrePot w/ Bossmod Countdown
-
+		
         if RubimRH.TargetIsValid(true) and (S.Vanish:TimeSinceLastCast() <= 10 or RubimRH.db.profile.mainOption.startattack) then
-            if Stealthed() ~= nil then
+			if not IsStealthed() and (Stealth:IsReady() or Stealth:CooldownRemainsP() <= 0) then 
+				return S.Stealth:Cast()			
+            elseif Stealthed() ~= nil then
                 return Stealthed()
             end
         end
@@ -648,6 +892,25 @@ local function APL ()
     if S.Kick:IsReady() and RubimRH.InterruptsON() and Target:IsInterruptible() then
         return S.Kick:Cast()
     end
+	
+	if RubimRH.AoEON() and RubimRH.AssaAutoAoEON() and Target:DebuffRemainsP(S.Rupture) >= S.Rupture:BaseDuration() * 0.90 and active_enemies() >= 2 and active_enemies() < 5 and CombatTime("player") > 0 and 
+( -- Rupture
+    not IsSpellInRange(1943, "target") or   
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) and
+(
+    -- Rupture
+    MultiDots(10, S.Rupture, 10, 3) >= 1 or
+    (
+        CombatTime("target") == 0 and
+        not Player:InPvP()
+    ) 
+) then 
+    return 133015 
+   end
 
     -- In Combat
     -- actions=variable,name=energy_regen_combined,value=energy.regen+poisoned_bleeds*7%(2*spell_haste)

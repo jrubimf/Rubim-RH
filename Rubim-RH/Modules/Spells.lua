@@ -18,7 +18,7 @@ RubimRH.Spell[1] = {
     Fireblood = Spell(265221),
     GiftoftheNaaru = Spell(59547),
     LightsJudgment = Spell(255647),
-
+    UnleashHeartOfAzeroth = Spell(280431),
 
         -- Potions
     PotionOfProlongedPowerBuff = Spell(229206),
@@ -84,7 +84,40 @@ RubimRH.Spell[268] = {
     HealingElixir = Spell(122281),
     BlackOxStatue = Spell(115315),
     Guard = Spell(202162),
-    LegSweep = Spell(119381)
+    LegSweep = Spell(119381),
+	QuackingPalm = Spell(107079),
+	Paralysis = Spell(115078),
+	Vivify = Spell(116670),
+	
+	--8.2 Essences
+  UnleashHeartOfAzeroth = Spell(280431),
+  BloodOfTheEnemy       = Spell(297108),
+  BloodOfTheEnemy2      = Spell(298273),
+  BloodOfTheEnemy3      = Spell(298277),
+  ConcentratedFlame     = Spell(295373),
+  ConcentratedFlame2    = Spell(299349),
+  ConcentratedFlame3    = Spell(299353),
+  GuardianOfAzeroth     = Spell(295840),
+  GuardianOfAzeroth2    = Spell(299355),
+  GuardianOfAzeroth3    = Spell(299358),
+  FocusedAzeriteBeam    = Spell(295258),
+  FocusedAzeriteBeam2   = Spell(299336),
+  FocusedAzeriteBeam3   = Spell(299338),
+  PurifyingBlast        = Spell(295337),
+  PurifyingBlast2       = Spell(299345),
+  PurifyingBlast3       = Spell(299347),
+  TheUnboundForce       = Spell(298452),
+  TheUnboundForce2      = Spell(299376),
+  TheUnboundForce3      = Spell(299378),
+  RippleInSpace         = Spell(302731),
+  RippleInSpace2        = Spell(302982),
+  RippleInSpace3        = Spell(302983),
+  WorldveinResonance    = Spell(295186),
+  WorldveinResonance2   = Spell(298628),
+  WorldveinResonance3   = Spell(299334),
+  MemoryOfLucidDreams   = Spell(298357),
+  MemoryOfLucidDreams2  = Spell(299372),
+  MemoryOfLucidDreams3  = Spell(299374),
 }
 
 --Windwalker
@@ -440,7 +473,36 @@ RubimRH.Spell[104] = {
     BearForm = Spell(5487),
     CatForm = Spell(768),
     MoonkinForm = Spell(197625),
-    TravelForm = Spell(783)
+    TravelForm = Spell(783),
+			  --8.2 Essences
+  UnleashHeartOfAzeroth = Spell(280431),
+  BloodOfTheEnemy       = Spell(297108),
+  BloodOfTheEnemy2      = Spell(298273),
+  BloodOfTheEnemy3      = Spell(298277),
+  ConcentratedFlame     = Spell(295373),
+  ConcentratedFlame2    = Spell(299349),
+  ConcentratedFlame3    = Spell(299353),
+  GuardianOfAzeroth     = Spell(295840),
+  GuardianOfAzeroth2    = Spell(299355),
+  GuardianOfAzeroth3    = Spell(299358),
+  FocusedAzeriteBeam    = Spell(295258),
+  FocusedAzeriteBeam2   = Spell(299336),
+  FocusedAzeriteBeam3   = Spell(299338),
+  PurifyingBlast        = Spell(295337),
+  PurifyingBlast2       = Spell(299345),
+  PurifyingBlast3       = Spell(299347),
+  TheUnboundForce       = Spell(298452),
+  TheUnboundForce2      = Spell(299376),
+  TheUnboundForce3      = Spell(299378),
+  RippleInSpace         = Spell(302731),
+  RippleInSpace2        = Spell(302982),
+  RippleInSpace3        = Spell(302983),
+  WorldveinResonance    = Spell(295186),
+  WorldveinResonance2   = Spell(298628),
+  WorldveinResonance3   = Spell(299334),
+  MemoryOfLucidDreams   = Spell(298357),
+  MemoryOfLucidDreams2  = Spell(299372),
+  MemoryOfLucidDreams3  = Spell(299374),
 }
 
 ----DEATH KNIGHT
@@ -499,87 +561,79 @@ RubimRH.Spell[265] = {
     SiphonLife = Spell(63106)
 }
 
---Demonology
 RubimRH.Spell[266] = {
-    -- Racials
-    ArcaneTorrent = Spell(25046),
-    Berserking = Spell(26297),
-    BloodFury = Spell(20572),
-    GiftoftheNaaru = Spell(59547),
-    Shadowmeld = Spell(58984),
-    LightsJudgment = Spell(255647),
+  -- Racials
+  Berserking            = Spell(26297),
+  BloodFury             = Spell(20572),
+  Fireblood             = Spell(265221),
+  -- Abilities
+  DrainLife             = Spell(234153),
+  SummonDemonicTyrant   = Spell(265187),
+  SummonImp             = Spell(688),
+  SummonFelguard        = Spell(30146),
+  HandOfGuldan          = Spell(105174),
+  ShadowBolt            = Spell(686),
+  Demonbolt             = Spell(264178),
+  CallDreadStalkers     = Spell(104316),
+  Fear                  = Spell(5782),
+  Implosion             = Spell(196277),
+  Shadowfury            = Spell(30283),
 
-    -- Abilities
-    DrainLife = Spell(234153),
-    LifeTap = Spell(1454),
-    SummonDoomGuard = Spell(18540),
-    SummonDoomGuardSuppremacy = Spell(157757),
-    SummonInfernal = Spell(1122),
-    SummonInfernalSuppremacy = Spell(157898),
-    SummonImp = Spell(688),
-    GrimoireImp = Spell(111859),
-    SummonFelguard = Spell(30146),
-    GrimoireFelguard = Spell(111898),
-    DemonicEmpowerment = Spell(193396),
-    DemonWrath = Spell(193440),
-    Doom = Spell(603),
-    HandOfGuldan = Spell(105174),
-    ShadowBolt = Spell(686),
-    CallDreadStalkers = Spell(104316),
-    Fear = Spell(5782),
+  -- Pet abilities
+  CauterizeMaster         = Spell(119905),--imp
+  Suffering               = Spell(119907),--voidwalker
+  Whiplash                = Spell(119909),--Bitch
+  FelStormFake            = Spell(29893),-- HAck == CreateSoulwell
+  FelStorm                = Spell(89751),--FelGuard
+  PetStun                 = Spell(119914),
+  SpellLock               = Spell(119898),
 
-    -- Pet abilities
-    CauterizeMaster = Spell(119905), --imp
-    Suffering = Spell(119907), --voidwalker
-    SpellLock = Spell(119910), --Dogi
-    Whiplash = Spell(119909), --Bitch
-    FelStorm = Spell(119914), --FelGuard
-    ShadowLock = Spell(171140), --doomguard
-    MeteorStrike = Spell(171152), --infernal
-    AxeToss = Spell(89766), --FelGuard
+  -- Talents
+  Dreadlash               = Spell(264078),
+  DemonicStrength         = Spell(267171),
+  BilescourgeBombers      = Spell(267211),
 
-    -- Talents
-    ShadowyInspiration = Spell(196269),
-    ShadowFlame = Spell(205181),
-    DemonicCalling = Spell(205145),
+  DemonicCalling          = Spell(205145),
+  PowerSiphon             = Spell(264130),
+  Doom                    = Spell(265412),
+  DoomDebuff              = Spell(265412),
 
-    ImpendingDoom = Spell(196270),
-    ImprovedStalkers = Spell(196272),
-    Implosion = Spell(196277),
+  DemonSkin               = Spell(219272),
+  BurningRush             = Spell(111400),
+  DarkPact                = Spell(108416),
 
-    DemonicCircle = Spell(48018),
-    MortalCoil = Spell(6789),
-    ShadowFury = Spell(30283),
+  FromTheShadows          = Spell(267170),
+  SoulStrike              = Spell(264057),
+  SummonVilefiend         = Spell(264119),
 
-    HandOfDoom = Spell(196283),
-    PowerTrip = Spell(196605),
-    SoulHarvest = Spell(196098),
+  Darkfury                = Spell(264874),
+  MortalCoil              = Spell(6789),
+  DemonicCircle           = Spell(268358),
 
-    GrimoireOfSupremacy = Spell(152107),
-    GrimoireOfService = Spell(108501),
-    GrimoireOfSynergy = Spell(171975),
+  InnerDemons             = Spell(267216),
+  SoulConduit             = Spell(215941),
+  GrimoireFelguard        = Spell(111898),
 
-    SummonDarkGlare = Spell(205180),
-    Demonbolt = Spell(157695),
-    SoulConduit = Spell(215941),
+  SacrificedSouls         = Spell(267214),
+  DemonicConsumption      = Spell(267215),
+  NetherPortal            = Spell(267217),
+  NetherPortalBuff        = Spell(267218),
 
-    -- Artifact
-    TalkielConsumption = Spell(211714),
-    StolenPower = Spell(211530),
-    ThalkielsAscendance = Spell(238145),
+  -- Defensive
+  UnendingResolve         = Spell(104773),
 
-    -- Defensive
-    UnendingResolve = Spell(104773),
+  -- Azerite
+  ForbiddenKnowledge      = Spell(279666),
+  BalefulInvocation       = Spell(287059),
+  ExplosivePotentialBuff  = Spell(275398),
+  ExplosivePotential      = Spell(275395),
 
-    -- Utility
-
-    -- Legendaries
-    SephuzBuff = Spell(208052),
-    NorgannonsBuff = Spell(236431),
-
-    -- Misc
-    Concordance = Spell(242586),
-    DemonicCallingBuff = Spell(205146),
-    GrimoireOfSynergyBuff = Spell(171982),
-    ShadowyInspirationBuff = Spell(196606)
+  -- Utility
+  TargetEnemy             = Spell(153911),--doesnt work
+  CreateHealthstone       = Spell(6201),--using this instead to target enemy
+  
+  -- Misc
+  DemonicCallingBuff      = Spell(205146),
+  DemonicCoreBuff         = Spell(264173),
+  DemonicPowerBuff        = Spell(265273)
 }

@@ -85,32 +85,6 @@ local function ttd(unit)
     end
 end
 
-local activeUnitPlates = {}
-local function AddNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-
-    -- store nameplate and its unitID
-    activeUnitPlates[unitframe] = unitID
-end
-
-local function RemoveNameplate(unitID)
-    local nameplate = C_NamePlate.GetNamePlateForUnit(unitID)
-    local unitframe = nameplate.UnitFrame
-    -- recycle the nameplate
-    activeUnitPlates[unitframe] = nil
-end
-
-RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_ADDED', function(...)
-    local unitID = ...
-    --AddNameplate(unitID)
-end)
-
-RubimRH.Listener:Add('Rubim_Events', 'NAME_PLATE_UNIT_REMOVED', function(...)
-    local unitID = ...
-    --RemoveNameplate(unitID)
-end)
-
 function DiyingIn()
     HL.GetEnemies(10, true); -- Blood Boil
     totalmobs = 0
@@ -169,7 +143,56 @@ end
 
 local SpellsInterrupt = {
     194610, 198405, 194657, 199514, 199589, 216197, --Maw of Souls
-    0
+    -- PvP Spells
+	118, -- Polymorph
+    20066, -- Repentance
+    51514, -- Hex
+    19386, -- Wyvern Sting
+    5782, -- Fear
+    33786, -- Cyclone
+    605, -- Mind Control 
+    982, -- Revive Pet 
+    32375, -- Mass Dispel 
+    203286, -- Greatest Pyroblast
+    116858, -- Chaos Bolt 
+    20484, -- Rebirth
+    203155, -- Sniper Shot 
+    47540, -- Penance
+    596, -- Prayer of Healing
+    2060, -- Heal
+    2061, -- Flash Heal
+    32546, -- Binding Heal                        (priest, holy)
+    33076, -- Prayer of Mending
+    64843, -- Divine Hymn
+    120517, -- Halo                                (priest, holy/disc)
+    186263, -- Shadow Mend
+    194509, -- Power Word: Radiance
+    265202, -- Holy Word: Salvation                (priest, holy)
+    289666, -- Greater Heal                        (priest, holy)
+    740, -- Tranquility
+    8936, -- Regrowth
+    48438, -- Wild Growth
+    289022, -- Nourish                             (druid, restoration)
+    1064, -- Chain Heal
+    8004, -- Healing Surge
+    73920, -- Healing Rain
+    77472, -- Healing Wave
+    197995, -- Wellspring                          (shaman, restoration)
+    207778, -- Downpour                            (shaman, restoration)
+    19750, -- Flash of Light
+    82326, -- Holy Light
+    116670, -- Vivify
+    124682, -- Enveloping Mist
+    191837, -- Essence Font
+    209525, -- Soothing Mist
+    227344, -- Surging Mist                        (monk, mistweaver)
+	
+	
+	
+	
+	
+	
+	0
 }
 
 local function ShouldInterrupt()
@@ -527,3 +550,600 @@ function RubimRH.print(text, color)
     print("|cff828282RRH: |r" .. text)
 end
 
+function RubimRH.GetCurrentLatency()
+    local latency = select(3,GetNetStats())	
+	local percentlatency = latency * 0.001
+	
+	return percentlatency or 0
+	
+end
+
+--------------------------------------
+-- ElvyUI Fix
+--------------------------------------
+local handled = {["Frame"] = true}
+local object = CreateFrame("Frame")
+object.t = object:CreateTexture(nil,"BACKGROUND")
+local OldTexelSnappingBias = object.t:GetTexelSnappingBias()
+
+local function Fix(frame)
+    if (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and not frame.PixelSnapTurnedOff then
+        if frame.SetSnapToPixelGrid then
+            frame:SetTexelSnappingBias(OldTexelSnappingBias)
+        elseif frame.GetStatusBarTexture then
+            local texture = frame:GetStatusBarTexture()
+            if texture and texture.SetSnapToPixelGrid then                
+                texture:SetTexelSnappingBias(OldTexelSnappingBias)
+            end
+        end
+        frame.PixelSnapTurnedOff = true 
+    end
+end
+
+local function addapi(object)
+    local mt = getmetatable(object).__index
+        if mt.DisabledPixelSnap then 
+        if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', Fix) end
+        if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', Fix) end
+        if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', Fix) end
+        if mt.SetVertexColor then hooksecurefunc(mt, 'SetVertexColor', Fix) end
+        if mt.CreateTexture then hooksecurefunc(mt, 'CreateTexture', Fix) end
+        if mt.SetTexCoord then hooksecurefunc(mt, 'SetTexCoord', Fix) end
+        if mt.SetTexture then hooksecurefunc(mt, 'SetTexture', Fix) end
+    end
+end
+
+addapi(object)
+addapi(object:CreateTexture())
+addapi(object:CreateFontString())
+addapi(object:CreateMaskTexture())
+object = EnumerateFrames()
+while object do
+    if not object:IsForbidden() and not handled[object:GetObjectType()] then
+        addapi(object)
+        handled[object:GetObjectType()] = true
+    end
+
+    object = EnumerateFrames(object)
+end
+
+--------------------------------------
+-- MSG Addon
+--------------------------------------
+-- UPDATED 8.0.1 Macro
+--/script C_ChatInfo.SendAddonMessage("grip", UnitName("player"), "RAID")
+C_ChatInfo.RegisterAddonMessagePrefix("grip") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("bark") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("swap") --Fix BFA 8.0.1
+C_ChatInfo.RegisterAddonMessagePrefix("bop") --Fix BFA 8.0.1
+
+-- Leap handler
+local spellId = 73325
+local debuffDuration = 5
+
+-- create the spell icon to show on raid frame
+RubimRH.addLeapIcon = function(parentFrame)
+    local frame = CreateFrame("Frame",nil,parentFrame)
+    frame:SetFrameStrata("HIGH")
+    frame:SetWidth(RubimRH.iconWidth)
+    frame:SetHeight(RubimRH.iconHeight)
+    frame:SetAlpha(RubimRH.iconAlpha)
+    
+    local texture = frame:CreateTexture(nil,"HIGH")
+    texture:SetTexture(select(3, GetSpellInfo(spellId)))
+    texture:SetAllPoints(frame)
+    frame.texture = texture
+    
+    frame:SetPoint(RubimRH.position,0,0)
+    
+    local cooldown = CreateFrame("COOLDOWN", nil, frame, "CooldownFrameTemplate")
+    cooldown:SetCooldown(GetTime(), debuffDuration)
+    cooldown:SetAllPoints(frame)
+    cooldown:SetDrawEdge(false)
+    cooldown:SetHideCountdownNumbers(IsAddOnLoaded("OmniCC") or false)
+    
+    frame:Show()
+    C_Timer.After(debuffDuration, function()
+            frame:Hide()
+    end)
+end
+
+-- Leap Highlight on raid frame depending on the current asker name and if our spell cd is ready
+RubimRH.Leaphighlight = function(target)
+    local hasGrid2 = IsAddOnLoaded("Grid2")
+    local hasElvUIParty = _G["ElvUF_Party"] and _G["ElvUF_Party"]:IsVisible()
+    local hasElvUIRaid = _G["ElvUF_Raid"] and _G["ElvUF_Raid"]:IsVisible()
+    --local isOnCD = GetSpellCooldown(73325)
+    
+    
+    -- Check Spell Cooldown and show custom status
+    local IsOnCD = false;
+    local name = GetSpellInfo(73325);
+    local start, duration, enabled = GetSpellCooldown(name);
+    -- msg when grip up
+	local msg1 = "Grip pas up, sorry"
+	-- msg if grip down
+    local msg2 = "Grip up, no stress"    
+    
+    -- spell on cd
+    if ( start > 0 and duration > 1.5) then
+        print("DEMANDE DE GRIP DE "..target.."MAIS CD PAS UP") -- TO DO CUSTOMIZE A BIT BETTER
+        
+        -- if spell is not available, whisp our target to tell the spell is on cd
+        SendChatMessage(msg1, "WHISPER", nil, target)
+        
+        IsOnCD = true;
+    else
+        print("GRIP URGENT SUR "..target.." !!") -- TO DO CUSTOMIZE A BIT BETTER
+        SendChatMessage(msg2, "WHISPER", nil, target)
+        IsOnCD = false;
+    end    
+    
+    
+    -- Fix Raid Group 8.0.1 + cooldown verification
+    if hasElvUIRaid and IsOnCD == false  then
+        for i=1, 8 do
+            for j=1, 5 do
+                local f = _G["ElvUF_RaidGroup"..i.."UnitButton"..j]
+                if f and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
+            end
+        end
+        
+        -- Fix Party Group 8.0.1 + cooldown verification
+    elseif hasElvUIParty and IsOnCD == false then
+        for i=1, 8 do
+            for j=1, 5 do
+                local f = _G["ElvUF_PartyGroup"..i.."UnitButton"..j]
+                if f and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
+            end
+        end
+        
+    elseif hasGrid2 and IsOnCD == false then
+        local layout = Grid2LayoutFrame
+        
+        if layout then
+            local children = {layout:GetChildren()}
+            for _, child in ipairs(children) do
+                if child:IsVisible() then
+                    local frames = {child:GetChildren()}
+                    for _, f in ipairs(frames) do
+                        if f.unit and UnitName(f.unit) == target then
+                            RubimRH.addLeapIcon(f)
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    else
+        if IsOnCD == false then
+            for i=1, 40 do
+                local f = _G["CompactRaidFrame"..i]
+                if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+                    RubimRH.addLeapIcon(f)
+                    return
+                end
+            end
+        end
+        -- Fix party group
+        -- for i=1, 5 do
+        --   local f = _G["CompactPartyFrameMember"..i]
+        -- if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+        --   RubimRH.addLeapIcon(f)
+        --  return
+        -- end
+        -- end
+        
+        
+        if IsOnCD == false then
+            for i=1, 4 do
+                for j=1, 5 do
+                    local f = _G["CompactRaidGroup"..i.."Member"..j]
+                    if f and f.unitExists and f.unit and UnitName(f.unit) == target then
+                        RubimRH.addLeapIcon(f)
+                        return
+                    end
+                end
+                
+            end
+        end
+    end
+end
+
+-- Leap message handler return player name
+function LeapMessage(e, prefix, message)    
+    local actionasked = prefix
+	if prefix == "grip" then
+        --message contains the players name
+        RubimRH.Leaphighlight(message)
+    end	
+	return actionasked
+end
+
+
+function RubimRH.AskedForLeap()
+    if actionasked == "grip" then
+	    return true
+	else
+	    return false
+    end		
+end
+
+function RubimRH.AskedForBark()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false	
+    end		
+end
+
+function RubimRH.AskedForSwap()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false
+    end		
+end
+
+function RubimRH.AskedForBop()
+    if HandleChatMsgAddon() == true then
+	    return true
+	else
+	    return false
+    end		
+end
+
+--- Core DB Saved Var
+-- @usage Automata.GetDB('core', 'icon')
+function RubimRH.GetDB( option, key )
+    local tempStr = "return RubimRH.db.profile." .. option .. "." .. key
+    local temp = loadstring( tempStr )( )
+    
+    if not temp then
+        RubimRH.Print( "Error: " .. tempStr )
+        return
+    end
+    
+    return temp
+end
+
+--- Class DB Saved Var
+-- @usage RubimRH.GetClassDB(250, 'VP').Value
+function RubimRH.GetClassDB( class, key )
+    if type( key ) == "string" then
+        key = [[']] .. key .. [[']]
+    end
+    
+    --[[
+        if RubimRH.db.profile.selectedProfile then
+        local tempStr = "return RubimRH.db.profile.classprofile[".. RubimRH.db.profile.selectedProfile .. "]" .. "[" .. class .. "][" .. key .. "]"
+    end--]]
+    
+    local tempStr = "return RubimRH.db.profile[" .. class .. "][" .. key .. "]"
+    local temp = loadstring( tempStr )( )
+    
+    if not temp then
+        RubimRH.Print( "Error: " .. tempStr )
+        return
+    end
+    
+    return temp
+end
+
+
+RubimRH.List.PvEInterrupts = {
+        [140983] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [281949] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [142621] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [33975] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [132666] = { useKick = false, useCC = true, Zone = 'Brawler' },
+        [282081] = { useKick = true, useCC = true, Zone = 'Brawler' },		
+		[300764] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300650] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300171] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[299588] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300087] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[298669] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300414] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300436] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[301689] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300514] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[301088] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[294103] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[293930] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[293729] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },		
+        [287419] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [283628] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [284578] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [282243] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [286379] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [287887] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [289861] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [268198] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [267180] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [273350] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [267427] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [263307] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [256849] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253517] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253548] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253583] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [255041] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [256849] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [252781] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [250368] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [259572] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [250096] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253562] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [255824] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [252923] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [265089] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265091] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [278755] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [260879] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [266106] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [278961] = { useKick = true, useCC = true, Zone = "The Underrot" },
+        [266201] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [272183] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [272180] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265433] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265523] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [267824] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265371] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263891] = { useKick = true, useCC = true, Zone = "Waycrest Manor" },
+        [266035] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [266036] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [260805] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278551] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278474] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263943] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264520] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278444] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265407] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265876] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264105] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278551] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264384] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263959] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [268278] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [266225] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [273657] = { useKick = false, useCC = true, Zone = "Waycrest Manor" },
+        [265368] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [269972] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270923] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270901] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [267763] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270492] = { useKick = true, useCC = true, Zone = "Kings' Rest" },
+        [267273] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [258128] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258153] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [257791] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258313] = { useKick = true, useCC = true, Zone = "TolDagor" },
+        [258869] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258634] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258935] = { useKick = true, useCC = true, Zone = "TolDagor" },
+        [256060] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257397] = { useKick = true, useCC = true, Zone = "Freehold" },
+        [258777] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257732] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257736] = { useKick = true, useCC = true, Zone = "Freehold" },
+        [257756] = { useKick = false, useCC = true, onChannel = true, Zone = "Freehold" },
+        [256957] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [272571] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [274569] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [265968] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [261635] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [261624] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [265912] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [272820] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [268061] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [267433] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [280604] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [268185] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [268129] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [269302] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [267354] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [268709] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [268702] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263215] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263066] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [263103] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [268797] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [269090] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [271579] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263202] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [262554] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [258627] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [267977] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267969] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268030] = { useKick = true, useCC = true, Zone = "Shrine of the Storm" },
+        [274438] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268309] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268322] = { useKick = true, useCC = true, Zone = "Shrine of the Storm" },
+        [268317] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268375] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267809] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267818] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268347] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [276292] = { useKick = false, useCC = true, Zone = "Shrine of the Storm" },
+    }
+	
+	RubimRH.List.MixedInterrupts = {
+	    -- PVE
+        [140983] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [281949] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [142621] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [33975] = { useKick = true, useCC = false, Zone = 'Brawler' },
+        [132666] = { useKick = false, useCC = true, Zone = 'Brawler' },
+        [282081] = { useKick = true, useCC = true, Zone = 'Brawler' },
+		[300764] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300650] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300171] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[299588] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300087] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[298669] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300414] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300436] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[301689] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[300514] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[301088] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[294103] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[293930] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+		[293729] = { useKick = true, useCC = true, Zone = "Operation Mechagon" },
+        [287419] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [283628] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [284578] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [282243] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [286379] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [287887] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [289861] = { useKick = true, useCC = false, Zone = "Dazar'alor" },
+        [268198] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [267180] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [273350] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [267427] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [263307] = { useKick = true, useCC = false, Zone = "Uldir" },
+        [256849] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253517] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253548] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253583] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [255041] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [256849] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [252781] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [250368] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [259572] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [250096] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [253562] = { useKick = true, useCC = false, Zone = "Atal'Dazar" },
+        [255824] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [252923] = { useKick = true, useCC = true, Zone = "Atal'Dazar" },
+        [265089] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265091] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [278755] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [260879] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [266106] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [278961] = { useKick = true, useCC = true, Zone = "The Underrot" },
+        [266201] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [272183] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [272180] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265433] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [265523] = { useKick = true, useCC = false, Zone = "The Underrot" },
+        [267824] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265371] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263891] = { useKick = true, useCC = true, Zone = "Waycrest Manor" },
+        [266035] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [266036] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [260805] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278551] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278474] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263943] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264520] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278444] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265407] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [265876] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264105] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [278551] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [264384] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [263959] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [268278] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [266225] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [273657] = { useKick = false, useCC = true, Zone = "Waycrest Manor" },
+        [265368] = { useKick = true, useCC = false, Zone = "Waycrest Manor" },
+        [269972] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270923] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270901] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [267763] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [270492] = { useKick = true, useCC = true, Zone = "Kings' Rest" },
+        [267273] = { useKick = true, useCC = false, Zone = "Kings' Rest" },
+        [258128] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258153] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [257791] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258313] = { useKick = true, useCC = true, Zone = "TolDagor" },
+        [258869] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258634] = { useKick = true, useCC = false, Zone = "TolDagor" },
+        [258935] = { useKick = true, useCC = true, Zone = "TolDagor" },
+        [256060] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257397] = { useKick = true, useCC = true, Zone = "Freehold" },
+        [258777] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257732] = { useKick = true, useCC = false, Zone = "Freehold" },
+        [257736] = { useKick = true, useCC = true, Zone = "Freehold" },
+        [257756] = { useKick = false, useCC = true, onChannel = true, Zone = "Freehold" },
+        [256957] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [272571] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [274569] = { useKick = true, useCC = true, Zone = "Siege of Boralus" },
+        [265968] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [261635] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [261624] = { useKick = true, useCC = true, Zone = "Temple of Selthralis" },
+        [265912] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [272820] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [268061] = { useKick = true, useCC = false, Zone = "Temple of Selthralis" },
+        [267433] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [280604] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [268185] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [268129] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [269302] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [267354] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [268709] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [268702] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263215] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263066] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [263103] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [268797] = { useKick = true, useCC = true, Zone = "Motherlode" },
+        [269090] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [271579] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [263202] = { useKick = true, useCC = false, Zone = "Motherlode" },
+        [262554] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [258627] = { useKick = false, useCC = true, Zone = "Motherlode" },
+        [267977] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267969] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268030] = { useKick = true, useCC = true, Zone = "Shrine of the Storm" },
+        [274438] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268309] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268322] = { useKick = true, useCC = true, Zone = "Shrine of the Storm" },
+        [268317] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268375] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267809] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [267818] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [268347] = { useKick = true, useCC = false, Zone = "Shrine of the Storm" },
+        [276292] = { useKick = false, useCC = true, Zone = "Shrine of the Storm" },
+		
+		-- PvP
+	    [51505] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Lava Burst
+		[48181] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Haunt
+		[203286] = { useKick = true, useCC = false, Zone = 'PvP' }, -- Great Pyroblast
+		[234153] = { useKick = true, useCC = false, Zone = 'PvP' }, -- Drain Life
+		[2060] = { useKick = true, useCC = false, Zone = 'PvP' },    --Heal
+		[8936] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Regrowth
+		[19750] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Flash of Light
+		[82326] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Divine Light
+		[2061] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Flash Heal
+		[64901] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Hymn of Hope
+		[12051] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Evocation
+		[64843] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Divine Hymn
+		[115175] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Soothing Mist
+		[8936] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Regrowth
+		[2061] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Flash Heal
+		[32546] = { useKick = true, useCC = false, Zone = 'PvP' }, --  binding Heal
+		[2060] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Greater Heal
+		[2006] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Resurrection
+		[596] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Prayer of Healing
+		[19750] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Flash of Light
+		[7328] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Redemption
+		[2008] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Ancestral Spirit
+		[50769] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Revive
+		[82326] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Divine Light
+		[740] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Tranquillity
+		[124682] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Enveloping Mist
+		[64901] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Hymn of Hope
+		[64843] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Divine Hymn
+		[115151] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Renewing Mist
+		[115310] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Revival
+		[152118] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Clarity of Will
+		[186263] = { useKick = true, useCC = false, Zone = 'PvP' }, --  Shadow Mend
+    }
+	
+	RubimRH.List.CustomInterrupts = {}

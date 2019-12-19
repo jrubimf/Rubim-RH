@@ -3,9 +3,12 @@
   RubimRH.CDToggle()
 </Binding>
 <Binding category="Rubim RH" name="Interrupt Toggle">
-  RubimRH.InterruptToggle()
+  RubimRH.InterruptsToggle()
 </Binding>
 <Binding category="Rubim RH" name="AoE Toggle">
   RubimRH.AoEToggle()
+</Binding>
+<Binding category="Rubim RH" name="HEAL Force Rejuvenation">
+  RubimRH.ForceRejuv()
 </Binding>
 </Bindings>

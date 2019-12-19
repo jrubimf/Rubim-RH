@@ -1,43 +1,68 @@
 --- @type StdUi
 local StdUi = LibStub and LibStub('StdUi', true);
 if not StdUi then
-	return;
+	return ;
 end
 
-local module, version = 'Tab', 1;
-if not StdUi:UpgradeNeeded(module, version) then return end;
+local module, version = 'Tab', 3;
+if not StdUi:UpgradeNeeded(module, version) then
+	return
+end ;
 
 ---
 ---local t = {
----	{
----		name = 'firstTab',
----		title = 'First',
----	},
----	{
----		name = 'secondTab',
----		title = 'Second',
----	},
----	{
----		name = 'thirdTab',
----		title = 'Third'
----	}
+---    {
+---        name = 'firstTab',
+---        title = 'First',
+---    },
+---    {
+---        name = 'secondTab',
+---        title = 'Second',
+---    },
+---    {
+---        name = 'thirdTab',
+---        title = 'Third'
+---    }
 ---}
-function StdUi:TabPanel(parent, width, height, tabs, vertical)
+function StdUi:TabPanel(parent, width, height, tabs, vertical, buttonWidth, buttonHeight)
 	local this = self;
 	vertical = vertical or false;
+	buttonHeight = buttonHeight or 20;
+	buttonWidth = buttonWidth or 160;
 
-	local buttonHeight = 20;
 	local tabFrame = self:Frame(parent, width, height);
+	tabFrame.vertical = vertical;
 
 	tabFrame.tabs = tabs;
-	tabFrame.panel = self:Panel(tabFrame);
-	self:GlueAcross(tabFrame.panel, tabFrame, 0, -buttonHeight, 0, 0);
+
+	tabFrame.buttonContainer = self:Frame(tabFrame);
+	tabFrame.container = self:Panel(tabFrame);
+
+	if vertical then
+		tabFrame.buttonContainer:SetPoint('TOPLEFT', tabFrame, 'TOPLEFT', 0, 0);
+		tabFrame.buttonContainer:SetPoint('BOTTOMLEFT', tabFrame, 'BOTTOMLEFT', 0, 0);
+		tabFrame.buttonContainer:SetWidth(buttonWidth);
+
+		tabFrame.container:SetPoint('TOPLEFT', tabFrame.buttonContainer, 'TOPRIGHT', 5, 0);
+		tabFrame.container:SetPoint('BOTTOMLEFT', tabFrame.buttonContainer, 'BOTTOMRIGHT', 5, 0);
+		tabFrame.container:SetPoint('TOPRIGHT', tabFrame, 'TOPRIGHT', 0, 0);
+		tabFrame.container:SetPoint('BOTTOMRIGHT', tabFrame, 'BOTTOMRIGHT', 0, 0);
+	else
+		tabFrame.buttonContainer:SetPoint('TOPLEFT', tabFrame, 'TOPLEFT', 0, 0);
+		tabFrame.buttonContainer:SetPoint('TOPRIGHT', tabFrame, 'TOPRIGHT', 0, 0);
+		tabFrame.buttonContainer:SetHeight(buttonHeight);
+
+		tabFrame.container:SetPoint('TOPLEFT', tabFrame.buttonContainer, 'BOTTOMLEFT', 0, -5);
+		tabFrame.container:SetPoint('TOPRIGHT', tabFrame.buttonContainer, 'BOTTOMRIGHT', 0, -5);
+		tabFrame.container:SetPoint('BOTTOMLEFT', tabFrame, 'BOTTOMLEFT', 0, 0);
+		tabFrame.container:SetPoint('BOTTOMRIGHT', tabFrame, 'BOTTOMRIGHT', 0, 0);
+	end
 
 	function tabFrame:EnumerateTabs(callback)
 		for i = 1, #self.tabs do
 			local tab = self.tabs[i];
-			if callback(tab) then
-				break;
+			if callback(tab, self) then
+				break ;
 			end
 		end
 	end
@@ -58,26 +83,42 @@ function StdUi:TabPanel(parent, width, height, tabs, vertical)
 		end);
 
 		local prevBtn;
-		self:EnumerateTabs(function(tab)
+		self:EnumerateTabs(function(tab, parentTabFrame)
 			local btn = tab.button;
-			if not btn then
-				btn = this:Button(tabFrame, nil, buttonHeight);
-				btn:SetScript('OnClick', function (btn)
-					tabFrame:SelectTab(btn.tab.name);
-				end);
+			local btnContainer = parentTabFrame.buttonContainer;
 
+			if not btn then
+				btn = this:Button(btnContainer, nil, buttonHeight);
 				tab.button = btn;
+				btn.tabFrame = parentTabFrame;
+
+				btn:SetScript('OnClick', function(bt)
+					bt.tabFrame:SelectTab(bt.tab.name);
+				end);
 			end
 
 			btn.tab = tab;
 			btn:SetText(tab.title);
 			btn:ClearAllPoints();
-			this:ButtonAutoWidth(btn);
 
-			if not prevBtn then
-				this:GlueTop(btn, tabFrame, 0, 0, 'LEFT');
+			if parentTabFrame.vertical then
+				btn:SetWidth(buttonWidth);
 			else
-				this:GlueRight(btn, prevBtn, 5, 0);
+				this:ButtonAutoWidth(btn);
+			end
+
+			if parentTabFrame.vertical then
+				if not prevBtn then
+					this:GlueTop(btn, btnContainer, 0, 0, 'CENTER');
+				else
+					this:GlueBelow(btn, prevBtn, 0, -1);
+				end
+			else
+				if not prevBtn then
+					this:GlueTop(btn, btnContainer, 0, 0, 'LEFT');
+				else
+					this:GlueRight(btn, prevBtn, 5, 0);
+				end
 			end
 
 			btn:Show();
@@ -88,7 +129,7 @@ function StdUi:TabPanel(parent, width, height, tabs, vertical)
 	function tabFrame:DrawFrames()
 		self:EnumerateTabs(function(tab)
 			if not tab.frame then
-				tab.frame = this:Frame(self.panel);
+				tab.frame = this:Frame(self.container);
 			end
 
 			tab.frame:ClearAllPoints();
@@ -96,9 +137,9 @@ function StdUi:TabPanel(parent, width, height, tabs, vertical)
 		end);
 	end
 
-	function tabFrame:Update(tabs)
-		if tabs then
-			self.tabs = tabs;
+	function tabFrame:Update(newTabs)
+		if newTabs then
+			self.tabs = newTabs;
 		end
 		self:DrawButtons();
 		self:DrawFrames();

@@ -63,7 +63,7 @@ Scripts
 -------------------------------------------------------------------------------]]
 local function Tab_OnClick(frame)
 	if not (frame.selected or frame.disabled) then
-		PlaySound(PlaySoundKitID and "igCharacterInfoTab" or 841) -- SOUNDKIT.IG_CHARACTER_INFO_TAB
+		PlaySound(841) -- SOUNDKIT.IG_CHARACTER_INFO_TAB
 		frame.obj:SelectTab(frame.value)
 	end
 end
@@ -165,7 +165,6 @@ local methods = {
 
 	["BuildTabs"] = function(self)
 		local hastitle = (self.titletext:GetText() and self.titletext:GetText() ~= "")
-		local status = self.status or self.localstatus
 		local tablist = self.tablist
 		local tabs = self.tabs
 		

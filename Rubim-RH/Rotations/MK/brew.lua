@@ -1,13 +1,17 @@
---- Last Edit: Bishop : 7/21/18
---- BfA Brewmaster v1.0.2
+--- ============================ HEADER ============================
+--- ======= LOCALIZE =======
+-- Addon
 local addonName, addonTable = ...
 -- HeroLib
-local HL = HeroLib
-local Cache = HeroCache
-local Unit = HL.Unit
+local HL     = HeroLib
+local Cache  = HeroCache
+local Unit   = HL.Unit
 local Player = Unit.Player
 local Target = Unit.Target
-local Spell = HL.Spell
+local Pet    = Unit.Pet
+local Spell  = HL.Spell
+local Item   = HL.Item
+local mainAddon = RubimRH
 
 -- Macro Settings
 UseBlackOxStatue = false
@@ -15,6 +19,15 @@ UseLegSweep = false
 UseKick = false
 
 local S = RubimRH.Spell[268]
+-- Rotation Var
+local ShouldReturn; -- Used to get the return string
+-- Items
+if not Item.Monk then Item.Monk = {} end
+Item.Monk.Brewmaster = {
+  BattlePotionOfAgility = Item(163223),
+  InvocationOfYulon     = Item(165568),
+};
+local I = Item.Monk.Brewmaster;
 
 --- Energy Cap -> Returns true if energy will cap in the next GCD
 local function EnergyWillCap()
@@ -22,6 +35,11 @@ local function EnergyWillCap()
 end
 
 local function AoE()
+	-- Leg Sweep
+	if S.LegSweep:IsCastableP() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.LegSweep:Cast()
+    end
+	
     if S.BreathOfFire:IsReady("Melee") then
         return S.BreathOfFire:Cast()
     end
@@ -57,19 +75,180 @@ local function AoE()
     if S.RushingJadeWind:IsReady(8) then
         return S.RushingJadeWind:Cast()
     end
-
+	
     return nil
+end
+
+local function DetermineEssenceRanks()
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy2:IsAvailable() and S.BloodOfTheEnemy2 or S.BloodOfTheEnemy
+  S.BloodOfTheEnemy = S.BloodOfTheEnemy3:IsAvailable() and S.BloodOfTheEnemy3 or S.BloodOfTheEnemy
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams2:IsAvailable() and S.MemoryOfLucidDreams2 or S.MemoryOfLucidDreams
+  S.MemoryOfLucidDreams = S.MemoryOfLucidDreams3:IsAvailable() and S.MemoryOfLucidDreams3 or S.MemoryOfLucidDreams
+  S.PurifyingBlast = S.PurifyingBlast2:IsAvailable() and S.PurifyingBlast2 or S.PurifyingBlast
+  S.PurifyingBlast = S.PurifyingBlast3:IsAvailable() and S.PurifyingBlast3 or S.PurifyingBlast
+  S.RippleInSpace = S.RippleInSpace2:IsAvailable() and S.RippleInSpace2 or S.RippleInSpace
+  S.RippleInSpace = S.RippleInSpace3:IsAvailable() and S.RippleInSpace3 or S.RippleInSpace
+  S.ConcentratedFlame = S.ConcentratedFlame2:IsAvailable() and S.ConcentratedFlame2 or S.ConcentratedFlame
+  S.ConcentratedFlame = S.ConcentratedFlame3:IsAvailable() and S.ConcentratedFlame3 or S.ConcentratedFlame
+  S.TheUnboundForce = S.TheUnboundForce2:IsAvailable() and S.TheUnboundForce2 or S.TheUnboundForce
+  S.TheUnboundForce = S.TheUnboundForce3:IsAvailable() and S.TheUnboundForce3 or S.TheUnboundForce
+  S.WorldveinResonance = S.WorldveinResonance2:IsAvailable() and S.WorldveinResonance2 or S.WorldveinResonance
+  S.WorldveinResonance = S.WorldveinResonance3:IsAvailable() and S.WorldveinResonance3 or S.WorldveinResonance
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam2:IsAvailable() and S.FocusedAzeriteBeam2 or S.FocusedAzeriteBeam
+  S.FocusedAzeriteBeam = S.FocusedAzeriteBeam3:IsAvailable() and S.FocusedAzeriteBeam3 or S.FocusedAzeriteBeam
+end
+
+-- # Essences
+local function Essences()
+  -- blood_of_the_enemy
+  if S.BloodOfTheEnemy:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- concentrated_flame
+  if S.ConcentratedFlame:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- guardian_of_azeroth
+  if S.GuardianOfAzeroth:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- focused_azerite_beam
+  if S.FocusedAzeriteBeam:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- purifying_blast
+  if S.PurifyingBlast:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- the_unbound_force
+  if S.TheUnboundForce:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- ripple_in_space
+  if S.RippleInSpace:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- worldvein_resonance
+  if S.WorldveinResonance:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
+  if S.MemoryOfLucidDreams:IsCastableP() then
+    return S.UnleashHeartOfAzeroth:Cast()
+  end
+  return false
+end
+
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
+local function trinketReady(trinketPosition)
+    local inventoryPosition
+    
+	if trinketPosition == 1 then
+        inventoryPosition = 13
+    end
+    
+	if trinketPosition == 2 then
+        inventoryPosition = 14
+    end
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
+    if enable == 0 then
+        return false
+    end
+
+    if start + duration - GetTime() > 0 then
+        return false
+    end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end	
+	
+    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
+        return true
+    end
+	
+	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
+        if not UnitExists("boss1") then
+            return false
+        end
+
+        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+            return false
+        end
+    end	
+    return true
 end
 
 --- Preliminary APL based on Peak of Serenity Rotation Priority for 8.0.1
 -- Guide Referenced: http://www.peakofserenity.com/bfa/brewmaster/guide/
 local function APL()
-
-    --- Not in combat
-    if not Player:AffectingCombat() then
-        return 0, 462338
+local Precombat_DBM, Precombat
+    DetermineEssenceRanks()
+	Precombat_DBM = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+        -- potion
+	    if I.BattlePotionOfAgility:IsReady() and RubimRH.DBM_PullTimer() > Player:GCD() and RubimRH.DBM_PullTimer() <= 2 then
+            return 967532
+        end		
+        -- Tiger Palm
+        if S.TigerPalm:IsReady("Melee") and RubimRH.DBM_PullTimer() >= 0.1 and RubimRH.DBM_PullTimer() <= 0.2 then
+            return S.TigerPalm:Cast()
+        end
     end
+	
+	Precombat = function()
+    -- flask
+    -- food
+    -- augmentation
+    -- snapshot_stats
+    -- potion
+    --if I.ProlongedPower:IsReady() and Settings.Commons.UsePotions then
+    --  if I.CastSuggested(I.ProlongedPower) then return "prolonged_power 4"; end
+    --end
+        -- Tiger Palm
+        if S.TigerPalm:IsReady("Melee") then
+            return S.TigerPalm:Cast()
+        end
+    end
+      --- Not in combat
+  --  if not Player:AffectingCombat() and RubimRH.PrecombatON() then
+  --      return 0, 462338
+ --   end
+    -- call DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and RubimRH.PerfectPullON() and not Target:IsQuestMob() then
+        return Precombat_DBM()
+	end
+    -- call non DBM precombat
+	if not Player:AffectingCombat() and RubimRH.PrecombatON() and not RubimRH.PerfectPullON() and not Target:IsQuestMob() then		
+        return Precombat()
+	end
+	
+    if QueueSkill() ~= nil then
+		return QueueSkill()
+    end
+	
+	-- call_action_list,name=essences
+    local ShouldReturn = Essences(); if ShouldReturn and (true) then return ShouldReturn; end
 
+    if Player:IsChanneling() or Player:IsCasting() then
+        return 0, 236353
+    end
+  
+    if RubimRH.TargetIsValid() then
+	
     -- Unit Update
     HL.GetEnemies(8, true);
     HL.GetEnemies(15, true);
@@ -79,7 +258,10 @@ local function APL()
     local IsTanking = Player:IsTankingAoE(8) or Player:IsTanking(Target)
 
     --- Player Macro Options
-
+    -- Paralysis
+    if S.Paralysis:IsReadyP() and RubimRH.InterruptsON() then
+        return S.Paralysis:Cast()
+    end
     -- Leg Sweep
     if S.LegSweep:IsReady()
             and UseLegSweep then
@@ -97,7 +279,10 @@ local function APL()
             and not S.BlackOxStatue:IsReady() then
         UseBlackOxStatue = false
     end
-
+	-- Panda racial kick 2
+	if S.QuackingPalm:IsCastableP() and not S.SpearHandStrike:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
+        return S.QuackingPalm:Cast()
+    end
     -- Kick
     if S.SpearHandStrike:IsReady() and Target:IsInterruptible() and RubimRH.InterruptsON() then
         return S.SpearHandStrike:Cast()
@@ -105,15 +290,13 @@ local function APL()
             and not S.SpearHandStrike:IsReady() then
         UseKick = false
     end
-
     --- Defensive Rotation
     if S.ExpelHarm:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk1 then
         return S.ExpelHarm:Cast()
     end
 
     -- Fortifying Brew
-    if S.FortifyingBrew:IsReady()
-            and Player:NeedPanicHealing() then
+    if S.FortifyingBrew:IsReady() and Player:HealthPercentage() <= RubimRH.db.profile[268].sk2 then
         return S.FortifyingBrew:Cast()
     end
 
@@ -181,6 +364,11 @@ local function APL()
             and S.InvokeNiuzaotheBlackOx:IsReady(40) then
         return S.InvokeNiuzaotheBlackOx:Cast()
     end
+	
+	-- Blackout Strike
+    if S.BlackoutStrike:IsReady("Melee") then
+        return S.BlackoutStrike:Cast()
+    end
 
     -- Keg Smash
     if S.KegSmash:IsReady(15) then
@@ -196,8 +384,7 @@ local function APL()
     --- Single-Target Priority
 
     -- Blackout Strike
-    if S.BlackoutStrike:IsReady("Melee")
-            and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
+    if S.BlackoutStrike:IsReady("Melee") and (not Player:Buff(S.BlackoutComboBuff) or not S.BlackoutCombo:IsAvailable()) then
         return S.BlackoutStrike:Cast()
     end
 
@@ -239,7 +426,13 @@ local function APL()
     if S.RushingJadeWind:IsReady() then
         return S.RushingJadeWind:Cast()
     end
+	
+	-- Vivify 10%
+    --if S.Vivify:IsReady() and Player:HealthPercentage() <= 10 then
+    --    return S.Vivify:Cast()
+    --end
 
+    end
     return 0, 135328
 end
 RubimRH.Rotation.SetAPL(268, APL);

@@ -125,15 +125,155 @@ function RubimRH.CCToggle()
     print("|cFF69CCF0CC Break" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.ccbreak))
 end
 
-function RubimRH.PotionToggle()
+function RubimRH.PerfectPull()
     RubimRH.playSoundR(891);
-    if RubimRH.db.profile.mainOption.usePotion == false then
-        RubimRH.db.profile.mainOption.usePotion = true
+    if RubimRH.db.profile.mainOption.PerfectPull == false then
+        RubimRH.db.profile.mainOption.PerfectPull = true
 
     else
-        RubimRH.db.profile.mainOption.usePotion = false
+        RubimRH.db.profile.mainOption.PerfectPull = false
     end
-    print("|cFF69CCF0Potion" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.usePotion))
+    print("|cFF69CCF0Perfect Pull" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.PerfectPull))
+end
+
+-- Prot Paladin checkbox value change handler
+function RubimRH.ASInterrupt()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[66].ASInterrupt == false then
+        RubimRH.db.profile[66].ASInterrupt = true
+
+    else
+        RubimRH.db.profile[66].ASInterrupt = false
+    end
+    print("|cFF69CCF0Avenger's Shield interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[66].ASInterrupt))
+end
+
+-- Shadow priest Auto AoE
+function RubimRH.ShadowAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[258].AutoAoE == false then
+        RubimRH.db.profile[258].AutoAoE = true
+
+    else
+        RubimRH.db.profile[258].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[258].AutoAoE))
+end
+
+-- Affliction warlock Auto AoE
+function RubimRH.AffliAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[265].AutoAoE == false then
+        RubimRH.db.profile[265].AutoAoE = true
+
+    else
+        RubimRH.db.profile[265].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[265].AutoAoE))
+end
+
+-- Assasination Rogue Auto AoE
+function RubimRH.AssaAutoAoE()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[259].AutoAoE == false then
+        RubimRH.db.profile[259].AutoAoE = true
+
+    else
+        RubimRH.db.profile[259].AutoAoE = false
+    end
+    print("|cFF69CCF0Automatic AoE" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[259].AutoAoE))
+end
+
+-- Balance Druid auto morph checkbox handler
+function RubimRH.AutoMorph()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].AutoMorph == false then
+        RubimRH.db.profile[102].AutoMorph = true
+
+    else
+        RubimRH.db.profile[102].AutoMorph = false
+    end
+    print("|cFF69CCF0Auto morph to Moonkin form" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[102].AutoMorph))
+end
+
+-- Prot Warrior 
+function RubimRH.UseShieldBlockDef()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].UseShieldBlockDef == false then
+        RubimRH.db.profile[102].UseShieldBlockDef = true
+
+    else
+        RubimRH.db.profile[102].UseShieldBlockDef = false
+    end
+    print("|cFF69CCF0Use Shield Block Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseShieldBlockDef))
+end
+
+function RubimRH.UseRageDef()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[102].UseRageDef == false then
+        RubimRH.db.profile[102].UseRageDef = true
+
+    else
+        RubimRH.db.profile[102].UseRageDef = false
+    end
+    print("|cFF69CCF0Use your Rage Defensively " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[73].UseRageDef))
+end
+
+-- Resto druid Force Rejuv handler
+function RubimRH.ForceRejuv()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[105].force_rejuv == false then
+        RubimRH.db.profile[105].force_rejuv = true
+
+    else
+        RubimRH.db.profile[105].force_rejuv = false
+    end
+    print("|cFF69CCF0Force Rejuvenation on everyone" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[105].force_rejuv))
+end
+
+-- Resto Druid Sync DBM Cds
+function RubimRH.DBMSync()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile[105].dbm_sync == false then
+        RubimRH.db.profile[105].dbm_sync = true
+
+    else
+        RubimRH.db.profile[105].dbm_sync = false
+    end
+    print("|cFF69CCF0CDs Synchronization with DBM events " .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile[105].dbm_sync))
+end
+
+function RubimRH.PrecombatToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.Precombat == false then
+        RubimRH.db.profile.mainOption.Precombat = true
+
+    else
+        RubimRH.db.profile.mainOption.Precombat = false
+    end
+    print("|cFF69CCF0Precombat" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.Precombat))
+end
+
+function RubimRH.InstantInterruptToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.InstantInterrupt == false then
+        RubimRH.db.profile.mainOption.InstantInterrupt = true
+
+    else
+        RubimRH.db.profile.mainOption.InstantInterrupt = false
+    end
+    print("|cFF69CCF0Instant Interrupt" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.InstantInterrupt))
+end
+
+function RubimRH.InterruptEverythingToggle()
+    RubimRH.playSoundR(891);
+    if RubimRH.db.profile.mainOption.InterruptEverything == false then
+        RubimRH.db.profile.mainOption.InterruptEverything = true
+
+    else
+        RubimRH.db.profile.mainOption.InterruptEverything = false
+    end
+    print("|cFF69CCF0Interrupt Everything" .. "|r: |cFF00FF00" .. tostring(RubimRH.db.profile.mainOption.InterruptEverything))
 end
 
 function RubimRH.RacialToggle()
@@ -244,7 +384,7 @@ function RubimRH.CleaveON()
     end
 end
 
-function RubimRH.ccbreak()
+function RubimRH.CCBreakON()
     if RubimRH.db == nil then
         return false
     end
@@ -255,11 +395,160 @@ function RubimRH.ccbreak()
     end
 end
 
-function RubimRH.PotionON()
+function RubimRH.PerfectPullON()
     if RubimRH.db == nil then
         return false
     end
-    if RubimRH.db.profile.mainOption.usePotion == true then
+    if RubimRH.db.profile.mainOption.PerfectPull == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.AutoAttackON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.startattack == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Prot Paladin Avenger Shield UI function
+function RubimRH.ASInterruptON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[66].ASInterrupt == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Shadow priest
+function RubimRH.ShadowAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[258].AutoAoE == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Affli lock UI function
+function RubimRH.AffliAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[265].AutoAoE == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Assa Rogue UI function
+function RubimRH.AssaAutoAoEON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[259].AutoAoE == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Druid Auto Morph UI
+function RubimRH.AutoMorphON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[102].AutoMorph == true then
+        return true
+    else
+        return false
+    end
+end
+
+-- Protection Warrior
+function RubimRH.UseShieldBlockDefON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[73].UseShieldBlockDefensively == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.UseRageDefON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[73].UseRageDefensively == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.ForceRejuvON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[105].force_rejuv == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.DBMSyncON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile[105].dbm_sync == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.PrecombatON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.Precombat == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.InstantInterruptON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.InstantInterrupt == true then
+        return true
+    else
+        return false
+    end
+end
+
+function RubimRH.InterruptEverythingON()
+    if RubimRH.db == nil then
+        return false
+    end
+    if RubimRH.db.profile.mainOption.InterruptEverything == true then
         return true
     else
         return false

@@ -5,6 +5,9 @@ local Player = Unit.Player;
 local Target = Unit.Target;
 local Spell = HL.Spell;
 local Item = HL.Item;
+local Focus, MouseOver = Unit.Focus, Unit.MouseOver;
+local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate;
+local Party, Raid = Unit.Party, Unit.Raid;
 
 local function GetTexture (Object)
     -- Spells
@@ -64,6 +67,37 @@ function Spell:QueueAuto(powerExtra)
     RubimRH.queuedSpellAuto = { self, powerEx }
 end
 
+-- Essence fix for QueueSkill
+local Essences = {   
+  Spell(297108),
+  Spell(298273),
+  Spell(298277),
+  Spell(295373),
+  Spell(299349),
+  Spell(299353),
+  Spell(295840),
+  Spell(299355),
+  Spell(299358),
+  Spell(295258),
+  Spell(299336),
+  Spell(299338),
+  Spell(295337),
+  Spell(299345),
+  Spell(299347),
+  Spell(298452),
+  Spell(299376),
+  Spell(299378),
+  Spell(302731),
+  Spell(302982),
+  Spell(302983),
+  Spell(295186),
+  Spell(298628),
+  Spell(299334),
+  Spell(298357),
+  Spell(299372),
+  Spell(299374),
+}
+
 RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
 function Spell:Queue(powerExtra, bypassRemove)
     local bypassRemove = bypassRemove or false
@@ -75,11 +109,25 @@ function Spell:Queue(powerExtra, bypassRemove)
         return
     end
 
-    if self:IsAvailable() then
-        RubimRH.queuedSpell = { self, powerEx }
-        RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
-        RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
-        return
+    if self:IsAvailable() then	
+	-- Essence fix for QueueSkill
+		for i = 1, #Essences do		
+		    local EssencesID = Essences[i]:ID()
+		    -- If an Essence is queued
+			if self:ID() == EssencesID then
+			    RubimRH.queuedSpell = {RubimRH.Spell[1].UnleashHeartOfAzeroth, 0}
+				RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
+			    print("Queued ID = " .. GetSpellLink(self:ID()))
+			    print("Compared Essence ID = " .. EssencesID)
+                return
+		    -- If not Essence, return classic queue spell
+			else	
+                RubimRH.queuedSpell = { self, powerEx }
+                RubimRH.print("|cFFFFFF00Queued:|r " .. GetSpellLink(self:ID()))
+                RubimRH.playSoundR("Interface\\Addons\\Rubim-RH\\Media\\queue.ogg")
+                return
+			end
+		end
     end
     RubimRH.print("|cFFFF0000Can't Queue:|r " .. GetSpellLink(self:ID()))
 
@@ -220,12 +268,27 @@ end
   *
   * @returns {number}
   *]]
-
+  
 function Spell:IsCastable(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -235,7 +298,8 @@ function Spell:IsCastable(Range, AoESpell, ThisUnit)
 end
 
 function Spell:IsCastableQueue(Range, AoESpell, ThisUnit)
-    if Range then
+
+	if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownRemainsTrue() <= 0.2 and RangeUnit:IsInRange(Range, AoESpell);
     else
@@ -247,6 +311,7 @@ function Spell:IsReadyQueue(Range, AoESpell, ThisUnit)
     if not RubimRH.TargetIsValid() then
         return false
     end
+	
 
     return self:IsCastableQueue(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
@@ -278,7 +343,22 @@ function Spell:IsReady(Range, AoESpell, ThisUnit)
     if not self:IsAvailable() then
         return false
     end
-
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     return self:IsCastable(Range, AoESpell, ThisUnit) and self:IsUsable();
 end
 
@@ -302,6 +382,21 @@ function Spell:IsReadyP(Range, AoESpell, ThisUnit)
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
     end
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
 
     if RubimRH.db.profile.mainOption.startattack then
 
@@ -334,7 +429,23 @@ function Spell:IsCastableP(Range, AoESpell, ThisUnit, BypassRecovery, Offset)
     if not self:IsAvailable() or self:IsQueuedPowerCheck() then
         return false
     end
-    if Range then
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	    
+	if Range then
         local RangeUnit = ThisUnit or Target
         return self:IsLearned() and self:CooldownRemainsP(BypassRecovery or true, Offset or "Auto") == 0 and RangeUnit:IsInRange(Range, AoESpell)
     else
@@ -346,6 +457,22 @@ function Spell:IsCastableMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
+	
     if Range then
         local RangeUnit = ThisUnit or Target;
         return self:IsLearned() and self:CooldownUp() and RangeUnit:IsInRange(Range, AoESpell);
@@ -358,6 +485,21 @@ function Spell:IsReadyMorph(Range, AoESpell, ThisUnit)
     if self:IsEnabled() == false then
         return false
     end
+	
+	local currentZoneID = select(8, GetInstanceInfo())
+    RubimRH.Spell[998] = {
+        RepeatPerformance = Spell(301244),
+    }
+    local S = RubimRH.Spell[998]
+	
+	-- Queens Court - Repeat Performance debuff checker
+	if currentZoneID == 2164 and Player:DebuffRemainsP(S.RepeatPerformance) > 0 then
+	    if Player:PrevGCD(1) ~= self:ID() then
+	        return true
+		else
+		    return false
+		end
+	end
 
     if self:IsEnabledCD() == false or self:IsEnabledCleave() == false then
         return false
@@ -560,3 +702,43 @@ function Spell:ArenaCast(arenaTarget)
         RubimRH.Arena3Icon(self:Cast())
     end
 end
+
+-- Is the current unit valid during cycle ?
+function RubimRH.UnitIsCycleValid (Unit, BestUnitTTD, TimeToDieOffset)
+    return not Unit:IsFacingBlacklisted() and not Unit:IsUserCycleBlacklisted() and (not BestUnitTTD or Unit:FilteredTimeToDie(">", BestUnitTTD, TimeToDieOffset));
+end
+
+-- GetSpellTexture cached function
+local GetSpellTexture = GetSpellTexture -- remap default API, since if Blizzard change GetSpellTexture then you can just replace it in one space instead edit everything
+local spelltexture = setmetatable({}, { __index = function(t, v)
+            local pwr = GetSpellTexture(v)
+            if pwr then
+                t[v] = { 1, pwr }
+                return t[v]
+            end     
+            return 0
+end })
+
+function CacheGetSpellTexture(a)
+    return unpack(spelltexture[a]) 
+end
+
+function RubimRH.GetDescription(spellID)
+    local text = GetSpellDescription(spellID) 
+    if not text then 
+        return {0, 0} 
+    end
+    local deleted_space, numbers = string.gsub(text, "%s+", ''), {}
+    deleted_space = string.gsub(deleted_space, "%d+%%", "")
+    for num in string.gmatch(deleted_space, "%d+") do
+        table.insert(numbers, tonumber(num))
+    end
+    if #numbers == 1 then
+        return numbers
+    end
+    table.sort(numbers, function (x, y)
+            return x > y
+    end)
+    return numbers
+end
+

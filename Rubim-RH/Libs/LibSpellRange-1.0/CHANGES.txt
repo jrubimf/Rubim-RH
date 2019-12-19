@@ -1,0 +1,11 @@
+lightweight tag c3c9eee6cebec252c9784fad1a51d6f4054e833c 1.0.13
+Author:	Andrew Scott <ascott18@gmail.com>
+Date:	Mon Dec 24 15:20:29 2018 -0800
+
+commit c3c9eee6cebec252c9784fad1a51d6f4054e833c
+Author: Andrew Scott <ascott18@gmail.com>
+Date:   Mon Dec 24 15:20:29 2018 -0800
+
+    Fixes to make it attempt to work for pet spells again, although it won't actually work until Blizz fixes IsSpellInRange to work with pet spells again.
+    This is just the fixes on the side of LibSpellRange so that we're at least picking up pet spells from the spellbook again.
+

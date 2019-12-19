@@ -4,20 +4,18 @@
 --- DateTime: 12/07/2018 07:01
 ---
 
-local HL = HeroLib;
-local Cache = HeroCache;
-local Unit = HL.Unit;
-local Player = Unit.Player;
-local Target = Unit.Target;
-local Spell = HL.Spell;
-local Item = HL.Item;
+local HL = HeroLib
+local Cache = HeroCache
+local Unit = HL.Unit
+local Player = Unit.Player
+local Target = Unit.Target
+local Spell = HL.Spell
+local Item = HL.Item
+local mainAddon = RubimRH
 
 local ProlongedPower = Item(142117)
 local Healthstone = 5512
 local autoAttack = Spell(6603)
-
-local trinket2 = 1030910
-local trinket1 = 1030902
 
 function Item:IsBuffTrinket()
 
@@ -36,18 +34,23 @@ local function IsAreaTrinket(itemID)
     return false
 end
 
+-- Trinket var
+local trinket2 = 1030910
+local trinket1 = 1030902
+
+-- Trinket Ready
 local function trinketReady(trinketPosition)
     local inventoryPosition
-
-    if trinketPosition == 1 then
+    
+	if trinketPosition == 1 then
         inventoryPosition = 13
     end
-    if trinketPosition == 2 then
+    
+	if trinketPosition == 2 then
         inventoryPosition = 14
     end
-
-    local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
-
+    
+	local start, duration, enable = GetInventoryItemCooldown("Player", inventoryPosition)
     if enable == 0 then
         return false
     end
@@ -55,19 +58,81 @@ local function trinketReady(trinketPosition)
     if start + duration - GetTime() > 0 then
         return false
     end
+	
+	if RubimRH.db.profile.mainOption.useTrinkets[1] == false then
+	    return false
+	end
+	
+   	if RubimRH.db.profile.mainOption.useTrinkets[2] == false then
+	    return false
+	end	
+	
+    if RubimRH.db.profile.mainOption.trinketsUsage == "Everything" then
+        return true
+    end
+	
+	if RubimRH.db.profile.mainOption.trinketsUsage == "Boss Only" then
+        if not UnitExists("boss1") then
+            return false
+        end
 
+        if UnitExists("target") and not (UnitClassification("target") == "worldboss" or UnitClassification("target") == "rareelite" or UnitClassification("target") == "rare") then
+            return false
+        end
+    end	
     return true
 end
 
+-- Essence fix for QueueSkill
+local Essences = {   
+  Spell(297108),
+  Spell(298273),
+  Spell(298277),
+  Spell(295373),
+  Spell(299349),
+  Spell(299353),
+  Spell(295840),
+  Spell(299355),
+  Spell(299358),
+  Spell(295258),
+  Spell(299336),
+  Spell(299338),
+  Spell(295337),
+  Spell(299345),
+  Spell(299347),
+  Spell(298452),
+  Spell(299376),
+  Spell(299378),
+  Spell(302731),
+  Spell(302982),
+  Spell(302983),
+  Spell(295186),
+  Spell(298628),
+  Spell(299334),
+  Spell(298357),
+  Spell(299372),
+  Spell(299374),
+}
+
 function QueueSkill()
-    if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
+    local UnleashHeartOfAzeroth = Spell(280431)    
+	
+	if RubimRH.QueuedSpell():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpell()) then
         RubimRH.queuedSpell = { RubimRH.Spell[1].Empty, 0 }
     end
-    if RubimRH.QueuedSpell():IsReadyQueue() then
-        if RubimRH.QueuedSpell():ID() == 194844 and Player:RunicPower() <= 90 then
-        else
-            return RubimRH.QueuedSpell():Cast()
-        end
+    
+	if RubimRH.QueuedSpell():IsReadyQueue() then
+        --[[-- Essence fix for QueueSkill
+		for i = 1, #Essences do		
+		    local EssencesID = Essences[i]:ID()
+		    if RubimRH.QueuedSpell():ID() == EssencesID then
+			    print("Queued ID = " .. RubimRH.QueuedSpell():ID())
+			    print("Compared Essence ID = " .. EssencesID)
+                return UnleashHeartOfAzeroth:Cast()		
+		    else]]--
+                return RubimRH.QueuedSpell():Cast()
+			--end
+        --end
     end
 
     if RubimRH.QueuedSpellAuto():ID() ~= 1 and Player:PrevGCDP(1, RubimRH.QueuedSpellAuto()) then
@@ -79,25 +144,40 @@ function QueueSkill()
     end
 end
 --#TODO FIX THIS
+-- 13.05.19 - Should now work as intended
 function RubimRH.Shared()
-    if Player:AffectingCombat() then
+    local ValidUnits = ValidMembersAlive(IsPlayer)  
 
-        if Player:AffectingCombat() and not Target:Exists() then
-            HL.GetEnemies(8)
-            if Cache.EnemiesCount[8] >= 1 then
-                return 153911
-            end
+   -- Start attack if we find a target in 40yards
+	if (not Target:Exists() or Target:IsDeadOrGhost()) and RubimRH.AutoAttackON() then
+	    --print("It works");  
+		HL.GetEnemies(40)
+		if Cache.EnemiesCount[40] >= 1 then
+	        return 133015   
         end
+    end
+    
+	if Player:AffectingCombat() then
 
         if Player:ShouldStopCasting() and Player:IsCasting() then
             return 249170
         end
-
-        if Item(Healthstone):IsReady() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+		
+		-- Healthstone in raid with at least 10 raid members alive. 
+        if Item(Healthstone):IsReady() and IsInRaid() and ValidUnits >= 15 and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
             return 538745
         end
 
-        if Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
+        if Item(Healthstone):IsReady() and not IsInRaid() and Player:HealthPercentage() <= RubimRH.db.profile.mainOption.healthstoneper then
+            return 538745
+        end
+		
+		-- Protect against interrupt of channeled spells
+        if (Player:IsCasting() and Player:CastRemains() >= ((select(4, GetNetStats()) / 1000) * 2)) or Player:IsChanneling() then
+            return 0, "Interface\\Addons\\Rubim-RH\\Media\\channel.tga"
+        end 
+
+        if HL.CombatTime() > 5 and Target:Exists() and ((Player:IsMelee() and Target:MaxDistanceToPlayer(true) <= 8) or (not Player:IsMelee())) and RubimRH.CDsON() and Player:CanAttack(Target) then
             for i = 1, #RubimRH.db.profile.mainOption.useTrinkets do
                 if RubimRH.db.profile.mainOption.useTrinkets[1] == true then
                     if trinketReady(1) then
